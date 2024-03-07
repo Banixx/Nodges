@@ -2,7 +2,7 @@ console.log("elements.js geladen")
 import * as THREE from 'three';
 export const nodeTemplate = (scene, x, y, z) => {
     const geometry = new THREE.SphereGeometry(0.5, 32, 32);
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const material = new THREE.MeshLambertMaterial({ color: 0x3030b0 });
     const sphere = new THREE.Mesh(geometry, material);
     sphere.position.set(x, y, z);
     scene.add(sphere);
@@ -10,7 +10,14 @@ export const nodeTemplate = (scene, x, y, z) => {
 };
 
 export const edgeTemplate = (scene, start, end) => {
-    const material = new THREE.LineBasicMaterial({ color: 0x0000ff });
+    const material = new THREE.LineDashedMaterial( {
+        color: 0xdfefff,
+        linewidth: 1,
+        scale: 1,
+        dashSize: 3,
+        gapSize: 1,
+        isLineDashedMaterial: true
+    } );
     const points = [];
     points.push(start.position);
     points.push(end.position);
