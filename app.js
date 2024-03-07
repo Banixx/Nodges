@@ -11,7 +11,7 @@ document.body.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 
 // Positioniere die Kamera
-camera.position.z = 5;
+camera.position.z = 6;
 
 // Erstelle Nodes
 const node1 = nodeTemplate(scene, 0, 0, 0);
