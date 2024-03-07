@@ -1,3 +1,4 @@
+console.log("elements.js geladen")
 import * as THREE from 'three';
 export const nodeTemplate = (scene, x, y, z) => {
     const geometry = new THREE.SphereGeometry(0.5, 32, 32);
