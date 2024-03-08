@@ -16,10 +16,10 @@ scene.add(light);
 camera.position.z = 6;
 camera.position.y = 5;
 camera.position.x = -1;
-
+//knoten erstellen
 const node1 = nodeTemplate(scene, 0, 0, 0);
 const node2 = nodeTemplate(scene, 2, 2, 0);
-
+//Kanten erstellen
 const edge = edgeTemplate(scene, node1, node2);
 
 const size = 30;
@@ -36,6 +36,7 @@ function onMouseMove(event) {
 
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+    //console.log("x: "+mouse.x+" y: "+mouse.y)
 
     raycaster.setFromCamera(mouse, camera);
 
@@ -51,7 +52,7 @@ function onMouseMove(event) {
             document.getElementById('tooltip').innerHTML = `Koordinaten: ${JSON.stringify(coords)}`;
         }
     } else {
-        document.getElementById('tooltip').style.display = 'none';
+             document.getElementById('tooltip').style.display = 'none';
     }
 }
 
@@ -64,3 +65,4 @@ function animate() {
 }
 
 animate();
+                                                    
