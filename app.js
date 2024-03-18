@@ -1,9 +1,10 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { nodeTemplate, edgeTemplate } from './elements.js';
-//import { addGridHelpers } from './helper.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer';
 import { createGridHelpers } from './createGridHelpers.js';
+import { handleMouseOver, handleMouseOut, handleMouseClick } from './mouseEvents.js';
+
 
 
 const scene = new THREE.Scene();
@@ -42,7 +43,7 @@ function onMouseMove(event) {
 
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-    console.log("x: "+mouse.x+" y: "+mouse.y)
+//    console.log("x: "+mouse.x+" y: "+mouse.y)
 
     raycaster.setFromCamera(mouse, camera);
 
