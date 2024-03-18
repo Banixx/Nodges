@@ -1,24 +1,17 @@
-// mouseEvents.js
+import { Vector2 } from 'three';
 
-const handleMouseOver = (element) => {
-    element.addEventListener('mouseover', () => {
-        // Handle mouse over event
-        console.log('Mouse over event occurred');
-    });
-};
+const mouse = new Vector2();
 
-const handleMouseOut = (element) => {
-    element.addEventListener('mouseout', () => {
-        // Handle mouse out event
-        console.log('Mouse out event occurred');
-    });
-};
+function onMouseMove(event) {
+  event.preventDefault();
 
-const handleMouseClick = (element) => {
-    element.addEventListener('click', () => {
-        // Handle mouse click event
-        console.log('Mouse click event occurred');
-    });
-};
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
 
-export { handleMouseOver, handleMouseOut, handleMouseClick };
+  const tooltip = document.getElementById('tooltip');
+  tooltip.style.left = `${event.clientX}px`;
+  tooltip.style.top = `${event.clientY}px`;
+  tooltip.innerHTML = `X-Koordinate: ${mouse.x.toFixed(2)}<br>Y-Koordinate: ${mouse.y.toFixed(2)}`;
+}
+
+window.addEventListener('mousemove', onMouseMove, false);
