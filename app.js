@@ -3,9 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { nodeTemplate, edgeTemplate } from './elements.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer';
 import { createGridHelpers } from './createGridHelpers.js';
-import { mouseEvents } from './mouseEvents.js';
-
-
+import { onMouseMove } from "./temp.js";
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -51,6 +49,9 @@ raycaster.setFromCamera(mouse, camera);
 
 window.addEventListener('mousemove', mouseEvents.onMouseMove, false);
 
+
+
+onMouseMove(event);
 
 
 function animate() {
