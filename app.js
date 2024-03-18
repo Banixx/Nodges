@@ -1,10 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { nodeTemplate, edgeTemplate } from './elements.js';
-import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer';
 import { createGridHelpers } from './createGridHelpers.js';
-import { mouseEvents } from './mouseEvents.js';
-
 
 
 const scene = new THREE.Scene();
@@ -34,30 +31,11 @@ const edge2 = edgeTemplate(scene, node2, node4);
 
 createGridHelpers(scene);
 
-// Raycaster und Mouse hinzufügen
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
-mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-raycaster.setFromCamera(mouse, camera);
-
-    const intersects = raycaster.intersectObjects(scene.children, true);
-    console.log("intersects.Length > 0")
-       if (intersects.length > 0) { 
-        let intersected = intersects[0].object;
-       }
-
-
-window.addEventListener('mousemove', mouseEvents.onMouseMove, false);
-
-
 
 function animate() {
     requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera);
 }
-
 animate();
                                                     
