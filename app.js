@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { nodeTemplate, edgeTemplate } from './elements.js';
 import { createGridHelpers } from './createGridHelpers.js';
 
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -29,6 +30,7 @@ const edge1 = edgeTemplate(scene, node1, node3);
 const edge2 = edgeTemplate(scene, node2, node4);
 
 createGridHelpers(scene);
+
 
 function animate() {
     requestAnimationFrame(animate);
