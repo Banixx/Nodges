@@ -11,6 +11,7 @@ function createGridHelpers(scene) {
     const gridColorXY = 0x6666CC;
     const gridColorYZ = 0x12CC66;
     const gridColorXZ = 0xCCff66;
+    let gridColor
 
     // XY-Ebene
     const gridHelperXY = new THREE.GridHelper(size, divisions,gridColorXY,gridColorXY);
