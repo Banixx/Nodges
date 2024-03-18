@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 
 function createGridHelpers(scene) {
-console.log("createGridhelpers funktion ausgeführt")
+//console.log("createGridhelpers funktion ausgeführt")
     const helperLayer = new THREE.Layers();
     helperLayer.enable(0,1);  
 

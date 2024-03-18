@@ -18,8 +18,8 @@ light.position.set(1, 1, 1);
 scene.add(light);
 
 camera.position.z = 6;
-camera.position.y = 5;
-camera.position.x = -1;
+camera.position.y = 3;
+camera.position.x = 5;
 //knoten erstellen
 const node1 = nodeTemplate(scene, 0, 0, 2);
 const node2 = nodeTemplate(scene, 2, 2, -2);
