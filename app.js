@@ -1,10 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { nodeTemplate, edgeTemplate } from './elements.js';
-//import { addGridHelpers } from './helper.js';
-import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer';
 import { createGridHelpers } from './createGridHelpers.js';
-
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -33,54 +30,10 @@ const edge2 = edgeTemplate(scene, node2, node4);
 
 createGridHelpers(scene);
 
-// Raycaster und Mouse hinzufügen
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
-function onMouseMove(event) {
-    event.preventDefault();
-
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-    console.log("x: "+mouse.x+" y: "+mouse.y)
-
-    raycaster.setFromCamera(mouse, camera);
-
-    const intersects = raycaster.intersectObjects(scene.children, true);
-
-    if (intersects.length > 0) {
-        console.log("intersects.Length > 0")
-        const intersected = intersects[0].object;
-        if (intersected.userData.type === 'node' || intersected.userData.type === 'edge') { 
-            
-        console.log("ist node oder edge")
-            const coords = intersected.position; 
-            document.getElementById('tooltip').style.display = 'block';
-            document.getElementById('tooltip').style.left = `${event.clientX}px`;
-            document.getElementById('tooltip').style.top = `${event.clientY}px`;
-            document.getElementById('tooltip').innerHTML = `Koordinaten: ${JSON.stringify(coords)}`;
-        }
-    } else {
-             document.getElementById('tooltip').style.display = 'none';
-    }
-}
-
-window.addEventListener('mousemove', onMouseMove, false);
-
-   // Setze das Intervall auf 1000 Millisekunden (1 Sekunde)
-    //const intervallID = setInterval(randomEdge, 1000);
-
 function animate() {
     requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera);
-
-    
-    
- 
-    
-
 }
-
 animate();
                                                     
