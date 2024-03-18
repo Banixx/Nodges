@@ -16,12 +16,6 @@ const controls = new OrbitControls(camera, renderer.domElement);
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(1, 1, 1);
 scene.add(light);
-//Gridhelper
-const Gridhelp = new addGridHelpers
-//scene.add(Gridhelp);
-//scene.add(gridHelperXZ);
-//scene.add(gridHelperXZ);
-//scene.add(gridHelperXZ);
 
 camera.position.z = 6;
 camera.position.y = 5;
@@ -34,22 +28,9 @@ const node4 = nodeTemplate(scene, 2, (Math.random()*5), 0);
 (Math.random()*5)
 //Kanten erstellen
 const edge = edgeTemplate(scene, node1, node2);
+const edge1 = edgeTemplate(scene, node1, node3);
+const edge2 = edgeTemplate(scene, node2, node4);
 
-const randomEdge = function(){
-    console.log ("randomEdge gestartet");
-    let sumNodes = [1,2,3,4];
-let ranNode = Math.floor(Math.random() * meinArray.length);
-console.log("rannode: "+ranNode)
-    nodeA = ("node"+ranNode)
-    nodeB = ("node"+ranMode)
-let edge3 =edgeTemplate(scene, nodeA, nodeB)
-}
-
-const size = 30;
-const divisions = 10;
-
-//const gridHelper = new THREE.GridHelper(30, 10);
-//scene.add(gridHelper);
 createGridHelpers(scene);
 
 // Raycaster und Mouse hinzufügen
@@ -61,7 +42,7 @@ function onMouseMove(event) {
 
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-    //console.log("x: "+mouse.x+" y: "+mouse.y)
+    console.log("x: "+mouse.x+" y: "+mouse.y)
 
     raycaster.setFromCamera(mouse, camera);
 
