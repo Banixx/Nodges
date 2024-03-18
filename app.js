@@ -2,6 +2,9 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { nodeTemplate, edgeTemplate } from './elements.js';
 import { createGridHelpers } from './createGridHelpers.js';
+import {Tooltip} from './tooltip.js';
+
+const tooltip = new Tooltip('tooltip');
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -72,6 +75,12 @@ document.addEventListener('mousemove', (event) => {
     raycaster.setFromCamera(mouse, camera);
 
     const intersects = raycaster.intersectObjects(interactiveObjects);
+
+    if (intersects = true) {
+      tooltip.show(`Inhalt des Tooltips`, event.clientX, event.clientY);
+  } else {
+      tooltip.hide();
+  }
 
     if(intersects.length > 0) {
         const obj = intersects[0].object;
