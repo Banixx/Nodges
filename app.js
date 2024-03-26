@@ -24,7 +24,6 @@ light.position.set(1, 1, 1);
 scene.add(light);
 
 camera.position.z = 6;
-
 camera.position.y = 3;
 camera.position.x = 5;
 
