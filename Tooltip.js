@@ -45,5 +45,5 @@ class Tooltip {
     }
 }
 
-// Exportiere die Klasse, um sie in anderen Dateien verwenden zu können
+
 export default Tooltip;
