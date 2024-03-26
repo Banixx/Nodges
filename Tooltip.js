@@ -1,4 +1,4 @@
-class Tooltip {
+class Tooltip { 
     constructor(tooltipId) {
         this.tooltip = document.getElementById(tooltipId);
         if (!this.tooltip) {

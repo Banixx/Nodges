@@ -1,7 +1,7 @@
 import { Vector2 } from 'three';
 
 const mouse = new Vector2();
-
+/*
 function onMouseMove(event) {
   event.preventDefault();
 
@@ -13,5 +13,5 @@ function onMouseMove(event) {
   tooltip.style.top = `${event.clientY}px`;
   tooltip.innerHTML = `X-Koordinate: ${mouse.x.toFixed(2)}<br>Y-Koordinate: ${mouse.y.toFixed(2)}`;
 }
-
+*/
 window.addEventListener('mousemove', onMouseMove, false);

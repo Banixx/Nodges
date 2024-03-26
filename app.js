@@ -2,7 +2,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { nodeTemplate, edgeTemplate } from './elements.js';
 import { createGridHelpers } from './createGridHelpers.js';
-import tooltip from './tooltip.js';
+import Tooltip from './tooltip.js';
+const tooltip = new Tooltip('tooltip');
 
 //const tooltip = new Tooltip('tooltip');
 
@@ -36,7 +37,7 @@ createGridHelpers(scene);
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
-
+/*
 function updateTooltipPosition(event) {
     const tooltipWidth = tooltip.offsetWidth;
     const tooltipHeight = tooltip.offsetHeight;
@@ -64,6 +65,7 @@ function updateTooltipPosition(event) {
     tooltip.style.left = `${posX}px`;
     tooltip.style.top = `${posY}px`;
 }
+*/
 
 const interactiveObjects = [];
 interactiveObjects.push(node1, node2, node3, node4, edge, edge1, edge2);
@@ -73,34 +75,17 @@ document.addEventListener('mousemove', (event) => {
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
-
     const intersects = raycaster.intersectObjects(interactiveObjects);
-
-    if (intersects = true) {
-      tooltip.show(`Inhalt des Tooltips`, event.clientX, event.clientY);
-  } else {
-      tooltip.hide();
-  }
 
     if(intersects.length > 0) {
         const obj = intersects[0].object;
-
-        if(obj instanceof THREE.Line || obj instanceof THREE.Mesh) {
-          if ((obj instanceof THREE.Line || obj instanceof THREE.Mesh) && !obj.name.includes("XY") && !obj.name.includes("YZ") && !obj.name.includes("XZ"))
-            tooltip.style.display = 'block';
-            updateTooltipPosition(event);
-
-            tooltip.innerHTML = `
-            name: ${obj.name}<br>
-            id: ${obj.id}<br>
-            X: ${obj.position.x.toFixed(2)}<br>
-            Y: ${obj.position.y.toFixed(2)}<br>
-            Z: ${obj.position.z.toFixed(2)}`;
-        }
+        // Hier die Logik, um zu bestimmen, was im Tooltip angezeigt werden soll
+        tooltip.show(`Inhalt des Tooltips`, event.clientX, event.clientY);
     } else {
-        tooltip.style.display = 'none';
+        tooltip.hide();
     }
 });
+
 
 function animate() {
     requestAnimationFrame(animate);
