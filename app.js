@@ -83,13 +83,16 @@ document.addEventListener("mousemove", (event) => {
   const intersects = raycaster.intersectObjects(interactiveObjects);
 
   if (intersects.length > 0) {
-    const obj = intersects[0].object;
-    // Hier die Logik, um zu bestimmen, was im Tooltip angezeigt werden soll
-    tooltip.show(`Inhalt des Tooltips`, event.clientX, event.clientY);
+    const intersect = intersects[0]; // Das Schnittpunkt-Objekt
+    const obj = intersect.object; // Das tatsächlich getroffene Objekt
+    // Verwende `obj.position` für die Position des Objekts
+    tooltip.show(`X-Koordinate: ${obj.position.x.toFixed(2)}<br>Y-Koordinate: ${obj.position.y.toFixed(2)}<br>Z-Koordinate: ${obj.position.z.toFixed(2)}`, event.clientX, event.clientY);
+    obj.color == 0xfff;
   } else {
     tooltip.hide();
   }
 });
+
 
 function animate() {
   requestAnimationFrame(animate);
