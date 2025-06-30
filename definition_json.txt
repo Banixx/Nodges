@@ -1,0 +1,52 @@
+Die Datei enthält Anweisungen zur Struktur von JSON-Dateien für Nodges-Visualisierungen.
+
+**Allgemeine Struktur einer Nodges-JSON-Datei:**
+Eine Nodges-JSON-Datei besteht aus einem `metadata`-Objekt, einem `nodes`-Array und einem `edges`-Array.
+
+- **`metadata`**: Enthält allgemeine Informationen zur Datei.
+  - `title`: Titel der Visualisierung (String).
+  - `description`: Beschreibung der Daten (String).
+  - `type`: Typ der Nodges-Datei (String, z.B. "family").
+
+- **`nodes`**: Ein Array von Objekten, die die Knoten (Personen, Konzepte etc.) repräsentieren.
+  Jeder Knoten muss folgende Eigenschaften haben:
+  - `id`: Eindeutiger Bezeichner des Knotens (String).
+  - `name`: Anzeigename des Knotens (String).
+  - `position`: Ein Objekt mit den 3D-Koordinaten des Knotens.
+    - `x`: X-Koordinate (Number).
+    - `y`: Y-Koordinate (Number).
+    - `z`: Z-Koordinate (Number).
+  - `metadata`: Ein Objekt für zusätzliche, typ-spezifische Informationen zur Darstellung.
+
+- **`edges`**: Ein Array von Objekten, die die Verbindungen (Beziehungen) zwischen Knoten repräsentieren.
+  Jede Kante muss folgende Eigenschaften haben:
+  - `source`: `id` des Startknotens (String).
+  - `target`: `id` des Zielknotens (String).
+  - `type`: Art der Beziehung (String, z.B. "bloodline", "marriage").
+  - `offset`: Numerischer Wert, um Kanten bei mehreren Verbindungen zwischen denselben Knoten zu versetzen.
+
+**Allgemeine Regeln für alle Nodges-JSON-Dateien:**
+- **Knotenabstand**: Die Knoten sollten etwa einen fünffachen Durchmesser an Abstand zueinander haben, um eine gute Lesbarkeit zu gewährleisten.
+- **Kanten-Offset**: Die Edges haben entsprechend ihrer steigenden Anzahl zwischen zwei Nodes einen steigenden Offset. Der Offset sollte maximal einen Durchmesser von einem Drittel der Distanz zwischen den beiden Nodes haben.
+- **Y-Koordinate (Höhe)**: Alle Knoten müssen über dem Raster liegen. Die niedrigste Y-Koordinate sollte positiv sein oder zumindest über dem Wert des Bodens (`ground.position.y` in `main.js`, aktuell `-0.81`) liegen.
+
+**Spezifische Regeln für den Typ `family` (Familienstammbäume):**
+- **Anordnung der Nodes**: Die Nodes werden wie bei einem klassischen Familienstammbaum angeordnet.
+  - **Y-Achse (Generation)**: Repräsentiert die Generation. Jüngere Generationen haben einen niedrigeren Y-Wert.
+  - **Z-Achse (Angeheiratete Partner)**: Angeheiratete Partner sind in der Z-Achse nach hinten versetzt (z.B. `z=0` für Blutsverwandte, `z=2` für angeheiratete Partner).
+  - **X-Achse (Horizontale Anordnung)**: Dient zur horizontalen Anordnung innerhalb einer Generation.
+- **Darstellung der Nodes (`metadata` im Knotenobjekt):**
+  - `gender`: (String) "male" für Männer, "female" für Frauen, "nonbinary" für Nonbinäre.
+  - `type`: (String) Definiert die Form des Knotens.
+    - Männer: "cube" (rote Box).
+    - Frauen: "dodecahedron" (blaues Dodecahedron).
+    - Nonbinäre: "icosahedron" (weißes Icosahedron).
+  - `color`: (Hex-Code) Definiert die Farbe des Knotens.
+    - Männer: `0xff0000` (Rot).
+    - Frauen: `0x0000ff` (Blau).
+    - Nonbinäre: `0xffffff` (Weiß).
+- **Darstellung der Edges (`type` im Kantenobjekt):**
+  - `bloodline`: (String) Grüne Verbindungen (`0x00ff00`) zwischen direkten Blutsverwandten.
+  - `marriage`: (String) Orange Verbindungen (`0xffa500`) zwischen angeheirateten Partnern.
+- **Panel-Anzeige**: Die Panels sind für alle Nodes angezeigt.
+- **Symmetrie**: Wähle eine gleichmäßige symmetrische Anordnung über 0,0,0.

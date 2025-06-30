@@ -1,0 +1,101 @@
+{
+  "metadata": {
+    "type": "sample_network",
+    "source": "Test Data",
+    "description": "Sample network for testing import functionality",
+    "nodeCount": 4,
+    "edgeCount": 4
+  },
+  "nodes": [
+    {
+      "id": "test1",
+      "name": "Test Node 1",
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "metadata": {
+        "color": 16711680,
+        "size": 1.2,
+        "type": "cube",
+        "category": "important"
+      }
+    },
+    {
+      "id": "test2", 
+      "name": "Test Node 2",
+      "position": { "x": 5, "y": 0, "z": 0 },
+      "metadata": {
+        "color": 65280,
+        "size": 1.0,
+        "type": "sphere",
+        "category": "normal"
+      }
+    },
+    {
+      "id": "test3",
+      "name": "Test Node 3", 
+      "position": { "x": 2.5, "y": 5, "z": 0 },
+      "metadata": {
+        "color": 255,
+        "size": 1.5,
+        "type": "cylinder",
+        "category": "special"
+      }
+    },
+    {
+      "id": "test4",
+      "name": "Test Node 4",
+      "position": { "x": -2, "y": 3, "z": 0 },
+      "metadata": {
+        "color": 16776960,
+        "size": 0.8,
+        "type": "dodecahedron",
+        "category": "normal"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "test1",
+      "target": "test2",
+      "name": "Connection 1-2",
+      "weight": 1.0,
+      "metadata": {
+        "color": 65280,
+        "style": "solid",
+        "type": "strong"
+      }
+    },
+    {
+      "source": "test2", 
+      "target": "test3",
+      "name": "Connection 2-3",
+      "weight": 2.0,
+      "metadata": {
+        "color": 16776960,
+        "style": "dashed",
+        "type": "medium"
+      }
+    },
+    {
+      "source": "test3",
+      "target": "test4", 
+      "name": "Connection 3-4",
+      "weight": 1.5,
+      "metadata": {
+        "color": 16711680,
+        "style": "solid",
+        "type": "weak"
+      }
+    },
+    {
+      "source": "test1",
+      "target": "test4",
+      "name": "Connection 1-4",
+      "weight": 0.5,
+      "metadata": {
+        "color": 8421504,
+        "style": "dotted",
+        "type": "weak"
+      }
+    }
+  ]
+}
