@@ -30,6 +30,37 @@ Eine Nodges-JSON-Datei besteht aus einem `metadata`-Objekt, einem `nodes`-Array 
 - **Kanten-Offset**: Die Edges haben entsprechend ihrer steigenden Anzahl zwischen zwei Nodes einen steigenden Offset. Der Offset sollte maximal einen Durchmesser von einem Drittel der Distanz zwischen den beiden Nodes haben.
 - **Y-Koordinate (Höhe)**: Alle Knoten müssen über dem Raster liegen. Die niedrigste Y-Koordinate sollte positiv sein oder zumindest über dem Wert des Bodens (`ground.position.y` in `main.js`, aktuell `-0.81`) liegen.
 
+**Spezifische Regeln für den Typ `process` (Prozess-/Systemabläufe):**
+- **Anordnung der Nodes**: Die Nodes repräsentieren Prozessschritte, Ämter, Entscheidungspunkte oder Dokumente.
+  - **X-Achse (Zeitlicher Ablauf)**: Repräsentiert die zeitliche Reihenfolge. Frühere Schritte haben niedrigere X-Werte.
+  - **Y-Achse (Hierarchie/Zuständigkeit)**: Repräsentiert die Organisationsebene oder Zuständigkeit. Höhere Ebenen haben höhere Y-Werte.
+  - **Z-Achse (Parallele Prozesse)**: Parallele oder alternative Pfade werden in der Z-Achse versetzt (z.B. `z=0` für Hauptpfad, `z=3` für Alternativpfad).
+- **Darstellung der Nodes (`metadata` im Knotenobjekt):**
+  - `nodeType`: (String) "authority" für Behörden, "document" für Dokumente, "decision" für Entscheidungspunkte, "process" für Prozessschritte.
+  - `type`: (String) Definiert die Form des Knotens.
+    - Behörden: "cube" (blaue Box).
+    - Dokumente: "cylinder" (gelber Zylinder).
+    - Entscheidungen: "octahedron" (rotes Oktaeder).
+    - Prozesse: "sphere" (grüne Kugel).
+  - `color`: (Hex-Code) Definiert die Farbe des Knotens.
+    - Behörden: `0x0066cc` (Blau).
+    - Dokumente: `0xffcc00` (Gelb).
+    - Entscheidungen: `0xff3300` (Rot).
+    - Prozesse: `0x00cc66` (Grün).
+  - `duration`: (Number) Bearbeitungsdauer in Tagen (optional).
+  - `jurisdiction`: (String) Zuständigkeitsbereich (z.B. "Kanton Zürich", "Gemeinde", "Bund").
+  - `requirements`: (Array) Liste erforderlicher Dokumente oder Voraussetzungen.
+- **Darstellung der Edges (`type` im Kantenobjekt):**
+  - `sequence`: (String) Blaue Verbindungen (`0x0066ff`) für zeitliche Abfolgen.
+  - `dependency`: (String) Orange Verbindungen (`0xff9900`) für Abhängigkeiten (z.B. Dokument → Prozess).
+  - `alternative`: (String) Gestrichelte graue Verbindungen (`0x999999`) für alternative Pfade.
+  - `approval`: (String) Grüne Verbindungen (`0x00cc00`) für Genehmigungsschritte.
+  - `rejection`: (String) Rote Verbindungen (`0xff0000`) für Ablehnungspfade.
+- **Zusätzliche Edge-Eigenschaften:**
+  - `condition`: (String) Bedingung für diese Verbindung (z.B. "wenn Bauzone = Wohngebiet").
+  - `probability`: (Number) Wahrscheinlichkeit dieses Pfades (0.0 - 1.0).
+  - `duration`: (Number) Zeitdauer für diesen Schritt in Tagen.
+
 **Spezifische Regeln für den Typ `family` (Familienstammbäume):**
 - **Anordnung der Nodes**: Die Nodes werden wie bei einem klassischen Familienstammbaum angeordnet.
   - **Y-Achse (Generation)**: Repräsentiert die Generation. Jüngere Generationen haben einen niedrigeren Y-Wert.

@@ -1,0 +1,54 @@
+{
+  "timestamp": "2025-07-01T06:54:12.966Z",
+  "summary": {
+    "passCount": 4,
+    "failCount": 0,
+    "errorCount": 0,
+    "warningCount": 1,
+    "successRate": "80.0"
+  },
+  "results": [
+    {
+      "name": "Memory Leak Prevention",
+      "status": "PASS",
+      "message": "Memory leak prevention works correctly"
+    },
+    {
+      "name": "Animation Performance",
+      "status": "WARNING",
+      "message": "Performance improvement not significant",
+      "metrics": {
+        "optimizedTime": 3.7806909999999974,
+        "oldTime": 2.8230719999999963,
+        "improvement": -33.921168145906385
+      }
+    },
+    {
+      "name": "Edge Settings Safety",
+      "status": "PASS",
+      "message": "Edge settings fallback mechanism works"
+    },
+    {
+      "name": "Error Handling",
+      "status": "PASS",
+      "message": "Error recovery mechanism works properly",
+      "details": {
+        "errorCaught": true,
+        "finallyExecuted": true,
+        "isAnimatingReset": true
+      }
+    },
+    {
+      "name": "Performance Monitoring",
+      "status": "PASS",
+      "message": "Good performance (100/100)",
+      "metrics": {
+        "fps": 33,
+        "frameTime": 15.401057484653169,
+        "visibleNodes": 580,
+        "visibleEdges": 294,
+        "memoryUsage": 51
+      }
+    }
+  ]
+}

@@ -1,0 +1,1181 @@
+{
+  "fileChecks": [
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "File Exists",
+      "status": "PASS",
+      "details": "File found and accessible"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Content Length",
+      "status": "PASS",
+      "details": "275 lines"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Header Structure",
+      "status": "PASS",
+      "details": "H1 and H2 headers found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Visual Elements",
+      "status": "PASS",
+      "details": "57 emojis for visual appeal"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "File Exists",
+      "status": "PASS",
+      "details": "File found and accessible"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Content Length",
+      "status": "PASS",
+      "details": "461 lines"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Header Structure",
+      "status": "PASS",
+      "details": "H1 and H2 headers found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Visual Elements",
+      "status": "PASS",
+      "details": "60 emojis for visual appeal"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "File Exists",
+      "status": "PASS",
+      "details": "File found and accessible"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Content Length",
+      "status": "PASS",
+      "details": "606 lines"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Header Structure",
+      "status": "PASS",
+      "details": "H1 and H2 headers found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Visual Elements",
+      "status": "PASS",
+      "details": "40 emojis for visual appeal"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "File Exists",
+      "status": "PASS",
+      "details": "File found and accessible"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Content Length",
+      "status": "PASS",
+      "details": "487 lines"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Header Structure",
+      "status": "PASS",
+      "details": "H1 and H2 headers found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Visual Elements",
+      "status": "PASS",
+      "details": "98 emojis for visual appeal"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "File Exists",
+      "status": "PASS",
+      "details": "File found and accessible"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Content Length",
+      "status": "PASS",
+      "details": "183 lines"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Header Structure",
+      "status": "PASS",
+      "details": "H1 and H2 headers found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Visual Elements",
+      "status": "PASS",
+      "details": "48 emojis for visual appeal"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "File Exists",
+      "status": "PASS",
+      "details": "File found and accessible"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Content Length",
+      "status": "PASS",
+      "details": "275 lines"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Header Structure",
+      "status": "PASS",
+      "details": "H1 and H2 headers found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Visual Elements",
+      "status": "PASS",
+      "details": "57 emojis for visual appeal"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "File Exists",
+      "status": "PASS",
+      "details": "File found and accessible"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Content Length",
+      "status": "PASS",
+      "details": "461 lines"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Header Structure",
+      "status": "PASS",
+      "details": "H1 and H2 headers found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Visual Elements",
+      "status": "PASS",
+      "details": "60 emojis for visual appeal"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "File Exists",
+      "status": "PASS",
+      "details": "File found and accessible"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Content Length",
+      "status": "PASS",
+      "details": "606 lines"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Header Structure",
+      "status": "PASS",
+      "details": "H1 and H2 headers found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Visual Elements",
+      "status": "PASS",
+      "details": "40 emojis for visual appeal"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "File Exists",
+      "status": "PASS",
+      "details": "File found and accessible"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Content Length",
+      "status": "PASS",
+      "details": "487 lines"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Header Structure",
+      "status": "PASS",
+      "details": "H1 and H2 headers found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Visual Elements",
+      "status": "PASS",
+      "details": "98 emojis for visual appeal"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "File Exists",
+      "status": "PASS",
+      "details": "File found and accessible"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Content Length",
+      "status": "PASS",
+      "details": "183 lines"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Header Structure",
+      "status": "PASS",
+      "details": "H1 and H2 headers found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Visual Elements",
+      "status": "PASS",
+      "details": "48 emojis for visual appeal"
+    }
+  ],
+  "linkValidation": [
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Link Validation",
+      "status": "PASS",
+      "details": "20 valid, 0 invalid of 36 total"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Link Validation",
+      "status": "PASS",
+      "details": "10 valid, 0 invalid of 10 total"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Link Validation",
+      "status": "PASS",
+      "details": "8 valid, 0 invalid of 8 total"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Link Validation",
+      "status": "PASS",
+      "details": "8 valid, 0 invalid of 8 total"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Link Validation",
+      "status": "PASS",
+      "details": "11 valid, 0 invalid of 11 total"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Link Validation",
+      "status": "PASS",
+      "details": "20 valid, 0 invalid of 36 total"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Link Validation",
+      "status": "PASS",
+      "details": "10 valid, 0 invalid of 10 total"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Link Validation",
+      "status": "PASS",
+      "details": "8 valid, 0 invalid of 8 total"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Link Validation",
+      "status": "PASS",
+      "details": "8 valid, 0 invalid of 8 total"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Link Validation",
+      "status": "PASS",
+      "details": "11 valid, 0 invalid of 11 total"
+    }
+  ],
+  "consistencyChecks": [
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "All Files",
+      "checkName": "Version Consistency",
+      "status": "PASS",
+      "details": "Consistent version: 0.80"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "All Files",
+      "checkName": "Port Consistency",
+      "status": "PASS",
+      "details": "Consistent port: 8080"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "All Files",
+      "checkName": "Feature Coverage",
+      "status": "PASS",
+      "details": "Average layout algorithm mentions: 7.6"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "All Files",
+      "checkName": "Version Consistency",
+      "status": "PASS",
+      "details": "Consistent version: 0.80"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "All Files",
+      "checkName": "Port Consistency",
+      "status": "PASS",
+      "details": "Consistent port: 8080"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "All Files",
+      "checkName": "Feature Coverage",
+      "status": "PASS",
+      "details": "Average layout algorithm mentions: 7.6"
+    }
+  ],
+  "formatChecks": [
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Table of Contents",
+      "status": "PASS",
+      "details": "TOC found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Code Blocks",
+      "status": "PASS",
+      "details": "5 code blocks found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Tables",
+      "status": "PASS",
+      "details": "6 table rows found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Lists",
+      "status": "PASS",
+      "details": "103 list items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Line Length",
+      "status": "WARNING",
+      "details": "2 lines over 120 characters"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Table of Contents",
+      "status": "PASS",
+      "details": "TOC found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Code Blocks",
+      "status": "PASS",
+      "details": "1 code blocks found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Tables",
+      "status": "PASS",
+      "details": "10 table rows found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Lists",
+      "status": "PASS",
+      "details": "232 list items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Line Length",
+      "status": "WARNING",
+      "details": "1 lines over 120 characters"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Table of Contents",
+      "status": "PASS",
+      "details": "TOC found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Code Blocks",
+      "status": "PASS",
+      "details": "31 code blocks found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Tables",
+      "status": "PASS",
+      "details": "9 table rows found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Lists",
+      "status": "PASS",
+      "details": "69 list items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Line Length",
+      "status": "WARNING",
+      "details": "1 lines over 120 characters"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Table of Contents",
+      "status": "PASS",
+      "details": "TOC found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Code Blocks",
+      "status": "PASS",
+      "details": "1 code blocks found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Tables",
+      "status": "PASS",
+      "details": "10 table rows found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Lists",
+      "status": "PASS",
+      "details": "255 list items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Line Length",
+      "status": "WARNING",
+      "details": "3 lines over 120 characters"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Table of Contents",
+      "status": "PASS",
+      "details": "TOC found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Code Blocks",
+      "status": "PASS",
+      "details": "2 code blocks found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Tables",
+      "status": "PASS",
+      "details": "6 table rows found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Lists",
+      "status": "PASS",
+      "details": "89 list items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Line Length",
+      "status": "PASS",
+      "details": "All lines under 120 characters"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Table of Contents",
+      "status": "PASS",
+      "details": "TOC found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Code Blocks",
+      "status": "PASS",
+      "details": "5 code blocks found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Tables",
+      "status": "PASS",
+      "details": "6 table rows found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Lists",
+      "status": "PASS",
+      "details": "103 list items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Line Length",
+      "status": "WARNING",
+      "details": "2 lines over 120 characters"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Table of Contents",
+      "status": "PASS",
+      "details": "TOC found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Code Blocks",
+      "status": "PASS",
+      "details": "1 code blocks found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Tables",
+      "status": "PASS",
+      "details": "10 table rows found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Lists",
+      "status": "PASS",
+      "details": "232 list items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Line Length",
+      "status": "WARNING",
+      "details": "1 lines over 120 characters"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Table of Contents",
+      "status": "PASS",
+      "details": "TOC found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Code Blocks",
+      "status": "PASS",
+      "details": "31 code blocks found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Tables",
+      "status": "PASS",
+      "details": "9 table rows found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Lists",
+      "status": "PASS",
+      "details": "69 list items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Line Length",
+      "status": "WARNING",
+      "details": "1 lines over 120 characters"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Table of Contents",
+      "status": "PASS",
+      "details": "TOC found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Code Blocks",
+      "status": "PASS",
+      "details": "1 code blocks found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Tables",
+      "status": "PASS",
+      "details": "10 table rows found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Lists",
+      "status": "PASS",
+      "details": "255 list items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Line Length",
+      "status": "WARNING",
+      "details": "3 lines over 120 characters"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Table of Contents",
+      "status": "PASS",
+      "details": "TOC found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Code Blocks",
+      "status": "PASS",
+      "details": "2 code blocks found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Tables",
+      "status": "PASS",
+      "details": "6 table rows found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Lists",
+      "status": "PASS",
+      "details": "89 list items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Line Length",
+      "status": "PASS",
+      "details": "All lines under 120 characters"
+    }
+  ],
+  "contentChecks": [
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Required Sections",
+      "status": "PASS",
+      "details": "All 4 required sections found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Required Sections",
+      "status": "PASS",
+      "details": "All 4 required sections found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Required Sections",
+      "status": "PASS",
+      "details": "All 4 required sections found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Required Sections",
+      "status": "PASS",
+      "details": "All 4 required sections found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Required Sections",
+      "status": "PASS",
+      "details": "All 4 required sections found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Examples",
+      "status": "WARNING",
+      "details": "No examples found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Images",
+      "status": "PASS",
+      "details": "5 image references found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Examples",
+      "status": "PASS",
+      "details": "4 examples found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Images",
+      "status": "WARNING",
+      "details": "No image references found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Examples",
+      "status": "PASS",
+      "details": "2 examples found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Images",
+      "status": "WARNING",
+      "details": "No image references found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Examples",
+      "status": "PASS",
+      "details": "2 examples found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Images",
+      "status": "WARNING",
+      "details": "No image references found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Examples",
+      "status": "WARNING",
+      "details": "No examples found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Images",
+      "status": "WARNING",
+      "details": "No image references found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "TODO Items",
+      "status": "PASS",
+      "details": "No unfinished items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Placeholders",
+      "status": "WARNING",
+      "details": "41 potential placeholders found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Common Typos",
+      "status": "WARNING",
+      "details": "2 potential typos found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "TODO Items",
+      "status": "PASS",
+      "details": "No unfinished items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Placeholders",
+      "status": "WARNING",
+      "details": "13 potential placeholders found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Common Typos",
+      "status": "WARNING",
+      "details": "1 potential typos found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "TODO Items",
+      "status": "PASS",
+      "details": "No unfinished items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Placeholders",
+      "status": "WARNING",
+      "details": "18 potential placeholders found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Common Typos",
+      "status": "WARNING",
+      "details": "1 potential typos found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "TODO Items",
+      "status": "PASS",
+      "details": "No unfinished items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Placeholders",
+      "status": "WARNING",
+      "details": "8 potential placeholders found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Common Typos",
+      "status": "WARNING",
+      "details": "1 potential typos found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "TODO Items",
+      "status": "PASS",
+      "details": "No unfinished items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Placeholders",
+      "status": "WARNING",
+      "details": "17 potential placeholders found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Common Typos",
+      "status": "WARNING",
+      "details": "1 potential typos found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Required Sections",
+      "status": "PASS",
+      "details": "All 4 required sections found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Required Sections",
+      "status": "PASS",
+      "details": "All 4 required sections found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Required Sections",
+      "status": "PASS",
+      "details": "All 4 required sections found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Required Sections",
+      "status": "PASS",
+      "details": "All 4 required sections found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Required Sections",
+      "status": "PASS",
+      "details": "All 4 required sections found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Examples",
+      "status": "WARNING",
+      "details": "No examples found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Images",
+      "status": "PASS",
+      "details": "5 image references found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Examples",
+      "status": "PASS",
+      "details": "4 examples found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Images",
+      "status": "WARNING",
+      "details": "No image references found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Examples",
+      "status": "PASS",
+      "details": "2 examples found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Images",
+      "status": "WARNING",
+      "details": "No image references found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Examples",
+      "status": "PASS",
+      "details": "2 examples found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Images",
+      "status": "WARNING",
+      "details": "No image references found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Examples",
+      "status": "WARNING",
+      "details": "No examples found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Images",
+      "status": "WARNING",
+      "details": "No image references found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "TODO Items",
+      "status": "PASS",
+      "details": "No unfinished items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Placeholders",
+      "status": "WARNING",
+      "details": "41 potential placeholders found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "README.md",
+      "checkName": "Common Typos",
+      "status": "WARNING",
+      "details": "2 potential typos found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "TODO Items",
+      "status": "PASS",
+      "details": "No unfinished items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Placeholders",
+      "status": "WARNING",
+      "details": "13 potential placeholders found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "USER_MANUAL.md",
+      "checkName": "Common Typos",
+      "status": "WARNING",
+      "details": "1 potential typos found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "TODO Items",
+      "status": "PASS",
+      "details": "No unfinished items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Placeholders",
+      "status": "WARNING",
+      "details": "18 potential placeholders found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "INSTALLATION_SETUP_GUIDE.md",
+      "checkName": "Common Typos",
+      "status": "WARNING",
+      "details": "1 potential typos found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "TODO Items",
+      "status": "PASS",
+      "details": "No unfinished items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Placeholders",
+      "status": "WARNING",
+      "details": "8 potential placeholders found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "FEATURE_OVERVIEW.md",
+      "checkName": "Common Typos",
+      "status": "WARNING",
+      "details": "1 potential typos found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "TODO Items",
+      "status": "PASS",
+      "details": "No unfinished items found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Placeholders",
+      "status": "WARNING",
+      "details": "17 potential placeholders found"
+    },
+    {
+      "timestamp": "9:37:28 AM",
+      "fileName": "QUICK_START_GUIDE.md",
+      "checkName": "Common Typos",
+      "status": "WARNING",
+      "details": "1 potential typos found"
+    }
+  ],
+  "summary": {
+    "total": 166,
+    "passed": 126,
+    "failed": 0,
+    "warnings": 40,
+    "qualityScore": "75.9"
+  }
+}

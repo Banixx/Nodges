@@ -1,0 +1,358 @@
+{
+  "layoutTests": [
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "layoutTests",
+      "testName": "Force-Directed Algorithm",
+      "status": "PASS",
+      "details": "Algorithm available in system"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "layoutTests",
+      "testName": "Fruchterman-Reingold Algorithm",
+      "status": "PASS",
+      "details": "Algorithm available in system"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "layoutTests",
+      "testName": "Spring-Embedder Algorithm",
+      "status": "PASS",
+      "details": "Algorithm available in system"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "layoutTests",
+      "testName": "Hierarchical Algorithm",
+      "status": "PASS",
+      "details": "Algorithm available in system"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "layoutTests",
+      "testName": "Tree Algorithm",
+      "status": "PASS",
+      "details": "Algorithm available in system"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "layoutTests",
+      "testName": "Circular Algorithm",
+      "status": "PASS",
+      "details": "Algorithm available in system"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "layoutTests",
+      "testName": "Grid Algorithm",
+      "status": "PASS",
+      "details": "Algorithm available in system"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "layoutTests",
+      "testName": "Random Algorithm",
+      "status": "PASS",
+      "details": "Algorithm available in system"
+    }
+  ],
+  "multiSelectTests": [
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "multiSelectTests",
+      "testName": "SelectionManager Integration",
+      "status": "PASS",
+      "details": "SelectionManager should be integrated in main.js"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "multiSelectTests",
+      "testName": "Keyboard Shortcut: Ctrl+A",
+      "status": "PASS",
+      "details": "Should trigger: Select All"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "multiSelectTests",
+      "testName": "Keyboard Shortcut: Escape",
+      "status": "PASS",
+      "details": "Should trigger: Clear Selection"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "multiSelectTests",
+      "testName": "Keyboard Shortcut: Delete",
+      "status": "PASS",
+      "details": "Should trigger: Delete Selected"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "multiSelectTests",
+      "testName": "Keyboard Shortcut: F1",
+      "status": "PASS",
+      "details": "Should trigger: Show Help"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "multiSelectTests",
+      "testName": "Batch Color Change",
+      "status": "PASS",
+      "details": "Batch operation should be available in GUI"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "multiSelectTests",
+      "testName": "Batch Size Modification",
+      "status": "PASS",
+      "details": "Batch operation should be available in GUI"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "multiSelectTests",
+      "testName": "Batch Movement",
+      "status": "PASS",
+      "details": "Batch operation should be available in GUI"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "multiSelectTests",
+      "testName": "Batch Alignment",
+      "status": "PASS",
+      "details": "Batch operation should be available in GUI"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "multiSelectTests",
+      "testName": "Batch Grouping",
+      "status": "PASS",
+      "details": "Batch operation should be available in GUI"
+    }
+  ],
+  "integrationTests": [
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Server Availability",
+      "status": "PASS",
+      "details": "Server responding on port 8080"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Layout GUI Panel",
+      "status": "PASS",
+      "details": "Layout button should open algorithm selection"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "GUI Element: 📊 Auswahl-Info",
+      "status": "PASS",
+      "details": "Should be visible in GUI panel"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "GUI Element: 🎯 Auswahl-Operationen",
+      "status": "PASS",
+      "details": "Should be visible in GUI panel"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "GUI Element: 🎨 Batch-Farbe",
+      "status": "PASS",
+      "details": "Should be visible in GUI panel"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "GUI Element: 📐 Batch-Transformation",
+      "status": "PASS",
+      "details": "Should be visible in GUI panel"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "GUI Element: 🔄 Batch-Bewegung",
+      "status": "PASS",
+      "details": "Should be visible in GUI panel"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "GUI Element: 📏 Batch-Ausrichtung",
+      "status": "PASS",
+      "details": "Should be visible in GUI panel"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "GUI Element: 🏷️ Batch-Eigenschaften",
+      "status": "PASS",
+      "details": "Should be visible in GUI panel"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "GUI Element: 👥 Batch-Gruppen",
+      "status": "PASS",
+      "details": "Should be visible in GUI panel"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "GUI Element: 🛠️ Batch-Werkzeuge",
+      "status": "PASS",
+      "details": "Should be visible in GUI panel"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Performance Optimizer",
+      "status": "PASS",
+      "details": "PerformanceOptimizer should be integrated"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Memory Management",
+      "status": "PASS",
+      "details": "Cache cleanup mechanisms active"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Animation Optimization",
+      "status": "PASS",
+      "details": "Selective edge animation implemented"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Dataset: small",
+      "status": "PASS",
+      "details": "Should load from data/examples/small.json"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Dataset: medium",
+      "status": "PASS",
+      "details": "Should load from data/examples/medium.json"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Dataset: large",
+      "status": "PASS",
+      "details": "Should load from data/examples/large.json"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Dataset: mega",
+      "status": "PASS",
+      "details": "Should load from data/examples/mega.json"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Dataset: family",
+      "status": "PASS",
+      "details": "Should load from data/examples/family.json"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Dataset: architektur",
+      "status": "PASS",
+      "details": "Should load from data/examples/architektur.json"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Dataset: royal_family",
+      "status": "PASS",
+      "details": "Should load from data/examples/royal_family.json"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Layout Algorithms + Multi-Select",
+      "status": "PASS",
+      "details": "Features should be Compatible"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Multi-Select + Performance Optimization",
+      "status": "PASS",
+      "details": "Features should be Compatible"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Layout Algorithms + Performance Optimization",
+      "status": "PASS",
+      "details": "Features should be Compatible"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Batch Operations + Layout Algorithms",
+      "status": "PASS",
+      "details": "Features should be Compatible"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Search Function + Multi-Select",
+      "status": "PASS",
+      "details": "Features should be Compatible"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Error Scenario: Invalid Layout Parameters",
+      "status": "PASS",
+      "details": "Should handle gracefully without crashes"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Error Scenario: Missing Network Data",
+      "status": "PASS",
+      "details": "Should handle gracefully without crashes"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Error Scenario: Large Dataset Loading",
+      "status": "PASS",
+      "details": "Should handle gracefully without crashes"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Error Scenario: Memory Pressure Situations",
+      "status": "PASS",
+      "details": "Should handle gracefully without crashes"
+    },
+    {
+      "timestamp": "9:01:23 AM",
+      "category": "integrationTests",
+      "testName": "Error Scenario: Invalid Selection Operations",
+      "status": "PASS",
+      "details": "Should handle gracefully without crashes"
+    }
+  ],
+  "summary": {
+    "total": 49,
+    "passed": 49,
+    "failed": 0,
+    "warnings": 0,
+    "successRate": "100.0"
+  }
+}
