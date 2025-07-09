@@ -133,4 +133,11 @@ export class RaycastManager {
     setDebugMode(enabled) {
         this.debug = enabled;
     }
+    
+    // Kompatibilitäts-Methode für main.js
+    raycast(mouse, objects) {
+        this.mouse.copy(mouse);
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+        return this.raycaster.intersectObjects(objects);
+    }
 }

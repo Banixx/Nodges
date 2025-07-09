@@ -31,14 +31,15 @@ export class NetworkAnalyzer {
         this.adjacencyList.clear();
         
         // Initialize adjacency list for all nodes
-        this.nodes.forEach(node => {
-            this.adjacencyList.set(node.id, new Set());
+        this.nodes.forEach((node, index) => {
+            const nodeId = node.id || node.name || index;
+            this.adjacencyList.set(nodeId, new Set());
         });
 
         // Add edges to adjacency list
         this.edges.forEach(edge => {
-            const startId = edge.startNode.id;
-            const endId = edge.endNode.id;
+            const startId = edge.startNode?.id || edge.startNode?.name || 'unknown';
+            const endId = edge.endNode?.id || edge.endNode?.name || 'unknown';
             
             if (this.adjacencyList.has(startId) && this.adjacencyList.has(endId)) {
                 this.adjacencyList.get(startId).add(endId);

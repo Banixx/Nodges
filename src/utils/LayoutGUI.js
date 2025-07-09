@@ -131,7 +131,12 @@ export class LayoutGUI {
         `;
         
         this.panel.appendChild(title);
-        this.container.appendChild(this.panel);
+        // Panel zum DOM hinzufügen
+        if (document.body) {
+            document.body.appendChild(this.panel);
+        } else {
+            console.warn('LayoutGUI: document.body not available');
+        }
     }
     
     createLayoutSelector() {
