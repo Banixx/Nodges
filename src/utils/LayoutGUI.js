@@ -122,7 +122,7 @@ export class LayoutGUI {
         `;
         
         const title = document.createElement('h3');
-        title.textContent = '🎯 Layout Algorithmen';
+        title.textContent = 'Layout Algorithmen';
         title.style.cssText = `
             margin: 0 0 15px 0;
             color: #333;
@@ -309,7 +309,7 @@ export class LayoutGUI {
         
         // Layout anwenden Button
         const applyButton = document.createElement('button');
-        applyButton.textContent = '🚀 Layout anwenden';
+        applyButton.textContent = 'Layout anwenden';
         applyButton.style.cssText = `
             flex: 1;
             padding: 10px;
@@ -335,7 +335,7 @@ export class LayoutGUI {
         
         // Stop Button
         const stopButton = document.createElement('button');
-        stopButton.textContent = '⏹️ Stop';
+        stopButton.textContent = 'Stop';
         stopButton.style.cssText = `
             padding: 10px 15px;
             background-color: #f44336;
@@ -469,14 +469,14 @@ export class LayoutGUI {
     
     getLayoutDisplayName(layoutName) {
         const displayNames = {
-            'force-directed': '🌐 Force-Directed',
-            'fruchterman-reingold': '🎯 Fruchterman-Reingold',
-            'spring-embedder': '🌸 Spring-Embedder',
-            'hierarchical': '🏗️ Hierarchisch',
-            'tree': '🌳 Baum',
-            'circular': '⭕ Kreisförmig',
-            'grid': '📐 Raster',
-            'random': '🎲 Zufällig'
+            'force-directed': 'Force-Directed',
+            'fruchterman-reingold': 'Fruchterman-Reingold',
+            'spring-embedder': 'Spring-Embedder',
+            'hierarchical': 'Hierarchisch',
+            'tree': 'Baum',
+            'circular': 'Kreisförmig',
+            'grid': 'Raster',
+            'random': 'Zufällig'
         };
         
         return displayNames[layoutName] || layoutName;
