@@ -25,9 +25,10 @@ export class Node {
 
     constructor(position, options = {}) {
         this.position = position;
+        this.data = position; // Speichere die ursprünglichen Daten für spätere Verwendung
         this.options = {
             type: options.type || 'cube',        // cube, icosahedron, dodecahedron, octahedron, tetrahedron, sphere, cylinder, male_icon, female_icon, diverse_icon
-            size: options.size || 1,             // Grundgröße
+            size: options.size || 1,             // Grundgrösse
             color: options.color || 0xff4500,    // Farbe
             glowFrequency: options.glowFrequency || 4, // Pulsgeschwindigkeit (0.25-5 Hz)
             ...options
@@ -54,7 +55,7 @@ export class Node {
             
             // Wenn position selbst Metadaten hat, füge diese hinzu
             if (position.metadata === undefined) {
-                // Extrahiere alle Eigenschaften außer position und name als Metadaten
+                // Extrahiere alle Eigenschaften ausser position und name als Metadaten
                 const { x, y, z, position: pos, ...otherProps } = position;
                 this.mesh.metadata = { ...otherProps };
             }
@@ -339,5 +340,41 @@ export class Node {
         if (!this.mesh.material.transparent) {
             this.mesh.material.opacity = 1.0;
         }
+    }
+    
+    // Cleanup-Methode fuer ordnungsgemasse Bereinigung
+    dispose() {
+        if (this.mesh) {
+            // Remove from scene if still attached
+            if (this.mesh.parent) {
+                this.mesh.parent.remove(this.mesh);
+            }
+            
+            // Clear userData references
+            if (this.mesh.userData) {
+                this.mesh.userData.node = null;
+                this.mesh.userData = {};
+            }
+            
+            // Dispose geometry
+            if (this.mesh.geometry) {
+                this.mesh.geometry.dispose();
+            }
+            
+            // Dispose material
+            if (this.mesh.material) {
+                if (Array.isArray(this.mesh.material)) {
+                    this.mesh.material.forEach(mat => mat.dispose());
+                } else {
+                    this.mesh.material.dispose();
+                }
+            }
+            
+            this.mesh = null;
+        }
+        
+        // Clear data references
+        this.data = null;
+        this.options = null;
     }
 }

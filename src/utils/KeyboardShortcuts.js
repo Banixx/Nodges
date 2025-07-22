@@ -8,10 +8,10 @@ export class KeyboardShortcuts {
         this.shortcuts = {
             'Selection': {
                 'Strg + Click': 'Mehrfachauswahl (Multi-Select)',
-                'Shift + Drag': 'Box-Auswahl (Bereich auswählen)',
-                'Strg + A': 'Alle auswählen',
+                'Shift + Drag': 'Box-Auswahl (Bereich auswaehlen)',
+                'Strg + A': 'Alle auswaehlen',
                 'Escape': 'Auswahl aufheben',
-                'Delete': 'Ausgewählte Objekte löschen'
+                'Delete': 'Ausgewaehlte Objekte loeschen'
             },
             'Navigation': {
                 'Linke Maustaste + Ziehen': 'Kamera rotieren',
@@ -21,7 +21,7 @@ export class KeyboardShortcuts {
             },
             'General': {
                 'F1': 'Diese Hilfe anzeigen',
-                'Strg + Z': 'Rückgängig (Batch-Operationen)',
+                'Strg + Z': 'Rueckgaengig (Batch-Operationen)',
                 'Strg + S': 'Netzwerk exportieren (geplant)',
                 'Strg + O': 'Datei importieren (geplant)'
             }
@@ -94,8 +94,8 @@ export class KeyboardShortcuts {
 
         let html = `
             <div style="text-align: center; margin-bottom: 20px;">
-                <h2 style="color: #00ff00; margin: 0; font-size: 24px;">⌨️ Keyboard Shortcuts</h2>
-                <p style="margin: 5px 0; opacity: 0.8;">Nodges 0.79 - Multi-Select & Batch Operations</p>
+                <h2 style="color: #00ff00; margin: 0; font-size: 24px;">Keyboard Shortcuts</h2>
+                <p style="margin: 5px 0; opacity: 0.8;">Nodges 0.88 - Multi-Select & Batch Operations</p>
             </div>
         `;
 
@@ -130,7 +130,7 @@ export class KeyboardShortcuts {
         html += `
             <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #333;">
                 <p style="margin: 0; opacity: 0.6; font-size: 14px;">
-                    Drücke F1 oder klicke irgendwo, um diese Hilfe zu schließen
+                    Druecke F1 oder klicke irgendwo, um diese Hilfe zu schliessen
                 </p>
             </div>
         `;

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Automated Performance Test - Nodges 0.80</title>
+    <title>Automated Performance Test - Nodges 0.88</title>
     <style>
         body {
             font-family: 'Courier New', monospace;
@@ -91,20 +91,20 @@
 </head>
 <body>
     <div class="container">
-        <h1>🧪 Automated Performance Test Suite</h1>
-        <p>Nodges 0.80 - Performance Fixes Validation</p>
+        <h1>[TEST] Automated Performance Test Suite</h1>
+        <p>Nodges 0.88 - Performance Fixes Validation</p>
         
         <div class="test-section">
-            <h2>🎮 Test Controls</h2>
-            <button onclick="runAllTests()">🚀 Run All Tests</button>
-            <button onclick="testMemoryLeaks()">💾 Memory Test</button>
-            <button onclick="testAnimationPerformance()">⚡ Animation Test</button>
-            <button onclick="testErrorHandling()">🛡️ Error Handling</button>
-            <button onclick="clearResults()">🧹 Clear Results</button>
+            <h2>[CONTROLS] Test Controls</h2>
+            <button onclick="runAllTests()">[START] Run All Tests</button>
+            <button onclick="testMemoryLeaks()">[MEMORY] Memory Test</button>
+            <button onclick="testAnimationPerformance()">[SPEED] Animation Test</button>
+            <button onclick="testErrorHandling()">[SHIELD] Error Handling</button>
+            <button onclick="clearResults()">[CLEAR] Clear Results</button>
         </div>
 
         <div class="test-section">
-            <h2>📊 Real-time Metrics</h2>
+            <h2>[DATA] Real-time Metrics</h2>
             <div class="metrics">
                 <div class="metric">
                     <div class="metric-value" id="fpsMetric">--</div>
@@ -126,7 +126,7 @@
         </div>
 
         <div class="test-section">
-            <h2>📝 Test Results</h2>
+            <h2>[RESULTS] Test Results</h2>
             <div id="testOutput"></div>
         </div>
     </div>
@@ -192,22 +192,22 @@
         }
 
         function testMemoryLeaks() {
-            log('🧪 Starting Memory Leak Test...', 'info');
+            log('[TEST] Starting Memory Leak Test...', 'info');
             
             // Test 1: Check if Edge cache exists
             try {
                 if (typeof Edge !== 'undefined' && Edge.geometryCache) {
-                    log('✅ Edge.geometryCache is available', 'success');
-                    log(`📊 Current cache size: ${Edge.geometryCache.size}`, 'info');
+                    log('[OK] Edge.geometryCache is available', 'success');
+                    log(`[DATA] Current cache size: ${Edge.geometryCache.size}`, 'info');
                 } else {
-                    log('⚠️ Edge.geometryCache not available (normal if no main.js loaded)', 'warning');
+                    log('[WARNING] Edge.geometryCache not available (normal if no main.js loaded)', 'warning');
                 }
             } catch (e) {
-                log(`❌ Error accessing Edge cache: ${e.message}`, 'error');
+                log(`[ERROR] Error accessing Edge cache: ${e.message}`, 'error');
             }
 
             // Test 2: Simulate cache cleanup
-            log('🧹 Testing cache cleanup simulation...', 'info');
+            log('[CLEAN] Testing cache cleanup simulation...', 'info');
             const mockCache = new Map();
             mockCache.set('test1', { dispose: () => {} });
             mockCache.set('test2', { dispose: () => {} });
@@ -217,16 +217,16 @@
             mockCache.clear();
             
             if (mockCache.size === 0) {
-                log('✅ Cache cleanup simulation successful', 'success');
+                log('[OK] Cache cleanup simulation successful', 'success');
             } else {
-                log('❌ Cache cleanup simulation failed', 'error');
+                log('[ERROR] Cache cleanup simulation failed', 'error');
             }
 
-            log('✅ Memory Leak Test completed', 'success');
+            log('[OK] Memory Leak Test completed', 'success');
         }
 
         function testAnimationPerformance() {
-            log('🧪 Starting Animation Performance Test...', 'info');
+            log('[TEST] Starting Animation Performance Test...', 'info');
             
             // Test optimized animation loop simulation
             const animatedEdges = [];
@@ -243,7 +243,7 @@
                 }
             });
 
-            log(`📊 Found ${animatedEdges.length} animated edges`, 'info');
+            log(`[DATA] Found ${animatedEdges.length} animated edges`, 'info');
 
             // Simulate optimized update loop
             const startTime = performance.now();
@@ -257,7 +257,7 @@
             const endTime = performance.now();
 
             const avgTime = (endTime - startTime) / 1000;
-            log(`⚡ Optimized loop: ${avgTime.toFixed(3)}ms per iteration`, 'success');
+            log(`[SPEED] Optimized loop: ${avgTime.toFixed(3)}ms per iteration`, 'success');
 
             // Compare with old method simulation
             const startTimeOld = performance.now();
@@ -273,12 +273,12 @@
             const avgTimeOld = (endTimeOld - startTimeOld) / 1000;
             const improvement = ((avgTimeOld - avgTime) / avgTimeOld * 100);
             
-            log(`📈 Performance improvement: ${improvement.toFixed(1)}%`, 'success');
-            log('✅ Animation Performance Test completed', 'success');
+            log(`[IMPROVE] Performance improvement: ${improvement.toFixed(1)}%`, 'success');
+            log('[OK] Animation Performance Test completed', 'success');
         }
 
         function testErrorHandling() {
-            log('🧪 Starting Error Handling Test...', 'info');
+            log('[TEST] Starting Error Handling Test...', 'info');
 
             // Test 1: Safe edge settings
             try {
@@ -289,12 +289,12 @@
                 };
 
                 if (safeEdgeSettings.segments === 10) {
-                    log('✅ Fallback edge settings work correctly', 'success');
+                    log('[OK] Fallback edge settings work correctly', 'success');
                 } else {
-                    log('❌ Fallback edge settings failed', 'error');
+                    log('[ERROR] Fallback edge settings failed', 'error');
                 }
             } catch (e) {
-                log(`❌ Edge settings test error: ${e.message}`, 'error');
+                log(`[ERROR] Edge settings test error: ${e.message}`, 'error');
             }
 
             // Test 2: Error recovery simulation
@@ -304,26 +304,26 @@
                 try {
                     throw new Error('Simulated layout error');
                 } catch (error) {
-                    log(`⚠️ Caught simulated error: ${error.message}`, 'warning');
+                    log(`[WARNING] Caught simulated error: ${error.message}`, 'warning');
                 } finally {
                     isAnimating = false;
-                    log('✅ Finally block executed - isAnimating reset', 'success');
+                    log('[OK] Finally block executed - isAnimating reset', 'success');
                 }
 
                 if (!isAnimating) {
-                    log('✅ Error recovery simulation successful', 'success');
+                    log('[OK] Error recovery simulation successful', 'success');
                 } else {
-                    log('❌ Error recovery simulation failed', 'error');
+                    log('[ERROR] Error recovery simulation failed', 'error');
                 }
             } catch (e) {
-                log(`❌ Error handling test failed: ${e.message}`, 'error');
+                log(`[ERROR] Error handling test failed: ${e.message}`, 'error');
             }
 
-            log('✅ Error Handling Test completed', 'success');
+            log('[OK] Error Handling Test completed', 'success');
         }
 
         function runAllTests() {
-            log('🚀 Starting Complete Performance Test Suite...', 'info');
+            log('[START] Starting Complete Performance Test Suite...', 'info');
             log('================================================', 'info');
             
             clearResults();
@@ -336,7 +336,7 @@
                         testErrorHandling();
                         setTimeout(() => {
                             log('================================================', 'info');
-                            log('🎉 All tests completed!', 'success');
+                            log('[SUCCESS] All tests completed!', 'success');
                             generateTestReport();
                         }, 1000);
                     }, 1000);
@@ -349,18 +349,18 @@
             const errorCount = testResults.filter(r => r.type === 'error').length;
             const warningCount = testResults.filter(r => r.type === 'warning').length;
 
-            log('📊 TEST SUMMARY:', 'info');
-            log(`✅ Successful tests: ${successCount}`, 'success');
-            log(`⚠️ Warnings: ${warningCount}`, 'warning');
-            log(`❌ Errors: ${errorCount}`, errorCount > 0 ? 'error' : 'info');
+            log('[DATA] TEST SUMMARY:', 'info');
+            log(`[OK] Successful tests: ${successCount}`, 'success');
+            log(`[WARNING] Warnings: ${warningCount}`, 'warning');
+            log(`[ERROR] Errors: ${errorCount}`, errorCount > 0 ? 'error' : 'info');
 
             const successRate = (successCount / (successCount + errorCount) * 100).toFixed(1);
-            log(`📈 Success rate: ${successRate}%`, successRate > 80 ? 'success' : 'warning');
+            log(`[RATE] Success rate: ${successRate}%`, successRate > 80 ? 'success' : 'warning');
 
             if (errorCount === 0) {
-                log('🏆 ALL PERFORMANCE FIXES VALIDATED SUCCESSFULLY!', 'success');
+                log('[SUCCESS] ALL PERFORMANCE FIXES VALIDATED SUCCESSFULLY!', 'success');
             } else {
-                log('🔧 Some issues detected - check individual test results', 'warning');
+                log('[CONFIG] Some issues detected - check individual test results', 'warning');
             }
         }
 
@@ -368,7 +368,7 @@
         updateMetrics();
 
         // Initial log
-        log('🧪 Performance Test Suite initialized', 'success');
+        log('[INIT] Performance Test Suite initialized', 'success');
         log('Click "Run All Tests" to start validation', 'info');
         log('Or run individual tests using the buttons above', 'info');
     </script>

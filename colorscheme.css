@@ -53,14 +53,14 @@
 .toggle-switch-inner:before {
     content: "ON";
     padding-left: 10px;
-    background-color: #4CAF50; /* Grün für ON */
+    background-color: #4CAF50; /* Gruen fuer ON */
     color: #FFFFFF;
 }
 
 .toggle-switch-inner:after {
     content: "OFF";
     padding-right: 10px;
-    background-color: #CCCCCC; /* Grau für OFF */
+    background-color: #CCCCCC; /* Grau fuer OFF */
     color: #333333;
     text-align: right;
 }
@@ -74,7 +74,7 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    right: 26px; /* Startposition für OFF */
+    right: 26px; /* Startposition fuer OFF */
     border: 2px solid #999999;
     border-radius: 34px;
     transition: all 0.3s ease-in-out;
@@ -85,8 +85,8 @@
 }
 
 .toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-switch {
-    right: 0px; /* Endposition für ON */
-    background-color: #4CAF50; /* Grün für ON */
+    right: 0px; /* Endposition fuer ON */
+    background-color: #4CAF50; /* Gruen fuer ON */
 }
 
 .toggle-switch-text {
@@ -95,6 +95,6 @@
     top: 50%;
     transform: translateY(-50%);
     font-size: 12px;
-    color: #333; /* Dunkle Farbe für den Text */
+    color: #333; /* Dunkle Farbe fuer den Text */
     white-space: nowrap; /* Verhindert Zeilenumbruch */
 }

@@ -39,7 +39,7 @@ import { Edge } from './objects/Edge.js';
 
 class NodgesApp {
     constructor() {
-        console.log('🚀 Initialisiere Nodges 0.80 - Layout Algorithms System');
+        console.log(' Initialisiere Nodges 0.80 - Layout Algorithms System');
         
         // Core Components
         this.scene = null;
@@ -91,11 +91,11 @@ class NodgesApp {
             await this.loadDefaultData();
             
             this.isInitialized = true;
-            console.log('✅ Nodges 0.80 erfolgreich initialisiert');
+            console.log(' Nodges 0.80 erfolgreich initialisiert');
             
             this.animate();
         } catch (error) {
-            console.error('❌ Fehler bei der Initialisierung:', error);
+            console.error(' Fehler bei der Initialisierung:', error);
         }
     }
     
@@ -136,7 +136,7 @@ class NodgesApp {
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         });
         
-        console.log('✅ Three.js initialisiert');
+        console.log(' Three.js initialisiert');
     }
     
     async initManagers() {
@@ -166,9 +166,9 @@ class NodgesApp {
             this.glowEffect = new GlowEffect();
             this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect);
             
-            console.log('✅ Manager-System initialisiert');
+            console.log(' Manager-System initialisiert');
         } catch (error) {
-            console.error('❌ Fehler bei Manager-Initialisierung:', error);
+            console.error(' Fehler bei Manager-Initialisierung:', error);
             throw error;
         }
     }
@@ -181,7 +181,7 @@ class NodgesApp {
         this.initFileInfoPanel();
         this.initSearchPanel();
         
-        console.log('✅ GUI-System initialisiert');
+        console.log(' GUI-System initialisiert');
     }
     
     initFileInfoPanel() {
@@ -224,7 +224,7 @@ class NodgesApp {
         this.renderer.domElement.addEventListener('click', (event) => this.onMouseClick(event));
         this.renderer.domElement.addEventListener('mousemove', (event) => this.onMouseMove(event));
         
-        console.log('✅ Event-Listener initialisiert');
+        console.log(' Event-Listener initialisiert');
     }
     
     async loadDefaultData() {
@@ -233,7 +233,7 @@ class NodgesApp {
     
     async loadData(url) {
         try {
-            console.log(`📂 Lade Netzwerk-Daten: ${url}`);
+            console.log(` Lade Netzwerk-Daten: ${url}`);
             
             const response = await fetch(url);
             if (!response.ok) {
@@ -265,10 +265,10 @@ class NodgesApp {
                 this.networkAnalyzer.initialize(this.currentNodes, this.currentEdges);
             }
             
-            console.log(`✅ Netzwerk geladen: ${this.currentNodes.length} Knoten, ${this.currentEdges.length} Kanten`);
+            console.log(` Netzwerk geladen: ${this.currentNodes.length} Knoten, ${this.currentEdges.length} Kanten`);
             
         } catch (error) {
-            console.error('❌ Fehler beim Laden der Daten:', error);
+            console.error(' Fehler beim Laden der Daten:', error);
         }
     }
     

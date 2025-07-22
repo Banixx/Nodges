@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "title": "Baueingabe-Verfahren Kanton Zürich",
-    "description": "Visualisierung des Bewilligungsverfahrens für Neubauten in Wohnzonen",
+    "title": "Baueingabe-Verfahren Kanton Zuerich",
+    "description": "Visualisierung des Bewilligungsverfahrens fuer Neubauten in Wohnzonen",
     "type": "process",
-    "jurisdiction": "Kanton Zürich",
+    "jurisdiction": "Kanton Zuerich",
     "lastUpdated": "2025-01-01",
     "complexity": "medium"
   },
@@ -31,12 +31,12 @@
         "color": "0x00cc66",
         "duration": 1,
         "jurisdiction": "Privat",
-        "requirements": ["Baupläne", "Grundbuchauszug", "Situationsplan"]
+        "requirements": ["Bauplaene", "Grundbuchauszug", "Situationsplan"]
       }
     },
     {
       "id": "bauplne",
-      "name": "Baupläne",
+      "name": "Bauplaene",
       "position": {"x": 2.5, "y": 0, "z": -2},
       "metadata": {
         "nodeType": "document",
@@ -75,7 +75,7 @@
     },
     {
       "id": "gemeinde_eingang",
-      "name": "Gemeinde - Eingangsprüfung",
+      "name": "Gemeinde - Eingangspruefung",
       "position": {"x": 10, "y": 5, "z": 0},
       "metadata": {
         "nodeType": "authority",
@@ -88,7 +88,7 @@
     },
     {
       "id": "vollstaendigkeit_pruefen",
-      "name": "Vollständigkeit prüfen",
+      "name": "Vollstaendigkeit pruefen",
       "position": {"x": 15, "y": 5, "z": 0},
       "metadata": {
         "nodeType": "decision",
@@ -134,7 +134,7 @@
         "type": "cube",
         "color": "0x0066cc",
         "duration": 14,
-        "jurisdiction": "Kanton Zürich",
+        "jurisdiction": "Kanton Zuerich",
         "requirements": []
       }
     },
@@ -147,7 +147,7 @@
         "type": "cube",
         "color": "0x0066cc",
         "duration": 10,
-        "jurisdiction": "Kanton Zürich",
+        "jurisdiction": "Kanton Zuerich",
         "requirements": []
       }
     },
@@ -218,14 +218,14 @@
     },
     {
       "id": "rekurs_moeglich",
-      "name": "Rekurs möglich",
+      "name": "Rekurs moeglich",
       "position": {"x": 45, "y": 3, "z": -2},
       "metadata": {
         "nodeType": "process",
         "type": "sphere",
         "color": "0xff9900",
         "duration": 30,
-        "jurisdiction": "Kanton Zürich",
+        "jurisdiction": "Kanton Zuerich",
         "requirements": []
       }
     }
@@ -290,7 +290,7 @@
       "target": "nachbesserung_anfordern",
       "type": "rejection",
       "offset": 0,
-      "condition": "wenn Unterlagen unvollständig",
+      "condition": "wenn Unterlagen unvollstaendig",
       "probability": 0.3,
       "duration": 0
     },
@@ -308,7 +308,7 @@
       "target": "fachstellen_anfrage",
       "type": "approval",
       "offset": 0,
-      "condition": "wenn Unterlagen vollständig",
+      "condition": "wenn Unterlagen vollstaendig",
       "probability": 0.7,
       "duration": 0
     },
@@ -335,7 +335,7 @@
       "target": "tiefbauamt",
       "type": "sequence",
       "offset": 2,
-      "condition": "wenn Erschließung betroffen",
+      "condition": "wenn Erschliessung betroffen",
       "probability": 0.8,
       "duration": 1
     },

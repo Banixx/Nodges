@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🤖 KI-System-Generator Demo - Nodges 0.80</title>
+    <title>🤖 KI-System-Generator Demo - Nodges 0.88</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -165,18 +165,18 @@
     <div class="container">
         <div class="header">
             <h1>🤖 KI-System-Generator Demo</h1>
-            <h2>Nodges 0.80 - Revolutionäre Systemvisualisierung</h2>
+            <h2>Nodges 0.88 - Revolutionaere Systemvisualisierung</h2>
             <p>Erstellen Sie komplexe Systemvisualisierungen mit Hilfe von KI in wenigen Minuten!</p>
         </div>
 
-        <!-- Workflow-Übersicht -->
+        <!-- Workflow-Uebersicht -->
         <div class="demo-section">
-            <h3>🚀 Workflow-Übersicht</h3>
+            <h3>[START] Workflow-Uebersicht</h3>
             <div class="workflow-steps">
                 <div class="workflow-step">
                     <div class="step-number">1</div>
                     <h4>📝 Beschreiben</h4>
-                    <p>System in natürlicher Sprache beschreiben</p>
+                    <p>System in natuerlicher Sprache beschreiben</p>
                 </div>
                 <div class="workflow-step">
                     <div class="step-number">2</div>
@@ -190,7 +190,7 @@
                 </div>
                 <div class="workflow-step">
                     <div class="step-number">4</div>
-                    <h4>🎯 Visualisieren</h4>
+                    <h4>[TARGET] Visualisieren</h4>
                     <p>3D-System interaktiv erkunden</p>
                 </div>
             </div>
@@ -198,31 +198,31 @@
 
         <!-- KI-Generator Interface -->
         <div class="demo-section">
-            <h3>🎯 KI-System-Generator</h3>
+            <h3>[TARGET] KI-System-Generator</h3>
             
             <div class="input-group">
                 <label for="systemDescription">📝 System-Beschreibung:</label>
-                <textarea id="systemDescription" placeholder="Beschreiben Sie das System, das Sie visualisieren möchten...">Baueingabe-Verfahren Kanton Zürich für Neubauten in Wohnzonen</textarea>
+                <textarea id="systemDescription" placeholder="Beschreiben Sie das System, das Sie visualisieren moechten...">Baueingabe-Verfahren Kanton Zuerich fuer Neubauten in Wohnzonen</textarea>
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
                 <div class="input-group">
-                    <label for="systemType">🎯 System-Typ:</label>
+                    <label for="systemType">[TARGET] System-Typ:</label>
                     <select id="systemType">
-                        <option value="government">🏛️ Behörden/Verwaltung</option>
-                        <option value="business">🏢 Geschäftsprozess</option>
+                        <option value="government">[GOV] Behoerden/Verwaltung</option>
+                        <option value="business">🏢 Geschaeftsprozess</option>
                         <option value="healthcare">🏥 Gesundheitswesen</option>
                         <option value="education">🎓 Bildung/Forschung</option>
                     </select>
                 </div>
                 
                 <div class="input-group">
-                    <label for="jurisdiction">🌍 Zuständigkeitsbereich:</label>
+                    <label for="jurisdiction">🌍 Zustaendigkeitsbereich:</label>
                     <input type="text" id="jurisdiction" value="Schweiz" placeholder="z.B. Schweiz, Deutschland, EU">
                 </div>
                 
                 <div class="input-group">
-                    <label for="complexity">📊 Komplexität:</label>
+                    <label for="complexity">[DATA] Komplexitaet:</label>
                     <select id="complexity">
                         <option value="low">🟢 Einfach (5-10 Schritte)</option>
                         <option value="medium" selected>🟡 Mittel (10-20 Schritte)</option>
@@ -233,35 +233,35 @@
             
             <div style="text-align: center; margin: 20px 0;">
                 <button onclick="generatePrompt()">📋 KI-Prompt generieren</button>
-                <button class="secondary-btn" onclick="showExamples()">💡 Beispiele anzeigen</button>
+                <button class="secondary-btn" onclick="showExamples()">[INFO] Beispiele anzeigen</button>
                 <button class="example-btn" onclick="loadExample('us_political')">🇺🇸 US-Politik laden</button>
-                <button class="example-btn" onclick="loadExample('baueingabe')">🏛️ Baueingabe laden</button>
+                <button class="example-btn" onclick="loadExample('baueingabe')">[GOV] Baueingabe laden</button>
             </div>
             
             <div class="status" id="status">
-                📊 Status: Bereit für Eingabe
+                [DATA] Status: Bereit fuer Eingabe
             </div>
         </div>
 
         <!-- Beispiele -->
         <div class="demo-section">
-            <h3>💡 Beispiel-Systeme</h3>
+            <h3>[INFO] Beispiel-Systeme</h3>
             <div class="examples-grid">
-                <div class="example-card" onclick="loadExampleDescription('government', 'Einbürgerungsverfahren Schweiz für ordentliche Einbürgerung mit allen drei Staatsebenen')">
-                    <h4>🏛️ Einbürgerungsverfahren</h4>
-                    <p>Schweizer Einbürgerungsprozess mit Bund, Kanton und Gemeinde</p>
+                <div class="example-card" onclick="loadExampleDescription('government', 'Einbuergerungsverfahren Schweiz fuer ordentliche Einbuergerung mit allen drei Staatsebenen')">
+                    <h4>[GOV] Einbuergerungsverfahren</h4>
+                    <p>Schweizer Einbuergerungsprozess mit Bund, Kanton und Gemeinde</p>
                 </div>
-                <div class="example-card" onclick="loadExampleDescription('business', 'Software-Entwicklungsprozess mit Scrum-Methodik für Tech-Startup')">
+                <div class="example-card" onclick="loadExampleDescription('business', 'Software-Entwicklungsprozess mit Scrum-Methodik fuer Tech-Startup')">
                     <h4>🏢 Scrum-Entwicklung</h4>
                     <p>Agiler Entwicklungsprozess mit 2-Wochen-Sprints</p>
                 </div>
-                <div class="example-card" onclick="loadExampleDescription('healthcare', 'Notfall-Patientenaufnahme im Universitätsklinikum mit Triage-System')">
+                <div class="example-card" onclick="loadExampleDescription('healthcare', 'Notfall-Patientenaufnahme im Universitaetsklinikum mit Triage-System')">
                     <h4>🏥 Notfallaufnahme</h4>
                     <p>Krankenhaus-Prozess mit Dringlichkeitsstufen</p>
                 </div>
-                <div class="example-card" onclick="loadExampleDescription('education', 'Universitäts-Bewerbungsverfahren für Master-Studium')">
+                <div class="example-card" onclick="loadExampleDescription('education', 'Universitaets-Bewerbungsverfahren fuer Master-Studium')">
                     <h4>🎓 Uni-Bewerbung</h4>
-                    <p>Bewerbungsprozess für Hochschulzulassung</p>
+                    <p>Bewerbungsprozess fuer Hochschulzulassung</p>
                 </div>
             </div>
         </div>
@@ -269,7 +269,7 @@
         <!-- Prompt-Ausgabe -->
         <div class="demo-section" id="promptSection" style="display: none;">
             <h3>📋 Generierter KI-Prompt</h3>
-            <p>Kopieren Sie diesen Prompt und fügen Sie ihn in ChatGPT, Claude oder eine andere KI ein:</p>
+            <p>Kopieren Sie diesen Prompt und fuegen Sie ihn in ChatGPT, Claude oder eine andere KI ein:</p>
             <div class="prompt-output" id="promptOutput"></div>
             <div style="text-align: center;">
                 <button onclick="copyPrompt()">📋 Prompt kopieren</button>
@@ -280,21 +280,21 @@
         <!-- JSON-Eingabe -->
         <div class="demo-section" id="jsonSection" style="display: none;">
             <h3>📥 KI-Antwort verarbeiten</h3>
-            <p>Fügen Sie hier das von der KI generierte JSON ein:</p>
-            <textarea id="jsonInput" placeholder="Hier das JSON von der KI einfügen..." style="height: 200px; font-family: monospace;"></textarea>
+            <p>Fuegen Sie hier das von der KI generierte JSON ein:</p>
+            <textarea id="jsonInput" placeholder="Hier das JSON von der KI einfuegen..." style="height: 200px; font-family: monospace;"></textarea>
             <div style="text-align: center; margin: 15px 0;">
-                <button onclick="processJSON()">🚀 JSON verarbeiten & visualisieren</button>
-                <button class="secondary-btn" onclick="validateJSON()">✅ JSON validieren</button>
+                <button onclick="processJSON()">[START] JSON verarbeiten & visualisieren</button>
+                <button class="secondary-btn" onclick="validateJSON()">[OK] JSON validieren</button>
             </div>
         </div>
 
         <!-- Ergebnis -->
         <div class="demo-section" id="resultSection" style="display: none;">
-            <h3>🎉 Visualisierung erfolgreich!</h3>
+            <h3>[SUCCESS] Visualisierung erfolgreich!</h3>
             <div class="status" id="resultStatus"></div>
             <p>Das System wurde erfolgreich generiert und kann jetzt in Nodges visualisiert werden.</p>
             <div style="text-align: center;">
-                <button onclick="openInNodeges()">🚀 In Nodges öffnen</button>
+                <button onclick="openInNodeges()">[START] In Nodges oeffnen</button>
                 <button class="secondary-btn" onclick="downloadJSON()">💾 JSON herunterladen</button>
                 <button class="example-btn" onclick="startOver()">🔄 Neues System erstellen</button>
             </div>
@@ -317,8 +317,8 @@
             }
 
             const systemTypeDescriptions = {
-                government: 'Behörden-/Verwaltungsverfahren',
-                business: 'Geschäftsprozess',
+                government: 'Behoerden-/Verwaltungsverfahren',
+                business: 'Geschaeftsprozess',
                 healthcare: 'Gesundheitswesen-Prozess',
                 education: 'Bildungs-/Lernprozess'
             };
@@ -329,8 +329,8 @@
                 high: 'Komplex (20+ Schritte)'
             };
 
-            currentPrompt = `Du bist ein Experte für die Visualisierung komplexer Systeme und Prozesse. 
-Deine Aufgabe ist es, reale Systeme in Nodges-kompatible JSON-Strukturen zu übersetzen.
+            currentPrompt = `Du bist ein Experte fuer die Visualisierung komplexer Systeme und Prozesse. 
+Deine Aufgabe ist es, reale Systeme in Nodges-kompatible JSON-Strukturen zu uebersetzen.
 
 WICHTIG: Du MUSST dich strikt an die Regeln halten.
 
@@ -338,10 +338,10 @@ SYSTEM-ANFRAGE:
 System: ${description}
 Typ: ${systemTypeDescriptions[systemType]}
 Kontext: ${jurisdiction}
-Komplexität: ${complexityDescriptions[complexity]}
+Komplexitaet: ${complexityDescriptions[complexity]}
 
 AUSGABE-FORMAT:
-Erstelle ein vollständiges JSON mit folgender Struktur:
+Erstelle ein vollstaendiges JSON mit folgender Struktur:
 
 {
   "metadata": {
@@ -361,7 +361,7 @@ Erstelle ein vollständiges JSON mit folgender Struktur:
         "type": "cube|cylinder|octahedron|sphere",
         "color": "0x0066cc|0xffcc00|0xff3300|0x00cc66",
         "duration": 0,
-        "jurisdiction": "Zuständigkeitsbereich",
+        "jurisdiction": "Zustaendigkeitsbereich",
         "requirements": []
       }
     }
@@ -372,28 +372,28 @@ Erstelle ein vollständiges JSON mit folgender Struktur:
       "target": "end_id", 
       "type": "sequence|dependency|approval|rejection|alternative",
       "offset": 0,
-      "condition": "Bedingung für diese Verbindung",
+      "condition": "Bedingung fuer diese Verbindung",
       "probability": 1.0,
       "duration": 0
     }
   ]
 }
 
-KOORDINATEN-SYSTEM für Typ "process":
-- X-Achse: Zeitlicher Ablauf (früher = niedrigere X-Werte, Abstand 5 Einheiten)
-- Y-Achse: Hierarchie/Zuständigkeit (höher = höhere Y-Werte, alle > -0.81)  
+KOORDINATEN-SYSTEM fuer Typ "process":
+- X-Achse: Zeitlicher Ablauf (frueher = niedrigere X-Werte, Abstand 5 Einheiten)
+- Y-Achse: Hierarchie/Zustaendigkeit (hoeher = hoehere Y-Werte, alle > -0.81)  
 - Z-Achse: Parallele/Alternative Pfade (Hauptpfad z=0, Alternativen z=±3)
 
 NODE-TYPEN:
-- authority (Behörden): "cube", Farbe 0x0066cc (blau)
+- authority (Behoerden): "cube", Farbe 0x0066cc (blau)
 - document (Dokumente): "cylinder", Farbe 0xffcc00 (gelb)
 - decision (Entscheidungen): "octahedron", Farbe 0xff3300 (rot)
-- process (Prozessschritte): "sphere", Farbe 0x00cc66 (grün)
+- process (Prozessschritte): "sphere", Farbe 0x00cc66 (gruen)
 
 EDGE-TYPEN:
 - sequence: Zeitliche Abfolge (blau)
-- dependency: Abhängigkeiten (orange) 
-- approval: Genehmigungsschritte (grün)
+- dependency: Abhaengigkeiten (orange) 
+- approval: Genehmigungsschritte (gruen)
 - rejection: Ablehnungspfade (rot)
 - alternative: Alternative Pfade (grau)
 
@@ -401,22 +401,22 @@ REGELN:
 - Knotenabstand: 5 Einheiten zwischen Knoten
 - Y-Koordinaten: Alle > -0.81
 - Symmetrische Anordnung um 0,0,0
-- Offset für mehrere Edges zwischen gleichen Knoten
+- Offset fuer mehrere Edges zwischen gleichen Knoten
 - Realistische Zeitdauern und Wahrscheinlichkeiten
 
-Berücksichtige dabei:
-- Alle beteiligten Akteure (Behörden, Personen, Systeme)
-- Zeitliche Abläufe und Reihenfolgen
+Beruecksichtige dabei:
+- Alle beteiligten Akteure (Behoerden, Personen, Systeme)
+- Zeitliche Ablaeufe und Reihenfolgen
 - Bedingte Verzweigungen und alternative Pfade
-- Erforderliche Dokumente und Abhängigkeiten
-- Zuständigkeiten und Hierarchien
+- Erforderliche Dokumente und Abhaengigkeiten
+- Zustaendigkeiten und Hierarchien
 - Typische Bearbeitungszeiten
 
-Ausgabe: Nur das vollständige JSON, keine zusätzlichen Erklärungen.`;
+Ausgabe: Nur das vollstaendige JSON, keine zusaetzlichen Erklaerungen.`;
 
             document.getElementById('promptOutput').textContent = currentPrompt;
             document.getElementById('promptSection').style.display = 'block';
-            document.getElementById('status').textContent = '📊 Status: Prompt generiert - Bereit für KI';
+            document.getElementById('status').textContent = '[DATA] Status: Prompt generiert - Bereit fuer KI';
 
             // Scroll to prompt
             document.getElementById('promptSection').scrollIntoView({ behavior: 'smooth' });
@@ -424,20 +424,20 @@ Ausgabe: Nur das vollständige JSON, keine zusätzlichen Erklärungen.`;
 
         function copyPrompt() {
             navigator.clipboard.writeText(currentPrompt).then(() => {
-                alert('✅ Prompt in Zwischenablage kopiert!\n\nJetzt in ChatGPT, Claude oder eine andere KI einfügen.');
+                alert('[OK] Prompt in Zwischenablage kopiert!\n\nJetzt in ChatGPT, Claude oder eine andere KI einfuegen.');
                 document.getElementById('jsonSection').style.display = 'block';
-                document.getElementById('status').textContent = '📊 Status: Prompt kopiert - Warte auf KI-Antwort';
+                document.getElementById('status').textContent = '[DATA] Status: Prompt kopiert - Warte auf KI-Antwort';
             }).catch(err => {
-                alert('❌ Fehler beim Kopieren. Bitte manuell kopieren.');
+                alert('[ERROR] Fehler beim Kopieren. Bitte manuell kopieren.');
             });
         }
 
         function simulateKIResponse() {
-            // Simuliere eine KI-Antwort für Demo-Zwecke
+            // Simuliere eine KI-Antwort fuer Demo-Zwecke
             const mockJSON = {
                 "metadata": {
-                    "title": "Baueingabe-Verfahren Kanton Zürich",
-                    "description": "Visualisierung des Bewilligungsverfahrens für Neubauten in Wohnzonen",
+                    "title": "Baueingabe-Verfahren Kanton Zuerich",
+                    "description": "Visualisierung des Bewilligungsverfahrens fuer Neubauten in Wohnzonen",
                     "type": "process",
                     "jurisdiction": "Schweiz",
                     "complexity": "medium"
@@ -466,12 +466,12 @@ Ausgabe: Nur das vollständige JSON, keine zusätzlichen Erklärungen.`;
                             "color": "0x00cc66",
                             "duration": 1,
                             "jurisdiction": "Privat",
-                            "requirements": ["Baupläne", "Grundbuchauszug"]
+                            "requirements": ["Bauplaene", "Grundbuchauszug"]
                         }
                     },
                     {
                         "id": "gemeinde_pruefung",
-                        "name": "Gemeinde Prüfung",
+                        "name": "Gemeinde Pruefung",
                         "position": {"x": 10, "y": 5, "z": 0},
                         "metadata": {
                             "nodeType": "authority",
@@ -507,7 +507,7 @@ Ausgabe: Nur das vollständige JSON, keine zusätzlichen Erklärungen.`;
 
             document.getElementById('jsonInput').value = JSON.stringify(mockJSON, null, 2);
             document.getElementById('jsonSection').style.display = 'block';
-            document.getElementById('status').textContent = '📊 Status: Simulierte KI-Antwort eingefügt';
+            document.getElementById('status').textContent = '[DATA] Status: Simulierte KI-Antwort eingefuegt';
             
             // Scroll to JSON section
             document.getElementById('jsonSection').scrollIntoView({ behavior: 'smooth' });
@@ -517,7 +517,7 @@ Ausgabe: Nur das vollständige JSON, keine zusätzlichen Erklärungen.`;
             const jsonText = document.getElementById('jsonInput').value.trim();
             
             if (!jsonText) {
-                alert('❌ Bitte fügen Sie JSON-Code ein!');
+                alert('[ERROR] Bitte fuegen Sie JSON-Code ein!');
                 return;
             }
 
@@ -526,29 +526,29 @@ Ausgabe: Nur das vollständige JSON, keine zusätzlichen Erklärungen.`;
                 
                 // Grundvalidierung
                 if (!json.metadata || !json.nodes || !json.edges) {
-                    alert('❌ Ungültige JSON-Struktur: metadata, nodes oder edges fehlen');
+                    alert('[ERROR] Ungueltige JSON-Struktur: metadata, nodes oder edges fehlen');
                     return;
                 }
 
                 if (json.metadata.type !== 'process') {
-                    alert('❌ Falscher Typ: Erwartet "process"');
+                    alert('[ERROR] Falscher Typ: Erwartet "process"');
                     return;
                 }
 
                 if (!Array.isArray(json.nodes) || json.nodes.length === 0) {
-                    alert('❌ Keine gültigen Nodes gefunden');
+                    alert('[ERROR] Keine gueltigen Nodes gefunden');
                     return;
                 }
 
                 if (!Array.isArray(json.edges)) {
-                    alert('❌ Keine gültigen Edges gefunden');
+                    alert('[ERROR] Keine gueltigen Edges gefunden');
                     return;
                 }
 
-                alert(`✅ JSON ist gültig!\n\nNodes: ${json.nodes.length}\nEdges: ${json.edges.length}\nTitel: ${json.metadata.title}`);
+                alert(`[OK] JSON ist gueltig!\n\nNodes: ${json.nodes.length}\nEdges: ${json.edges.length}\nTitel: ${json.metadata.title}`);
                 
             } catch (error) {
-                alert(`❌ JSON-Parsing-Fehler: ${error.message}`);
+                alert(`[ERROR] JSON-Parsing-Fehler: ${error.message}`);
             }
         }
 
@@ -556,7 +556,7 @@ Ausgabe: Nur das vollständige JSON, keine zusätzlichen Erklärungen.`;
             const jsonText = document.getElementById('jsonInput').value.trim();
             
             if (!jsonText) {
-                alert('❌ Bitte fügen Sie JSON-Code ein!');
+                alert('[ERROR] Bitte fuegen Sie JSON-Code ein!');
                 return;
             }
 
@@ -565,32 +565,32 @@ Ausgabe: Nur das vollständige JSON, keine zusätzlichen Erklärungen.`;
                 
                 // Validierung (vereinfacht)
                 if (!currentJSON.metadata || !currentJSON.nodes || !currentJSON.edges) {
-                    throw new Error('Ungültige JSON-Struktur');
+                    throw new Error('Ungueltige JSON-Struktur');
                 }
 
                 // Erfolg anzeigen
                 document.getElementById('resultSection').style.display = 'block';
                 document.getElementById('resultStatus').textContent = 
-                    `✅ System erfolgreich verarbeitet!\n` +
-                    `📊 Titel: ${currentJSON.metadata.title}\n` +
-                    `🎯 Nodes: ${currentJSON.nodes.length}\n` +
-                    `🔗 Edges: ${currentJSON.edges.length}\n` +
-                    `🌍 Zuständigkeit: ${currentJSON.metadata.jurisdiction}`;
+                    `[OK] System erfolgreich verarbeitet!\n` +
+                    `[DATA] Titel: ${currentJSON.metadata.title}\n` +
+                    `[TARGET] Nodes: ${currentJSON.nodes.length}\n` +
+                    `[LINK] Edges: ${currentJSON.edges.length}\n` +
+                    `🌍 Zustaendigkeit: ${currentJSON.metadata.jurisdiction}`;
                 
-                document.getElementById('status').textContent = '📊 Status: System erfolgreich generiert!';
+                document.getElementById('status').textContent = '[DATA] Status: System erfolgreich generiert!';
                 
                 // Scroll to result
                 document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
                 
             } catch (error) {
-                alert(`❌ Fehler beim Verarbeiten: ${error.message}`);
+                alert(`[ERROR] Fehler beim Verarbeiten: ${error.message}`);
             }
         }
 
         function openInNodeges() {
             if (currentJSON) {
-                // In einer echten Implementierung würde hier das JSON an Nodges übergeben
-                alert('🚀 In einer echten Implementierung würde das System jetzt in Nodges 3D visualisiert!\n\nDas JSON würde an die loadNetworkFromImportedData() Funktion übergeben.');
+                // In einer echten Implementierung wuerde hier das JSON an Nodges uebergeben
+                alert('[START] In einer echten Implementierung wuerde das System jetzt in Nodges 3D visualisiert!\n\nDas JSON wuerde an die loadNetworkFromImportedData() Funktion uebergeben.');
             }
         }
 
@@ -611,7 +611,7 @@ Ausgabe: Nur das vollständige JSON, keine zusätzlichen Erklärungen.`;
             document.getElementById('promptSection').style.display = 'none';
             document.getElementById('jsonSection').style.display = 'none';
             document.getElementById('resultSection').style.display = 'none';
-            document.getElementById('status').textContent = '📊 Status: Bereit für neue Eingabe';
+            document.getElementById('status').textContent = '[DATA] Status: Bereit fuer neue Eingabe';
             currentPrompt = '';
             currentJSON = null;
         }
@@ -619,26 +619,26 @@ Ausgabe: Nur das vollständige JSON, keine zusätzlichen Erklärungen.`;
         function showExamples() {
             const examples = {
                 government: [
-                    '🏛️ Baueingabe-Verfahren Kanton Zürich für Neubauten in Wohnzonen',
-                    '🏛️ Einbürgerungsverfahren Schweiz für ordentliche Einbürgerung',
-                    '🏛️ Steuererklärung-Prozess mit Prüfung und Veranlagung',
-                    '🏛️ Führerschein-Antrag mit Theorie- und Praxisprüfung'
+                    '[GOV] Baueingabe-Verfahren Kanton Zuerich fuer Neubauten in Wohnzonen',
+                    '[GOV] Einbuergerungsverfahren Schweiz fuer ordentliche Einbuergerung',
+                    '[GOV] Steuererklaerung-Prozess mit Pruefung und Veranlagung',
+                    '[GOV] Fuehrerschein-Antrag mit Theorie- und Praxispruefung'
                 ],
                 business: [
                     '🏢 Software-Entwicklungsprozess mit Scrum-Methodik',
-                    '🏢 Recruiting-Prozess für Software-Entwickler',
-                    '🏢 Kundenservice-Workflow für Beschwerdebearbeitung',
-                    '🏢 Produktentwicklung von Idee bis Markteinführung'
+                    '🏢 Recruiting-Prozess fuer Software-Entwickler',
+                    '🏢 Kundenservice-Workflow fuer Beschwerdebearbeitung',
+                    '🏢 Produktentwicklung von Idee bis Markteinfuehrung'
                 ],
                 healthcare: [
                     '🏥 Notfall-Patientenaufnahme im Krankenhaus',
-                    '🏥 Operationsplanung und -durchführung',
+                    '🏥 Operationsplanung und -durchfuehrung',
                     '🏥 Medikamenten-Zulassungsverfahren',
-                    '🏥 Impfkampagne-Organisation und -durchführung'
+                    '🏥 Impfkampagne-Organisation und -durchfuehrung'
                 ],
                 education: [
-                    '🎓 Universitäts-Bewerbungsverfahren',
-                    '🎓 Prüfungsorganisation und -durchführung',
+                    '🎓 Universitaets-Bewerbungsverfahren',
+                    '🎓 Pruefungsorganisation und -durchfuehrung',
                     '🎓 Forschungsprojekt von Antrag bis Publikation',
                     '🎓 Online-Kurs-Entwicklung und -bereitstellung'
                 ]
@@ -647,20 +647,20 @@ Ausgabe: Nur das vollständige JSON, keine zusätzlichen Erklärungen.`;
             const systemType = document.getElementById('systemType').value;
             const exampleList = examples[systemType];
             
-            alert(`💡 Beispiele für ${systemType}:\n\n${exampleList.join('\n\n')}`);
+            alert(`[INFO] Beispiele fuer ${systemType}:\n\n${exampleList.join('\n\n')}`);
         }
 
         function loadExampleDescription(type, description) {
             document.getElementById('systemType').value = type;
             document.getElementById('systemDescription').value = description;
-            document.getElementById('status').textContent = '📊 Status: Beispiel geladen - Bereit für Prompt-Generierung';
+            document.getElementById('status').textContent = '[DATA] Status: Beispiel geladen - Bereit fuer Prompt-Generierung';
         }
 
         function loadExample(type) {
             if (type === 'us_political') {
-                alert('🇺🇸 In einer echten Implementierung würde hier das US-Politiksystem geladen!\n\nDas vordefinierte JSON würde direkt in Nodges visualisiert.');
+                alert('🇺🇸 In einer echten Implementierung wuerde hier das US-Politiksystem geladen!\n\nDas vordefinierte JSON wuerde direkt in Nodges visualisiert.');
             } else if (type === 'baueingabe') {
-                alert('🏛️ In einer echten Implementierung würde hier das Baueingabe-Beispiel geladen!\n\nDas vordefinierte JSON würde direkt in Nodges visualisiert.');
+                alert('[GOV] In einer echten Implementierung wuerde hier das Baueingabe-Beispiel geladen!\n\nDas vordefinierte JSON wuerde direkt in Nodges visualisiert.');
             }
         }
     </script>

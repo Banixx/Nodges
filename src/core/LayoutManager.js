@@ -1,708 +1,486 @@
 /**
- * LayoutManager - Zentrale Verwaltung aller Layout-Algorithmen für Nodges 0.80
- * 
- * Features:
- * - Force-Directed Layouts (Fruchterman-Reingold, Spring-Embedder)
- * - Hierarchical Layouts (Tree, Hierarchie)
- * - Geometric Layouts (Circular, Grid, Random)
- * - Animation System für smooth transitions
- * - Performance-optimiert für große Netzwerke
+ * LayoutManager - Zentrale Verwaltung aller Layout-Algorithmen fuer Nodges 0.89
  */
 
-import * as THREE from 'three';
-// TWEEN wird �ber das UMD-Bundle in main.js geladen
-
 export class LayoutManager {
-    constructor(scene, stateManager) {
-        this.scene = scene;
-        this.stateManager = stateManager;
-        
-        // Layout-Algorithmen
-        this.algorithms = {
-            'force-directed': new ForceDirectedLayout(),
-            'fruchterman-reingold': new FruchtermanReingoldLayout(),
-            'spring-embedder': new SpringEmbedderLayout(),
-            'hierarchical': new HierarchicalLayout(),
-            'tree': new TreeLayout(),
-            'circular': new CircularLayout(),
-            'grid': new GridLayout(),
-            'random': new RandomLayout()
-        };
-        
-        // Animation-Einstellungen
-        this.animationDuration = 2000; // 2 Sekunden
+    constructor() {
+        this.layouts = new Map();
+        this.currentLayout = null;
         this.isAnimating = false;
-        this.currentLayout = 'force-directed';
+        this.animationSpeed = 1.0;
         
-        // Performance-Einstellungen
-        this.maxIterations = 1000;
-        this.convergenceThreshold = 0.01;
-        
-        console.log('🎯 LayoutManager initialisiert mit', Object.keys(this.algorithms).length, 'Algorithmen');
+        // Registriere Standard-Layouts
+        this.registerDefaultLayouts();
     }
-    
-    /**
-     * Wendet einen Layout-Algorithmus auf das Netzwerk an
-     */
-    async applyLayout(layoutName, nodes, edges, options = {}) {
-        if (this.isAnimating) {
-            console.warn('⚠️ Layout-Animation läuft bereits');
-            return;
-        }
-        
-        const algorithm = this.algorithms[layoutName];
-        if (!algorithm) {
-            console.error('❌ Unbekannter Layout-Algorithmus:', layoutName);
-            return;
-        }
-        
-        console.log(`🚀 Starte ${layoutName} Layout für ${nodes.length} Knoten`);
-        this.isAnimating = true;
-        
-        try {
-            // Aktuelle Positionen speichern
-            const originalPositions = this.saveCurrentPositions(nodes);
-            
-            // Neue Positionen berechnen
-            const newPositions = await algorithm.calculate(nodes, edges, {
-                maxIterations: this.maxIterations,
-                convergenceThreshold: this.convergenceThreshold,
-                ...options
-            });
-            
-            // Animierte Transition zu neuen Positionen
-            await this.animateToPositions(nodes, newPositions, originalPositions);
-            
-            this.currentLayout = layoutName;
-            console.log(`✅ ${layoutName} Layout erfolgreich angewendet`);
-            
-        } catch (error) {
-            console.error('❌ Fehler beim Layout-Algorithmus:', error);
-            // FIX: Re-throw error for caller handling while ensuring cleanup
-            throw error;
-        } finally {
-            // FIX: Always reset isAnimating flag, even if error occurs
-            this.isAnimating = false;
-        }
-    }
-    
-    /**
-     * Speichert aktuelle Knotenpositionen
-     */
-    saveCurrentPositions(nodes) {
-        return nodes.map(node => ({
-            id: node.id,
-            x: node.mesh.position.x,
-            y: node.mesh.position.y,
-            z: node.mesh.position.z
-        }));
-    }
-    
-    /**
-     * Animiert Knoten zu neuen Positionen
-     */
-    animateToPositions(nodes, newPositions, originalPositions) {
-        return new Promise((resolve) => {
-            const tweens = [];
-            
-            nodes.forEach((node, index) => {
-                const newPos = newPositions[index];
-                const currentPos = node.mesh.position;
-                
-                const tween = new window.TWEEN.Tween(currentPos)
-                    .to({ x: newPos.x, y: newPos.y, z: newPos.z }, this.animationDuration)
-                    .easing(window.TWEEN.Easing.Cubic.InOut)
-                    .onUpdate(() => {
-                        // Position aktualisieren
-                        node.mesh.position.set(currentPos.x, currentPos.y, currentPos.z);
-                        
-                        // Kanten-Positionen aktualisieren (falls vorhanden)
-                        if (node.edges) {
-                            node.edges.forEach(edge => {
-                                edge.updateGeometry();
-                            });
-                        }
-                    });
-                
-                tweens.push(tween);
-            });
-            
-            // Alle Tweens starten
-            tweens.forEach(tween => tween.start());
-            
-            // Warten bis alle Animationen fertig sind
-            const checkComplete = () => {
-                if (tweens.every(tween => !tween.isPlaying())) {
-                    resolve();
-                } else {
-                    requestAnimationFrame(checkComplete);
-                }
-            };
-            
-            requestAnimationFrame(checkComplete);
+
+    registerDefaultLayouts() {
+        // Force-Directed Layout
+        this.registerLayout('force-directed', {
+            name: 'Force-Directed',
+            apply: (nodes, edges, options) => this.applyForceLayout(nodes, edges, options),
+            options: {
+                maxIterations: 100,
+                repulsionStrength: 50,
+                attractionStrength: 0.5,
+                damping: 0.8
+            }
         });
-    }
-    
-    /**
-     * Stoppt aktuelle Animation
-     */
-    stopAnimation() {
-        if (window.TWEEN) {
-            window.TWEEN.removeAll();
-        }
-        this.isAnimating = false;
-    }
-    
-    /**
-     * Gibt verfügbare Layout-Algorithmen zurück
-     */
-    getAvailableLayouts() {
-        return Object.keys(this.algorithms);
-    }
-    
-    /**
-     * Gibt aktuellen Layout-Namen zurück
-     */
-    getCurrentLayout() {
-        return this.currentLayout;
-    }
-    
-    /**
-     * Setzt Animation-Geschwindigkeit
-     */
-    setAnimationDuration(duration) {
-        this.animationDuration = Math.max(500, Math.min(5000, duration));
-    }
-    
-    /**
-     * Cleanup
-     */
-    destroy() {
-        this.stopAnimation();
-        Object.values(this.algorithms).forEach(algorithm => {
-            if (algorithm.destroy) {
-                algorithm.destroy();
+
+        // Fruchterman-Reingold Layout
+        this.registerLayout('fruchterman-reingold', {
+            name: 'Fruchterman-Reingold',
+            apply: (nodes, edges, options) => this.applyFruchtermanReingoldLayout(nodes, edges, options),
+            options: {
+                maxIterations: 500,
+                area: 400,
+                temperature: 10
+            }
+        });
+
+        // Spring-Embedder Layout
+        this.registerLayout('spring-embedder', {
+            name: 'Spring-Embedder',
+            apply: (nodes, edges, options) => this.applySpringEmbedderLayout(nodes, edges, options),
+            options: {
+                maxIterations: 1000,
+                springConstant: 0.1,
+                repulsionConstant: 1000,
+                damping: 0.95,
+                naturalLength: 2
+            }
+        });
+
+        // Hierarchical Layout
+        this.registerLayout('hierarchical', {
+            name: 'Hierarchical',
+            apply: (nodes, edges, options) => this.applyHierarchicalLayout(nodes, edges, options),
+            options: {
+                levelHeight: 3,
+                nodeSpacing: 2
+            }
+        });
+
+        // Tree Layout
+        this.registerLayout('tree', {
+            name: 'Tree',
+            apply: (nodes, edges, options) => this.applyTreeLayout(nodes, edges, options),
+            options: {
+                levelHeight: 3,
+                nodeSpacing: 2
+            }
+        });
+
+        // Circular Layout
+        this.registerLayout('circular', {
+            name: 'Circular',
+            apply: (nodes, edges, options) => this.applyCircularLayout(nodes, edges, options),
+            options: {
+                radius: 10,
+                height: 0
+            }
+        });
+
+        // Grid Layout
+        this.registerLayout('grid', {
+            name: 'Grid',
+            apply: (nodes, edges, options) => this.applyGridLayout(nodes, edges, options),
+            options: {
+                spacing: 2
+            }
+        });
+
+        // Random Layout
+        this.registerLayout('random', {
+            name: 'Random',
+            apply: (nodes, edges, options) => this.applyRandomLayout(nodes, edges, options),
+            options: {
+                minBound: -10,
+                maxBound: 10
             }
         });
     }
-}
 
-/**
- * Basis-Klasse für Layout-Algorithmen
- */
-class LayoutAlgorithm {
-    constructor() {
-        this.name = 'base';
+    registerLayout(id, layout) {
+        this.layouts.set(id, layout);
     }
-    
-    async calculate(nodes, edges, options = {}) {
-        throw new Error('calculate() muss in Unterklasse implementiert werden');
-    }
-    
-    // Hilfsmethoden für alle Algorithmen
-    getNodeById(nodes, id) {
-        return nodes.find(node => node.id === id);
-    }
-    
-    calculateDistance(pos1, pos2) {
-        const dx = pos1.x - pos2.x;
-        const dy = pos1.y - pos2.y;
-        const dz = pos1.z - pos2.z;
-        return Math.sqrt(dx * dx + dy * dy + dz * dz);
-    }
-    
-    normalizePositions(positions, bounds = { min: -10, max: 10 }) {
-        if (positions.length === 0) return positions;
-        
-        // Min/Max finden
-        const minX = Math.min(...positions.map(p => p.x));
-        const maxX = Math.max(...positions.map(p => p.x));
-        const minY = Math.min(...positions.map(p => p.y));
-        const maxY = Math.max(...positions.map(p => p.y));
-        const minZ = Math.min(...positions.map(p => p.z));
-        const maxZ = Math.max(...positions.map(p => p.z));
-        
-        const rangeX = maxX - minX || 1;
-        const rangeY = maxY - minY || 1;
-        const rangeZ = maxZ - minZ || 1;
-        const targetRange = bounds.max - bounds.min;
-        
-        return positions.map(pos => ({
-            x: bounds.min + ((pos.x - minX) / rangeX) * targetRange,
-            y: bounds.min + ((pos.y - minY) / rangeY) * targetRange,
-            z: bounds.min + ((pos.z - minZ) / rangeZ) * targetRange
-        }));
-    }
-}
 
-/**
- * Force-Directed Layout (Standard)
- */
-class ForceDirectedLayout extends LayoutAlgorithm {
-    constructor() {
-        super();
-        this.name = 'force-directed';
+    applyLayout(layoutId, nodes, edges, options = {}) {
+        const layout = this.layouts.get(layoutId);
+        if (!layout) {
+            console.warn(`Layout ${layoutId} nicht gefunden`);
+            return false;
+        }
+
+        this.currentLayout = layoutId;
+        const mergedOptions = { ...layout.options, ...options };
+        
+        try {
+            layout.apply(nodes, edges, mergedOptions);
+            console.log(`Layout ${layout.name} angewendet auf ${nodes.length} Knoten`);
+            return true;
+        } catch (error) {
+            console.error(`Fehler beim Anwenden des Layouts ${layout.name}:`, error);
+            return false;
+        }
     }
-    
-    async calculate(nodes, edges, options = {}) {
-        const {
-            maxIterations = 500,
-            convergenceThreshold = 0.01,
-            repulsionStrength = 1000,
-            attractionStrength = 0.1,
-            damping = 0.9
+
+    applyForceLayout(nodes, edges, options = {}) {
+        const { 
+            maxIterations = 100, 
+            repulsionStrength = 50, 
+            attractionStrength = 0.5, 
+            damping = 0.8 
         } = options;
         
-        // Initiale zufällige Positionen
-        const positions = nodes.map(() => ({
-            x: (Math.random() - 0.5) * 20,
-            y: (Math.random() - 0.5) * 20,
-            z: (Math.random() - 0.5) * 20
-        }));
-        
-        const velocities = nodes.map(() => ({ x: 0, y: 0, z: 0 }));
-        
-        for (let iteration = 0; iteration < maxIterations; iteration++) {
-            const forces = positions.map(() => ({ x: 0, y: 0, z: 0 }));
-            
-            // Repulsive Kräfte zwischen allen Knoten
-            for (let i = 0; i < nodes.length; i++) {
-                for (let j = i + 1; j < nodes.length; j++) {
-                    const dx = positions[i].x - positions[j].x;
-                    const dy = positions[i].y - positions[j].y;
-                    const dz = positions[i].z - positions[j].z;
-                    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) || 0.1;
+        for (let i = 0; i < maxIterations; i++) {
+            // Repulsion zwischen allen Knoten
+            for (let j = 0; j < nodes.length; j++) {
+                for (let k = j + 1; k < nodes.length; k++) {
+                    const node1 = nodes[j];
+                    const node2 = nodes[k];
+                    
+                    const dx = node2.x - node1.x;
+                    const dy = node2.y - node1.y;
+                    const dz = node2.z - node1.z;
+                    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.01;
                     
                     const force = repulsionStrength / (distance * distance);
                     const fx = (dx / distance) * force;
                     const fy = (dy / distance) * force;
                     const fz = (dz / distance) * force;
                     
-                    forces[i].x += fx;
-                    forces[i].y += fy;
-                    forces[i].z += fz;
-                    forces[j].x -= fx;
-                    forces[j].y -= fy;
-                    forces[j].z -= fz;
+                    node1.x -= fx * damping;
+                    node1.y -= fy * damping;
+                    node1.z -= fz * damping;
+                    node2.x += fx * damping;
+                    node2.y += fy * damping;
+                    node2.z += fz * damping;
                 }
             }
             
-            // Attractive Kräfte entlang der Kanten
+            // Attraction entlang Kanten
             edges.forEach(edge => {
-                const sourceIndex = nodes.findIndex(n => n.id === edge.source);
-                const targetIndex = nodes.findIndex(n => n.id === edge.target);
+                const node1 = edge.start;
+                const node2 = edge.end;
                 
-                if (sourceIndex !== -1 && targetIndex !== -1) {
-                    const dx = positions[targetIndex].x - positions[sourceIndex].x;
-                    const dy = positions[targetIndex].y - positions[sourceIndex].y;
-                    const dz = positions[targetIndex].z - positions[sourceIndex].z;
-                    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) || 0.1;
+                const dx = node2.x - node1.x;
+                const dy = node2.y - node1.y;
+                const dz = node2.z - node1.z;
+                
+                const fx = dx * attractionStrength;
+                const fy = dy * attractionStrength;
+                const fz = dz * attractionStrength;
+                
+                node1.x += fx;
+                node1.y += fy;
+                node1.z += fz;
+                node2.x -= fx;
+                node2.y -= fy;
+                node2.z -= fz;
+            });
+        }
+        
+        // Normalisiere Positionen um das Netzwerk kompakt zu halten
+        this.normalizeNodePositions(nodes, 10); // Maximal 10 Einheiten Ausdehnung
+    }
+
+    applyCircularLayout(nodes, edges, options) {
+        const { radius } = options;
+        const angleStep = (2 * Math.PI) / nodes.length;
+        
+        nodes.forEach((node, index) => {
+            const angle = index * angleStep;
+            node.x = Math.cos(angle) * radius;
+            node.y = 0;
+            node.z = Math.sin(angle) * radius;
+        });
+    }
+
+    applyGridLayout(nodes, edges, options) {
+        const { spacing } = options;
+        const gridSize = Math.ceil(Math.sqrt(nodes.length));
+        
+        nodes.forEach((node, index) => {
+            const row = Math.floor(index / gridSize);
+            const col = index % gridSize;
+            
+            node.x = (col - gridSize / 2) * spacing;
+            node.y = 0;
+            node.z = (row - gridSize / 2) * spacing;
+        });
+    }
+
+    applyRandomLayout(nodes, edges, options) {
+        const { minBound, maxBound } = options;
+        const range = maxBound - minBound;
+        
+        nodes.forEach(node => {
+            node.x = minBound + Math.random() * range;
+            node.y = minBound + Math.random() * range;
+            node.z = minBound + Math.random() * range;
+        });
+    }
+
+    applyFruchtermanReingoldLayout(nodes, edges, options = {}) {
+        const { 
+            maxIterations = 500, 
+            area = 400, 
+            temperature = 10 
+        } = options;
+        const k = Math.sqrt(area / nodes.length);
+        let temp = temperature;
+        
+        // Initialisiere displacement vectors
+        nodes.forEach(node => {
+            node.disp = { x: 0, y: 0, z: 0 };
+        });
+        
+        for (let iter = 0; iter < maxIterations; iter++) {
+            // Calculate repulsive forces
+            nodes.forEach(v => {
+                v.disp = { x: 0, y: 0, z: 0 };
+                nodes.forEach(u => {
+                    if (v !== u) {
+                        const dx = v.x - u.x;
+                        const dy = v.y - u.y;
+                        const dz = v.z - u.z;
+                        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.01;
+                        
+                        const force = (k * k) / distance;
+                        v.disp.x += (dx / distance) * force;
+                        v.disp.y += (dy / distance) * force;
+                        v.disp.z += (dz / distance) * force;
+                    }
+                });
+            });
+            
+            // Calculate attractive forces
+            edges.forEach(edge => {
+                const v = edge.start;
+                const u = edge.end;
+                const dx = v.x - u.x;
+                const dy = v.y - u.y;
+                const dz = v.z - u.z;
+                const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.01;
+                
+                const force = (distance * distance) / k;
+                const fx = (dx / distance) * force;
+                const fy = (dy / distance) * force;
+                const fz = (dz / distance) * force;
+                
+                v.disp.x -= fx;
+                v.disp.y -= fy;
+                v.disp.z -= fz;
+                u.disp.x += fx;
+                u.disp.y += fy;
+                u.disp.z += fz;
+            });
+            
+            // Limit displacement and apply
+            nodes.forEach(v => {
+                const dispLength = Math.sqrt(v.disp.x * v.disp.x + v.disp.y * v.disp.y + v.disp.z * v.disp.z);
+                const limitedLength = Math.min(dispLength, temp);
+                
+                if (dispLength > 0) {
+                    v.x += (v.disp.x / dispLength) * limitedLength;
+                    v.y += (v.disp.y / dispLength) * limitedLength;
+                    v.z += (v.disp.z / dispLength) * limitedLength;
+                }
+            });
+            
+            temp *= 0.95; // Cool down
+        }
+        
+        // Normalisiere Positionen um das Netzwerk kompakt zu halten
+        this.normalizeNodePositions(nodes, 10);
+    }
+
+    applySpringEmbedderLayout(nodes, edges, options) {
+        const { maxIterations, springConstant, repulsionConstant, damping, naturalLength } = options;
+        
+        for (let iter = 0; iter < maxIterations; iter++) {
+            nodes.forEach(node => {
+                node.fx = 0;
+                node.fy = 0;
+                node.fz = 0;
+            });
+            
+            // Spring forces
+            edges.forEach(edge => {
+                const v1 = edge.start;
+                const v2 = edge.end;
+                const dx = v2.x - v1.x;
+                const dy = v2.y - v1.y;
+                const dz = v2.z - v1.z;
+                const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.01;
+                
+                const force = springConstant * (distance - naturalLength);
+                const fx = (dx / distance) * force;
+                const fy = (dy / distance) * force;
+                const fz = (dz / distance) * force;
+                
+                v1.fx += fx;
+                v1.fy += fy;
+                v1.fz += fz;
+                v2.fx -= fx;
+                v2.fy -= fy;
+                v2.fz -= fz;
+            });
+            
+            // Repulsion forces
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const v1 = nodes[i];
+                    const v2 = nodes[j];
+                    const dx = v2.x - v1.x;
+                    const dy = v2.y - v1.y;
+                    const dz = v2.z - v1.z;
+                    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.01;
                     
-                    const force = attractionStrength * distance;
+                    const force = repulsionConstant / (distance * distance);
                     const fx = (dx / distance) * force;
                     const fy = (dy / distance) * force;
                     const fz = (dz / distance) * force;
                     
-                    forces[sourceIndex].x += fx;
-                    forces[sourceIndex].y += fy;
-                    forces[sourceIndex].z += fz;
-                    forces[targetIndex].x -= fx;
-                    forces[targetIndex].y -= fy;
-                    forces[targetIndex].z -= fz;
+                    v1.fx -= fx;
+                    v1.fy -= fy;
+                    v1.fz -= fz;
+                    v2.fx += fx;
+                    v2.fy += fy;
+                    v2.fz += fz;
                 }
+            }
+            
+            // Apply forces
+            nodes.forEach(node => {
+                node.x += node.fx * damping;
+                node.y += node.fy * damping;
+                node.z += node.fz * damping;
             });
-            
-            // Geschwindigkeiten und Positionen aktualisieren
-            let maxMovement = 0;
-            for (let i = 0; i < nodes.length; i++) {
-                velocities[i].x = (velocities[i].x + forces[i].x) * damping;
-                velocities[i].y = (velocities[i].y + forces[i].y) * damping;
-                velocities[i].z = (velocities[i].z + forces[i].z) * damping;
-                
-                positions[i].x += velocities[i].x;
-                positions[i].y += velocities[i].y;
-                positions[i].z += velocities[i].z;
-                
-                const movement = Math.sqrt(
-                    velocities[i].x * velocities[i].x +
-                    velocities[i].y * velocities[i].y +
-                    velocities[i].z * velocities[i].z
-                );
-                maxMovement = Math.max(maxMovement, movement);
-            }
-            
-            // Konvergenz prüfen
-            if (maxMovement < convergenceThreshold) {
-                console.log(`🎯 Force-Directed Layout konvergiert nach ${iteration} Iterationen`);
-                break;
-            }
         }
-        
-        return this.normalizePositions(positions);
     }
-}
 
-/**
- * Fruchterman-Reingold Layout
- */
-class FruchtermanReingoldLayout extends LayoutAlgorithm {
-    constructor() {
-        super();
-        this.name = 'fruchterman-reingold';
-    }
-    
-    async calculate(nodes, edges, options = {}) {
-        const {
-            maxIterations = 500,
-            area = 400,
-            temperature = 10
-        } = options;
+    applyHierarchicalLayout(nodes, edges, options) {
+        const { levelHeight, nodeSpacing } = options;
         
-        const k = Math.sqrt(area / nodes.length);
-        let temp = temperature;
+        // Simple hierarchical layout - arrange nodes in levels
+        const levels = this.calculateNodeLevels(nodes, edges);
+        const maxLevel = Math.max(...Object.values(levels));
         
-        // Initiale zufällige Positionen
-        const positions = nodes.map(() => ({
-            x: (Math.random() - 0.5) * 20,
-            y: (Math.random() - 0.5) * 20,
-            z: (Math.random() - 0.5) * 20
-        }));
-        
-        for (let iteration = 0; iteration < maxIterations; iteration++) {
-            const displacement = positions.map(() => ({ x: 0, y: 0, z: 0 }));
-            
-            // Repulsive Kräfte
-            for (let v = 0; v < nodes.length; v++) {
-                for (let u = 0; u < nodes.length; u++) {
-                    if (v !== u) {
-                        const dx = positions[v].x - positions[u].x;
-                        const dy = positions[v].y - positions[u].y;
-                        const dz = positions[v].z - positions[u].z;
-                        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) || 0.1;
-                        
-                        const repulsiveForce = (k * k) / distance;
-                        displacement[v].x += (dx / distance) * repulsiveForce;
-                        displacement[v].y += (dy / distance) * repulsiveForce;
-                        displacement[v].z += (dz / distance) * repulsiveForce;
-                    }
-                }
-            }
-            
-            // Attractive Kräfte
-            edges.forEach(edge => {
-                const vIndex = nodes.findIndex(n => n.id === edge.source);
-                const uIndex = nodes.findIndex(n => n.id === edge.target);
-                
-                if (vIndex !== -1 && uIndex !== -1) {
-                    const dx = positions[vIndex].x - positions[uIndex].x;
-                    const dy = positions[vIndex].y - positions[uIndex].y;
-                    const dz = positions[vIndex].z - positions[uIndex].z;
-                    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) || 0.1;
-                    
-                    const attractiveForce = (distance * distance) / k;
-                    const fx = (dx / distance) * attractiveForce;
-                    const fy = (dy / distance) * attractiveForce;
-                    const fz = (dz / distance) * attractiveForce;
-                    
-                    displacement[vIndex].x -= fx;
-                    displacement[vIndex].y -= fy;
-                    displacement[vIndex].z -= fz;
-                    displacement[uIndex].x += fx;
-                    displacement[uIndex].y += fy;
-                    displacement[uIndex].z += fz;
-                }
-            });
-            
-            // Positionen aktualisieren
-            for (let v = 0; v < nodes.length; v++) {
-                const dispLength = Math.sqrt(
-                    displacement[v].x * displacement[v].x +
-                    displacement[v].y * displacement[v].y +
-                    displacement[v].z * displacement[v].z
-                ) || 0.1;
-                
-                positions[v].x += (displacement[v].x / dispLength) * Math.min(dispLength, temp);
-                positions[v].y += (displacement[v].y / dispLength) * Math.min(dispLength, temp);
-                positions[v].z += (displacement[v].z / dispLength) * Math.min(dispLength, temp);
-            }
-            
-            // Temperatur reduzieren
-            temp = temperature * (1 - iteration / maxIterations);
-        }
-        
-        return this.normalizePositions(positions);
-    }
-}
-
-/**
- * Circular Layout
- */
-class CircularLayout extends LayoutAlgorithm {
-    constructor() {
-        super();
-        this.name = 'circular';
-    }
-    
-    async calculate(nodes, edges, options = {}) {
-        const { radius = 10, height = 0 } = options;
-        
-        const positions = nodes.map((node, index) => {
-            const angle = (index / nodes.length) * 2 * Math.PI;
-            return {
-                x: Math.cos(angle) * radius,
-                y: height,
-                z: Math.sin(angle) * radius
-            };
+        const levelNodes = {};
+        nodes.forEach(node => {
+            const level = levels[node.id] || 0;
+            if (!levelNodes[level]) levelNodes[level] = [];
+            levelNodes[level].push(node);
         });
         
-        return positions;
-    }
-}
-
-/**
- * Grid Layout
- */
-class GridLayout extends LayoutAlgorithm {
-    constructor() {
-        super();
-        this.name = 'grid';
-    }
-    
-    async calculate(nodes, edges, options = {}) {
-        const { spacing = 2 } = options;
-        const gridSize = Math.ceil(Math.sqrt(nodes.length));
-        
-        const positions = nodes.map((node, index) => {
-            const row = Math.floor(index / gridSize);
-            const col = index % gridSize;
+        Object.keys(levelNodes).forEach(level => {
+            const levelNodeArray = levelNodes[level];
+            const levelIndex = parseInt(level);
             
-            return {
-                x: (col - gridSize / 2) * spacing,
-                y: 0,
-                z: (row - gridSize / 2) * spacing
-            };
-        });
-        
-        return positions;
-    }
-}
-
-/**
- * Random Layout
- */
-class RandomLayout extends LayoutAlgorithm {
-    constructor() {
-        super();
-        this.name = 'random';
-    }
-    
-    async calculate(nodes, edges, options = {}) {
-        const { bounds = { min: -10, max: 10 } } = options;
-        const range = bounds.max - bounds.min;
-        
-        const positions = nodes.map(() => ({
-            x: bounds.min + Math.random() * range,
-            y: bounds.min + Math.random() * range,
-            z: bounds.min + Math.random() * range
-        }));
-        
-        return positions;
-    }
-}
-
-/**
- * Hierarchical Layout (vereinfacht)
- */
-class HierarchicalLayout extends LayoutAlgorithm {
-    constructor() {
-        super();
-        this.name = 'hierarchical';
-    }
-    
-    async calculate(nodes, edges, options = {}) {
-        const { levelHeight = 3, nodeSpacing = 2 } = options;
-        
-        // Einfache Hierarchie basierend auf Konnektivität
-        const levels = this.calculateLevels(nodes, edges);
-        const positions = [];
-        
-        levels.forEach((levelNodes, level) => {
-            levelNodes.forEach((nodeId, index) => {
-                const nodeIndex = nodes.findIndex(n => n.id === nodeId);
-                if (nodeIndex !== -1) {
-                    positions[nodeIndex] = {
-                        x: (index - levelNodes.length / 2) * nodeSpacing,
-                        y: level * levelHeight,
-                        z: 0
-                    };
-                }
+            levelNodeArray.forEach((node, index) => {
+                const totalWidth = (levelNodeArray.length - 1) * nodeSpacing;
+                node.x = -totalWidth / 2 + index * nodeSpacing;
+                node.y = (maxLevel - levelIndex) * levelHeight;
+                node.z = 0;
             });
         });
-        
-        return positions;
     }
-    
-    calculateLevels(nodes, edges) {
-        const levels = [];
+
+    applyTreeLayout(nodes, edges, options) {
+        // Similar to hierarchical but with tree structure
+        this.applyHierarchicalLayout(nodes, edges, options);
+    }
+
+    calculateNodeLevels(nodes, edges) {
+        const levels = {};
         const visited = new Set();
-        const adjacencyList = new Map();
+        const adjacencyList = {};
         
-        // Adjacency List erstellen
-        nodes.forEach(node => adjacencyList.set(node.id, []));
-        edges.forEach(edge => {
-            if (adjacencyList.has(edge.source)) {
-                adjacencyList.get(edge.source).push(edge.target);
-            }
-            if (adjacencyList.has(edge.target)) {
-                adjacencyList.get(edge.target).push(edge.source);
-            }
+        // Build adjacency list
+        nodes.forEach(node => {
+            adjacencyList[node.id] = [];
+            levels[node.id] = 0;
         });
         
-        // BFS für Level-Zuordnung
-        const queue = [nodes[0].id]; // Start mit erstem Knoten
-        visited.add(nodes[0].id);
-        levels.push([nodes[0].id]);
+        edges.forEach(edge => {
+            adjacencyList[edge.start.id].push(edge.end.id);
+        });
+        
+        // Find root nodes (nodes with no incoming edges)
+        const incomingCount = {};
+        nodes.forEach(node => incomingCount[node.id] = 0);
+        edges.forEach(edge => incomingCount[edge.end.id]++);
+        
+        const roots = nodes.filter(node => incomingCount[node.id] === 0);
+        
+        // BFS to assign levels
+        const queue = roots.map(root => ({ id: root.id, level: 0 }));
         
         while (queue.length > 0) {
-            const currentLevel = [];
-            const levelSize = queue.length;
+            const { id, level } = queue.shift();
+            if (visited.has(id)) continue;
             
-            for (let i = 0; i < levelSize; i++) {
-                const nodeId = queue.shift();
-                const neighbors = adjacencyList.get(nodeId) || [];
-                
-                neighbors.forEach(neighborId => {
-                    if (!visited.has(neighborId)) {
-                        visited.add(neighborId);
-                        queue.push(neighborId);
-                        currentLevel.push(neighborId);
-                    }
-                });
-            }
+            visited.add(id);
+            levels[id] = level;
             
-            if (currentLevel.length > 0) {
-                levels.push(currentLevel);
-            }
-        }
-        
-        // Unbesuchte Knoten hinzufügen
-        nodes.forEach(node => {
-            if (!visited.has(node.id)) {
-                if (levels.length === 0) {
-                    levels.push([]);
+            adjacencyList[id].forEach(neighborId => {
+                if (!visited.has(neighborId)) {
+                    queue.push({ id: neighborId, level: level + 1 });
                 }
-                levels[levels.length - 1].push(node.id);
-            }
-        });
+            });
+        }
         
         return levels;
     }
-}
 
-/**
- * Tree Layout
- */
-class TreeLayout extends HierarchicalLayout {
-    constructor() {
-        super();
-        this.name = 'tree';
+    getAvailableLayouts() {
+        return Array.from(this.layouts.keys());
+    }
+
+    getCurrentLayout() {
+        return this.currentLayout;
     }
     
-    async calculate(nodes, edges, options = {}) {
-        // Verwende Hierarchical Layout als Basis für Tree Layout
-        return super.calculate(nodes, edges, options);
-    }
-}
-
-/**
- * Spring-Embedder Layout
- */
-class SpringEmbedderLayout extends LayoutAlgorithm {
-    constructor() {
-        super();
-        this.name = 'spring-embedder';
-    }
-    
-    async calculate(nodes, edges, options = {}) {
-        const {
-            maxIterations = 1000,
-            springConstant = 0.1,
-            repulsionConstant = 1000,
-            damping = 0.95,
-            naturalLength = 2
-        } = options;
+    // Normalisiert Node-Positionen um das Netzwerk kompakt zu halten
+    normalizeNodePositions(nodes, maxExtent = 10) {
+        if (nodes.length === 0) return;
         
-        // Initiale Positionen
-        const positions = nodes.map(() => ({
-            x: (Math.random() - 0.5) * 20,
-            y: (Math.random() - 0.5) * 20,
-            z: (Math.random() - 0.5) * 20
-        }));
+        // Finde Bounding Box
+        let minX = nodes[0].x, maxX = nodes[0].x;
+        let minY = nodes[0].y, maxY = nodes[0].y;
+        let minZ = nodes[0].z, maxZ = nodes[0].z;
         
-        const velocities = nodes.map(() => ({ x: 0, y: 0, z: 0 }));
+        nodes.forEach(node => {
+            minX = Math.min(minX, node.x);
+            maxX = Math.max(maxX, node.x);
+            minY = Math.min(minY, node.y);
+            maxY = Math.max(maxY, node.y);
+            minZ = Math.min(minZ, node.z);
+            maxZ = Math.max(maxZ, node.z);
+        });
         
-        for (let iteration = 0; iteration < maxIterations; iteration++) {
-            const forces = positions.map(() => ({ x: 0, y: 0, z: 0 }));
-            
-            // Spring-Kräfte entlang der Kanten
-            edges.forEach(edge => {
-                const sourceIndex = nodes.findIndex(n => n.id === edge.source);
-                const targetIndex = nodes.findIndex(n => n.id === edge.target);
-                
-                if (sourceIndex !== -1 && targetIndex !== -1) {
-                    const dx = positions[targetIndex].x - positions[sourceIndex].x;
-                    const dy = positions[targetIndex].y - positions[sourceIndex].y;
-                    const dz = positions[targetIndex].z - positions[sourceIndex].z;
-                    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) || 0.1;
-                    
-                    const springForce = springConstant * (distance - naturalLength);
-                    const fx = (dx / distance) * springForce;
-                    const fy = (dy / distance) * springForce;
-                    const fz = (dz / distance) * springForce;
-                    
-                    forces[sourceIndex].x += fx;
-                    forces[sourceIndex].y += fy;
-                    forces[sourceIndex].z += fz;
-                    forces[targetIndex].x -= fx;
-                    forces[targetIndex].y -= fy;
-                    forces[targetIndex].z -= fz;
-                }
-            });
-            
-            // Repulsive Kräfte
-            for (let i = 0; i < nodes.length; i++) {
-                for (let j = i + 1; j < nodes.length; j++) {
-                    const dx = positions[i].x - positions[j].x;
-                    const dy = positions[i].y - positions[j].y;
-                    const dz = positions[i].z - positions[j].z;
-                    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) || 0.1;
-                    
-                    const repulsionForce = repulsionConstant / (distance * distance);
-                    const fx = (dx / distance) * repulsionForce;
-                    const fy = (dy / distance) * repulsionForce;
-                    const fz = (dz / distance) * repulsionForce;
-                    
-                    forces[i].x += fx;
-                    forces[i].y += fy;
-                    forces[i].z += fz;
-                    forces[j].x -= fx;
-                    forces[j].y -= fy;
-                    forces[j].z -= fz;
-                }
-            }
-            
-            // Geschwindigkeiten und Positionen aktualisieren
-            for (let i = 0; i < nodes.length; i++) {
-                velocities[i].x = (velocities[i].x + forces[i].x) * damping;
-                velocities[i].y = (velocities[i].y + forces[i].y) * damping;
-                velocities[i].z = (velocities[i].z + forces[i].z) * damping;
-                
-                positions[i].x += velocities[i].x;
-                positions[i].y += velocities[i].y;
-                positions[i].z += velocities[i].z;
-            }
-        }
+        // Berechne aktuelle Ausdehnung
+        const extentX = maxX - minX;
+        const extentY = maxY - minY;
+        const extentZ = maxZ - minZ;
+        const maxCurrentExtent = Math.max(extentX, extentY, extentZ);
         
-        return this.normalizePositions(positions);
+        // Skalierungsfaktor berechnen
+        const scale = maxCurrentExtent > 0 ? maxExtent / maxCurrentExtent : 1;
+        
+        // Zentrum berechnen
+        const centerX = (minX + maxX) / 2;
+        const centerY = (minY + maxY) / 2;
+        const centerZ = (minZ + maxZ) / 2;
+        
+        // Nodes skalieren und zentrieren
+        nodes.forEach(node => {
+            node.x = (node.x - centerX) * scale;
+            node.y = (node.y - centerY) * scale;
+            node.z = (node.z - centerZ) * scale;
+        });
+        
+        console.log(`[LAYOUT] Netzwerk normalisiert: Skalierung ${scale.toFixed(3)}, Ausdehnung ${maxExtent}`);
     }
 }

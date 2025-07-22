@@ -3,18 +3,28 @@ import * as THREE from 'three';
 export class Edge {
     // Statischer Cache nur für Geometrien (Materialien werden nicht mehr gecacht)
     static geometryCache = new Map();
+    
+    // Cache-Reset-Methode
+    static clearCache() {
+        Edge.geometryCache.clear();
+        console.log('[CACHE] Edge geometry cache cleared');
+    }
 
     constructor(startNode, endNode, options = {}) {
         this.startNode = startNode;
         this.endNode = endNode;
+        
+        // Adaptive Qualität basierend auf Netzwerkgrösse
+        const adaptiveSettings = this.calculateAdaptiveSettings(options.totalEdges || 10);
+        
         this.options = {
             color: options.color || 0x0000ff,
             style: options.style || 'solid', // solid, dashed, dotted, pulsing, flowing
             curveHeight: options.curveHeight || 2,
             offset: options.offset || 0,
-            segments: options.segments || 10,
-            radius: options.radius || 0.5,           // Dicke der Edge
-            radialSegments: options.radialSegments || 3, // Querschnitt-Segmente
+            segments: options.segments || 7,
+            radius: options.radius || adaptiveSettings.radius,
+            radialSegments: options.radialSegments || adaptiveSettings.radialSegments,
             dashSize: options.dashSize || 0.5,
             gapSize: 0.3,
             ...options
@@ -28,7 +38,7 @@ export class Edge {
         this.line.userData.type = 'edge';
         this.line.userData.edge = this;
         this.line.name = this.name;
-        this.line.glow = null;
+        // Kein separates Glow-Objekt mehr - verwende nur Material-Eigenschaften
         
         // Speichere Metadaten
         this.metadata = { ...options };
@@ -37,7 +47,43 @@ export class Edge {
         // Animation properties
         this.animationPhase = 0;
         this.animationSpeed = options.animationSpeed || 1;
-        this.animationActive = (this.options.style === 'pulsing' || this.options.style === 'flowing');
+        
+        // Deaktiviere Animationen bei grossen Netzwerken fuer Performance
+        const totalEdges = options.totalEdges || 10;
+        const allowAnimations = totalEdges <= 50; // Nur bei kleinen/mittleren Netzwerken
+        
+        this.animationActive = allowAnimations && (this.options.style === 'pulsing' || this.options.style === 'flowing');
+    }
+
+    // Berechnet adaptive Einstellungen basierend auf der Anzahl der Edges
+    calculateAdaptiveSettings(totalEdges) {
+        let segments, radius, radialSegments;
+        
+        if (totalEdges <= 10) {
+            // Kleine Netzwerke: Hohe Qualität
+            segments = 7;
+            radius = 0.24;
+            radialSegments = 3;
+        } else if (totalEdges <= 50) {
+            // Mittlere Netzwerke: Mittlere Qualität
+            segments = 7;
+            radius = 0.18;
+            radialSegments = 3;
+        } else if (totalEdges <= 200) {
+            // Grosse Netzwerke: Reduzierte Qualität
+            segments = 7;
+            radius = 0.12;
+            radialSegments = 3;
+        } else {
+            // Mega Netzwerke: Ultra-minimale Qualität für Performance
+            segments = 7;
+            radius = 0.06;
+            radialSegments = 2;
+        }
+        
+        console.log('Edge-Qualitaet fuer ' + totalEdges + ' Edges: segments=' + segments + ', radius=' + radius + ', radialSegments=' + radialSegments);
+        
+        return { segments, radius, radialSegments };
     }
 
     createLine() {
@@ -46,8 +92,9 @@ export class Edge {
         const material = this.createMaterial();
         
         const line = new THREE.Mesh(geometry, material);
+        // Shadow-Konfiguration: Edges werfen Schatten nur auf Ground
         line.castShadow = true;
-        line.receiveShadow = true;
+        line.receiveShadow = false; // Edges empfangen keine Schatten von anderen Objekten
         return line;
     }
 
@@ -79,21 +126,21 @@ export class Edge {
         const segments = this.options.segments;
         const curveHeight = this.options.curveHeight;
         const offset = this.options.offset;
-        // Verbesserte Cache-Key-Generierung mit Start- und Endknoten-IDs für Eindeutigkeit
-        const startId = this.startNode?.id || this.startNode?.mesh?.name || 'unknown';
-        const endId = this.endNode?.id || this.endNode?.mesh?.name || 'unknown';
-        const cacheKey = `curve-${startId}-${endId}-${segments}-${curveHeight}-${offset}-${this.name}`;
-
-        if (Edge.geometryCache.has(cacheKey)) {
-            return Edge.geometryCache.get(cacheKey);
-        }
-
-        // Verwende konfigurierbare Parameter für TubeGeometry
         const radius = this.options.radius || 0.5;
         const radialSegments = this.options.radialSegments || 3;
+        
+        // CACHE TEMPORAER DEAKTIVIERT - Jede Edge wird neu erstellt
         const geometry = new THREE.TubeGeometry(curve, segments, radius, radialSegments, false);
-        Edge.geometryCache.set(cacheKey, geometry);
         return geometry;
+        
+        // Alter Cache-Code (deaktiviert):
+        // const startId = this.startNode?.id || this.startNode?.mesh?.name || 'unknown';
+        // const endId = this.endNode?.id || this.endNode?.mesh?.name || 'unknown';
+        // const cacheKey = `curve-${startId}-${endId}-${segments}-${curveHeight}-${offset}-${radius}-${radialSegments}-${this.name}`;
+        // if (Edge.geometryCache.has(cacheKey)) {
+        //     return Edge.geometryCache.get(cacheKey);
+        // }
+        // Edge.geometryCache.set(cacheKey, geometry);
     }
 
     createMaterial() {
@@ -161,6 +208,10 @@ export class Edge {
         if (originalStyle !== 'dashed' && originalStyle !== 'dotted') {
             this.line.material.opacity = 1.0;
         }
+        
+        // Emissive komplett zurücksetzen
+        this.line.material.emissive.setHex(0x000000);
+        this.line.material.emissiveIntensity = 0;
     }
 
     // Methode zum Aktualisieren der Geometrie-Parameter
@@ -256,5 +307,53 @@ export class Edge {
         
         // Animate texture offset
         this.line.material.map.offset.x = this.animationPhase;
+    }
+    
+    // Cleanup-Methode fuer ordnungsgemasse Bereinigung
+    dispose() {
+        if (this.line) {
+            // Remove from scene if still attached
+            if (this.line.parent) {
+                this.line.parent.remove(this.line);
+            }
+            
+            // Clear userData references
+            if (this.line.userData) {
+                this.line.userData.edge = null;
+                this.line.userData = {};
+            }
+            
+            // Dispose geometry
+            if (this.line.geometry) {
+                this.line.geometry.dispose();
+            }
+            
+            // Dispose material and textures
+            if (this.line.material) {
+                if (Array.isArray(this.line.material)) {
+                    this.line.material.forEach(mat => {
+                        if (mat.map) mat.map.dispose();
+                        if (mat.normalMap) mat.normalMap.dispose();
+                        if (mat.emissiveMap) mat.emissiveMap.dispose();
+                        mat.dispose();
+                    });
+                } else {
+                    if (this.line.material.map) this.line.material.map.dispose();
+                    if (this.line.material.normalMap) this.line.material.normalMap.dispose();
+                    if (this.line.material.emissiveMap) this.line.material.emissiveMap.dispose();
+                    this.line.material.dispose();
+                }
+            }
+            
+            this.line = null;
+        }
+        
+        // Clear node references
+        this.startNode = null;
+        this.endNode = null;
+        
+        // Clear metadata
+        this.metadata = null;
+        this.options = null;
     }
 }

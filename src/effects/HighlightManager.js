@@ -52,7 +52,14 @@ export class HighlightManager {
 
     highlightSelectedObject(object) {
         if (!this.highlightedObjects.has(object)) {
-            this.glowEffect.applySelectionGlow(object);
+            if (object.userData.type === 'edge') {
+                // Einfache Farbaenderung fuer Edges statt Glow-Effekt
+                if (object.material) {
+                    object.material.color.setHex(0xff6600); // Orange
+                }
+            } else {
+                this.glowEffect.applySelectionGlow(object);
+            }
             this.highlightedObjects.add(object);
         }
     }

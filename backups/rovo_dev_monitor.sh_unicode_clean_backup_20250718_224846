@@ -1,0 +1,48 @@
+#!/bin/bash
+# ROVO DEV MONITOR - Überwacht RovoDev-Aktivitäten in Echtzeit
+
+echo "[MONITOR] RovoDev Überwachungssystem gestartet"
+
+# Überwache Dateiänderungen mit inotify
+monitor_files() {
+    echo "[WATCH] Überwache kritische Dateien..."
+    
+    # Wichtige Dateien überwachen
+    inotifywait -m -e modify,create,delete \
+        main.js \
+        index.html \
+        src/core/ \
+        automated_performance_test.html \
+        ROVO_DEV_RULES.md \
+        2>/dev/null | while read path action file; do
+        
+        echo "[EVENT] $action auf $path$file um $(date)"
+        
+        # Sofortige Unicode-Prüfung nach Änderung
+        if [[ "$action" == "MODIFY" ]]; then
+            ./unicode_prevention.sh
+            if [ $? -ne 0 ]; then
+                echo "[CRITICAL] Unicode-Verstoß nach RovoDev-Aktion!"
+                echo "[ACTION] Automatisches Backup und Warnung"
+            fi
+        fi
+        
+        # Prüfe auf leere Dateien (Datei-Zerstörung)
+        if [[ "$file" == *.js ]] && [[ "$action" == "MODIFY" ]]; then
+            if [ ! -s "$path$file" ]; then
+                echo "[ALARM] DATEI WURDE GELEERT: $path$file"
+                echo "[RECOVERY] Automatische Wiederherstellung erforderlich!"
+            fi
+        fi
+    done
+}
+
+# Starte Überwachung im Hintergrund
+monitor_files &
+MONITOR_PID=$!
+
+echo "[INFO] Monitor läuft mit PID: $MONITOR_PID"
+echo "[INFO] Stoppen mit: kill $MONITOR_PID"
+
+# Halte Script am Leben
+wait $MONITOR_PID

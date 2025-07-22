@@ -5,17 +5,17 @@ export class RaycastManager {
         this.camera = camera;
         this.scene = scene;
         this.raycaster = new THREE.Raycaster();
-        this.raycaster.params.Line.threshold = 5; // Reduzierter Threshold für präzisere Edge-Erkennung
-        this.raycaster.params.Points.threshold = 3; // Threshold für Punkte
-        this.raycaster.params.Mesh.threshold = 0.1; // Threshold für Mesh-Objekte (Edges als TubeGeometry)
+        this.raycaster.params.Line.threshold = 5; // Reduzierter Threshold fuer praezisere Edge-Erkennung
+        this.raycaster.params.Points.threshold = 3; // Threshold fuer Punkte
+        this.raycaster.params.Mesh.threshold = 0.1; // Threshold fuer Mesh-Objekte (Edges als TubeGeometry)
         this.mouse = new THREE.Vector2();
         
-        // Cache für durchsuchbare Objekte
+        // Cache fuer durchsuchbare Objekte
         this.objectsCache = new Set();
         this.nodeCache = new Set();
         this.edgeCache = new Set();
         this.lastCacheUpdate = 0;
-        this.cacheUpdateInterval = 500; // Cache-Update-Intervall in ms (reduziert für bessere Reaktionszeit)
+        this.cacheUpdateInterval = 500; // Cache-Update-Intervall in ms (reduziert fuer bessere Reaktionszeit)
         
         // Debug-Modus
         this.debug = false;
@@ -35,7 +35,7 @@ export class RaycastManager {
             this.edgeCache.clear();
             
             this.scene.traverse((object) => {
-                // Prüfe, ob das Objekt ein Mesh oder eine Line ist und userData hat
+                // Pruefe, ob das Objekt ein Mesh oder eine Line ist und userData hat
                 if (object.userData) {
                     if (object.userData.type === 'node') {
                         this.nodeCache.add(object);
@@ -60,16 +60,16 @@ export class RaycastManager {
         this.updateObjectsCache();
         this.raycaster.setFromCamera(this.mouse, this.camera);
 
-        // Prüfe zuerst Knoten (höhere Priorität)
+        // Pruefe zuerst Knoten (hoehere Prioritaet)
         const nodeIntersects = this.raycaster.intersectObjects([...this.nodeCache]);
         if (nodeIntersects.length > 0) {
             return nodeIntersects[0].object;
         }
 
-        // Wenn keine Knoten getroffen wurden, prüfe Kanten
+        // Wenn keine Knoten getroffen wurden, pruefe Kanten
         const edgeIntersects = this.raycaster.intersectObjects([...this.edgeCache]);
         if (edgeIntersects.length > 0) {
-            // Finde die nächste Edge basierend auf Distanz
+            // Finde die naechste Edge basierend auf Distanz
             const closestEdge = edgeIntersects.reduce((closest, current) => {
                 return current.distance < closest.distance ? current : closest;
             });
@@ -93,13 +93,13 @@ export class RaycastManager {
             .map(intersect => intersect.object);
     }
 
-    // Findet Objekte in der Nähe eines bestimmten Punktes
+    // Findet Objekte in der Naehe eines bestimmten Punktes
     findObjectsNearPoint(point, radius = 5) {
         this.updateObjectsCache();
         
         const nearbyObjects = [];
         
-        // Prüfe alle Objekte im Cache
+        // Pruefe alle Objekte im Cache
         this.objectsCache.forEach(object => {
             if (object.position) {
                 const distance = point.distanceTo(object.position);
@@ -134,10 +134,18 @@ export class RaycastManager {
         this.debug = enabled;
     }
     
-    // Kompatibilitäts-Methode für main.js
+    // Kompatibilitaets-Methode fuer main.js
     raycast(mouse, objects) {
         this.mouse.copy(mouse);
         this.raycaster.setFromCamera(this.mouse, this.camera);
-        return this.raycaster.intersectObjects(objects);
+        
+        // Filtere undefined/null Objekte heraus
+        const validObjects = objects.filter(obj => obj && obj.geometry && obj.material);
+        
+        if (validObjects.length === 0) {
+            return [];
+        }
+        
+        return this.raycaster.intersectObjects(validObjects);
     }
 }

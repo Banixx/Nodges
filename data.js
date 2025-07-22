@@ -42,17 +42,17 @@ export const createNodes = async (filename) => {
             z = node.z || 0;
         }
         
-        // Erstelle Vector3 für die Position
+        // Erstelle Vector3 fuer die Position
         const vector = new THREE.Vector3(x, y, z);
         
-        // Füge wichtige Eigenschaften hinzu
+        // Fuege wichtige Eigenschaften hinzu
         vector.name = node.name || `Node ${index}`;
         vector.id = node.id || index; // Sicherstellen, dass die ID auf dem Vector ist
         
-        // Füge alle anderen Eigenschaften des Knotens als Metadaten hinzu
+        // Fuege alle anderen Eigenschaften des Knotens als Metadaten hinzu
         vector.metadata = { ...node };
         
-        // Stelle sicher, dass die Position-Eigenschaft existiert (für Konsistenz)
+        // Stelle sicher, dass die Position-Eigenschaft existiert (fuer Konsistenz)
         vector.position = vector;
         
         return vector;
@@ -67,10 +67,10 @@ export const createEdgeDefinitions = async (filename, nodes) => {
     const data = await loadNetworkData(filename);
     if (!data || !data.edges) return [];
     
-    // Erstelle eine Map für schnellen Zugriff auf Knoten nach ID oder Index
+    // Erstelle eine Map fuer schnellen Zugriff auf Knoten nach ID oder Index
     const nodeMap = new Map();
     
-    // Fülle die Map mit Knoten
+    // Fuelle die Map mit Knoten
     nodes.forEach((node, index) => {
         // Speichere Knoten nach Index
         nodeMap.set(index, node);
@@ -87,7 +87,7 @@ export const createEdgeDefinitions = async (filename, nodes) => {
     });
     
     return data.edges.map(edge => {
-        // Bestimme Start- und Endknoten basierend auf verschiedenen möglichen Eigenschaften
+        // Bestimme Start- und Endknoten basierend auf verschiedenen moeglichen Eigenschaften
         let startId = edge.start !== undefined ? edge.start : edge.source;
         let endId = edge.end !== undefined ? edge.end : edge.target;
         
@@ -95,8 +95,8 @@ export const createEdgeDefinitions = async (filename, nodes) => {
         let end = nodeMap.get(endId);
         
         if (!start || !end) {
-            console.warn(`Ungültiger Knotenindex in Kantendefinition: start=${startId}, end=${endId}`);
-            return null; // Überspringe diese Kante
+            console.warn(`Ungueltiger Knotenindex in Kantendefinition: start=${startId}, end=${endId}`);
+            return null; // Ueberspringe diese Kante
         }
         
         const startNode = start;
@@ -112,10 +112,10 @@ export const createEdgeDefinitions = async (filename, nodes) => {
             name: edge.type || edge.name || `Edge ${startId}-${endId}`
         };
         return edgeDefinition;
-    }).filter(edge => edge !== null); // Filtere übersprungene Kanten heraus
+    }).filter(edge => edge !== null); // Filtere uebersprungene Kanten heraus
 };
 
-// Exportiere die Dateinamen für einfachen Zugriff
+// Exportiere die Dateinamen fuer einfachen Zugriff
 export const dataFiles = {
     small: 'data/examples/small.json',
     medium: 'data/examples/medium.json',

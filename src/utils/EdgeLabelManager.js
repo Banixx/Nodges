@@ -18,7 +18,7 @@ export class EdgeLabelManager {
             padding: 0.05,
             visible: true,
             alwaysVisible: false,
-            distanceThreshold: 15 // Maximale Entfernung für Sichtbarkeit
+            distanceThreshold: 15 // Maximale Entfernung fuer Sichtbarkeit
         };
         
         // Bind update method to use in animation loop
@@ -26,8 +26,8 @@ export class EdgeLabelManager {
     }
     
     /**
-     * Erstellt oder aktualisiert ein Label für eine Kante
-     * @param {Edge} edge - Die Kante, für die ein Label erstellt werden soll
+     * Erstellt oder aktualisiert ein Label fuer eine Kante
+     * @param {Edge} edge - Die Kante, fuer die ein Label erstellt werden soll
      * @param {string} text - Der anzuzeigende Text
      */
     createOrUpdateLabel(edge, text) {
@@ -35,16 +35,16 @@ export class EdgeLabelManager {
         
         const edgeId = edge.line.id;
         
-        // Wenn bereits ein Label für diese Kante existiert, entferne es
+        // Wenn bereits ein Label fuer diese Kante existiert, entferne es
         if (this.labels.has(edgeId)) {
             this.removeLabel(edgeId);
         }
         
-        // Erstelle ein Canvas für das Label
+        // Erstelle ein Canvas fuer das Label
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
         
-        // Setze die Größe des Canvas
+        // Setze die Groesse des Canvas
         const fontSize = 24;
         context.font = `${fontSize}px Arial`;
         const textWidth = context.measureText(text).width;
@@ -76,14 +76,14 @@ export class EdgeLabelManager {
         // Erstelle ein Sprite mit dem Material
         const sprite = new THREE.Sprite(material);
         
-        // Skaliere das Sprite basierend auf der Textgröße
+        // Skaliere das Sprite basierend auf der Textgroesse
         const scale = this.config.fontSize;
         sprite.scale.set(scale * canvas.width / fontSize, scale, 1);
         
         // Positioniere das Sprite in der Mitte der Kante
         this.updateLabelPosition(sprite, edge);
         
-        // Füge das Sprite zur Szene hinzu
+        // Fuege das Sprite zur Szene hinzu
         this.labelGroup.add(sprite);
         
         // Speichere das Label in der Map
@@ -99,7 +99,7 @@ export class EdgeLabelManager {
     /**
      * Aktualisiert die Position eines Labels basierend auf der Kantenposition
      * @param {THREE.Sprite} sprite - Das Label-Sprite
-     * @param {Edge} edge - Die zugehörige Kante
+     * @param {Edge} edge - Die zugehoerige Kante
      */
     updateLabelPosition(sprite, edge) {
         if (!sprite || !edge || !edge.line) return;
@@ -115,13 +115,13 @@ export class EdgeLabelManager {
             (startPos.z + endPos.z) / 2
         );
         
-        // Berücksichtige den Offset der Kante
+        // Beruecksichtige den Offset der Kante
         if (edge.options && edge.options.offset !== 0) {
             const direction = new THREE.Vector3().subVectors(endPos, startPos).normalize();
             const offsetDirection = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
             midPoint.addScaledVector(offsetDirection, edge.options.offset);
             
-            // Füge etwas Höhe hinzu, damit das Label über der Kante schwebt
+            // Fuege etwas Hoehe hinzu, damit das Label ueber der Kante schwebt
             midPoint.y += 0.5;
         }
         
@@ -196,7 +196,7 @@ export class EdgeLabelManager {
     updateConfig(config) {
         this.config = { ...this.config, ...config };
         
-        // Aktualisiere alle Labels, wenn sich die Konfiguration ändert
+        // Aktualisiere alle Labels, wenn sich die Konfiguration aendert
         if (config.fontSize || config.color || config.backgroundColor || config.backgroundOpacity) {
             this.refreshAllLabels();
         }
@@ -226,14 +226,14 @@ export class EdgeLabelManager {
     }
     
     /**
-     * Erstellt Labels für alle Kanten im Netzwerk
+     * Erstellt Labels fuer alle Kanten im Netzwerk
      * @param {Array} edges - Array von Kanten-Objekten
      */
     createLabelsForAllEdges(edges) {
         // Entferne zuerst alle vorhandenen Labels
         this.removeAllLabels();
         
-        // Erstelle neue Labels für alle Kanten
+        // Erstelle neue Labels fuer alle Kanten
         edges.forEach(edge => {
             if (edge && edge.line) {
                 // Bestimme den anzuzeigenden Text

@@ -67,7 +67,7 @@ export class ExportManager {
             metadata: {
                 ...networkData.metadata,
                 exportedAt: new Date().toISOString(),
-                exportedBy: 'Nodges 0.78',
+                exportedBy: 'Nodges 0.88',
                 format: 'nodges-json'
             },
             nodes: networkData.nodes || [],
@@ -209,7 +209,7 @@ export class ExportManager {
         let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
         xml += '<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.2draft/viz" version="1.2">\n';
         xml += '  <meta lastmodifieddate="' + new Date().toISOString() + '">\n';
-        xml += '    <creator>Nodges 0.78</creator>\n';
+        xml += '    <creator>Nodges 0.88</creator>\n';
         xml += '    <description>Network exported from Nodges</description>\n';
         xml += '  </meta>\n';
         xml += '  <graph mode="static" defaultedgetype="undirected">\n';
@@ -426,7 +426,7 @@ export class ExportManager {
         return {
             metadata: {
                 type: 'nodges_export',
-                source: 'Nodges 0.78',
+                source: 'Nodges 0.88',
                 exportedAt: new Date().toISOString(),
                 nodeCount: nodes.length,
                 edgeCount: edges.length

@@ -1,0 +1,78 @@
+#!/bin/bash
+# ROVO DEV SAFETY WRAPPER - Zwingt RovoDev zur Regel-Einhaltung
+
+echo "[SAFETY] RovoDev Safety Wrapper aktiviert"
+
+# Funktion: Pruefe vor jeder Operation
+pre_operation_check() {
+    echo "[PRE-CHECK] Fuehre Sicherheitspruefung durch..."
+    
+    # 1. Unicode-Check
+    ./unicode_prevention.sh
+    if [ $? -ne 0 ]; then
+        echo "[BLOCK] Operation blockiert - Unicode-Verstoesse gefunden!"
+        return 1
+    fi
+    
+    # 2. Backup-Check
+    echo "[BACKUP] Erstelle Sicherheitsbackup..."
+    for file in main.js index.html src/core/*.js; do
+        if [ -f "$file" ]; then
+            cp "$file" "backups/$(basename "$file")_safety_$(date +%Y%m%d_%H%M%S)"
+        fi
+    done
+    
+    echo "[OK] Pre-Check erfolgreich"
+    return 0
+}
+
+# Funktion: Pruefe nach jeder Operation
+post_operation_check() {
+    echo "[POST-CHECK] Validiere Aenderungen..."
+    
+    # 1. Datei-Integritaet
+    for file in main.js index.html src/core/*.js; do
+        if [ -f "$file" ]; then
+            if [ ! -s "$file" ]; then
+                echo "[CRITICAL] Datei wurde geleert: $file"
+                echo "[RECOVERY] Automatische Wiederherstellung..."
+                # Finde neuestes Backup
+                latest_backup=$(ls -t backups/$(basename "$file")_* | head -1)
+                if [ -f "$latest_backup" ]; then
+                    cp "$latest_backup" "$file"
+                    echo "[RESTORED] $file wiederhergestellt aus $latest_backup"
+                fi
+            fi
+        fi
+    done
+    
+    # 2. Unicode-Check nach Aenderung
+    ./unicode_prevention.sh
+    if [ $? -ne 0 ]; then
+        echo "[CRITICAL] Unicode-Verstoesse nach Operation gefunden!"
+        echo "[ACTION] Automatische Bereinigung erforderlich!"
+        return 1
+    fi
+    
+    echo "[OK] Post-Check erfolgreich"
+    return 0
+}
+
+# Hauptfunktion
+case "$1" in
+    "pre")
+        pre_operation_check
+        ;;
+    "post")
+        post_operation_check
+        ;;
+    "full")
+        pre_operation_check && echo "[INFO] Fuehre Operation durch..." && post_operation_check
+        ;;
+    *)
+        echo "Usage: $0 {pre|post|full}"
+        echo "  pre  - Vor RovoDev-Operation"
+        echo "  post - Nach RovoDev-Operation"
+        echo "  full - Kompletter Schutz-Zyklus"
+        ;;
+esac

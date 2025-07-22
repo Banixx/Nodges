@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Nodges 0.86 - Layout Algorithms</title>
+    <link rel="icon" type="image/png" href="favicon-32x32.png">
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+        #controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+			display: flex;
+			flex-direction: column;
+        }
+
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #fileInfoPanel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(128, 128, 128, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+            z-index: 99;
+            width: 213px;
+            height: auto;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        #fileInfoContent {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            overflow: hidden;
+            max-height: 200px;
+            opacity: 1;
+        }
+        
+        #fileInfoPanel.collapsed #fileInfoContent {
+            max-height: 0;
+            opacity: 0;
+            margin-bottom: 0;
+        }
+        
+        #fileInfoPanel.collapsed {
+            min-height: auto;
+        }
+
+        #fileInfoPanel p {
+            margin: 3px 0;
+            color: #333;
+            font-size: 11px;
+        }
+
+        /* File Panel Styling */
+        #filePanel {
+            position: fixed;
+            top: 280px;
+            right: 20px;
+            width: 200px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 5px;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            z-index: 99;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        #filePanel.collapsed {
+            height: 35px;
+        }
+
+        #filePanel.collapsed #filePanelContent {
+            display: none;
+        }
+
+        #filePanelContent {
+            margin-top: 10px;
+        }
+
+        .file-item {
+            padding: 8px 12px;
+            margin: 3px 0;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 11px;
+        }
+
+        .file-item:hover {
+            background-color: #e0e0e0;
+            border-color: #bbb;
+        }
+
+        .file-item.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #45a049;
+        }
+
+		
+        /* Search styling */
+        .search-container {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        
+        #searchInput {
+            padding: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        #searchButton {
+            margin-bottom: 5px;
+        }
+        
+        .search-results {
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 4px;
+            display: none;
+            margin-top: 5px;
+        }
+        
+        .search-result-item {
+            padding: 5px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .search-result-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .search-result-item.selected {
+            background-color: #e0e0e0;
+        }
+        
+        .highlight-search {
+            background-color: rgba(255, 255, 0, 0.3);
+            border: 2px solid yellow;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <button id="smallData">Kleines Netzwerk</button>
+        <button id="mediumData">Mittleres Netzwerk</button>
+        <button id="largeData">Grosses Netzwerk</button>
+		<button id="megaData">Mega Netzwerk</button>
+		<button id="familyData">Familien Daten</button>
+		<button id="architektur">Architektur</button>
+		<button id="royalFamilyData">Königsfamilie</button>
+        <button id="layoutButton" style="background-color: #FF6B35; margin-top: 10px;">Layout Algorithmen</button>
+        <div class="toggle-switch">
+            <input type="checkbox" id="toggleIcons" class="toggle-switch-checkbox">
+            <label class="toggle-switch-label" for="toggleIcons">
+                <span class="toggle-switch-inner"></span>
+                <span class="toggle-switch-switch"></span>
+            </label>
+            <span class="toggle-switch-text">Icons umschalten</span>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Knoten suchen...">
+            <button id="searchButton">Suchen</button>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+   </div>
+    <div id="fileInfoPanel" class="collapsed">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 2px solid #808080; padding-bottom: 5px;">
+            <h3 style="margin: 0; color: #333; font-size: 14px;">Info</h3>
+            <button id="fileInfoToggle" style="background: none; border: none; font-size: 14px; cursor: pointer; color: #808080; padding: 2px 6px; border-radius: 3px; transition: background-color 0.2s;">▶</button>
+        </div>
+        <div id="fileInfoContent">
+            <p id="fileFilename">Dateiname: </p>
+            <p id="fileNodeCount">Anzahl Knoten: </p>
+            <p id="fileEdgeCount">Anzahl Kanten: </p>
+            <p id="fileXAxis">X-Achse: </p>
+            <p id="fileYAxis">Y-Achse: </p>
+            <p id="fileZAxis">Z-Achse: </p>
+        </div>
+    </div>
+    
+    <!-- File Panel -->
+    <div id="filePanel" class="collapsed">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 2px solid #808080; padding-bottom: 5px;">
+            <h3 style="margin: 0; color: #333; font-size: 14px;">Files</h3>
+            <button id="filePanelToggle" style="background: none; border: none; font-size: 14px; cursor: pointer; color: #808080; padding: 2px 6px; border-radius: 3px; transition: background-color 0.2s;">▶</button>
+        </div>
+        <div id="filePanelContent">
+            <div class="file-item" onclick="loadDataFile('small')">Small Network</div>
+            <div class="file-item" onclick="loadDataFile('medium')">Medium Network</div>
+            <div class="file-item" onclick="loadDataFile('large')">Large Network</div>
+            <div class="file-item" onclick="loadDataFile('mega')">Mega Network</div>
+            <div class="file-item" onclick="loadDataFile('family')">Family Tree</div>
+            <div class="file-item" onclick="loadDataFile('architektur')">Architecture</div>
+            <div class="file-item" onclick="loadDataFile('royal_family')">Royal Family</div>
+        </div>
+    </div>
+    
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/examples/jsm/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.19.1/dist/lil-gui.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.6.4/dist/tween.umd.js"></script>
+    <script>
+        // Panel Toggle Funktionalität
+        document.addEventListener('DOMContentLoaded', function() {
+            // Info Panel Toggle
+            const fileInfoToggle = document.getElementById('fileInfoToggle');
+            const fileInfoPanel = document.getElementById('fileInfoPanel');
+            
+            if (fileInfoToggle && fileInfoPanel) {
+                // Hover-Effekte wie beim Layout-Panel
+                fileInfoToggle.addEventListener('mouseenter', function() {
+                    fileInfoToggle.style.backgroundColor = 'rgba(128, 128, 128, 0.2)';
+                });
+                
+                fileInfoToggle.addEventListener('mouseleave', function() {
+                    fileInfoToggle.style.backgroundColor = 'transparent';
+                });
+                
+                // Toggle-Funktionalität
+                fileInfoToggle.addEventListener('click', function() {
+                    fileInfoPanel.classList.toggle('collapsed');
+                    
+                    // Pfeil-Symbol ändern (rechts = geschlossen, unten = offen)
+                    if (fileInfoPanel.classList.contains('collapsed')) {
+                        fileInfoToggle.innerHTML = '▶';
+                    } else {
+                        fileInfoToggle.innerHTML = '▼';
+                    }
+                });
+            }
+            
+            // File Panel Toggle
+            const filePanelToggle = document.getElementById('filePanelToggle');
+            const filePanel = document.getElementById('filePanel');
+            
+            if (filePanelToggle && filePanel) {
+                // Hover-Effekte
+                filePanelToggle.addEventListener('mouseenter', function() {
+                    filePanelToggle.style.backgroundColor = 'rgba(128, 128, 128, 0.2)';
+                });
+                
+                filePanelToggle.addEventListener('mouseleave', function() {
+                    filePanelToggle.style.backgroundColor = 'transparent';
+                });
+                
+                // Toggle-Funktionalität
+                filePanelToggle.addEventListener('click', function() {
+                    filePanel.classList.toggle('collapsed');
+                    
+                    // Pfeil-Symbol ändern (rechts = geschlossen, unten = offen)
+                    if (filePanel.classList.contains('collapsed')) {
+                        filePanelToggle.innerHTML = '▶';
+                    } else {
+                        filePanelToggle.innerHTML = '▼';
+                    }
+                });
+            }
+        });
+        
+        // File Panel dynamic positioning
+        function updateFilePanelPosition() {
+            const fileInfoPanel = document.getElementById('fileInfoPanel');
+            const filePanel = document.getElementById('filePanel');
+            
+            if (fileInfoPanel && filePanel) {
+                const fileInfoRect = fileInfoPanel.getBoundingClientRect();
+                const newTop = fileInfoRect.bottom + 5; // 5px Abstand unter Info Panel
+                filePanel.style.top = newTop + 'px';
+            }
+        }
+        
+        // Start positioning for File Panel
+        document.addEventListener('DOMContentLoaded', function() {
+            updateFilePanelPosition();
+            
+            // Observer für fileInfoPanel
+            const fileInfoPanel = document.getElementById('fileInfoPanel');
+            if (fileInfoPanel) {
+                const resizeObserver = new ResizeObserver(() => updateFilePanelPosition());
+                resizeObserver.observe(fileInfoPanel);
+                
+                const mutationObserver = new MutationObserver(() => updateFilePanelPosition());
+                mutationObserver.observe(fileInfoPanel, { 
+                    attributes: true, 
+                    childList: true,
+                    subtree: true
+                });
+            }
+            
+            // Window resize
+            window.addEventListener('resize', () => updateFilePanelPosition());
+            
+            // Fallback: regelmäßige Updates
+            setInterval(() => updateFilePanelPosition(), 100);
+        });
+        
+        // File loading function
+        function loadDataFile(filename) {
+            // Remove active class from all file items
+            document.querySelectorAll('.file-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked item
+            event.target.classList.add('active');
+            
+            // Load the file (this will be handled by the main application)
+            if (window.nodgesApp && window.nodgesApp.loadData) {
+                window.nodgesApp.loadData(filename);
+            } else {
+                console.log('Loading file:', filename);
+            }
+        }
+    </script>
+    <script src="main.js" type="module"></script>
+</body>
+</html>
+<!-- Cache buster: Tue Jul  8 23:42:40 CEST 2025 -->
+<!-- Cache buster: Wed Jul  9 16:15:25 CEST 2025 -->
+Tue Jul 15 14:49:22 CEST 2025

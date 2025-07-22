@@ -53,17 +53,28 @@ export class GlowEffect {
         if (object.userData.type === 'node') {
             object.material.emissive.setRGB(0, 0, 0);
             object.material.emissiveIntensity = 0;
-            // Ursprüngliche Farbe wiederherstellen
+            // Urspruengliche Farbe wiederherstellen
             if (object.parent && object.parent.options) {
                 object.material.color.setHex(object.parent.options.color);
             }
         } else if (object.userData.type === 'edge') {
-            // Standard-Kantenfarbe wiederherstellen
-            object.material.color.setHex(0x0000ff);
+            // Emissive zuruecksetzen und urspruengliche Farbe wiederherstellen
+            if (object.material) {
+                object.material.emissive.setHex(0x000000);
+                object.material.emissiveIntensity = 0;
+                // Verwende resetHighlight Methode falls verfuegbar
+                if (object.userData.edge && typeof object.userData.edge.resetHighlight === 'function') {
+                    object.userData.edge.resetHighlight();
+                } else {
+                    // Fallback: Standard-Kantenfarbe
+                    const originalColor = object.material.userData?.originalColor || 0x0000ff;
+                    object.material.color.setHex(originalColor);
+                }
+            }
         }
     }
 
-    // Hilfsmethode für pulsierende Glow-Berechnung
+    // Hilfsmethode fuer pulsierende Glow-Berechnung
     calculatePulsingIntensity(baseIntensity, time, frequency = 1) {
         const phase = (time * Math.PI * 2 * frequency) % (Math.PI * 2);
         return baseIntensity + (1 - baseIntensity) * (Math.sin(phase) * 0.5 + 0.5);
@@ -90,17 +101,16 @@ export class GlowEffect {
     applySelectionGlow(object) {
         if (object.userData.type === 'node') {
             this.applyNodeGlow(object, 0.8, {
-                color: new THREE.Color(0, 1, 0), // Grüner Selektions-Glow
+                color: new THREE.Color(1, 0.5, 0), // Orange Selektions-Glow statt gruen
                 baseIntensity: 0.4,
                 maxIntensity: 1.0
             });
         } else if (object.userData.type === 'edge') {
-            this.applyEdgeGlow(object, 0.8, {
-                hue: 0.3, // Grünlicher Ton
-                saturation: 1,
-                baseIntensity: 0.5,
-                maxIntensity: 0.9
-            });
+            // Verwende emissive statt Farbaenderung um Schatten-Effekt zu vermeiden
+            if (object.material) {
+                object.material.emissive.setHex(0xff6600); // Orange emissive
+                object.material.emissiveIntensity = 0.3;
+            }
         }
     }
 }

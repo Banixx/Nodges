@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Nodges 0.88</title>
+    <link rel="icon" type="image/png" href="favicon-32x32.png">
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #fileInfoPanel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(128, 128, 128, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+            z-index: 99;
+            width: 213px;
+            height: auto;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        #fileInfoContent {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            overflow: hidden;
+            max-height: 200px;
+            opacity: 1;
+        }
+        
+        #fileInfoPanel.collapsed #fileInfoContent {
+            max-height: 0;
+            opacity: 0;
+            margin-bottom: 0;
+        }
+        
+        #fileInfoPanel.collapsed {
+            min-height: auto;
+            height: 35px;
+        }
+
+        #fileInfoPanel p {
+            margin: 3px 0;
+            color: #333;
+            font-size: 11px;
+        }
+
+        /* File Panel Styling */
+        #filePanel {
+            position: fixed;
+            top: 0px;
+            right: 20px;
+            width: 213px;
+            background-color: rgba(128, 128, 128, 0.5);
+            border-radius: 8px;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            z-index: 97;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        #filePanel.collapsed {
+            height: 35px;
+        }
+
+        #filePanel.collapsed #filePanelContent {
+            display: none;
+        }
+
+        #filePanelContent {
+            margin-top: 10px;
+        }
+
+        .file-item {
+            padding: 8px 12px;
+            margin: 3px 0;
+            background-color: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 11px;
+        }
+
+        .file-item:hover {
+            background-color: #e0e0e0;
+            border-color: #bbb;
+        }
+
+        .file-item.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #45a049;
+        }
+
+		
+        /* Search styling */
+        .search-container {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        
+        #searchInput {
+            padding: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        #searchButton {
+            margin-bottom: 5px;
+        }
+        
+        .search-results {
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 4px;
+            display: none;
+            margin-top: 5px;
+        }
+        
+        .search-result-item {
+            padding: 5px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .search-result-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .search-result-item.selected {
+            background-color: #e0e0e0;
+        }
+        
+        .highlight-search {
+            background-color: rgba(255, 255, 0, 0.3);
+            border: 2px solid yellow;
+        }
+        
+        
+        .layout-button {
+            display: block;
+            width: 100%;
+            margin: 3px 0;
+            padding: 8px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: background-color 0.2s;
+        }
+        
+        .layout-button:hover {
+            background-color: #1976D2;
+        }
+        
+        /* Object Info Panel Styling */
+        #infoPanel {
+            position: fixed;
+            top: 0px;
+            right: 20px;
+            width: 213px;
+            background-color: rgba(128, 128, 128, 0.5);
+            border-radius: 8px;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            z-index: 98;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        #infoPanel.collapsed #infoPanelContent {
+            max-height: 0;
+            opacity: 0;
+            margin-bottom: 0;
+        }
+        
+        #infoPanel.collapsed {
+            min-height: auto;
+            height: 35px;
+        }
+        
+        #infoPanelContent {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            overflow: hidden;
+            max-height: 200px;
+            opacity: 1;
+        }
+        
+        #infoPanelContent p {
+            margin: 3px 0;
+            color: #333;
+            font-size: 12px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Link-Styling fuer Edge/Node Namen */
+        .edge-link, .node-link {
+            color: #CCCCCC !important;
+            cursor: pointer;
+            font-weight: 500;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            text-decoration: none !important;
+        }
+        
+        .edge-link:hover, .node-link:hover {
+            background-color: rgba(204, 204, 204, 0.2);
+            color: #AAAAAA !important;
+        }
+        
+        #infoPanelContent strong {
+            color: #000;
+            font-weight: bold;
+        }
+        
+        #infoPanelToggle {
+            background: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            color: #808080;
+            padding: 2px 6px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+        
+        #infoPanelToggle:hover {
+            background-color: rgba(128, 128, 128, 0.2);
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="fileInfoPanel" class="collapsed">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 2px solid #808080; padding-bottom: 5px;">
+            <h3 style="margin: 0; color: #333; font-size: 14px;">Info</h3>
+            <button id="fileInfoToggle" style="background: none; border: none; font-size: 14px; cursor: pointer; color: #808080; padding: 2px 6px; border-radius: 3px; transition: background-color 0.2s;">></button>
+        </div>
+        <div id="fileInfoContent">
+            <p id="fileFilename">Dateiname: </p>
+            <p id="fileNodeCount">Anzahl Knoten: </p>
+            <p id="fileEdgeCount">Anzahl Kanten: </p>
+            <p id="fileXAxis">X-Achse: </p>
+            <p id="fileYAxis">Y-Achse: </p>
+            <p id="fileZAxis">Z-Achse: </p>
+        </div>
+    </div>
+    
+    <!-- File Panel -->
+    <div id="filePanel" class="collapsed">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 2px solid #808080; padding-bottom: 5px;">
+            <h3 style="margin: 0; color: #333; font-size: 14px;">Files</h3>
+            <button id="filePanelToggle" style="background: none; border: none; font-size: 14px; cursor: pointer; color: #808080; padding: 2px 6px; border-radius: 3px; transition: background-color 0.2s;">></button>
+        </div>
+        <div id="filePanelContent">
+            <!-- Buttons werden dynamisch generiert -->
+            <div id="fileLoadingIndicator" style="padding: 10px; text-align: center; color: #666; font-style: italic;">
+                Loading available files...
+            </div>
+        </div>
+    </div>
+    
+    <!-- Object Info Panel (for selected nodes/edges) -->
+    <div id="infoPanel" class="collapsed">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 2px solid #808080; padding-bottom: 5px;">
+            <h3 id="infoPanelTitle" style="margin: 0; color: #333; font-size: 14px;">Selection</h3>
+            <button id="infoPanelToggle" style="background: none; border: none; font-size: 14px; cursor: pointer; color: #808080; padding: 2px 6px; border-radius: 3px; transition: background-color 0.2s;">></button>
+        </div>
+        <div id="infoPanelContent">
+            <!-- Content will be dynamically populated -->
+        </div>
+    </div>
+    
+    
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/examples/jsm/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.19.1/dist/lil-gui.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.6.4/dist/tween.umd.js"></script>
+    <script>
+        // Panel Toggle Funktionalitaet
+        document.addEventListener('DOMContentLoaded', function() {
+            // Info Panel Toggle
+            const fileInfoToggle = document.getElementById('fileInfoToggle');
+            const fileInfoPanel = document.getElementById('fileInfoPanel');
+            
+            if (fileInfoToggle && fileInfoPanel) {
+                // Hover-Effekte wie beim Layout-Panel
+                fileInfoToggle.addEventListener('mouseenter', function() {
+                    fileInfoToggle.style.backgroundColor = 'rgba(128, 128, 128, 0.2)';
+                });
+                
+                fileInfoToggle.addEventListener('mouseleave', function() {
+                    fileInfoToggle.style.backgroundColor = 'transparent';
+                });
+                
+                // Toggle-Funktionalitaet
+                fileInfoToggle.addEventListener('click', function() {
+                    fileInfoPanel.classList.toggle('collapsed');
+                    
+                    // Pfeil-Symbol aendern (rechts = geschlossen, unten = offen)
+                    if (fileInfoPanel.classList.contains('collapsed')) {
+                        fileInfoToggle.innerHTML = '>';
+                    } else {
+                        fileInfoToggle.innerHTML = 'v';
+                    }
+                });
+            }
+            
+            // File Panel Toggle
+            const filePanelToggle = document.getElementById('filePanelToggle');
+            const filePanel = document.getElementById('filePanel');
+            
+            if (filePanelToggle && filePanel) {
+                // Hover-Effekte
+                filePanelToggle.addEventListener('mouseenter', function() {
+                    filePanelToggle.style.backgroundColor = 'rgba(128, 128, 128, 0.2)';
+                });
+                
+                filePanelToggle.addEventListener('mouseleave', function() {
+                    filePanelToggle.style.backgroundColor = 'transparent';
+                });
+                
+                // Toggle-Funktionalitaet
+                filePanelToggle.addEventListener('click', function() {
+                    filePanel.classList.toggle('collapsed');
+                    
+                    // Pfeil-Symbol aendern (rechts = geschlossen, unten = offen)
+                    if (filePanel.classList.contains('collapsed')) {
+                        filePanelToggle.innerHTML = '>';
+                    } else {
+                        filePanelToggle.innerHTML = 'v';
+                    }
+                });
+            }
+            
+        });
+        
+        // Layout functions
+        window.applyLayout = function(layoutType) {
+            if (window.nodgesApp && window.nodgesApp.layoutManager) {
+                console.log('Applying layout:', layoutType);
+                window.nodgesApp.layoutManager.applyLayout(layoutType, window.nodgesApp.currentNodes, window.nodgesApp.currentEdges);
+                
+                // Update visualization
+                if (window.nodgesApp.nodeObjects) {
+                    window.nodgesApp.nodeObjects.forEach((nodeObj, index) => {
+                        if (nodeObj.mesh && window.nodgesApp.currentNodes[index]) {
+                            const nodeData = window.nodgesApp.currentNodes[index];
+                            nodeObj.mesh.position.set(nodeData.x, nodeData.y, nodeData.z);
+                        }
+                    });
+                }
+                
+                // Update edges
+                if (window.nodgesApp.edgeObjects) {
+                    window.nodgesApp.edgeObjects.forEach((edgeObj, index) => {
+                        if (edgeObj.line && window.nodgesApp.currentEdges[index]) {
+                            const edgeData = window.nodgesApp.currentEdges[index];
+                            const startNode = window.nodgesApp.currentNodes[edgeData.start];
+                            const endNode = window.nodgesApp.currentNodes[edgeData.end];
+                            
+                            if (startNode && endNode) {
+                                const points = [
+                                    new THREE.Vector3(startNode.x, startNode.y, startNode.z),
+                                    new THREE.Vector3(endNode.x, endNode.y, endNode.z)
+                                ];
+                                edgeObj.line.geometry.setFromPoints(points);
+                            }
+                        }
+                    });
+                }
+            } else {
+                console.warn('Nodges app or layout manager not ready');
+            }
+        };
+        
+        
+        
+        // Update Object Panel Position (below Info Panel)
+        function updateObjectPanelPosition() {
+            const fileInfoPanel = document.getElementById('fileInfoPanel');
+            const infoPanel = document.getElementById('infoPanel');
+            
+            if (fileInfoPanel && infoPanel) {
+                const fileInfoRect = fileInfoPanel.getBoundingClientRect();
+                const newTop = fileInfoRect.bottom + 10; // 10px gap below Info Panel
+                infoPanel.style.top = newTop + 'px';
+            }
+        }
+        
+        // Update File Panel Position (below Selection Panel)
+        function updateFilePanelPosition() {
+            const infoPanel = document.getElementById('infoPanel');
+            const filePanel = document.getElementById('filePanel');
+            
+            if (infoPanel && filePanel) {
+                const infoPanelRect = infoPanel.getBoundingClientRect();
+                const newTop = infoPanelRect.bottom + 10; // 10px gap below Selection Panel
+                filePanel.style.top = newTop + 'px';
+            }
+        }
+        
+        // Dynamic file discovery and button generation
+        async function discoverAndCreateFileButtons() {
+            const filePanelContent = document.getElementById('filePanelContent');
+            const loadingIndicator = document.getElementById('fileLoadingIndicator');
+            
+            try {
+                // Try to get file list from server directory listing
+                const response = await fetch('data/examples/');
+                const text = await response.text();
+                
+                // Parse HTML directory listing for .json files
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+                const links = doc.querySelectorAll('a[href$=".json"]');
+                
+                const jsonFiles = Array.from(links).map(link => {
+                    const href = link.getAttribute('href');
+                    return href.replace('.json', '');
+                }).filter(filename => filename && !filename.includes('/'));
+                
+                if (jsonFiles.length > 0) {
+                    createFileButtons(jsonFiles);
+                } else {
+                    // Fallback: try known files
+                    await tryKnownFiles();
+                }
+                
+            } catch (error) {
+                console.log('Directory listing not available, trying known files...');
+                await tryKnownFiles();
+            }
+        }
+        
+        // Fallback: try to load known files
+        async function tryKnownFiles() {
+            const knownFiles = ['small', 'medium', 'large', 'mega', 'family', 'architektur', 'royal_family'];
+            const availableFiles = [];
+            
+            for (const filename of knownFiles) {
+                try {
+                    const response = await fetch(`data/examples/${filename}.json`, { method: 'HEAD' });
+                    if (response.ok) {
+                        availableFiles.push(filename);
+                    }
+                } catch (error) {
+                    // File doesn't exist, skip
+                }
+            }
+            
+            createFileButtons(availableFiles);
+        }
+        
+        // Create file buttons dynamically
+        function createFileButtons(filenames) {
+            const filePanelContent = document.getElementById('filePanelContent');
+            const loadingIndicator = document.getElementById('fileLoadingIndicator');
+            
+            // Remove loading indicator
+            if (loadingIndicator) {
+                loadingIndicator.remove();
+            }
+            
+            // Clear existing content
+            filePanelContent.innerHTML = '';
+            
+            if (filenames.length === 0) {
+                filePanelContent.innerHTML = '<div style="padding: 10px; text-align: center; color: #999;">No files found</div>';
+                return;
+            }
+            
+            // Create buttons for each file
+            filenames.forEach(filename => {
+                const button = document.createElement('div');
+                button.className = 'file-item';
+                button.onclick = () => loadDataFile(filename);
+                
+                // Create user-friendly display name
+                const displayName = createDisplayName(filename);
+                button.textContent = displayName;
+                
+                filePanelContent.appendChild(button);
+            });
+            
+            console.log(`Created ${filenames.length} file buttons:`, filenames);
+        }
+        
+        // Create user-friendly display names
+        function createDisplayName(filename) {
+            const nameMap = {
+                'small': 'Small Network',
+                'medium': 'Medium Network', 
+                'large': 'Large Network',
+                'mega': 'Mega Network',
+                'family': 'Family Tree',
+                'architektur': 'Architecture',
+                'royal_family': 'Royal Family'
+            };
+            
+            // Use mapped name if available, otherwise format filename
+            if (nameMap[filename]) {
+                return nameMap[filename];
+            }
+            
+            // Format filename: remove underscores, capitalize words
+            return filename
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, l => l.toUpperCase());
+        }
+        
+        // Start positioning for File Panel
+        document.addEventListener('DOMContentLoaded', function() {
+            updateObjectPanelPosition();
+            updateFilePanelPosition();
+            
+            // Discover and create file buttons
+            discoverAndCreateFileButtons();
+            
+            // Observer fuer fileInfoPanel und infoPanel
+            const fileInfoPanel = document.getElementById('fileInfoPanel');
+            const infoPanel = document.getElementById('infoPanel');
+            
+            if (fileInfoPanel) {
+                const resizeObserver = new ResizeObserver(() => {
+                    updateObjectPanelPosition();
+                    updateFilePanelPosition();
+                });
+                resizeObserver.observe(fileInfoPanel);
+                
+                const mutationObserver = new MutationObserver(() => {
+                    updateObjectPanelPosition();
+                    updateFilePanelPosition();
+                });
+                mutationObserver.observe(fileInfoPanel, { 
+                    attributes: true, 
+                    childList: true,
+                    subtree: true
+                });
+            }
+            
+            if (infoPanel) {
+                const resizeObserver2 = new ResizeObserver(() => {
+                    updateFilePanelPosition();
+                });
+                resizeObserver2.observe(infoPanel);
+                
+                const mutationObserver2 = new MutationObserver(() => {
+                    updateFilePanelPosition();
+                });
+                mutationObserver2.observe(infoPanel, { 
+                    attributes: true, 
+                    childList: true,
+                    subtree: true
+                });
+            }
+            
+            // Window resize
+            window.addEventListener('resize', () => {
+                updateObjectPanelPosition();
+                updateFilePanelPosition();
+            });
+            
+            // Selection Panel Toggle Button
+            const infoPanelToggle = document.getElementById('infoPanelToggle');
+            
+            if (infoPanelToggle && infoPanel) {
+                // Hover effects
+                infoPanelToggle.addEventListener('mouseenter', function() {
+                    infoPanelToggle.style.backgroundColor = 'rgba(128, 128, 128, 0.2)';
+                });
+                
+                infoPanelToggle.addEventListener('mouseleave', function() {
+                    infoPanelToggle.style.backgroundColor = 'transparent';
+                });
+                
+                // Toggle functionality
+                infoPanelToggle.addEventListener('click', function() {
+                    infoPanel.classList.toggle('collapsed');
+                    
+                    // Change arrow symbol (right = collapsed, down = open)
+                    if (infoPanel.classList.contains('collapsed')) {
+                        infoPanelToggle.innerHTML = '>';
+                    } else {
+                        infoPanelToggle.innerHTML = 'v';
+                    }
+                    
+                    // Update file panel position after toggle
+                    setTimeout(() => {
+                        updateFilePanelPosition();
+                    }, 350); // Wait for CSS transition
+                });
+            }
+            
+            // Immediate initial positioning - mehrfach fuer Sicherheit
+            setTimeout(() => {
+                updateObjectPanelPosition();
+                updateFilePanelPosition();
+            }, 50);
+            
+            setTimeout(() => {
+                updateObjectPanelPosition();
+                updateFilePanelPosition();
+            }, 200);
+            
+            setTimeout(() => {
+                updateObjectPanelPosition();
+                updateFilePanelPosition();
+            }, 500);
+            
+            // Regular updates for dynamic positioning
+            setInterval(() => {
+                updateObjectPanelPosition();
+                updateFilePanelPosition();
+            }, 1000);
+        });
+        
+        // File loading function
+        function loadDataFile(filename) {
+            // Remove active class from all file items
+            document.querySelectorAll('.file-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked item
+            event.target.classList.add('active');
+            
+            // Construct full file path
+            const filePath = `data/examples/${filename}.json`;
+            
+            // Load the file through the main application
+            if (window.nodgesApp && typeof window.nodgesApp.loadData === 'function') {
+                console.log(`Loading file: ${filePath}`);
+                window.nodgesApp.loadData(filePath);
+            } else if (window.nodgesApp && typeof window.nodgesApp.loadNetworkFromFile === 'function') {
+                console.log(`Loading file via loadNetworkFromFile: ${filePath}`);
+                window.nodgesApp.loadNetworkFromFile(filePath);
+            } else {
+                console.log('Nodges app not ready yet, trying direct load...');
+                // Fallback: try to load directly
+                loadNetworkData(filePath);
+            }
+        }
+        
+        // Fallback function for direct loading
+        async function loadNetworkData(filePath) {
+            try {
+                console.log(`Direct loading: ${filePath}`);
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log(`Successfully loaded ${filePath}:`, data);
+                
+                // If nodges app becomes available, use it
+                if (window.nodgesApp) {
+                    window.nodgesApp.processLoadedData(data, filePath);
+                }
+            } catch (error) {
+                console.error(`Error loading ${filePath}:`, error);
+            }
+        }
+    </script>
+    <script src="main.js" type="module"></script>
+    <script>
+        console.log("=== ROVO DEV STARTUP WORKFLOW COMPLETED ===");
+        console.log("1. [OK] .agent.md read - Entry point with mandatory documents");
+        console.log("2. [OK] ROVO_DEV_RULES.md read - Unicode prohibitions and development rules");
+        console.log("3. [OK] SECURITY_SYSTEM_OVERVIEW.md read - Safety systems and protocols");
+        console.log("4. [OK] Server started via ./start_server.sh - Standard project server");
+        console.log("5. [OK] Files checked - All core files intact and functional");
+        console.log("6. [OK] .agent.md created - Professional entry point with references");
+        console.log("7. [OK] Console.log added to index.html - Workflow documentation");
+        console.log("=== READY FOR ACLI ROVODEV RECONNECTION TEST ===");
+    </script>
+</body>
+</html>

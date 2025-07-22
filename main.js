@@ -1,6 +1,6 @@
 /**
- * Nodges 0.80 - Main Application
- * Professional 3D Network Visualization with Layout Algorithms
+ * Nodges 0.89 - Main Application
+ * 3D Network Visualization
  */
 
 import * as THREE from 'three';
@@ -13,7 +13,7 @@ import { UIManager } from './src/core/UIManager.js';
 import { EventManager } from './src/core/EventManager.js';
 
 // Utilities
-import { SearchManager } from './src/utils/SearchManager.js';
+// import { SearchManager } from './src/utils/SearchManager.js'; // Deaktiviert - Such-UI entfernt
 import { SelectionManager } from './src/utils/SelectionManager.js';
 import { RaycastManager } from './src/utils/RaycastManager.js';
 import { NetworkAnalyzer } from './src/utils/NetworkAnalyzer.js';
@@ -39,7 +39,7 @@ import { Edge } from './objects/Edge.js';
 
 class NodgesApp {
     constructor() {
-        console.log('🚀 Initialisiere Nodges 0.80 - Layout Algorithms System');
+        console.log(' Initialisiere Nodges 0.89');
         
         // Core Components
         this.scene = null;
@@ -52,7 +52,7 @@ class NodgesApp {
         this.layoutManager = null;
         this.uiManager = null;
         this.eventManager = null;
-        this.searchManager = null;
+        // this.searchManager = null; // Deaktiviert
         this.selectionManager = null;
         this.raycastManager = null;
         this.networkAnalyzer = null;
@@ -91,11 +91,11 @@ class NodgesApp {
             await this.loadDefaultData();
             
             this.isInitialized = true;
-            console.log('✅ Nodges 0.80 erfolgreich initialisiert');
+            console.log(' Nodges 0.89 erfolgreich initialisiert');
             
             this.animate();
         } catch (error) {
-            console.error('❌ Fehler bei der Initialisierung:', error);
+            console.error(' Fehler bei der Initialisierung:', error);
         }
     }
     
@@ -127,7 +127,22 @@ class NodgesApp {
         const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
         directionalLight.position.set(10, 10, 5);
         directionalLight.castShadow = true;
+        directionalLight.shadow.mapSize.width = 2048;
+        directionalLight.shadow.mapSize.height = 2048;
+        
+        // Shadow-Kamera korrekt konfigurieren fuer die Szene
+        directionalLight.shadow.camera.near = 0.5;
+        directionalLight.shadow.camera.far = 50;
+        directionalLight.shadow.camera.left = -20;
+        directionalLight.shadow.camera.right = 20;
+        directionalLight.shadow.camera.top = 20;
+        directionalLight.shadow.camera.bottom = -20;
+        directionalLight.shadow.camera.updateProjectionMatrix();
+        
         this.scene.add(directionalLight);
+
+        // Untergrund hinzufgen
+        this.createGround();
         
         // Window resize handler
         window.addEventListener('resize', () => {
@@ -136,18 +151,53 @@ class NodgesApp {
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         });
         
-        console.log('✅ Three.js initialisiert');
+        console.log(' Three.js initialisiert');
+    }
+
+    createGround() {
+        // Erstelle Untergrund-Geometrie
+        const groundGeometry = new THREE.PlaneGeometry(100, 100);
+        
+        // Erstelle Material mit subtiler Textur
+        const groundMaterial = new THREE.MeshLambertMaterial({
+            color: 0x333333,
+            transparent: true,
+            opacity: 0.8
+        });
+
+        // Erstelle Untergrund-Mesh
+        this.ground = new THREE.Mesh(groundGeometry, groundMaterial);
+        this.ground.rotation.x = -Math.PI / 2; // Horizontal ausrichten
+        this.ground.position.y = -5; // Unter den Knoten positionieren
+        this.ground.receiveShadow = true; // Schatten empfangen
+        this.ground.name = 'ground';
+
+        this.scene.add(this.ground);
+
+        // Optional: Grid lines for better orientation
+        this.createGridLines();
+
+        console.log(' Untergrund erstellt');
+    }
+
+    createGridLines() {
+        // Create grid for better spatial orientation
+        const gridHelper = new THREE.GridHelper(100, 20, 0x444444, 0x222222);
+        gridHelper.position.y = -4.9; // Knapp ber dem Untergrund
+        gridHelper.material.transparent = true;
+        gridHelper.material.opacity = 0.3;
+        this.scene.add(gridHelper);
     }
     
     async initManagers() {
         try {
             // Core Managers
-            this.layoutManager = new LayoutManager(this.scene, this.stateManager);
+            this.layoutManager = new LayoutManager();
             this.uiManager = new UIManager(this.stateManager);
             this.eventManager = new EventManager(this.stateManager);
             
             // Utility Managers - ALL with correct parameters
-            this.searchManager = new SearchManager();
+            // this.searchManager = new SearchManager(); // Deaktiviert
             this.selectionManager = new SelectionManager(this.scene, this.camera, this.renderer, this.stateManager);
             this.raycastManager = new RaycastManager(this.camera, this.scene);
             this.networkAnalyzer = new NetworkAnalyzer();
@@ -166,22 +216,22 @@ class NodgesApp {
             this.glowEffect = new GlowEffect();
             this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect);
             
-            console.log('✅ Manager-System initialisiert');
+            console.log(' Manager-System initialisiert');
         } catch (error) {
-            console.error('❌ Fehler bei Manager-Initialisierung:', error);
+            console.error(' Fehler bei Manager-Initialisierung:', error);
             throw error;
         }
     }
     
     async initGUI() {
-        // Layout GUI
-        this.layoutGUI = new LayoutGUI(this.layoutManager);
+        // Layout GUI - mit container Parameter
+        this.layoutGUI = new LayoutGUI(this.layoutManager, document.body);
         
         // Initialize GUI panels
         this.initFileInfoPanel();
         this.initSearchPanel();
         
-        console.log('✅ GUI-System initialisiert');
+        console.log(' GUI-System initialisiert');
     }
     
     initFileInfoPanel() {
@@ -224,7 +274,7 @@ class NodgesApp {
         this.renderer.domElement.addEventListener('click', (event) => this.onMouseClick(event));
         this.renderer.domElement.addEventListener('mousemove', (event) => this.onMouseMove(event));
         
-        console.log('✅ Event-Listener initialisiert');
+        console.log(' Event-Listener initialisiert');
     }
     
     async loadDefaultData() {
@@ -233,7 +283,7 @@ class NodgesApp {
     
     async loadData(url) {
         try {
-            console.log(`📂 Lade Netzwerk-Daten: ${url}`);
+            console.log(` Lade Netzwerk-Daten: ${url}`);
             
             const response = await fetch(url);
             if (!response.ok) {
@@ -265,29 +315,42 @@ class NodgesApp {
                 this.networkAnalyzer.initialize(this.currentNodes, this.currentEdges);
             }
             
-            console.log(`✅ Netzwerk geladen: ${this.currentNodes.length} Knoten, ${this.currentEdges.length} Kanten`);
+            console.log(` Netzwerk geladen: ${this.currentNodes.length} Knoten, ${this.currentEdges.length} Kanten`);
             
         } catch (error) {
-            console.error('❌ Fehler beim Laden der Daten:', error);
+            console.error(' Fehler beim Laden der Daten:', error);
         }
     }
     
     clearScene() {
+        console.log('[CLEAR] Entferne ' + this.nodeObjects.length + ' Knoten und ' + this.edgeObjects.length + ' Edges');
+        
         // Remove existing objects
         this.nodeObjects.forEach(node => {
             if (node.mesh) {
                 this.scene.remove(node.mesh);
+                node.mesh.geometry?.dispose();
+                node.mesh.material?.dispose();
             }
         });
         
         this.edgeObjects.forEach(edge => {
-            if (edge.mesh) {
-                this.scene.remove(edge.mesh);
+            if (edge.line) {
+                this.scene.remove(edge.line);
+                edge.line.geometry?.dispose();
+                edge.line.material?.dispose();
             }
         });
         
+        // Clear Edge geometry cache
+        if (typeof Edge !== 'undefined' && Edge.geometryCache) {
+            Edge.geometryCache.clear();
+        }
+        
         this.nodeObjects = [];
         this.edgeObjects = [];
+        
+        console.log('[CLEAR] Scene bereinigt');
     }
     
     async createNodes() {
@@ -303,13 +366,26 @@ class NodgesApp {
     }
     
     async createEdges() {
+        const totalEdges = this.currentEdges.length;
+        console.log('Erstelle ' + totalEdges + ' Edges mit adaptiver Qualitaet');
+        
         this.currentEdges.forEach((edgeData, index) => {
-            const edge = new Edge(edgeData, this.currentNodes, index);
-            edge.createMesh();
+            const startNodeObj = this.nodeObjects[edgeData.start];
+            const endNodeObj = this.nodeObjects[edgeData.end];
             
-            if (edge.mesh) {
-                this.scene.add(edge.mesh);
-                this.edgeObjects.push(edge);
+            if (startNodeObj && endNodeObj) {
+                const edge = new Edge(startNodeObj, endNodeObj, {
+                    ...edgeData,
+                    name: edgeData.name || 'Edge ' + index,
+                    totalEdges: totalEdges
+                });
+                
+                if (edge.line) {
+                    this.scene.add(edge.line);
+                    this.edgeObjects.push(edge);
+                }
+            } else {
+                console.warn('Edge ' + index + ': Knoten nicht gefunden');
             }
         });
     }
@@ -350,7 +426,7 @@ class NodgesApp {
     performSearch(query) {
         if (!query.trim()) return;
         
-        const results = this.searchManager.search(query, this.currentNodes);
+        // const results = this.searchManager.search(query, this.currentNodes); // Deaktiviert
         this.displaySearchResults(results);
     }
     
@@ -402,7 +478,9 @@ class NodgesApp {
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
         
-        const intersects = this.raycastManager.raycast(mouse, [...this.nodeObjects.map(n => n.mesh), ...this.edgeObjects.map(e => e.mesh)]);
+        const nodeObjects = this.nodeObjects.map(n => n.mesh).filter(mesh => mesh);
+        const edgeObjects = this.edgeObjects.map(e => e.line).filter(line => line);
+        const intersects = this.raycastManager.raycast(mouse, [...nodeObjects, ...edgeObjects]);
         
         if (intersects.length > 0) {
             const selectedObject = intersects[0].object;
@@ -421,7 +499,9 @@ class NodgesApp {
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
         
-        const intersects = this.raycastManager.raycast(mouse, [...this.nodeObjects.map(n => n.mesh), ...this.edgeObjects.map(e => e.mesh)]);
+        const nodeObjects = this.nodeObjects.map(n => n.mesh).filter(mesh => mesh);
+        const edgeObjects = this.edgeObjects.map(e => e.line).filter(line => line);
+        const intersects = this.raycastManager.raycast(mouse, [...nodeObjects, ...edgeObjects]);
         
         if (intersects.length > 0) {
             const hoveredObject = intersects[0].object;
@@ -443,32 +523,149 @@ class NodgesApp {
         if (object.userData.type === 'node') {
             const nodeObject = this.nodeObjects.find(n => n.mesh === object);
             if (nodeObject) {
-                infoPanelTitle.textContent = nodeObject.data.name || 'Unbenannter Knoten';
+                const data = nodeObject.data || nodeObject.position || {};
+                const name = data.name || object.name || 'Unbenannter Knoten';
+                const x = data.x || 0;
+                const y = data.y || 0;
+                const z = data.z || 0;
+                
+                // Finde verbundene Edges
+                const nodeIndex = this.nodeObjects.indexOf(nodeObject);
+                const connectedEdges = this.getConnectedEdges(nodeIndex);
+                
+                let edgesList = '';
+                if (connectedEdges.length > 0) {
+                    edgesList = connectedEdges.map(edge => 
+                        `<li><span class="edge-link" data-edge-index="${edge.index}"
+                             onmouseover="window.nodgesApp.highlightEdge(${edge.index}, true)"
+                             onmouseout="window.nodgesApp.highlightEdge(${edge.index}, false)"
+                             onclick="window.nodgesApp.selectEdge(${edge.index})">${edge.name || 'Unbenannte Kante'}</span></li>`
+                    ).join('');
+                    edgesList = `<p><strong>Verbundene Kanten (${connectedEdges.length}):</strong></p><ul>${edgesList}</ul>`;
+                } else {
+                    edgesList = '<p><strong>Verbundene Kanten:</strong> Keine</p>';
+                }
+                
+                infoPanelTitle.textContent = name;
                 infoPanelContent.innerHTML = `
-                    <p><strong>Position:</strong> (${nodeObject.data.x.toFixed(2)}, ${nodeObject.data.y.toFixed(2)}, ${nodeObject.data.z.toFixed(2)})</p>
+                    <p><strong>Position:</strong> (${x.toFixed(2)}, ${y.toFixed(2)}, ${z.toFixed(2)})</p>
                     <p><strong>Typ:</strong> Knoten</p>
+                    ${edgesList}
                 `;
             }
         } else if (object.userData.type === 'edge') {
-            const edgeObject = this.edgeObjects.find(e => e.mesh === object);
+            const edgeObject = this.edgeObjects.find(e => e.line === object);
             if (edgeObject) {
-                infoPanelTitle.textContent = edgeObject.data.name || 'Unbenannte Kante';
-                infoPanelContent.innerHTML = `
-                    <p><strong>Verbindung:</strong> ${edgeObject.data.start} → ${edgeObject.data.end}</p>
-                    <p><strong>Typ:</strong> Kante</p>
-                `;
+                // Finde Edge-Daten
+                const edgeIndex = this.edgeObjects.indexOf(edgeObject);
+                const edgeData = this.currentEdges[edgeIndex];
+                
+                if (edgeData) {
+                    const startNodeName = this.currentNodes[edgeData.start]?.name || `Node ${edgeData.start}`;
+                    const endNodeName = this.currentNodes[edgeData.end]?.name || `Node ${edgeData.end}`;
+                    
+                    infoPanelTitle.textContent = edgeData.name || 'Unbenannte Kante';
+                    infoPanelContent.innerHTML = `
+                        <p><strong>Verbindung:</strong> 
+                           <span class="node-link"
+                                 onmouseover="window.nodgesApp.highlightNode(${edgeData.start}, true)"
+                                 onmouseout="window.nodgesApp.highlightNode(${edgeData.start}, false)"
+                                 onclick="window.nodgesApp.selectNode(${edgeData.start})">${startNodeName}</span>
+                           <-> 
+                           <span class="node-link"
+                                 onmouseover="window.nodgesApp.highlightNode(${edgeData.end}, true)"
+                                 onmouseout="window.nodgesApp.highlightNode(${edgeData.end}, false)"
+                                 onclick="window.nodgesApp.selectNode(${edgeData.end})">${endNodeName}</span>
+                        </p>
+                        <p><strong>Typ:</strong> Kante</p>
+                        <p><strong>Offset:</strong> ${edgeData.offset || 0}</p>
+                    `;
+                }
             }
         }
         
+        // Selection Panel automatisch ausfahren
+        infoPanel.classList.remove('collapsed');
+        const infoPanelToggle = document.getElementById('infoPanelToggle');
+        if (infoPanelToggle) {
+            infoPanelToggle.innerHTML = 'v';
+        }
+        
         infoPanel.style.display = 'block';
-        infoPanel.classList.add('expanded');
+        // infoPanel entfernt
     }
     
     hideInfoPanel() {
-        const infoPanel = document.getElementById('infoPanel');
-        if (infoPanel) {
-            infoPanel.style.display = 'none';
-            infoPanel.classList.remove('expanded');
+        // infoPanel wurde entfernt - Funktion deaktiviert
+    }
+    
+    // Hilfsfunktion: Finde alle Edges die mit einem Node verbunden sind
+    getConnectedEdges(nodeIndex) {
+        const connectedEdges = [];
+        
+        this.currentEdges.forEach((edgeData, index) => {
+            if (edgeData.start === nodeIndex || edgeData.end === nodeIndex) {
+                connectedEdges.push({
+                    name: edgeData.name || `Edge ${index}`,
+                    start: edgeData.start,
+                    end: edgeData.end,
+                    index: index
+                });
+            }
+        });
+        
+        return connectedEdges;
+    }
+    
+    // Highlight Edge beim Hovern
+    highlightEdge(edgeIndex, highlight) {
+        const edgeObject = this.edgeObjects[edgeIndex];
+        if (edgeObject && edgeObject.line) {
+            if (highlight) {
+                // Edge hervorheben
+                edgeObject.line.material.emissive.setHex(0x444444);
+                edgeObject.line.material.emissiveIntensity = 0.3;
+            } else {
+                // Highlight entfernen
+                edgeObject.line.material.emissive.setHex(0x000000);
+                edgeObject.line.material.emissiveIntensity = 0;
+            }
+        }
+    }
+    
+    // Edge selektieren beim Klicken
+    selectEdge(edgeIndex) {
+        const edgeObject = this.edgeObjects[edgeIndex];
+        if (edgeObject && edgeObject.line) {
+            // Edge als selektiertes Objekt setzen
+            this.stateManager.setSelectedObject(edgeObject.line);
+            this.showInfoPanel(edgeObject.line);
+        }
+    }
+    
+    // Highlight Node beim Hovern
+    highlightNode(nodeIndex, highlight) {
+        const nodeObject = this.nodeObjects[nodeIndex];
+        if (nodeObject && nodeObject.mesh) {
+            if (highlight) {
+                // Node hervorheben
+                nodeObject.mesh.material.emissive.setHex(0x444444);
+                nodeObject.mesh.material.emissiveIntensity = 0.3;
+            } else {
+                // Highlight entfernen
+                nodeObject.mesh.material.emissive.setHex(0x000000);
+                nodeObject.mesh.material.emissiveIntensity = 0;
+            }
+        }
+    }
+    
+    // Node selektieren beim Klicken
+    selectNode(nodeIndex) {
+        const nodeObject = this.nodeObjects[nodeIndex];
+        if (nodeObject && nodeObject.mesh) {
+            // Node als selektiertes Objekt setzen
+            this.stateManager.setSelectedObject(nodeObject.mesh);
+            this.showInfoPanel(nodeObject.mesh);
         }
     }
     

@@ -1,9 +1,9 @@
 /**
- * LayoutGUI - Benutzerfreundliche GUI für Layout-Algorithmen
+ * LayoutGUI - Benutzerfreundliche GUI fuer Layout-Algorithmen
  * 
  * Features:
- * - Dropdown-Menü für Layout-Auswahl
- * - Parameter-Einstellungen für jeden Algorithmus
+ * - Dropdown-Menue fuer Layout-Auswahl
+ * - Parameter-Einstellungen fuer jeden Algorithmus
  * - Animation-Kontrollen
  * - Preset-Verwaltung
  */
@@ -18,8 +18,13 @@ export class LayoutGUI {
         this.layoutSelect = null;
         this.parameterContainer = null;
         this.animationControls = null;
+        this.toggleButton = null;
+        this.contentContainer = null;
+        this.isCollapsed = false; // Standardmaessig ausgeklappt
+        this.layoutToggleSwitch = null;
+        this.layoutEnabled = false; // Standardmaessig ausgeschaltet
         
-        // Layout-Parameter für verschiedene Algorithmen
+        // Layout-Parameter fuer verschiedene Algorithmen
         this.layoutParameters = {
             'force-directed': {
                 maxIterations: { type: 'range', min: 100, max: 2000, default: 500, step: 50 },
@@ -60,13 +65,13 @@ export class LayoutGUI {
             }
         };
         
-        // Presets für schnelle Anwendung
+        // Presets fuer schnelle Anwendung
         this.presets = {
             'Kleine Netzwerke': {
                 layout: 'force-directed',
                 params: { maxIterations: 300, repulsionStrength: 800 }
             },
-            'Große Netzwerke': {
+            'Grosse Netzwerke': {
                 layout: 'fruchterman-reingold',
                 params: { maxIterations: 200, area: 600 }
             },
@@ -74,7 +79,7 @@ export class LayoutGUI {
                 layout: 'hierarchical',
                 params: { levelHeight: 4, nodeSpacing: 3 }
             },
-            'Kreisförmig': {
+            'Kreisfoermig': {
                 layout: 'circular',
                 params: { radius: 15 }
             },
@@ -96,10 +101,21 @@ export class LayoutGUI {
         this.createPresetControls();
         this.createActionButtons();
         
-        // Initial Layout auswählen
+        // Initial Layout auswaehlen
         this.selectLayout('force-directed');
         
-        console.log('🎨 LayoutGUI initialisiert');
+        // Initial Layout-Status setzen (deaktiviert)
+        this.updateLayoutState();
+        
+        // Initial collapsed state setzen
+        if (this.isCollapsed) {
+            this.contentContainer.style.display = 'none';
+            this.toggleButton.innerHTML = '▶';
+        } else {
+            this.toggleButton.innerHTML = '▼';
+        }
+        
+        console.log(' LayoutGUI initialisiert');
     }
     
     createPanel() {
@@ -107,33 +123,166 @@ export class LayoutGUI {
         this.panel.id = 'layoutPanel';
         this.panel.style.cssText = `
             position: fixed;
-            top: 20px;
+            top: 0px;
             right: 20px;
-            width: 320px;
-            background-color: rgba(255, 255, 255, 0.95);
+            width: 213px;
+            background-color: rgba(128, 128, 128, 0.5);
             border-radius: 8px;
-            padding: 15px;
+            padding: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
+            z-index: 96;
             font-family: Arial, sans-serif;
-            font-size: 14px;
+            font-size: 12px;
             max-height: 80vh;
             overflow-y: auto;
+            transition: top 0.3s ease;
         `;
         
-        const title = document.createElement('h3');
-        title.textContent = 'Layout Algorithmen';
-        title.style.cssText = `
-            margin: 0 0 15px 0;
-            color: #333;
-            border-bottom: 2px solid #4CAF50;
+        // Header mit Toggle-Schalter und Collapse-Button
+        const header = document.createElement('div');
+        header.style.cssText = `
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #808080;
             padding-bottom: 5px;
         `;
         
-        this.panel.appendChild(title);
-        // Panel zum DOM hinzufügen
+        // Linke Seite: Titel + Toggle-Schalter
+        const leftSection = document.createElement('div');
+        leftSection.style.cssText = `
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        `;
+        
+        const title = document.createElement('h3');
+        title.textContent = 'Layout';
+        title.style.cssText = `
+            margin: 0;
+            color: #333;
+            font-size: 14px;
+        `;
+        
+        // Toggle-Schalter fuer Layout-Aktivierung
+        this.layoutToggleSwitch = document.createElement('label');
+        this.layoutToggleSwitch.style.cssText = `
+            position: relative;
+            display: inline-block;
+            width: 34px;
+            height: 18px;
+        `;
+        
+        const toggleInput = document.createElement('input');
+        toggleInput.type = 'checkbox';
+        toggleInput.checked = this.layoutEnabled;
+        toggleInput.style.cssText = `
+            opacity: 0;
+            width: 0;
+            height: 0;
+        `;
+        
+        const slider = document.createElement('span');
+        slider.style.cssText = `
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 18px;
+        `;
+        
+        const sliderButton = document.createElement('span');
+        sliderButton.style.cssText = `
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        `;
+        
+        slider.appendChild(sliderButton);
+        
+        toggleInput.addEventListener('change', (e) => {
+            this.layoutEnabled = e.target.checked;
+            console.log('[DEBUG] Toggle geaendert:', this.layoutEnabled);
+            if (this.layoutEnabled) {
+                slider.style.backgroundColor = '#4CAF50'; // Gruen fuer aktiviert
+                sliderButton.style.transform = 'translateX(16px)';
+                console.log('[DEBUG] Layout aktiviert - Schalter gruen');
+            } else {
+                slider.style.backgroundColor = '#ccc';
+                sliderButton.style.transform = 'translateX(0px)';
+                console.log('[DEBUG] Layout deaktiviert - Schalter grau');
+            }
+            this.updateLayoutState();
+        });
+        
+        this.layoutToggleSwitch.appendChild(toggleInput);
+        this.layoutToggleSwitch.appendChild(slider);
+        
+        leftSection.appendChild(title);
+        leftSection.appendChild(this.layoutToggleSwitch);
+        
+        // Toggle-Button mit Pfeil
+        this.toggleButton = document.createElement('button');
+        this.toggleButton.innerHTML = '▶';
+        this.toggleButton.style.cssText = `
+            background: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            color: #808080;
+            padding: 2px 6px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        `;
+        
+        this.toggleButton.addEventListener('click', () => {
+            this.toggleCollapse();
+        });
+        
+        this.toggleButton.addEventListener('mouseenter', () => {
+            this.toggleButton.style.backgroundColor = 'rgba(128, 128, 128, 0.2)';
+        });
+        
+        this.toggleButton.addEventListener('mouseleave', () => {
+            this.toggleButton.style.backgroundColor = 'transparent';
+        });
+        
+        header.appendChild(leftSection);
+        header.appendChild(this.toggleButton);
+        this.panel.appendChild(header);
+        
+        // Content Container fuer collapse-Funktionalitaet
+        this.contentContainer = document.createElement('div');
+        this.contentContainer.style.cssText = `
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            overflow: hidden;
+            max-height: 1000px;
+            opacity: 1;
+        `;
+        this.panel.appendChild(this.contentContainer);
+        
+        // Panel standardmaessig kollabiert
+        this.isCollapsed = true;
+        this.contentContainer.style.maxHeight = '0px';
+        this.contentContainer.style.opacity = '0';
+        this.toggleButton.innerHTML = '▶';
+        
+        // Panel zum DOM hinzufuegen
         if (document.body) {
             document.body.appendChild(this.panel);
+            // Positionierung unter fileInfoPanel starten
+            this.startPositioning();
         } else {
             console.warn('LayoutGUI: document.body not available');
         }
@@ -161,7 +310,7 @@ export class LayoutGUI {
             background-color: white;
         `;
         
-        // Layout-Optionen hinzufügen
+        // Layout-Optionen hinzufuegen
         const layouts = this.layoutManager.getAvailableLayouts();
         layouts.forEach(layout => {
             const option = document.createElement('option');
@@ -176,7 +325,7 @@ export class LayoutGUI {
         
         selectorContainer.appendChild(label);
         selectorContainer.appendChild(this.layoutSelect);
-        this.panel.appendChild(selectorContainer);
+        this.contentContainer.appendChild(selectorContainer);
     }
     
     createParameterControls() {
@@ -191,7 +340,7 @@ export class LayoutGUI {
         `;
         
         this.parameterContainer.appendChild(title);
-        this.panel.appendChild(this.parameterContainer);
+        this.contentContainer.appendChild(this.parameterContainer);
     }
     
     createAnimationControls() {
@@ -249,7 +398,7 @@ export class LayoutGUI {
         
         this.animationControls.appendChild(title);
         this.animationControls.appendChild(speedContainer);
-        this.panel.appendChild(this.animationControls);
+        this.contentContainer.appendChild(this.animationControls);
     }
     
     createPresetControls() {
@@ -276,7 +425,7 @@ export class LayoutGUI {
         // Default-Option
         const defaultOption = document.createElement('option');
         defaultOption.value = '';
-        defaultOption.textContent = '-- Preset auswählen --';
+        defaultOption.textContent = '-- Preset auswaehlen --';
         presetSelect.appendChild(defaultOption);
         
         // Preset-Optionen
@@ -296,7 +445,7 @@ export class LayoutGUI {
         
         presetContainer.appendChild(title);
         presetContainer.appendChild(presetSelect);
-        this.panel.appendChild(presetContainer);
+        this.contentContainer.appendChild(presetContainer);
     }
     
     createActionButtons() {
@@ -309,57 +458,67 @@ export class LayoutGUI {
         
         // Layout anwenden Button
         const applyButton = document.createElement('button');
-        applyButton.textContent = 'Layout anwenden';
+        applyButton.textContent = 'Anwenden';
         applyButton.style.cssText = `
             flex: 1;
-            padding: 10px;
-            background-color: #4CAF50;
+            padding: 8px;
+            background-color: #808080;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 11px;
         `;
         
         applyButton.addEventListener('click', () => {
-            this.applyCurrentLayout();
+            if (this.layoutEnabled) {
+                this.applyCurrentLayout();
+            }
         });
         
         applyButton.addEventListener('mouseenter', () => {
-            applyButton.style.backgroundColor = '#45a049';
+            if (this.layoutEnabled) {
+                applyButton.style.backgroundColor = '#606060';
+            }
         });
         
         applyButton.addEventListener('mouseleave', () => {
-            applyButton.style.backgroundColor = '#4CAF50';
+            applyButton.style.backgroundColor = this.layoutEnabled ? '#808080' : '#cccccc';
         });
         
         // Stop Button
         const stopButton = document.createElement('button');
         stopButton.textContent = 'Stop';
         stopButton.style.cssText = `
-            padding: 10px 15px;
-            background-color: #f44336;
+            padding: 8px 12px;
+            background-color: #999999;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 11px;
         `;
         
         stopButton.addEventListener('click', () => {
-            this.layoutManager.stopAnimation();
+            if (this.layoutEnabled) {
+                this.layoutManager.stopAnimation();
+            }
         });
         
         stopButton.addEventListener('mouseenter', () => {
-            stopButton.style.backgroundColor = '#da190b';
+            if (this.layoutEnabled) {
+                stopButton.style.backgroundColor = '#777777';
+            }
         });
         
         stopButton.addEventListener('mouseleave', () => {
-            stopButton.style.backgroundColor = '#f44336';
+            stopButton.style.backgroundColor = this.layoutEnabled ? '#999999' : '#cccccc';
         });
         
         buttonContainer.appendChild(applyButton);
         buttonContainer.appendChild(stopButton);
-        this.panel.appendChild(buttonContainer);
+        this.contentContainer.appendChild(buttonContainer);
     }
     
     selectLayout(layoutName) {
@@ -435,7 +594,7 @@ export class LayoutGUI {
         const preset = this.presets[presetName];
         if (!preset) return;
         
-        // Layout auswählen
+        // Layout auswaehlen
         this.selectLayout(preset.layout);
         
         // Parameter setzen
@@ -450,21 +609,115 @@ export class LayoutGUI {
             }
         });
         
-        console.log(`🎨 Preset "${presetName}" angewendet`);
+        console.log(` Preset "${presetName}" angewendet`);
     }
     
     async applyCurrentLayout() {
         const layoutName = this.layoutSelect.value;
+        console.log('[DEBUG] Layout anwenden:', layoutName, this.currentParameters);
         
-        // Event für Layout-Anwendung auslösen
-        const event = new CustomEvent('applyLayout', {
-            detail: {
-                layoutName: layoutName,
-                parameters: { ...this.currentParameters }
+        // Direkt LayoutManager aufrufen statt Event
+        if (window.nodgesApp && window.nodgesApp.layoutManager) {
+            const nodeObjects = window.nodgesApp.getNodeObjects();
+            const edgeObjects = window.nodgesApp.getEdgeObjects();
+            console.log('[DEBUG] Node/Edge-Objekte gefunden:', nodeObjects.length, edgeObjects.length);
+            
+            // Node-Objekte direkt verwenden (haben position-Eigenschaft)
+            console.log('[DEBUG] Node-Position:', nodeObjects[0].position);
+            
+            const nodes = nodeObjects.map(nodeObj => ({
+                x: nodeObj.position.x,
+                y: nodeObj.position.y, 
+                z: nodeObj.position.z,
+                id: nodeObj.id || Math.random().toString(36)
+            }));
+            
+            const edges = edgeObjects.map(edgeObj => ({
+                start: {
+                    x: edgeObj.startNode.position.x,
+                    y: edgeObj.startNode.position.y,
+                    z: edgeObj.startNode.position.z,
+                    id: edgeObj.startNode.id || Math.random().toString(36)
+                },
+                end: {
+                    x: edgeObj.endNode.position.x,
+                    y: edgeObj.endNode.position.y,
+                    z: edgeObj.endNode.position.z,
+                    id: edgeObj.endNode.id || Math.random().toString(36)
+                }
+            }));
+            
+            console.log('[DEBUG] Verarbeite Knoten/Kanten:', nodes.length, edges.length);
+            console.log('[DEBUG] Erste Node-Daten:', nodes[0]);
+            
+            const success = window.nodgesApp.layoutManager.applyLayout(
+                layoutName, 
+                nodes, 
+                edges, 
+                this.currentParameters
+            );
+            
+            if (success) {
+                console.log('[DEBUG] Layout erfolgreich angewendet');
+                // Knoten-Positionen in 3D-Objekten aktualisieren
+                this.updateNodePositions(nodeObjects, nodes);
+                // Edges aktualisieren
+                this.updateEdgePositions(edgeObjects);
+            } else {
+                console.error('[DEBUG] Layout-Anwendung fehlgeschlagen');
+            }
+        } else {
+            console.error('[DEBUG] nodgesApp oder layoutManager nicht verfuegbar');
+        }
+    }
+    
+    updateNodePositions(nodeObjects, nodes) {
+        console.log('[DEBUG] Aktualisiere Positionen fuer', nodeObjects.length, 'Knoten');
+        nodeObjects.forEach((nodeObj, index) => {
+            if (nodes[index] && nodeObj.mesh) {
+                const newX = nodes[index].x || 0;
+                const newY = nodes[index].y || 0;
+                const newZ = nodes[index].z || 0;
+                
+                console.log(`[DEBUG] Knoten ${index}: (${newX}, ${newY}, ${newZ})`);
+                
+                nodeObj.mesh.position.set(newX, newY, newZ);
+                
+                // Auch die Node-Position aktualisieren
+                nodeObj.position.x = newX;
+                nodeObj.position.y = newY;
+                nodeObj.position.z = newZ;
+                
+                console.log(`[DEBUG] Mesh-Position gesetzt:`, nodeObj.mesh.position);
             }
         });
-        
-        document.dispatchEvent(event);
+        console.log('[DEBUG] Knoten-Positionen aktualisiert');
+    }
+    
+    updateEdgePositions(edgeObjects) {
+        console.log('[DEBUG] Aktualisiere Edge-Positionen fuer', edgeObjects.length, 'Edges');
+        edgeObjects.forEach((edgeObj, index) => {
+            if (edgeObj.line && edgeObj.startNode && edgeObj.endNode) {
+                // Edge komplett neu erstellen statt Geometrie zu modifizieren
+                const scene = window.nodgesApp.getScene();
+                
+                // Alte Edge aus Scene entfernen
+                scene.remove(edgeObj.line);
+                edgeObj.line.geometry?.dispose();
+                edgeObj.line.material?.dispose();
+                
+                // Neue Edge erstellen
+                edgeObj.line = edgeObj.createLine();
+                
+                // Neue Edge zur Scene hinzufuegen
+                if (edgeObj.line) {
+                    scene.add(edgeObj.line);
+                }
+                
+                console.log(`[DEBUG] Edge ${index} neu erstellt`);
+            }
+        });
+        console.log('[DEBUG] Edge-Positionen aktualisiert');
     }
     
     getLayoutDisplayName(layoutName) {
@@ -474,9 +727,9 @@ export class LayoutGUI {
             'spring-embedder': 'Spring-Embedder',
             'hierarchical': 'Hierarchisch',
             'tree': 'Baum',
-            'circular': 'Kreisförmig',
+            'circular': 'Kreisfoermig',
             'grid': 'Raster',
-            'random': 'Zufällig'
+            'random': 'Zufaellig'
         };
         
         return displayNames[layoutName] || layoutName;
@@ -485,18 +738,18 @@ export class LayoutGUI {
     getParameterDisplayName(paramName) {
         const displayNames = {
             maxIterations: 'Max. Iterationen',
-            repulsionStrength: 'Abstoßungskraft',
+            repulsionStrength: 'Abstossungskraft',
             attractionStrength: 'Anziehungskraft',
-            damping: 'Dämpfung',
-            area: 'Fläche',
+            damping: 'Daempfung',
+            area: 'Flaeche',
             temperature: 'Temperatur',
             springConstant: 'Federkonstante',
-            repulsionConstant: 'Abstoßungskonstante',
-            naturalLength: 'Natürliche Länge',
-            levelHeight: 'Ebenen-Höhe',
+            repulsionConstant: 'Abstossungskonstante',
+            naturalLength: 'Natuerliche Laenge',
+            levelHeight: 'Ebenen-Hoehe',
             nodeSpacing: 'Knoten-Abstand',
             radius: 'Radius',
-            height: 'Höhe',
+            height: 'Hoehe',
             spacing: 'Abstand',
             minBound: 'Min. Grenze',
             maxBound: 'Max. Grenze'
@@ -513,6 +766,17 @@ export class LayoutGUI {
     // Panel anzeigen
     show() {
         this.panel.style.display = 'block';
+        // Beim ersten Anzeigen kollabiert starten
+        if (this.isCollapsed === undefined) {
+            this.isCollapsed = true;
+            this.contentContainer.style.maxHeight = '0px';
+            this.contentContainer.style.opacity = '0';
+            const toggleButton = this.panel.querySelector('.toggle-button');
+            if (toggleButton) {
+                toggleButton.innerHTML = '▶';
+            }
+        }
+        this.updatePosition();
     }
     
     // Panel verstecken
@@ -520,6 +784,95 @@ export class LayoutGUI {
         this.panel.style.display = 'none';
     }
     
+    // Content ein-/ausklappen
+    toggleCollapse() {
+        this.isCollapsed = !this.isCollapsed;
+        
+        if (this.isCollapsed) {
+            // Einklappen
+            this.contentContainer.style.maxHeight = '0px';
+            this.contentContainer.style.opacity = '0';
+            this.toggleButton.innerHTML = '▶';
+            this.toggleButton.style.transform = 'rotate(0deg)';
+        } else {
+            // Ausklappen
+            this.contentContainer.style.maxHeight = '1000px';
+            this.contentContainer.style.opacity = '1';
+            this.toggleButton.innerHTML = '▼';
+            this.toggleButton.style.transform = 'rotate(0deg)';
+        }
+    }
+    
+    // Layout-Status aktualisieren
+    updateLayoutState() {
+        const applyButton = this.contentContainer.querySelector('button');
+        const stopButton = this.contentContainer.querySelectorAll('button')[1];
+        
+        if (this.layoutEnabled) {
+            // Layout aktiviert - Buttons aktivieren
+            if (applyButton) {
+                applyButton.style.backgroundColor = '#808080';
+                applyButton.style.cursor = 'pointer';
+                applyButton.style.opacity = '1';
+            }
+            if (stopButton) {
+                stopButton.style.backgroundColor = '#999999';
+                stopButton.style.cursor = 'pointer';
+                stopButton.style.opacity = '1';
+            }
+            console.log('[LAYOUT] Layout-Algorithmen aktiviert');
+        } else {
+            // Layout deaktiviert - Buttons deaktivieren
+            if (applyButton) {
+                applyButton.style.backgroundColor = '#cccccc';
+                applyButton.style.cursor = 'not-allowed';
+                applyButton.style.opacity = '0.6';
+            }
+            if (stopButton) {
+                stopButton.style.backgroundColor = '#cccccc';
+                stopButton.style.cursor = 'not-allowed';
+                stopButton.style.opacity = '0.6';
+            }
+            console.log('[LAYOUT] Layout-Algorithmen deaktiviert');
+        }
+    }
+    
+    // Positionierung unter fileInfoPanel
+    startPositioning() {
+        this.updatePosition();
+        
+        // Observer fuer filePanel
+        const filePanel = document.getElementById('filePanel');
+        if (filePanel) {
+            // ResizeObserver fuer Groessenaenderungen
+            const resizeObserver = new ResizeObserver(() => this.updatePosition());
+            resizeObserver.observe(filePanel);
+            
+            // MutationObserver fuer Attributaenderungen
+            const mutationObserver = new MutationObserver(() => this.updatePosition());
+            mutationObserver.observe(filePanel, { 
+                attributes: true, 
+                childList: true,
+                subtree: true
+            });
+        }
+        
+        // Window resize
+        window.addEventListener('resize', () => this.updatePosition());
+        
+        // Fallback: regelmaessige Updates
+        setInterval(() => this.updatePosition(), 100);
+    }
+    
+    updatePosition() {
+        const filePanel = document.getElementById('filePanel');
+        if (filePanel && this.panel) {
+            const filePanelRect = filePanel.getBoundingClientRect();
+            const newTop = filePanelRect.bottom + 10; // 10px Abstand unter File Panel
+            this.panel.style.top = newTop + 'px';
+        }
+    }
+
     // Cleanup
     destroy() {
         if (this.panel && this.panel.parentNode) {

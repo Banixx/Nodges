@@ -15,12 +15,12 @@ export class Rollover {
         this.selectedObject = null;
         this.hoverTimeout = null;
         this.panelCloseTimeout = null;
-        this.rafId = null; // Für requestAnimationFrame
+        this.rafId = null; // Fuer requestAnimationFrame
 
         // Konfiguration
-        this.hoverDelay = 50; // Verzögerung in ms bevor das Panel angezeigt wird
-        this.panelCloseDelay = 200; // Verzögerung in ms bevor das Panel geschlossen wird
-        this.hoverAreaSize = 5; // Größe der Hover-Area um das Objekt
+        this.hoverDelay = 50; // Verzoegerung in ms bevor das Panel angezeigt wird
+        this.panelCloseDelay = 200; // Verzoegerung in ms bevor das Panel geschlossen wird
+        this.hoverAreaSize = 5; // Groesse der Hover-Area um das Objekt
 
         // Event-Listener
         this.renderer.domElement.addEventListener('mousemove', this.onMouseMove.bind(this), false);
@@ -29,11 +29,11 @@ export class Rollover {
         // Animation starten
         this.animate();
 
-        // Event-Listener für das Info-Panel
+        // Event-Listener fuer das Info-Panel
         const infoPanel = document.getElementById('infoPanel');
         infoPanel.addEventListener('click', this.onInfoPanelClick.bind(this));
         infoPanel.addEventListener('mouseenter', () => {
-            // Wenn die Maus über dem Panel ist, verhindern, dass es geschlossen wird
+            // Wenn die Maus ueber dem Panel ist, verhindern, dass es geschlossen wird
             if (this.panelCloseTimeout) {
                 clearTimeout(this.panelCloseTimeout);
                 this.panelCloseTimeout = null;
@@ -42,7 +42,7 @@ export class Rollover {
             infoPanel.classList.add('expanded');
         });
         infoPanel.addEventListener('mouseleave', () => {
-            // Wenn die Maus das Panel verlässt, Panel mit Verzögerung schließen
+            // Wenn die Maus das Panel verlaesst, Panel mit Verzoegerung schliessen
             this.panelCloseTimeout = setTimeout(() => {
                 this.hideInfoPanel();
             }, this.panelCloseDelay);
@@ -78,7 +78,7 @@ export class Rollover {
         // Finde das Objekt unter dem Mauszeiger
         const intersectedObject = this.raycastManager.findIntersectedObject();
 
-        // Prüfe, ob das Info-Panel die Maus enthält
+        // Pruefe, ob das Info-Panel die Maus enthaelt
         const infoPanel = document.getElementById('infoPanel');
         const rect = infoPanel.getBoundingClientRect();
         const isMouseOverPanel = (
@@ -89,10 +89,10 @@ export class Rollover {
             infoPanel.style.display !== 'none'
         );
         
-        // Wenn die Maus über dem Panel ist, oder wenn kein Objekt gefunden wurde und das Panel bereits angezeigt wird,
+        // Wenn die Maus ueber dem Panel ist, oder wenn kein Objekt gefunden wurde und das Panel bereits angezeigt wird,
         // aber die Maus das Panel nicht verlassen hat, dann nichts tun.
         if (isMouseOverPanel) {
-            // Wenn die Maus über dem Panel ist, lösche den panelCloseTimeout
+            // Wenn die Maus ueber dem Panel ist, loesche den panelCloseTimeout
             if (this.panelCloseTimeout) {
                 clearTimeout(this.panelCloseTimeout);
                 this.panelCloseTimeout = null;
@@ -104,11 +104,11 @@ export class Rollover {
         if (intersectedObject) {
             // Wenn die Maus von einem anderen Objekt auf dieses Objekt gewechselt ist
             if (this.hoveredObject !== intersectedObject) {
-                // Lösche alle ausstehenden Timeouts
+                // Loesche alle ausstehenden Timeouts
                 if (this.hoverTimeout) clearTimeout(this.hoverTimeout);
                 if (this.panelCloseTimeout) clearTimeout(this.panelCloseTimeout);
 
-                // Setze das Highlight für das vorherige Objekt zurück
+                // Setze das Highlight fuer das vorherige Objekt zurueck
                 if (this.hoveredObject) {
                     this.resetHighlight(this.hoveredObject);
                 }
@@ -119,7 +119,7 @@ export class Rollover {
                 // Wende das Highlight auf das neue Objekt an
                 this.applyHighlight(intersectedObject);
 
-                // Zeige das Info-Panel mit Verzögerung
+                // Zeige das Info-Panel mit Verzoegerung
                 this.hoverTimeout = setTimeout(() => {
                     this.showInfoPanel(intersectedObject, event);
                 }, this.hoverDelay);
@@ -141,22 +141,22 @@ export class Rollover {
         } else {
             // Wenn kein Objekt gefunden wurde
             if (this.hoveredObject) {
-                // Lösche den hoverTimeout, falls vorhanden
+                // Loesche den hoverTimeout, falls vorhanden
                 if (this.hoverTimeout) {
                     clearTimeout(this.hoverTimeout);
                     this.hoverTimeout = null;
                 }
-                // Lösche auch den requestAnimationFrame, falls aktiv
+                // Loesche auch den requestAnimationFrame, falls aktiv
                 if (this.rafId) {
                     cancelAnimationFrame(this.rafId);
                     this.rafId = null;
                 }
 
-                // Setze das Highlight für das vorherige Objekt zurück
+                // Setze das Highlight fuer das vorherige Objekt zurueck
                 this.resetHighlight(this.hoveredObject);
                 this.hoveredObject = null;
 
-                // Schließe das Panel mit Verzögerung, wenn die Maus das Objekt verlässt
+                // Schliesse das Panel mit Verzoegerung, wenn die Maus das Objekt verlaesst
                 if (this.panelCloseTimeout) {
                     clearTimeout(this.panelCloseTimeout);
                 }
@@ -164,8 +164,8 @@ export class Rollover {
                     this.hideInfoPanel();
                 }, this.panelCloseDelay);
             } else {
-                // Wenn kein Objekt gehovert wird und die Maus nicht über dem Panel ist,
-                // und das Panel noch sichtbar ist, schließe es sofort.
+                // Wenn kein Objekt gehovert wird und die Maus nicht ueber dem Panel ist,
+                // und das Panel noch sichtbar ist, schliesse es sofort.
                 const infoPanel = document.getElementById('infoPanel');
                 if (infoPanel.style.display === 'block' && !isMouseOverPanel) {
                     this.hideInfoPanel();
@@ -191,7 +191,7 @@ export class Rollover {
 
     resetHighlight(object) {
         if (object.userData.type === 'node') {
-            // Verwende die resetHighlight Methode der Node-Klasse für korrekte Wiederherstellung
+            // Verwende die resetHighlight Methode der Node-Klasse fuer korrekte Wiederherstellung
             const node = object.userData.node;
             if (node && typeof node.resetHighlight === 'function') {
                 node.resetHighlight();
@@ -206,7 +206,7 @@ export class Rollover {
             // Debug-Ausgabe
             console.log(`Resetting highlight for node: ${object.name}`);
         } else if (object.userData.type === 'edge') {
-            // Verwende die resetHighlight Methode der Edge-Klasse für korrekte Wiederherstellung
+            // Verwende die resetHighlight Methode der Edge-Klasse fuer korrekte Wiederherstellung
             const edge = object.userData.edge;
             if (edge && typeof edge.resetHighlight === 'function') {
                 edge.resetHighlight();
@@ -216,7 +216,7 @@ export class Rollover {
                 object.material.color.setHex(originalColor);
             }
             
-            // Emissive-Eigenschaften zurücksetzen
+            // Emissive-Eigenschaften zuruecksetzen
             object.material.emissiveIntensity = 0;
             object.material.emissive.setHex(0x000000);
             
@@ -232,11 +232,11 @@ export class Rollover {
 
         try {
             if (object.userData.type === 'node') {
-                // Für Knoten
+                // Fuer Knoten
                 const nodeName = object.name || 'Unbenannter Knoten';
                 infoPanelTitle.textContent = nodeName;
                 
-                // Sammle alle verfügbaren Metadaten
+                // Sammle alle verfuegbaren Metadaten
                 let metadataHtml = '';
                 
                 // Geometrie-Typ
@@ -252,7 +252,7 @@ export class Rollover {
                     metadataHtml += `<strong>Position:</strong> (${x}, ${y}, ${z})<br>`;
                 }
                 
-                // Zusätzliche Metadaten aus dem ursprünglichen Knoten
+                // Zusaetzliche Metadaten aus dem urspruenglichen Knoten
                 if (object.metadata) {
                     const excludeKeys = ['name', 'position', 'x', 'y', 'z'];
                     Object.entries(object.metadata).forEach(([key, value]) => {
@@ -267,10 +267,10 @@ export class Rollover {
                     });
                 }
                 
-                infoPanelContent.innerHTML = metadataHtml || 'Keine weiteren Informationen verfügbar';
+                infoPanelContent.innerHTML = metadataHtml || 'Keine weiteren Informationen verfuegbar';
                 
             } else if (object.userData.type === 'edge') {
-                // Für Kanten
+                // Fuer Kanten
                 const edgeName = object.name || 'Unbenannte Kante';
                 infoPanelTitle.textContent = edgeName;
                 
@@ -303,7 +303,7 @@ export class Rollover {
                     }
                 }
                 
-                infoPanelContent.innerHTML = edgeHtml || 'Keine weiteren Informationen verfügbar';
+                infoPanelContent.innerHTML = edgeHtml || 'Keine weiteren Informationen verfuegbar';
             }
 
             // Positioniere das Panel neben dem Mauszeiger
@@ -339,7 +339,7 @@ export class Rollover {
     }
 
     render() {
-        // Animation und Rendering-Logik hier, falls benötigt
+        // Animation und Rendering-Logik hier, falls benoetigt
     }
 
 
