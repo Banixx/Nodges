@@ -201,7 +201,7 @@ class NodgesApp {
             this.selectionManager = new SelectionManager(this.scene, this.camera, this.renderer, this.stateManager);
             this.raycastManager = new RaycastManager(this.camera, this.scene);
             this.networkAnalyzer = new NetworkAnalyzer();
-            this.pathFinder = new PathFinder();
+            this.pathFinder = new PathFinder(this.scene, this.stateManager);
             this.performanceOptimizer = new PerformanceOptimizer(this.scene, this.camera, this.renderer);
             this.fileHandler = new FileHandler();
             this.importManager = new ImportManager();

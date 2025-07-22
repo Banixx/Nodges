@@ -400,33 +400,40 @@ export class SelectionManager {
             const size = boundingBox.getSize(new THREE.Vector3());
             geometry = new THREE.BoxGeometry(size.x * scale, size.y * scale, size.z * scale);
         } else if (object.userData.type === 'edge') {
-            // Create cylinder around edge
+            // Create tube around edge that matches the actual edge geometry
             const edge = object.userData.edge;
             if (edge && edge.startNode && edge.endNode) {
-                const start = edge.startNode.mesh.position;
-                const end = edge.endNode.mesh.position;
-                const distance = start.distanceTo(end);
-                geometry = new THREE.CylinderGeometry(0.1, 0.1, distance * scale, 8);
+                // Use the same curve as the original edge
+                const start = edge.startNode.mesh.position.clone();
+                const end = edge.endNode.mesh.position.clone();
+                const midPoint = new THREE.Vector3(
+                    (start.x + end.x) / 2,
+                    (start.y + end.y) / 2 + (edge.options.curveHeight || 2),
+                    (start.z + end.z) / 2
+                );
+                
+                // Add offset if present
+                if (edge.options.offset !== 0) {
+                    const direction = new THREE.Vector3().subVectors(end, start).normalize();
+                    const offsetDirection = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
+                    midPoint.addScaledVector(offsetDirection, edge.options.offset);
+                }
+                
+                const curve = new THREE.QuadraticBezierCurve3(start, midPoint, end);
+                const radius = (edge.options.radius || 0.2) * 1.5; // Slightly larger than original
+                geometry = new THREE.TubeGeometry(curve, 8, radius, 6, false);
             } else {
                 geometry = new THREE.BoxGeometry(1, 1, 1);
             }
         }
         
         const selectionBox = new THREE.Mesh(geometry, this.selectionBoxMaterial);
-        selectionBox.position.copy(object.position);
         
-        // For edges, orient the selection box
-        if (object.userData.type === 'edge') {
-            const edge = object.userData.edge;
-            if (edge && edge.startNode && edge.endNode) {
-                const start = edge.startNode.mesh.position;
-                const end = edge.endNode.mesh.position;
-                const center = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
-                selectionBox.position.copy(center);
-                selectionBox.lookAt(end);
-                selectionBox.rotateX(Math.PI / 2);
-            }
+        // For nodes, copy position directly
+        if (object.userData.type === 'node') {
+            selectionBox.position.copy(object.position);
         }
+        // For edges with TubeGeometry, no positioning needed - curve is already in world coordinates
         
         this.selectionBoxes.set(object, selectionBox);
         this.scene.add(selectionBox);
