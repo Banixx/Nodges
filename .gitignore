@@ -1,0 +1,36 @@
+# Logs
+*.log
+server.log
+
+# Temporary files
+tmp_*
+*.tmp
+
+# Backup files (keep structure but ignore content)
+backups/*
+!backups/.gitkeep
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node modules (if any)
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+
+# Markdown files (except README.md)
+*.md
+!README.md
