@@ -391,52 +391,22 @@ export class SelectionManager {
      * Create selection box for object
      */
     createSelectionBox(object) {
-        let geometry;
-        let scale = 1.1;
-        
+        // Nur fuer Nodes - Edges verwenden das HighlightManager-System
         if (object.userData.type === 'node') {
-            // Create box around node
+            let scale = 1.1;
             const boundingBox = new THREE.Box3().setFromObject(object);
             const size = boundingBox.getSize(new THREE.Vector3());
-            geometry = new THREE.BoxGeometry(size.x * scale, size.y * scale, size.z * scale);
-        } else if (object.userData.type === 'edge') {
-            // Create tube around edge that matches the actual edge geometry
-            const edge = object.userData.edge;
-            if (edge && edge.startNode && edge.endNode) {
-                // Use the same curve as the original edge
-                const start = edge.startNode.mesh.position.clone();
-                const end = edge.endNode.mesh.position.clone();
-                const midPoint = new THREE.Vector3(
-                    (start.x + end.x) / 2,
-                    (start.y + end.y) / 2 + (edge.options.curveHeight || 2),
-                    (start.z + end.z) / 2
-                );
-                
-                // Add offset if present
-                if (edge.options.offset !== 0) {
-                    const direction = new THREE.Vector3().subVectors(end, start).normalize();
-                    const offsetDirection = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
-                    midPoint.addScaledVector(offsetDirection, edge.options.offset);
-                }
-                
-                const curve = new THREE.QuadraticBezierCurve3(start, midPoint, end);
-                const radius = (edge.options.radius || 0.2) * 1.5; // Slightly larger than original
-                geometry = new THREE.TubeGeometry(curve, 8, radius, 6, false);
-            } else {
-                geometry = new THREE.BoxGeometry(1, 1, 1);
-            }
-        }
-        
-        const selectionBox = new THREE.Mesh(geometry, this.selectionBoxMaterial);
-        
-        // For nodes, copy position directly
-        if (object.userData.type === 'node') {
+            const geometry = new THREE.BoxGeometry(size.x * scale, size.y * scale, size.z * scale);
+            
+            const selectionBox = new THREE.Mesh(geometry, this.selectionBoxMaterial);
             selectionBox.position.copy(object.position);
+            
+            this.selectionBoxes.set(object, selectionBox);
+            this.scene.add(selectionBox);
+        } else if (object.userData.type === 'edge') {
+            // Fuer Edges: Erstelle eine gekruemmte Selektions-Linie die der urspruenglichen Edge folgt
+            this.createEdgeSelectionIndicator(object);
         }
-        // For edges with TubeGeometry, no positioning needed - curve is already in world coordinates
-        
-        this.selectionBoxes.set(object, selectionBox);
-        this.scene.add(selectionBox);
     }
 
     /**
@@ -446,8 +416,55 @@ export class SelectionManager {
         const box = this.selectionBoxes.get(object);
         if (box) {
             this.scene.remove(box);
+            // Dispose geometry and material for proper cleanup
+            if (box.geometry) box.geometry.dispose();
+            if (box.material) box.material.dispose();
             this.selectionBoxes.delete(object);
         }
+    }
+
+    /**
+     * Create curved selection indicator for edges
+     */
+    createEdgeSelectionIndicator(edgeObject) {
+        console.log('[DEBUG] createEdgeSelectionIndicator aufgerufen fuer:', edgeObject);
+        if (!edgeObject.userData.edge) {
+            console.log('[DEBUG] Kein edge userData gefunden');
+            return;
+        }
+        
+        const edge = edgeObject.userData.edge;
+        console.log('[DEBUG] Edge gefunden:', edge);
+        
+        // Erstelle die gleiche Kurve wie die urspruengliche Edge
+        const curve = edge.createCurve();
+        
+        // Erstelle Geometrie mit etwas groesserem Radius fuer Sichtbarkeit
+        const originalRadius = edge.options.radius || 0.2;
+        const selectionRadius = originalRadius * 1.3; // 30% groesser
+        const geometry = new THREE.TubeGeometry(
+            curve, 
+            edge.options.segments || 7, 
+            selectionRadius, 
+            edge.options.radialSegments || 3, 
+            false
+        );
+        
+        // Hellgruenes Material fuer Selektion
+        const material = new THREE.MeshBasicMaterial({
+            color: 0x00ff00,
+            transparent: true,
+            opacity: 0.6,
+            side: THREE.DoubleSide
+        });
+        
+        const selectionIndicator = new THREE.Mesh(geometry, material);
+        selectionIndicator.userData.type = 'selection-indicator';
+        selectionIndicator.userData.parentEdge = edgeObject;
+        
+        this.selectionBoxes.set(edgeObject, selectionIndicator);
+        this.scene.add(selectionIndicator);
+        console.log('[DEBUG] Gekruemmte Selektions-Edge erstellt und zur Szene hinzugefuegt');
     }
 
     /**

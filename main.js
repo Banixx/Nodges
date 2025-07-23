@@ -1,6 +1,6 @@
 /**
- * Nodges 0.89 - Main Application
- * 3D Network Visualization
+ * Nodges 0.90 - Main Application
+ * 3D Network Visualization with Advanced Caching
  */
 
 import * as THREE from 'three';
@@ -19,6 +19,7 @@ import { RaycastManager } from './src/utils/RaycastManager.js';
 import { NetworkAnalyzer } from './src/utils/NetworkAnalyzer.js';
 import { PathFinder } from './src/utils/PathFinder.js';
 import { PerformanceOptimizer } from './src/utils/PerformanceOptimizer.js';
+import { FPSMonitor } from './src/utils/FPSMonitor.js';
 import { FileHandler } from './src/utils/FileHandler.js';
 import { ImportManager } from './src/utils/ImportManager.js';
 import { ExportManager } from './src/utils/ExportManager.js';
@@ -39,7 +40,7 @@ import { Edge } from './objects/Edge.js';
 
 class NodgesApp {
     constructor() {
-        console.log(' Initialisiere Nodges 0.89');
+        console.log(' Initialisiere Nodges 0.90');
         
         // Core Components
         this.scene = null;
@@ -58,6 +59,7 @@ class NodgesApp {
         this.networkAnalyzer = null;
         this.pathFinder = null;
         this.performanceOptimizer = null;
+        this.fpsMonitor = null;
         this.fileHandler = null;
         this.importManager = null;
         this.exportManager = null;
@@ -75,6 +77,11 @@ class NodgesApp {
         this.currentEdges = [];
         this.nodeObjects = [];
         this.edgeObjects = [];
+        this.lastMouseMoveTime = 0;
+        
+        // Performance cache for raycast operations
+        this.raycastObjectsCache = null;
+        this.raycastCacheValid = false;
         
         // State
         this.isInitialized = false;
@@ -91,7 +98,7 @@ class NodgesApp {
             await this.loadDefaultData();
             
             this.isInitialized = true;
-            console.log(' Nodges 0.89 erfolgreich initialisiert');
+            console.log(' Nodges 0.90 erfolgreich initialisiert');
             
             this.animate();
         } catch (error) {
@@ -203,6 +210,7 @@ class NodgesApp {
             this.networkAnalyzer = new NetworkAnalyzer();
             this.pathFinder = new PathFinder(this.scene, this.stateManager);
             this.performanceOptimizer = new PerformanceOptimizer(this.scene, this.camera, this.renderer);
+            this.fpsMonitor = new FPSMonitor();
             this.fileHandler = new FileHandler();
             this.importManager = new ImportManager();
             this.exportManager = new ExportManager();
@@ -261,9 +269,6 @@ class NodgesApp {
         document.getElementById('mediumData')?.addEventListener('click', () => this.loadData('data/examples/medium.json'));
         document.getElementById('largeData')?.addEventListener('click', () => this.loadData('data/examples/large.json'));
         document.getElementById('megaData')?.addEventListener('click', () => this.loadData('data/examples/mega.json'));
-        document.getElementById('familyData')?.addEventListener('click', () => this.loadData('data/examples/family.json'));
-        document.getElementById('architektur')?.addEventListener('click', () => this.loadData('data/examples/architektur.json'));
-        document.getElementById('royalFamilyData')?.addEventListener('click', () => this.loadData('data/examples/royal_family.json'));
         
         // Layout button
         document.getElementById('layoutButton')?.addEventListener('click', () => {
@@ -342,9 +347,15 @@ class NodgesApp {
             }
         });
         
-        // Clear Edge geometry cache
-        if (typeof Edge !== 'undefined' && Edge.geometryCache) {
-            Edge.geometryCache.clear();
+        // Cache-Statistiken vor dem Leeren anzeigen
+        if (typeof Edge !== 'undefined' && Edge.getCacheStats) {
+            const stats = Edge.getCacheStats();
+            console.log('[CACHE] Vor Bereinigung:', stats);
+        }
+        
+        // Clear Edge geometry cache ordnungsgemass
+        if (typeof Edge !== 'undefined' && Edge.clearCache) {
+            Edge.clearCache();
         }
         
         this.nodeObjects = [];
@@ -367,18 +378,47 @@ class NodgesApp {
     
     async createEdges() {
         const totalEdges = this.currentEdges.length;
-        console.log('Erstelle ' + totalEdges + ' Edges mit adaptiver Qualitaet');
+        console.log('Erstelle ' + totalEdges + ' Edges mit adaptiver Qualitaet und Caching');
+        
+        // Performance-Messung starten
+        const startTime = performance.now();
+        let geometryCacheHits = 0;
+        let geometryCacheMisses = 0;
+        let materialCacheHits = 0;
+        let materialCacheMisses = 0;
         
         this.currentEdges.forEach((edgeData, index) => {
             const startNodeObj = this.nodeObjects[edgeData.start];
             const endNodeObj = this.nodeObjects[edgeData.end];
             
             if (startNodeObj && endNodeObj) {
+                // Cache-Statistiken vor Edge-Erstellung
+                const geoCacheSizeBefore = Edge.geometryCache ? Edge.geometryCache.size : 0;
+                const matCacheSizeBefore = Edge.materialCache ? Edge.materialCache.size : 0;
+                
                 const edge = new Edge(startNodeObj, endNodeObj, {
                     ...edgeData,
                     name: edgeData.name || 'Edge ' + index,
                     totalEdges: totalEdges
                 });
+                
+                // Cache-Statistiken nach Edge-Erstellung
+                const geoCacheSizeAfter = Edge.geometryCache ? Edge.geometryCache.size : 0;
+                const matCacheSizeAfter = Edge.materialCache ? Edge.materialCache.size : 0;
+                
+                // Geometrie-Cache-Tracking
+                if (geoCacheSizeAfter > geoCacheSizeBefore) {
+                    geometryCacheMisses++;
+                } else {
+                    geometryCacheHits++;
+                }
+                
+                // Material-Cache-Tracking
+                if (matCacheSizeAfter > matCacheSizeBefore) {
+                    materialCacheMisses++;
+                } else {
+                    materialCacheHits++;
+                }
                 
                 if (edge.line) {
                     this.scene.add(edge.line);
@@ -388,6 +428,36 @@ class NodgesApp {
                 console.warn('Edge ' + index + ': Knoten nicht gefunden');
             }
         });
+        
+        // Performance-Ergebnisse
+        const endTime = performance.now();
+        const duration = endTime - startTime;
+        const totalCacheHits = geometryCacheHits + materialCacheHits;
+        const totalCacheMisses = geometryCacheMisses + materialCacheMisses;
+        const totalCacheOperations = totalCacheHits + totalCacheMisses;
+        const overallCacheHitRate = totalCacheOperations > 0 ? ((totalCacheHits / totalCacheOperations) * 100).toFixed(1) : 0;
+        const geometryHitRate = (geometryCacheHits + geometryCacheMisses) > 0 ? ((geometryCacheHits / (geometryCacheHits + geometryCacheMisses)) * 100).toFixed(1) : 0;
+        const materialHitRate = (materialCacheHits + materialCacheMisses) > 0 ? ((materialCacheHits / (materialCacheHits + materialCacheMisses)) * 100).toFixed(1) : 0;
+        
+        console.log(`[PERFORMANCE] Edge-Erstellung abgeschlossen:`);
+        console.log(`  - Dauer: ${duration.toFixed(2)}ms`);
+        console.log(`  - Durchschnitt pro Edge: ${(duration / totalEdges).toFixed(2)}ms`);
+        console.log(`  - Gesamt Cache Hit Rate: ${overallCacheHitRate}%`);
+        console.log(`[GEOMETRIE-CACHE]`);
+        console.log(`  - Hits: ${geometryCacheHits} | Misses: ${geometryCacheMisses} | Rate: ${geometryHitRate}%`);
+        console.log(`[MATERIAL-CACHE]`);
+        console.log(`  - Hits: ${materialCacheHits} | Misses: ${materialCacheMisses} | Rate: ${materialHitRate}%`);
+        
+        // Detaillierte Cache-Statistiken anzeigen
+        if (Edge.getCacheStats) {
+            const stats = Edge.getCacheStats();
+            console.log(`[CACHE] Finale Statistiken:`);
+            console.log(`  - Geometrien: ${stats.geometries}`);
+            console.log(`  - Materialien: ${stats.materials}`);
+            console.log(`  - Gesamt: ${stats.usage}`);
+            console.log(`  - Speicher: ${stats.memoryEstimate}`);
+            console.log(`  - Breakdown: Geo=${stats.breakdown.geometryMemory}, Mat=${stats.breakdown.materialMemory}`);
+        }
     }
     
     updateFileInfo(filename, nodeCount, edgeCount) {
@@ -474,18 +544,12 @@ class NodgesApp {
     onMouseClick(event) {
         if (!this.raycastManager) return;
         
-        const mouse = new THREE.Vector2();
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        this.raycastManager.updateMousePosition(event);
+        const intersectedObject = this.raycastManager.findIntersectedObject();
         
-        const nodeObjects = this.nodeObjects.map(n => n.mesh).filter(mesh => mesh);
-        const edgeObjects = this.edgeObjects.map(e => e.line).filter(line => line);
-        const intersects = this.raycastManager.raycast(mouse, [...nodeObjects, ...edgeObjects]);
-        
-        if (intersects.length > 0) {
-            const selectedObject = intersects[0].object;
-            this.stateManager.setSelectedObject(selectedObject);
-            this.showInfoPanel(selectedObject);
+        if (intersectedObject) {
+            this.stateManager.setSelectedObject(intersectedObject);
+            this.showInfoPanel(intersectedObject);
         } else {
             this.stateManager.setSelectedObject(null);
             this.hideInfoPanel();
@@ -495,16 +559,15 @@ class NodgesApp {
     onMouseMove(event) {
         if (!this.raycastManager) return;
         
-        const mouse = new THREE.Vector2();
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        // Throttle mouse move events to 60fps max
+        const now = performance.now();
+        if (now - this.lastMouseMoveTime < 16.67) return; // 60fps = 16.67ms
+        this.lastMouseMoveTime = now;
         
-        const nodeObjects = this.nodeObjects.map(n => n.mesh).filter(mesh => mesh);
-        const edgeObjects = this.edgeObjects.map(e => e.line).filter(line => line);
-        const intersects = this.raycastManager.raycast(mouse, [...nodeObjects, ...edgeObjects]);
+        this.raycastManager.updateMousePosition(event);
+        const hoveredObject = this.raycastManager.findIntersectedObject();
         
-        if (intersects.length > 0) {
-            const hoveredObject = intersects[0].object;
+        if (hoveredObject) {
             this.stateManager.setHoveredObject(hoveredObject);
             document.body.style.cursor = 'pointer';
         } else {
@@ -617,18 +680,14 @@ class NodgesApp {
         return connectedEdges;
     }
     
-    // Highlight Edge beim Hovern
+    // Highlight Edge beim Hovern - verwendet HighlightManager
     highlightEdge(edgeIndex, highlight) {
         const edgeObject = this.edgeObjects[edgeIndex];
         if (edgeObject && edgeObject.line) {
             if (highlight) {
-                // Edge hervorheben
-                edgeObject.line.material.emissive.setHex(0x444444);
-                edgeObject.line.material.emissiveIntensity = 0.3;
+                this.stateManager.setHoveredObject(edgeObject.line);
             } else {
-                // Highlight entfernen
-                edgeObject.line.material.emissive.setHex(0x000000);
-                edgeObject.line.material.emissiveIntensity = 0;
+                this.stateManager.setHoveredObject(null);
             }
         }
     }
@@ -643,18 +702,14 @@ class NodgesApp {
         }
     }
     
-    // Highlight Node beim Hovern
+    // Highlight Node beim Hovern - verwendet HighlightManager
     highlightNode(nodeIndex, highlight) {
         const nodeObject = this.nodeObjects[nodeIndex];
         if (nodeObject && nodeObject.mesh) {
             if (highlight) {
-                // Node hervorheben
-                nodeObject.mesh.material.emissive.setHex(0x444444);
-                nodeObject.mesh.material.emissiveIntensity = 0.3;
+                this.stateManager.setHoveredObject(nodeObject.mesh);
             } else {
-                // Highlight entfernen
-                nodeObject.mesh.material.emissive.setHex(0x000000);
-                nodeObject.mesh.material.emissiveIntensity = 0;
+                this.stateManager.setHoveredObject(null);
             }
         }
     }
@@ -671,6 +726,11 @@ class NodgesApp {
     
     animate() {
         requestAnimationFrame(() => this.animate());
+        
+        // Update FPS monitor
+        if (this.fpsMonitor) {
+            this.fpsMonitor.update();
+        }
         
         this.controls.update();
         

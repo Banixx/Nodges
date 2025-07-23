@@ -1,13 +1,55 @@
 import * as THREE from 'three';
 
 export class Edge {
-    // Statischer Cache nur für Geometrien (Materialien werden nicht mehr gecacht)
+    // Statische Caches für Geometrien UND Materialien
     static geometryCache = new Map();
+    static materialCache = new Map();
     
-    // Cache-Reset-Methode
+    // Cache-Reset-Methode mit ordnungsgemasser Bereinigung
     static clearCache() {
+        console.log(`[CACHE] Bereinige ${Edge.geometryCache.size} Geometrien und ${Edge.materialCache.size} Materialien...`);
+        
+        // Dispose alle Geometrien ordnungsgemass
+        Edge.geometryCache.forEach((geometry, key) => {
+            if (geometry && geometry.dispose) {
+                geometry.dispose();
+            }
+        });
+        
+        // Dispose alle Materialien ordnungsgemass
+        Edge.materialCache.forEach((material, key) => {
+            if (material && material.dispose) {
+                // Dispose auch Texturen falls vorhanden
+                if (material.map) material.map.dispose();
+                if (material.normalMap) material.normalMap.dispose();
+                if (material.emissiveMap) material.emissiveMap.dispose();
+                material.dispose();
+            }
+        });
+        
         Edge.geometryCache.clear();
-        console.log('[CACHE] Edge geometry cache cleared');
+        Edge.materialCache.clear();
+        console.log('[CACHE] Edge geometry and material caches cleared and disposed');
+    }
+    
+    // Cache-Statistiken
+    static getCacheStats() {
+        const totalSize = Edge.geometryCache.size + Edge.materialCache.size;
+        const geometryMemory = Edge.geometryCache.size * 0.1; // ~100KB pro Geometrie
+        const materialMemory = Edge.materialCache.size * 0.01; // ~10KB pro Material
+        
+        return {
+            geometries: Edge.geometryCache.size,
+            materials: Edge.materialCache.size,
+            totalSize: totalSize,
+            maxSize: 1000,
+            usage: `${totalSize}/1000`,
+            memoryEstimate: `${(geometryMemory + materialMemory).toFixed(1)}MB`,
+            breakdown: {
+                geometryMemory: `${geometryMemory.toFixed(1)}MB`,
+                materialMemory: `${materialMemory.toFixed(1)}MB`
+            }
+        };
     }
 
     constructor(startNode, endNode, options = {}) {
@@ -129,26 +171,48 @@ export class Edge {
         const radius = this.options.radius || 0.5;
         const radialSegments = this.options.radialSegments || 3;
         
-        // CACHE TEMPORAER DEAKTIVIERT - Jede Edge wird neu erstellt
-        const geometry = new THREE.TubeGeometry(curve, segments, radius, radialSegments, false);
-        return geometry;
+        // CACHE REAKTIVIERT - Massive Performance-Verbesserung!
+        const startId = this.startNode?.id || this.startNode?.mesh?.name || 'unknown';
+        const endId = this.endNode?.id || this.endNode?.mesh?.name || 'unknown';
         
-        // Alter Cache-Code (deaktiviert):
-        // const startId = this.startNode?.id || this.startNode?.mesh?.name || 'unknown';
-        // const endId = this.endNode?.id || this.endNode?.mesh?.name || 'unknown';
-        // const cacheKey = `curve-${startId}-${endId}-${segments}-${curveHeight}-${offset}-${radius}-${radialSegments}-${this.name}`;
-        // if (Edge.geometryCache.has(cacheKey)) {
-        //     return Edge.geometryCache.get(cacheKey);
-        // }
-        // Edge.geometryCache.set(cacheKey, geometry);
+        // Erstelle intelligenten Cache-Key mit allen relevanten Parametern
+        const cacheKey = `geo-${startId}-${endId}-${segments}-${curveHeight}-${offset}-${radius}-${radialSegments}`;
+        
+        // Pruefe Cache zuerst
+        if (Edge.geometryCache.has(cacheKey)) {
+            return Edge.geometryCache.get(cacheKey);
+        }
+        const geometry = new THREE.TubeGeometry(curve, segments, radius, radialSegments, false);
+        
+        // Cache-Limit implementieren (max 1000 Geometrien)
+        if (Edge.geometryCache.size >= 1000) {
+            const firstKey = Edge.geometryCache.keys().next().value;
+            const oldGeometry = Edge.geometryCache.get(firstKey);
+            if (oldGeometry && oldGeometry.dispose) {
+                oldGeometry.dispose();
+            }
+            Edge.geometryCache.delete(firstKey);
+        }
+        
+        // In Cache speichern
+        Edge.geometryCache.set(cacheKey, geometry);
+        
+        return geometry;
     }
 
     createMaterial() {
         const color = this.options.color;
         const style = this.options.style;
+        const opacity = this.options.opacity || 1;
+        const shininess = this.options.shininess || 30;
         
-        // Erstelle für jede Edge ein einzigartiges Material ohne Caching
-        // Das verhindert das Problem, dass mehrere Edges das gleiche Material teilen
+        // MATERIAL-CACHING IMPLEMENTIERT - Weitere Performance-Verbesserung!
+        const materialKey = `mat-${color}-${style}-${opacity}-${shininess}`;
+        
+        // Pruefe Material-Cache zuerst
+        if (Edge.materialCache.has(materialKey)) {
+            return Edge.materialCache.get(materialKey);
+        }
         let material;
 
         switch(style) {
@@ -156,25 +220,27 @@ export class Edge {
                 material = new THREE.MeshPhongMaterial({
                     color: color,
                     transparent: true,
-                    opacity: 1,
+                    opacity: opacity,
 					side: THREE.DoubleSide,
-					shininess: 30
+					shininess: shininess
                 });
                 break;
             case 'dotted':
                 material = new THREE.MeshPhongMaterial({
                     color: color,
                     transparent: true,
-                    opacity: 1,
+                    opacity: opacity,
 					side: THREE.DoubleSide,
-					shininess: 30
+					shininess: shininess
                 });
                 break;
             default:
                 material = new THREE.MeshPhongMaterial({
                     color: color,
+                    transparent: opacity < 1,
+                    opacity: opacity,
 					side: THREE.DoubleSide,
-					shininess: 30
+					shininess: shininess
                 });
                 break;
         }
@@ -182,8 +248,26 @@ export class Edge {
         // Speichere die ursprüngliche Farbe für Reset-Funktionen
         material.userData = {
             originalColor: color,
-            originalStyle: style
+            originalStyle: style,
+            cacheKey: materialKey
         };
+        
+        // Material-Cache-Limit implementieren (max 500 Materialien)
+        if (Edge.materialCache.size >= 500) {
+            const firstKey = Edge.materialCache.keys().next().value;
+            const oldMaterial = Edge.materialCache.get(firstKey);
+            if (oldMaterial && oldMaterial.dispose) {
+                // Dispose Texturen falls vorhanden
+                if (oldMaterial.map) oldMaterial.map.dispose();
+                if (oldMaterial.normalMap) oldMaterial.normalMap.dispose();
+                if (oldMaterial.emissiveMap) oldMaterial.emissiveMap.dispose();
+                oldMaterial.dispose();
+            }
+            Edge.materialCache.delete(firstKey);
+        }
+        
+        // In Material-Cache speichern
+        Edge.materialCache.set(materialKey, material);
         
         return material;
     }

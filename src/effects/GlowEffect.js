@@ -106,10 +106,15 @@ export class GlowEffect {
                 maxIntensity: 1.0
             });
         } else if (object.userData.type === 'edge') {
-            // Verwende emissive statt Farbaenderung um Schatten-Effekt zu vermeiden
+            // Verwende nur emissive um die urspruengliche Geometrie zu erhalten
             if (object.material) {
+                // Speichere urspruengliche Werte falls noch nicht gespeichert
+                if (!object.material.userData.originalEmissive) {
+                    object.material.userData.originalEmissive = object.material.emissive.getHex();
+                    object.material.userData.originalEmissiveIntensity = object.material.emissiveIntensity;
+                }
                 object.material.emissive.setHex(0xff6600); // Orange emissive
-                object.material.emissiveIntensity = 0.3;
+                object.material.emissiveIntensity = 0.5;
             }
         }
     }

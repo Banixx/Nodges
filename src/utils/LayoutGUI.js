@@ -213,15 +213,12 @@ export class LayoutGUI {
         
         toggleInput.addEventListener('change', (e) => {
             this.layoutEnabled = e.target.checked;
-            console.log('[DEBUG] Toggle geaendert:', this.layoutEnabled);
             if (this.layoutEnabled) {
                 slider.style.backgroundColor = '#4CAF50'; // Gruen fuer aktiviert
                 sliderButton.style.transform = 'translateX(16px)';
-                console.log('[DEBUG] Layout aktiviert - Schalter gruen');
             } else {
                 slider.style.backgroundColor = '#ccc';
                 sliderButton.style.transform = 'translateX(0px)';
-                console.log('[DEBUG] Layout deaktiviert - Schalter grau');
             }
             this.updateLayoutState();
         });
@@ -272,11 +269,11 @@ export class LayoutGUI {
         `;
         this.panel.appendChild(this.contentContainer);
         
-        // Panel standardmaessig kollabiert
-        this.isCollapsed = true;
-        this.contentContainer.style.maxHeight = '0px';
-        this.contentContainer.style.opacity = '0';
-        this.toggleButton.innerHTML = '▶';
+        // Panel standardmaessig ausgeklappt fuer bessere Benutzererfahrung
+        this.isCollapsed = false;
+        this.contentContainer.style.maxHeight = '1000px';
+        this.contentContainer.style.opacity = '1';
+        this.toggleButton.innerHTML = '▼';
         
         // Panel zum DOM hinzufuegen
         if (document.body) {
@@ -609,21 +606,15 @@ export class LayoutGUI {
             }
         });
         
-        console.log(` Preset "${presetName}" angewendet`);
     }
     
     async applyCurrentLayout() {
         const layoutName = this.layoutSelect.value;
-        console.log('[DEBUG] Layout anwenden:', layoutName, this.currentParameters);
         
         // Direkt LayoutManager aufrufen statt Event
         if (window.nodgesApp && window.nodgesApp.layoutManager) {
             const nodeObjects = window.nodgesApp.getNodeObjects();
             const edgeObjects = window.nodgesApp.getEdgeObjects();
-            console.log('[DEBUG] Node/Edge-Objekte gefunden:', nodeObjects.length, edgeObjects.length);
-            
-            // Node-Objekte direkt verwenden (haben position-Eigenschaft)
-            console.log('[DEBUG] Node-Position:', nodeObjects[0].position);
             
             const nodes = nodeObjects.map(nodeObj => ({
                 x: nodeObj.position.x,
@@ -647,9 +638,6 @@ export class LayoutGUI {
                 }
             }));
             
-            console.log('[DEBUG] Verarbeite Knoten/Kanten:', nodes.length, edges.length);
-            console.log('[DEBUG] Erste Node-Daten:', nodes[0]);
-            
             const success = window.nodgesApp.layoutManager.applyLayout(
                 layoutName, 
                 nodes, 
@@ -658,28 +646,20 @@ export class LayoutGUI {
             );
             
             if (success) {
-                console.log('[DEBUG] Layout erfolgreich angewendet');
                 // Knoten-Positionen in 3D-Objekten aktualisieren
                 this.updateNodePositions(nodeObjects, nodes);
                 // Edges aktualisieren
                 this.updateEdgePositions(edgeObjects);
-            } else {
-                console.error('[DEBUG] Layout-Anwendung fehlgeschlagen');
             }
-        } else {
-            console.error('[DEBUG] nodgesApp oder layoutManager nicht verfuegbar');
         }
     }
     
     updateNodePositions(nodeObjects, nodes) {
-        console.log('[DEBUG] Aktualisiere Positionen fuer', nodeObjects.length, 'Knoten');
         nodeObjects.forEach((nodeObj, index) => {
             if (nodes[index] && nodeObj.mesh) {
                 const newX = nodes[index].x || 0;
                 const newY = nodes[index].y || 0;
                 const newZ = nodes[index].z || 0;
-                
-                console.log(`[DEBUG] Knoten ${index}: (${newX}, ${newY}, ${newZ})`);
                 
                 nodeObj.mesh.position.set(newX, newY, newZ);
                 
@@ -687,15 +667,11 @@ export class LayoutGUI {
                 nodeObj.position.x = newX;
                 nodeObj.position.y = newY;
                 nodeObj.position.z = newZ;
-                
-                console.log(`[DEBUG] Mesh-Position gesetzt:`, nodeObj.mesh.position);
             }
         });
-        console.log('[DEBUG] Knoten-Positionen aktualisiert');
     }
     
     updateEdgePositions(edgeObjects) {
-        console.log('[DEBUG] Aktualisiere Edge-Positionen fuer', edgeObjects.length, 'Edges');
         edgeObjects.forEach((edgeObj, index) => {
             if (edgeObj.line && edgeObj.startNode && edgeObj.endNode) {
                 // Edge komplett neu erstellen statt Geometrie zu modifizieren
@@ -703,6 +679,13 @@ export class LayoutGUI {
                 
                 // Alte Edge aus Scene entfernen
                 scene.remove(edgeObj.line);
+                
+                // Entferne alte Edge aus HighlightManager falls selektiert
+                if (window.nodgesApp && window.nodgesApp.highlightManager) {
+                    window.nodgesApp.highlightManager.removeHighlight(edgeObj.line);
+                    window.nodgesApp.highlightManager.highlightedObjects.delete(edgeObj.line);
+                }
+                
                 edgeObj.line.geometry?.dispose();
                 edgeObj.line.material?.dispose();
                 
@@ -713,11 +696,8 @@ export class LayoutGUI {
                 if (edgeObj.line) {
                     scene.add(edgeObj.line);
                 }
-                
-                console.log(`[DEBUG] Edge ${index} neu erstellt`);
             }
         });
-        console.log('[DEBUG] Edge-Positionen aktualisiert');
     }
     
     getLayoutDisplayName(layoutName) {
@@ -766,15 +746,12 @@ export class LayoutGUI {
     // Panel anzeigen
     show() {
         this.panel.style.display = 'block';
-        // Beim ersten Anzeigen kollabiert starten
+        // Beim ersten Anzeigen ausgeklappt starten fuer bessere UX
         if (this.isCollapsed === undefined) {
-            this.isCollapsed = true;
-            this.contentContainer.style.maxHeight = '0px';
-            this.contentContainer.style.opacity = '0';
-            const toggleButton = this.panel.querySelector('.toggle-button');
-            if (toggleButton) {
-                toggleButton.innerHTML = '▶';
-            }
+            this.isCollapsed = false;
+            this.contentContainer.style.maxHeight = '1000px';
+            this.contentContainer.style.opacity = '1';
+            this.toggleButton.innerHTML = '▼';
         }
         this.updatePosition();
     }
@@ -820,7 +797,6 @@ export class LayoutGUI {
                 stopButton.style.cursor = 'pointer';
                 stopButton.style.opacity = '1';
             }
-            console.log('[LAYOUT] Layout-Algorithmen aktiviert');
         } else {
             // Layout deaktiviert - Buttons deaktivieren
             if (applyButton) {
@@ -833,7 +809,6 @@ export class LayoutGUI {
                 stopButton.style.cursor = 'not-allowed';
                 stopButton.style.opacity = '0.6';
             }
-            console.log('[LAYOUT] Layout-Algorithmen deaktiviert');
         }
     }
     
