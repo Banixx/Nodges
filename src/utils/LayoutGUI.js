@@ -20,7 +20,7 @@ export class LayoutGUI {
         this.animationControls = null;
         this.toggleButton = null;
         this.contentContainer = null;
-        this.isCollapsed = false; // Standardmaessig ausgeklappt
+        this.isCollapsed = true; // Standardmaessig kollabiert
         this.layoutToggleSwitch = null;
         this.layoutEnabled = false; // Standardmaessig ausgeschaltet
         
@@ -109,10 +109,15 @@ export class LayoutGUI {
         
         // Initial collapsed state setzen
         if (this.isCollapsed) {
+            this.contentContainer.style.maxHeight = '0px';
+            this.contentContainer.style.opacity = '0';
             this.contentContainer.style.display = 'none';
-            this.toggleButton.innerHTML = '▶';
+            this.toggleButton.innerHTML = '>';
         } else {
-            this.toggleButton.innerHTML = '▼';
+            this.contentContainer.style.maxHeight = '1000px';
+            this.contentContainer.style.opacity = '1';
+            this.contentContainer.style.display = 'block';
+            this.toggleButton.innerHTML = 'v';
         }
         
         console.log(' LayoutGUI initialisiert');
@@ -229,9 +234,9 @@ export class LayoutGUI {
         leftSection.appendChild(title);
         leftSection.appendChild(this.layoutToggleSwitch);
         
-        // Toggle-Button mit Pfeil
+        // Toggle-Button mit Pfeil (wie bei Info Panel)
         this.toggleButton = document.createElement('button');
-        this.toggleButton.innerHTML = '▶';
+        this.toggleButton.innerHTML = '>';
         this.toggleButton.style.cssText = `
             background: none;
             border: none;
@@ -269,11 +274,12 @@ export class LayoutGUI {
         `;
         this.panel.appendChild(this.contentContainer);
         
-        // Panel standardmaessig ausgeklappt fuer bessere Benutzererfahrung
-        this.isCollapsed = false;
-        this.contentContainer.style.maxHeight = '1000px';
-        this.contentContainer.style.opacity = '1';
-        this.toggleButton.innerHTML = '▼';
+        // Panel standardmaessig kollabiert fuer weniger UI-Clutter
+        this.isCollapsed = true;
+        this.contentContainer.style.maxHeight = '0px';
+        this.contentContainer.style.opacity = '0';
+        this.contentContainer.style.display = 'none'; // WICHTIG: Auch display none setzen
+        this.toggleButton.innerHTML = '>';
         
         // Panel zum DOM hinzufuegen
         if (document.body) {
@@ -761,7 +767,7 @@ export class LayoutGUI {
         this.panel.style.display = 'none';
     }
     
-    // Content ein-/ausklappen
+    // Content ein-/ausklappen (wie bei Info Panel)
     toggleCollapse() {
         this.isCollapsed = !this.isCollapsed;
         
@@ -769,14 +775,14 @@ export class LayoutGUI {
             // Einklappen
             this.contentContainer.style.maxHeight = '0px';
             this.contentContainer.style.opacity = '0';
-            this.toggleButton.innerHTML = '▶';
-            this.toggleButton.style.transform = 'rotate(0deg)';
+            this.contentContainer.style.display = 'none';
+            this.toggleButton.innerHTML = '>';
         } else {
             // Ausklappen
             this.contentContainer.style.maxHeight = '1000px';
             this.contentContainer.style.opacity = '1';
-            this.toggleButton.innerHTML = '▼';
-            this.toggleButton.style.transform = 'rotate(0deg)';
+            this.contentContainer.style.display = 'block';
+            this.toggleButton.innerHTML = 'v';
         }
     }
     

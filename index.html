@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Nodges 0.90</title>
+    <title>Nodges 0.92</title>
     <link rel="icon" type="image/png" href="favicon-32x32.png">
     <style>
         body { margin: 0; }
@@ -418,27 +418,51 @@
         
         
         
-        // Update Object Panel Position (below Info Panel)
-        function updateObjectPanelPosition() {
-            const fileInfoPanel = document.getElementById('fileInfoPanel');
+        // Update Selection Panel Position (below Layout Panel - ganz unten)
+        function updateSelectionPanelPosition() {
+            const layoutPanel = document.getElementById('layoutPanel'); // Layout Panel von LayoutGUI.js
             const infoPanel = document.getElementById('infoPanel');
             
-            if (fileInfoPanel && infoPanel) {
-                const fileInfoRect = fileInfoPanel.getBoundingClientRect();
-                const newTop = fileInfoRect.bottom + 10; // 10px gap below Info Panel
-                infoPanel.style.top = newTop + 'px';
+            if (layoutPanel && infoPanel) {
+                const layoutPanelRect = layoutPanel.getBoundingClientRect();
+                const newTop = layoutPanelRect.bottom + 10; // 10px gap below Layout Panel
+                
+                // WICHTIG: Mindestabstand beachten
+                const minTopPosition = 160; // Mindestens 160px vom oberen Rand (unter Layout Panel)
+                const finalTop = Math.max(newTop, minTopPosition);
+                
+                infoPanel.style.top = finalTop + 'px';
+                console.log(`[Panel Position] Selection Panel (unter Layout): ${finalTop}px (calculated: ${newTop}px, min: ${minTopPosition}px)`);
+            } else if (!layoutPanel) {
+                // Fallback: Falls Layout Panel noch nicht existiert, unter File Panel
+                const filePanel = document.getElementById('filePanel');
+                if (filePanel && infoPanel) {
+                    const filePanelRect = filePanel.getBoundingClientRect();
+                    const newTop = filePanelRect.bottom + 10;
+                    const minTopPosition = 160;
+                    const finalTop = Math.max(newTop, minTopPosition);
+                    
+                    infoPanel.style.top = finalTop + 'px';
+                    console.log(`[Panel Position] Selection Panel (Fallback unter File): ${finalTop}px`);
+                }
             }
         }
         
-        // Update File Panel Position (below Selection Panel)
+        // Update File Panel Position (below Info Panel - mittlere Position)
         function updateFilePanelPosition() {
-            const infoPanel = document.getElementById('infoPanel');
+            const fileInfoPanel = document.getElementById('fileInfoPanel');
             const filePanel = document.getElementById('filePanel');
             
-            if (infoPanel && filePanel) {
-                const infoPanelRect = infoPanel.getBoundingClientRect();
-                const newTop = infoPanelRect.bottom + 10; // 10px gap below Selection Panel
-                filePanel.style.top = newTop + 'px';
+            if (fileInfoPanel && filePanel) {
+                const fileInfoRect = fileInfoPanel.getBoundingClientRect();
+                const newTop = fileInfoRect.bottom + 10; // 10px gap below Info Panel
+                
+                // WICHTIG: Mindestabstand beachten
+                const minTopPosition = 80; // Mindestens 80px vom oberen Rand (unter Info Panel)
+                const finalTop = Math.max(newTop, minTopPosition);
+                
+                filePanel.style.top = finalTop + 'px';
+                console.log(`[Panel Position] File Panel (mitte): ${finalTop}px (calculated: ${newTop}px, min: ${minTopPosition}px)`);
             }
         }
         
@@ -551,10 +575,10 @@
                 .replace(/\b\w/g, l => l.toUpperCase());
         }
         
-        // Start positioning for File Panel
+        // Start positioning for Panels - NEUE REIHENFOLGE: Info -> File -> Selection
         document.addEventListener('DOMContentLoaded', function() {
-            updateObjectPanelPosition();
             updateFilePanelPosition();
+            updateSelectionPanelPosition();
             
             // Discover and create file buttons
             discoverAndCreateFileButtons();
@@ -565,14 +589,14 @@
             
             if (fileInfoPanel) {
                 const resizeObserver = new ResizeObserver(() => {
-                    updateObjectPanelPosition();
                     updateFilePanelPosition();
+                    updateSelectionPanelPosition();
                 });
                 resizeObserver.observe(fileInfoPanel);
                 
                 const mutationObserver = new MutationObserver(() => {
-                    updateObjectPanelPosition();
                     updateFilePanelPosition();
+                    updateSelectionPanelPosition();
                 });
                 mutationObserver.observe(fileInfoPanel, { 
                     attributes: true, 
@@ -581,26 +605,69 @@
                 });
             }
             
-            if (infoPanel) {
+            // Observer fuer Layout Panel (wichtigster fuer Selection Panel Position)
+            const layoutPanel = document.getElementById('layoutPanel');
+            if (layoutPanel) {
                 const resizeObserver2 = new ResizeObserver(() => {
-                    updateFilePanelPosition();
+                    updateSelectionPanelPosition();
                 });
-                resizeObserver2.observe(infoPanel);
+                resizeObserver2.observe(layoutPanel);
                 
                 const mutationObserver2 = new MutationObserver(() => {
-                    updateFilePanelPosition();
+                    updateSelectionPanelPosition();
                 });
-                mutationObserver2.observe(infoPanel, { 
+                mutationObserver2.observe(layoutPanel, { 
                     attributes: true, 
                     childList: true,
                     subtree: true
                 });
+            } else {
+                // Fallback: Observer fuer File Panel falls Layout Panel noch nicht existiert
+                if (filePanel) {
+                    const resizeObserver2 = new ResizeObserver(() => {
+                        updateSelectionPanelPosition();
+                    });
+                    resizeObserver2.observe(filePanel);
+                    
+                    const mutationObserver2 = new MutationObserver(() => {
+                        updateSelectionPanelPosition();
+                    });
+                    mutationObserver2.observe(filePanel, { 
+                        attributes: true, 
+                        childList: true,
+                        subtree: true
+                    });
+                }
+                
+                // Warte auf Layout Panel und setze Observer spaeter
+                const checkForLayoutPanel = setInterval(() => {
+                    const layoutPanel = document.getElementById('layoutPanel');
+                    if (layoutPanel) {
+                        clearInterval(checkForLayoutPanel);
+                        const resizeObserver3 = new ResizeObserver(() => {
+                            updateSelectionPanelPosition();
+                        });
+                        resizeObserver3.observe(layoutPanel);
+                        
+                        const mutationObserver3 = new MutationObserver(() => {
+                            updateSelectionPanelPosition();
+                        });
+                        mutationObserver3.observe(layoutPanel, { 
+                            attributes: true, 
+                            childList: true,
+                            subtree: true
+                        });
+                        
+                        console.log('[Panel Position] Layout Panel Observer hinzugefuegt');
+                        updateSelectionPanelPosition(); // Sofortige Neupositionierung
+                    }
+                }, 500); // Pruefe alle 500ms
             }
             
             // Window resize
             window.addEventListener('resize', () => {
-                updateObjectPanelPosition();
                 updateFilePanelPosition();
+                updateSelectionPanelPosition();
             });
             
             // Selection Panel Toggle Button
@@ -627,33 +694,34 @@
                         infoPanelToggle.innerHTML = 'v';
                     }
                     
-                    // Update file panel position after toggle
+                    // Update panel positions after toggle
                     setTimeout(() => {
-                        updateFilePanelPosition();
+                        updateFilePanelPosition(); // File Panel neu positionieren
+                        updateSelectionPanelPosition(); // Selection Panel ganz unten
                     }, 350); // Wait for CSS transition
                 });
             }
             
             // Immediate initial positioning - mehrfach fuer Sicherheit
             setTimeout(() => {
-                updateObjectPanelPosition();
                 updateFilePanelPosition();
+                updateSelectionPanelPosition();
             }, 50);
             
             setTimeout(() => {
-                updateObjectPanelPosition();
                 updateFilePanelPosition();
+                updateSelectionPanelPosition();
             }, 200);
             
             setTimeout(() => {
-                updateObjectPanelPosition();
                 updateFilePanelPosition();
+                updateSelectionPanelPosition();
             }, 500);
             
             // Regular updates for dynamic positioning
             setInterval(() => {
-                updateObjectPanelPosition();
                 updateFilePanelPosition();
+                updateSelectionPanelPosition();
             }, 1000);
         });
         

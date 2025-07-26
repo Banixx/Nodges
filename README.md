@@ -1,4 +1,4 @@
-# Nodges 0.90
+# Nodges 0.92
 
 A powerful 3D network visualization tool built with Three.js for interactive exploration of complex networks and graphs.
 
@@ -59,7 +59,7 @@ nodges/
 
 ## Development
 
-- **Version**: 0.90
+- **Version**: 0.92
 - **Technology**: Three.js, WebGL, ES6 Modules
 - **Safety System**: Unicode prevention and automatic backups
 - **Architecture**: Modular ES6 with reactive state management

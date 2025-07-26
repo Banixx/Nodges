@@ -4,10 +4,26 @@ export class HighlightManager {
     constructor(stateManager, glowEffect) {
         this.stateManager = stateManager;
         this.glowEffect = glowEffect;
-        this.highlightedObjects = new Set();
+        
+        // Einzige Highlight-Registry
+        this.highlightRegistry = new Map();
+        
+        // Highlight-Types
+        this.types = {
+            HOVER: 'hover',
+            SELECTION: 'selection',
+            SEARCH: 'search',
+            PATH: 'path',
+            GROUP: 'group'
+        };
+        
+        // Material-Backup fuer Wiederherstellung
+        this.materialBackups = new Map();
         
         // State-Änderungen abonnieren
-        this.stateManager.subscribe(this.handleStateChange.bind(this));
+        this.stateManager.subscribe(this.handleStateChange.bind(this), 'highlight');
+        
+        console.log('[HighlightManager] Initialisiert mit unified registry');
     }
 
     handleStateChange(state) {
@@ -17,45 +33,78 @@ export class HighlightManager {
     updateHighlights(state) {
         const { hoveredObject, selectedObject } = state;
         
-        // Alte Highlights entfernen
-        this.clearUnusedHighlights(hoveredObject, selectedObject);
+        // Cleanup nicht mehr benoetigte Highlights
+        this.cleanupUnusedHighlights(hoveredObject, selectedObject);
 
         // Neue Highlights anwenden
         if (selectedObject) {
-            this.highlightSelectedObject(selectedObject);
+            this.applyHighlight(selectedObject, this.types.SELECTION);
         }
 
         if (hoveredObject && hoveredObject !== selectedObject) {
-            this.highlightHoveredObject(hoveredObject);
+            this.applyHighlight(hoveredObject, this.types.HOVER);
         }
     }
 
-    clearUnusedHighlights(hoveredObject, selectedObject) {
-        for (const object of this.highlightedObjects) {
-            if (object !== hoveredObject && object !== selectedObject) {
-                this.removeHighlight(object);
-                this.highlightedObjects.delete(object);
+    cleanupUnusedHighlights(hoveredObject, selectedObject) {
+        const toRemove = [];
+        
+        for (const [object, highlightData] of this.highlightRegistry) {
+            const shouldKeep = (
+                (object === hoveredObject && highlightData.type === this.types.HOVER) ||
+                (object === selectedObject && highlightData.type === this.types.SELECTION) ||
+                (highlightData.type === this.types.SEARCH) ||
+                (highlightData.type === this.types.PATH) ||
+                (highlightData.type === this.types.GROUP)
+            );
+            
+            if (!shouldKeep) {
+                toRemove.push(object);
             }
         }
+        
+        toRemove.forEach(object => this.clearHighlight(object));
     }
 
+    /**
+     * Einzige Highlight-Anwendung - ersetzt alle anderen Methoden
+     */
+    applyHighlight(object, type, options = {}) {
+        if (!object || !object.material) return;
+        
+        // Altes Highlight entfernen falls vorhanden
+        this.clearHighlight(object);
+        
+        // Material-Backup erstellen
+        const originalMaterial = this.backupMaterial(object);
+        
+        // Highlight-Daten erstellen
+        const highlightData = {
+            type,
+            object,
+            originalMaterial,
+            options,
+            timestamp: performance.now()
+        };
+        
+        // In Registry speichern
+        this.highlightRegistry.set(object, highlightData);
+        
+        // Visuelles Highlight anwenden
+        this.applyVisualHighlight(highlightData);
+        
+        console.log(`[HighlightManager] Applied ${type} highlight to ${object.userData?.type || 'unknown'}`);
+    }
+
+    /**
+     * Legacy-Methoden fuer Kompatibilitaet
+     */
     highlightHoveredObject(object) {
-        if (!this.highlightedObjects.has(object)) {
-            if (object.userData.type === 'node') {
-                this.applyNodeHoverHighlight(object);
-            } else if (object.userData.type === 'edge') {
-                this.applyEdgeHoverHighlight(object);
-            }
-            this.highlightedObjects.add(object);
-        }
+        this.applyHighlight(object, this.types.HOVER);
     }
 
     highlightSelectedObject(object) {
-        if (!this.highlightedObjects.has(object)) {
-            // Verwende immer den GlowEffect fuer konsistente Behandlung
-            this.glowEffect.applySelectionGlow(object);
-            this.highlightedObjects.add(object);
-        }
+        this.applyHighlight(object, this.types.SELECTION);
     }
 
     applyNodeHoverHighlight(node) {
@@ -81,31 +130,30 @@ export class HighlightManager {
         this.glowEffect.applyHighlightGlow(edge);
     }
 
-    removeHighlight(object) {
-        if (object.userData.type === 'node') {
-            // Verwende die resetHighlight Methode der Node-Klasse für korrekte Wiederherstellung
-            if (object.userData.node && typeof object.userData.node.resetHighlight === 'function') {
-                object.userData.node.resetHighlight();
-            } else {
-                // Fallback: Ursprüngliche Farbe wiederherstellen
-                const originalColor = object.material.userData?.originalColor || 0xff4500;
-                object.material.color.setHex(originalColor);
-                object.material.emissiveIntensity = 0;
-                object.material.emissive.setHex(0x000000);
-            }
-        } else if (object.userData.type === 'edge') {
-            // Verwende die resetHighlight Methode der Edge-Klasse für korrekte Wiederherstellung
-            if (object.userData.edge && typeof object.userData.edge.resetHighlight === 'function') {
-                object.userData.edge.resetHighlight();
-            } else {
-                // Fallback: Standard-Kantenfarbe wiederherstellen
-                const originalColor = object.material.userData?.originalColor || 0x0000ff;
-                object.material.color.setHex(originalColor);
-            }
-        }
-
+    /**
+     * Einzige Highlight-Entfernung
+     */
+    clearHighlight(object) {
+        const highlightData = this.highlightRegistry.get(object);
+        if (!highlightData) return;
+        
+        // Material wiederherstellen
+        this.restoreMaterial(object, highlightData.originalMaterial);
+        
         // Glow-Effekt entfernen
         this.glowEffect.removeGlow(object);
+        
+        // Aus Registry entfernen
+        this.highlightRegistry.delete(object);
+        
+        console.log(`[HighlightManager] Cleared ${highlightData.type} highlight from ${object.userData?.type || 'unknown'}`);
+    }
+
+    /**
+     * Legacy-Methode fuer Kompatibilitaet
+     */
+    removeHighlight(object) {
+        this.clearHighlight(object);
     }
 
     // Spezielle Highlight-Effekte
@@ -157,14 +205,173 @@ export class HighlightManager {
         });
     }
 
+    /**
+     * Erstellt Material-Backup und klont Material falls geteilt
+     */
+    backupMaterial(object) {
+        if (!object.material) return null;
+        
+        // KRITISCH: Pruefe ob Material geteilt wird
+        const materialIsShared = this.isMaterialShared(object);
+        if (materialIsShared) {
+            console.log(`[HighlightManager] Material geteilt erkannt - klone Material fuer ${object.userData?.type || 'unknown'}`);
+            // Klone das Material um Sharing zu vermeiden
+            object.material = object.material.clone();
+        }
+        
+        const backup = {
+            color: object.material.color.clone(),
+            emissive: object.material.emissive ? object.material.emissive.clone() : null,
+            emissiveIntensity: object.material.emissiveIntensity || 0,
+            opacity: object.material.opacity || 1,
+            transparent: object.material.transparent || false,
+            wasShared: materialIsShared
+        };
+        
+        this.materialBackups.set(object, backup);
+        return backup;
+    }
+    
+    /**
+     * Prueft ob ein Material von mehreren Objekten geteilt wird
+     */
+    isMaterialShared(object) {
+        // Einfache Heuristik: Pruefe ob das Material einen Cache-Identifier hat
+        // oder ob es in der Edge-Material-Cache verwendet wird
+        return object.material.userData && object.material.userData.cacheKey;
+    }
+
+    /**
+     * Stellt Material wieder her
+     */
+    restoreMaterial(object, backup) {
+        if (!object.material || !backup) return;
+        
+        object.material.color.copy(backup.color);
+        if (backup.emissive && object.material.emissive) {
+            object.material.emissive.copy(backup.emissive);
+        }
+        object.material.emissiveIntensity = backup.emissiveIntensity;
+        object.material.opacity = backup.opacity;
+        object.material.transparent = backup.transparent;
+        
+        this.materialBackups.delete(object);
+    }
+
+    /**
+     * Wendet visuelles Highlight an
+     */
+    applyVisualHighlight(highlightData) {
+        const { object, type, options } = highlightData;
+        
+        switch (type) {
+            case this.types.HOVER:
+                this.applyHoverEffect(object, options);
+                break;
+            case this.types.SELECTION:
+                this.applySelectionEffect(object, options);
+                break;
+            case this.types.SEARCH:
+                this.applySearchEffect(object, options);
+                break;
+            case this.types.PATH:
+                this.applyPathEffect(object, options);
+                break;
+            case this.types.GROUP:
+                this.applyGroupEffect(object, options);
+                break;
+        }
+    }
+
+    /**
+     * Hover-Effekt - NUR fuer das spezifische Objekt
+     */
+    applyHoverEffect(object, options = {}) {
+        if (!object || !object.material) {
+            console.warn('[HighlightManager] applyHoverEffect: Objekt oder Material fehlt');
+            return;
+        }
+        
+        if (object.userData.type === 'node') {
+            // Hellere Farbe fuer Hover-Effekt
+            const color = object.material.color;
+            const hsl = {};
+            color.getHSL(hsl);
+            
+            const newLightness = Math.min(hsl.l + 0.2, 1.0);
+            color.setHSL(hsl.h, hsl.s, newLightness);
+            
+            // Leichter Glow-Effekt
+            this.glowEffect.applyHighlightGlow(object);
+        } else if (object.userData.type === 'edge') {
+            // WICHTIG: Nur diese spezifische Kante highlighten
+            const originalColor = object.material.color.getHex();
+            console.log(`[HighlightManager] Hover Edge: ${object.name || 'unnamed'}, Original: ${originalColor.toString(16)}`);
+            
+            // Hellerer Blauton fuer Hover-Effekt - NUR fuer diese Kante
+            object.material.color.setHex(0x4444ff);
+            this.glowEffect.applyHighlightGlow(object);
+        }
+    }
+
+    /**
+     * Selection-Effekt
+     */
+    applySelectionEffect(object, options = {}) {
+        this.glowEffect.applySelectionGlow(object);
+    }
+
+    /**
+     * Search-Effekt
+     */
+    applySearchEffect(object, options = {}) {
+        const color = options.color || 0xffff00; // Gelb
+        object.material.color.setHex(color);
+        this.glowEffect.applyHighlightGlow(object);
+    }
+
+    /**
+     * Path-Effekt
+     */
+    applyPathEffect(object, options = {}) {
+        const color = options.color || 0x00ffff; // Cyan
+        object.material.color.setHex(color);
+        this.glowEffect.applyHighlightGlow(object);
+    }
+
+    /**
+     * Group-Effekt
+     */
+    applyGroupEffect(object, options = {}) {
+        const color = options.color || 0xff00ff; // Magenta
+        object.material.color.setHex(color);
+        this.glowEffect.applyHighlightGlow(object);
+    }
+
     clearAllHighlights() {
-        this.highlightedObjects.forEach(object => {
-            this.removeHighlight(object);
-        });
-        this.highlightedObjects.clear();
+        const objectsToRemove = Array.from(this.highlightRegistry.keys());
+        objectsToRemove.forEach(object => this.clearHighlight(object));
+    }
+
+    /**
+     * Debug-Informationen
+     */
+    getDebugInfo() {
+        const typeCount = {};
+        for (const [object, data] of this.highlightRegistry) {
+            typeCount[data.type] = (typeCount[data.type] || 0) + 1;
+        }
+        
+        return {
+            totalHighlights: this.highlightRegistry.size,
+            typeBreakdown: typeCount,
+            materialBackups: this.materialBackups.size
+        };
     }
 
     destroy() {
         this.clearAllHighlights();
+        this.materialBackups.clear();
+        console.log('[HighlightManager] Cleanup abgeschlossen');
     }
 }

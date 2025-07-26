@@ -1,5 +1,5 @@
 /**
- * Nodges 0.92 - Main Application
+ * Nodges 0.90 - Main Application
  * 3D Network Visualization with Advanced Caching
  */
 
@@ -8,8 +8,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // Core System
 import { StateManager } from './src/core/StateManager.js';
-import { CentralEventManager } from './src/core/CentralEventManager.js';
-import { InteractionManager } from './src/core/InteractionManager.js';
 import { LayoutManager } from './src/core/LayoutManager.js';
 import { UIManager } from './src/core/UIManager.js';
 import { EventManager } from './src/core/EventManager.js';
@@ -42,7 +40,7 @@ import { Edge } from './objects/Edge.js';
 
 class NodgesApp {
     constructor() {
-        console.log(' Initialisiere Nodges 0.92');
+        console.log(' Initialisiere Nodges 0.90');
         
         // Core Components
         this.scene = null;
@@ -52,8 +50,6 @@ class NodgesApp {
         
         // Managers
         this.stateManager = new StateManager();
-        this.centralEventManager = null;
-        this.interactionManager = null;
         this.layoutManager = null;
         this.uiManager = null;
         this.eventManager = null;
@@ -102,7 +98,7 @@ class NodgesApp {
             await this.loadDefaultData();
             
             this.isInitialized = true;
-            console.log(' Nodges 0.92 erfolgreich initialisiert');
+            console.log(' Nodges 0.90 erfolgreich initialisiert');
             
             this.animate();
         } catch (error) {
@@ -207,16 +203,6 @@ class NodgesApp {
             this.uiManager = new UIManager(this.stateManager);
             this.eventManager = new EventManager(this.stateManager);
             
-            // Neues Unified Event System
-            this.centralEventManager = new CentralEventManager(this.scene, this.camera, this.renderer, this.stateManager);
-            
-            // Effects BEFORE InteractionManager
-            this.glowEffect = new GlowEffect();
-            this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect);
-            
-            // InteractionManager AFTER HighlightManager
-            this.interactionManager = new InteractionManager(this.centralEventManager, this.stateManager, this.highlightManager);
-            
             // Utility Managers - ALL with correct parameters
             // this.searchManager = new SearchManager(); // Deaktiviert
             this.selectionManager = new SelectionManager(this.scene, this.camera, this.renderer, this.stateManager);
@@ -234,7 +220,9 @@ class NodgesApp {
             this.batchOperations = new BatchOperations();
             this.nodeGroupManager = new NodeGroupManager();
             
-            // Effects wurden bereits oben initialisiert
+            // Effects
+            this.glowEffect = new GlowEffect();
+            this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect);
             
             console.log(' Manager-System initialisiert');
         } catch (error) {
@@ -287,8 +275,9 @@ class NodgesApp {
             this.layoutGUI.show();
         });
         
-        // Mouse events werden jetzt durch CentralEventManager verwaltet
-        // ALTE EVENT-HANDLER ENTFERNT - Ersetzt durch Unified System
+        // Mouse events for interaction
+        this.renderer.domElement.addEventListener('click', (event) => this.onMouseClick(event));
+        this.renderer.domElement.addEventListener('mousemove', (event) => this.onMouseMove(event));
         
         console.log(' Event-Listener initialisiert');
     }
