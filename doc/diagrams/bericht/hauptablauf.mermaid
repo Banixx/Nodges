@@ -1,0 +1,33 @@
+flowchart TD
+    A[Start] --> B[index.html lädt main.js]
+    B --> C[main.js initialisiert Three.js]
+    C --> D[Manager werden instanziiert]
+    D --> E[Event-Listener registriert]
+    E --> F[Daten werden geladen]
+    F --> G[Netzwerkvisualisierung erstellt]
+    
+    G --> H[Animation Loop startet]
+    H --> I[OrbitControls aktualisieren]
+    I --> J[Szene rendern]
+    J --> K[FPS berechnen]
+    K --> H
+    
+    subgraph Benutzerinteraktion
+        L[Mausbewegung] --> M[RaycastManager identifiziert Objekt]
+        M --> N[CentralEventManager aktualisiert Hover-State]
+        N --> O[InteractionManager verarbeitet Hover]
+        O -->|Hover Start| P[HighlightManager wendet Hervorhebung an]
+        O -->|Hover End| Q[HighlightManager entfernt Hervorhebung]
+        
+        R[Mausklick] --> S[CentralEventManager aktualisiert Selection-State]
+        S --> T[InteractionManager verarbeitet Klick]
+        T -->|Objekt selektiert| U[StateManager setzt selectedObject]
+        U --> V[HighlightManager wendet Auswahl-Hervorhebung an]
+        V --> W[Info-Panel wird angezeigt]
+        T -->|Kein Objekt| X[StateManager löscht Auswahl]
+        
+        Y[Tastaturereignis] --> Z[CentralEventManager verarbeitet Eingabe]
+        Z --> AA[InteractionManager/SelectionManager verarbeitet Shortcut]
+    end
+    
+    H --> Benutzerinteraktion

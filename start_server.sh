@@ -50,4 +50,16 @@ else
     exit 1
 fi
 
-echo "[DONE] Script beendet, Server laeuft weiter." 
+# Protokoll anzeigen
+echo " "
+echo "=== PROJEKTPROTOKOLL ==="
+if [ -f "Protokoll.md" ]; then
+    while IFS= read -r line; do
+        echo "[PROTO] $line"
+    done < "Protokoll.md"
+else
+    echo "[PROTO] Kein Protokoll gefunden."
+fi
+echo " "
+
+echo "[DONE] Script beendet, Server laeuft weiter."

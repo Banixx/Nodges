@@ -15,6 +15,7 @@ export class StateManager {
             tooltipContent: null,
             tooltipPosition: null,
             infoPanelVisible: false,
+            infoPanelCollapsed: false, // New state to control panel visibility
             
             // System States
             isInteractionEnabled: true,
@@ -100,7 +101,8 @@ export class StateManager {
             this.update({ 
                 selectedObject: object,
                 glowIntensity: 0,
-                glowDirection: 1
+                glowDirection: 1,
+                infoPanelCollapsed: false  // Expand panel when selecting an object
             });
         }
     }

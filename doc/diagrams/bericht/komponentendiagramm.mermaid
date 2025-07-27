@@ -1,0 +1,22 @@
+flowchart TB
+    subgraph Kernkomponenten
+        A[CentralEventManager] -->|benachrichtigt| B[InteractionManager]
+        B -->|aktualisiert Zustand| C[StateManager]
+        C -->|informiert| D[HighlightManager]
+        C -->|informiert| E[UIManager]
+        F[RaycastManager] -->|liefert Objekte| A
+    end
+
+    subgraph Datenverarbeitung
+        G[FileHandler] -->|lädt Daten| H[LayoutManager]
+        H -->|berechnet Positionen| I[Rendering]
+    end
+
+    subgraph Visualisierung
+        I --> J[Three.js]
+        D -->|visuelles Feedback| J
+        E -->|UI Updates| K[HTML-Panels]
+    end
+
+    A -->|Ereignisse| L[SelectionManager]
+    L -->|Auswahlmanagement| C

@@ -342,13 +342,18 @@ export class SelectionManager {
     }
 
     /**
-     * Clear all selections
+     * Clear all selections (without closing panel)
      */
     clearSelection() {
         this.selectedObjects.forEach(obj => this.removeSelectionBox(obj));
         this.selectedObjects.clear();
         this.selectionMode = 'single';
-        this.stateManager.setSelectedObject(null);
+        
+        // Notify state manager without closing panel
+        this.stateManager.update({ 
+            selectedObject: null, 
+            infoPanelCollapsed: false // Keep panel visible but collapsed
+        });
     }
 
     /**
