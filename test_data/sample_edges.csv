@@ -1,7 +1,0 @@
-source,target,name,weight,color,style,relationship
-node1,node2,friendship,1.0,#00ff00,solid,friend
-node2,node3,collaboration,2.0,#ffff00,dashed,colleague
-node3,node4,family,3.0,#ff0000,solid,sibling
-node4,node5,acquaintance,0.5,#888888,dotted,acquaintance
-node5,node6,partnership,2.5,#ff6600,solid,partner
-node1,node6,mentorship,1.5,#9900ff,dashed,mentor

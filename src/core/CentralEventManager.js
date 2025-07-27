@@ -44,7 +44,6 @@ export class CentralEventManager {
         
         this.initializeEventListeners();
         
-        console.log('[CentralEventManager] Initialisiert');
     }
     
     /**
@@ -70,7 +69,6 @@ export class CentralEventManager {
         this.addEventHandler('keydown', document, this.handleKeyDown.bind(this));
         this.addEventHandler('keyup', document, this.handleKeyUp.bind(this));
         
-        console.log('[CentralEventManager] Event-Listener registriert');
     }
     
     /**
@@ -400,7 +398,6 @@ export class CentralEventManager {
         this.eventHandlers.clear();
         this.activeListeners.clear();
         
-        console.log('[CentralEventManager] Cleanup abgeschlossen');
     }
     
     /**

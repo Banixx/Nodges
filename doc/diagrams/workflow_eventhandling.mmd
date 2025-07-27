@@ -1,0 +1,9 @@
+flowchart TD
+    U[User Action\nClick/Hover] --> E[EventManager]
+    E -->|Event-Typ| H{Hover?}
+    H -->|Ja| HI[HighlightManager\nAktiviere Glow]
+    H -->|Nein| CI{Click?}
+    CI -->|Ja| SM[SelectionManager\nAuswahl verarbeiten]
+    SM --> UI[UIManager\nUpdate Info-Panel]
+    HI --> R[Rendering\nVisual Feedback]
+    UI --> R

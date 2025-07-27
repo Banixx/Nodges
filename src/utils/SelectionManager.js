@@ -427,14 +427,11 @@ export class SelectionManager {
      * Create curved selection indicator for edges
      */
     createEdgeSelectionIndicator(edgeObject) {
-        console.log('[DEBUG] createEdgeSelectionIndicator aufgerufen fuer:', edgeObject);
         if (!edgeObject.userData.edge) {
-            console.log('[DEBUG] Kein edge userData gefunden');
             return;
         }
         
         const edge = edgeObject.userData.edge;
-        console.log('[DEBUG] Edge gefunden:', edge);
         
         // Erstelle die gleiche Kurve wie die urspruengliche Edge
         const curve = edge.createCurve();
@@ -464,7 +461,6 @@ export class SelectionManager {
         
         this.selectionBoxes.set(edgeObject, selectionIndicator);
         this.scene.add(selectionIndicator);
-        console.log('[DEBUG] Gekruemmte Selektions-Edge erstellt und zur Szene hinzugefuegt');
     }
 
     /**

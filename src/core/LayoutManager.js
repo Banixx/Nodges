@@ -1,5 +1,5 @@
 /**
- * LayoutManager - Zentrale Verwaltung aller Layout-Algorithmen fuer Nodges 0.92
+ * LayoutManager - Zentrale Verwaltung aller Layout-Algorithmen fuer Nodges
  */
 
 export class LayoutManager {

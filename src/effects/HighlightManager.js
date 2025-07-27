@@ -23,7 +23,6 @@ export class HighlightManager {
         // State-Änderungen abonnieren
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'highlight');
         
-        console.log('[HighlightManager] Initialisiert mit unified registry');
     }
 
     handleStateChange(state) {
@@ -93,7 +92,6 @@ export class HighlightManager {
         // Visuelles Highlight anwenden
         this.applyVisualHighlight(highlightData);
         
-        console.log(`[HighlightManager] Applied ${type} highlight to ${object.userData?.type || 'unknown'}`);
     }
 
     /**
@@ -146,7 +144,6 @@ export class HighlightManager {
         // Aus Registry entfernen
         this.highlightRegistry.delete(object);
         
-        console.log(`[HighlightManager] Cleared ${highlightData.type} highlight from ${object.userData?.type || 'unknown'}`);
     }
 
     /**
@@ -214,7 +211,6 @@ export class HighlightManager {
         // KRITISCH: Pruefe ob Material geteilt wird
         const materialIsShared = this.isMaterialShared(object);
         if (materialIsShared) {
-            console.log(`[HighlightManager] Material geteilt erkannt - klone Material fuer ${object.userData?.type || 'unknown'}`);
             // Klone das Material um Sharing zu vermeiden
             object.material = object.material.clone();
         }
@@ -288,7 +284,6 @@ export class HighlightManager {
      */
     applyHoverEffect(object, options = {}) {
         if (!object || !object.material) {
-            console.warn('[HighlightManager] applyHoverEffect: Objekt oder Material fehlt');
             return;
         }
         
@@ -306,7 +301,6 @@ export class HighlightManager {
         } else if (object.userData.type === 'edge') {
             // WICHTIG: Nur diese spezifische Kante highlighten
             const originalColor = object.material.color.getHex();
-            console.log(`[HighlightManager] Hover Edge: ${object.name || 'unnamed'}, Original: ${originalColor.toString(16)}`);
             
             // Hellerer Blauton fuer Hover-Effekt - NUR fuer diese Kante
             object.material.color.setHex(0x4444ff);
@@ -372,6 +366,5 @@ export class HighlightManager {
     destroy() {
         this.clearAllHighlights();
         this.materialBackups.clear();
-        console.log('[HighlightManager] Cleanup abgeschlossen');
     }
 }

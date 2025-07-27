@@ -1,0 +1,13 @@
+flowchart TD
+    subgraph Generationen
+        direction TB
+        G0[Großeltern\nZ=0] --> G1[Eltern\nZ=1]
+        G1 --> G2[Kinder\nZ=2]
+    end
+    
+    subgraph 3D-Darstellung
+        direction LR
+        X[X-Achse\nGeschwisterreihenfolge]
+        Y[Y-Achse\nLebenszeitachse]
+        Z[Z-Achse\nGenerationenebene]
+    end

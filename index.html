@@ -276,9 +276,10 @@
             <p id="fileFilename">Dateiname: </p>
             <p id="fileNodeCount">Anzahl Knoten: </p>
             <p id="fileEdgeCount">Anzahl Kanten: </p>
-            <p id="fileXAxis">X-Achse: </p>
-            <p id="fileYAxis">Y-Achse: </p>
-            <p id="fileZAxis">Z-Achse: </p>
+        <p id="fileXAxis">X-Achse: </p>
+        <p id="fileYAxis">Y-Achse: </p>
+        <p id="fileZAxis">Z-Achse: </p>
+        <p id="fileFPS">FPS: </p>
         </div>
     </div>
     
@@ -296,11 +297,12 @@
         </div>
     </div>
     
+
     <!-- Object Info Panel (for selected nodes/edges) -->
     <div id="infoPanel" class="collapsed">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 2px solid #808080; padding-bottom: 5px;">
             <h3 id="infoPanelTitle" style="margin: 0; color: #333; font-size: 14px;">Selection</h3>
-            <button id="infoPanelToggle" style="background: none; border: none; font-size: 14px; cursor: pointer; color: #808080; padding: 2px 6px; border-radius: 3px; transition: background-color 0.2s;">></button>
+            <button id="infoPanelToggle" style="background: none; border: none; font-size: 14px; cursor: pointer; color: #c0c0c0; padding: 2px 6px; border-radius: 3px; transition: background-color 0.2s;">></button>
         </div>
         <div id="infoPanelContent">
             <!-- Content will be dynamically populated -->
@@ -432,7 +434,6 @@
                 const finalTop = Math.max(newTop, minTopPosition);
                 
                 infoPanel.style.top = finalTop + 'px';
-                console.log(`[Panel Position] Selection Panel (unter Layout): ${finalTop}px (calculated: ${newTop}px, min: ${minTopPosition}px)`);
             } else if (!layoutPanel) {
                 // Fallback: Falls Layout Panel noch nicht existiert, unter File Panel
                 const filePanel = document.getElementById('filePanel');
@@ -443,7 +444,6 @@
                     const finalTop = Math.max(newTop, minTopPosition);
                     
                     infoPanel.style.top = finalTop + 'px';
-                    console.log(`[Panel Position] Selection Panel (Fallback unter File): ${finalTop}px`);
                 }
             }
         }
@@ -462,61 +462,69 @@
                 const finalTop = Math.max(newTop, minTopPosition);
                 
                 filePanel.style.top = finalTop + 'px';
-                console.log(`[Panel Position] File Panel (mitte): ${finalTop}px (calculated: ${newTop}px, min: ${minTopPosition}px)`);
             }
         }
         
-        // Dynamic file discovery and button generation
-        async function discoverAndCreateFileButtons() {
+        // New reliable file discovery
+        async function loadAvailableFiles() {
             const filePanelContent = document.getElementById('filePanelContent');
-            const loadingIndicator = document.getElementById('fileLoadingIndicator');
+            filePanelContent.innerHTML = '<div id="fileLoadingIndicator">Loading files...</div>';
             
             try {
-                // Try to get file list from server directory listing
-                const response = await fetch('data/examples/');
-                const text = await response.text();
+                // Get list from server API
+                const response = await fetch('/file-list');
+                if (!response.ok) throw new Error('Server error');
                 
-                // Parse HTML directory listing for .json files
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(text, 'text/html');
-                const links = doc.querySelectorAll('a[href$=".json"]');
+                const files = await response.json();
+                createFileButtons(files);
+                addRefreshButton();
+            } catch (apiError) {
+                console.warn('API failed, using fallback method');
                 
-                const jsonFiles = Array.from(links).map(link => {
-                    const href = link.getAttribute('href');
-                    return href.replace('.json', '');
-                }).filter(filename => filename && !filename.includes('/'));
-                
-                if (jsonFiles.length > 0) {
-                    createFileButtons(jsonFiles);
-                } else {
-                    // Fallback: try known files
-                    await tryKnownFiles();
-                }
-                
-            } catch (error) {
-                console.log('Directory listing not available, trying known files...');
-                await tryKnownFiles();
+                // Fallback: manual directory scan
+                const fallbackFiles = await fetchDirectoryContents();
+                createFileButtons(fallbackFiles);
+                addRefreshButton();
             }
         }
         
-        // Fallback: try to load known files
-        async function tryKnownFiles() {
-            const knownFiles = ['small', 'medium', 'large', 'mega'];
-            const availableFiles = [];
+        // Manual directory scan fallback
+        async function fetchDirectoryContents() {
+        const knownFiles = ['small', 'medium', 'large', 'mega', 'us_legal_system_actors'];
             
-            for (const filename of knownFiles) {
+            const available = [];
+            for (const file of knownFiles) {
                 try {
-                    const response = await fetch(`data/examples/${filename}.json`, { method: 'HEAD' });
-                    if (response.ok) {
-                        availableFiles.push(filename);
-                    }
-                } catch (error) {
-                    // File doesn't exist, skip
+                    const res = await fetch(`data/examples/${file}.json`, {method: 'HEAD'});
+                    if (res.ok) available.push(file);
+                } catch (e) {
+                    console.log(`File not found: ${file}`);
                 }
             }
-            
-            createFileButtons(availableFiles);
+            return available;
         }
+        
+        // Add refresh button
+        function addRefreshButton() {
+            const filePanelContent = document.getElementById('filePanelContent');
+            const existingRefresh = document.getElementById('refreshButton');
+            
+            if (existingRefresh) return;
+            
+            const refreshButton = document.createElement('div');
+            refreshButton.id = 'refreshButton';
+            refreshButton.className = 'file-item';
+            refreshButton.textContent = 'Refresh List';
+            refreshButton.onclick = () => loadAvailableFiles();
+            
+            filePanelContent.prepend(refreshButton);
+        }
+        
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAvailableFiles();
+        });
+        
         
         // Create file buttons dynamically
         function createFileButtons(filenames) {
@@ -549,20 +557,20 @@
                 filePanelContent.appendChild(button);
             });
             
-            console.log(`Created ${filenames.length} file buttons:`, filenames);
         }
         
         // Create user-friendly display names
         function createDisplayName(filename) {
-            const nameMap = {
-                'small': 'Small Network',
-                'medium': 'Medium Network', 
-                'large': 'Large Network',
-                'mega': 'Mega Network',
-                'family': 'Family Tree',
-                'architektur': 'Architecture',
-                'royal_family': 'Royal Family'
-            };
+        const nameMap = {
+            'small': 'Small Network',
+            'medium': 'Medium Network', 
+            'large': 'Large Network',
+            'mega': 'Mega Network',
+            'family': 'Family Tree',
+            'architektur': 'Architecture',
+            'royal_family': 'Royal Family',
+            'us_legal_system_actors': 'US Legal System'
+        };
             
             // Use mapped name if available, otherwise format filename
             if (nameMap[filename]) {
@@ -580,8 +588,8 @@
             updateFilePanelPosition();
             updateSelectionPanelPosition();
             
-            // Discover and create file buttons
-            discoverAndCreateFileButtons();
+            // Load available files
+            loadAvailableFiles();
             
             // Observer fuer fileInfoPanel und infoPanel
             const fileInfoPanel = document.getElementById('fileInfoPanel');
@@ -658,7 +666,6 @@
                             subtree: true
                         });
                         
-                        console.log('[Panel Position] Layout Panel Observer hinzugefuegt');
                         updateSelectionPanelPosition(); // Sofortige Neupositionierung
                     }
                 }, 500); // Pruefe alle 500ms
@@ -773,16 +780,6 @@
         }
     </script>
     <script src="main.js" type="module"></script>
-    <script>
-        console.log("=== ROVO DEV STARTUP WORKFLOW COMPLETED ===");
-        console.log("1. [OK] .agent.md read - Entry point with mandatory documents");
-        console.log("2. [OK] ROVO_DEV_RULES.md read - Unicode prohibitions and development rules");
-        console.log("3. [OK] SECURITY_SYSTEM_OVERVIEW.md read - Safety systems and protocols");
-        console.log("4. [OK] Server started via ./start_server.sh - Standard project server");
-        console.log("5. [OK] Files checked - All core files intact and functional");
-        console.log("6. [OK] .agent.md created - Professional entry point with references");
-        console.log("7. [OK] Console.log added to index.html - Workflow documentation");
-        console.log("=== READY FOR ACLI ROVODEV RECONNECTION TEST ===");
-    </script>
+    <!-- ROVO-Startlogs entfernt für reduzierte Konsolenausgabe -->
 </body>
 </html>

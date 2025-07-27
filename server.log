@@ -9,235 +9,116 @@ Server-Verzeichnis: /home/wir/Schreibtisch/Nodge3/Nodges
 [OK] CORS ist aktiviert - keine Cross-Origin-Probleme!
 [STOP]  Zum Beenden: Ctrl+C druecken
 
-[26/Jul/2025 13:55:44] "GET /index.html HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /main.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/core/StateManager.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/core/LayoutManager.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/core/UIManager.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/core/EventManager.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/SelectionManager.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/RaycastManager.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/NetworkAnalyzer.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/PathFinder.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/PerformanceOptimizer.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/FPSMonitor.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/FileHandler.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/ImportManager.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/ExportManager.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/EdgeLabelManager.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/NeighborhoodHighlighter.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/KeyboardShortcuts.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/BatchOperations.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/NodeGroupManager.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/utils/LayoutGUI.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/effects/HighlightManager.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /src/effects/GlowEffect.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /objects/Node.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /objects/Edge.js HTTP/1.1" 200 -
-[26/Jul/2025 13:55:44] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 13:55:45] "GET /data/examples/small.json HTTP/1.1" 200 -
-[26/Jul/2025 13:55:45] "GET /favicon-32x32.png HTTP/1.1" 200 -
-[26/Jul/2025 14:01:44] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 14:01:44] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 14:02:21] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 14:02:21] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 15:28:19] "GET /index.html HTTP/1.1" 200 -
-[26/Jul/2025 15:28:47] "GET /tmp_rovodev_test_hover.html HTTP/1.1" 200 -
-[26/Jul/2025 15:28:47] "GET /index.html HTTP/1.1" 200 -
-[26/Jul/2025 15:31:45] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 15:31:46] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /index.html HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /main.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/core/StateManager.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/core/CentralEventManager.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/core/InteractionManager.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/core/LayoutManager.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/core/UIManager.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/core/EventManager.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/SelectionManager.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/RaycastManager.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/NetworkAnalyzer.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/PathFinder.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/PerformanceOptimizer.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/FPSMonitor.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/FileHandler.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/ImportManager.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/ExportManager.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/EdgeLabelManager.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/NeighborhoodHighlighter.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/KeyboardShortcuts.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/BatchOperations.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/NodeGroupManager.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/utils/LayoutGUI.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/effects/HighlightManager.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /src/effects/GlowEffect.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /objects/Node.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:00] "GET /objects/Edge.js HTTP/1.1" 200 -
-[26/Jul/2025 15:32:01] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 15:32:01] "GET /data/examples/small.json HTTP/1.1" 200 -
-[26/Jul/2025 15:32:01] "GET /favicon-32x32.png HTTP/1.1" 200 -
-[26/Jul/2025 15:32:33] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 15:50:56] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 15:50:57] "GET /main.js HTTP/1.1" 304 -
-[26/Jul/2025 15:50:57] "GET /src/core/StateManager.js HTTP/1.1" 304 -
-[26/Jul/2025 15:50:57] "GET /src/core/CentralEventManager.js HTTP/1.1" 304 -
-[26/Jul/2025 15:50:57] "GET /src/core/InteractionManager.js HTTP/1.1" 304 -
-[26/Jul/2025 15:50:57] "GET /src/effects/HighlightManager.js HTTP/1.1" 304 -
-[26/Jul/2025 15:50:57] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 15:51:02] code 404, message File not found
-[26/Jul/2025 15:51:02] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 15:51:07] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 15:51:07] code 404, message File not found
-[26/Jul/2025 15:51:07] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 15:51:08] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 15:51:29] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 15:51:29] code 404, message File not found
-[26/Jul/2025 15:51:29] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 15:51:29] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 15:52:38] "GET /tmp_rovodev_live_test.html HTTP/1.1" 200 -
-[26/Jul/2025 15:52:38] code 404, message File not found
-[26/Jul/2025 15:52:38] "GET /favicon.ico HTTP/1.1" 404 -
-[26/Jul/2025 15:52:52] code 404, message File not found
-[26/Jul/2025 15:52:52] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 15:54:47] "GET /tmp_rovodev_live_test.html HTTP/1.1" 304 -
-[26/Jul/2025 15:54:47] code 404, message File not found
-[26/Jul/2025 15:54:47] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 15:57:37] "GET /tmp_rovodev_live_test.html HTTP/1.1" 200 -
-[26/Jul/2025 15:57:37] code 404, message File not found
-[26/Jul/2025 15:57:37] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 15:57:59] "GET /tmp_rovodev_live_test.html HTTP/1.1" 304 -
-[26/Jul/2025 15:57:59] code 404, message File not found
-[26/Jul/2025 15:57:59] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 15:58:04] "GET /tmp_rovodev_live_test.html HTTP/1.1" 304 -
-[26/Jul/2025 15:58:04] code 404, message File not found
-[26/Jul/2025 15:58:04] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 15:59:42] "GET /index.html HTTP/1.1" 200 -
-[26/Jul/2025 15:59:42] "GET /main.js HTTP/1.1" 200 -
-[26/Jul/2025 16:00:16] "GET /index.html HTTP/1.1" 200 -
-[26/Jul/2025 16:02:22] "GET /tmp_rovodev_debug.html HTTP/1.1" 200 -
-[26/Jul/2025 16:04:02] "GET /tmp_rovodev_live_test.html HTTP/1.1" 304 -
-[26/Jul/2025 16:04:03] code 404, message File not found
-[26/Jul/2025 16:04:03] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 16:04:14] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 16:04:14] code 404, message File not found
-[26/Jul/2025 16:04:14] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 16:04:14] "GET /main.js HTTP/1.1" 200 -
-[26/Jul/2025 16:04:14] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 16:08:00] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 16:08:00] code 404, message File not found
-[26/Jul/2025 16:08:00] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 16:08:00] "GET /main.js HTTP/1.1" 200 -
-[26/Jul/2025 16:08:00] "GET /src/core/StateManager.js HTTP/1.1" 304 -
-[26/Jul/2025 16:08:00] "GET /src/core/CentralEventManager.js HTTP/1.1" 304 -
-[26/Jul/2025 16:08:00] "GET /src/core/InteractionManager.js HTTP/1.1" 304 -
-[26/Jul/2025 16:08:00] "GET /src/effects/HighlightManager.js HTTP/1.1" 304 -
-[26/Jul/2025 16:08:00] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 16:10:52] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 16:10:52] code 404, message File not found
-[26/Jul/2025 16:10:52] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 16:10:52] "GET /main.js HTTP/1.1" 304 -
-[26/Jul/2025 16:10:52] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 16:10:58] "GET /index.html HTTP/1.1" 200 -
-[26/Jul/2025 16:10:58] code 404, message File not found
-[26/Jul/2025 16:10:58] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 16:10:58] "GET /main.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/core/StateManager.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/core/CentralEventManager.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/core/InteractionManager.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/core/LayoutManager.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/core/UIManager.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/core/EventManager.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/SelectionManager.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/RaycastManager.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/NetworkAnalyzer.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/PathFinder.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/PerformanceOptimizer.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/FPSMonitor.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/FileHandler.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/ImportManager.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/ExportManager.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/EdgeLabelManager.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/NeighborhoodHighlighter.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/KeyboardShortcuts.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/BatchOperations.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/NodeGroupManager.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/utils/LayoutGUI.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/effects/HighlightManager.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /src/effects/GlowEffect.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /objects/Node.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /objects/Edge.js HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /data/examples/small.json HTTP/1.1" 200 -
-[26/Jul/2025 16:10:59] "GET /favicon-32x32.png HTTP/1.1" 200 -
-[26/Jul/2025 16:11:35] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 16:11:35] "GET /main.js HTTP/1.1" 304 -
-[26/Jul/2025 16:11:36] "GET /src/core/CentralEventManager.js HTTP/1.1" 304 -
-[26/Jul/2025 16:11:36] code 404, message File not found
-[26/Jul/2025 16:11:36] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 16:11:36] "GET /src/effects/HighlightManager.js HTTP/1.1" 304 -
-[26/Jul/2025 16:11:36] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 16:12:22] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 16:12:22] "GET /main.js HTTP/1.1" 304 -
-[26/Jul/2025 16:12:22] "GET /src/core/CentralEventManager.js HTTP/1.1" 304 -
-[26/Jul/2025 16:12:22] "GET /src/effects/HighlightManager.js HTTP/1.1" 304 -
-[26/Jul/2025 16:12:23] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 16:12:23] code 404, message File not found
-[26/Jul/2025 16:12:23] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 16:12:47] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 16:12:47] "GET /src/core/CentralEventManager.js HTTP/1.1" 304 -
-[26/Jul/2025 16:12:47] "GET /src/effects/HighlightManager.js HTTP/1.1" 304 -
-[26/Jul/2025 16:12:47] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 16:12:47] code 404, message File not found
-[26/Jul/2025 16:12:47] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 16:13:41] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 16:13:41] "GET /main.js HTTP/1.1" 304 -
-[26/Jul/2025 16:13:41] "GET /src/core/CentralEventManager.js HTTP/1.1" 304 -
-[26/Jul/2025 16:13:41] "GET /src/effects/HighlightManager.js HTTP/1.1" 304 -
-[26/Jul/2025 16:13:41] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 16:13:41] code 404, message File not found
-[26/Jul/2025 16:13:41] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 18:19:26] "GET /index.html HTTP/1.1" 200 -
-[26/Jul/2025 18:19:26] "GET /main.js HTTP/1.1" 304 -
-[26/Jul/2025 18:19:26] "GET /src/core/StateManager.js HTTP/1.1" 304 -
-[26/Jul/2025 18:19:26] "GET /src/core/CentralEventManager.js HTTP/1.1" 304 -
-[26/Jul/2025 18:19:26] code 404, message File not found
-[26/Jul/2025 18:19:26] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 18:19:26] "GET /src/core/InteractionManager.js HTTP/1.1" 304 -
-[26/Jul/2025 18:19:26] "GET /src/effects/HighlightManager.js HTTP/1.1" 304 -
-[26/Jul/2025 18:19:26] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 18:19:41] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 18:19:41] code 404, message File not found
-[26/Jul/2025 18:19:41] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 18:19:41] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 18:22:37] "GET /index.html HTTP/1.1" 200 -
-[26/Jul/2025 18:22:37] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 18:22:37] code 404, message File not found
-[26/Jul/2025 18:22:37] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 18:25:52] "GET /index.html HTTP/1.1" 200 -
-[26/Jul/2025 18:25:53] code 404, message File not found
-[26/Jul/2025 18:25:53] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 18:25:53] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 18:26:52] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 18:26:52] code 404, message File not found
-[26/Jul/2025 18:26:52] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 18:26:52] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 18:26:57] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 18:26:57] code 404, message File not found
-[26/Jul/2025 18:26:57] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 18:26:57] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 18:28:54] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 18:28:54] code 404, message File not found
-[26/Jul/2025 18:28:54] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 18:28:54] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 18:28:57] "GET /index.html HTTP/1.1" 304 -
-[26/Jul/2025 18:28:57] code 404, message File not found
-[26/Jul/2025 18:28:57] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 18:28:57] "GET /data/examples/ HTTP/1.1" 200 -
-[26/Jul/2025 18:29:09] "GET /index.html HTTP/1.1" 200 -
-[26/Jul/2025 18:29:09] code 404, message File not found
-[26/Jul/2025 18:29:09] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
-[26/Jul/2025 18:29:09] "GET /main.js HTTP/1.1" 200 -
-[26/Jul/2025 18:29:09] "GET /src/core/StateManager.js HTTP/1.1" 200 -
-[26/Jul/2025 18:29:09] "GET /src/core/CentralEventManager.js HTTP/1.1" 200 -
-[26/Jul/2025 18:29:09] "GET /src/core/InteractionManager.js HTTP/1.1" 200 -
-[26/Jul/2025 18:29:09] "GET /src/core/LayoutManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /index.html HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /main.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/core/StateManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/core/CentralEventManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/core/InteractionManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/core/LayoutManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/core/UIManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/core/EventManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/SelectionManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/RaycastManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/NetworkAnalyzer.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/PathFinder.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/PerformanceOptimizer.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/FPSMonitor.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/FileHandler.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/ImportManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/ExportManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/EdgeLabelManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/NeighborhoodHighlighter.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/KeyboardShortcuts.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/BatchOperations.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/NodeGroupManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/utils/LayoutGUI.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/effects/HighlightManager.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /src/effects/GlowEffect.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /objects/Node.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /objects/Edge.js HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] code 404, message File not found
+[27/Jul/2025 11:32:16] "GET /file-list HTTP/1.1" 404 -
+[27/Jul/2025 11:32:16] code 404, message File not found
+[27/Jul/2025 11:32:16] "GET /file-list HTTP/1.1" 404 -
+[27/Jul/2025 11:32:16] "GET /data/examples/small.json HTTP/1.1" 200 -
+[27/Jul/2025 11:32:16] "GET /favicon-32x32.png HTTP/1.1" 200 -
+[27/Jul/2025 11:32:17] "HEAD /data/examples/medium.json HTTP/1.1" 200 -
+[27/Jul/2025 11:32:17] "HEAD /data/examples/medium.json HTTP/1.1" 200 -
+[27/Jul/2025 11:32:17] "HEAD /data/examples/large.json HTTP/1.1" 200 -
+[27/Jul/2025 11:32:17] "HEAD /data/examples/large.json HTTP/1.1" 200 -
+[27/Jul/2025 11:32:17] "HEAD /data/examples/mega.json HTTP/1.1" 200 -
+[27/Jul/2025 11:32:17] "HEAD /data/examples/mega.json HTTP/1.1" 200 -
+[27/Jul/2025 11:32:17] "HEAD /data/examples/us_legal_system_actors.json HTTP/1.1" 200 -
+[27/Jul/2025 11:32:17] "HEAD /data/examples/us_legal_system_actors.json HTTP/1.1" 200 -
+[27/Jul/2025 11:32:40] code 404, message File not found
+[27/Jul/2025 11:32:40] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+[27/Jul/2025 11:35:59] "GET /index.html HTTP/1.1" 304 -
+[27/Jul/2025 11:35:59] code 404, message File not found
+[27/Jul/2025 11:35:59] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+[27/Jul/2025 11:35:59] "GET /main.js HTTP/1.1" 200 -
+[27/Jul/2025 11:35:59] code 404, message File not found
+[27/Jul/2025 11:35:59] "GET /file-list HTTP/1.1" 404 -
+[27/Jul/2025 11:35:59] code 404, message File not found
+[27/Jul/2025 11:35:59] "GET /file-list HTTP/1.1" 404 -
+[27/Jul/2025 11:36:00] "HEAD /data/examples/medium.json HTTP/1.1" 200 -
+[27/Jul/2025 11:36:00] "HEAD /data/examples/medium.json HTTP/1.1" 200 -
+[27/Jul/2025 11:36:00] "HEAD /data/examples/large.json HTTP/1.1" 200 -
+[27/Jul/2025 11:36:00] "HEAD /data/examples/large.json HTTP/1.1" 200 -
+[27/Jul/2025 11:36:00] "HEAD /data/examples/mega.json HTTP/1.1" 200 -
+[27/Jul/2025 11:36:00] "HEAD /data/examples/mega.json HTTP/1.1" 200 -
+[27/Jul/2025 11:36:00] "HEAD /data/examples/us_legal_system_actors.json HTTP/1.1" 200 -
+[27/Jul/2025 11:36:00] "HEAD /data/examples/us_legal_system_actors.json HTTP/1.1" 200 -
+[27/Jul/2025 11:37:03] "GET /index.html HTTP/1.1" 304 -
+[27/Jul/2025 11:37:04] code 404, message File not found
+[27/Jul/2025 11:37:04] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+[27/Jul/2025 11:37:04] "GET /main.js HTTP/1.1" 200 -
+[27/Jul/2025 11:37:04] code 404, message File not found
+[27/Jul/2025 11:37:04] "GET /file-list HTTP/1.1" 404 -
+[27/Jul/2025 11:37:04] code 404, message File not found
+[27/Jul/2025 11:37:04] "GET /file-list HTTP/1.1" 404 -
+[27/Jul/2025 11:37:04] "HEAD /data/examples/medium.json HTTP/1.1" 200 -
+[27/Jul/2025 11:37:04] "HEAD /data/examples/medium.json HTTP/1.1" 200 -
+[27/Jul/2025 11:37:04] "HEAD /data/examples/large.json HTTP/1.1" 200 -
+[27/Jul/2025 11:37:04] "HEAD /data/examples/large.json HTTP/1.1" 200 -
+[27/Jul/2025 11:37:04] "HEAD /data/examples/mega.json HTTP/1.1" 200 -
+[27/Jul/2025 11:37:04] "HEAD /data/examples/mega.json HTTP/1.1" 200 -
+[27/Jul/2025 11:37:04] "HEAD /data/examples/us_legal_system_actors.json HTTP/1.1" 200 -
+[27/Jul/2025 11:37:05] "HEAD /data/examples/us_legal_system_actors.json HTTP/1.1" 200 -
+[27/Jul/2025 11:40:31] "GET /index.html HTTP/1.1" 304 -
+[27/Jul/2025 11:40:31] "GET /main.js HTTP/1.1" 200 -
+[27/Jul/2025 11:40:31] code 404, message File not found
+[27/Jul/2025 11:40:31] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+[27/Jul/2025 11:40:31] code 404, message File not found
+[27/Jul/2025 11:40:31] "GET /file-list HTTP/1.1" 404 -
+[27/Jul/2025 11:40:31] code 404, message File not found
+[27/Jul/2025 11:40:31] "GET /file-list HTTP/1.1" 404 -
+[27/Jul/2025 11:40:31] "HEAD /data/examples/medium.json HTTP/1.1" 200 -
+[27/Jul/2025 11:40:31] "HEAD /data/examples/medium.json HTTP/1.1" 200 -
+[27/Jul/2025 11:40:31] "HEAD /data/examples/large.json HTTP/1.1" 200 -
+[27/Jul/2025 11:40:32] "HEAD /data/examples/large.json HTTP/1.1" 200 -
+[27/Jul/2025 11:40:32] "HEAD /data/examples/mega.json HTTP/1.1" 200 -
+[27/Jul/2025 11:40:32] "HEAD /data/examples/mega.json HTTP/1.1" 200 -
+[27/Jul/2025 11:40:32] "HEAD /data/examples/us_legal_system_actors.json HTTP/1.1" 200 -
+[27/Jul/2025 11:40:32] "HEAD /data/examples/us_legal_system_actors.json HTTP/1.1" 200 -
+[27/Jul/2025 11:40:40] "GET /data/examples/large.json HTTP/1.1" 200 -
+[27/Jul/2025 12:24:58] "GET /index.html HTTP/1.1" 304 -
+[27/Jul/2025 12:24:58] "GET /main.js HTTP/1.1" 200 -
+[27/Jul/2025 12:24:58] code 404, message File not found
+[27/Jul/2025 12:24:58] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+[27/Jul/2025 12:24:58] code 404, message File not found
+[27/Jul/2025 12:24:58] "GET /file-list HTTP/1.1" 404 -
+[27/Jul/2025 12:24:58] code 404, message File not found
+[27/Jul/2025 12:24:58] "GET /file-list HTTP/1.1" 404 -
+[27/Jul/2025 12:24:59] "HEAD /data/examples/medium.json HTTP/1.1" 200 -
+[27/Jul/2025 12:24:59] "HEAD /data/examples/medium.json HTTP/1.1" 200 -
+[27/Jul/2025 12:24:59] "HEAD /data/examples/mega.json HTTP/1.1" 200 -
+[27/Jul/2025 12:24:59] "HEAD /data/examples/mega.json HTTP/1.1" 200 -
+[27/Jul/2025 12:24:59] "HEAD /data/examples/us_legal_system_actors.json HTTP/1.1" 200 -
+[27/Jul/2025 12:24:59] "HEAD /data/examples/us_legal_system_actors.json HTTP/1.1" 200 -
+[27/Jul/2025 12:28:12] "GET /data/examples/us_legal_system_actors.json HTTP/1.1" 200 -
+[27/Jul/2025 12:30:02] "GET /index.html HTTP/1.1" 304 -
+[27/Jul/2025 12:30:02] code 404, message File not found
+[27/Jul/2025 12:30:02] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+[27/Jul/2025 12:30:02] "GET /main.js HTTP/1.1" 200 -
+[27/Jul/2025 12:30:02] code 404, message File not found
+[27/Jul/2025 12:30:02] "GET /file-list HTTP/1.1" 404 -

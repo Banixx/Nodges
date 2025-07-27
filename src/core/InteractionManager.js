@@ -39,7 +39,6 @@ export class InteractionManager {
         this.initializeEventSubscriptions();
         this.initializeInfoPanel();
         
-        console.log('[InteractionManager] Initialisiert');
     }
     
     /**
@@ -95,7 +94,6 @@ export class InteractionManager {
             // Tooltip anzeigen (optional)
             this.showTooltip(object);
             
-            console.log('[InteractionManager] Hover Start:', object.userData?.type || 'unknown');
         }
     }
     
@@ -116,7 +114,6 @@ export class InteractionManager {
             // Tooltip verstecken
             this.hideTooltip();
             
-            console.log('[InteractionManager] Hover End:', object.userData?.type || 'unknown');
         }
     }
     
@@ -147,7 +144,6 @@ export class InteractionManager {
             this.deselectAll();
         }
         
-        console.log('[InteractionManager] Click:', clickedObject?.userData?.type || 'background');
     }
     
     /**
@@ -160,7 +156,6 @@ export class InteractionManager {
         
         if (clickedObject) {
             this.focusOnObject(clickedObject);
-            console.log('[InteractionManager] Double-Click Focus:', clickedObject.userData?.type || 'unknown');
         }
     }
     
@@ -205,7 +200,6 @@ export class InteractionManager {
             
             if (deltaX > this.dragThreshold || deltaY > this.dragThreshold) {
                 this.isDragging = true;
-                console.log('[InteractionManager] Drag detected');
             }
         }
     }
@@ -222,7 +216,6 @@ export class InteractionManager {
             this.showContextMenu(clickedObject, event);
         }
         
-        console.log('[InteractionManager] Context Menu:', clickedObject?.userData?.type || 'background');
     }
     
     /**
@@ -271,7 +264,6 @@ export class InteractionManager {
         // Info Panel anzeigen
         this.showInfoPanel(object);
         
-        console.log('[InteractionManager] Object selected:', object.userData?.type || 'unknown');
     }
     
     /**
@@ -286,7 +278,6 @@ export class InteractionManager {
         this.stateManager.setSelectedObject(null);
         this.hideInfoPanel();
         
-        console.log('[InteractionManager] All deselected');
     }
     
     /**
@@ -295,7 +286,6 @@ export class InteractionManager {
     focusOnObject(object) {
         // Diese Funktionalitaet wird spaeter implementiert
         // Benoetigt Zugriff auf Camera und Controls
-        console.log('[InteractionManager] Focus on object:', object.userData?.type || 'unknown');
     }
     
     /**
@@ -305,7 +295,6 @@ export class InteractionManager {
         const selectedObject = this.stateManager.state.selectedObject;
         if (selectedObject) {
             // Diese Funktionalitaet wird spaeter implementiert
-            console.log('[InteractionManager] Delete selected:', selectedObject.userData?.type || 'unknown');
         }
     }
     
@@ -362,7 +351,6 @@ export class InteractionManager {
         // StateManager benachrichtigen
         this.stateManager.showInfoPanel();
         
-        console.log('[InteractionManager] Info Panel shown for:', object.userData?.type || 'unknown');
     }
     
     /**
@@ -375,7 +363,6 @@ export class InteractionManager {
         
         this.stateManager.hideInfoPanel();
         
-        console.log('[InteractionManager] Info Panel hidden');
     }
     
     /**
@@ -436,7 +423,6 @@ export class InteractionManager {
      */
     showContextMenu(object, event) {
         // Context Menu Implementierung - spaeter
-        console.log('[InteractionManager] Context Menu fuer:', object.userData?.type || 'unknown');
     }
     
     /**
@@ -446,7 +432,6 @@ export class InteractionManager {
         if (Object.values(this.modes).includes(mode)) {
             this.currentMode = mode;
             this.stateManager.setCurrentTool(mode);
-            console.log('[InteractionManager] Mode changed to:', mode);
         }
     }
     
@@ -456,7 +441,6 @@ export class InteractionManager {
     setEnabled(enabled) {
         this.isEnabled = enabled;
         this.stateManager.setInteractionEnabled(enabled);
-        console.log('[InteractionManager] Enabled:', enabled);
     }
     
     /**
@@ -483,6 +467,5 @@ export class InteractionManager {
         this.hideInfoPanel();
         this.hideTooltip();
         
-        console.log('[InteractionManager] Cleanup abgeschlossen');
     }
 }
