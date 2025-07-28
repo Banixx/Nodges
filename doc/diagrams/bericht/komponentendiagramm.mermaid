@@ -18,5 +18,13 @@ flowchart TB
         E -->|UI Updates| K[HTML-Panels]
     end
 
-    A -->|Ereignisse| L[SelectionManager]
-    L -->|Auswahlmanagement| C
+    subgraph Performance
+        M[FPSMonitor] -->|überwacht| J
+        M -->|daten| N[PerformanceOptimizer]
+        N -->|optimiert| I
+        N -->|empfiehlt| H
+        N -->|steuert| A
+    end
+
+    A -->|Ereignisse| O[SelectionManager]
+    O -->|Auswahlmanagement| C

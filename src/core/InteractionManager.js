@@ -5,10 +5,13 @@
  */
 
 export class InteractionManager {
-    constructor(centralEventManager, stateManager, highlightManager) {
+    constructor(centralEventManager, stateManager, highlightManager, camera, controls, scene) {
         this.eventManager = centralEventManager;
         this.stateManager = stateManager;
         this.highlightManager = highlightManager;
+        this.camera = camera;
+        this.controls = controls;
+        this.scene = scene;
         
         // Interaction Modes
         this.modes = {
@@ -284,8 +287,32 @@ export class InteractionManager {
      * Fokussiert auf ein Objekt (Kamera-Bewegung)
      */
     focusOnObject(object) {
-        // Diese Funktionalitaet wird spaeter implementiert
-        // Benoetigt Zugriff auf Camera und Controls
+        if (!this.camera || !this.controls || !object) return;
+        
+        // Berechne die Position des Objekts
+        const position = new THREE.Vector3();
+        object.getWorldPosition(position);
+        
+        // Berechne die Entfernung basierend auf der Objektgröße
+        const box = new THREE.Box3().setFromObject(object);
+        const size = box.getSize(new THREE.Vector3()).length();
+        const distance = Math.max(size * 2, 5); // Mindestabstand von 5 Einheiten
+        
+        // Berechne die neue Kameraposition
+        const direction = new THREE.Vector3()
+            .subVectors(this.camera.position, this.controls.target)
+            .normalize();
+            
+        const newPosition = position.clone().addScaledVector(direction, distance);
+        
+        // Setze die neue Kamera-Position und das Ziel
+        this.camera.position.copy(newPosition);
+        this.controls.target.copy(position);
+        this.controls.update();
+        
+        // Anpassung der Zoom-Stärke basierend auf der Objektgröße
+        const zoomFactor = Math.max(1, size / 5);
+        this.controls.zoomSpeed = 1.5 / zoomFactor;
     }
     
     /**
@@ -294,7 +321,25 @@ export class InteractionManager {
     deleteSelected() {
         const selectedObject = this.stateManager.state.selectedObject;
         if (selectedObject) {
-            // Diese Funktionalitaet wird spaeter implementiert
+            // Lösche das Objekt aus der Szene
+            this.scene.remove(selectedObject);
+            
+            // Entferne Highlight und Ressourcen
+            this.highlightManager.removeHighlight(selectedObject);
+            
+            // Freigabe von Geometrie und Material
+            if (selectedObject.geometry) {
+                selectedObject.geometry.dispose();
+            }
+            if (selectedObject.material) {
+                selectedObject.material.dispose();
+            }
+            
+            // Deselektiere das Objekt
+            this.deselectAll();
+            
+            // Event veröffentlichen
+            this.eventManager.publish('object_deleted', { object: selectedObject });
         }
     }
     

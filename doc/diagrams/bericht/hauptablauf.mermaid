@@ -9,25 +9,29 @@ flowchart TD
     G --> H[Animation Loop startet]
     H --> I[OrbitControls aktualisieren]
     I --> J[Szene rendern]
-    J --> K[FPS berechnen]
-    K --> H
+    J --> K[FPSMonitor berechnet FPS]
+    K --> L[PerformanceOptimizer prüft Last]
+    L -->|Hohe Last| M[Reduziere Detailstufen]
+    L -->|Normale Last| N[Behalte Einstellungen]
+    M --> J
+    N --> H
     
     subgraph Benutzerinteraktion
-        L[Mausbewegung] --> M[RaycastManager identifiziert Objekt]
-        M --> N[CentralEventManager aktualisiert Hover-State]
-        N --> O[InteractionManager verarbeitet Hover]
-        O -->|Hover Start| P[HighlightManager wendet Hervorhebung an]
-        O -->|Hover End| Q[HighlightManager entfernt Hervorhebung]
+        O[Mausbewegung] --> P[RaycastManager identifiziert Objekt]
+        P --> Q[CentralEventManager aktualisiert Hover-State]
+        Q --> R[InteractionManager verarbeitet Hover]
+        R -->|Hover Start| S[HighlightManager wendet Hervorhebung an]
+        R -->|Hover End| T[HighlightManager entfernt Hervorhebung]
         
-        R[Mausklick] --> S[CentralEventManager aktualisiert Selection-State]
-        S --> T[InteractionManager verarbeitet Klick]
-        T -->|Objekt selektiert| U[StateManager setzt selectedObject]
-        U --> V[HighlightManager wendet Auswahl-Hervorhebung an]
-        V --> W[Info-Panel wird angezeigt]
-        T -->|Kein Objekt| X[StateManager löscht Auswahl]
+        U[Mausklick] --> V[CentralEventManager aktualisiert Selection-State]
+        V --> W[InteractionManager verarbeitet Klick]
+        W -->|Objekt selektiert| X[StateManager setzt selectedObject]
+        X --> Y[HighlightManager wendet Auswahl-Hervorhebung an]
+        Y --> Z[Info-Panel wird angezeigt]
+        W -->|Kein Objekt| AA[StateManager löscht Auswahl]
         
-        Y[Tastaturereignis] --> Z[CentralEventManager verarbeitet Eingabe]
-        Z --> AA[InteractionManager/SelectionManager verarbeitet Shortcut]
+        AB[Tastaturereignis] --> AC[CentralEventManager verarbeitet Eingabe]
+        AC --> AD[InteractionManager/SelectionManager verarbeitet Shortcut]
     end
     
     H --> Benutzerinteraktion

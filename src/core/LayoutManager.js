@@ -104,7 +104,7 @@ export class LayoutManager {
         this.layouts.set(id, layout);
     }
 
-    applyLayout(layoutId, nodes, edges, options = {}) {
+    async applyLayout(layoutId, nodes, edges, options = {}) {
         const layout = this.layouts.get(layoutId);
         if (!layout) {
             console.warn(`Layout ${layoutId} nicht gefunden`);
@@ -115,13 +115,56 @@ export class LayoutManager {
         const mergedOptions = { ...layout.options, ...options };
         
         try {
-            layout.apply(nodes, edges, mergedOptions);
-            console.log(`Layout ${layout.name} angewendet auf ${nodes.length} Knoten`);
-            return true;
+            // Verwende Web Worker für rechenintensive Layouts
+            if (['force-directed', 'fruchterman-reingold', 'spring-embedder'].includes(layoutId)) {
+                return await this.applyLayoutWithWorker(layoutId, nodes, edges, mergedOptions);
+            } else {
+                layout.apply(nodes, edges, mergedOptions);
+                console.log(`Layout ${layout.name} angewendet auf ${nodes.length} Knoten`);
+                return true;
+            }
         } catch (error) {
             console.error(`Fehler beim Anwenden des Layouts ${layout.name}:`, error);
             return false;
         }
+    }
+    
+    async applyLayoutWithWorker(layoutId, nodes, edges, options) {
+        return new Promise((resolve, reject) => {
+            const worker = new Worker('./src/workers/layout-worker.js');
+            
+            worker.postMessage({
+                nodes: nodes.map(node => ({ x: node.x, y: node.y, z: node.z })),
+                edges: edges.map(edge => ({
+                    start: edge.start,
+                    end: edge.end
+                })),
+                algorithm: layoutId,
+                options: options
+            });
+            
+            worker.onmessage = (event) => {
+                const positions = event.data.positions;
+                nodes.forEach((node, index) => {
+                    if (positions[index]) {
+                        node.x = positions[index].x;
+                        node.y = positions[index].y;
+                        node.z = positions[index].z;
+                    }
+                });
+                
+                this.normalizeNodePositions(nodes, 10);
+                console.log(`Worker: Layout ${layoutId} angewendet auf ${nodes.length} Knoten`);
+                worker.terminate();
+                resolve(true);
+            };
+            
+            worker.onerror = (error) => {
+                console.error('Worker-Fehler:', error);
+                worker.terminate();
+                reject(false);
+            };
+        });
     }
 
     applyForceLayout(nodes, edges, options = {}) {

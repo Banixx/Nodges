@@ -1,0 +1,11 @@
+{
+  "name": "nodges",
+  "version": "0.92.3",
+  "description": "3D Network Visualization Tool",
+  "main": "main.js",
+  "type": "module",
+  "dependencies": {
+    "three": "^0.161.0"
+  }
+
+}

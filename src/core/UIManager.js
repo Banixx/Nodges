@@ -1,43 +1,21 @@
 import * as THREE from 'three';
 
 export class UIManager {
-    constructor(stateManager) {
+    constructor(stateManager, highlightManager) {
         this.stateManager = stateManager;
+        this.highlightManager = highlightManager;
 
         // Subscribe to state changes
         this.stateManager.subscribe(this.handleStateChange.bind(this));
     }
 
-
     handleStateChange(state) {
-        // Visuelle Effekte aktualisieren
-        this.updateVisualEffects(state);
-    }
-
-    updateVisualEffects(state) {
+        // Update visual effects through HighlightManager
         if (state.selectedObject) {
-            this.applyGlowEffect(state.selectedObject, 1.0);
-        }
-    }
-
-    applyGlowEffect(object, intensity) {
-        if (object.userData.type === 'node') {
-            object.material.emissive.setRGB(1, 0.5, 0);
-            object.material.emissiveIntensity = 0.3 + intensity * 0.7;
-        } else if (object.userData.type === 'edge') {
-            const color = new THREE.Color();
-            color.setHSL(0.6, 1, intensity * 0.7);
-            object.material.color = color;
-        }
-    }
-
-    resetVisualEffects(object) {
-        if (object.userData.type === 'node') {
-            object.material.emissive.setRGB(0, 0, 0);
-            object.material.emissiveIntensity = 0;
-            object.material.color.setHex(object.parent.options.color);
-        } else if (object.userData.type === 'edge') {
-            object.material.color.setHex(0x0000ff);
+            this.highlightManager.applyHighlight(
+                state.selectedObject, 
+                this.highlightManager.types.SELECTION
+            );
         }
     }
 

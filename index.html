@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Nodges 0.92</title>
+    <title>Nodges 0.92.4</title>
     <link rel="icon" type="image/png" href="favicon-32x32.png">
     <style>
         body { margin: 0; }
@@ -466,43 +466,46 @@
             }
         }
         
-        // New reliable file discovery
+        // Improved file discovery without API dependency
         async function loadAvailableFiles() {
             const filePanelContent = document.getElementById('filePanelContent');
             filePanelContent.innerHTML = '<div id="fileLoadingIndicator">Loading files...</div>';
             
-            try {
-                // Get list from server API
-                const response = await fetch('/file-list');
-                if (!response.ok) throw new Error('Server error');
-                
-                const files = await response.json();
-                createFileButtons(files);
-                addRefreshButton();
-            } catch (apiError) {
-                console.warn('API failed, using fallback method');
-                
-                // Fallback: manual directory scan
-                const fallbackFiles = await fetchDirectoryContents();
-                createFileButtons(fallbackFiles);
-                addRefreshButton();
-            }
+            // Directly use manual directory scan
+            const files = await fetchDirectoryContents();
+            createFileButtons(files);
+            addRefreshButton();
         }
         
-        // Manual directory scan fallback
+        // Enhanced directory scanner
         async function fetchDirectoryContents() {
-        const knownFiles = ['small', 'medium', 'large', 'mega', 'us_legal_system_actors'];
-            
-            const available = [];
-            for (const file of knownFiles) {
-                try {
-                    const res = await fetch(`data/examples/${file}.json`, {method: 'HEAD'});
-                    if (res.ok) available.push(file);
-                } catch (e) {
-                    console.log(`File not found: ${file}`);
-                }
+            try {
+                // Dynamically fetch directory listing
+                const response = await fetch('data/examples/');
+                if (!response.ok) throw new Error('Directory not found');
+                
+                // Parse HTML response to extract files
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const links = doc.querySelectorAll('a[href]');
+                
+                // Extract JSON files
+                const jsonFiles = [];
+                links.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href.endsWith('.json')) {
+                        jsonFiles.push(href.replace('.json', ''));
+                    }
+                });
+                
+                return jsonFiles;
+            } catch (error) {
+                console.warn('Dynamic directory scan failed:', error);
+                
+                // Fallback to core dataset
+                return ['small', 'medium'];
             }
-            return available;
         }
         
         // Add refresh button
