@@ -108,7 +108,7 @@ class NodgesApp {
         
         // Zeige Versionsnummer nach einer kurzen Verzögerung
         setTimeout(() => {
-            console.log('Version: 0.92.4');
+            console.log('Version: 0.92.5');
         }, 100);
         
         this.animate();
@@ -280,8 +280,8 @@ class NodgesApp {
                 Kantentyp:
             </label>
             <select id="edgeTypeSelector" style="width:100%">
-                <option value="line">Gerade Linien</option>
-                <option value="tube">Gebogene Röhren</option>
+                <option value="line">bogä</option>
+                <option value="tube">graad</option>
             </select>
         `;
         
@@ -351,9 +351,11 @@ class NodgesApp {
             // Kamera automatisch auf Netzwerk ausrichten
             this.fitCameraToScene();
             
-            // Korrigiere den Pfad für den lokalen Server
-            const correctedUrl = url.startsWith('/') ? url : `/${url}`;
-            const response = await fetch(correctedUrl);
+            // Sicherstellen, dass der Pfad korrekt ist
+            const correctedUrl = url.includes('data/examples') ? url : `data/examples/${url}`;
+            // Für lokalen Server mit führendem / 
+            const serverUrl = correctedUrl.startsWith('/') ? correctedUrl : `/${correctedUrl}`;
+            const response = await fetch(serverUrl);
             if (!response.ok) throw new Error(`HTTP-Fehler! Status: ${response.status}`);
             
             const data = await response.json();
@@ -567,17 +569,27 @@ class NodgesApp {
                     {
                         ...edgeData,
                         name: edgeData.name || 'Kante ' + index,
-                        totalEdges: totalEdges
+                        totalEdges: totalEdges,
+                        index: index  // Füge den Index der aktuellen Kante hinzu
                     }
                 );
+                console.log(`[DEBUG] Erstelle Röhren-Kante ${index} zwischen Knoten ${edgeData.start} und ${edgeData.end}`);
+                console.log('Startposition:', startNode.position);
+                console.log('Endposition:', endNode.position);
+                console.log('Optionen:', {
+                    start: edgeData.start,
+                    end: edgeData.end,
+                    totalEdges: totalEdges,
+                    index: index
+                });
                 
                 if (edge.tube) {
                     this.scene.add(edge.tube);
                     this.edgeObjects.push(edge);
-                    console.log(`Röhren-Kante ${index} zwischen Knoten ${edgeData.start} und ${edgeData.end} erstellt`);
+                    //console.log(`[DEBUG] Röhren-Kante ${index} zwischen Knoten ${edgeData.start} und ${edgeData.end} erstellt`);
                 }
             } else {
-                console.warn(`Ungültige Röhren-Kante ${index}: Knoten ${edgeData.start} oder ${edgeData.end} existiert nicht`);
+                console.warn(`[DEBUG] Ungültige Röhren-Kante ${index}: Knoten ${edgeData.start} oder ${edgeData.end} existiert nicht`);
             }
         });
     }
@@ -711,7 +723,31 @@ class NodgesApp {
     }
     
     showInfoPanel(object) {
-        // Info-Panel-Logik (gekürzt)
+        const infoPanel = document.getElementById('infoPanel');
+        const infoPanelContent = document.getElementById('infoPanelContent');
+        
+        if (!infoPanel || !infoPanelContent) return;
+
+        // Panel immer sichtbar machen
+        infoPanel.classList.remove('collapsed');
+        
+        // Pfeil-Symbol auf "geöffnet" setzen
+        const infoPanelToggle = document.getElementById('infoPanelToggle');
+        if (infoPanelToggle) {
+            infoPanelToggle.innerHTML = 'v';
+        }
+
+        if (object) {
+            // Panel mit Inhalt füllen
+            infoPanelContent.innerHTML = `
+                <p><strong>Ausgewähltes Objekt:</strong></p>
+                <p>Typ: ${object.type}</p>
+                <p>Name: ${object.name || 'Unbenannt'}</p>
+            `;
+        } else {
+            // Leeres Panel ohne Inhalt
+            infoPanelContent.innerHTML = '<p>Kein Objekt ausgewählt</p>';
+        }
     }
     
     getConnectedEdges(nodeIndex) {

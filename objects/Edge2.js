@@ -24,18 +24,41 @@ export class Edge2 {
             this.startPosition
         ).normalize();
 
-        // Berechne senkrechte Richtung für den Bogen
-        const perpendicular = new THREE.Vector3(1, 0, 0).cross(direction);
+        // Berechne senkrechte Richtung für den Bogen basierend auf der Anzahl der Kanten zwischen den Knoten
+        let perpendicular = new THREE.Vector3(1, 0, 0).cross(direction);
         if (perpendicular.length() < 0.0001) {
             perpendicular.set(0, 1, 0).cross(direction);
         }
         perpendicular.normalize();
 
-        // Höhe des Bogens basierend auf Kantenlänge
-        const curveHeight = direction.length() * (this.options.curveFactor || 0.7); 
+        // Berücksichtige die Anzahl der Kanten zwischen den Knoten
+        if (this.options.totalEdges > 1) {
+            const angle = (2 * Math.PI) / this.options.totalEdges; // Winkel zwischen den Kanten
+            const rotationAxis = direction.clone().normalize();
+            const rotationMatrix = new THREE.Matrix4().makeRotationAxis(rotationAxis, angle * this.options.index);
+            perpendicular.applyMatrix4(rotationMatrix);
+        }
+
+        // Zufällige Höhe des Bogens basierend auf Kantenlänge und Index
+        const curveFactor = 0.5 + (this.options.index * 0.25); // Unterschiedliche Höhe für jede Kante
+        const curveHeight = direction.length() * curveFactor;
         const controlPoint = midPoint.clone().add(perpendicular.multiplyScalar(curveHeight));
 
         // Quadratische Bézier-Kurve mit 3 Punkten
+        console.log('Erstelle Kante mit folgenden Parametern:');
+        console.log('Startposition:', this.startPosition);
+        console.log('Endposition:', this.endPosition);
+        console.log('Anzahl Kanten zwischen Knoten:', this.options.totalEdges);
+        console.log('Index dieser Kante:', this.options.index);
+        console.log('Richtung:', direction);
+        console.log('Senkrechte Richtung:', perpendicular);
+        console.log('Kontrollpunkt:', controlPoint);
+        console.log('Kurvenhöhe:', curveHeight);
+        console.log('Mittelpunkt:', midPoint);
+        console.log('Berechnete senkrechte Richtung:', perpendicular);
+        console.log('Berechnete Richtung:', direction);
+        console.log('Berechneter Kontrollpunkt:', controlPoint);
+
         const curve = new THREE.QuadraticBezierCurve3(
             this.startPosition,
             controlPoint,
