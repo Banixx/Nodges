@@ -91,7 +91,6 @@ self.onmessage = function(event) {
             
             // Frühes Beenden bei geringer Energie
             if (totalEnergy < minEnergyThreshold) {
-                console.log(`Layout konvergiert nach ${iter} Iterationen`);
                 break;
             }
         }

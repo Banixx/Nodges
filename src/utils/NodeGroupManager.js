@@ -68,7 +68,6 @@ export class NodeGroupManager {
      */
     addNodeToGroup(node, groupId) {
         if (!this.groups.has(groupId)) {
-            console.warn(`Group with ID ${groupId} does not exist`);
             return;
         }
         

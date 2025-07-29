@@ -22,8 +22,6 @@ export class GroundManager {
         this.ground.name = "ground";
         
         this.scene.add(this.ground);
-        console.log("Beiger Untergrund erstellt");
-        
         return this.ground;
     }
     

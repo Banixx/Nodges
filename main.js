@@ -12,8 +12,6 @@ import { CentralEventManager } from './src/core/CentralEventManager.js';
 import { InteractionManager } from './src/core/InteractionManager.js';
 import { LayoutManager } from './src/core/LayoutManager.js';
 import { UIManager } from './src/core/UIManager.js';
-import { EventManager } from './src/core/EventManager.js';
-
 // Utilities
 import { SelectionManager } from './src/utils/SelectionManager.js';
 import { RaycastManager } from './src/utils/RaycastManager.js';
@@ -37,7 +35,7 @@ import { GlowEffect } from './src/effects/GlowEffect.js';
 
 // Objekte
 import { Node } from './objects/Node.js';
-import { Edge } from './objects/Edge.js';
+import { Edge2 } from './objects/Edge.js';
 
 class NodgesApp {
     constructor() {
@@ -98,7 +96,6 @@ class NodgesApp {
             await this.initManagers();
             // GUI vor Event-Listenern initialisieren
             await this.initGUI();
-            this.createEdgeTypeToggle(); // Toggle-Panel hinzufgen
             await this.initEventListeners();
             // Default-Daten nach Event-Registrierung laden
             await this.loadDefaultData();
@@ -108,7 +105,7 @@ class NodgesApp {
         
         // Zeige Versionsnummer nach einer kurzen Verzgerung
         setTimeout(() => {
-            console.log('Version: 0.92.5');
+            console.log('Version: 0.92.10');
         }, 100);
         
         this.animate();
@@ -216,7 +213,6 @@ class NodgesApp {
         // UI Manager muss nach HighlightManager initialisiert werden
         this.uiManager = new UIManager(this.stateManager, this.highlightManager);
         
-        this.eventManager = new EventManager(this.stateManager);
         
         // Unified Event System
         this.centralEventManager = new CentralEventManager(this.scene, this.camera, this.renderer, this.stateManager);
@@ -260,49 +256,6 @@ class NodgesApp {
         this.initFileInfoPanel();
         this.initSearchPanel();
         console.log('GUI-System initialisiert');
-    }
-    
-    // Toggle-Panel fr Kantentyp
-    createEdgeTypeToggle() {
-        const togglePanel = document.createElement('div');
-        togglePanel.id = 'edge-toggle-panel';
-        togglePanel.style.position = 'absolute';
-        togglePanel.style.top = '10px';
-        togglePanel.style.left = '10px';
-        togglePanel.style.backgroundColor = 'rgba(40,40,40,0.7)';
-        togglePanel.style.padding = '10px';
-        togglePanel.style.borderRadius = '5px';
-        togglePanel.style.zIndex = '100';
-        togglePanel.style.color = 'white';
-        
-        togglePanel.innerHTML = `
-            <label style="display:block; margin-bottom:5px;">
-                Kantentyp:
-            </label>
-            <select id="edgeTypeSelector" style="width:100%">
-                <option value="line">bog</option>
-                <option value="tube">graad</option>
-            </select>
-        `;
-        
-        document.body.appendChild(togglePanel);
-        
-        document.getElementById('edgeTypeSelector').addEventListener('change', (e) => {
-            this.setEdgeType(e.target.value);
-        });
-    }
-    
-    setEdgeType(type) {
-        this.edgeType = type;
-        if (this.currentNodes.length > 0 && this.currentEdges.length > 0) {
-            this.recreateEdges();
-        }
-    }
-    
-    recreateEdges() {
-        this.clearScene();
-        this.createNodes();
-        this.createEdges();
     }
     
     initFileInfoPanel() {

@@ -120,7 +120,6 @@ export class LayoutManager {
                 return await this.applyLayoutWithWorker(layoutId, nodes, edges, mergedOptions);
             } else {
                 layout.apply(nodes, edges, mergedOptions);
-                console.log(`Layout ${layout.name} angewendet auf ${nodes.length} Knoten`);
                 return true;
             }
         } catch (error) {
@@ -154,7 +153,6 @@ export class LayoutManager {
                 });
                 
                 this.normalizeNodePositions(nodes, 10);
-                console.log(`Worker: Layout ${layoutId} angewendet auf ${nodes.length} Knoten`);
                 worker.terminate();
                 resolve(true);
             };
@@ -524,6 +522,5 @@ export class LayoutManager {
             node.z = (node.z - centerZ) * scale;
         });
         
-        console.log(`[LAYOUT] Netzwerk normalisiert: Skalierung ${scale.toFixed(3)}, Ausdehnung ${maxExtent}`);
     }
 }

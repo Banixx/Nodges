@@ -50,7 +50,6 @@ export class BatchOperations {
         });
 
         this.addToHistory(operation);
-        console.log(`Changed color of ${selectedObjects.length} objects to #${color.toString(16).padStart(6, '0')}`);
     }
 
     /**
@@ -86,7 +85,6 @@ export class BatchOperations {
         });
 
         this.addToHistory(operation);
-        console.log(`Changed size of ${selectedNodes.length} nodes to ${size}`);
     }
 
     /**
@@ -120,7 +118,6 @@ export class BatchOperations {
         });
 
         this.addToHistory(operation);
-        console.log(`Changed type of ${selectedNodes.length} nodes to ${type}`);
     }
 
     /**
@@ -148,7 +145,6 @@ export class BatchOperations {
         });
 
         this.addToHistory(operation);
-        console.log(`Moved ${selectedObjects.length} objects by (${offset.x}, ${offset.y}, ${offset.z})`);
     }
 
     /**
@@ -176,7 +172,6 @@ export class BatchOperations {
         });
 
         this.addToHistory(operation);
-        console.log(`Scaled ${selectedObjects.length} objects by factor ${scaleFactor}`);
     }
 
     /**
@@ -213,7 +208,6 @@ export class BatchOperations {
         });
 
         this.addToHistory(operation);
-        console.log(`Added ${selectedNodes.length} nodes to group ${groupId}`);
     }
 
     /**
@@ -248,7 +242,6 @@ export class BatchOperations {
         });
 
         this.addToHistory(operation);
-        console.log(`Removed ${operation.objects.length} nodes from their groups`);
     }
 
     /**
@@ -291,7 +284,6 @@ export class BatchOperations {
         });
 
         this.addToHistory(operation);
-        console.log(`Set property '${property}' to '${value}' for ${operation.objects.length} objects`);
     }
 
     /**
@@ -342,7 +334,6 @@ export class BatchOperations {
         });
 
         this.addToHistory(operation);
-        console.log(`Aligned ${selectedObjects.length} objects on ${axis}-axis (${mode})`);
     }
 
     /**
@@ -380,7 +371,6 @@ export class BatchOperations {
         });
 
         this.addToHistory(operation);
-        console.log(`Distributed ${selectedObjects.length} objects on ${axis}-axis`);
     }
 
     /**
@@ -401,7 +391,6 @@ export class BatchOperations {
             // Note: Edge copying is more complex as it requires node relationships
         });
 
-        console.log(`Created ${copies.length} copies`);
         return copies;
     }
 
@@ -544,7 +533,6 @@ export class BatchOperations {
                 break;
         }
 
-        console.log(`Undid operation: ${operation.type}`);
     }
 
     /**

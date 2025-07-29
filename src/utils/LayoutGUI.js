@@ -120,7 +120,6 @@ export class LayoutGUI {
             this.toggleButton.innerHTML = 'v';
         }
         
-        console.log(' LayoutGUI initialisiert');
     }
     
     createPanel() {
@@ -287,7 +286,6 @@ export class LayoutGUI {
             // Positionierung unter fileInfoPanel starten
             this.startPositioning();
         } else {
-            console.warn('LayoutGUI: document.body not available');
         }
     }
     

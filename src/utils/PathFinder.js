@@ -84,7 +84,6 @@ export class PathFinder {
      */
     findShortestPath() {
         if (!this.startNode || !this.endNode) {
-            console.warn('Start or end node not set');
             return [];
         }
 
