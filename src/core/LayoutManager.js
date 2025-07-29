@@ -115,7 +115,7 @@ export class LayoutManager {
         const mergedOptions = { ...layout.options, ...options };
         
         try {
-            // Verwende Web Worker für rechenintensive Layouts
+            // Verwende Web Worker fr rechenintensive Layouts
             if (['force-directed', 'fruchterman-reingold', 'spring-embedder'].includes(layoutId)) {
                 return await this.applyLayoutWithWorker(layoutId, nodes, edges, mergedOptions);
             } else {

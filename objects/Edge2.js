@@ -80,7 +80,16 @@ export class Edge2 {
             side: THREE.DoubleSide
         });
 
-        return new THREE.Mesh(tubeGeometry, material);
+        const tube = new THREE.Mesh(tubeGeometry, material);
+        
+        // WICHTIG: userData fuer Edge-Erkennung setzen
+        tube.userData = {
+            type: 'edge',
+            edge: this,
+            name: this.options.name || 'Unbenannte Kante'
+        };
+
+        return tube;
     }
 
     updatePositions(startPosition, endPosition, startNodeRadius, endNodeRadius) {

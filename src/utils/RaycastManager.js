@@ -18,15 +18,28 @@ export class RaycastManager {
     findIntersectedObject() {
         this.raycaster.setFromCamera(this.mouse, this.camera);
         
-        // F端hre den Raycast f端r alle Objekte durch
+        // Führe den Raycast für alle Objekte durch
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
         
-        // Pr端fe zuerst auf Kanten (Edges)
+        // Debug-Ausgabe für alle Intersects
+        if (intersects.length > 0) {
+            console.log('Raycast intersects:', intersects.map(i => ({
+                object: i.object,
+                userData: i.object.userData,
+                type: i.object.userData?.type,
+                isInstancedMesh: i.object.isInstancedMesh
+            })));
+        }
+        
+        // Prüfe zuerst auf Kanten (Edges)
         const edgeIntersect = intersects.find(intersect => 
-            intersect.object.userData.type === 'edge'
+            intersect.object.userData && intersect.object.userData.type === 'edge'
         );
         
-        if (edgeIntersect) return edgeIntersect.object;
+        if (edgeIntersect) {
+            console.log('Edge gefunden:', edgeIntersect.object);
+            return edgeIntersect.object;
+        }
         
         // Dann auf Knoten (Instanced Mesh)
         const nodeIntersect = intersects.find(intersect => 
@@ -34,7 +47,8 @@ export class RaycastManager {
         );
         
         if (nodeIntersect) {
-            // Erstelle ein Dummy-Objekt f端r die Interaktion
+            console.log('Node gefunden:', nodeIntersect.object);
+            // Erstelle ein Dummy-Objekt für die Interaktion
             const dummyNode = new THREE.Object3D();
             dummyNode.position.copy(nodeIntersect.point);
             dummyNode.userData = {

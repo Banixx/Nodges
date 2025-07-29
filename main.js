@@ -80,9 +80,9 @@ class NodgesApp {
         this.nodeObjects = [];
         this.edgeObjects = [];
         this.lastMouseMoveTime = 0;
-        this.edgeType = 'tube'; // Standard: Gebogene Röhren
+        this.edgeType = 'tube'; // Standard: Gebogene Rhren
         
-        // Performance-Cache für Raycast-Operationen
+        // Performance-Cache fr Raycast-Operationen
         this.raycastObjectsCache = null;
         this.raycastCacheValid = false;
         
@@ -98,7 +98,7 @@ class NodgesApp {
             await this.initManagers();
             // GUI vor Event-Listenern initialisieren
             await this.initGUI();
-            this.createEdgeTypeToggle(); // Toggle-Panel hinzufügen
+            this.createEdgeTypeToggle(); // Toggle-Panel hinzufgen
             await this.initEventListeners();
             // Default-Daten nach Event-Registrierung laden
             await this.loadDefaultData();
@@ -106,7 +106,7 @@ class NodgesApp {
         this.isInitialized = true;
         console.log('Nodges erfolgreich initialisiert');
         
-        // Zeige Versionsnummer nach einer kurzen Verzögerung
+        // Zeige Versionsnummer nach einer kurzen Verzgerung
         setTimeout(() => {
             console.log('Version: 0.92.5');
         }, 100);
@@ -162,7 +162,7 @@ class NodgesApp {
         // Untergrund erstellen
         this.createGround();
         
-        // Fenstergrößenänderung behandeln
+        // Fenstergrennderung behandeln
         window.addEventListener('resize', () => {
             this.camera.aspect = window.innerWidth / window.innerHeight;
             this.camera.updateProjectionMatrix();
@@ -173,7 +173,7 @@ class NodgesApp {
     }
 
     createGround() {
-        // Geometrie für Untergrund
+        // Geometrie fr Untergrund
         const groundGeometry = new THREE.PlaneGeometry(100, 100);
         
         // Material mit Textur
@@ -192,7 +192,7 @@ class NodgesApp {
 
         this.scene.add(this.ground);
 
-        // Hilfsgitter für Orientierung
+        // Hilfsgitter fr Orientierung
         this.createGridLines();
 
         console.log('Untergrund erstellt');
@@ -262,7 +262,7 @@ class NodgesApp {
         console.log('GUI-System initialisiert');
     }
     
-    // Toggle-Panel für Kantentyp
+    // Toggle-Panel fr Kantentyp
     createEdgeTypeToggle() {
         const togglePanel = document.createElement('div');
         togglePanel.id = 'edge-toggle-panel';
@@ -280,7 +280,7 @@ class NodgesApp {
                 Kantentyp:
             </label>
             <select id="edgeTypeSelector" style="width:100%">
-                <option value="line">bogä</option>
+                <option value="line">bog</option>
                 <option value="tube">graad</option>
             </select>
         `;
@@ -353,7 +353,7 @@ class NodgesApp {
             
             // Sicherstellen, dass der Pfad korrekt ist
             const correctedUrl = url.includes('data/examples') ? url : `data/examples/${url}`;
-            // Für lokalen Server mit führendem / 
+            // Fr lokalen Server mit fhrendem / 
             const serverUrl = correctedUrl.startsWith('/') ? correctedUrl : `/${correctedUrl}`;
             const response = await fetch(serverUrl);
             if (!response.ok) throw new Error(`HTTP-Fehler! Status: ${response.status}`);
@@ -372,7 +372,7 @@ class NodgesApp {
                 this.updateNodePositions();
                 console.log('Layout erfolgreich angewendet');
             } else {
-                console.log('Layout-Anwendung übersprungen (deaktiviert)');
+                console.log('Layout-Anwendung bersprungen (deaktiviert)');
             }
             
             this.updateFileInfo(
@@ -417,10 +417,10 @@ class NodgesApp {
     }
     
     async createNodes() {
-        // Erstelle Instanced Mesh für alle Knoten mit LOD-Unterstützung
+        // Erstelle Instanced Mesh fr alle Knoten mit LOD-Untersttzung
         const nodeGeometry = new THREE.SphereGeometry(0.2, 16, 16);
         
-        // Materialien für verschiedene Detailstufen
+        // Materialien fr verschiedene Detailstufen
         this.lowDetailMaterial = new THREE.MeshBasicMaterial({ color: 0xcccccc });
         this.mediumDetailMaterial = new THREE.MeshLambertMaterial({ color: 0x3498db });
         this.highDetailMaterial = new THREE.MeshPhongMaterial({ 
@@ -442,7 +442,7 @@ class NodgesApp {
         // Positionen aller Knoten aktualisieren
         this.updateNodePositions();
         
-        // Node-Objekte für Kantenerstellung erstellen
+        // Node-Objekte fr Kantenerstellung erstellen
         this.nodeObjects = this.currentNodes.map((node, index) => {
             return {
                 index: index,
@@ -451,7 +451,7 @@ class NodgesApp {
             };
         });
         
-        console.log(`Optimiertes Instanced Mesh mit LOD-Unterstützung erstellt für ${this.currentNodes.length} Knoten`);
+        console.log(`Optimiertes Instanced Mesh mit LOD-Untersttzung erstellt fr ${this.currentNodes.length} Knoten`);
     }
     
     updateNodePositions() {
@@ -488,6 +488,15 @@ class NodgesApp {
         } else {
             await this.createLineEdges();
         }
+        
+        // Debug: Pruefe alle Szenen-Objekte nach Edge-Erstellung
+        console.log('=== SZENEN-OBJEKTE NACH EDGE-ERSTELLUNG ===');
+        this.scene.traverse((object) => {
+            if (object.userData && object.userData.type === 'edge') {
+                console.log('Edge in Szene gefunden:', object, 'userData:', object.userData);
+            }
+        });
+        console.log('=== ENDE SZENEN-OBJEKTE ===');
     }
     
     async createLineEdges() {
@@ -507,7 +516,7 @@ class NodgesApp {
         let materialCacheMisses = 0;
         
         this.currentEdges.forEach((edgeData, index) => {
-            // Sicherstellen, dass die Knotenindizes gültig sind
+            // Sicherstellen, dass die Knotenindizes gltig sind
             if (edgeData.start >= 0 && edgeData.start < this.nodeObjects.length && 
                 edgeData.end >= 0 && edgeData.end < this.nodeObjects.length) {
                 
@@ -538,7 +547,7 @@ class NodgesApp {
                     console.log(`Kante ${index} zwischen Knoten ${edgeData.start} und ${edgeData.end} erstellt`);
                 }
             } else {
-                console.warn(`Ungültige Kante ${index}: Knoten ${edgeData.start} oder ${edgeData.end} existiert nicht`);
+                console.warn(`Ungltige Kante ${index}: Knoten ${edgeData.start} oder ${edgeData.end} existiert nicht`);
             }
         });
         
@@ -570,10 +579,10 @@ class NodgesApp {
                         ...edgeData,
                         name: edgeData.name || 'Kante ' + index,
                         totalEdges: totalEdges,
-                        index: index  // Füge den Index der aktuellen Kante hinzu
+                        index: index  // Fge den Index der aktuellen Kante hinzu
                     }
                 );
-                console.log(`[DEBUG] Erstelle Röhren-Kante ${index} zwischen Knoten ${edgeData.start} und ${edgeData.end}`);
+                console.log(`[DEBUG] Erstelle Rhren-Kante ${index} zwischen Knoten ${edgeData.start} und ${edgeData.end}`);
                 console.log('Startposition:', startNode.position);
                 console.log('Endposition:', endNode.position);
                 console.log('Optionen:', {
@@ -584,12 +593,23 @@ class NodgesApp {
                 });
                 
                 if (edge.tube) {
+                    // WICHTIG: userData NACH Edge-Erstellung setzen
+                    edge.tube.userData = {
+                        type: 'edge',
+                        edge: edge,
+                        name: edgeData.name || `Kante ${index}`,
+                        start: edgeData.start,
+                        end: edgeData.end,
+                        index: index
+                    };
+                    
                     this.scene.add(edge.tube);
                     this.edgeObjects.push(edge);
-                    //console.log(`[DEBUG] Röhren-Kante ${index} zwischen Knoten ${edgeData.start} und ${edgeData.end} erstellt`);
+                    console.log(`Tube-Kante ${index} zwischen Knoten ${edgeData.start} und ${edgeData.end} erstellt`);
+                    console.log(`Tube userData:`, edge.tube.userData);
                 }
             } else {
-                console.warn(`[DEBUG] Ungültige Röhren-Kante ${index}: Knoten ${edgeData.start} oder ${edgeData.end} existiert nicht`);
+                console.warn(`[DEBUG] Ungltige Rhren-Kante ${index}: Knoten ${edgeData.start} oder ${edgeData.end} existiert nicht`);
             }
         });
     }
@@ -642,7 +662,7 @@ class NodgesApp {
             bounds.z.max - bounds.z.min
         );
         
-        // Berechne optimalen Kamera-Abstand basierend auf Netzwerkgröße
+        // Berechne optimalen Kamera-Abstand basierend auf Netzwerkgre
         const fov = this.camera.fov * (Math.PI / 180);
         const distance = Math.abs(maxDimension / Math.sin(fov / 2));
         
@@ -658,15 +678,15 @@ class NodgesApp {
     
     performSearch(query) {
         if (!query.trim()) return;
-        // Suchfunktionalität deaktiviert
+        // Suchfunktionalitt deaktiviert
     }
     
     displaySearchResults(results) {
-        // Suchfunktionalität deaktiviert
+        // Suchfunktionalitt deaktiviert
     }
     
     focusOnNode(nodeData) {
-        // Suchfunktionalität deaktiviert
+        // Suchfunktionalitt deaktiviert
     }
     
     onMouseClick(event) {
@@ -731,22 +751,22 @@ class NodgesApp {
         // Panel immer sichtbar machen
         infoPanel.classList.remove('collapsed');
         
-        // Pfeil-Symbol auf "geöffnet" setzen
+        // Pfeil-Symbol auf "geffnet" setzen
         const infoPanelToggle = document.getElementById('infoPanelToggle');
         if (infoPanelToggle) {
             infoPanelToggle.innerHTML = 'v';
         }
 
         if (object) {
-            // Panel mit Inhalt füllen
+            // Panel mit Inhalt fllen
             infoPanelContent.innerHTML = `
-                <p><strong>Ausgewähltes Objekt:</strong></p>
+                <p><strong>Ausgewhltes Objekt:</strong></p>
                 <p>Typ: ${object.type}</p>
                 <p>Name: ${object.name || 'Unbenannt'}</p>
             `;
         } else {
             // Leeres Panel ohne Inhalt
-            infoPanelContent.innerHTML = '<p>Kein Objekt ausgewählt</p>';
+            infoPanelContent.innerHTML = '<p>Kein Objekt ausgewhlt</p>';
         }
     }
     
@@ -821,7 +841,7 @@ class NodgesApp {
         this.renderer.render(this.scene, this.camera);
     }
     
-    // Öffentliche API-Methoden
+    // ffentliche API-Methoden
     getNodes() { return this.currentNodes; }
     getEdges() { return this.currentEdges; }
     getNodeObjects() { return this.nodeObjects; }
@@ -846,7 +866,7 @@ function setupDevOptions(app) {
     if (toggleOptimized) {
         toggleOptimized.addEventListener('change', () => {
             console.log('Optimized mode toggled:', toggleOptimized.checked);
-            // Hier später die Umschaltung zwischen normalem und optimiertem Modus implementieren
+            // Hier spter die Umschaltung zwischen normalem und optimiertem Modus implementieren
         });
     }
 }
@@ -859,7 +879,7 @@ if (typeof window !== 'undefined') {
         setupDevOptions(app);
     });
 } else {
-    console.error("Diese Anwendung muss im Browser ausgeführt werden");
+    console.error("Diese Anwendung muss im Browser ausgefhrt werden");
 }
 
 export { NodgesApp };

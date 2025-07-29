@@ -37,7 +37,16 @@ export class Edge {
             transparent: false
         });
         
-        return new THREE.Line(geometry, material);
+        const line = new THREE.Line(geometry, material);
+        
+        // WICHTIG: userData fuer Edge-Erkennung setzen
+        line.userData = {
+            type: 'edge',
+            edge: this,
+            name: this.options.name || 'Unbenannte Kante'
+        };
+        
+        return line;
     }
     
     updatePositions(startPosition, endPosition, startNodeRadius, endNodeRadius) {

@@ -279,7 +279,20 @@ export class InteractionManager {
         }
         
         this.stateManager.setSelectedObject(null);
-        this.hideInfoPanel();
+        
+        // Panel kollabieren statt verstecken
+        if (this.infoPanelElement) {
+            this.infoPanelElement.classList.add('collapsed');
+            
+            const infoPanelToggle = document.getElementById('infoPanelToggle');
+            if (infoPanelToggle) {
+                infoPanelToggle.innerHTML = '>';
+            }
+            
+            if (this.infoPanelContent) {
+                this.infoPanelContent.innerHTML = '<p>Kein Objekt ausgewaehlt</p>';
+            }
+        }
         
     }
     
@@ -399,11 +412,23 @@ export class InteractionManager {
     }
     
     /**
-     * Versteckt Info Panel
+     * Versteckt Info Panel (kollabiert statt ausblenden)
      */
     hideInfoPanel() {
         if (this.infoPanelElement) {
-            this.infoPanelElement.style.display = 'none';
+            // Panel kollabieren statt ausblenden
+            this.infoPanelElement.classList.add('collapsed');
+            
+            // Pfeil-Symbol auf "kollabiert" setzen
+            const infoPanelToggle = document.getElementById('infoPanelToggle');
+            if (infoPanelToggle) {
+                infoPanelToggle.innerHTML = '>';
+            }
+            
+            // Inhalt leeren aber Panel sichtbar lassen
+            if (this.infoPanelContent) {
+                this.infoPanelContent.innerHTML = '<p>Kein Objekt ausgewaehlt</p>';
+            }
         }
         
         this.stateManager.hideInfoPanel();
@@ -453,12 +478,20 @@ export class InteractionManager {
         const edgeData = edgeObject.userData.edge?.options || {};
         const name = edgeData.name || edgeObject.name || 'Unbenannte Kante';
         
+        // Erweiterte Edge-Informationen
+        const startIndex = edgeData.start || 'Unbekannt';
+        const endIndex = edgeData.end || 'Unbekannt';
+        const offset = edgeData.offset || 0;
+        const edgeType = edgeObject.userData.edge?.type || 'Unbekannt';
+        
         return {
             title: name,
             html: `
-                <p><strong>Typ:</strong> Kante</p>
-                <p><strong>Verbindung:</strong> ${edgeData.start || 'Unbekannt'} <-> ${edgeData.end || 'Unbekannt'}</p>
-                <p><strong>Offset:</strong> ${edgeData.offset || 0}</p>
+                <p><strong>Typ:</strong> Kante (${edgeType})</p>
+                <p><strong>Verbindung:</strong> Knoten ${startIndex} <-> Knoten ${endIndex}</p>
+                <p><strong>Offset:</strong> ${offset}</p>
+                <p><strong>Index:</strong> ${edgeData.index || 'Unbekannt'}</p>
+                <p><strong>Geometrie:</strong> ${edgeObject.geometry?.type || 'Unbekannt'}</p>
             `
         };
     }
