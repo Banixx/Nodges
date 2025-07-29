@@ -35,7 +35,7 @@ import { GlowEffect } from './src/effects/GlowEffect.js';
 
 // Objekte
 import { Node } from './objects/Node.js';
-import { Edge2 } from './objects/Edge.js';
+import { Edge } from './objects/Edge.js';
 
 class NodgesApp {
     constructor() {
@@ -370,57 +370,37 @@ class NodgesApp {
     }
     
     async createNodes() {
-        // Erstelle Instanced Mesh fr alle Knoten mit LOD-Untersttzung
+        // Erstelle einzelne Meshes fr jeden Knoten
         const nodeGeometry = new THREE.SphereGeometry(0.2, 16, 16);
-        
-        // Materialien fr verschiedene Detailstufen
-        this.lowDetailMaterial = new THREE.MeshBasicMaterial({ color: 0xcccccc });
-        this.mediumDetailMaterial = new THREE.MeshLambertMaterial({ color: 0x3498db });
-        this.highDetailMaterial = new THREE.MeshPhongMaterial({ 
+        const nodeMaterial = new THREE.MeshPhongMaterial({ 
             color: 0x3498db,
             shininess: 30
         });
         
-        // Instanced Mesh erstellen (Standardmaterial)
-        this.nodeMesh = new THREE.InstancedMesh(
-            nodeGeometry, 
-            this.mediumDetailMaterial, 
-            this.currentNodes.length
-        );
-        
-        // Optimierte Instanzmatrix-Verwendung
-        this.nodeMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-        this.scene.add(this.nodeMesh);
-        
-        // Positionen aller Knoten aktualisieren
-        this.updateNodePositions();
-        
-        // Node-Objekte fr Kantenerstellung erstellen
         this.nodeObjects = this.currentNodes.map((node, index) => {
+            const nodeMesh = new THREE.Mesh(nodeGeometry, nodeMaterial);
+            nodeMesh.position.set(node.x, node.y, node.z);
+            this.scene.add(nodeMesh);
+            
             return {
                 index: index,
                 position: new THREE.Vector3(node.x, node.y, node.z),
-                mesh: this.nodeMesh  // Verweis auf das Instanced Mesh
+                mesh: nodeMesh
             };
         });
         
-        console.log(`Optimiertes Instanced Mesh mit LOD-Untersttzung erstellt fr ${this.currentNodes.length} Knoten`);
+        console.log(`${this.currentNodes.length} Knoten erstellt`);
     }
     
     updateNodePositions() {
-        if (!this.nodeMesh) return;
-        
-        const matrix = new THREE.Matrix4();
         this.currentNodes.forEach((node, i) => {
-            matrix.setPosition(node.x, node.y, node.z);
-            this.nodeMesh.setMatrixAt(i, matrix);
-            
-            // Aktualisiere die Vector3-Position im nodeObjects-Array
             if (this.nodeObjects[i]) {
                 this.nodeObjects[i].position.set(node.x, node.y, node.z);
+                if (this.nodeObjects[i].mesh) {
+                    this.nodeObjects[i].mesh.position.set(node.x, node.y, node.z);
+                }
             }
         });
-        this.nodeMesh.instanceMatrix.needsUpdate = true;
         
         // Aktualisiere alle Kantenpositionen
         this.edgeObjects.forEach(edge => {
@@ -512,7 +492,7 @@ class NodgesApp {
     }
     
     async createTubeEdges() {
-        const { Edge2 } = await import('./objects/Edge2.js');
+        const { Edge } = await import('./objects/Edge.js');
         const totalEdges = this.currentEdges.length;
         console.log(`[DEBUG] Start tube edge creation for ${totalEdges} edges`);
         
@@ -523,7 +503,7 @@ class NodgesApp {
                 const startNode = this.nodeObjects[edgeData.start];
                 const endNode = this.nodeObjects[edgeData.end];
                 
-                const edge = new Edge2(
+                const edge = new Edge(
                     startNode.position,
                     endNode.position,
                     0.2,

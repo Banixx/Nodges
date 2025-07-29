@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export class Edge2 {
+export class Edge {
     constructor(startPosition, endPosition, startNodeRadius, endNodeRadius, options = {}) {
         this.startPosition = startPosition;
         this.endPosition = endPosition;
@@ -59,15 +59,15 @@ export class Edge2 {
         console.log('Berechnete Richtung:', direction);
         console.log('Berechneter Kontrollpunkt:', controlPoint);
 
-        const curve = new THREE.QuadraticBezierCurve3(
+        this.curve = new THREE.QuadraticBezierCurve3(
             this.startPosition,
             controlPoint,
             this.endPosition
         );
 
-        // TubeGeometry entlang der Kurve
+        // TubeGeometry entlang der gespeicherten Kurve
         const tubeGeometry = new THREE.TubeGeometry(
-            curve,
+            this.curve,
             5,       // tubularSegments (5 wie angefordert)
             0.1,     // radius der Röhre
             8,       // radialSegments

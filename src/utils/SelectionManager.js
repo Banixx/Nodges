@@ -438,8 +438,8 @@ export class SelectionManager {
         
         const edge = edgeObject.userData.edge;
         
-        // Erstelle die gleiche Kurve wie die urspruengliche Edge
-        const curve = edge.createCurve();
+        // Verwende die gespeicherte Kurve der Edge
+        const curve = edge.curve;
         
         // Erstelle Geometrie mit etwas groesserem Radius fuer Sichtbarkeit
         const originalRadius = edge.options.radius || 0.2;
