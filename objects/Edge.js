@@ -44,7 +44,7 @@ export class Edge {
         const curveHeight = direction.length() * curveFactor;
         const controlPoint = midPoint.clone().add(perpendicular.multiplyScalar(curveHeight));
 
-        // Quadratische Bézier-Kurve mit 3 Punkten
+        /*
         console.log('Erstelle Kante mit folgenden Parametern:');
         console.log('Startposition:', this.startPosition);
         console.log('Endposition:', this.endPosition);
@@ -58,7 +58,7 @@ export class Edge {
         console.log('Berechnete senkrechte Richtung:', perpendicular);
         console.log('Berechnete Richtung:', direction);
         console.log('Berechneter Kontrollpunkt:', controlPoint);
-
+*/
         this.curve = new THREE.QuadraticBezierCurve3(
             this.startPosition,
             controlPoint,
