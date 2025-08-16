@@ -1,11 +1,9 @@
 # Nodges
 
 
-## Quick Start
 
-start means start.md
 
-3. **Load sample data:**
+**Load sample data:**
    - Click on "Files" panel
    - Select from available network examples
 
