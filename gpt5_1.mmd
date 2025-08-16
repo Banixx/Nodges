@@ -1,0 +1,92 @@
+graph TD
+
+  A[NodgesApp<br>main.js] --> S[StateManager]
+  A --> CEM[CentralEventManager]
+  A --> IM[InteractionManager]
+  A --> LM[LayoutManager]
+  A --> UIM[UIManager]
+  A --> RM[RaycastManager]
+  A --> SEL[SelectionManager]
+  A --> NA[NetworkAnalyzer]
+  A --> PF[PathFinder]
+  A --> PO[PerformanceOptimizer]
+  A --> IMPT[ImportManager]
+  A --> EXPT[ExportManager]
+  A --> ELM[EdgeLabelManager]
+  A --> NH[NeighborhoodHighlighter]
+  A --> KBD[KeyboardShortcuts]
+  A --> NGM[NodeGroupManager]
+  A --> LGUI[LayoutGUI]
+  A --> HM[HighlightManager]
+  A --> GE[GlowEffect]
+
+  subgraph Core_src_core
+    S
+    CEM
+    IM
+    LM
+    UIM
+  end
+
+  subgraph Utils_src_utils
+    RM
+    SEL
+    NA
+    PF
+    PO
+    IMPT
+    EXPT
+    ELM
+    NH
+    KBD
+    NGM
+    LGUI
+    FDM[FutureDataManager]
+    FDP[FutureDataParser]
+    DMV[DataModelValidator]
+    FH[FileHandler]
+    SRCH[SearchManager]
+    CIA[ConnectInterfaceAdapter]
+    BO[BatchOperations]
+  end
+
+  subgraph Effects_src_effects
+    HM
+    GE
+  end
+
+  subgraph Workers_src_workers
+    LW[layout-worker.js]
+  end
+
+  subgraph Objects_objects
+    OBJN[Node]
+    OBJE[Edge]
+    NMF[NodeMeshFactory]
+  end
+
+  subgraph Data_data_examples
+    JSONS[(*.json)]
+  end
+
+  
+  IM-.subs/publ.->CEM
+  S--subscribe-->UIM
+  S--subscribe-->HM
+  HM-->GE
+  CEM--raycast2-->RM
+  SEL--raycast-->RM
+  LM--optional offload-->LW
+  IMPT--parse-->FDP
+  FDP--normalize-->FDM
+  FDM--validate-->DMV
+  DMV--validated data-->A
+  FH--I/O-->IMPT
+  EXPT--format-->FH
+  JSONS--fetch-->FH
+  A--creates-->OBJN
+  A--creates-->OBJE
+  A--uses-->NMF
+  IMPT--search-->SRCH
+  CEM--interface-->CIA
+  A--batch ops-->BO

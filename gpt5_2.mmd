@@ -1,0 +1,27 @@
+sequenceDiagram
+participant DOM as index.html
+participant App as NodgesApp
+participant Three as THREE.Scene Renderer Camera
+participant Managers as Core Utils
+participant Data as data examples *.json
+participant Worker as layout-worker
+
+DOM->>App: Initialize NodgesApp
+App->>Three: initThreeJS()
+App->>Managers: initManagers() (State, Event, Layout, UI, ...)
+App->>Managers: initGUI(), initEventListeners()
+App->>Data: loadDefaultData("data/examples/small.json")
+Data-->>App: JSON (legacy | future)
+App->>Managers: if future -> FutureDataParser/Validator
+App->>App: currentNodes/currentEdges setzen
+App->>App: createNodes(), createEdges()
+opt LayoutEnabled
+App->>LM: applyLayout("force-directed", nodes, edges)
+LM->>Worker: compute positions (iterations)
+Worker-->>LM: positions updates
+LM-->>App: updateNodePositions()
+end
+loop RAF
+App->>Three: renderer.render(scene, camera)
+App->>S: state.animate() (z.B. Glow)
+end
