@@ -57,8 +57,13 @@ export class GlowEffect {
                 object.material.color.setHex(object.parent.options.color);
             }
         } else if (object.userData.type === 'edge') {
-            // Standard-Kantenfarbe wiederherstellen
-            object.material.color.setHex(0x0000ff);
+            // Ursprüngliche Kantenfarbe wiederherstellen
+            if (object.material.userData && object.material.userData.originalColor) {
+                object.material.color.setHex(object.material.userData.originalColor);
+            } else {
+                // Fallback auf Standard-Kantenfarbe
+                object.material.color.setHex(0x0000ff);
+            }
         }
     }
 

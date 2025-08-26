@@ -69,6 +69,9 @@ export class HighlightManager {
      * Einzige Highlight-Anwendung - ersetzt alle anderen Methoden
      */
     applyHighlight(object, type, options = {}) {
+        // Prüfe ob Highlight-Effekte aktiviert sind
+        if (!this.stateManager.state.highlightEffectsEnabled) return;
+        
         if (!object || !object.material) return;
         
         // Altes Highlight entfernen falls vorhanden
@@ -121,11 +124,13 @@ export class HighlightManager {
 
     applyEdgeHoverHighlight(edge) {
         // Hellerer Blauton für Hover-Effekt
-        const color = new THREE.Color(0x4444ff);
-        edge.material.color = color;
+        if (edge.material) {
+            const color = new THREE.Color(0x4444ff);
+            edge.material.color = color;
 
-        // Leichter Glow-Effekt
-        this.glowEffect.applyHighlightGlow(edge);
+            // Leichter Glow-Effekt
+            this.glowEffect.applyHighlightGlow(edge);
+        }
     }
 
     /**
@@ -251,6 +256,11 @@ export class HighlightManager {
         object.material.opacity = backup.opacity;
         object.material.transparent = backup.transparent;
         
+        // Für Kanten: Stelle die ursprüngliche Farbe aus userData wieder her
+        if (object.userData.type === 'edge' && object.material.userData && object.material.userData.originalColor) {
+            object.material.color.setHex(object.material.userData.originalColor);
+        }
+        
         this.materialBackups.delete(object);
     }
 
@@ -279,6 +289,9 @@ export class HighlightManager {
         }
     }
 
+    /**
+     * Hover-Effekt - NUR fuer das spezifische Objekt
+     */
     /**
      * Hover-Effekt - NUR fuer das spezifische Objekt
      */

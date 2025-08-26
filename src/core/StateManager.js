@@ -17,6 +17,9 @@ export class StateManager {
             infoPanelVisible: false,
             infoPanelCollapsed: false, // New state to control panel visibility
             
+            // Highlight Effects State
+            highlightEffectsEnabled: true, // New state for highlight effects toggle
+            
             // System States
             isInteractionEnabled: true,
             currentTool: 'select' // 'select', 'pan', 'zoom', etc.

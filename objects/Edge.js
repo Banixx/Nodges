@@ -11,17 +11,30 @@ export class Edge {
     }
 
     createTube() {
+        // Sicherstellen, dass die Positionen gültige THREE.Vector3 Objekte sind
+        const startPos = new THREE.Vector3(
+            this.startPosition.x || 0,
+            this.startPosition.y || 0,
+            this.startPosition.z || 0
+        );
+        
+        const endPos = new THREE.Vector3(
+            this.endPosition.x || 0,
+            this.endPosition.y || 0,
+            this.endPosition.z || 0
+        );
+
         // Berechne die Mitte der Verbindung
         const midPoint = new THREE.Vector3().lerpVectors(
-            this.startPosition, 
-            this.endPosition, 
+            startPos, 
+            endPos, 
             0.5
         );
 
         // Berechne die Richtung der Verbindung
         const direction = new THREE.Vector3().subVectors(
-            this.endPosition, 
-            this.startPosition
+            endPos, 
+            startPos
         ).normalize();
 
         // Berechne senkrechte Richtung für den Bogen basierend auf der Anzahl der Kanten zwischen den Knoten
@@ -32,37 +45,25 @@ export class Edge {
         perpendicular.normalize();
 
         // Berücksichtige die Anzahl der Kanten zwischen den Knoten
-        if (this.options.totalEdges > 1) {
-            const angle = (2 * Math.PI) / this.options.totalEdges; // Winkel zwischen den Kanten
+        const totalEdges = this.options.totalEdges || 1;
+        const edgeIndex = this.options.index || 0;
+        
+        if (totalEdges > 1) {
+            const angle = (2 * Math.PI) / totalEdges; // Winkel zwischen den Kanten
             const rotationAxis = direction.clone().normalize();
-            const rotationMatrix = new THREE.Matrix4().makeRotationAxis(rotationAxis, angle * this.options.index);
+            const rotationMatrix = new THREE.Matrix4().makeRotationAxis(rotationAxis, angle * edgeIndex);
             perpendicular.applyMatrix4(rotationMatrix);
         }
 
         // Zufällige Höhe des Bogens basierend auf Kantenlänge und Index
-        const curveFactor = 0.5 + (this.options.index * 0.25); // Unterschiedliche Höhe für jede Kante
+        const curveFactor = 0.5 + (edgeIndex * 0.25); // Unterschiedliche Höhe für jede Kante
         const curveHeight = direction.length() * curveFactor;
         const controlPoint = midPoint.clone().add(perpendicular.multiplyScalar(curveHeight));
 
-        /*
-        console.log('Erstelle Kante mit folgenden Parametern:');
-        console.log('Startposition:', this.startPosition);
-        console.log('Endposition:', this.endPosition);
-        console.log('Anzahl Kanten zwischen Knoten:', this.options.totalEdges);
-        console.log('Index dieser Kante:', this.options.index);
-        console.log('Richtung:', direction);
-        console.log('Senkrechte Richtung:', perpendicular);
-        console.log('Kontrollpunkt:', controlPoint);
-        console.log('Kurvenhöhe:', curveHeight);
-        console.log('Mittelpunkt:', midPoint);
-        console.log('Berechnete senkrechte Richtung:', perpendicular);
-        console.log('Berechnete Richtung:', direction);
-        console.log('Berechneter Kontrollpunkt:', controlPoint);
-*/
         this.curve = new THREE.QuadraticBezierCurve3(
-            this.startPosition,
+            startPos,
             controlPoint,
-            this.endPosition
+            endPos
         );
 
         // TubeGeometry entlang der gespeicherten Kurve
@@ -79,6 +80,11 @@ export class Edge {
             color: this.options.color || 0xb498db,
             side: THREE.DoubleSide
         });
+        
+        // Füge userData hinzu, um das Material zu identifizieren
+        material.userData = {
+            originalColor: this.options.color || 0xb498db
+        };
 
         const tube = new THREE.Mesh(tubeGeometry, material);
         

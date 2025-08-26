@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Nodges 0.92.13</title>
+    <title>Nodges 0.92.14</title>
     <link rel="icon" type="image/png" href="favicon-32x32.png">
     <style>
         body { margin: 0; }
@@ -264,6 +264,56 @@
             background-color: rgba(128, 128, 128, 0.2);
         }
         
+        /* Dev Panel Styling */
+        #devPanel {
+            position: fixed;
+            top: 0px;
+            right: 20px;
+            width: 213px;
+            background-color: rgba(128, 128, 128, 0.5);
+            border-radius: 8px;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            z-index: 95;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        #devPanel.collapsed #devPanelContent {
+            max-height: 0;
+            opacity: 0;
+            margin-bottom: 0;
+        }
+        
+        #devPanel.collapsed {
+            min-height: auto;
+            height: 35px;
+        }
+        
+        #devPanelContent {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            overflow: hidden;
+            max-height: 200px;
+            opacity: 1;
+        }
+        
+        #devPanelToggle {
+            background: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            color: #808080;
+            padding: 2px 6px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+        
+        #devPanelToggle:hover {
+            background-color: rgba(128, 128, 128, 0.2);
+        }
+        
     </style>
 </head>
 <body>
@@ -273,7 +323,7 @@
             <button id="fileInfoToggle" style="background: none; border: none; font-size: 14px; cursor: pointer; color: #808080; padding: 2px 6px; border-radius: 3px; transition: background-color 0.2s;">></button>
         </div>
         <div id="fileInfoContent">
-            <p id="fileVersion">Version: 0.92.13</p>
+            <p id="fileVersion">Version: 0.92.14</p>
             <p id="fileFilename">Dateiname: </p>
             <p id="fileNodeCount">Anzahl Knoten: </p>
             <p id="fileEdgeCount">Anzahl Kanten: </p>
@@ -307,6 +357,26 @@
         </div>
         <div id="infoPanelContent">
             <!-- Content will be dynamically populated -->
+        </div>
+    </div>
+    
+    <!-- Dev Panel (for developer options) -->
+    <div id="devPanel" class="collapsed">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 2px solid #808080; padding-bottom: 5px;">
+            <h3 id="devPanelTitle" style="margin: 0; color: #333; font-size: 14px;">Dev Options</h3>
+            <button id="devPanelToggle" style="background: none; border: none; font-size: 14px; cursor: pointer; color: #c0c0c0; padding: 2px 6px; border-radius: 3px; transition: background-color 0.2s;">></button>
+        </div>
+        <div id="devPanelContent">
+            <!-- Toggle switch for highlight effects -->
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <label style="margin-right: 10px; color: #333; font-size: 12px;">Highlight Effects:</label>
+                <label id="highlightToggleSwitch" style="position: relative; display: inline-block; width: 34px; height: 18px;">
+                    <input type="checkbox" id="highlightToggleInput" checked style="opacity: 0; width: 0; height: 0;">
+                    <span id="highlightToggleSlider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #4CAF50; transition: 0.3s; border-radius: 18px;">
+                        <span id="highlightToggleButton" style="position: absolute; content: ''; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; transition: 0.3s; border-radius: 50%; transform: translateX(16px);"></span>
+                    </span>
+                </label>
+            </div>
         </div>
     </div>
     
@@ -449,6 +519,18 @@
             }
         }
         
+        // Update Dev Panel Position (below Selection Panel)
+        function updateDevPanelPosition() {
+            const infoPanel = document.getElementById('infoPanel');
+            const devPanel = document.getElementById('devPanel');
+            
+            if (infoPanel && devPanel) {
+                const infoPanelRect = infoPanel.getBoundingClientRect();
+                const newTop = infoPanelRect.bottom + 10; // 10px gap below Selection Panel
+                devPanel.style.top = newTop + 'px';
+            }
+        }
+        
         // Update File Panel Position (below Info Panel - mittlere Position)
         function updateFilePanelPosition() {
             const fileInfoPanel = document.getElementById('fileInfoPanel');
@@ -480,28 +562,22 @@
         // Enhanced directory scanner
         async function fetchDirectoryContents() {
             try {
-                // Dynamically fetch directory listing
-                const response = await fetch('data/examples/');
-                if (!response.ok) throw new Error('Directory not found');
+                // List of available files in the data directory
+                const files = [
+                    'EXAMPLE_BAUEINGABE_SYSTEM',
+                    'future_format_example',
+                    'ikosaeder',
+                    'large',
+                    'medium',
+                    'mega',
+                    'small',
+                    'us_legal_system_actors',
+                    'us_political_system'
+                ];
                 
-                // Parse HTML response to extract files
-                const html = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const links = doc.querySelectorAll('a[href]');
-                
-                // Extract JSON files
-                const jsonFiles = [];
-                links.forEach(link => {
-                    const href = link.getAttribute('href');
-                    if (href.endsWith('.json')) {
-                        jsonFiles.push(href.replace('.json', ''));
-                    }
-                });
-                
-                return jsonFiles;
+                return files;
             } catch (error) {
-                console.warn('Dynamic directory scan failed:', error);
+                console.warn('Directory scan failed:', error);
                 
                 // Fallback to core dataset
                 return ['small', 'medium'];
@@ -591,6 +667,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateFilePanelPosition();
             updateSelectionPanelPosition();
+            updateDevPanelPosition(); // Add Dev Panel positioning
             
             // Load available files
             loadAvailableFiles();
@@ -598,17 +675,20 @@
             // Observer fuer fileInfoPanel und infoPanel
             const fileInfoPanel = document.getElementById('fileInfoPanel');
             const infoPanel = document.getElementById('infoPanel');
+            const devPanel = document.getElementById('devPanel');
             
             if (fileInfoPanel) {
                 const resizeObserver = new ResizeObserver(() => {
                     updateFilePanelPosition();
                     updateSelectionPanelPosition();
+                    updateDevPanelPosition(); // Update Dev Panel position
                 });
                 resizeObserver.observe(fileInfoPanel);
                 
                 const mutationObserver = new MutationObserver(() => {
                     updateFilePanelPosition();
                     updateSelectionPanelPosition();
+                    updateDevPanelPosition(); // Update Dev Panel position
                 });
                 mutationObserver.observe(fileInfoPanel, { 
                     attributes: true, 
@@ -622,11 +702,13 @@
             if (layoutPanel) {
                 const resizeObserver2 = new ResizeObserver(() => {
                     updateSelectionPanelPosition();
+                    updateDevPanelPosition(); // Update Dev Panel position
                 });
                 resizeObserver2.observe(layoutPanel);
                 
                 const mutationObserver2 = new MutationObserver(() => {
                     updateSelectionPanelPosition();
+                    updateDevPanelPosition(); // Update Dev Panel position
                 });
                 mutationObserver2.observe(layoutPanel, { 
                     attributes: true, 
@@ -638,11 +720,13 @@
                 if (filePanel) {
                     const resizeObserver2 = new ResizeObserver(() => {
                         updateSelectionPanelPosition();
+                        updateDevPanelPosition(); // Update Dev Panel position
                     });
                     resizeObserver2.observe(filePanel);
                     
                     const mutationObserver2 = new MutationObserver(() => {
                         updateSelectionPanelPosition();
+                        updateDevPanelPosition(); // Update Dev Panel position
                     });
                     mutationObserver2.observe(filePanel, { 
                         attributes: true, 
@@ -658,11 +742,13 @@
                         clearInterval(checkForLayoutPanel);
                         const resizeObserver3 = new ResizeObserver(() => {
                             updateSelectionPanelPosition();
+                            updateDevPanelPosition(); // Update Dev Panel position
                         });
                         resizeObserver3.observe(layoutPanel);
                         
                         const mutationObserver3 = new MutationObserver(() => {
                             updateSelectionPanelPosition();
+                            updateDevPanelPosition(); // Update Dev Panel position
                         });
                         mutationObserver3.observe(layoutPanel, { 
                             attributes: true, 
@@ -671,6 +757,7 @@
                         });
                         
                         updateSelectionPanelPosition(); // Sofortige Neupositionierung
+                        updateDevPanelPosition(); // Sofortige Neupositionierung
                     }
                 }, 500); // Pruefe alle 500ms
             }
@@ -679,6 +766,7 @@
             window.addEventListener('resize', () => {
                 updateFilePanelPosition();
                 updateSelectionPanelPosition();
+                updateDevPanelPosition(); // Update Dev Panel position
             });
             
             // Selection Panel Toggle Button
@@ -709,7 +797,34 @@
                     setTimeout(() => {
                         updateFilePanelPosition(); // File Panel neu positionieren
                         updateSelectionPanelPosition(); // Selection Panel ganz unten
+                        updateDevPanelPosition(); // Dev Panel neu positionieren
                     }, 350); // Wait for CSS transition
+                });
+            }
+            
+            // Dev Panel Toggle Button
+            const devPanelToggle = document.getElementById('devPanelToggle');
+            
+            if (devPanelToggle && devPanel) {
+                // Hover effects
+                devPanelToggle.addEventListener('mouseenter', function() {
+                    devPanelToggle.style.backgroundColor = 'rgba(128, 128, 128, 0.2)';
+                });
+                
+                devPanelToggle.addEventListener('mouseleave', function() {
+                    devPanelToggle.style.backgroundColor = 'transparent';
+                });
+                
+                // Toggle functionality
+                devPanelToggle.addEventListener('click', function() {
+                    devPanel.classList.toggle('collapsed');
+                    
+                    // Change arrow symbol (right = collapsed, down = open)
+                    if (devPanel.classList.contains('collapsed')) {
+                        devPanelToggle.innerHTML = '>';
+                    } else {
+                        devPanelToggle.innerHTML = 'v';
+                    }
                 });
             }
             
@@ -717,23 +832,50 @@
             setTimeout(() => {
                 updateFilePanelPosition();
                 updateSelectionPanelPosition();
+                updateDevPanelPosition(); // Update Dev Panel position
             }, 50);
             
             setTimeout(() => {
                 updateFilePanelPosition();
                 updateSelectionPanelPosition();
+                updateDevPanelPosition(); // Update Dev Panel position
             }, 200);
             
             setTimeout(() => {
                 updateFilePanelPosition();
                 updateSelectionPanelPosition();
+                updateDevPanelPosition(); // Update Dev Panel position
             }, 500);
             
             // Regular updates for dynamic positioning
             setInterval(() => {
                 updateFilePanelPosition();
                 updateSelectionPanelPosition();
+                updateDevPanelPosition(); // Update Dev Panel position
             }, 1000);
+            
+            // Highlight Effects Toggle
+            const highlightToggleInput = document.getElementById('highlightToggleInput');
+            if (highlightToggleInput) {
+                highlightToggleInput.addEventListener('change', function() {
+                    const isChecked = this.checked;
+                    const slider = document.getElementById('highlightToggleSlider');
+                    const button = document.getElementById('highlightToggleButton');
+                    
+                    if (isChecked) {
+                        slider.style.backgroundColor = '#4CAF50'; // Green for enabled
+                        button.style.transform = 'translateX(16px)';
+                    } else {
+                        slider.style.backgroundColor = '#ccc'; // Gray for disabled
+                        button.style.transform = 'translateX(0px)';
+                    }
+                    
+                    // Update state in the application
+                    if (window.nodgesApp && window.nodgesApp.stateManager) {
+                        window.nodgesApp.stateManager.update({ highlightEffectsEnabled: isChecked });
+                    }
+                });
+            }
         });
         
         // File loading function
@@ -747,7 +889,7 @@
             event.target.classList.add('active');
             
             // Construct full file path
-            const filePath = `data/examples/${filename}.json`;
+            const filePath = `data/${filename}.json`;
             
             // Load the file through the main application
             if (window.nodgesApp && typeof window.nodgesApp.loadData === 'function') {

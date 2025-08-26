@@ -1,0 +1,13 @@
+{
+  "nodes": [
+    {"id": "node1", "x": -3.5, "y": 1.2, "z": -2.8, "name": "node 1"},
+    {"id": "node2", "x": 2.8, "y": 0.5, "z": 3.2, "name": "node 2"},
+    {"id": "node3", "x": -3.2, "y": 2.8, "z": 4.7, "name": "node 3"}
+  ],
+  "edges": [
+    {"source": "node3", "target": "node2", "offset": 3, "name": "edge 1"},
+    {"source": "node3", "target": "node2", "offset": 1, "name": "edge 2"},
+    {"source": "node2", "target": "node3", "offset": 0, "name": "edge 3"},
+    {"source": "node3", "target": "node2", "offset": -4, "name": "edge 4"}
+  ]
+}

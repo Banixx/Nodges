@@ -132,8 +132,20 @@ export class LayoutManager {
         return new Promise((resolve, reject) => {
             const worker = new Worker('./src/workers/layout-worker.js');
             
+            // Stelle sicher, dass alle Knoten Positionen haben
+            nodes.forEach(node => {
+                if (typeof node.x !== 'number') node.x = 0;
+                if (typeof node.y !== 'number') node.y = 0;
+                if (typeof node.z !== 'number') node.z = 0;
+            });
+            
             worker.postMessage({
-                nodes: nodes.map(node => ({ x: node.x, y: node.y, z: node.z })),
+                nodes: nodes.map(node => ({ 
+                    x: node.x || 0, 
+                    y: node.y || 0, 
+                    z: node.z || 0,
+                    index: node.index !== undefined ? node.index : nodes.indexOf(node)
+                })),
                 edges: edges.map(edge => ({
                     start: edge.start,
                     end: edge.end
@@ -144,13 +156,15 @@ export class LayoutManager {
             
             worker.onmessage = (event) => {
                 const positions = event.data.positions;
-                nodes.forEach((node, index) => {
-                    if (positions[index]) {
-                        node.x = positions[index].x;
-                        node.y = positions[index].y;
-                        node.z = positions[index].z;
-                    }
-                });
+                if (positions && Array.isArray(positions)) {
+                    positions.forEach((pos, index) => {
+                        if (pos && nodes[index]) {
+                            nodes[index].x = pos.x || 0;
+                            nodes[index].y = pos.y || 0;
+                            nodes[index].z = pos.z || 0;
+                        }
+                    });
+                }
                 
                 this.normalizeNodePositions(nodes, 10);
                 worker.terminate();
@@ -172,6 +186,13 @@ export class LayoutManager {
             attractionStrength = 0.5, 
             damping = 0.8 
         } = options;
+        
+        // Initialisiere Positionen, falls nicht vorhanden
+        nodes.forEach(node => {
+            if (typeof node.x !== 'number') node.x = 0;
+            if (typeof node.y !== 'number') node.y = 0;
+            if (typeof node.z !== 'number') node.z = 0;
+        });
         
         for (let i = 0; i < maxIterations; i++) {
             // Repulsion zwischen allen Knoten
@@ -201,23 +222,26 @@ export class LayoutManager {
             
             // Attraction entlang Kanten
             edges.forEach(edge => {
-                const node1 = edge.start;
-                const node2 = edge.end;
+                // Sicherstellen, dass die Knotenreferenzen korrekt sind
+                const node1 = nodes[edge.start];
+                const node2 = nodes[edge.end];
                 
-                const dx = node2.x - node1.x;
-                const dy = node2.y - node1.y;
-                const dz = node2.z - node1.z;
-                
-                const fx = dx * attractionStrength;
-                const fy = dy * attractionStrength;
-                const fz = dz * attractionStrength;
-                
-                node1.x += fx;
-                node1.y += fy;
-                node1.z += fz;
-                node2.x -= fx;
-                node2.y -= fy;
-                node2.z -= fz;
+                if (node1 && node2) {
+                    const dx = node2.x - node1.x;
+                    const dy = node2.y - node1.y;
+                    const dz = node2.z - node1.z;
+                    
+                    const fx = dx * attractionStrength;
+                    const fy = dy * attractionStrength;
+                    const fz = dz * attractionStrength;
+                    
+                    node1.x += fx;
+                    node1.y += fy;
+                    node1.z += fz;
+                    node2.x -= fx;
+                    node2.y -= fy;
+                    node2.z -= fz;
+                }
             });
         }
         

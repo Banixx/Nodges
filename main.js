@@ -106,7 +106,7 @@ class NodgesApp {
         
         // Zeige Versionsnummer nach einer kurzen Verzgerung
         setTimeout(() => {
-            console.log('Version: 0.92.13');
+            console.log('Version: 0.92.14');
         }, 100);
         
         this.animate();
@@ -282,11 +282,11 @@ class NodgesApp {
     
     async initEventListeners() {
         // Datenlade-Buttons
-        document.getElementById('smallData')?.addEventListener('click', () => this.loadData('data/examples/small.json'));
-        document.getElementById('mediumData')?.addEventListener('click', () => this.loadData('data/examples/medium.json'));
-        document.getElementById('largeData')?.addEventListener('click', () => this.loadData('data/examples/large.json'));
-        document.getElementById('megaData')?.addEventListener('click', () => this.loadData('data/examples/mega.json'));
-        document.getElementById('futureData')?.addEventListener('click', () => this.loadData('data/examples/future_format_example.json'));
+        document.getElementById('smallData')?.addEventListener('click', () => this.loadData('data/small.json'));
+        document.getElementById('mediumData')?.addEventListener('click', () => this.loadData('data/medium.json'));
+        document.getElementById('largeData')?.addEventListener('click', () => this.loadData('data/large.json'));
+        document.getElementById('megaData')?.addEventListener('click', () => this.loadData('data/mega.json'));
+        document.getElementById('futureData')?.addEventListener('click', () => this.loadData('data/future_format_example.json'));
         
         // Layout-Button
         document.getElementById('layoutButton')?.addEventListener('click', () => {
@@ -297,7 +297,7 @@ class NodgesApp {
     }
     
     async loadDefaultData() {
-        await this.loadData('data/examples/small.json');
+        await this.loadData('data/small.json');
     }
     
     async loadData(url) {
@@ -307,7 +307,7 @@ class NodgesApp {
             this.fitCameraToScene();
             
             // Sicherstellen, dass der Pfad korrekt ist
-            const correctedUrl = url.includes('data/examples') ? url : `data/examples/${url}`;
+            const correctedUrl = url.includes('data/') ? url : `data/${url}`;
             //console.log(`[DEBUG] Corrected URL: ${correctedUrl}`);
             
             //console.log(`[DEBUG] Starting fetch...`);
@@ -316,17 +316,12 @@ class NodgesApp {
             if (!response.ok) throw new Error(`HTTP-Fehler! Status: ${response.status}`);
             
             const data = await response.json();
-            /*console.log('[DEBUG] JSON loaded, data structure:', typeof data);
-            console.log('[DEBUG] data.data exists:', !!data.data);
-            console.log('[DEBUG] data.data.entities exists:', !!(data.data && data.data.entities));
-            console.log('[DEBUG] data.nodes exists:', !!data.nodes);
-            console.log('[DEBUG] data.edges exists:', !!data.edges);
-            */
+           
             this.clearScene();
             
             // Future Format Adapter - convert entities/relationships to nodes/edges
             if (data.data && data.data.entities) {
-                console.log('[DEBUG] Future Format detected - using FutureDataParser');
+                //console.log('[DEBUG] Future Format detected - using FutureDataParser');
                 const parser = new FutureDataParser();
                 const parsedData = await parser.parseData(data);
 
@@ -351,22 +346,62 @@ class NodgesApp {
                 //console.log('[DEBUG] Future nodes count:', this.currentNodes.length);
                 //console.log('[DEBUG] Future edges count:', this.currentEdges.length);
             } else {
-                //console.log('[DEBUG] Legacy Format detected');
-                // Legacy Format
+                //console.log('[DEBUG] Standard Format detected');
+                // Standard Format (z.B. us_legal_system_actors.json oder small.json)
                 this.currentNodes = data.nodes || [];
-                this.currentEdges = data.edges || [];
-                //console.log('[DEBUG] Legacy nodes count:', this.currentNodes.length);
-                //console.log('[DEBUG] Legacy edges count:', this.currentEdges.length);
+                
+                // Wenn Knoten keine IDs haben, füge sie hinzu (für alte Dateien)
+                this.currentNodes.forEach((node, index) => {
+                    if (!node.id) {
+                        node.id = `node${index}`;
+                    }
+                });
+                
+                // Erstelle eine Map von Knoten-IDs zu Indizes für schnelle Suche
+                const nodeIndexMap = new Map();
+                this.currentNodes.forEach((node, index) => {
+                    nodeIndexMap.set(node.id, index);
+                });
+                
+            // Konvertiere Kanten vom source/target Format zum start/end Format
+            this.currentEdges = (data.edges || []).map(edge => {
+                const start = nodeIndexMap.get(edge.source);
+                const end = nodeIndexMap.get(edge.target);
+                
+                // Validierung der Knotenindizes
+                if (start === undefined || end === undefined) {
+                    console.warn(`Ungltige Kante: Knoten ${edge.source} oder ${edge.target} nicht gefunden`);
+                    return null;
+                }
+                
+                return {
+                    start: start,
+                    end: end,
+                    name: edge.relationship || edge.label || edge.name || 'Unbenannte Kante',
+                    type: edge.type || 'Beziehung',
+                    originalData: edge
+                };
+            }).filter(edge => edge !== null); // Entferne ungltige Kanten
+                
+                //console.log('[DEBUG] Standard nodes count:', this.currentNodes.length);
+                //console.log('[DEBUG] Standard edges count:', this.currentEdges.length);
             }
             
             await this.createNodes();
             await this.createEdges();
             
-            // Layout nur anwenden, wenn nicht deaktiviert
-            if (this.stateManager.state.layoutEnabled) {
+            // Layout nur anwenden, wenn nicht deaktiviert und Knoten noch nicht positioniert sind
+            const nodesHavePositions = this.currentNodes.some(node => 
+                typeof node.x === 'number' && typeof node.y === 'number' && typeof node.z === 'number'
+            );
+            
+            if (this.stateManager.state.layoutEnabled && !nodesHavePositions) {
                 await this.layoutManager.applyLayout('force-directed', this.currentNodes, this.currentEdges);
                 this.updateNodePositions();
                 //console.log('Layout erfolgreich angewendet');
+            } else if (this.stateManager.state.layoutEnabled && nodesHavePositions) {
+                // Wenn Knoten bereits Positionen haben, aktualisiere nur die Positionen
+                this.updateNodePositions();
             } else {
                 //console.log('Layout-Anwendung bersprungen (deaktiviert)');
             }
@@ -420,14 +455,36 @@ class NodgesApp {
             shininess: 30
         });
         
+        // Prfe, ob Knoten Positionen haben, wenn nicht, wende Layout an
+        const nodesHavePositions = this.currentNodes.some(node => 
+            typeof node.x === 'number' && typeof node.y === 'number' && typeof node.z === 'number'
+        );
+        
+        if (!nodesHavePositions && this.layoutManager && this.stateManager.state.layoutEnabled) {
+            // Stelle sicher, dass alle Knoten eine eindeutige ID haben
+            this.currentNodes.forEach((node, index) => {
+                if (!node.id) {
+                    node.id = `node_${index}`;
+                }
+            });
+            
+            // Wende Layout an, um Positionen zu berechnen
+            await this.layoutManager.applyLayout('force-directed', this.currentNodes, this.currentEdges);
+        }
+        
         this.nodeObjects = this.currentNodes.map((node, index) => {
+            // Setze Standardpositionen, wenn keine vorhanden sind
+            const x = typeof node.x === 'number' ? node.x : 0;
+            const y = typeof node.y === 'number' ? node.y : 0;
+            const z = typeof node.z === 'number' ? node.z : 0;
+            
             const nodeMesh = new THREE.Mesh(nodeGeometry, nodeMaterial);
-            nodeMesh.position.set(node.x, node.y, node.z);
+            nodeMesh.position.set(x, y, z);
             this.scene.add(nodeMesh);
             
             return {
                 index: index,
-                position: new THREE.Vector3(node.x, node.y, node.z),
+                position: new THREE.Vector3(x, y, z),
                 mesh: nodeMesh
             };
         });
@@ -533,12 +590,49 @@ class NodgesApp {
         const totalEdges = this.currentEdges.length;
         //console.log(`[DEBUG] Start tube edge creation for ${totalEdges} edges`);
         
+        // Zählen der Kanten zwischen denselben Knoten
+        const edgeCountMap = new Map();
         this.currentEdges.forEach((edgeData, index) => {
+            // Validierung der Knotenindizes
+            if (edgeData.start === undefined || edgeData.end === undefined) {
+                console.warn(`[DEBUG] Ungltige Rhren-Kante ${index}: Start oder Endknoten ist undefined`);
+                return;
+            }
+            
+            if (edgeData.start < 0 || edgeData.start >= this.nodeObjects.length || 
+                edgeData.end < 0 || edgeData.end >= this.nodeObjects.length) {
+                console.warn(`[DEBUG] Ungltige Rhren-Kante ${index}: Knoten ${edgeData.start} oder ${edgeData.end} existiert nicht`);
+                return;
+            }
+            
+            // Erstelle einen eindeutigen Schlüssel für das Knotenpaar (unabhängig von Richtung)
+            const key = edgeData.start < edgeData.end ? 
+                `${edgeData.start}-${edgeData.end}` : 
+                `${edgeData.end}-${edgeData.start}`;
+                
+            if (!edgeCountMap.has(key)) {
+                edgeCountMap.set(key, 0);
+            }
+            edgeCountMap.set(key, edgeCountMap.get(key) + 1);
+        });
+        
+        this.currentEdges.forEach((edgeData, index) => {
+            // Validierung der Knotenindizes
+            if (edgeData.start === undefined || edgeData.end === undefined) {
+                console.warn(`[DEBUG] Ungltige Rhren-Kante ${index}: Start oder Endknoten ist undefined`);
+                return;
+            }
+            
             if (edgeData.start >= 0 && edgeData.start < this.nodeObjects.length && 
                 edgeData.end >= 0 && edgeData.end < this.nodeObjects.length) {
                 
                 const startNode = this.nodeObjects[edgeData.start];
                 const endNode = this.nodeObjects[edgeData.end];
+                
+                // Erstelle einen eindeutigen Schlüssel für das Knotenpaar (unabhängig von Richtung)
+                const key = edgeData.start < edgeData.end ? 
+                    `${edgeData.start}-${edgeData.end}` : 
+                    `${edgeData.end}-${edgeData.start}`;
                 
                 const edge = new Edge(
                     startNode.position,
@@ -548,7 +642,7 @@ class NodgesApp {
                     {
                         ...edgeData,
                         name: edgeData.name || 'Kante ' + index,
-                        totalEdges: totalEdges,
+                        totalEdges: edgeCountMap.get(key) || 1,
                         index: index  // Fge den Index der aktuellen Kante hinzu
                     }
                 );
