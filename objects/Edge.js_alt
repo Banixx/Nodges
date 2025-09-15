@@ -56,7 +56,7 @@ export class Edge {
         }
 
         // Zufällige Höhe des Bogens basierend auf Kantenlänge und Index
-        const curveFactor = 1.2 + (edgeIndex * 0.5); // Größere Kurven für besseren Abstand
+        const curveFactor = 0.5 + (edgeIndex * 0.25); // Unterschiedliche Höhe für jede Kante
         const curveHeight = direction.length() * curveFactor;
         const controlPoint = midPoint.clone().add(perpendicular.multiplyScalar(curveHeight));
 

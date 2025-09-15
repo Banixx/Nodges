@@ -130,91 +130,7 @@ export class HighlightManager {
 
             // Leichter Glow-Effekt
             this.glowEffect.applyHighlightGlow(edge);
-
-            // Umriss-Effekt hinzufügen
-            this.addEdgeOutline(edge);
         }
-    }
-
-    /**
-     * Fügt einen Umriss um die Edge hinzu
-     */
-    addEdgeOutline(edge) {
-        if (!edge || !edge.userData || !edge.userData.edge) return;
-
-        // Prüfe ob bereits ein Umriss existiert
-        if (edge.userData.outline) {
-            return; // Umriss bereits vorhanden
-        }
-
-        const edgeInstance = edge.userData.edge;
-
-        // Erstelle eine TubeGeometry mit größerem Radius für den Umriss
-        const outlineGeometry = new THREE.TubeGeometry(
-            edgeInstance.curve,
-            5,       // tubularSegments (5 wie angefordert)
-            0.15,    // radius der Röhre (größer als der ursprüngliche Radius von 0.1)
-            8,       // radialSegments
-            false    // geschlossen?
-        );
-
-        // Material für den Umriss (aufgehellte Originalfarbe)
-        const originalColor = edge.material.color.clone();
-        const hsl = {};
-        originalColor.getHSL(hsl);
-
-        // Helligkeit um 0.3 erhöhen, aber nicht über 1.0
-        const brightenedLightness = Math.min(hsl.l + 0.3, 1.0);
-        const brightenedColor = new THREE.Color().setHSL(hsl.h, hsl.s, brightenedLightness);
-
-        const outlineMaterial = new THREE.MeshBasicMaterial({
-            color: brightenedColor,
-            side: THREE.DoubleSide,
-            transparent: true,
-            opacity: 0.8
-        });
-
-        // Erstelle das Umriss-Mesh
-        const outlineMesh = new THREE.Mesh(outlineGeometry, outlineMaterial);
-
-        // Setze userData für den Umriss
-        outlineMesh.userData = {
-            type: 'edge_outline',
-            parentEdge: edge
-        };
-
-        // Speichere den Umriss in userData
-        edge.userData.outline = outlineMesh;
-
-        // Füge den Umriss zur gleichen Szene hinzu wie die Edge
-        if (edge.parent) {
-            edge.parent.add(outlineMesh);
-        }
-    }
-
-    /**
-     * Entfernt den Umriss von der Edge
-     */
-    removeEdgeOutline(edge) {
-        if (!edge || !edge.userData || !edge.userData.outline) return;
-
-        const outlineMesh = edge.userData.outline;
-
-        // Entferne den Umriss aus der Szene, falls er hinzugefügt wurde
-        if (outlineMesh.parent) {
-            outlineMesh.parent.remove(outlineMesh);
-        }
-
-        // Geometrie und Material freigeben
-        if (outlineMesh.geometry) {
-            outlineMesh.geometry.dispose();
-        }
-        if (outlineMesh.material) {
-            outlineMesh.material.dispose();
-        }
-
-        // Umriss aus userData entfernen
-        delete edge.userData.outline;
     }
 
     /**
@@ -223,21 +139,16 @@ export class HighlightManager {
     clearHighlight(object) {
         const highlightData = this.highlightRegistry.get(object);
         if (!highlightData) return;
-
-        // Spezieller Umriss-Effekt für Edges entfernen
-        if (object.userData.type === 'edge') {
-            this.removeEdgeOutline(object);
-        }
-
+        
         // Material wiederherstellen
         this.restoreMaterial(object, highlightData.originalMaterial);
-
+        
         // Glow-Effekt entfernen
         this.glowEffect.removeGlow(object);
-
+        
         // Aus Registry entfernen
         this.highlightRegistry.delete(object);
-
+        
     }
 
     /**
@@ -388,28 +299,25 @@ export class HighlightManager {
         if (!object || !object.material) {
             return;
         }
-
+        
         if (object.userData.type === 'node') {
             // Hellere Farbe fuer Hover-Effekt
             const color = object.material.color;
             const hsl = {};
             color.getHSL(hsl);
-
+            
             const newLightness = Math.min(hsl.l + 0.2, 1.0);
             color.setHSL(hsl.h, hsl.s, newLightness);
-
+            
             // Leichter Glow-Effekt
             this.glowEffect.applyHighlightGlow(object);
         } else if (object.userData.type === 'edge') {
             // WICHTIG: Nur diese spezifische Kante highlighten
             const originalColor = object.material.color.getHex();
-
-            // Deutlicheres Blau für Hover-Effekt - NUR für diese Kante
-            object.material.color.setHex(0x0088ff); // Helleres, aber nicht weißes Blau
+            
+            // Hellerer Blauton fuer Hover-Effekt - NUR fuer diese Kante
+            object.material.color.setHex(0x4444ff);
             this.glowEffect.applyHighlightGlow(object);
-
-            // Umriss-Effekt hinzufügen
-            this.addEdgeOutline(object);
         }
     }
 

@@ -37,6 +37,7 @@ import { GlowEffect } from './src/effects/GlowEffect.js';
 // Objekte
 import { Node } from './objects/Node.js';
 import { Edge } from './objects/Edge.js';
+import { NodeObjects } from './objects/nodeObjects.js';
 
 class NodgesApp {
     constructor() {
@@ -72,6 +73,9 @@ class NodgesApp {
         this.layoutGUI = null;
         this.highlightManager = null;
         this.glowEffect = null;
+
+        // Node Objects Manager für verschiedene Geometrien
+        this.nodeObjectsManager = new NodeObjects();
         
         // Daten
         this.currentNodes = [];
@@ -448,18 +452,11 @@ class NodgesApp {
     }
     
     async createNodes() {
-        // Erstelle einzelne Meshes fr jeden Knoten
-        const nodeGeometry = new THREE.SphereGeometry(0.2, 16, 16);
-        const nodeMaterial = new THREE.MeshPhongMaterial({ 
-            color: 0x3498db,
-            shininess: 30
-        });
-        
-        // Prfe, ob Knoten Positionen haben, wenn nicht, wende Layout an
-        const nodesHavePositions = this.currentNodes.some(node => 
+        // Prüfe, ob Knoten Positionen haben, wenn nicht, wende Layout an
+        const nodesHavePositions = this.currentNodes.some(node =>
             typeof node.x === 'number' && typeof node.y === 'number' && typeof node.z === 'number'
         );
-        
+
         if (!nodesHavePositions && this.layoutManager && this.stateManager.state.layoutEnabled) {
             // Stelle sicher, dass alle Knoten eine eindeutige ID haben
             this.currentNodes.forEach((node, index) => {
@@ -467,29 +464,71 @@ class NodgesApp {
                     node.id = `node_${index}`;
                 }
             });
-            
+
             // Wende Layout an, um Positionen zu berechnen
             await this.layoutManager.applyLayout('force-directed', this.currentNodes, this.currentEdges);
         }
-        
+
+        // Hole alle verfügbaren Node-Geometrien
+        const availableTypes = this.nodeObjectsManager.getAvailableTypes();
+        console.log(`Verfügbare Node-Geometrien: ${availableTypes.join(', ')}`);
+
         this.nodeObjects = this.currentNodes.map((node, index) => {
             // Setze Standardpositionen, wenn keine vorhanden sind
             const x = typeof node.x === 'number' ? node.x : 0;
             const y = typeof node.y === 'number' ? node.y : 0;
             const z = typeof node.z === 'number' ? node.z : 0;
-            
-            const nodeMesh = new THREE.Mesh(nodeGeometry, nodeMaterial);
-            nodeMesh.position.set(x, y, z);
+
+            // Wähle Geometrie basierend auf Node-Index (zyklisch durch alle verfügbaren Typen)
+            const geometryIndex = index % availableTypes.length;
+            const geometryType = availableTypes[geometryIndex];
+
+            // Bestimme Farbe basierend auf Node-Typ oder verwende Standardfarbe
+            let nodeColor = 0x3498db; // Standard: Blau
+            if (node.type) {
+                // Verschiedene Farben für verschiedene Node-Typen
+                const colorMap = {
+                    'person': 0x3498db,      // Blau
+                    'organization': 0xe74c3c, // Rot
+                    'location': 0x2ecc71,    // Grün
+                    'event': 0xf39c12,       // Orange
+                    'resource': 0x9b59b6,    // Lila
+                    'process': 0x1abc9c,     // Türkis
+                    'system': 0xe67e22,      // Dunkelorange
+                    'data': 0x34495e        // Dunkelblau
+                };
+                nodeColor = colorMap[node.type] || nodeColor;
+            }
+
+            // Erstelle Node-Mesh mit verschiedenen Geometrien
+            const nodeMesh = this.nodeObjectsManager.createNodeMesh(geometryType, {
+                size: 1.0,
+                color: nodeColor,
+                position: new THREE.Vector3(x, y, z),
+                materialType: 'phong'
+            });
+
+            // Zusätzliche userData für Interaktion
+            nodeMesh.userData.nodeData = node;
+            nodeMesh.userData.nodeIndex = index;
+            nodeMesh.userData.geometryType = geometryType;
+
+            // Füge zur Szene hinzu
             this.scene.add(nodeMesh);
-            
+
+            console.log(`Node ${index} (${node.name || `Node ${index}`}) erstellt als ${geometryType} an Position (${x.toFixed(2)}, ${y.toFixed(2)}, ${z.toFixed(2)})`);
+
             return {
                 index: index,
                 position: new THREE.Vector3(x, y, z),
-                mesh: nodeMesh
+                mesh: nodeMesh,
+                geometryType: geometryType,
+                nodeData: node
             };
         });
-        
-        console.log(`${this.currentNodes.length} Knoten erstellt`);
+
+        console.log(`${this.currentNodes.length} Knoten mit verschiedenen Geometrien erstellt`);
+        console.log(`Verwendete Geometrien: ${[...new Set(this.nodeObjects.map(obj => obj.geometryType))].join(', ')}`);
     }
     
     updateNodePositions() {
@@ -822,15 +861,43 @@ class NodgesApp {
         }
 
         if (object) {
-            // Panel mit Inhalt fllen
-            infoPanelContent.innerHTML = `
-                <p><strong>Ausgewhltes Objekt:</strong></p>
-                <p>Typ: ${object.type}</p>
-                <p>Name: ${object.name || 'Unbenannt'}</p>
-            `;
+            // Panel mit Inhalt füllen
+            if (object.userData.type === 'node') {
+                // Node-spezifische Informationen
+                const nodeData = object.userData.nodeData || {};
+                const geometryType = object.userData.geometryType || 'unbekannt';
+                const geometryInfo = this.nodeObjectsManager.getNodeTypeInfo(geometryType);
+
+                infoPanelContent.innerHTML = `
+                    <p><strong>Ausgewähltes Objekt:</strong></p>
+                    <p><strong>Typ:</strong> ${object.userData.type}</p>
+                    <p><strong>Name:</strong> ${nodeData.name || 'Unbenannt'}</p>
+                    <p><strong>ID:</strong> ${nodeData.id || 'Unbekannt'}</p>
+                    <p><strong>Geometrie:</strong> ${geometryInfo.name} (${geometryInfo.faces} Flächen)</p>
+                    <p><strong>Beschreibung:</strong> ${geometryInfo.description}</p>
+                    <p><strong>Node-Typ:</strong> ${nodeData.type || 'Standard'}</p>
+                    <p><strong>Position:</strong> (${nodeData.x?.toFixed(2) || 0}, ${nodeData.y?.toFixed(2) || 0}, ${nodeData.z?.toFixed(2) || 0})</p>
+                `;
+            } else if (object.userData.type === 'edge') {
+                // Edge-spezifische Informationen
+                infoPanelContent.innerHTML = `
+                    <p><strong>Ausgewähltes Objekt:</strong></p>
+                    <p><strong>Typ:</strong> ${object.userData.type}</p>
+                    <p><strong>Name:</strong> ${object.userData.name || 'Unbenannt'}</p>
+                    <p><strong>Verbindung:</strong> Knoten ${object.userData.start} ↔ Knoten ${object.userData.end}</p>
+                    <p><strong>Index:</strong> ${object.userData.index || 'Unbekannt'}</p>
+                `;
+            } else {
+                // Fallback für andere Objekte
+                infoPanelContent.innerHTML = `
+                    <p><strong>Ausgewähltes Objekt:</strong></p>
+                    <p><strong>Typ:</strong> ${object.type || 'Unbekannt'}</p>
+                    <p><strong>Name:</strong> ${object.name || 'Unbenannt'}</p>
+                `;
+            }
         } else {
             // Leeres Panel ohne Inhalt
-            infoPanelContent.innerHTML = '<p>Kein Objekt ausgewhlt</p>';
+            infoPanelContent.innerHTML = '<p>Kein Objekt ausgewählt</p>';
         }
     }
     
@@ -1062,3 +1129,63 @@ async function demoConnectInterface() {
 }
 
 window.demoConnectInterface = demoConnectInterface;
+
+/**
+ * Demonstriert alle verfügbaren Node-Geometrien
+ */
+async function demoNodeGeometries() {
+    console.log('\n🔺 Node-Geometrien Demo...\n');
+
+    if (!window.nodgesApp) {
+        console.error('Nodges App nicht verfügbar');
+        return;
+    }
+
+    const app = window.nodgesApp;
+    const availableTypes = app.nodeObjectsManager.getAvailableTypes();
+
+    console.log(`Verfügbare Geometrien (${availableTypes.length}):`);
+    availableTypes.forEach((type, index) => {
+        const info = app.nodeObjectsManager.getNodeTypeInfo(type);
+        console.log(`  ${index + 1}. ${info.name} (${info.faces} Flächen) - ${info.description}`);
+    });
+
+    console.log('\nErstelle Test-Netzwerk mit allen Geometrien...');
+
+    // Erstelle ein Test-Netzwerk mit allen verfügbaren Geometrien
+    const testNodes = availableTypes.map((type, index) => ({
+        id: `test_${type}`,
+        name: type.charAt(0).toUpperCase() + type.slice(1),
+        x: (index % 5) * 1.5 - 3, // 5 Spalten
+        y: Math.floor(index / 5) * 1.5 - 1, // Mehrere Reihen
+        z: 0,
+        type: 'test'
+    }));
+
+    // Erstelle einige Test-Kanten
+    const testEdges = [];
+    for (let i = 0; i < testNodes.length - 1; i++) {
+        testEdges.push({
+            start: i,
+            end: i + 1,
+            name: `Verbindung ${i}-${i + 1}`
+        });
+    }
+
+    // Temporäre Daten setzen
+    app.currentNodes = testNodes;
+    app.currentEdges = testEdges;
+
+    // Szene leeren und neu erstellen
+    app.clearScene();
+    await app.createNodes();
+    await app.createEdges();
+
+    console.log(`\n✅ Demo-Netzwerk erstellt mit ${testNodes.length} verschiedenen Geometrien!`);
+    console.log('Klicke auf verschiedene Nodes, um ihre Eigenschaften im Info-Panel zu sehen.');
+
+    // Kamera anpassen
+    app.fitCameraToScene();
+}
+
+window.demoNodeGeometries = demoNodeGeometries;

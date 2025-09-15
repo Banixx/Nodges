@@ -87,16 +87,16 @@ export class InteractionManager {
      */
     handleHoverStart(data) {
         if (!this.isEnabled) return;
-
+        
         const { object } = data;
-
+        
         if (object) {
             // Highlight anwenden
             this.highlightManager.highlightHoveredObject(object);
-
+            
             // Tooltip anzeigen (optional)
             this.showTooltip(object);
-
+            
         }
     }
     
@@ -105,18 +105,18 @@ export class InteractionManager {
      */
     handleHoverEnd(data) {
         if (!this.isEnabled) return;
-
+        
         const { object } = data;
-
+        
         if (object) {
             // Highlight entfernen (nur wenn nicht selektiert)
             if (!this.stateManager.isObjectSelected(object)) {
                 this.highlightManager.removeHighlight(object);
             }
-
+            
             // Tooltip verstecken
             this.hideTooltip();
-
+            
         }
     }
     
