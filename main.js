@@ -110,7 +110,7 @@ class NodgesApp {
         
         // Zeige Versionsnummer nach einer kurzen Verzgerung
         setTimeout(() => {
-            console.log('Version : 0.92.17');
+            console.log('Version : 0.92.18');
         }, 100);
         
         this.animate();
