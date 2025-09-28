@@ -110,7 +110,7 @@ class NodgesApp {
         
         // Zeige Versionsnummer nach einer kurzen Verzgerung
         setTimeout(() => {
-            console.log('Version : 0.92.14');
+            console.log('Version : 0.92.17');
         }, 100);
         
         this.animate();
@@ -215,8 +215,8 @@ class NodgesApp {
         this.glowEffect = new GlowEffect();
         this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect);
         
-        // UI Manager muss nach HighlightManager initialisiert werden
-        this.uiManager = new UIManager(this.stateManager, this.highlightManager);
+        // UI Manager is now self-contained and gets the app instance
+        this.uiManager = new UIManager(this);
         
         
         // Unified Event System
@@ -258,13 +258,9 @@ class NodgesApp {
     
     async initGUI() {
         this.layoutGUI = new LayoutGUI(this.layoutManager, document.body);
-        this.initFileInfoPanel();
-        this.initSearchPanel();
+        this.uiManager.init();
+        this.initSearchPanel(); // TODO: Move to UIManager
         console.log('GUI-System initialisiert');
-    }
-    
-    initFileInfoPanel() {
-        this.updateFileInfo('Kein Netzwerk geladen', 0, 0);
     }
     
     initSearchPanel() {
@@ -285,19 +281,9 @@ class NodgesApp {
     }
     
     async initEventListeners() {
-        // Datenlade-Buttons
-        document.getElementById('smallData')?.addEventListener('click', () => this.loadData('data/small.json'));
-        document.getElementById('mediumData')?.addEventListener('click', () => this.loadData('data/medium.json'));
-        document.getElementById('largeData')?.addEventListener('click', () => this.loadData('data/large.json'));
-        document.getElementById('megaData')?.addEventListener('click', () => this.loadData('data/mega.json'));
-        document.getElementById('futureData')?.addEventListener('click', () => this.loadData('data/future_format_example.json'));
-        
-        // Layout-Button
-        document.getElementById('layoutButton')?.addEventListener('click', () => {
-            this.layoutGUI.show();
-        });
-        
-        console.log('Event-Listener initialisiert');
+        // Note: Event listeners for data loading buttons are now handled dynamically inside UIManager.
+        // The old static button listeners are no longer needed.
+        console.log('Event-Listener for main app are initialized.');
     }
     
     async loadDefaultData() {
@@ -410,10 +396,11 @@ class NodgesApp {
                 //console.log('Layout-Anwendung bersprungen (deaktiviert)');
             }
             
-            this.updateFileInfo(
+            this.uiManager.updateFileInfo(
                 url.split('/').pop(),
                 this.currentNodes.length,
-                this.currentEdges.length
+                this.currentEdges.length,
+                this.calculateBounds()
             );
             
             if (this.networkAnalyzer) {
@@ -717,18 +704,6 @@ class NodgesApp {
         });
     }
     
-    updateFileInfo(filename, nodeCount, edgeCount) {
-        document.getElementById('fileFilename').textContent = `Dateiname: ${filename}`;
-        document.getElementById('fileNodeCount').textContent = `Anzahl Knoten: ${nodeCount}`;
-        document.getElementById('fileEdgeCount').textContent = `Anzahl Kanten: ${edgeCount}`;
-        
-        if (this.currentNodes.length > 0) {
-            const bounds = this.calculateBounds();
-            document.getElementById('fileXAxis').textContent = `X-Achse: ${bounds.x.min.toFixed(2)} bis ${bounds.x.max.toFixed(2)}`;
-            document.getElementById('fileYAxis').textContent = `Y-Achse: ${bounds.y.min.toFixed(2)} bis ${bounds.y.max.toFixed(2)}`;
-            document.getElementById('fileZAxis').textContent = `Z-Achse: ${bounds.z.min.toFixed(2)} bis ${bounds.z.max.toFixed(2)}`;
-        }
-    }
     
     calculateBounds() {
         const bounds = {
@@ -792,115 +767,6 @@ class NodgesApp {
         // Suchfunktionalitt deaktiviert
     }
     
-    onMouseClick(event) {
-        if (!this.raycastManager) return;
-        
-        this.raycastManager.updateMousePosition(event);
-        const intersectedObject = this.raycastManager.findIntersectedObject();
-        
-        if (intersectedObject) {
-            this.stateManager.setSelectedObject(intersectedObject);
-            this.showInfoPanel(intersectedObject);
-        } else {
-            this.stateManager.setSelectedObject(null);
-        }
-    }
-    
-    onMouseMove(event) {
-        if (!this.raycastManager) return;
-        
-        const now = performance.now();
-        const deltaTime = now - this.lastMouseMoveTime;
-        
-        // Throttle raycasting to 30fps (33ms)
-        if (deltaTime < 33) return;
-        this.lastMouseMoveTime = now;
-        
-        // Check if mouse position has changed significantly (5px threshold)
-        const dx = event.clientX - this.lastMouseX;
-        const dy = event.clientY - this.lastMouseY;
-        const distance = Math.sqrt(dx*dx + dy*dy);
-        
-        let hoveredObject;
-        if (distance > 5 || !this.lastRaycastResult) {
-            // Update raycast manager with new position
-            this.raycastManager.updateMousePosition(event);
-            
-            // Perform new raycast and cache result
-            hoveredObject = this.raycastManager.findIntersectedObject();
-            this.lastRaycastResult = hoveredObject;
-            this.lastMouseX = event.clientX;
-            this.lastMouseY = event.clientY;
-        } else {
-            // Use cached result
-            hoveredObject = this.lastRaycastResult;
-        }
-        
-        // Batch state updates
-        const updates = {
-            hoveredObject: hoveredObject,
-            cursorStyle: hoveredObject ? 'pointer' : 'default'
-        };
-        
-        this.stateManager.batchUpdate(updates);
-    }
-    
-    showInfoPanel(object) {
-        const infoPanel = document.getElementById('infoPanel');
-        const infoPanelContent = document.getElementById('infoPanelContent');
-        
-        if (!infoPanel || !infoPanelContent) return;
-
-        // Panel immer sichtbar machen
-        infoPanel.classList.remove('collapsed');
-        
-        // Pfeil-Symbol auf "geffnet" setzen
-        const infoPanelToggle = document.getElementById('infoPanelToggle');
-        if (infoPanelToggle) {
-            infoPanelToggle.innerHTML = 'v';
-        }
-
-        if (object) {
-            // Panel mit Inhalt füllen
-            if (object.userData.type === 'node') {
-                // Node-spezifische Informationen
-                const nodeData = object.userData.nodeData || {};
-                const geometryType = object.userData.geometryType || 'unbekannt';
-                const geometryInfo = this.nodeObjectsManager.getNodeTypeInfo(geometryType);
-
-                infoPanelContent.innerHTML = `
-                    <p><strong>Ausgewähltes Objekt:</strong></p>
-                    <p><strong>Typ:</strong> ${object.userData.type}</p>
-                    <p><strong>Name:</strong> ${nodeData.name || 'Unbenannt'}</p>
-                    <p><strong>ID:</strong> ${nodeData.id || 'Unbekannt'}</p>
-                    <p><strong>Geometrie:</strong> ${geometryInfo.name} (${geometryInfo.faces} Flächen)</p>
-                    <p><strong>Beschreibung:</strong> ${geometryInfo.description}</p>
-                    <p><strong>Node-Typ:</strong> ${nodeData.type || 'Standard'}</p>
-                    <p><strong>Position:</strong> (${nodeData.x?.toFixed(2) || 0}, ${nodeData.y?.toFixed(2) || 0}, ${nodeData.z?.toFixed(2) || 0})</p>
-                `;
-            } else if (object.userData.type === 'edge') {
-                // Edge-spezifische Informationen
-                infoPanelContent.innerHTML = `
-                    <p><strong>Ausgewähltes Objekt:</strong></p>
-                    <p><strong>Typ:</strong> ${object.userData.type}</p>
-                    <p><strong>Name:</strong> ${object.userData.name || 'Unbenannt'}</p>
-                    <p><strong>Verbindung:</strong> Knoten ${object.userData.start} ↔ Knoten ${object.userData.end}</p>
-                    <p><strong>Index:</strong> ${object.userData.index || 'Unbekannt'}</p>
-                `;
-            } else {
-                // Fallback für andere Objekte
-                infoPanelContent.innerHTML = `
-                    <p><strong>Ausgewähltes Objekt:</strong></p>
-                    <p><strong>Typ:</strong> ${object.type || 'Unbekannt'}</p>
-                    <p><strong>Name:</strong> ${object.name || 'Unbenannt'}</p>
-                `;
-            }
-        } else {
-            // Leeres Panel ohne Inhalt
-            infoPanelContent.innerHTML = '<p>Kein Objekt ausgewählt</p>';
-        }
-    }
-    
     getConnectedEdges(nodeIndex) {
         const connectedEdges = [];
         this.currentEdges.forEach((edgeData, index) => {
@@ -959,10 +825,9 @@ class NodgesApp {
             this.frameCount = 0;
             this.lastFPSUpdate = now;
             
-            // FPS im Datei-Info-Panel anzeigen
-            const fpsElement = document.getElementById('fileFPS');
-            if (fpsElement) {
-                fpsElement.textContent = `FPS: ${fps}`;
+            // FPS-Anzeige wird vom UIManager gehandhabt
+            if (this.uiManager) {
+                this.uiManager.updateFps(fps);
             }
         }
 

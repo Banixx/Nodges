@@ -1,9 +1,0 @@
-flowchart LR
-    D[Dateiladung] -->|JSON| P[Parsing]
-    P --> V[Validierung]
-    V -->|Daten| S[StateManager]
-    S -->|Nodes/Edges| R[Rendering]
-    R --> T[Three.js Scene]
-    I[Interaktionen] -->|Events| E[EventManager]
-    E --> U[UI Updates]
-    U --> R
