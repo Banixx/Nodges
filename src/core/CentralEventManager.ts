@@ -4,131 +4,164 @@
  * Ersetzt die verteilten Event-Handler in main.js und rollover.js
  */
 
-import { RaycastManager } from '../utils/RaycastManager.js';
+import * as THREE from 'three';
+// @ts-ignore
+import { RaycastManager } from '../utils/RaycastManager';
+import { StateManager } from './StateManager';
+
+interface EventHandlerData {
+    eventType: string;
+    element: HTMLElement | Window | Document;
+    handler: EventListenerOrEventListenerObject;
+    active: boolean;
+}
+
+interface EventConfig {
+    hoverDelay: number;
+    clickDelay: number;
+    doubleClickThreshold: number;
+}
 
 export class CentralEventManager {
-    constructor(scene, camera, renderer, stateManager) {
-        this.scene = scene;
-        this.camera = camera;
+    private renderer: THREE.WebGLRenderer;
+    private stateManager: StateManager;
+    private raycastManager: any; // RaycastManager
+
+    private eventHandlers: Map<string, EventHandlerData | Set<Function>>;
+    private activeListeners: Set<string>;
+
+    private currentHoveredObject: THREE.Object3D | null;
+    private currentSelectedObject: THREE.Object3D | null;
+    private lastMousePosition: { x: number, y: number };
+    private isMouseDown: boolean;
+    private mouseDownTime: number;
+
+    private lastMouseMoveTime: number;
+    private mouseMoveThrottle: number;
+
+    private hoverTimeout: any;
+    private clickTimeout: any;
+
+    private config: EventConfig;
+
+    constructor(scene: THREE.Scene, camera: THREE.Camera, renderer: THREE.WebGLRenderer, stateManager: StateManager) {
         this.renderer = renderer;
         this.stateManager = stateManager;
-        
+
         // Einziger RaycastManager
         this.raycastManager = new RaycastManager(camera, scene);
-        
+
         // Event-Handler Registry
         this.eventHandlers = new Map();
         this.activeListeners = new Set();
-        
+
         // State-Tracking
         this.currentHoveredObject = null;
         this.currentSelectedObject = null;
         this.lastMousePosition = { x: 0, y: 0 };
         this.isMouseDown = false;
         this.mouseDownTime = 0;
-        
+
         // Performance-Throttling - ERHOEHT fuer weniger Events
         this.lastMouseMoveTime = 0;
         this.mouseMoveThrottle = 50; // Reduziert auf 20fps fuer weniger Events
-        
+
         // Timeouts fuer delayed actions
         this.hoverTimeout = null;
         this.clickTimeout = null;
-        
+
         // Configuration
         this.config = {
             hoverDelay: 50,
             clickDelay: 200,
             doubleClickThreshold: 300
         };
-        
+
         this.initializeEventListeners();
-        
     }
-    
+
     /**
      * Initialisiert alle Event-Listener
      */
     initializeEventListeners() {
         const canvas = this.renderer.domElement;
-        
+
         // Mouse Events
-        this.addEventHandler('mousemove', canvas, this.handleMouseMove.bind(this));
-        this.addEventHandler('mousedown', canvas, this.handleMouseDown.bind(this));
-        this.addEventHandler('mouseup', canvas, this.handleMouseUp.bind(this));
-        this.addEventHandler('click', canvas, this.handleClick.bind(this));
-        this.addEventHandler('dblclick', canvas, this.handleDoubleClick.bind(this));
-        
+        this.addEventHandler('mousemove', canvas, this.handleMouseMove.bind(this) as EventListener);
+        this.addEventHandler('mousedown', canvas, this.handleMouseDown.bind(this) as EventListener);
+        this.addEventHandler('mouseup', canvas, this.handleMouseUp.bind(this) as EventListener);
+        this.addEventHandler('click', canvas, this.handleClick.bind(this) as EventListener);
+        this.addEventHandler('dblclick', canvas, this.handleDoubleClick.bind(this) as EventListener);
+
         // Context menu prevention
-        this.addEventHandler('contextmenu', canvas, this.handleContextMenu.bind(this));
-        
+        this.addEventHandler('contextmenu', canvas, this.handleContextMenu.bind(this) as EventListener);
+
         // Window events
-        this.addEventHandler('resize', window, this.handleResize.bind(this));
-        
+        this.addEventHandler('resize', window, this.handleResize.bind(this) as EventListener);
+
         // Keyboard events
-        this.addEventHandler('keydown', document, this.handleKeyDown.bind(this));
-        this.addEventHandler('keyup', document, this.handleKeyUp.bind(this));
-        
+        this.addEventHandler('keydown', document, this.handleKeyDown.bind(this) as EventListener);
+        this.addEventHandler('keyup', document, this.handleKeyUp.bind(this) as EventListener);
     }
-    
+
     /**
      * Fuegt einen Event-Handler hinzu und verwaltet ihn
      */
-    addEventHandler(eventType, element, handler) {
-        const handlerId = `${eventType}_${element.tagName || 'window'}_${Date.now()}`;
-        
+    addEventHandler(eventType: string, element: HTMLElement | Window | Document, handler: EventListenerOrEventListenerObject): string {
+        const handlerId = `${eventType}_${(element as any).tagName || 'window'}_${Date.now()}`;
+
         element.addEventListener(eventType, handler, false);
-        
+
         this.eventHandlers.set(handlerId, {
             eventType,
             element,
             handler,
             active: true
         });
-        
+
         this.activeListeners.add(handlerId);
-        
+
         return handlerId;
     }
-    
+
     /**
      * Entfernt einen Event-Handler
      */
-    removeEventHandler(handlerId) {
-        const handlerData = this.eventHandlers.get(handlerId);
+    removeEventHandler(handlerId: string) {
+        const handlerData = this.eventHandlers.get(handlerId) as EventHandlerData;
         if (handlerData) {
             handlerData.element.removeEventListener(handlerData.eventType, handlerData.handler);
             this.eventHandlers.delete(handlerId);
             this.activeListeners.delete(handlerId);
         }
     }
-    
+
     /**
      * Haupthandler fuer Mouse-Move Events
      */
-    handleMouseMove(event) {
+    handleMouseMove(event: MouseEvent) {
         // Performance-Throttling
         const now = performance.now();
         if (now - this.lastMouseMoveTime < this.mouseMoveThrottle) {
             return;
         }
         this.lastMouseMoveTime = now;
-        
+
         // Mausposition aktualisieren
         this.updateMousePosition(event);
-        
+
         // Raycast durchfuehren
         this.raycastManager.updateMousePosition(event);
         const hoveredObject = this.raycastManager.findIntersectedObject();
-        
+
         // Hover-State aktualisieren
         if (hoveredObject !== this.currentHoveredObject) {
             this.updateHoverState(hoveredObject);
         }
-        
+
         // Cursor aktualisieren
         this.updateCursor(hoveredObject);
-        
+
         // Event an Subscriber weiterleiten
         this.notifySubscribers('mousemove', {
             event,
@@ -136,35 +169,35 @@ export class CentralEventManager {
             mousePosition: this.lastMousePosition
         });
     }
-    
+
     /**
      * Handler fuer Mouse-Down Events
      */
-    handleMouseDown(event) {
+    handleMouseDown(event: MouseEvent) {
         this.isMouseDown = true;
         this.mouseDownTime = performance.now();
-        
+
         // Raycast fuer clicked object
         this.raycastManager.updateMousePosition(event);
         const clickedObject = this.raycastManager.findIntersectedObject();
-        
+
         this.notifySubscribers('mousedown', {
             event,
             clickedObject,
             button: event.button
         });
     }
-    
+
     /**
      * Handler fuer Mouse-Up Events
      */
-    handleMouseUp(event) {
+    handleMouseUp(event: MouseEvent) {
         const wasMouseDown = this.isMouseDown;
         const downDuration = performance.now() - this.mouseDownTime;
-        
+
         this.isMouseDown = false;
         this.mouseDownTime = 0;
-        
+
         this.notifySubscribers('mouseup', {
             event,
             wasMouseDown,
@@ -172,115 +205,115 @@ export class CentralEventManager {
             button: event.button
         });
     }
-    
+
     /**
      * Handler fuer Click Events
      */
-    handleClick(event) {
+    handleClick(event: MouseEvent) {
         // Verhindere mehrfache Clicks
         if (this.clickTimeout) {
             clearTimeout(this.clickTimeout);
         }
-        
+
         this.clickTimeout = setTimeout(() => {
             this.processClick(event);
             this.clickTimeout = null;
         }, this.config.clickDelay);
     }
-    
+
     /**
      * Verarbeitet Click-Events
      */
-    processClick(event) {
+    processClick(event: MouseEvent) {
         this.raycastManager.updateMousePosition(event);
         const clickedObject = this.raycastManager.findIntersectedObject();
-        
+
         this.updateSelectionState(clickedObject);
-        
+
         this.notifySubscribers('click', {
             event,
             clickedObject,
             button: event.button
         });
     }
-    
+
     /**
      * Handler fuer Double-Click Events
      */
-    handleDoubleClick(event) {
+    handleDoubleClick(event: MouseEvent) {
         // Cancle pending single click
         if (this.clickTimeout) {
             clearTimeout(this.clickTimeout);
             this.clickTimeout = null;
         }
-        
+
         this.raycastManager.updateMousePosition(event);
         const clickedObject = this.raycastManager.findIntersectedObject();
-        
+
         this.notifySubscribers('doubleclick', {
             event,
             clickedObject
         });
     }
-    
+
     /**
      * Handler fuer Context Menu Events
      */
-    handleContextMenu(event) {
+    handleContextMenu(event: MouseEvent) {
         event.preventDefault();
-        
+
         this.raycastManager.updateMousePosition(event);
         const clickedObject = this.raycastManager.findIntersectedObject();
-        
+
         this.notifySubscribers('contextmenu', {
             event,
             clickedObject
         });
     }
-    
+
     /**
      * Handler fuer Resize Events
      */
-    handleResize(event) {
+    handleResize(event: UIEvent) {
         this.notifySubscribers('resize', { event });
     }
-    
+
     /**
      * Handler fuer Keyboard Events
      */
-    handleKeyDown(event) {
+    handleKeyDown(event: KeyboardEvent) {
         this.notifySubscribers('keydown', { event });
     }
-    
-    handleKeyUp(event) {
+
+    handleKeyUp(event: KeyboardEvent) {
         this.notifySubscribers('keyup', { event });
     }
-    
+
     /**
      * Aktualisiert den Hover-State
      */
-    updateHoverState(newHoveredObject) {
+    updateHoverState(newHoveredObject: THREE.Object3D | null) {
         const oldHoveredObject = this.currentHoveredObject;
-        
+
         // Hover-Timeout zuruecksetzen
         if (this.hoverTimeout) {
             clearTimeout(this.hoverTimeout);
             this.hoverTimeout = null;
         }
-        
+
         // Altes Objekt "unhover"
         if (oldHoveredObject) {
             this.notifySubscribers('hover_end', {
                 object: oldHoveredObject
             });
         }
-        
+
         // Neues Objekt setzen
         this.currentHoveredObject = newHoveredObject;
-        
+
         // StateManager aktualisieren
         this.stateManager.setHoveredObject(newHoveredObject);
-        
+
         // Neues Objekt "hover" mit Delay
         if (newHoveredObject) {
             this.hoverTimeout = setTimeout(() => {
@@ -291,26 +324,26 @@ export class CentralEventManager {
             }, this.config.hoverDelay);
         }
     }
-    
+
     /**
      * Aktualisiert den Selection-State
      */
-    updateSelectionState(newSelectedObject) {
+    updateSelectionState(newSelectedObject: THREE.Object3D | null) {
         const oldSelectedObject = this.currentSelectedObject;
-        
+
         // Altes Objekt deselektieren
         if (oldSelectedObject) {
             this.notifySubscribers('selection_end', {
                 object: oldSelectedObject
             });
         }
-        
+
         // Neues Objekt setzen
         this.currentSelectedObject = newSelectedObject;
-        
+
         // StateManager aktualisieren
         this.stateManager.setSelectedObject(newSelectedObject);
-        
+
         // Neues Objekt selektieren
         if (newSelectedObject) {
             this.notifySubscribers('selection_start', {
@@ -318,46 +351,46 @@ export class CentralEventManager {
             });
         }
     }
-    
+
     /**
      * Aktualisiert die Mausposition
      */
-    updateMousePosition(event) {
+    updateMousePosition(event: MouseEvent) {
         const rect = this.renderer.domElement.getBoundingClientRect();
         this.lastMousePosition.x = event.clientX - rect.left;
         this.lastMousePosition.y = event.clientY - rect.top;
     }
-    
+
     /**
      * Aktualisiert den Cursor
      */
-    updateCursor(hoveredObject) {
+    updateCursor(hoveredObject: THREE.Object3D | null) {
         if (hoveredObject) {
             document.body.style.cursor = 'pointer';
         } else {
             document.body.style.cursor = 'default';
         }
     }
-    
+
     /**
      * Event-Subscription System
      */
-    subscribe(eventType, callback) {
+    subscribe(eventType: string, callback: Function) {
         if (!this.eventHandlers.has(`subscribers_${eventType}`)) {
             this.eventHandlers.set(`subscribers_${eventType}`, new Set());
         }
-        
-        const subscribers = this.eventHandlers.get(`subscribers_${eventType}`);
+
+        const subscribers = this.eventHandlers.get(`subscribers_${eventType}`) as Set<Function>;
         subscribers.add(callback);
-        
+
         return () => subscribers.delete(callback);
     }
-    
+
     /**
      * Benachrichtigt alle Subscriber eines Event-Types
      */
-    notifySubscribers(eventType, data) {
-        const subscribers = this.eventHandlers.get(`subscribers_${eventType}`);
+    notifySubscribers(eventType: string, data: any) {
+        const subscribers = this.eventHandlers.get(`subscribers_${eventType}`) as Set<Function>;
         if (subscribers) {
             subscribers.forEach(callback => {
                 try {
@@ -368,19 +401,26 @@ export class CentralEventManager {
             });
         }
     }
-    
+
+    /**
+     * Verffentlicht ein benutzerdefiniertes Event (Alias fr notifySubscribers)
+     */
+    publish(eventType: string, data: any) {
+        this.notifySubscribers(eventType, data);
+    }
+
     /**
      * Aktiviert/Deaktiviert Event-Handling
      */
-    setEnabled(enabled) {
+    setEnabled(enabled: boolean) {
         this.activeListeners.forEach(handlerId => {
-            const handlerData = this.eventHandlers.get(handlerId);
+            const handlerData = this.eventHandlers.get(handlerId) as EventHandlerData;
             if (handlerData) {
                 handlerData.active = enabled;
             }
         });
     }
-    
+
     /**
      * Cleanup - entfernt alle Event-Listener
      */
@@ -388,18 +428,17 @@ export class CentralEventManager {
         // Alle Timeouts clearen
         if (this.hoverTimeout) clearTimeout(this.hoverTimeout);
         if (this.clickTimeout) clearTimeout(this.clickTimeout);
-        
+
         // Alle Event-Listener entfernen
         this.activeListeners.forEach(handlerId => {
             this.removeEventHandler(handlerId);
         });
-        
+
         // Cleanup
         this.eventHandlers.clear();
         this.activeListeners.clear();
-        
     }
-    
+
     /**
      * Debug-Informationen
      */

@@ -1,0 +1,246 @@
+:root {
+  --bg-color: #1a1a1a;
+  --text-color: #e0e0e0;
+  --text-muted: #aaaaaa;
+  --panel-bg: rgba(30, 30, 30, 0.85);
+  /* Slightly darker for better contrast */
+  --panel-border: 1px solid rgba(255, 255, 255, 0.15);
+  --accent-color: #3498db;
+  --accent-hover: #2980b9;
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --panel-width: 250px;
+  --panel-spacing: 10px;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: 13px;
+  /* Base font size */
+}
+
+canvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* --- Unified Panel Architecture --- */
+
+/* Base Panel Class */
+.ui-panel {
+  position: fixed;
+  right: 20px;
+  width: var(--panel-width);
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: var(--panel-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  padding: 0;
+  /* Content handles padding */
+  display: flex;
+  flex-direction: column;
+  transition: top 0.3s ease;
+  /* Smooth reordering */
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+/* Panel Header */
+.ui-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 40px;
+  box-sizing: border-box;
+}
+
+.ui-panel-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Toggle Button */
+.ui-panel-toggle {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.ui-panel-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+}
+
+/* Panel Content */
+.ui-panel-content {
+  padding: 12px;
+  overflow-y: auto;
+  max-height: 60vh;
+  /* Prevent panels from becoming too tall */
+  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+  opacity: 1;
+}
+
+/* Collapsed State */
+.ui-panel.collapsed .ui-panel-content {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+.ui-panel.collapsed {
+  /* Height is determined by header only */
+}
+
+/* --- Content Elements --- */
+
+/* Key-Value Pairs (e.g. Info Panel) */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.info-label {
+  color: var(--text-muted);
+}
+
+.info-value {
+  color: var(--text-color);
+  font-weight: 500;
+  text-align: right;
+}
+
+/* File List Items */
+.file-item {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 4px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--text-color);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.file-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.file-item.active {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+/* Form Elements */
+label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+select,
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 6px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: var(--text-color);
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+select:focus,
+input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+input[type="range"] {
+  width: 100%;
+  margin: 8px 0;
+}
+
+/* Action Buttons */
+.action-button {
+  width: 100%;
+  padding: 8px;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 5px;
+  transition: background-color 0.2s;
+}
+
+.action-button:hover {
+  background-color: var(--accent-hover);
+}
+
+.action-button.secondary {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.action-button.secondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* --- Specific Panel IDs (for JS targeting) --- */
+/* We rely on the generic classes for styling, IDs are just for JS hooks */
+#fileInfoPanel,
+#filePanel,
+#layoutPanel,
+#infoPanel,
+#devPanel {
+  /* No specific styles needed, they inherit from .ui-panel */
+}
