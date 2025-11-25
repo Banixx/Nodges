@@ -320,7 +320,7 @@ export class LayoutManager {
         this.normalizeNodePositions(nodes, 10); // Maximal 10 Einheiten Ausdehnung
     }
 
-    applyCircularLayout(nodes: NodeData[], edges: EdgeData[], options: LayoutOptions) {
+    applyCircularLayout(nodes: NodeData[], _edges: EdgeData[], options: LayoutOptions) {
         const { radius } = options;
         const angleStep = (2 * Math.PI) / nodes.length;
 
@@ -332,7 +332,7 @@ export class LayoutManager {
         });
     }
 
-    applyGridLayout(nodes: NodeData[], edges: EdgeData[], options: LayoutOptions) {
+    applyGridLayout(nodes: NodeData[], _edges: EdgeData[], options: LayoutOptions) {
         const { spacing } = options;
         const gridSize = Math.ceil(Math.sqrt(nodes.length));
 
@@ -346,7 +346,7 @@ export class LayoutManager {
         });
     }
 
-    applyRandomLayout(nodes: NodeData[], edges: EdgeData[], options: LayoutOptions) {
+    applyRandomLayout(nodes: NodeData[], _edges: EdgeData[], options: LayoutOptions) {
         const { minBound, maxBound } = options;
         const range = maxBound - minBound;
 

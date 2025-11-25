@@ -76,7 +76,7 @@ export class UIManager {
                 });
 
                 // Panel Click (Expand when collapsed)
-                panel.addEventListener('click', (e) => {
+                panel.addEventListener('click', (_e) => {
                     if (panel.classList.contains('collapsed')) {
                         this.togglePanel(panel, toggle);
                     }

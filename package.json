@@ -1,7 +1,7 @@
 {
   "name": "nodges-2.0",
   "private": true,
-  "version": "2.0.0",
+  "version": "0.93.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

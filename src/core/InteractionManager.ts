@@ -188,7 +188,7 @@ export class InteractionManager {
     /**
      * Handler fuer Mouse Up
      */
-    handleMouseUp(data: any) {
+    handleMouseUp(_data: any) {
         if (!this.isEnabled) return;
 
         this.isDragging = false;
@@ -252,7 +252,7 @@ export class InteractionManager {
         }
     }
 
-    handleKeyUp(data: any) {
+    handleKeyUp(_data: any) {
         // Placeholder fuer Key-Up Events
     }
 
@@ -379,7 +379,7 @@ export class InteractionManager {
     /**
      * Zeigt Context Menu an
      */
-    showContextMenu(object: THREE.Object3D, event: any) {
+    showContextMenu(_object: THREE.Object3D, _event: any) {
         // Context Menu Implementierung - spaeter
     }
 

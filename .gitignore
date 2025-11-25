@@ -34,3 +34,4 @@ build/
 # Markdown files (except README.md)
 *.md
 !README.md
+!project_report.md
