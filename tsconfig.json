@@ -27,7 +27,13 @@
             "@/*": [
                 "src/*"
             ]
-        }
+        },
+            "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    // Sicherstellen, dass Node.js-Module wie `path` korrekt typisiert werden
+    "moduleResolution": "bundler"
     },
     "include": [
         "src/**/*.ts",
