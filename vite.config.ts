@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue'; // Erforderlich für Vue Single-File-Components
 import path from 'path';
 
 export default defineConfig({
@@ -8,9 +7,6 @@ export default defineConfig({
   base: '/Nodges/',
   // Falls du eine Benutzer-/Organisationsseite nutzt (Repo-Name: dein-benutzername.github.io):
   // base: '/',
-
-  // Plugin für Vue SFCs (erforderlich für Vue-Projekte, auch mit TypeScript)
-  plugins: [vue()],
 
   resolve: {
     alias: {

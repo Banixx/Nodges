@@ -37,25 +37,31 @@ export class NodeObjectsManager {
         this.geometryCache.set('cylinder', new THREE.CylinderGeometry(1, 1, 1, 8));
         this.geometryCache.set('cone', new THREE.ConeGeometry(1, 1, 8));
         this.geometryCache.set('torus', new THREE.TorusGeometry(1, 0.4, 8, 6));
-        // Add others as needed, keeping it simple for now
     }
 
     private initializeMaterials() {
+        console.log('[TRACE] NodeObjectsManager.initializeMaterials called');
         // We use one material per InstancedMesh. Colors are handled via instanceColor attribute.
         this.materialCache.set('default', new THREE.MeshPhongMaterial({
             color: 0xffffff, // White base to allow vertex colors to tint
             shininess: 30,
             vertexColors: true // Important for InstancedMesh color variation
         }));
+        console.log(`[TRACE] Material 'default' set. Cache size: ${this.materialCache.size}`);
     }
 
     public updateNodes(nodes: NodeData[]) {
-        console.log('=== SCHRITT 7: NodeObjectsManager.updateNodes() ===');
-        console.log('Anzahl Nodes:', nodes.length);
-        if (nodes[0]) {
-            console.log('Erster Node Input:', nodes[0]);
-            console.log('Position:', nodes[0].x, nodes[0].y, nodes[0].z);
+        console.log(`[TRACE] NodeObjectsManager.updateNodes called with ${nodes.length} nodes`);
+
+        // Re-initialize caches if they were cleared (e.g. by dispose())
+        if (this.geometryCache.size === 0) {
+            this.initializeGeometries();
         }
+        if (this.materialCache.size === 0) {
+            this.initializeMaterials();
+        }
+
+        console.log(`[TRACE] Material Cache Keys: ${Array.from(this.materialCache.keys()).join(', ')}`);
 
         // 1. Group nodes by geometry type
         const nodesByType = new Map<string, NodeData[]>();
@@ -103,16 +109,12 @@ export class NodeObjectsManager {
                 const z = node.z || 0;
                 dummy.position.set(x, y, z);
 
-                console.log(`NodeObjectsManager: Setting node ${node.id} to position: (${x}, ${y}, ${z})`);
-
                 // Scale based on node size (default 1.0)
                 // Note: Geometries are created with size 1, so we scale directly
                 const size = (node.val || 1) * (node.scale || 1);
-                // Use a much larger base size to make nodes clearly visible
-                const visualScale = size * 10.0;
+                // Use reasonable scale for visibility (0.5 = half unit size)
+                const visualScale = size * 0.5;
                 dummy.scale.set(visualScale, visualScale, visualScale);
-
-                console.log(`NodeObjectsManager: Setting node ${node.id} scale to: ${visualScale}`);
 
                 dummy.updateMatrix();
                 mesh.setMatrixAt(index, dummy.matrix);
@@ -136,7 +138,12 @@ export class NodeObjectsManager {
             // Store metadata
             mesh.userData = { type: 'node_instanced', geometryType: type };
 
+            const mat = material as any;
+            const matColor = (mat && mat.color) ? mat.color.getHexString() : 'unknown';
+            console.log(`[TRACE] Adding InstancedMesh to scene. Type: ${type}, Count: ${count}, Material Color: #${matColor}`);
             this.scene.add(mesh);
+            console.log(`[TRACE] Mesh added. Scene children count: ${this.scene.children.length}`);
+
             this.meshes.set(type, mesh);
             this.nodeDataMap.set(type, groupNodes);
         });
@@ -208,6 +215,7 @@ export class NodeObjectsManager {
     }
 
     public dispose() {
+        console.log('[TRACE] NodeObjectsManager.dispose called');
         this.meshes.forEach(mesh => {
             this.scene.remove(mesh);
             mesh.dispose();

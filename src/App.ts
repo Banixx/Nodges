@@ -102,6 +102,7 @@ export class App {
     public nodeObjects: any[] = [];
 
     private _isInitialized: boolean = false;
+    private frameCounter: number = 0;
 
     public get isInitialized(): boolean {
         return this._isInitialized;
@@ -243,50 +244,35 @@ export class App {
             const response = await fetch(url);
             const rawData = await response.json();
 
-            console.log('=== SCHRITT 1: RAW JSON GELADEN ===');
-            console.log('Rohdaten entities:', rawData.data?.entities);
-            if (rawData.data?.entities?.[0]?.position) {
-                console.log('Erste Entity Position (raw):', rawData.data.entities[0].position);
-            }
+            console.log(`[TRACE] Loaded Raw Data: ${rawData.data?.entities?.length} entities`);
 
             // Parse data using DataParser (handles both legacy and future formats)
             this.currentGraphData = DataParser.parse(rawData);
 
-            console.log('=== SCHRITT 2: NACH DATAPARSER ===');
-            console.log('Parsed entities:', this.currentGraphData.data.entities.length);
-            if (this.currentGraphData.data.entities[0]) {
-                console.log('Erste Entity nach Parse:', this.currentGraphData.data.entities[0]);
-                console.log('Position nach Parse:', this.currentGraphData.data.entities[0].position);
-            }
-
-            console.log('Loaded graph data:', this.currentGraphData.system);
-            console.log('Entities:', this.currentGraphData.data.entities.length);
-            console.log('Relationships:', this.currentGraphData.data.relationships.length);
+            console.log(`[TRACE] Parsed Data: ${this.currentGraphData.data.entities.length} entities`);
 
             // Set visual mappings if available
             if (this.currentGraphData.visualMappings) {
                 this.visualMappingEngine.setVisualMappings(this.currentGraphData.visualMappings);
-                console.log('Visual mappings loaded');
             }
 
             // Convert to legacy format for compatibility with existing layout/rendering code
-            console.log('=== SCHRITT 3: VOR KONVERTIERUNG ZU NODES ===');
+            console.log('[TRACE] Converting entities to nodes...');
             this.currentNodes = this.convertEntitiesToNodes(this.currentGraphData.data.entities);
-            console.log('=== SCHRITT 4: NACH KONVERTIERUNG ZU NODES ===');
-            console.log('Anzahl currentNodes:', this.currentNodes.length);
-            if (this.currentNodes[0]) {
-                console.log('Erster Node:', this.currentNodes[0]);
-                console.log('Node Koordinaten (x, y, z):', this.currentNodes[0].x, this.currentNodes[0].y, this.currentNodes[0].z);
-            }
+            console.log(`[TRACE] Converted ${this.currentNodes.length} nodes`);
+
             this.currentEdges = this.convertRelationshipsToEdges(
                 this.currentGraphData.data.relationships,
                 this.currentGraphData.data.entities
             );
 
-            console.log('=== SCHRITT 5: VOR createNodes() ===');
+            console.log('[TRACE] Calling createNodes()...');
             await this.createNodes();
-            console.log('=== SCHRITT 6: NACH createNodes() ===');
+            console.log('[TRACE] createNodes() finished');
+
+            console.log('[TRACE] Calling createEdges()...');
             await this.createEdges();
+            console.log('[TRACE] createEdges() finished');
 
             // Only apply layout if entities don't have positions
             const hasPositions = this.currentGraphData.data.entities.every(e =>
@@ -294,11 +280,8 @@ export class App {
             );
 
             if (this.layoutManager && !hasPositions) {
-                console.log('Applying force-directed layout (no positions defined)');
                 await this.layoutManager.applyLayout('force-directed', this.currentNodes, this.currentEdges);
                 this.updateNodePositions();
-            } else {
-                console.log('Skipping layout (positions already defined in data)');
             }
 
             // Update UI
@@ -337,7 +320,6 @@ export class App {
                 z: position?.z || 0,
                 type: entity.type
             };
-            console.log('Converted entity:', entity.id, 'position:', { x: result.x, y: result.y, z: result.z });
             return result;
         });
         return converted;
@@ -423,30 +405,25 @@ export class App {
     }
 
     fitCameraToScene() {
-        console.log('=== SCHRITT 8: fitCameraToScene() ===');
         if (this.currentNodes.length === 0) return;
 
         const bounds = this.calculateBounds(this.currentNodes);
-        console.log('Berechnete Bounds:', bounds);
 
         const center = new THREE.Vector3(
             (bounds.x.min + bounds.x.max) / 2,
             (bounds.y.min + bounds.y.max) / 2,
             (bounds.z.min + bounds.z.max) / 2
         );
-        console.log('Zentrum der Szene:', center);
 
         const maxDimension = Math.max(
             bounds.x.max - bounds.x.min,
             bounds.y.max - bounds.y.min,
             bounds.z.max - bounds.z.min
         );
-        console.log('Max Dimension:', maxDimension);
 
         // Calculate optimal camera distance based on network size and FOV
         const fov = this.camera.fov * (Math.PI / 180);
         const distance = Math.max(5, Math.abs(maxDimension / Math.sin(fov / 2)));
-        console.log('Berechnete Kamera-Distanz:', distance);
 
         // Position camera
         const cameraPos = new THREE.Vector3(
@@ -455,21 +432,28 @@ export class App {
             center.z + distance
         );
         this.camera.position.copy(cameraPos);
-        console.log('Finale Kamera-Position:', this.camera.position);
 
         this.camera.lookAt(center);
         this.controls.target.copy(center);
-        console.log('Kamera-Target:', this.controls.target);
         this.controls.update();
-
-        console.log(`=== KAMERA FOKUSSIERT: Zentrum (${center.x.toFixed(2)}, ${center.y.toFixed(2)}, ${center.z.toFixed(2)}) bei Distanz ${distance.toFixed(2)} ===`);
     }
 
     animate() {
         requestAnimationFrame(this.animate.bind(this));
         this.controls.update();
         this.renderer.render(this.scene, this.camera);
-        // this.stateManager.animate(); // StateManager has its own loop
+
+        // [TRACE] Log every 60 frames (approx 1 sec)
+        this.frameCounter++;
+        if (this.frameCounter % 60 === 0) {
+            console.log(`[TRACE] Render Loop (Frame ${this.frameCounter})`);
+            console.log(`[TRACE] Camera Pos: ${this.camera.position.x.toFixed(1)}, ${this.camera.position.y.toFixed(1)}, ${this.camera.position.z.toFixed(1)}`);
+            const nodeMeshes = this.scene.children.filter(c => c.type === 'InstancedMesh');
+            console.log(`[TRACE] Scene Children: ${this.scene.children.length}, InstancedMeshes: ${nodeMeshes.length}`);
+            nodeMeshes.forEach((mesh: any, i) => {
+                console.log(`[TRACE] Mesh ${i}: count=${mesh.count}, visible=${mesh.visible}`);
+            });
+        }
     }
 }
 

@@ -4,8 +4,7 @@ import {
     RelationshipData,
     NodeData,
     EdgeData,
-    DataModel,
-    VisualMappings
+    DataModel
 } from '../types';
 
 /**

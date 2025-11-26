@@ -187,7 +187,7 @@ export class VisualMappingEngine {
     /**
      * Heatmap mapping (returns a value that can be mapped to color)
      */
-    private heatmapMapping(value: number, mapping: VisualMapping): number {
+    private heatmapMapping(value: number, _mapping: VisualMapping): number {
         // Return normalized value for color mapping
         return value;
     }
@@ -195,7 +195,7 @@ export class VisualMappingEngine {
     /**
      * Bipolar mapping (for values ranging from negative to positive)
      */
-    private bipolarMapping(value: number, mapping: VisualMapping): number {
+    private bipolarMapping(value: number, _mapping: VisualMapping): number {
         // Normalize from [-1, 1] to [0, 1]
         return (value + 1) / 2;
     }
@@ -240,12 +240,12 @@ export class VisualMappingEngine {
     /**
      * Map to geometry type
      */
-    private mapToGeometry(mapping: VisualMapping, data: EntityData): string {
+    private mapToGeometry(mapping: VisualMapping, _data: EntityData): string {
         if (mapping.function === 'sphereComplexity') {
-            // Map value to sphere complexity
-            const value = this.getNestedProperty(data, mapping.source);
-            const minSegments = mapping.params?.minSegments || 8;
-            const maxSegments = mapping.params?.maxSegments || 32;
+            // Map value to sphere complexity (complexity handling in NodeObjectsManager)
+            // const value = this.getNestedProperty(data, mapping.source);
+            // const minSegments = mapping.params?.minSegments || 8;
+            // const maxSegments = mapping.params?.maxSegments || 32;
 
             // For now, just return 'sphere' - actual complexity is handled in NodeObjectsManager
             return 'sphere';
