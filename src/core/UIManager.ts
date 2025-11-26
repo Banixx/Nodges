@@ -204,12 +204,19 @@ export class UIManager {
     }
 
     async fetchDirectoryContents(): Promise<string[]> {
-        // This is a static list, as client-side JS can't read directories.
-        // It's the same hardcoded list from index.html.
-        return [
-            'EXAMPLE_BAUEINGABE_SYSTEM', 'future_format_example', 'ikosaeder',
-            'large', 'medium', 'mega', 'small', 'us_legal_system_actors', 'us_political_system'
-        ];
+        // Use Vite's import.meta.glob to dynamically discover all JSON files in data/
+        // This is evaluated at build time, so it automatically finds all files
+        const dataFiles = import.meta.glob('/data/*.json');
+
+        // Extract filenames without path and extension
+        const filenames = Object.keys(dataFiles).map(path => {
+            // Extract filename from '/data/filename.json'
+            const match = path.match(/\/data\/(.+)\.json$/);
+            return match ? match[1] : '';
+        }).filter(name => name !== ''); // Remove empty strings
+
+        console.log('Discovered data files:', filenames);
+        return filenames.sort(); // Sort alphabetically
     }
 
     createFileButtons(filenames: string[]) {

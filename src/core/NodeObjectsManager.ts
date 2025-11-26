@@ -50,6 +50,13 @@ export class NodeObjectsManager {
     }
 
     public updateNodes(nodes: NodeData[]) {
+        console.log('=== SCHRITT 7: NodeObjectsManager.updateNodes() ===');
+        console.log('Anzahl Nodes:', nodes.length);
+        if (nodes[0]) {
+            console.log('Erster Node Input:', nodes[0]);
+            console.log('Position:', nodes[0].x, nodes[0].y, nodes[0].z);
+        }
+
         // 1. Group nodes by geometry type
         const nodesByType = new Map<string, NodeData[]>();
 
@@ -91,14 +98,21 @@ export class NodeObjectsManager {
 
             groupNodes.forEach((node, index) => {
                 // Position & Scale
-                dummy.position.set(node.x || 0, node.y || 0, node.z || 0);
+                const x = node.x || 0;
+                const y = node.y || 0;
+                const z = node.z || 0;
+                dummy.position.set(x, y, z);
+
+                console.log(`NodeObjectsManager: Setting node ${node.id} to position: (${x}, ${y}, ${z})`);
 
                 // Scale based on node size (default 1.0)
                 // Note: Geometries are created with size 1, so we scale directly
                 const size = (node.val || 1) * (node.scale || 1);
-                // Adjust scale factor to match previous visuals (approx 0.2 radius base)
-                const visualScale = size * 0.2;
+                // Use a much larger base size to make nodes clearly visible
+                const visualScale = size * 10.0;
                 dummy.scale.set(visualScale, visualScale, visualScale);
+
+                console.log(`NodeObjectsManager: Setting node ${node.id} scale to: ${visualScale}`);
 
                 dummy.updateMatrix();
                 mesh.setMatrixAt(index, dummy.matrix);

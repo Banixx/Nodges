@@ -47,6 +47,11 @@ import { GlowEffect } from './effects/GlowEffect.js';
 import { NodeObjectsManager } from './core/NodeObjectsManager';
 // @ts-ignore
 import { EdgeObjectsManager } from './core/EdgeObjectsManager';
+// @ts-ignore
+import { DataParser } from './core/DataParser';
+// @ts-ignore
+import { VisualMappingEngine } from './core/VisualMappingEngine';
+import { GraphData } from './types';
 
 import './styles/main.css';
 
@@ -86,10 +91,15 @@ export class App {
     public nodeObjectsManager: any;
     public edgeObjectsManager: any;
 
+    // Data management
+    public currentGraphData: GraphData | null = null;
+    public visualMappingEngine: VisualMappingEngine;
+    public layoutEnabled: boolean = false; // Auto-layout disabled by default
+
+    // Legacy support
     public currentNodes: any[] = [];
     public currentEdges: any[] = [];
     public nodeObjects: any[] = [];
-    // public edgeObjects: any[] = []; // Deprecated
 
     private _isInitialized: boolean = false;
 
@@ -108,6 +118,7 @@ export class App {
 
         this.stateManager = new StateManager();
 
+        this.visualMappingEngine = new VisualMappingEngine();
         this.nodeObjectsManager = new NodeObjectsManager(this.scene);
         this.edgeObjectsManager = new EdgeObjectsManager(this.scene);
 
@@ -130,7 +141,7 @@ export class App {
     }
 
     async initThreeJS() {
-        this.scene.background = new THREE.Color(0x1a1a1a);
+        this.scene.background = new THREE.Color(0xdafa1a);
         this.camera.position.set(10, 10, 10);
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -230,56 +241,149 @@ export class App {
             this.clearScene();
 
             const response = await fetch(url);
-            const data = await response.json();
+            const rawData = await response.json();
 
-            // Basic loading logic for now, similar to main.js
-            this.currentNodes = data.nodes || [];
-            this.currentEdges = (data.edges || []).map((edge: any) => ({
-                ...edge,
-                start: edge.start !== undefined ? edge.start : edge.source,
-                end: edge.end !== undefined ? edge.end : edge.target
-            }));
+            console.log('=== SCHRITT 1: RAW JSON GELADEN ===');
+            console.log('Rohdaten entities:', rawData.data?.entities);
+            if (rawData.data?.entities?.[0]?.position) {
+                console.log('Erste Entity Position (raw):', rawData.data.entities[0].position);
+            }
 
-            // Fix IDs
-            this.currentNodes.forEach((node, index) => {
-                if (!node.id) node.id = `node${index}`;
-            });
+            // Parse data using DataParser (handles both legacy and future formats)
+            this.currentGraphData = DataParser.parse(rawData);
 
+            console.log('=== SCHRITT 2: NACH DATAPARSER ===');
+            console.log('Parsed entities:', this.currentGraphData.data.entities.length);
+            if (this.currentGraphData.data.entities[0]) {
+                console.log('Erste Entity nach Parse:', this.currentGraphData.data.entities[0]);
+                console.log('Position nach Parse:', this.currentGraphData.data.entities[0].position);
+            }
+
+            console.log('Loaded graph data:', this.currentGraphData.system);
+            console.log('Entities:', this.currentGraphData.data.entities.length);
+            console.log('Relationships:', this.currentGraphData.data.relationships.length);
+
+            // Set visual mappings if available
+            if (this.currentGraphData.visualMappings) {
+                this.visualMappingEngine.setVisualMappings(this.currentGraphData.visualMappings);
+                console.log('Visual mappings loaded');
+            }
+
+            // Convert to legacy format for compatibility with existing layout/rendering code
+            console.log('=== SCHRITT 3: VOR KONVERTIERUNG ZU NODES ===');
+            this.currentNodes = this.convertEntitiesToNodes(this.currentGraphData.data.entities);
+            console.log('=== SCHRITT 4: NACH KONVERTIERUNG ZU NODES ===');
+            console.log('Anzahl currentNodes:', this.currentNodes.length);
+            if (this.currentNodes[0]) {
+                console.log('Erster Node:', this.currentNodes[0]);
+                console.log('Node Koordinaten (x, y, z):', this.currentNodes[0].x, this.currentNodes[0].y, this.currentNodes[0].z);
+            }
+            this.currentEdges = this.convertRelationshipsToEdges(
+                this.currentGraphData.data.relationships,
+                this.currentGraphData.data.entities
+            );
+
+            console.log('=== SCHRITT 5: VOR createNodes() ===');
             await this.createNodes();
+            console.log('=== SCHRITT 6: NACH createNodes() ===');
             await this.createEdges();
 
-            if (this.layoutManager) {
+            // Only apply layout if entities don't have positions
+            const hasPositions = this.currentGraphData.data.entities.every(e =>
+                e.position && e.position.x !== undefined && e.position.y !== undefined && e.position.z !== undefined
+            );
+
+            if (this.layoutManager && !hasPositions) {
+                console.log('Applying force-directed layout (no positions defined)');
                 await this.layoutManager.applyLayout('force-directed', this.currentNodes, this.currentEdges);
                 this.updateNodePositions();
+            } else {
+                console.log('Skipping layout (positions already defined in data)');
             }
 
             // Update UI
             if (this.uiManager) {
-                // Extract filename from URL
                 const filename = url.split('/').pop()?.replace('.json', '') || 'unknown';
-
-                // Calculate bounds
-                const bounds = {
-                    x: { min: Infinity, max: -Infinity },
-                    y: { min: Infinity, max: -Infinity },
-                    z: { min: Infinity, max: -Infinity }
-                };
-
-                this.currentNodes.forEach(node => {
-                    bounds.x.min = Math.min(bounds.x.min, node.x || 0);
-                    bounds.x.max = Math.max(bounds.x.max, node.x || 0);
-                    bounds.y.min = Math.min(bounds.y.min, node.y || 0);
-                    bounds.y.max = Math.max(bounds.y.max, node.y || 0);
-                    bounds.z.min = Math.min(bounds.z.min, node.z || 0);
-                    bounds.z.max = Math.max(bounds.z.max, node.z || 0);
-                });
-
-                this.uiManager.updateFileInfo(filename, this.currentNodes.length, this.currentEdges.length, bounds);
+                const bounds = this.calculateBounds(this.currentNodes);
+                this.uiManager.updateFileInfo(
+                    filename,
+                    this.currentGraphData.data.entities.length,
+                    this.currentGraphData.data.relationships.length,
+                    bounds
+                );
             }
+
+            // Auto-focus camera on loaded nodes
+            this.fitCameraToScene();
 
         } catch (e) {
             console.error('Failed to load data:', e);
         }
+    }
+
+    /**
+     * Convert entities to legacy node format
+     */
+    private convertEntitiesToNodes(entities: any[]): any[] {
+        const converted = entities.map(entity => {
+            // Spread entity first, then override with extracted coordinates
+            const { position, ...rest } = entity;
+            const result = {
+                ...rest,
+                id: entity.id,
+                name: entity.label || entity.id,
+                x: position?.x || 0,
+                y: position?.y || 0,
+                z: position?.z || 0,
+                type: entity.type
+            };
+            console.log('Converted entity:', entity.id, 'position:', { x: result.x, y: result.y, z: result.z });
+            return result;
+        });
+        return converted;
+    }
+
+    /**
+     * Convert relationships to legacy edge format
+     */
+    private convertRelationshipsToEdges(relationships: any[], entities: any[]): any[] {
+        return relationships.map(rel => {
+            // Find entity indices
+            const sourceIndex = entities.findIndex(e => e.id === rel.source);
+            const targetIndex = entities.findIndex(e => e.id === rel.target);
+
+            return {
+                start: sourceIndex >= 0 ? sourceIndex : rel.source,
+                end: targetIndex >= 0 ? targetIndex : rel.target,
+                source: rel.source,
+                target: rel.target,
+                name: rel.label,
+                type: rel.type,
+                ...rel
+            };
+        });
+    }
+
+    /**
+     * Calculate bounds from nodes
+     */
+    private calculateBounds(nodes: any[]) {
+        const bounds = {
+            x: { min: Infinity, max: -Infinity },
+            y: { min: Infinity, max: -Infinity },
+            z: { min: Infinity, max: -Infinity }
+        };
+
+        nodes.forEach(node => {
+            bounds.x.min = Math.min(bounds.x.min, node.x || 0);
+            bounds.x.max = Math.max(bounds.x.max, node.x || 0);
+            bounds.y.min = Math.min(bounds.y.min, node.y || 0);
+            bounds.y.max = Math.max(bounds.y.max, node.y || 0);
+            bounds.z.min = Math.min(bounds.z.min, node.z || 0);
+            bounds.z.max = Math.max(bounds.z.max, node.z || 0);
+        });
+
+        return bounds;
     }
 
     clearScene() {
@@ -316,6 +420,49 @@ export class App {
         if (this.edgeObjectsManager) {
             this.edgeObjectsManager.updateEdgePositions(this.currentNodes);
         }
+    }
+
+    fitCameraToScene() {
+        console.log('=== SCHRITT 8: fitCameraToScene() ===');
+        if (this.currentNodes.length === 0) return;
+
+        const bounds = this.calculateBounds(this.currentNodes);
+        console.log('Berechnete Bounds:', bounds);
+
+        const center = new THREE.Vector3(
+            (bounds.x.min + bounds.x.max) / 2,
+            (bounds.y.min + bounds.y.max) / 2,
+            (bounds.z.min + bounds.z.max) / 2
+        );
+        console.log('Zentrum der Szene:', center);
+
+        const maxDimension = Math.max(
+            bounds.x.max - bounds.x.min,
+            bounds.y.max - bounds.y.min,
+            bounds.z.max - bounds.z.min
+        );
+        console.log('Max Dimension:', maxDimension);
+
+        // Calculate optimal camera distance based on network size and FOV
+        const fov = this.camera.fov * (Math.PI / 180);
+        const distance = Math.max(5, Math.abs(maxDimension / Math.sin(fov / 2)));
+        console.log('Berechnete Kamera-Distanz:', distance);
+
+        // Position camera
+        const cameraPos = new THREE.Vector3(
+            center.x + distance,
+            center.y + distance,
+            center.z + distance
+        );
+        this.camera.position.copy(cameraPos);
+        console.log('Finale Kamera-Position:', this.camera.position);
+
+        this.camera.lookAt(center);
+        this.controls.target.copy(center);
+        console.log('Kamera-Target:', this.controls.target);
+        this.controls.update();
+
+        console.log(`=== KAMERA FOKUSSIERT: Zentrum (${center.x.toFixed(2)}, ${center.y.toFixed(2)}, ${center.z.toFixed(2)}) bei Distanz ${distance.toFixed(2)} ===`);
     }
 
     animate() {

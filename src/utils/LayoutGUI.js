@@ -177,6 +177,79 @@ export class LayoutGUI {
     }
 
     createLayoutSelector() {
+        // Auto-Layout Toggle oben
+        const toggleContainer = document.createElement('div');
+        toggleContainer.style.cssText = `
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        `;
+
+        const toggleLabel = document.createElement('label');
+        toggleLabel.textContent = 'Auto-Layout:';
+        toggleLabel.style.cssText = `
+            font-weight: bold;
+            color: #555;
+            font-size: 13px;
+        `;
+
+        // Toggle Switch
+        const toggleSwitch = document.createElement('div');
+        toggleSwitch.style.cssText = `
+            position: relative;
+            width: 44px;
+            height: 22px;
+            background-color: #ccc;
+            border-radius: 11px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        `;
+
+        const toggleButton = document.createElement('div');
+        toggleButton.style.cssText = `
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        `;
+
+        toggleSwitch.appendChild(toggleButton);
+
+        toggleSwitch.addEventListener('click', () => {
+            this.layoutEnabled = !this.layoutEnabled;
+
+            if (this.layoutEnabled) {
+                toggleSwitch.style.backgroundColor = '#4CAF50';
+                toggleButton.style.transform = 'translateX(22px)';
+            } else {
+                toggleSwitch.style.backgroundColor = '#ccc';
+                toggleButton.style.transform = 'translateX(0px)';
+            }
+
+            this.updateLayoutState();
+
+            // Inform App.ts about the change
+            if (this.app) {
+                this.app.layoutEnabled = this.layoutEnabled;
+            }
+        });
+
+        this.layoutToggleSwitch = toggleSwitch;
+
+        toggleContainer.appendChild(toggleLabel);
+        toggleContainer.appendChild(toggleSwitch);
+        this.contentContainer.appendChild(toggleContainer);
+
+        // Layout-Selector
         const selectorContainer = document.createElement('div');
         selectorContainer.style.marginBottom = '15px';
 
