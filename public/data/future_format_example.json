@@ -1,0 +1,335 @@
+{
+  "system": "Psychologisches Beziehungsnetzwerk - Universitätsteam",
+  "metadata": {
+    "created": "2025-01-27T21:00:00Z",
+    "version": "1.0",
+    "author": "Nodges Future System",
+    "description": "Beispiel für ein psychologisches Beziehungsnetzwerk mit emotionalen Verbindungen zwischen Teammitgliedern"
+  },
+  "dataModel": {
+    "entities": {
+      "person": {
+        "properties": {
+          "age": {
+            "type": "continuous",
+            "range": [18, 70],
+            "unit": "years"
+          },
+          "personality": {
+            "type": "vector",
+            "dimensions": ["openness", "conscientiousness", "extraversion", "agreeableness", "neuroticism"],
+            "range": [0, 1]
+          },
+          "position": {
+            "type": "spatial",
+            "coordinates": ["x", "y", "z"]
+          },
+          "influence": {
+            "type": "continuous",
+            "range": [0, 1]
+          },
+          "department": {
+            "type": "categorical",
+            "values": ["IT", "Marketing", "Research", "Management", "Design"]
+          },
+          "experience": {
+            "type": "continuous",
+            "range": [0, 50],
+            "unit": "years"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "emotional": {
+        "properties": {
+          "trust": {
+            "type": "continuous",
+            "range": [0, 1]
+          },
+          "collaboration": {
+            "type": "continuous",
+            "range": [0, 1]
+          },
+          "conflict": {
+            "type": "continuous",
+            "range": [0, 1]
+          },
+          "communication_frequency": {
+            "type": "continuous",
+            "range": [0, 10],
+            "unit": "interactions_per_week"
+          },
+          "relationship_duration": {
+            "type": "temporal",
+            "unit": "months"
+          },
+          "emotional_valence": {
+            "type": "continuous",
+            "range": [-1, 1]
+          }
+        }
+      }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "person": {
+        "position": {
+          "source": "position",
+          "function": "geographic"
+        },
+        "size": {
+          "source": "influence",
+          "function": "exponential",
+          "range": [0.5, 3.0],
+          "params": {
+            "base": 2
+          }
+        },
+        "color": {
+          "source": "personality.extraversion",
+          "function": "heatmap",
+          "palette": "blue-red"
+        },
+        "geometry": {
+          "source": "age",
+          "function": "sphereComplexity",
+          "params": {
+            "minSegments": 6,
+            "maxSegments": 24
+          }
+        },
+        "glow": {
+          "source": "experience",
+          "function": "linear",
+          "range": [0, 0.5]
+        }
+      },
+      "emotional": {
+        "thickness": {
+          "source": "trust",
+          "function": "exponential",
+          "range": [0.05, 0.8],
+          "params": {
+            "base": 3
+          }
+        },
+        "color": {
+          "source": "emotional_valence",
+          "function": "bipolar",
+          "params": {
+            "positive": "#ff69b4",
+            "negative": "#8b0000"
+          }
+        },
+        "curvature": {
+          "source": "relationship_duration",
+          "function": "logarithmic",
+          "range": [0.1, 2.0]
+        },
+        "glow": {
+          "source": "collaboration",
+          "function": "pulse",
+          "params": {
+            "frequency": "heartbeat"
+          }
+        },
+        "opacity": {
+          "source": "communication_frequency",
+          "function": "linear",
+          "range": [0.3, 1.0]
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "alice",
+        "type": "person",
+        "label": "Alice Schmidt",
+        "age": 28,
+        "personality": {
+          "openness": 0.8,
+          "conscientiousness": 0.7,
+          "extraversion": 0.9,
+          "agreeableness": 0.6,
+          "neuroticism": 0.3
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "influence": 0.85,
+        "department": "IT",
+        "experience": 5.5
+      },
+      {
+        "id": "bob",
+        "type": "person",
+        "label": "Bob Mueller",
+        "age": 35,
+        "personality": {
+          "openness": 0.6,
+          "conscientiousness": 0.9,
+          "extraversion": 0.4,
+          "agreeableness": 0.8,
+          "neuroticism": 0.2
+        },
+        "position": {
+          "x": 8,
+          "y": 2,
+          "z": -3
+        },
+        "influence": 0.75,
+        "department": "Research",
+        "experience": 12.0
+      },
+      {
+        "id": "clara",
+        "type": "person",
+        "label": "Clara Weber",
+        "age": 31,
+        "personality": {
+          "openness": 0.9,
+          "conscientiousness": 0.5,
+          "extraversion": 0.7,
+          "agreeableness": 0.9,
+          "neuroticism": 0.4
+        },
+        "position": {
+          "x": -5,
+          "y": 6,
+          "z": 2
+        },
+        "influence": 0.65,
+        "department": "Design",
+        "experience": 8.5
+      },
+      {
+        "id": "david",
+        "type": "person",
+        "label": "David Fischer",
+        "age": 42,
+        "personality": {
+          "openness": 0.5,
+          "conscientiousness": 0.8,
+          "extraversion": 0.6,
+          "agreeableness": 0.7,
+          "neuroticism": 0.1
+        },
+        "position": {
+          "x": 3,
+          "y": -4,
+          "z": 5
+        },
+        "influence": 0.95,
+        "department": "Management",
+        "experience": 18.0
+      },
+      {
+        "id": "eva",
+        "type": "person",
+        "label": "Eva Hoffmann",
+        "age": 26,
+        "personality": {
+          "openness": 0.7,
+          "conscientiousness": 0.6,
+          "extraversion": 0.8,
+          "agreeableness": 0.5,
+          "neuroticism": 0.6
+        },
+        "position": {
+          "x": -2,
+          "y": -3,
+          "z": -4
+        },
+        "influence": 0.55,
+        "department": "Marketing",
+        "experience": 3.0
+      }
+    ],
+    "relationships": [
+      {
+        "id": "alice_bob",
+        "type": "emotional",
+        "source": "alice",
+        "target": "bob",
+        "label": "Alice ↔ Bob",
+        "trust": 0.8,
+        "collaboration": 0.9,
+        "conflict": 0.1,
+        "communication_frequency": 7.5,
+        "relationship_duration": 24,
+        "emotional_valence": 0.7
+      },
+      {
+        "id": "alice_clara",
+        "type": "emotional",
+        "source": "alice",
+        "target": "clara",
+        "label": "Alice ↔ Clara",
+        "trust": 0.9,
+        "collaboration": 0.8,
+        "conflict": 0.05,
+        "communication_frequency": 6.0,
+        "relationship_duration": 18,
+        "emotional_valence": 0.85
+      },
+      {
+        "id": "bob_david",
+        "type": "emotional",
+        "source": "bob",
+        "target": "david",
+        "label": "Bob ↔ David",
+        "trust": 0.7,
+        "collaboration": 0.6,
+        "conflict": 0.3,
+        "communication_frequency": 4.0,
+        "relationship_duration": 36,
+        "emotional_valence": 0.2
+      },
+      {
+        "id": "clara_eva",
+        "type": "emotional",
+        "source": "clara",
+        "target": "eva",
+        "label": "Clara ↔ Eva",
+        "trust": 0.6,
+        "collaboration": 0.7,
+        "conflict": 0.2,
+        "communication_frequency": 5.5,
+        "relationship_duration": 12,
+        "emotional_valence": 0.4
+      },
+      {
+        "id": "david_eva",
+        "type": "emotional",
+        "source": "david",
+        "target": "eva",
+        "label": "David ↔ Eva",
+        "trust": 0.5,
+        "collaboration": 0.4,
+        "conflict": 0.6,
+        "communication_frequency": 2.0,
+        "relationship_duration": 8,
+        "emotional_valence": -0.3
+      },
+      {
+        "id": "alice_david",
+        "type": "emotional",
+        "source": "alice",
+        "target": "david",
+        "label": "Alice ↔ David",
+        "trust": 0.85,
+        "collaboration": 0.9,
+        "conflict": 0.05,
+        "communication_frequency": 8.0,
+        "relationship_duration": 30,
+        "emotional_valence": 0.8
+      }
+    ]
+  }
+}

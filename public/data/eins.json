@@ -1,0 +1,82 @@
+{
+    "system": "Single Node",
+    "metadata": {
+        "created": "2025-11-25T23:03:38Z",
+        "version": "2.0",
+        "author": "Nodges User",
+        "description": "Ein einzelner Knoten an Position (1, 1, 1)"
+    },
+    "dataModel": {
+        "entities": {
+            "node": {
+                "properties": {
+                    "position": {
+                        "type": "spatial",
+                        "coordinates": [
+                            "x",
+                            "y",
+                            "z"
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "connection": {
+                "properties": {
+                    "offset": {
+                        "type": "continuous",
+                        "range": [
+                            -10,
+                            10
+                        ],
+                        "unit": "units"
+                    }
+                }
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "node": {
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        1.0,
+                        1.0
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "linear"
+                }
+            },
+            "connection": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.1,
+                        0.1
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "node1",
+                "type": "node",
+                "label": "Einzelner Knoten",
+                "position": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 1
+                }
+            }
+        ],
+        "relationships": []
+    }
+}

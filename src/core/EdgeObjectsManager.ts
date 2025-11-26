@@ -51,7 +51,7 @@ export class EdgeObjectsManager {
         // 3. Group edges by connection (start-end) to identify duplicates
         const connectionMap = new Map<string, EdgeData[]>();
 
-        edges.forEach(edge => {
+        edges.forEach((edge) => {
             // Sort IDs to treat A->B and B->A as same connection
             const start = edge.start < edge.end ? edge.start : edge.end;
             const end = edge.start < edge.end ? edge.end : edge.start;
@@ -81,12 +81,14 @@ export class EdgeObjectsManager {
             }
         });
 
-        // 5. Create InstancedMesh for straight edges
-        if (straightEdges.length > 0) {
+        // 5. For now, treat all edges as straight lines (including multi-edges)
+        const allEdges = [...straightEdges, ...curvedEdgesData.map(item => item.edge)];
+        
+        if (allEdges.length > 0) {
             this.cylinderMesh = new THREE.InstancedMesh(
                 this.geometry,
                 this.material,
-                straightEdges.length
+                allEdges.length
             );
             this.cylinderMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
             this.scene.add(this.cylinderMesh);
@@ -95,7 +97,7 @@ export class EdgeObjectsManager {
             const startVec = new THREE.Vector3();
             const endVec = new THREE.Vector3();
 
-            straightEdges.forEach((edge, i) => {
+            allEdges.forEach((edge, i) => {
                 const startNode = nodeMap.get(edge.start);
                 const endNode = nodeMap.get(edge.end);
 
@@ -107,7 +109,7 @@ export class EdgeObjectsManager {
                     dummy.lookAt(endVec);
 
                     const distance = startVec.distanceTo(endVec);
-                    dummy.scale.set(1, 1, distance); // Z-scale is length because we rotated geometry to Z
+                    dummy.scale.set(1, 1, distance);
 
                     dummy.updateMatrix();
                     this.cylinderMesh!.setMatrixAt(i, dummy.matrix);
@@ -117,35 +119,6 @@ export class EdgeObjectsManager {
             });
             this.cylinderMesh.instanceMatrix.needsUpdate = true;
         }
-
-        // 6. Create Curved Edges (Legacy)
-        curvedEdgesData.forEach(item => {
-            const startNode = nodeMap.get(item.edge.start);
-            const endNode = nodeMap.get(item.edge.end);
-
-            if (startNode && endNode) {
-                const startPos = new THREE.Vector3(startNode.x, startNode.y, startNode.z);
-                const endPos = new THREE.Vector3(endNode.x, endNode.y, endNode.z);
-
-                const edgeObj = new Edge(
-                    startPos,
-                    endPos,
-                    0.5, // radius
-                    0.5,
-                    {
-                        ...item.edge,
-                        totalEdges: item.total,
-                        index: item.index,
-                        color: 0xaaaaaa
-                    }
-                );
-
-                if (edgeObj.tube) {
-                    this.scene.add(edgeObj.tube);
-                    this.curvedEdges.push(edgeObj);
-                }
-            }
-        });
     }
 
     public updateEdgePositions(nodes: NodeData[]) {

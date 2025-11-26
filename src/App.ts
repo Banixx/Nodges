@@ -100,6 +100,7 @@ export class App {
     public currentNodes: any[] = [];
     public currentEdges: any[] = [];
     public nodeObjects: any[] = [];
+    public edgeObjects: any[] = [];
 
     private _isInitialized: boolean = false;
     private frameCounter: number = 0;
@@ -328,15 +329,13 @@ export class App {
     /**
      * Convert relationships to legacy edge format
      */
-    private convertRelationshipsToEdges(relationships: any[], entities: any[]): any[] {
+    private convertRelationshipsToEdges(relationships: any[], _entities: any[]): any[] {
         return relationships.map(rel => {
-            // Find entity indices
-            const sourceIndex = entities.findIndex(e => e.id === rel.source);
-            const targetIndex = entities.findIndex(e => e.id === rel.target);
-
+            // Use the source and target IDs directly instead of indices
+            // This ensures compatibility with the NodeMap which uses node.id as keys
             return {
-                start: sourceIndex >= 0 ? sourceIndex : rel.source,
-                end: targetIndex >= 0 ? targetIndex : rel.target,
+                start: rel.source,  // Use string ID directly
+                end: rel.target,    // Use string ID directly
                 source: rel.source,
                 target: rel.target,
                 name: rel.label,
@@ -379,7 +378,7 @@ export class App {
         if (this.edgeObjectsManager) {
             this.edgeObjectsManager.dispose();
         }
-        // this.edgeObjects = [];
+        this.edgeObjects = [];
 
         this.currentNodes = [];
         this.currentEdges = [];
@@ -445,7 +444,7 @@ export class App {
 
         // [TRACE] Log every 60 frames (approx 1 sec)
         this.frameCounter++;
-        if (this.frameCounter % 60 === 0) {
+        if (this.frameCounter % 300 === 0) {
             console.log(`[TRACE] Render Loop (Frame ${this.frameCounter})`);
             console.log(`[TRACE] Camera Pos: ${this.camera.position.x.toFixed(1)}, ${this.camera.position.y.toFixed(1)}, ${this.camera.position.z.toFixed(1)}`);
             const nodeMeshes = this.scene.children.filter(c => c.type === 'InstancedMesh');

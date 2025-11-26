@@ -1,0 +1,135 @@
+{
+  "system": "Simple Graph Example",
+  "metadata": {
+    "created": "2025-11-25T14:35:00Z",
+    "version": "2.0",
+    "author": "Nodges Team",
+    "description": "Ein einfacher Graph mit 3 Knoten und mehreren Kanten, inklusive Mehrfach-Verbindungen"
+  },
+  "dataModel": {
+    "entities": {
+      "node": {
+        "properties": {
+          "position": {
+            "type": "spatial",
+            "coordinates": [
+              "x",
+              "y",
+              "z"
+            ]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "connection": {
+        "properties": {
+          "offset": {
+            "type": "continuous",
+            "range": [
+              -10,
+              10
+            ],
+            "unit": "units"
+          }
+        }
+      }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "node": {
+        "size": {
+          "source": "constant",
+          "function": "linear",
+          "range": [
+            1.0,
+            1.0
+          ]
+        },
+        "color": {
+          "source": "constant",
+          "function": "linear"
+        }
+      },
+      "connection": {
+        "thickness": {
+          "source": "constant",
+          "function": "linear",
+          "range": [
+            0.1,
+            0.1
+          ]
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "node1",
+        "type": "node",
+        "label": "node 1",
+        "position": {
+          "x": -3.5,
+          "y": 1.2,
+          "z": -2.8
+        }
+      },
+      {
+        "id": "node2",
+        "type": "node",
+        "label": "node 2",
+        "position": {
+          "x": 2.8,
+          "y": 0.5,
+          "z": 3.2
+        }
+      },
+      {
+        "id": "node3",
+        "type": "node",
+        "label": "node 3",
+        "position": {
+          "x": -3.2,
+          "y": 2.8,
+          "z": 4.7
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "edge1",
+        "type": "connection",
+        "source": "node3",
+        "target": "node2",
+        "label": "edge 1",
+        "offset": 3
+      },
+      {
+        "id": "edge2",
+        "type": "connection",
+        "source": "node3",
+        "target": "node2",
+        "label": "edge 2",
+        "offset": 1
+      },
+      {
+        "id": "edge3",
+        "type": "connection",
+        "source": "node2",
+        "target": "node3",
+        "label": "edge 3",
+        "offset": 0
+      },
+      {
+        "id": "edge4",
+        "type": "connection",
+        "source": "node3",
+        "target": "node2",
+        "label": "edge 4",
+        "offset": -4
+      }
+    ]
+  }
+}
