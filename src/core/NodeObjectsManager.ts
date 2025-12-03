@@ -50,6 +50,29 @@ export class NodeObjectsManager {
         console.log(`[TRACE] Material 'default' set. Cache size: ${this.materialCache.size}`);
     }
 
+    /**
+     * Retrieves metadata about a specific geometry type used for nodes.
+     */
+    public getNodeTypeInfo(geometryType: string): { name: string, faces: number | string } {
+        const geometry = this.geometryCache.get(geometryType);
+        if (geometry) {
+            const name = geometry.type || geometryType;
+            let faces: number | string = 'N/A';
+
+            // Check for index buffer (triangles = faces)
+            if (geometry.index && geometry.index.count) {
+                faces = `${geometry.index.count / 3} Triangles`;
+            }
+            // Fallback check for position attribute count (vertices)
+            else if (geometry.attributes && geometry.attributes.position && geometry.attributes.position.count > 0) {
+                faces = `${geometry.attributes.position.count} Vertices`;
+            }
+
+            return { name: name, faces: faces };
+        }
+        return { name: 'Unknown Geometry', faces: '0' };
+    }
+
     public updateNodes(nodes: NodeData[]) {
         console.log(`[TRACE] NodeObjectsManager.updateNodes called with ${nodes.length} nodes`);
 
@@ -212,6 +235,16 @@ export class NodeObjectsManager {
             return nodes[instanceId];
         }
         return null;
+    }
+
+    public getNodeData(id: string): NodeData | undefined {
+        const map = this.nodeIdMap.get(String(id));
+        if (!map) return undefined;
+        return this.getNodeAt(map.type, map.index) || undefined;
+    }
+
+    public getMeshes(): THREE.InstancedMesh[] {
+        return Array.from(this.meshes.values());
     }
 
     public dispose() {

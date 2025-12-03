@@ -35,3 +35,6 @@ build/
 *.md
 !README.md
 !project_report.md
+!architecture_diagrams.md
+!/.agent/
+!/.agent/workflows/

@@ -1,13 +1,14 @@
 import * as THREE from 'three';
 
 export class HighlightManager {
-    constructor(stateManager, glowEffect) {
+    constructor(stateManager, glowEffect, scene) {
         this.stateManager = stateManager;
         this.glowEffect = glowEffect;
-        
+        this.scene = scene;
+
         // Einzige Highlight-Registry
         this.highlightRegistry = new Map();
-        
+
         // Highlight-Types
         this.types = {
             HOVER: 'hover',
@@ -16,13 +17,13 @@ export class HighlightManager {
             PATH: 'path',
             GROUP: 'group'
         };
-        
+
         // Material-Backup fuer Wiederherstellung
         this.materialBackups = new Map();
-        
+
         // State-Änderungen abonnieren
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'highlight');
-        
+
     }
 
     handleStateChange(state) {
@@ -31,7 +32,7 @@ export class HighlightManager {
 
     updateHighlights(state) {
         const { hoveredObject, selectedObject } = state;
-        
+
         // Cleanup nicht mehr benoetigte Highlights
         this.cleanupUnusedHighlights(hoveredObject, selectedObject);
 
@@ -47,7 +48,7 @@ export class HighlightManager {
 
     cleanupUnusedHighlights(hoveredObject, selectedObject) {
         const toRemove = [];
-        
+
         for (const [object, highlightData] of this.highlightRegistry) {
             const shouldKeep = (
                 (object === hoveredObject && highlightData.type === this.types.HOVER) ||
@@ -56,12 +57,12 @@ export class HighlightManager {
                 (highlightData.type === this.types.PATH) ||
                 (highlightData.type === this.types.GROUP)
             );
-            
+
             if (!shouldKeep) {
                 toRemove.push(object);
             }
         }
-        
+
         toRemove.forEach(object => this.clearHighlight(object));
     }
 
@@ -71,15 +72,20 @@ export class HighlightManager {
     applyHighlight(object, type, options = {}) {
         // Prüfe ob Highlight-Effekte aktiviert sind
         if (!this.stateManager.state.highlightEffectsEnabled) return;
-        
-        if (!object || !object.material) return;
-        
+
+        if (!object) return;
+        // Allow objects without material if they are proxy objects (like edges)
+        if (!object.material && object.userData.type !== 'edge') return;
+
         // Altes Highlight entfernen falls vorhanden
         this.clearHighlight(object);
-        
-        // Material-Backup erstellen
-        const originalMaterial = this.backupMaterial(object);
-        
+
+        // Material-Backup erstellen (nur wenn Material vorhanden)
+        let originalMaterial = null;
+        if (object.material) {
+            originalMaterial = this.backupMaterial(object);
+        }
+
         // Highlight-Daten erstellen
         const highlightData = {
             type,
@@ -88,13 +94,13 @@ export class HighlightManager {
             options,
             timestamp: performance.now()
         };
-        
+
         // In Registry speichern
         this.highlightRegistry.set(object, highlightData);
-        
+
         // Visuelles Highlight anwenden
         this.applyVisualHighlight(highlightData);
-        
+
     }
 
     /**
@@ -113,7 +119,7 @@ export class HighlightManager {
         const color = node.material.color;
         const hsl = {};
         color.getHSL(hsl);
-        
+
         // Helligkeit um 20% erhöhen, aber nicht über 1.0
         const newLightness = Math.min(hsl.l + 0.2, 1.0);
         color.setHSL(hsl.h, hsl.s, newLightness);
@@ -140,35 +146,38 @@ export class HighlightManager {
      * Fügt einen Umriss um die Edge hinzu
      */
     addEdgeOutline(edge) {
-        if (!edge || !edge.userData || !edge.userData.edge) return;
+        if (!edge || !edge.userData) return;
 
         // Prüfe ob bereits ein Umriss existiert
         if (edge.userData.outline) {
             return; // Umriss bereits vorhanden
         }
 
-        const edgeInstance = edge.userData.edge;
+        let curve;
+        // Check if we have start/end positions in userData (from RaycastManager proxy)
+        if (edge.userData.start && edge.userData.end) {
+            const start = new THREE.Vector3(edge.userData.start.x, edge.userData.start.y, edge.userData.start.z);
+            const end = new THREE.Vector3(edge.userData.end.x, edge.userData.end.y, edge.userData.end.z);
+            curve = new THREE.LineCurve3(start, end);
+        } else if (edge.userData.edge && edge.userData.edge.curve) {
+            // Fallback for curved edges if they pass the actual object
+            curve = edge.userData.edge.curve;
+        } else {
+            return; // Cannot create outline without geometry info
+        }
 
         // Erstelle eine TubeGeometry mit größerem Radius für den Umriss
         const outlineGeometry = new THREE.TubeGeometry(
-            edgeInstance.curve,
-            5,       // tubularSegments (5 wie angefordert)
+            curve,
+            1,       // tubularSegments (1 for straight line is enough)
             0.15,    // radius der Röhre (größer als der ursprüngliche Radius von 0.1)
             8,       // radialSegments
             false    // geschlossen?
         );
 
-        // Material für den Umriss (aufgehellte Originalfarbe)
-        const originalColor = edge.material.color.clone();
-        const hsl = {};
-        originalColor.getHSL(hsl);
-
-        // Helligkeit um 0.3 erhöhen, aber nicht über 1.0
-        const brightenedLightness = Math.min(hsl.l + 0.3, 1.0);
-        const brightenedColor = new THREE.Color().setHSL(hsl.h, hsl.s, brightenedLightness);
-
+        // Material für den Umriss (Light Blue / Cyan)
         const outlineMaterial = new THREE.MeshBasicMaterial({
-            color: brightenedColor,
+            color: 0x00aaff, // Theme Blue / Cyan
             side: THREE.DoubleSide,
             transparent: true,
             opacity: 0.8
@@ -186,9 +195,9 @@ export class HighlightManager {
         // Speichere den Umriss in userData
         edge.userData.outline = outlineMesh;
 
-        // Füge den Umriss zur gleichen Szene hinzu wie die Edge
-        if (edge.parent) {
-            edge.parent.add(outlineMesh);
+        // Füge den Umriss zur Szene hinzu (da Proxy-Objekte keinen Parent in der Szene haben)
+        if (this.scene) {
+            this.scene.add(outlineMesh);
         }
     }
 
@@ -200,8 +209,10 @@ export class HighlightManager {
 
         const outlineMesh = edge.userData.outline;
 
-        // Entferne den Umriss aus der Szene, falls er hinzugefügt wurde
-        if (outlineMesh.parent) {
+        // Entferne den Umriss aus der Szene
+        if (this.scene) {
+            this.scene.remove(outlineMesh);
+        } else if (outlineMesh.parent) {
             outlineMesh.parent.remove(outlineMesh);
         }
 
@@ -229,11 +240,11 @@ export class HighlightManager {
             this.removeEdgeOutline(object);
         }
 
-        // Material wiederherstellen
-        this.restoreMaterial(object, highlightData.originalMaterial);
-
-        // Glow-Effekt entfernen
+        // CRITICAL: Glow-Effekt ZUERST entfernen (setzt Fallback-Farbe)
         this.glowEffect.removeGlow(object);
+
+        // DANN Material wiederherstellen (überschreibt mit Original-Farbe)
+        this.restoreMaterial(object, highlightData.originalMaterial);
 
         // Aus Registry entfernen
         this.highlightRegistry.delete(object);
@@ -301,14 +312,14 @@ export class HighlightManager {
      */
     backupMaterial(object) {
         if (!object.material) return null;
-        
+
         // KRITISCH: Pruefe ob Material geteilt wird
         const materialIsShared = this.isMaterialShared(object);
         if (materialIsShared) {
             // Klone das Material um Sharing zu vermeiden
             object.material = object.material.clone();
         }
-        
+
         const backup = {
             color: object.material.color.clone(),
             emissive: object.material.emissive ? object.material.emissive.clone() : null,
@@ -317,11 +328,11 @@ export class HighlightManager {
             transparent: object.material.transparent || false,
             wasShared: materialIsShared
         };
-        
+
         this.materialBackups.set(object, backup);
         return backup;
     }
-    
+
     /**
      * Prueft ob ein Material von mehreren Objekten geteilt wird
      */
@@ -336,7 +347,7 @@ export class HighlightManager {
      */
     restoreMaterial(object, backup) {
         if (!object.material || !backup) return;
-        
+
         object.material.color.copy(backup.color);
         if (backup.emissive && object.material.emissive) {
             object.material.emissive.copy(backup.emissive);
@@ -344,12 +355,12 @@ export class HighlightManager {
         object.material.emissiveIntensity = backup.emissiveIntensity;
         object.material.opacity = backup.opacity;
         object.material.transparent = backup.transparent;
-        
+
         // Für Kanten: Stelle die ursprüngliche Farbe aus userData wieder her
         if (object.userData.type === 'edge' && object.material.userData && object.material.userData.originalColor) {
             object.material.color.setHex(object.material.userData.originalColor);
         }
-        
+
         this.materialBackups.delete(object);
     }
 
@@ -358,7 +369,7 @@ export class HighlightManager {
      */
     applyVisualHighlight(highlightData) {
         const { object, type, options } = highlightData;
-        
+
         switch (type) {
             case this.types.HOVER:
                 this.applyHoverEffect(object, options);
@@ -381,15 +392,10 @@ export class HighlightManager {
     /**
      * Hover-Effekt - NUR fuer das spezifische Objekt
      */
-    /**
-     * Hover-Effekt - NUR fuer das spezifische Objekt
-     */
     applyHoverEffect(object, options = {}) {
-        if (!object || !object.material) {
-            return;
-        }
+        if (!object) return;
 
-        if (object.userData.type === 'node') {
+        if (object.userData.type === 'node' && object.material) {
             // Hellere Farbe fuer Hover-Effekt
             const color = object.material.color;
             const hsl = {};
@@ -402,11 +408,8 @@ export class HighlightManager {
             this.glowEffect.applyHighlightGlow(object);
         } else if (object.userData.type === 'edge') {
             // WICHTIG: Nur diese spezifische Kante highlighten
-            const originalColor = object.material.color.getHex();
-
-            // Deutlicheres Blau für Hover-Effekt - NUR für diese Kante
-            object.material.color.setHex(0x0088ff); // Helleres, aber nicht weißes Blau
-            this.glowEffect.applyHighlightGlow(object);
+            // Da Edges InstancedMesh sind, ändern wir NICHT das Material,
+            // sondern fügen nur den Umriss hinzu.
 
             // Umriss-Effekt hinzufügen
             this.addEdgeOutline(object);
@@ -460,7 +463,7 @@ export class HighlightManager {
         for (const [object, data] of this.highlightRegistry) {
             typeCount[data.type] = (typeCount[data.type] || 0) + 1;
         }
-        
+
         return {
             totalHighlights: this.highlightRegistry.size,
             typeBreakdown: typeCount,

@@ -83,7 +83,7 @@ export class EdgeObjectsManager {
 
         // 5. For now, treat all edges as straight lines (including multi-edges)
         const allEdges = [...straightEdges, ...curvedEdgesData.map(item => item.edge)];
-        
+
         if (allEdges.length > 0) {
             this.cylinderMesh = new THREE.InstancedMesh(
                 this.geometry,
@@ -118,6 +118,9 @@ export class EdgeObjectsManager {
                 }
             });
             this.cylinderMesh.instanceMatrix.needsUpdate = true;
+
+            // Store metadata: Mark this mesh as representing Edges ('edge' is expected by RaycastManager)
+            this.cylinderMesh.userData = { type: 'edge' };
         }
     }
 
@@ -179,5 +182,23 @@ export class EdgeObjectsManager {
         });
         this.curvedEdges = [];
         this.instanceToEdgeData.clear();
+    }
+
+    /**
+     * Retrieves EdgeData associated with a specific mesh instance index.
+     */
+    public getInstanceData(instanceId: number): EdgeData | undefined {
+        return this.instanceToEdgeData.get(instanceId);
+    }
+
+    public getMeshes(): THREE.Object3D[] {
+        const meshes: THREE.Object3D[] = [];
+        if (this.cylinderMesh) {
+            meshes.push(this.cylinderMesh);
+        }
+        this.curvedEdges.forEach(edge => {
+            if (edge.tube) meshes.push(edge.tube);
+        });
+        return meshes;
     }
 }

@@ -30,7 +30,7 @@ export class GlowEffect {
         const maxIntensity = options.maxIntensity || this.defaultNodeGlow.maxIntensity;
 
         node.material.emissive.copy(glowColor);
-        node.material.emissiveIntensity = baseIntensity + 
+        node.material.emissiveIntensity = baseIntensity +
             (maxIntensity - baseIntensity) * intensity;
     }
 
@@ -41,9 +41,9 @@ export class GlowEffect {
         const maxIntensity = options.maxIntensity || this.defaultEdgeGlow.maxIntensity;
 
         const color = new THREE.Color();
-        const lightness = baseIntensity + 
+        const lightness = baseIntensity +
             (maxIntensity - baseIntensity) * intensity;
-        
+
         color.setHSL(hue, saturation, lightness);
         edge.material.color = color;
     }
@@ -61,8 +61,8 @@ export class GlowEffect {
             if (object.material.userData && object.material.userData.originalColor) {
                 object.material.color.setHex(object.material.userData.originalColor);
             } else {
-                // Fallback auf Standard-Kantenfarbe
-                object.material.color.setHex(0x0000ff);
+                // Fallback auf Standard-Kantenfarbe (theme blue)
+                object.material.color.setHex(0x00aaff);
             }
         }
     }
@@ -77,13 +77,13 @@ export class GlowEffect {
     applyHighlightGlow(object) {
         if (object.userData.type === 'node') {
             this.applyNodeGlow(object, 0.5, {
-                color: new THREE.Color(1, 1, 0), // Gelber Highlight-Glow
+                color: new THREE.Color(0, 1, 1), // Cyan Highlight-Glow
                 baseIntensity: 0.5,
                 maxIntensity: 0.8
             });
         } else if (object.userData.type === 'edge') {
             this.applyEdgeGlow(object, 0.5, {
-                hue: 0.15, // Gelblicher Ton
+                hue: 0.55, // Light Blue Ton
                 saturation: 0.8,
                 baseIntensity: 0.4,
                 maxIntensity: 0.6

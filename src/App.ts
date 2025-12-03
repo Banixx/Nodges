@@ -111,7 +111,7 @@ export class App {
     private ground: THREE.Mesh | null = null;
 
     constructor() {
-        console.log('Initializing Nodges 2.0');
+        console.log('Initializing Nodges');
 
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -143,7 +143,7 @@ export class App {
     }
 
     async initThreeJS() {
-        this.scene.background = new THREE.Color(0xdafa1a);
+        this.scene.background = new THREE.Color(0xfa5a1a);
         this.camera.position.set(10, 10, 10);
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -197,10 +197,10 @@ export class App {
     async initManagers() {
         this.layoutManager = new LayoutManager();
         this.glowEffect = new GlowEffect();
-        this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect);
+        this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect, this.scene);
         this.uiManager = new UIManager(this);
 
-        this.centralEventManager = new CentralEventManager(this.scene, this.camera, this.renderer, this.stateManager);
+        this.centralEventManager = new CentralEventManager(this.camera, this.renderer, this.stateManager, this.nodeObjectsManager, this.edgeObjectsManager);
 
         this.interactionManager = new InteractionManager(
             this.centralEventManager,
@@ -212,7 +212,7 @@ export class App {
         );
 
         this.selectionManager = new SelectionManager(this.scene, this.camera, this.renderer, this.stateManager);
-        this.raycastManager = new RaycastManager(this.camera, this.scene, this.nodeObjectsManager);
+        this.raycastManager = new RaycastManager(this.camera, this.nodeObjectsManager, this.edgeObjectsManager);
         this.networkAnalyzer = new NetworkAnalyzer();
         this.pathFinder = new PathFinder(this.scene, this.stateManager);
         this.performanceOptimizer = new PerformanceOptimizer(this.scene, this.camera, this.renderer);
@@ -242,6 +242,15 @@ export class App {
             // Clear existing scene
             this.clearScene();
 
+            // Reset application state universally before reloading data
+            this.stateManager.update({
+                selectedObject: null,
+                hoveredObject: null,
+                highlightedObjects: new Set(),
+                infoPanelVisible: false,
+                infoPanelCollapsed: false,
+            });
+
             const response = await fetch(url);
             const rawData = await response.json();
 
@@ -258,22 +267,23 @@ export class App {
             }
 
             // Convert to legacy format for compatibility with existing layout/rendering code
-            console.log('[TRACE] Converting entities to nodes...');
+            //console.log('[TRACE] Converting entities to nodes...');
             this.currentNodes = this.convertEntitiesToNodes(this.currentGraphData.data.entities);
-            console.log(`[TRACE] Converted ${this.currentNodes.length} nodes`);
+            //console.log(`[TRACE] Converted ${this.currentNodes.length} nodes`);
 
             this.currentEdges = this.convertRelationshipsToEdges(
                 this.currentGraphData.data.relationships,
                 this.currentGraphData.data.entities
             );
 
-            console.log('[TRACE] Calling createNodes()...');
+            //console.log('[TRACE] Calling createNodes()...');
             await this.createNodes();
-            console.log('[TRACE] createNodes() finished');
+            //console.log('[TRACE] createNodes() finished');
 
-            console.log('[TRACE] Calling createEdges()...');
+
+            //console.log('[TRACE] Calling createEdges()...');
             await this.createEdges();
-            console.log('[TRACE] createEdges() finished');
+            //console.log('[TRACE] createEdges() finished');
 
             // Only apply layout if entities don't have positions
             const hasPositions = this.currentGraphData.data.entities.every(e =>
@@ -445,12 +455,12 @@ export class App {
         // [TRACE] Log every 60 frames (approx 1 sec)
         this.frameCounter++;
         if (this.frameCounter % 300 === 0) {
-            console.log(`[TRACE] Render Loop (Frame ${this.frameCounter})`);
-            console.log(`[TRACE] Camera Pos: ${this.camera.position.x.toFixed(1)}, ${this.camera.position.y.toFixed(1)}, ${this.camera.position.z.toFixed(1)}`);
+            //console.log(`[TRACE] Render Loop (Frame ${this.frameCounter})`);
+            //console.log(`[TRACE] Camera Pos: ${this.camera.position.x.toFixed(1)}, ${this.camera.position.y.toFixed(1)}, ${this.camera.position.z.toFixed(1)}`);
             const nodeMeshes = this.scene.children.filter(c => c.type === 'InstancedMesh');
-            console.log(`[TRACE] Scene Children: ${this.scene.children.length}, InstancedMeshes: ${nodeMeshes.length}`);
+            //console.log(`[TRACE] Scene Children: ${this.scene.children.length}, InstancedMeshes: ${nodeMeshes.length}`);
             nodeMeshes.forEach((mesh: any, i) => {
-                console.log(`[TRACE] Mesh ${i}: count=${mesh.count}, visible=${mesh.visible}`);
+                //  console.log(`[TRACE] Mesh ${i}: count=${mesh.count}, visible=${mesh.visible}`);
             });
         }
     }

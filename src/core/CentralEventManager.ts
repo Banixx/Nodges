@@ -8,6 +8,10 @@ import * as THREE from 'three';
 // @ts-ignore
 import { RaycastManager } from '../utils/RaycastManager';
 import { StateManager } from './StateManager';
+// @ts-ignore
+import { NodeObjectsManager } from './NodeObjectsManager';
+// @ts-ignore
+import { EdgeObjectsManager } from './EdgeObjectsManager';
 
 interface EventHandlerData {
     eventType: string;
@@ -26,6 +30,8 @@ export class CentralEventManager {
     private renderer: THREE.WebGLRenderer;
     private stateManager: StateManager;
     private raycastManager: any; // RaycastManager
+    // private nodeObjectsManager: NodeObjectsManager; // Unused
+    // private edgeObjectsManager: EdgeObjectsManager; // Unused
 
     private eventHandlers: Map<string, EventHandlerData | Set<Function>>;
     private activeListeners: Set<string>;
@@ -44,12 +50,20 @@ export class CentralEventManager {
 
     private config: EventConfig;
 
-    constructor(scene: THREE.Scene, camera: THREE.Camera, renderer: THREE.WebGLRenderer, stateManager: StateManager) {
+    constructor(
+        camera: THREE.Camera,
+        renderer: THREE.WebGLRenderer,
+        stateManager: StateManager,
+        nodeObjectsManager: NodeObjectsManager,
+        edgeObjectsManager: EdgeObjectsManager
+    ) {
         this.renderer = renderer;
         this.stateManager = stateManager;
+        // this.nodeObjectsManager = nodeObjectsManager;
+        // this.edgeObjectsManager = edgeObjectsManager;
 
         // Einziger RaycastManager
-        this.raycastManager = new RaycastManager(camera, scene);
+        this.raycastManager = new RaycastManager(camera, nodeObjectsManager, edgeObjectsManager);
 
         // Event-Handler Registry
         this.eventHandlers = new Map();
@@ -73,7 +87,7 @@ export class CentralEventManager {
         // Configuration
         this.config = {
             hoverDelay: 50,
-            clickDelay: 200,
+            clickDelay: 100,
             doubleClickThreshold: 300
         };
 

@@ -204,14 +204,14 @@ export class UIManager {
     }
 
     async fetchDirectoryContents(): Promise<string[]> {
-        // Use Vite's import.meta.glob to dynamically discover all JSON files in data/
+        // Use Vite's import.meta.glob to dynamically discover all JSON files in public/data/
         // This is evaluated at build time, so it automatically finds all files
-        const dataFiles = import.meta.glob('/data/*.json');
+        const dataFiles = import.meta.glob('/public/data/*.json');
 
         // Extract filenames without path and extension
         const filenames = Object.keys(dataFiles).map(path => {
-            // Extract filename from '/data/filename.json'
-            const match = path.match(/\/data\/(.+)\.json$/);
+            // Extract filename from '/public/data/filename.json'
+            const match = path.match(/\/public\/data\/(.+)\.json$/);
             return match ? match[1] : '';
         }).filter(name => name !== ''); // Remove empty strings
 
@@ -318,8 +318,9 @@ export class UIManager {
 
     collapseInfoPanel() {
         if (!this.panels.info) return;
-        this.panels.info.classList.add('collapsed');
-        if (this.panelToggles.info) this.panelToggles.info.innerHTML = '>';
+        // Do not auto-collapse the panel
+        // this.panels.info.classList.add('collapsed');
+        // if (this.panelToggles.info) this.panelToggles.info.innerHTML = '>';
         if (this.infoPanelContent) this.infoPanelContent.innerHTML = '<p>Kein Objekt ausgewählt</p>';
     }
 }
