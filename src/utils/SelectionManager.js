@@ -300,23 +300,43 @@ export class SelectionManager {
      * Create curved selection indicator for edges
      */
     createEdgeSelectionIndicator(edgeObject) {
-        if (!edgeObject.userData.edge) {
+        let curve;
+        let radius = 0.2;
+        let segments = 7;
+        let radialSegments = 3;
+
+        // Check for proxy object with start/end (InstancedMesh optimization)
+        if (edgeObject.userData.start && edgeObject.userData.end) {
+            const start = new THREE.Vector3(edgeObject.userData.start.x, edgeObject.userData.start.y, edgeObject.userData.start.z);
+            const end = new THREE.Vector3(edgeObject.userData.end.x, edgeObject.userData.end.y, edgeObject.userData.end.z);
+            curve = new THREE.LineCurve3(start, end);
+            // Default radius for straight lines
+            radius = 0.1;
+            segments = 1; // Straight line needs fewer segments
+        }
+        // Check for standard edge object with curve
+        else if (edgeObject.userData.edge) {
+            const edge = edgeObject.userData.edge;
+            curve = edge.curve;
+
+            if (edge.options) {
+                radius = edge.options.radius || 0.2;
+                segments = edge.options.segments || 7;
+                radialSegments = edge.options.radialSegments || 3;
+            }
+        }
+
+        if (!curve) {
             return;
         }
 
-        const edge = edgeObject.userData.edge;
-
-        // Verwende die gespeicherte Kurve der Edge
-        const curve = edge.curve;
-
         // Erstelle Geometrie mit etwas groesserem Radius fuer Sichtbarkeit
-        const originalRadius = edge.options.radius || 0.2;
-        const selectionRadius = originalRadius * 1.3; // 30% groesser
+        const selectionRadius = radius * 1.3; // 30% groesser
         const geometry = new THREE.TubeGeometry(
             curve,
-            edge.options.segments || 7,
+            segments,
             selectionRadius,
-            edge.options.radialSegments || 3,
+            radialSegments,
             false
         );
 

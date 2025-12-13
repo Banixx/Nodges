@@ -197,7 +197,7 @@ export class App {
     async initManagers() {
         this.layoutManager = new LayoutManager();
         this.glowEffect = new GlowEffect();
-        this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect, this.scene);
+        this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect, this.scene, this.nodeObjectsManager);
         this.uiManager = new UIManager(this);
 
         this.centralEventManager = new CentralEventManager(this.camera, this.renderer, this.stateManager, this.nodeObjectsManager, this.edgeObjectsManager);

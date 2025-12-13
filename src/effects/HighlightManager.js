@@ -1,10 +1,11 @@
 import * as THREE from 'three';
 
 export class HighlightManager {
-    constructor(stateManager, glowEffect, scene) {
+    constructor(stateManager, glowEffect, scene, nodeObjectsManager = null) {
         this.stateManager = stateManager;
         this.glowEffect = glowEffect;
         this.scene = scene;
+        this.nodeObjectsManager = nodeObjectsManager;
 
         // Einzige Highlight-Registry
         this.highlightRegistry = new Map();
@@ -20,6 +21,9 @@ export class HighlightManager {
 
         // Material-Backup fuer Wiederherstellung
         this.materialBackups = new Map();
+
+        // Node-Color-Backup für InstancedMesh-Nodes
+        this.nodeColorBackups = new Map();
 
         // State-Änderungen abonnieren
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'highlight');
@@ -75,7 +79,7 @@ export class HighlightManager {
 
         if (!object) return;
         // Allow objects without material if they are proxy objects (like edges)
-        if (!object.material && object.userData.type !== 'edge') return;
+        if (!object.material && object.userData.type !== 'edge' && object.userData.type !== 'node') return;
 
         // Altes Highlight entfernen falls vorhanden
         this.clearHighlight(object);
@@ -229,6 +233,69 @@ export class HighlightManager {
     }
 
     /**
+     * Fügt einen Umriss/Halo um den Node hinzu
+     */
+    addNodeOutline(object) {
+        if (!object || !object.userData || !object.userData.nodeData) return;
+
+        // Prüfe ob bereits ein Umriss existiert
+        if (object.userData.outline) return;
+
+        const nodeData = object.userData.nodeData;
+        const size = (nodeData.val || 1) * (nodeData.scale || 1);
+        const visualScale = size * 0.5;
+
+        // Etwas größer als das Original (1.4x)
+        const outlineScale = visualScale * 1.4;
+
+        // Geometrie passend zum Node-Typ (vereinfacht: immer Sphere für Halo)
+        const geometry = new THREE.SphereGeometry(1, 16, 16);
+
+        const material = new THREE.MeshBasicMaterial({
+            color: 0x00ffff, // Cyan Force-Field
+            transparent: true,
+            opacity: 0.3,
+            depthWrite: false // Damit der innere Node nicht verdeckt wird bei Transparenz
+        });
+
+        const outlineMesh = new THREE.Mesh(geometry, material);
+
+        // Position vom Proxy-Objekt übernehmen
+        outlineMesh.position.copy(object.position);
+
+        // Skalieren
+        outlineMesh.scale.set(outlineScale, outlineScale, outlineScale);
+
+        // Store metadata
+        outlineMesh.userData = {
+            type: 'node_outline'
+        };
+
+        // Link in userData
+        object.userData.outline = outlineMesh;
+
+        // Add to scene
+        if (this.scene) {
+            this.scene.add(outlineMesh);
+        }
+    }
+
+    removeNodeOutline(object) {
+        if (!object || !object.userData || !object.userData.outline) return;
+
+        const outlineMesh = object.userData.outline;
+
+        if (this.scene) {
+            this.scene.remove(outlineMesh);
+        }
+
+        if (outlineMesh.geometry) outlineMesh.geometry.dispose();
+        if (outlineMesh.material) outlineMesh.material.dispose();
+
+        delete object.userData.outline;
+    }
+
+    /**
      * Einzige Highlight-Entfernung
      */
     clearHighlight(object) {
@@ -238,6 +305,22 @@ export class HighlightManager {
         // Spezieller Umriss-Effekt für Edges entfernen
         if (object.userData.type === 'edge') {
             this.removeEdgeOutline(object);
+        } else if (object.userData.type === 'node') {
+            this.removeNodeOutline(object);
+        }
+
+        // Für Nodes: Stelle ursprüngliche Farbe wieder her
+        if (object.userData.type === 'node' && this.nodeObjectsManager && object.userData.nodeData) {
+            const nodeId = object.userData.nodeData.id;
+            const originalColor = this.nodeColorBackups.get(nodeId);
+
+            if (originalColor) {
+                this.nodeObjectsManager.setNodeColor(String(nodeId), originalColor);
+                this.nodeColorBackups.delete(nodeId);
+            } else {
+                // Fallback: Nutze resetNodeColor
+                this.nodeObjectsManager.resetNodeColor(String(nodeId));
+            }
         }
 
         // CRITICAL: Glow-Effekt ZUERST entfernen (setzt Fallback-Farbe)
@@ -395,17 +478,39 @@ export class HighlightManager {
     applyHoverEffect(object, options = {}) {
         if (!object) return;
 
-        if (object.userData.type === 'node' && object.material) {
-            // Hellere Farbe fuer Hover-Effekt
-            const color = object.material.color;
-            const hsl = {};
-            color.getHSL(hsl);
+        console.log('[HighlightManager] applyHoverEffect called for:', object.userData);
 
-            const newLightness = Math.min(hsl.l + 0.2, 1.0);
-            color.setHSL(hsl.h, hsl.s, newLightness);
+        if (object.userData.type === 'node') {
+            // Nodes werden als InstancedMesh gerendert
+            // Wir müssen die Farbe der spezifischen Instanz ändern
+            if (this.nodeObjectsManager && object.userData.nodeData) {
+                const nodeId = object.userData.nodeData.id;
 
-            // Leichter Glow-Effekt
-            this.glowEffect.applyHighlightGlow(object);
+                // Sichere die ursprüngliche Farbe (falls noch nicht gesichert)
+                if (!this.nodeColorBackups.has(nodeId)) {
+                    const nodeData = this.nodeObjectsManager.getNodeData(String(nodeId));
+                    if (nodeData) {
+                        const originalColor = nodeData.color || '#3498db';
+                        this.nodeColorBackups.set(nodeId, originalColor);
+                    }
+                }
+
+                // Berechne hellere Hover-Farbe
+                const originalColor = this.nodeColorBackups.get(nodeId) || '#3498db';
+                const color = new THREE.Color(originalColor);
+                const hsl = {};
+                color.getHSL(hsl);
+
+                // Helligkeit um 20% erhöhen
+                const newLightness = Math.min(hsl.l + 0.2, 1.0);
+                color.setHSL(hsl.h, hsl.s, newLightness);
+
+                // Setze die neue Farbe in der InstancedMesh
+                this.nodeObjectsManager.setNodeColor(String(nodeId), color.getHex());
+            }
+
+            // Halo/Umriss für den Node hinzufügen
+            this.addNodeOutline(object);
         } else if (object.userData.type === 'edge') {
             // WICHTIG: Nur diese spezifische Kante highlighten
             // Da Edges InstancedMesh sind, ändern wir NICHT das Material,
@@ -474,5 +579,6 @@ export class HighlightManager {
     destroy() {
         this.clearAllHighlights();
         this.materialBackups.clear();
+        this.nodeColorBackups.clear();
     }
 }

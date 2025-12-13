@@ -1,0 +1,51 @@
+sequenceDiagram
+    autonumber
+    participant User
+    participant RM as RaycastManager.ts
+    participant CEM as CentralEventManager.ts
+    participant IM as InteractionManager.ts
+    participant HM as HighlightManager.js
+    participant GE as GlowEffect.js
+
+    Note over User, GE: === HOVER EVENT (Bläuliche Outline) ===
+
+    User->>RM: Bewegt Maus über Edge
+    RM->>RM: findIntersectedObject()
+    Note right of RM: Erkennt InstancedMesh<br/>Erstellt Proxy-Objekt<br/>userData.type = 'edge'
+    RM-->>CEM: Gibt Proxy-Objekt zurück
+
+    CEM->>CEM: Erkennt Statusänderung (Enter)
+    CEM->>IM: publish('hover_start', { object })
+
+    IM->>HM: highlightHoveredObject(object)
+    HM->>HM: applyHighlight(object, 'hover')
+    HM->>HM: applyHoverEffect(object)
+
+    rect rgb(20, 20, 40)
+        Note right of HM: Datei: HighlightManager.js
+        HM->>HM: addEdgeOutline(edge)
+        Note right of HM: Erstellt neue Geometrie (Tube)<br/>Variable: outlineMaterial<br/>Color: 0x00aaff (Cyan/Blau)
+    end
+    
+    HM-->>User: Visuelles Ergebnis: Blaue Umrandung
+
+    Note over User, GE: === CLICK EVENT (Grün-Gelbliche Farbe) ===
+
+    User->>CEM: Klickt auf Edge
+    CEM->>IM: publish('click', { clickedObject })
+
+    IM->>IM: selectObject(clickedObject)
+    IM->>HM: highlightSelectedObject(clickedObject)
+    
+    HM->>HM: applyHighlight(object, 'selection')
+    HM->>HM: applySelectionEffect(object)
+
+    HM->>GE: applySelectionGlow(object)
+
+    rect rgb(40, 40, 20)
+        Note right of GE: Datei: GlowEffect.js
+        GE->>GE: applyEdgeGlow(object, 0.8, { hue: 0.3 })
+        Note right of GE: Variable: hue = 0.3 (Grün-Gelb)<br/>Variable: saturation = 1<br/>Aktion: Setzt edge.material.color
+    end
+
+    GE-->>User: Visuelles Ergebnis: Grün-Gelbe Einfärbung

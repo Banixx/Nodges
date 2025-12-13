@@ -25,6 +25,7 @@ export class GlowEffect {
     }
 
     applyNodeGlow(node, intensity, options = {}) {
+        if (!node.material) return;
         const glowColor = options.color || this.defaultNodeGlow.color;
         const baseIntensity = options.baseIntensity || this.defaultNodeGlow.baseIntensity;
         const maxIntensity = options.maxIntensity || this.defaultNodeGlow.maxIntensity;
@@ -35,6 +36,7 @@ export class GlowEffect {
     }
 
     applyEdgeGlow(edge, intensity, options = {}) {
+        if (!edge.material) return;
         const hue = options.hue || this.defaultEdgeGlow.hue;
         const saturation = options.saturation || this.defaultEdgeGlow.saturation;
         const baseIntensity = options.baseIntensity || this.defaultEdgeGlow.baseIntensity;
@@ -50,19 +52,23 @@ export class GlowEffect {
 
     removeGlow(object) {
         if (object.userData.type === 'node') {
-            object.material.emissive.setRGB(0, 0, 0);
-            object.material.emissiveIntensity = 0;
-            // Ursprüngliche Farbe wiederherstellen
-            if (object.parent && object.parent.options) {
-                object.material.color.setHex(object.parent.options.color);
+            if (object.material) {
+                object.material.emissive.setRGB(0, 0, 0);
+                object.material.emissiveIntensity = 0;
+                // Ursprüngliche Farbe wiederherstellen
+                if (object.parent && object.parent.options) {
+                    object.material.color.setHex(object.parent.options.color);
+                }
             }
         } else if (object.userData.type === 'edge') {
-            // Ursprüngliche Kantenfarbe wiederherstellen
-            if (object.material.userData && object.material.userData.originalColor) {
-                object.material.color.setHex(object.material.userData.originalColor);
-            } else {
-                // Fallback auf Standard-Kantenfarbe (theme blue)
-                object.material.color.setHex(0x00aaff);
+            if (object.material) {
+                // Ursprüngliche Kantenfarbe wiederherstellen
+                if (object.material.userData && object.material.userData.originalColor) {
+                    object.material.color.setHex(object.material.userData.originalColor);
+                } else {
+                    // Fallback auf Standard-Kantenfarbe (theme blue)
+                    object.material.color.setHex(0x00aaff);
+                }
             }
         }
     }

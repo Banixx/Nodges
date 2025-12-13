@@ -170,6 +170,7 @@ export class CentralEventManager {
 
         // Hover-State aktualisieren
         if (hoveredObject !== this.currentHoveredObject) {
+            console.log('[CentralEventManager] Hover state changed:', hoveredObject?.userData);
             this.updateHoverState(hoveredObject);
         }
 
