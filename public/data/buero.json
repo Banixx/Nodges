@@ -1,0 +1,371 @@
+{
+  "system": "Office Network",
+  "metadata": {
+    "description": "Office graph with multi-edges",
+    "created": "2025-12-14",
+    "version": "1.0"
+  },
+  "dataModel": {
+    "entities": {
+      "node": {}
+    },
+    "relationships": {
+      "connection": {}
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "node": {
+        "size": {
+          "source": "constant",
+          "range": [
+            1,
+            1
+          ]
+        },
+        "color": {
+          "source": "constant",
+          "range": [
+            0,
+            1
+          ]
+        }
+      },
+      "connection": {
+        "thickness": {
+          "source": "constant",
+          "range": [
+            0.1,
+            0.1
+          ]
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "node_0",
+        "type": "node",
+        "label": "Office Node 0",
+        "position": {
+          "x": 1.09,
+          "y": 5.97,
+          "z": -4.91
+        }
+      },
+      {
+        "id": "node_1",
+        "type": "node",
+        "label": "Office Node 1",
+        "position": {
+          "x": -1.27,
+          "y": 0.7,
+          "z": -1.65
+        }
+      },
+      {
+        "id": "node_2",
+        "type": "node",
+        "label": "Office Node 2",
+        "position": {
+          "x": -0.49,
+          "y": -2.57,
+          "z": 7.5
+        }
+      },
+      {
+        "id": "node_3",
+        "type": "node",
+        "label": "Office Node 3",
+        "position": {
+          "x": 0.08,
+          "y": -8.29,
+          "z": 6.61
+        }
+      },
+      {
+        "id": "node_4",
+        "type": "node",
+        "label": "Office Node 4",
+        "position": {
+          "x": 1.72,
+          "y": -7.25,
+          "z": -5.04
+        }
+      },
+      {
+        "id": "node_5",
+        "type": "node",
+        "label": "Office Node 5",
+        "position": {
+          "x": 1.0,
+          "y": 8.48,
+          "z": -8.44
+        }
+      },
+      {
+        "id": "node_6",
+        "type": "node",
+        "label": "Office Node 6",
+        "position": {
+          "x": 9.5,
+          "y": 8.7,
+          "z": 1.15
+        }
+      },
+      {
+        "id": "node_7",
+        "type": "node",
+        "label": "Office Node 7",
+        "position": {
+          "x": -1.3,
+          "y": -8.82,
+          "z": 7.14
+        }
+      },
+      {
+        "id": "node_8",
+        "type": "node",
+        "label": "Office Node 8",
+        "position": {
+          "x": -0.09,
+          "y": -8.55,
+          "z": 3.28
+        }
+      },
+      {
+        "id": "node_9",
+        "type": "node",
+        "label": "Office Node 9",
+        "position": {
+          "x": 6.78,
+          "y": -6.51,
+          "z": 7.84
+        }
+      },
+      {
+        "id": "node_10",
+        "type": "node",
+        "label": "Office Node 10",
+        "position": {
+          "x": 0.92,
+          "y": -4.4,
+          "z": 7.23
+        }
+      },
+      {
+        "id": "node_11",
+        "type": "node",
+        "label": "Office Node 11",
+        "position": {
+          "x": -8.55,
+          "y": -3.09,
+          "z": -1.51
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "edge_0",
+        "type": "connection",
+        "source": "node_0",
+        "target": "node_1",
+        "label": "Multi-Edge 1",
+        "offset": 0
+      },
+      {
+        "id": "edge_1",
+        "type": "connection",
+        "source": "node_0",
+        "target": "node_1",
+        "label": "Multi-Edge 2",
+        "offset": 1
+      },
+      {
+        "id": "edge_2",
+        "type": "connection",
+        "source": "node_0",
+        "target": "node_1",
+        "label": "Multi-Edge 3",
+        "offset": 2
+      },
+      {
+        "id": "edge_3",
+        "type": "connection",
+        "source": "node_0",
+        "target": "node_1",
+        "label": "Multi-Edge 4",
+        "offset": 3
+      },
+      {
+        "id": "edge_4",
+        "type": "connection",
+        "source": "node_4",
+        "target": "node_7",
+        "label": "Edge 4"
+      },
+      {
+        "id": "edge_5",
+        "type": "connection",
+        "source": "node_10",
+        "target": "node_5",
+        "label": "Edge 5"
+      },
+      {
+        "id": "edge_6",
+        "type": "connection",
+        "source": "node_10",
+        "target": "node_5",
+        "label": "Edge 6"
+      },
+      {
+        "id": "edge_7",
+        "type": "connection",
+        "source": "node_7",
+        "target": "node_10",
+        "label": "Edge 7"
+      },
+      {
+        "id": "edge_8",
+        "type": "connection",
+        "source": "node_0",
+        "target": "node_3",
+        "label": "Edge 8"
+      },
+      {
+        "id": "edge_9",
+        "type": "connection",
+        "source": "node_4",
+        "target": "node_5",
+        "label": "Edge 9"
+      },
+      {
+        "id": "edge_10",
+        "type": "connection",
+        "source": "node_0",
+        "target": "node_10",
+        "label": "Edge 10"
+      },
+      {
+        "id": "edge_11",
+        "type": "connection",
+        "source": "node_3",
+        "target": "node_2",
+        "label": "Edge 11"
+      },
+      {
+        "id": "edge_12",
+        "type": "connection",
+        "source": "node_3",
+        "target": "node_10",
+        "label": "Edge 12"
+      },
+      {
+        "id": "edge_13",
+        "type": "connection",
+        "source": "node_8",
+        "target": "node_3",
+        "label": "Edge 13"
+      },
+      {
+        "id": "edge_14",
+        "type": "connection",
+        "source": "node_7",
+        "target": "node_11",
+        "label": "Edge 14"
+      },
+      {
+        "id": "edge_15",
+        "type": "connection",
+        "source": "node_10",
+        "target": "node_4",
+        "label": "Edge 15"
+      },
+      {
+        "id": "edge_16",
+        "type": "connection",
+        "source": "node_6",
+        "target": "node_11",
+        "label": "Edge 16"
+      },
+      {
+        "id": "edge_17",
+        "type": "connection",
+        "source": "node_6",
+        "target": "node_0",
+        "label": "Edge 17"
+      },
+      {
+        "id": "edge_18",
+        "type": "connection",
+        "source": "node_10",
+        "target": "node_1",
+        "label": "Edge 18"
+      },
+      {
+        "id": "edge_19",
+        "type": "connection",
+        "source": "node_1",
+        "target": "node_10",
+        "label": "Edge 19"
+      },
+      {
+        "id": "edge_20",
+        "type": "connection",
+        "source": "node_3",
+        "target": "node_7",
+        "label": "Edge 20"
+      },
+      {
+        "id": "edge_21",
+        "type": "connection",
+        "source": "node_7",
+        "target": "node_10",
+        "label": "Edge 21"
+      },
+      {
+        "id": "edge_22",
+        "type": "connection",
+        "source": "node_1",
+        "target": "node_9",
+        "label": "Edge 22"
+      },
+      {
+        "id": "edge_23",
+        "type": "connection",
+        "source": "node_2",
+        "target": "node_0",
+        "label": "Edge 23"
+      },
+      {
+        "id": "edge_24",
+        "type": "connection",
+        "source": "node_2",
+        "target": "node_9",
+        "label": "Edge 24"
+      },
+      {
+        "id": "edge_25",
+        "type": "connection",
+        "source": "node_9",
+        "target": "node_3",
+        "label": "Edge 25"
+      },
+      {
+        "id": "edge_26",
+        "type": "connection",
+        "source": "node_9",
+        "target": "node_8",
+        "label": "Edge 26"
+      },
+      {
+        "id": "edge_27",
+        "type": "connection",
+        "source": "node_5",
+        "target": "node_10",
+        "label": "Edge 27"
+      }
+    ]
+  }
+}

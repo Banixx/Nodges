@@ -4,7 +4,7 @@
 
 // @ts-ignore
 import LayoutWorker from '../workers/layout-worker.js?worker';
-import { NodeData, EdgeData } from '../types';
+import { EntityData, RelationshipData, NodeData, EdgeData } from '../types';
 
 interface LayoutOptions {
     [key: string]: any;
@@ -12,7 +12,7 @@ interface LayoutOptions {
 
 interface LayoutDefinition {
     name: string;
-    apply: (nodes: NodeData[], edges: EdgeData[], options: LayoutOptions) => void | Promise<boolean>;
+    apply: (nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions) => void | Promise<boolean>;
     options: LayoutOptions;
 }
 
@@ -123,7 +123,7 @@ export class LayoutManager {
         this.layouts.set(id, layout);
     }
 
-    async applyLayout(layoutId: string, nodes: NodeData[], edges: EdgeData[], options: LayoutOptions = {}): Promise<boolean> {
+    async applyLayout(layoutId: string, nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions = {}): Promise<boolean> {
         const layout = this.layouts.get(layoutId);
         if (!layout) {
             console.warn(`Layout ${layoutId} nicht gefunden`);
@@ -147,15 +147,13 @@ export class LayoutManager {
         }
     }
 
-    async applyLayoutWithWorker(layoutId: string, nodes: NodeData[], edges: EdgeData[], options: LayoutOptions): Promise<boolean> {
+    async applyLayoutWithWorker(layoutId: string, nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const worker = new LayoutWorker();
 
-            // Stelle sicher, dass alle Knoten Positionen haben
+            // Ensure all nodes have positions
             nodes.forEach(node => {
-                if (typeof node.x !== 'number') node.x = 0;
-                if (typeof node.y !== 'number') node.y = 0;
-                if (typeof node.z !== 'number') node.z = 0;
+                if (!node.position) node.position = { x: 0, y: 0, z: 0 };
             });
 
             // Map node IDs to indices for the worker
@@ -168,9 +166,9 @@ export class LayoutManager {
 
             worker.postMessage({
                 nodes: nodes.map(node => ({
-                    x: node.x || 0,
-                    y: node.y || 0,
-                    z: node.z || 0,
+                    x: node.position?.x || 0,
+                    y: node.position?.y || 0,
+                    z: node.position?.z || 0,
                     index: nodeIndexMap.get(node.id) !== undefined ? nodeIndexMap.get(node.id) : nodes.indexOf(node)
                 })),
                 edges: edges.map(edge => {
@@ -203,9 +201,10 @@ export class LayoutManager {
                 if (positions && Array.isArray(positions)) {
                     positions.forEach((pos: any, index: number) => {
                         if (pos && nodes[index]) {
-                            nodes[index].x = pos.x || 0;
-                            nodes[index].y = pos.y || 0;
-                            nodes[index].z = pos.z || 0;
+                            if (!nodes[index].position) nodes[index].position = { x: 0, y: 0, z: 0 };
+                            nodes[index].position!.x = pos.x || 0;
+                            nodes[index].position!.y = pos.y || 0;
+                            nodes[index].position!.z = pos.z || 0;
                         }
                     });
                 }
@@ -223,7 +222,7 @@ export class LayoutManager {
         });
     }
 
-    applyForceLayout(nodes: NodeData[], edges: EdgeData[], options: LayoutOptions = {}) {
+    applyForceLayout(nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions = {}) {
         const {
             maxIterations = 100,
             repulsionStrength = 50,
@@ -233,9 +232,7 @@ export class LayoutManager {
 
         // Initialisiere Positionen, falls nicht vorhanden
         nodes.forEach(node => {
-            if (typeof node.x !== 'number') node.x = 0;
-            if (typeof node.y !== 'number') node.y = 0;
-            if (typeof node.z !== 'number') node.z = 0;
+            if (!node.position) node.position = { x: 0, y: 0, z: 0 };
         });
 
         for (let i = 0; i < maxIterations; i++) {
@@ -245,9 +242,9 @@ export class LayoutManager {
                     const node1 = nodes[j];
                     const node2 = nodes[k];
 
-                    const dx = node2.x - node1.x;
-                    const dy = node2.y - node1.y;
-                    const dz = node2.z - node1.z;
+                    const dx = node2.position!.x - node1.position!.x;
+                    const dy = node2.position!.y - node1.position!.y;
+                    const dz = node2.position!.z - node1.position!.z;
                     const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.01;
 
                     const force = repulsionStrength / (distance * distance);
@@ -255,12 +252,12 @@ export class LayoutManager {
                     const fy = (dy / distance) * force;
                     const fz = (dz / distance) * force;
 
-                    node1.x -= fx * damping;
-                    node1.y -= fy * damping;
-                    node1.z -= fz * damping;
-                    node2.x += fx * damping;
-                    node2.y += fy * damping;
-                    node2.z += fz * damping;
+                    node1.position!.x -= fx * damping;
+                    node1.position!.y -= fy * damping;
+                    node1.position!.z -= fz * damping;
+                    node2.position!.x += fx * damping;
+                    node2.position!.y += fy * damping;
+                    node2.position!.z += fz * damping;
                 }
             }
 
@@ -278,40 +275,42 @@ export class LayoutManager {
                 // The original JS code was likely failing locally too if IDs were used.
                 // I should add mapping here too.
 
-                let startIndex = edge.start;
-                let endIndex = edge.end;
+                let startIndex = edge.source;
+                let endIndex = edge.target;
 
-                // Simple check if it's an index
-                let node1: NodeData | undefined;
-                let node2: NodeData | undefined;
+                // Check for EntityData
+                let node1: EntityData | undefined;
+                let node2: EntityData | undefined;
 
                 if (typeof startIndex === 'number') {
+                    // @ts-ignore
                     node1 = nodes[startIndex];
                 } else {
                     node1 = nodes.find(n => n.id === startIndex);
                 }
 
                 if (typeof endIndex === 'number') {
+                    // @ts-ignore
                     node2 = nodes[endIndex];
                 } else {
                     node2 = nodes.find(n => n.id === endIndex);
                 }
 
-                if (node1 && node2) {
-                    const dx = node2.x - node1.x;
-                    const dy = node2.y - node1.y;
-                    const dz = node2.z - node1.z;
+                if (node1 && node2 && node1.position && node2.position) {
+                    const dx = node2.position.x - node1.position.x;
+                    const dy = node2.position.y - node1.position.y;
+                    const dz = node2.position.z - node1.position.z;
 
                     const fx = dx * attractionStrength;
                     const fy = dy * attractionStrength;
                     const fz = dz * attractionStrength;
 
-                    node1.x += fx;
-                    node1.y += fy;
-                    node1.z += fz;
-                    node2.x -= fx;
-                    node2.y -= fy;
-                    node2.z -= fz;
+                    node1.position.x += fx;
+                    node1.position.y += fy;
+                    node1.position.z += fz;
+                    node2.position.x -= fx;
+                    node2.position.y -= fy;
+                    node2.position.z -= fz;
                 }
             });
         }
@@ -320,44 +319,48 @@ export class LayoutManager {
         this.normalizeNodePositions(nodes, 10); // Maximal 10 Einheiten Ausdehnung
     }
 
-    applyCircularLayout(nodes: NodeData[], _edges: EdgeData[], options: LayoutOptions) {
+    applyCircularLayout(nodes: EntityData[], _edges: RelationshipData[], options: LayoutOptions) {
         const { radius } = options;
         const angleStep = (2 * Math.PI) / nodes.length;
 
         nodes.forEach((node, index) => {
+            if (!node.position) node.position = { x: 0, y: 0, z: 0 };
             const angle = index * angleStep;
-            node.x = Math.cos(angle) * radius;
-            node.y = 0;
-            node.z = Math.sin(angle) * radius;
+            node.position.x = Math.cos(angle) * radius;
+            node.position.y = 0;
+            node.position.z = Math.sin(angle) * radius;
         });
     }
 
-    applyGridLayout(nodes: NodeData[], _edges: EdgeData[], options: LayoutOptions) {
+    applyGridLayout(nodes: EntityData[], _edges: RelationshipData[], options: LayoutOptions) {
         const { spacing } = options;
         const gridSize = Math.ceil(Math.sqrt(nodes.length));
 
         nodes.forEach((node, index) => {
+            if (!node.position) node.position = { x: 0, y: 0, z: 0 };
             const row = Math.floor(index / gridSize);
             const col = index % gridSize;
 
-            node.x = (col - gridSize / 2) * spacing;
-            node.y = 0;
-            node.z = (row - gridSize / 2) * spacing;
+            node.position.x = (col - gridSize / 2) * spacing;
+            node.position.y = 0;
+            node.position.z = (row - gridSize / 2) * spacing;
         });
     }
 
-    applyRandomLayout(nodes: NodeData[], _edges: EdgeData[], options: LayoutOptions) {
+    applyRandomLayout(nodes: EntityData[], _edges: RelationshipData[], options: LayoutOptions) {
         const { minBound, maxBound } = options;
         const range = maxBound - minBound;
 
         nodes.forEach(node => {
-            node.x = minBound + Math.random() * range;
-            node.y = minBound + Math.random() * range;
-            node.z = minBound + Math.random() * range;
+            node.position = {
+                x: minBound + Math.random() * range,
+                y: minBound + Math.random() * range,
+                z: minBound + Math.random() * range
+            };
         });
     }
 
-    applyFruchtermanReingoldLayout(nodes: NodeData[], edges: EdgeData[], options: LayoutOptions = {}) {
+    applyFruchtermanReingoldLayout(nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions = {}) {
         const {
             maxIterations = 500,
             area = 400,
@@ -376,10 +379,10 @@ export class LayoutManager {
             nodes.forEach(v => {
                 v.disp = { x: 0, y: 0, z: 0 };
                 nodes.forEach(u => {
-                    if (v !== u) {
-                        const dx = v.x - u.x;
-                        const dy = v.y - u.y;
-                        const dz = v.z - u.z;
+                    if (v !== u && v.position && u.position) {
+                        const dx = v.position.x - u.position.x;
+                        const dy = v.position.y - u.position.y;
+                        const dz = v.position.z - u.position.z;
                         const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.01;
 
                         const force = (k * k) / distance;
@@ -393,19 +396,27 @@ export class LayoutManager {
             // Calculate attractive forces
             edges.forEach(edge => {
                 // Handle ID vs Index
-                let v: NodeData | undefined;
-                let u: NodeData | undefined;
+                let v: EntityData | undefined;
+                let u: EntityData | undefined;
 
-                if (typeof edge.start === 'number') v = nodes[edge.start];
-                else v = nodes.find(n => n.id === edge.start);
+                if (typeof edge.source === 'number') {
+                    // @ts-ignore
+                    v = nodes[edge.source];
+                } else {
+                    v = nodes.find(n => n.id === edge.source);
+                }
 
-                if (typeof edge.end === 'number') u = nodes[edge.end];
-                else u = nodes.find(n => n.id === edge.end);
+                if (typeof edge.target === 'number') {
+                    // @ts-ignore
+                    u = nodes[edge.target];
+                } else {
+                    u = nodes.find(n => n.id === edge.target);
+                }
 
-                if (v && u) {
-                    const dx = v.x - u.x;
-                    const dy = v.y - u.y;
-                    const dz = v.z - u.z;
+                if (v && u && v.position && u.position) {
+                    const dx = v.position.x - u.position.x;
+                    const dy = v.position.y - u.position.y;
+                    const dz = v.position.z - u.position.z;
                     const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.01;
 
                     const force = (distance * distance) / k;
@@ -428,9 +439,10 @@ export class LayoutManager {
                 const limitedLength = Math.min(dispLength, temp);
 
                 if (dispLength > 0) {
-                    v.x += (v.disp.x / dispLength) * limitedLength;
-                    v.y += (v.disp.y / dispLength) * limitedLength;
-                    v.z += (v.disp.z / dispLength) * limitedLength;
+                    if (!v.position) v.position = { x: 0, y: 0, z: 0 };
+                    v.position.x += (v.disp.x / dispLength) * limitedLength;
+                    v.position.y += (v.disp.y / dispLength) * limitedLength;
+                    v.position.z += (v.disp.z / dispLength) * limitedLength;
                 }
             });
 
@@ -441,7 +453,7 @@ export class LayoutManager {
         this.normalizeNodePositions(nodes, 10);
     }
 
-    applySpringEmbedderLayout(nodes: NodeData[], edges: EdgeData[], options: LayoutOptions) {
+    applySpringEmbedderLayout(nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions) {
         const { maxIterations, springConstant, repulsionConstant, damping, naturalLength } = options;
 
         for (let iter = 0; iter < maxIterations; iter++) {
@@ -453,8 +465,8 @@ export class LayoutManager {
 
             // Spring forces
             edges.forEach(edge => {
-                let v1: NodeData | undefined;
-                let v2: NodeData | undefined;
+                let v1: EntityData | undefined;
+                let v2: EntityData | undefined;
 
                 if (typeof edge.start === 'number') v1 = nodes[edge.start];
                 else v1 = nodes.find(n => n.id === edge.start);
@@ -487,42 +499,55 @@ export class LayoutManager {
                 for (let j = i + 1; j < nodes.length; j++) {
                     const v1 = nodes[i];
                     const v2 = nodes[j];
-                    const dx = v2.x - v1.x;
-                    const dy = v2.y - v1.y;
-                    const dz = v2.z - v1.z;
-                    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.01;
+                    if (v1 && v2 && v1.position && v2.position) {
+                        const dx = v2.position.x - v1.position.x;
+                        const dy = v2.position.y - v1.position.y;
+                        const dz = v2.position.z - v1.position.z;
+                        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.01;
 
-                    const force = repulsionConstant / (distance * distance);
-                    const fx = (dx / distance) * force;
-                    const fy = (dy / distance) * force;
-                    const fz = (dz / distance) * force;
+                        const force = repulsionConstant / (distance * distance);
+                        const fx = (dx / distance) * force;
+                        const fy = (dy / distance) * force;
+                        const fz = (dz / distance) * force;
 
-                    v1.fx -= fx;
-                    v1.fy -= fy;
-                    v1.fz -= fz;
-                    v2.fx += fx;
-                    v2.fy += fy;
-                    v2.fz += fz;
+                        // @ts-ignore
+                        v1.fx -= fx;
+                        // @ts-ignore
+                        v1.fy -= fy;
+                        // @ts-ignore
+                        v1.fz -= fz;
+                        // @ts-ignore
+                        v2.fx += fx;
+                        // @ts-ignore
+                        v2.fy += fy;
+                        // @ts-ignore
+                        v2.fz += fz;
+                    }
                 }
             }
 
             // Apply forces
             nodes.forEach(node => {
-                node.x += node.fx * damping;
-                node.y += node.fy * damping;
-                node.z += node.fz * damping;
+                if (node.position) {
+                    // @ts-ignore (fx,fy,fz are temp props)
+                    node.position.x += (node.fx || 0) * damping;
+                    // @ts-ignore
+                    node.position.y += (node.fy || 0) * damping;
+                    // @ts-ignore
+                    node.position.z += (node.fz || 0) * damping;
+                }
             });
         }
     }
 
-    applyHierarchicalLayout(nodes: NodeData[], edges: EdgeData[], options: LayoutOptions) {
+    applyHierarchicalLayout(nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions) {
         const { levelHeight, nodeSpacing } = options;
 
         // Simple hierarchical layout - arrange nodes in levels
         const levels = this.calculateNodeLevels(nodes, edges);
         const maxLevel = Math.max(...Object.values(levels));
 
-        const levelNodes: { [key: number]: NodeData[] } = {};
+        const levelNodes: { [key: number]: EntityData[] } = {};
         nodes.forEach(node => {
             const level = levels[node.id] || 0;
             if (!levelNodes[level]) levelNodes[level] = [];
@@ -535,19 +560,20 @@ export class LayoutManager {
 
             levelNodeArray.forEach((node, index) => {
                 const totalWidth = (levelNodeArray.length - 1) * nodeSpacing;
-                node.x = -totalWidth / 2 + index * nodeSpacing;
-                node.y = (maxLevel - level) * levelHeight;
-                node.z = 0;
+                if (!node.position) node.position = { x: 0, y: 0, z: 0 };
+                node.position.x = -totalWidth / 2 + index * nodeSpacing;
+                node.position.y = (maxLevel - level) * levelHeight;
+                node.position.z = 0;
             });
         });
     }
 
-    applyTreeLayout(nodes: NodeData[], edges: EdgeData[], options: LayoutOptions) {
+    applyTreeLayout(nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions) {
         // Similar to hierarchical but with tree structure
         this.applyHierarchicalLayout(nodes, edges, options);
     }
 
-    calculateNodeLevels(nodes: NodeData[], edges: EdgeData[]) {
+    calculateNodeLevels(nodes: EntityData[], edges: RelationshipData[]) {
         const levels: { [key: string]: number } = {};
         const visited = new Set<string | number>();
         const adjacencyList: { [key: string]: (string | number)[] } = {};
@@ -560,8 +586,8 @@ export class LayoutManager {
 
         edges.forEach(edge => {
             // Assuming IDs for hierarchical layout for now, or need to resolve
-            const startId = typeof edge.start === 'number' ? nodes[edge.start]?.id : edge.start;
-            const endId = typeof edge.end === 'number' ? nodes[edge.end]?.id : edge.end;
+            const startId = typeof edge.source === 'number' ? nodes[edge.source]?.id : edge.source;
+            const endId = typeof edge.target === 'number' ? nodes[edge.target]?.id : edge.target;
 
             if (startId !== undefined && endId !== undefined && adjacencyList[startId]) {
                 adjacencyList[startId].push(endId);
@@ -572,9 +598,10 @@ export class LayoutManager {
         const incomingCount: { [key: string]: number } = {};
         nodes.forEach(node => incomingCount[node.id] = 0);
         edges.forEach(edge => {
-            const endId = typeof edge.end === 'number' ? nodes[edge.end]?.id : edge.end;
+            const endId = typeof edge.target === 'number' ? nodes[edge.target]?.id : edge.target;
             if (endId !== undefined) incomingCount[endId]++;
         });
+
 
         const roots = nodes.filter(node => incomingCount[node.id] === 0);
 
@@ -609,21 +636,24 @@ export class LayoutManager {
     }
 
     // Normalisiert Node-Positionen um das Netzwerk kompakt zu halten
-    normalizeNodePositions(nodes: NodeData[], maxExtent = 10) {
+    normalizeNodePositions(nodes: EntityData[], maxExtent = 10) {
         if (nodes.length === 0) return;
 
+        if (!nodes[0].position) nodes[0].position = { x: 0, y: 0, z: 0 };
+
         // Finde Bounding Box
-        let minX = nodes[0].x, maxX = nodes[0].x;
-        let minY = nodes[0].y, maxY = nodes[0].y;
-        let minZ = nodes[0].z, maxZ = nodes[0].z;
+        let minX = nodes[0].position!.x, maxX = nodes[0].position!.x;
+        let minY = nodes[0].position!.y, maxY = nodes[0].position!.y;
+        let minZ = nodes[0].position!.z, maxZ = nodes[0].position!.z;
 
         nodes.forEach(node => {
-            minX = Math.min(minX, node.x);
-            maxX = Math.max(maxX, node.x);
-            minY = Math.min(minY, node.y);
-            maxY = Math.max(maxY, node.y);
-            minZ = Math.min(minZ, node.z);
-            maxZ = Math.max(maxZ, node.z);
+            if (!node.position) node.position = { x: 0, y: 0, z: 0 };
+            minX = Math.min(minX, node.position!.x);
+            maxX = Math.max(maxX, node.position!.x);
+            minY = Math.min(minY, node.position!.y);
+            maxY = Math.max(maxY, node.position!.y);
+            minZ = Math.min(minZ, node.position!.z);
+            maxZ = Math.max(maxZ, node.position!.z);
         });
 
         // Berechne aktuelle Ausdehnung
@@ -642,9 +672,11 @@ export class LayoutManager {
 
         // Nodes skalieren und zentrieren
         nodes.forEach(node => {
-            node.x = (node.x - centerX) * scale;
-            node.y = (node.y - centerY) * scale;
-            node.z = (node.z - centerZ) * scale;
+            if (node.position) {
+                node.position.x = (node.position.x - centerX) * scale;
+                node.position.y = (node.position.y - centerY) * scale;
+                node.position.z = (node.position.z - centerZ) * scale;
+            }
         });
 
     }

@@ -1,23 +1,23 @@
 import * as THREE from 'three';
 // @ts-ignore
-import { NodeObjectsManager } from '../core/NodeObjectsManager';
+import { NodeManager } from '../core/NodeManager';
 // @ts-ignore
 import { EdgeObjectsManager } from '../core/EdgeObjectsManager';
+// @ts-ignore
+import { EntityData } from '../types';
 
 export class RaycastManager {
     private camera: THREE.Camera;
-    // private scene: THREE.Scene; // Removed as unused
     private raycaster: THREE.Raycaster;
     private mouse: THREE.Vector2;
     private lastRaycastTime: number;
     private lastIntersectedObject: THREE.Object3D | null;
-    private nodeObjectsManager: NodeObjectsManager | null;
+    private nodeManager: NodeManager | null;
     private edgeObjectsManager: EdgeObjectsManager | null;
 
-    constructor(camera: THREE.Camera, nodeObjectsManager: NodeObjectsManager | null = null, edgeObjectsManager: EdgeObjectsManager | null = null) {
+    constructor(camera: THREE.Camera, nodeManager: NodeManager | null = null, edgeObjectsManager: EdgeObjectsManager | null = null) {
         this.camera = camera;
-        // scene is no longer used for raycasting
-        this.nodeObjectsManager = nodeObjectsManager;
+        this.nodeManager = nodeManager;
         this.edgeObjectsManager = edgeObjectsManager;
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2();
@@ -36,8 +36,8 @@ export class RaycastManager {
         // Collect all interactive meshes
         let interactiveMeshes: THREE.Object3D[] = [];
 
-        if (this.nodeObjectsManager) {
-            interactiveMeshes = interactiveMeshes.concat(this.nodeObjectsManager.getMeshes());
+        if (this.nodeManager) {
+            interactiveMeshes = interactiveMeshes.concat(this.nodeManager.getMeshes());
         }
 
         if (this.edgeObjectsManager) {
@@ -45,7 +45,6 @@ export class RaycastManager {
         }
 
         // Perform raycast against only interactive meshes
-        // Note: We don't need recursive=true for InstancedMesh, but might for curved edges if they are groups (usually they are single meshes)
         const intersects = this.raycaster.intersectObjects(interactiveMeshes, false);
 
         // 1. Check for Edges first (Mesh with userData.type === 'edge')
@@ -55,35 +54,37 @@ export class RaycastManager {
 
         if (edgeIntersect) {
             const mesh = edgeIntersect.object;
-
-            // NOTE: Accessing instanceId on intersect result, assuming Three.js provides it for InstancedMesh hits
             const instanceId = edgeIntersect.instanceId !== undefined ? edgeIntersect.instanceId : undefined;
 
             if (this.edgeObjectsManager && instanceId !== undefined) {
                 // Retrieve EdgeData from manager using instanceId
                 const edgeData = this.edgeObjectsManager.getInstanceData(instanceId);
 
-                if (edgeData && this.nodeObjectsManager) {
+                if (edgeData && this.nodeManager) {
                     // Create a proxy object for the edge
                     const dummyEdge = new THREE.Object3D();
 
                     // Get start and end node positions
-                    const startNode = this.nodeObjectsManager.getNodeData(String(edgeData.start));
-                    const endNode = this.nodeObjectsManager.getNodeData(String(edgeData.end));
+                    // Assuming edgeData uses 'source'/'target' or mapped 'start'/'end'
+                    // App.ts mapped source->start, target->end.
+                    const startId = String(edgeData.start || edgeData.source);
+                    const endId = String(edgeData.end || edgeData.target);
+                    const startNode = this.nodeManager.getNodeData(startId);
+                    const endNode = this.nodeManager.getNodeData(endId);
 
-                    if (startNode && endNode) {
+                    if (startNode && endNode && startNode.position && endNode.position) {
                         dummyEdge.userData = {
                             type: 'edge',
                             edge: edgeData,
-                            start: { x: startNode.x, y: startNode.y, z: startNode.z },
-                            end: { x: endNode.x, y: endNode.y, z: endNode.z },
-                            originalObject: mesh // Keep reference to original mesh if needed
+                            start: { x: startNode.position.x, y: startNode.position.y, z: startNode.position.z },
+                            end: { x: endNode.position.x, y: endNode.position.y, z: endNode.position.z },
+                            originalObject: mesh
                         };
                         return dummyEdge;
                     }
                 }
             }
-            // Fallback: Return object if tagged correctly but data retrieval failed/not applicable
+            // Fallback
             if (mesh.userData.type === 'edge') {
                 return mesh;
             }
@@ -91,20 +92,20 @@ export class RaycastManager {
 
         // 2. Check for Nodes (InstancedMesh)
         const nodeIntersect = intersects.find(intersect =>
-            (intersect.object as any).isInstancedMesh
+            (intersect.object as any).isInstancedMesh && intersect.object.userData.type === 'node_instanced'
         );
 
-        if (nodeIntersect && nodeIntersect.instanceId !== undefined && this.nodeObjectsManager) {
+        if (nodeIntersect && nodeIntersect.instanceId !== undefined && this.nodeManager) {
             const mesh = nodeIntersect.object as THREE.InstancedMesh;
             const geometryType = mesh.userData.geometryType || 'sphere';
 
-            // Retrieve real NodeData from manager
-            const nodeData = this.nodeObjectsManager.getNodeAt(geometryType, nodeIntersect.instanceId);
+            // Retrieve real EntityData from manager
+            const nodeData = this.nodeManager.getNodeAt(geometryType, nodeIntersect.instanceId);
 
-            if (nodeData) {
+            if (nodeData && nodeData.position) {
                 // Return a proxy object that looks like a selected node
                 const dummyNode = new THREE.Object3D();
-                dummyNode.position.set(nodeData.x || 0, nodeData.y || 0, nodeData.z || 0);
+                dummyNode.position.set(nodeData.position.x || 0, nodeData.position.y || 0, nodeData.position.z || 0);
 
                 dummyNode.userData = {
                     type: 'node',

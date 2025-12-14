@@ -17,7 +17,7 @@ export class Edge {
             this.startPosition.y || 0,
             this.startPosition.z || 0
         );
-        
+
         const endPos = new THREE.Vector3(
             this.endPosition.x || 0,
             this.endPosition.y || 0,
@@ -26,14 +26,14 @@ export class Edge {
 
         // Berechne die Mitte der Verbindung
         const midPoint = new THREE.Vector3().lerpVectors(
-            startPos, 
-            endPos, 
+            startPos,
+            endPos,
             0.5
         );
 
         // Berechne die Richtung der Verbindung
         const direction = new THREE.Vector3().subVectors(
-            endPos, 
+            endPos,
             startPos
         ).normalize();
 
@@ -47,7 +47,7 @@ export class Edge {
         // Berücksichtige die Anzahl der Kanten zwischen den Knoten
         const totalEdges = this.options.totalEdges || 1;
         const edgeIndex = this.options.index || 0;
-        
+
         if (totalEdges > 1) {
             const angle = (2 * Math.PI) / totalEdges; // Winkel zwischen den Kanten
             const rotationAxis = direction.clone().normalize();
@@ -76,18 +76,21 @@ export class Edge {
         );
 
         // Material mit Standard- oder Optionsfarbe
-        const material = new THREE.MeshBasicMaterial({
+        const material = new THREE.MeshPhongMaterial({
             color: this.options.color || 0xb498db,
+            shininess: 30,
             side: THREE.DoubleSide
         });
-        
+
         // Füge userData hinzu, um das Material zu identifizieren
         material.userData = {
             originalColor: this.options.color || 0xb498db
         };
 
         const tube = new THREE.Mesh(tubeGeometry, material);
-        
+        tube.castShadow = true;
+        tube.receiveShadow = true;
+
         // WICHTIG: userData fuer Edge-Erkennung setzen
         tube.userData = {
             type: 'edge',
@@ -103,7 +106,7 @@ export class Edge {
         this.endPosition = endPosition;
         this.startNodeRadius = startNodeRadius;
         this.endNodeRadius = endNodeRadius;
-        
+
         // Ersetze die Geometrie komplett (einfacher als Update)
         this.tube.geometry.dispose();
         this.tube.geometry = this.createTube().geometry;

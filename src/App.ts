@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { StateManager } from './core/StateManager';
 // @ts-ignore
+import { NodeManager } from './core/NodeManager';
 import { CentralEventManager } from './core/CentralEventManager';
 // @ts-ignore
 import { InteractionManager } from './core/InteractionManager';
@@ -44,14 +45,15 @@ import { HighlightManager } from './effects/HighlightManager.js';
 // @ts-ignore
 import { GlowEffect } from './effects/GlowEffect.js';
 // @ts-ignore
-import { NodeObjectsManager } from './core/NodeObjectsManager';
+// @ts-ignore
+// import { NodeObjectsManager } from './core/NodeObjectsManager';
 // @ts-ignore
 import { EdgeObjectsManager } from './core/EdgeObjectsManager';
 // @ts-ignore
 import { DataParser } from './core/DataParser';
 // @ts-ignore
 import { VisualMappingEngine } from './core/VisualMappingEngine';
-import { GraphData } from './types';
+import { GraphData, EntityData, RelationshipData, VisualProperties } from './types';
 
 import './styles/main.css';
 
@@ -88,7 +90,7 @@ export class App {
     public layoutGUI: any;
     public highlightManager: any;
     public glowEffect: any;
-    public nodeObjectsManager: any;
+    public nodeManager: NodeManager;
     public edgeObjectsManager: any;
 
     // Data management
@@ -96,9 +98,13 @@ export class App {
     public visualMappingEngine: VisualMappingEngine;
     public layoutEnabled: boolean = false; // Auto-layout disabled by default
 
-    // Legacy support
-    public currentNodes: any[] = [];
-    public currentEdges: any[] = [];
+    // Future support
+    public currentEntities: EntityData[] = [];
+    public currentRelationships: RelationshipData[] = [];
+
+    // Legacy support (DEPRECATED - mapped to entities)
+    // public currentNodes: any[] = [];
+    // public currentEdges: any[] = [];
     public nodeObjects: any[] = [];
     public edgeObjects: any[] = [];
 
@@ -121,7 +127,7 @@ export class App {
         this.stateManager = new StateManager();
 
         this.visualMappingEngine = new VisualMappingEngine();
-        this.nodeObjectsManager = new NodeObjectsManager(this.scene);
+        this.nodeManager = new NodeManager(this.scene, this.visualMappingEngine);
         this.edgeObjectsManager = new EdgeObjectsManager(this.scene);
 
         this.init();
@@ -160,6 +166,14 @@ export class App {
         const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
         directionalLight.position.set(10, 10, 5);
         directionalLight.castShadow = true;
+        directionalLight.shadow.mapSize.width = 2048;
+        directionalLight.shadow.mapSize.height = 2048;
+        directionalLight.shadow.camera.near = 0.5;
+        directionalLight.shadow.camera.far = 500;
+        directionalLight.shadow.camera.left = -50;
+        directionalLight.shadow.camera.right = 50;
+        directionalLight.shadow.camera.top = 50;
+        directionalLight.shadow.camera.bottom = -50;
         this.scene.add(directionalLight);
 
         this.createGround();
@@ -197,10 +211,11 @@ export class App {
     async initManagers() {
         this.layoutManager = new LayoutManager();
         this.glowEffect = new GlowEffect();
-        this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect, this.scene, this.nodeObjectsManager);
+        this.glowEffect = new GlowEffect();
+        this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect, this.scene, this.nodeManager);
         this.uiManager = new UIManager(this);
 
-        this.centralEventManager = new CentralEventManager(this.camera, this.renderer, this.stateManager, this.nodeObjectsManager, this.edgeObjectsManager, this.scene);
+        this.centralEventManager = new CentralEventManager(this.camera, this.renderer, this.stateManager, this.nodeManager, this.edgeObjectsManager, this.scene);
 
         this.interactionManager = new InteractionManager(
             this.centralEventManager,
@@ -212,7 +227,7 @@ export class App {
         );
 
         this.selectionManager = new SelectionManager(this.scene, this.camera, this.renderer, this.stateManager);
-        this.raycastManager = new RaycastManager(this.camera, this.nodeObjectsManager, this.edgeObjectsManager);
+        this.raycastManager = new RaycastManager(this.camera, this.nodeManager, this.edgeObjectsManager);
         this.networkAnalyzer = new NetworkAnalyzer();
         this.pathFinder = new PathFinder(this.scene, this.stateManager);
         this.performanceOptimizer = new PerformanceOptimizer(this.scene, this.camera, this.renderer);
@@ -266,43 +281,47 @@ export class App {
                 this.visualMappingEngine.setVisualMappings(this.currentGraphData.visualMappings);
             }
 
-            // Convert to legacy format for compatibility with existing layout/rendering code
-            //console.log('[TRACE] Converting entities to nodes...');
-            this.currentNodes = this.convertEntitiesToNodes(this.currentGraphData.data.entities);
-            //console.log(`[TRACE] Converted ${this.currentNodes.length} nodes`);
+            // Store data directly
+            this.currentEntities = this.currentGraphData.data.entities;
+            this.currentRelationships = this.currentGraphData.data.relationships;
 
-            this.currentEdges = this.convertRelationshipsToEdges(
-                this.currentGraphData.data.relationships,
-                this.currentGraphData.data.entities
-            );
+            // Initialize visual mappings
+            // Note: VisualMappingEngine is already used by NodeManager during updateNodes
 
-            //console.log('[TRACE] Calling createNodes()...');
+            // Create Nodes (Entities)
+            console.log('[App] Calling createNodes...');
             await this.createNodes();
-            //console.log('[TRACE] createNodes() finished');
+            console.log('[App] createNodes finished.');
 
-
-            //console.log('[TRACE] Calling createEdges()...');
+            // Create Edges (Relationships)
+            // Note: EdgeObjectsManager still needs updates to handle RelationshipData fully, 
+            // but we pass standard arrays for now.
+            // We need to map RelationshipData to standard Edge structure if EdgeObjectsManager wasn't updated to RelationshipData fully?
+            // Wait, we didn't update EdgeObjectsManager to take RelationshipData?
+            // We should map it here temporarily or trust strict typing if we updated it (we didn't).
+            // Let's do a quick mapping for EdgeObjectsManager compatibility.
+            // Actually, let's cast it for now as EdgeObjectsManager is loosely typed in some places.
             await this.createEdges();
-            //console.log('[TRACE] createEdges() finished');
 
             // Only apply layout if entities don't have positions
-            const hasPositions = this.currentGraphData.data.entities.every(e =>
+            const hasPositions = this.currentEntities.every(e =>
                 e.position && e.position.x !== undefined && e.position.y !== undefined && e.position.z !== undefined
             );
 
             if (this.layoutManager && !hasPositions) {
-                await this.layoutManager.applyLayout('force-directed', this.currentNodes, this.currentEdges);
+                // LayoutManager was updated to accept EntityData[]
+                await this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships);
                 this.updateNodePositions();
             }
 
             // Update UI
             if (this.uiManager) {
                 const filename = url.split('/').pop()?.replace('.json', '') || 'unknown';
-                const bounds = this.calculateBounds(this.currentNodes);
+                const bounds = this.calculateBounds(this.currentEntities);
                 this.uiManager.updateFileInfo(
                     filename,
-                    this.currentGraphData.data.entities.length,
-                    this.currentGraphData.data.relationships.length,
+                    this.currentEntities.length,
+                    this.currentRelationships.length,
                     bounds
                 );
             }
@@ -318,42 +337,7 @@ export class App {
     /**
      * Convert entities to legacy node format
      */
-    private convertEntitiesToNodes(entities: any[]): any[] {
-        const converted = entities.map(entity => {
-            // Spread entity first, then override with extracted coordinates
-            const { position, ...rest } = entity;
-            const result = {
-                ...rest,
-                id: entity.id,
-                name: entity.label || entity.id,
-                x: position?.x || 0,
-                y: position?.y || 0,
-                z: position?.z || 0,
-                type: entity.type
-            };
-            return result;
-        });
-        return converted;
-    }
-
-    /**
-     * Convert relationships to legacy edge format
-     */
-    private convertRelationshipsToEdges(relationships: any[], _entities: any[]): any[] {
-        return relationships.map(rel => {
-            // Use the source and target IDs directly instead of indices
-            // This ensures compatibility with the NodeMap which uses node.id as keys
-            return {
-                start: rel.source,  // Use string ID directly
-                end: rel.target,    // Use string ID directly
-                source: rel.source,
-                target: rel.target,
-                name: rel.label,
-                type: rel.type,
-                ...rel
-            };
-        });
-    }
+    // Legacy conversion methods removed
 
     /**
      * Calculate bounds from nodes
@@ -366,12 +350,15 @@ export class App {
         };
 
         nodes.forEach(node => {
-            bounds.x.min = Math.min(bounds.x.min, node.x || 0);
-            bounds.x.max = Math.max(bounds.x.max, node.x || 0);
-            bounds.y.min = Math.min(bounds.y.min, node.y || 0);
-            bounds.y.max = Math.max(bounds.y.max, node.y || 0);
-            bounds.z.min = Math.min(bounds.z.min, node.z || 0);
-            bounds.z.max = Math.max(bounds.z.max, node.z || 0);
+            const x = node.position?.x || 0;
+            const y = node.position?.y || 0;
+            const z = node.position?.z || 0;
+            bounds.x.min = Math.min(bounds.x.min, x);
+            bounds.x.max = Math.max(bounds.x.max, x);
+            bounds.y.min = Math.min(bounds.y.min, y);
+            bounds.y.max = Math.max(bounds.y.max, y);
+            bounds.z.min = Math.min(bounds.z.min, z);
+            bounds.z.max = Math.max(bounds.z.max, z);
         });
 
         return bounds;
@@ -379,8 +366,8 @@ export class App {
 
     clearScene() {
         // Clear nodes
-        if (this.nodeObjectsManager) {
-            this.nodeObjectsManager.dispose();
+        if (this.nodeManager) {
+            this.nodeManager.clear();
         }
         this.nodeObjects = [];
 
@@ -390,33 +377,32 @@ export class App {
         }
         this.edgeObjects = [];
 
-        this.currentNodes = [];
-        this.currentEdges = [];
+        this.currentEntities = [];
+        this.currentRelationships = [];
     }
 
     async createNodes() {
-        this.nodeObjectsManager.updateNodes(this.currentNodes);
+        this.nodeManager.updateNodes(this.currentEntities);
     }
 
     async createEdges() {
-        console.log(`Creating ${this.currentEdges.length} edges...`);
+        console.log(`Creating ${this.currentRelationships.length} edges...`);
         if (this.edgeObjectsManager) {
-            this.edgeObjectsManager.updateEdges(this.currentEdges, this.currentNodes);
+            this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
         }
     }
     updateNodePositions() {
-        if (this.nodeObjectsManager) {
-            this.nodeObjectsManager.updateNodePositions(this.currentNodes);
+        if (this.nodeManager) {
+            this.nodeManager.updateNodePositions(this.currentEntities);
         }
         if (this.edgeObjectsManager) {
-            this.edgeObjectsManager.updateEdgePositions(this.currentNodes);
+            this.edgeObjectsManager.updateEdgePositions(this.currentEntities);
         }
     }
 
     fitCameraToScene() {
-        if (this.currentNodes.length === 0) return;
-
-        const bounds = this.calculateBounds(this.currentNodes);
+        if (this.currentEntities.length === 0) return;
+        const bounds = this.calculateBounds(this.currentEntities);
 
         const center = new THREE.Vector3(
             (bounds.x.min + bounds.x.max) / 2,

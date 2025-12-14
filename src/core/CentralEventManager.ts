@@ -9,7 +9,8 @@ import * as THREE from 'three';
 import { RaycastManager } from '../utils/RaycastManager';
 import { StateManager } from './StateManager';
 // @ts-ignore
-import { NodeObjectsManager } from './NodeObjectsManager';
+// @ts-ignore
+import { NodeManager } from './NodeManager';
 // @ts-ignore
 import { EdgeObjectsManager } from './EdgeObjectsManager';
 import { HoverInfoPanel } from '../utils/HoverInfoPanel';
@@ -32,7 +33,7 @@ export class CentralEventManager {
     private stateManager: StateManager;
     private raycastManager: any; // RaycastManager
     private hoverInfoPanel: HoverInfoPanel;
-    // private nodeObjectsManager: NodeObjectsManager; // Unused
+    // private nodeManager: NodeManager; // Unused
     // private edgeObjectsManager: EdgeObjectsManager; // Unused
 
     private eventHandlers: Map<string, EventHandlerData | Set<Function>>;
@@ -56,17 +57,17 @@ export class CentralEventManager {
         camera: THREE.Camera,
         renderer: THREE.WebGLRenderer,
         stateManager: StateManager,
-        nodeObjectsManager: NodeObjectsManager,
+        nodeManager: NodeManager,
         edgeObjectsManager: EdgeObjectsManager,
         scene?: THREE.Scene
     ) {
         this.renderer = renderer;
         this.stateManager = stateManager;
-        // this.nodeObjectsManager = nodeObjectsManager;
+        // this.nodeManager = nodeManager;
         // this.edgeObjectsManager = edgeObjectsManager;
 
         // Einziger RaycastManager
-        this.raycastManager = new RaycastManager(camera, nodeObjectsManager, edgeObjectsManager);
+        this.raycastManager = new RaycastManager(camera, nodeManager, edgeObjectsManager);
 
         // Hover Info Panel mit Camera und Scene für intelligente Positionierung
         this.hoverInfoPanel = new HoverInfoPanel(camera, scene);

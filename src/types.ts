@@ -4,6 +4,7 @@ import * as THREE from 'three';
 // Legacy Types (for backward compatibility)
 // ============================================================================
 
+// @deprecated Use EntityData instead
 export interface NodeData {
     id: string | number;
     name?: string;
@@ -14,6 +15,7 @@ export interface NodeData {
     [key: string]: any;
 }
 
+// @deprecated Use RelationshipData instead
 export interface EdgeData {
     start: number | string; // Index or ID of start node
     end: number | string;   // Index or ID of end node
