@@ -1,0 +1,31 @@
+graph TD
+    subgraph Data_Loading [Data Loading Pipeline]
+        JSON[("Raw JSON Data")] --> |fetch| App[App.ts]
+        App --> |rawData| DP[DataParser.parse]
+    end
+
+    subgraph Parsing_Logic [core/DataParser.ts]
+        DP --> CheckFormat{Check Format}
+        CheckFormat --> |"nodes/edges detected"| Legacy[Legacy Format]
+        CheckFormat --> |"data.entities detected"| Future[Future Format]
+        
+        Legacy --> |convertLegacyFormat| Normalize[Normalize to GraphData]
+        Future --> |normalizeFutureFormat| Normalize
+        
+        Normalize --> |Entities & Relationships| GD[GraphData Interface]
+    end
+
+    subgraph Rendering_Preparation [App.ts Integration]
+        GD --> |"data.entities"| Converter[convertEntitiesToNodes]
+        Converter --> |"Flattened Objects"| CurrentNodes[this.currentNodes]
+        
+        GD --> |"data.relationships"| EdgeConv[convertRelationshipsToEdges]
+        EdgeConv --> CurrentEdges[this.currentEdges]
+        
+        CurrentNodes --> NOM[NodeObjectsManager]
+        CurrentEdges --> EOM[EdgeObjectsManager]
+    end
+
+    style JSON fill:#f9f,stroke:#333
+    style DP fill:#bbf,stroke:#333
+    style GD fill:#bfb,stroke:#333

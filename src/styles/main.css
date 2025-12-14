@@ -109,9 +109,7 @@ canvas {
   overflow: hidden;
 }
 
-.ui-panel.collapsed {
-  /* Height is determined by header only */
-}
+
 
 /* --- Content Elements --- */
 
@@ -237,10 +235,63 @@ input[type="range"] {
 
 /* --- Specific Panel IDs (for JS targeting) --- */
 /* We rely on the generic classes for styling, IDs are just for JS hooks */
-#fileInfoPanel,
-#filePanel,
-#layoutPanel,
-#infoPanel,
-#devPanel {
-  /* No specific styles needed, they inherit from .ui-panel */
+
+
+/* --- Hover Info Panel --- */
+#hoverInfoPanel {
+  position: fixed;
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: var(--panel-border);
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  padding: 12px 14px;
+  min-width: 200px;
+  max-width: 300px;
+  pointer-events: none;
+  /* Damit das Panel nicht mit der Maus interagiert */
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+#hoverInfoPanel.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#hoverInfoPanel.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+.hover-info-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hover-info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 11px;
+}
+
+.hover-info-label {
+  color: var(--text-muted);
+  margin-right: 8px;
+}
+
+.hover-info-value {
+  color: var(--text-color);
+  font-weight: 500;
+  text-align: right;
+  word-break: break-word;
 }

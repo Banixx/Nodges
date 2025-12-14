@@ -12,6 +12,7 @@ import { StateManager } from './StateManager';
 import { NodeObjectsManager } from './NodeObjectsManager';
 // @ts-ignore
 import { EdgeObjectsManager } from './EdgeObjectsManager';
+import { HoverInfoPanel } from '../utils/HoverInfoPanel';
 
 interface EventHandlerData {
     eventType: string;
@@ -30,6 +31,7 @@ export class CentralEventManager {
     private renderer: THREE.WebGLRenderer;
     private stateManager: StateManager;
     private raycastManager: any; // RaycastManager
+    private hoverInfoPanel: HoverInfoPanel;
     // private nodeObjectsManager: NodeObjectsManager; // Unused
     // private edgeObjectsManager: EdgeObjectsManager; // Unused
 
@@ -55,7 +57,8 @@ export class CentralEventManager {
         renderer: THREE.WebGLRenderer,
         stateManager: StateManager,
         nodeObjectsManager: NodeObjectsManager,
-        edgeObjectsManager: EdgeObjectsManager
+        edgeObjectsManager: EdgeObjectsManager,
+        scene?: THREE.Scene
     ) {
         this.renderer = renderer;
         this.stateManager = stateManager;
@@ -64,6 +67,9 @@ export class CentralEventManager {
 
         // Einziger RaycastManager
         this.raycastManager = new RaycastManager(camera, nodeObjectsManager, edgeObjectsManager);
+
+        // Hover Info Panel mit Camera und Scene für intelligente Positionierung
+        this.hoverInfoPanel = new HoverInfoPanel(camera, scene);
 
         // Event-Handler Registry
         this.eventHandlers = new Map();
@@ -157,6 +163,10 @@ export class CentralEventManager {
         // Performance-Throttling
         const now = performance.now();
         if (now - this.lastMouseMoveTime < this.mouseMoveThrottle) {
+            // Auch bei Throttling: HoverInfoPanel-Position aktualisieren wenn sichtbar
+            if (this.hoverInfoPanel.isVisible() && this.currentHoveredObject) {
+                this.hoverInfoPanel.updatePosition(event.clientX, event.clientY);
+            }
             return;
         }
         this.lastMouseMoveTime = now;
@@ -171,7 +181,10 @@ export class CentralEventManager {
         // Hover-State aktualisieren
         if (hoveredObject !== this.currentHoveredObject) {
             console.log('[CentralEventManager] Hover state changed:', hoveredObject?.userData);
-            this.updateHoverState(hoveredObject);
+            this.updateHoverState(hoveredObject, event.clientX, event.clientY);
+        } else if (hoveredObject) {
+            // Gleiches Objekt, aber Position aktualisieren
+            this.hoverInfoPanel.updatePosition(event.clientX, event.clientY);
         }
 
         // Cursor aktualisieren
@@ -307,7 +320,7 @@ export class CentralEventManager {
     /**
      * Aktualisiert den Hover-State
      */
-    updateHoverState(newHoveredObject: THREE.Object3D | null) {
+    updateHoverState(newHoveredObject: THREE.Object3D | null, mouseX?: number, mouseY?: number) {
         const oldHoveredObject = this.currentHoveredObject;
 
         // Hover-Timeout zuruecksetzen
@@ -321,6 +334,8 @@ export class CentralEventManager {
             this.notifySubscribers('hover_end', {
                 object: oldHoveredObject
             });
+            // HoverInfoPanel verstecken
+            this.hoverInfoPanel.hide();
         }
 
         // Neues Objekt setzen
@@ -337,6 +352,11 @@ export class CentralEventManager {
                 });
                 this.hoverTimeout = null;
             }, this.config.hoverDelay);
+
+            // HoverInfoPanel anzeigen
+            if (mouseX !== undefined && mouseY !== undefined) {
+                this.hoverInfoPanel.show(newHoveredObject, mouseX, mouseY);
+            }
         }
     }
 
@@ -443,6 +463,9 @@ export class CentralEventManager {
         // Alle Timeouts clearen
         if (this.hoverTimeout) clearTimeout(this.hoverTimeout);
         if (this.clickTimeout) clearTimeout(this.clickTimeout);
+
+        // HoverInfoPanel cleanup
+        this.hoverInfoPanel.destroy();
 
         // Alle Event-Listener entfernen
         this.activeListeners.forEach(handlerId => {

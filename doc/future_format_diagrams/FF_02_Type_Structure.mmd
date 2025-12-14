@@ -1,0 +1,56 @@
+classDiagram
+    note "Legacy Format (Flat Structure)"
+    class NodeData {
+        +string|number id
+        +number x
+        +number y
+        +number z
+        +string type
+        +any [key]
+    }
+    
+    class EdgeData {
+        +string|number start
+        +string|number end
+        +string type
+    }
+
+    note "Future Format (Semantic Structure)"
+    class GraphData {
+        +string system
+        +DataModel dataModel
+        +VisualMappings visualMappings
+        +object data
+    }
+
+    class DataModel {
+        +Record~string, EntityTypeSchema~ entities
+        +Record~string, RelationshipTypeSchema~ relationships
+    }
+
+    class EntityTypeSchema {
+        +Record~string, PropertySchema~ properties
+    }
+
+    class PropertySchema {
+        +enum type (continuous, spatial, ...)
+        +tuple range
+        +string unit
+    }
+
+    class VisualMappings {
+        +Record defaultPresets
+    }
+
+    class EntityData {
+        +string id
+        +string type
+        +Vector3 position (optional)
+        +any properties
+    }
+    
+    GraphData *-- DataModel
+    GraphData *-- VisualMappings
+    DataModel *-- EntityTypeSchema
+    EntityTypeSchema *-- PropertySchema
+    GraphData --> EntityData : contains

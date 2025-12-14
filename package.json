@@ -1,7 +1,7 @@
 {
-  "name": "Nodges",
+  "name": "nodges",
   "private": true,
-  "version": "0.94.2",
+  "version": "0.95.1",
   "type": "module",
   "scripts": {
     "dev": "vite",

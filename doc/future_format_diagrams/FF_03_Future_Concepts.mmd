@@ -1,0 +1,34 @@
+erDiagram
+    %% Concept 1: One-to-Many (Hyperedges)
+    NODE_A ||--|{ HYPER_EDGE : "originates"
+    HYPER_EDGE }|--|{ NODE_B : "targets (multicast)"
+    
+    %% Concept 2: Port-Based Connections
+    COMPONENT ||--|{ PORT : "exposes"
+    
+    PORT {
+        string id PK
+        string nodeId FK
+        vector3 localPosition
+        string type
+    }
+
+    CONNECTION {
+        string id PK
+        string sourcePort FK
+        string targetPort FK
+        string type
+    }
+
+    PORT ||--|| CONNECTION : "connects valid source"
+    PORT ||--|| CONNECTION : "connects valid target"
+    
+    %% Semantic Types Integration
+    COMPONENT }|--|| ENTITY_TYPE : "instantiates"
+    CONNECTION }|--|| REL_TYPE : "instantiates"
+    
+    ENTITY_TYPE ||--|{ PROPERTY_DEFINITION : "defines"
+    PROPERTY_DEFINITION {
+        string name
+        enum dataType "continuous, vector, etc"
+    }
