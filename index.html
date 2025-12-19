@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Nodges 0.95.3</title>
+    <title>Nodges 0.97</title>
     <link rel="icon" type="image/png" href="favicon-32x32.png">
     <link rel="stylesheet" href="/src/styles/main.css">
 </head>
@@ -17,7 +17,7 @@
         </div>
         <div id="fileInfoContent" class="ui-panel-content">
             <div class="info-row"><span class="info-label">Version:</span><span class="info-value"
-                    id="fileVersion"></span></div>
+                    id="fileVersion">0.96.3</span></div>
             <div class="info-row"><span class="info-label">Dateiname:</span><span class="info-value"
                     id="fileFilename">-</span></div>
             <div class="info-row"><span class="info-label">Knoten:</span><span class="info-value"
@@ -48,6 +48,19 @@
         </div>
     </div>
 
+    <!-- Visual Mapping Panel -->
+    <div id="visualMappingPanel" class="ui-panel collapsed">
+        <div class="ui-panel-header">
+            <h3>Mapping</h3>
+            <button id="visualMappingToggle" class="ui-panel-toggle">></button>
+        </div>
+        <div id="visualMappingContent" class="ui-panel-content">
+            <div style="padding: 10px; text-align: center; color: var(--text-muted);">
+                No mappings available.
+            </div>
+        </div>
+    </div>
+
     <!-- Object Info Panel -->
     <div id="infoPanel" class="ui-panel">
         <div class="ui-panel-header">
@@ -66,9 +79,84 @@
             <button id="devPanelToggle" class="ui-panel-toggle">></button>
         </div>
         <div id="devPanelContent" class="ui-panel-content">
-            <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
                 <label style="margin: 0;">Highlight Effects</label>
                 <input type="checkbox" id="highlightToggleInput" checked>
+            </div>
+
+            <!-- Edge Thickness Control -->
+            <div style="margin-bottom: 12px;">
+                <label
+                    style="display: block; margin-bottom: 2px; font-size: 11px; font-weight: bold;">Thickness:</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="range" id="edgeThicknessSlider" min="0.01" max="0.5" step="0.01" value="0.1"
+                        style="flex: 1;">
+                    <span id="edgeThicknessValue"
+                        style="min-width: 35px; text-align: right; font-family: monospace; font-size: 11px;">0.10</span>
+                </div>
+            </div>
+
+            <!-- Edge Tubular Segments -->
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; margin-bottom: 2px; font-size: 11px; font-weight: bold;">Curve
+                    Segments:</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="range" id="edgeSegmentsSlider" min="2" max="100" step="1" value="20" style="flex: 1;">
+                    <span id="edgeSegmentsValue"
+                        style="min-width: 35px; text-align: right; font-family: monospace; font-size: 11px;">20</span>
+                </div>
+            </div>
+
+            <!-- Edge Radial Segments -->
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; margin-bottom: 2px; font-size: 11px; font-weight: bold;">Tube
+                    Facets:</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="range" id="edgeRadialSlider" min="3" max="32" step="1" value="8" style="flex: 1;">
+                    <span id="edgeRadialValue"
+                        style="min-width: 35px; text-align: right; font-family: monospace; font-size: 11px;">8</span>
+                </div>
+            </div>
+
+            <!-- Edge Curve Factor (Drop out) -->
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; margin-bottom: 2px; font-size: 11px; font-weight: bold;">Drop out
+                    (Curvature):</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="range" id="edgeCurveSlider" min="0" max="2.0" step="0.05" value="0.4" style="flex: 1;">
+                    <span id="edgeCurveValue"
+                        style="min-width: 35px; text-align: right; font-family: monospace; font-size: 11px;">0.40</span>
+                </div>
+            </div>
+
+            <!-- Edge Pulse Speed -->
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; margin-bottom: 2px; font-size: 11px; font-weight: bold;">Pulse
+                    Speed:</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="range" id="edgePulseSlider" min="0" max="5.0" step="0.1" value="1.0" style="flex: 1;">
+                    <span id="edgePulseValue"
+                        style="min-width: 35px; text-align: right; font-family: monospace; font-size: 11px;">1.0</span>
+                </div>
+            </div>
+
+            <!-- Edge Opacity Control -->
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 2px; font-size: 11px; font-weight: bold;">Opacity:</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="range" id="edgeOpacitySlider" min="0.1" max="1.0" step="0.05" value="1.0"
+                        style="flex: 1;">
+                    <span id="edgeOpacityValue"
+                        style="min-width: 35px; text-align: right; font-family: monospace; font-size: 11px;">1.00</span>
+                </div>
+            </div>
+
+            <!-- Reset Button -->
+            <div style="text-align: center;">
+                <button id="resetEdgeControls"
+                    style="padding: 8px 16px; background-color: #666; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                    Reset Edge Controls
+                </button>
             </div>
         </div>
     </div>

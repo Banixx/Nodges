@@ -1,0 +1,258 @@
+{
+    "system": "Multi-Edge Test Graph",
+    "metadata": {
+        "created": "2025-12-16T22:45:00Z",
+        "version": "1.0",
+        "author": "Antigravity",
+        "description": "Ein Graph mit 8 Knoten und vielen Mehrfach-Verbindungen zum Testen der Render-Logik"
+    },
+    "dataModel": {
+        "entities": {
+            "node": {
+                "properties": {
+                    "position": {
+                        "type": "spatial",
+                        "coordinates": [
+                            "x",
+                            "y",
+                            "z"
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "connection": {
+                "properties": {
+                    "offset": {
+                        "type": "continuous",
+                        "range": [
+                            -10,
+                            10
+                        ],
+                        "unit": "units"
+                    }
+                }
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "node": {
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        1.0,
+                        1.0
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "linear"
+                }
+            },
+            "connection": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.1,
+                        0.1
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "n1",
+                "type": "node",
+                "label": "Node 1",
+                "position": {
+                    "x": -5,
+                    "y": 0,
+                    "z": -5
+                }
+            },
+            {
+                "id": "n2",
+                "type": "node",
+                "label": "Node 2",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -5
+                }
+            },
+            {
+                "id": "n3",
+                "type": "node",
+                "label": "Node 3",
+                "position": {
+                    "x": 5,
+                    "y": 0,
+                    "z": -5
+                }
+            },
+            {
+                "id": "n4",
+                "type": "node",
+                "label": "Node 4",
+                "position": {
+                    "x": -5,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n5",
+                "type": "node",
+                "label": "Node 5",
+                "position": {
+                    "x": 5,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n6",
+                "type": "node",
+                "label": "Node 6",
+                "position": {
+                    "x": -5,
+                    "y": 0,
+                    "z": 5
+                }
+            },
+            {
+                "id": "n7",
+                "type": "node",
+                "label": "Node 7",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 5
+                }
+            },
+            {
+                "id": "n8",
+                "type": "node",
+                "label": "Node 8",
+                "position": {
+                    "x": 5,
+                    "y": 0,
+                    "z": 5
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "id": "e1-2-1",
+                "type": "connection",
+                "source": "n1",
+                "target": "n2",
+                "label": "Single"
+            },
+            {
+                "id": "e2-3-1",
+                "type": "connection",
+                "source": "n2",
+                "target": "n3",
+                "label": "Double 1"
+            },
+            {
+                "id": "e2-3-2",
+                "type": "connection",
+                "source": "n3",
+                "target": "n2",
+                "label": "Double 2"
+            },
+            {
+                "id": "e4-5-1",
+                "type": "connection",
+                "source": "n4",
+                "target": "n5",
+                "label": "Triple 1"
+            },
+            {
+                "id": "e4-5-2",
+                "type": "connection",
+                "source": "n4",
+                "target": "n5",
+                "label": "Triple 2"
+            },
+            {
+                "id": "e4-5-3",
+                "type": "connection",
+                "source": "n5",
+                "target": "n4",
+                "label": "Triple 3"
+            },
+            {
+                "id": "e6-7-1",
+                "type": "connection",
+                "source": "n6",
+                "target": "n7",
+                "label": "Quad 1"
+            },
+            {
+                "id": "e6-7-2",
+                "type": "connection",
+                "source": "n6",
+                "target": "n7",
+                "label": "Quad 2"
+            },
+            {
+                "id": "e6-7-3",
+                "type": "connection",
+                "source": "n6",
+                "target": "n7",
+                "label": "Quad 3"
+            },
+            {
+                "id": "e6-7-4",
+                "type": "connection",
+                "source": "n6",
+                "target": "n7",
+                "label": "Quad 4"
+            },
+            {
+                "id": "e7-8-1",
+                "type": "connection",
+                "source": "n7",
+                "target": "n8",
+                "label": "Quint 1"
+            },
+            {
+                "id": "e7-8-2",
+                "type": "connection",
+                "source": "n7",
+                "target": "n8",
+                "label": "Quint 2"
+            },
+            {
+                "id": "e7-8-3",
+                "type": "connection",
+                "source": "n7",
+                "target": "n8",
+                "label": "Quint 3"
+            },
+            {
+                "id": "e7-8-4",
+                "type": "connection",
+                "source": "n7",
+                "target": "n8",
+                "label": "Quint 4"
+            },
+            {
+                "id": "e7-8-5",
+                "type": "connection",
+                "source": "n7",
+                "target": "n8",
+                "label": "Quint 5"
+            }
+        ]
+    }
+}

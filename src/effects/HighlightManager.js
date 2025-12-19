@@ -1,11 +1,19 @@
 import * as THREE from 'three';
 
 export class HighlightManager {
-    constructor(stateManager, glowEffect, scene, nodeManager = null) {
+    /**
+     * @param {any} stateManager 
+     * @param {any} glowEffect 
+     * @param {import('three').Scene} scene 
+     * @param {any} [nodeManager]
+     * @param {any} [edgeObjectsManager] 
+     */
+    constructor(stateManager, glowEffect, scene, nodeManager = null, edgeObjectsManager = null) {
         this.stateManager = stateManager;
         this.glowEffect = glowEffect;
         this.scene = scene;
         this.nodeManager = nodeManager;
+        this.edgeObjectsManager = edgeObjectsManager;
 
         // Einzige Highlight-Registry
         this.highlightRegistry = new Map();
@@ -24,7 +32,6 @@ export class HighlightManager {
 
         // State-Änderungen abonnieren
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'highlight');
-
     }
 
     handleStateChange(state) {
@@ -126,39 +133,60 @@ export class HighlightManager {
     /**
      * Fügt einen Umriss um die Edge hinzu
      */
-    addEdgeOutline(edge) {
+    addEdgeOutline(edge, options = {}) {
         if (!edge || !edge.userData) return;
 
         // Prüfe ob bereits ein Umriss existiert
         if (edge.userData.outline) {
-            return; // Umriss bereits vorhanden
+            // Falls Farbe anders ist (z.B. Wechsel von Hover zu Selection), lösche alten Umriss
+            if (options.color && edge.userData.outline.material.color.getHex() !== options.color) {
+                this.removeEdgeOutline(edge);
+            } else {
+                return; // Umriss bereits vorhanden und Farbe passt
+            }
         }
 
-        let curve;
-        // Check if we have start/end positions in userData (from RaycastManager proxy)
-        if (edge.userData.start && edge.userData.end) {
-            const start = new THREE.Vector3(edge.userData.start.x, edge.userData.start.y, edge.userData.start.z);
-            const end = new THREE.Vector3(edge.userData.end.x, edge.userData.end.y, edge.userData.end.z);
-            curve = new THREE.LineCurve3(start, end);
-        } else if (edge.userData.edge && edge.userData.edge.curve) {
-            // Fallback for curved edges if they pass the actual object
+        let curve = null;
+
+        // Hole die Kurve aus userData
+        if (edge.userData.curve) {
+            curve = edge.userData.curve;
+        }
+        // Fallback: curve in edge-Objekt (für Kompatibilität)
+        else if (edge.userData.edge && edge.userData.edge.curve) {
             curve = edge.userData.edge.curve;
         } else {
-            return; // Cannot create outline without geometry info
+            return; // Keine Kurve verfügbar
         }
 
-        // Erstelle eine TubeGeometry mit größerem Radius für den Umriss
+        // Hole aktuelle Dicke aus dem StateManager
+        const edgeThickness = this.stateManager?.state?.edgeThickness || 0.1;
+        const highlightRadius = edgeThickness * 1.5; // Highlight etwas dicker als die Edge selbst
+
+        // Erstelle eine TubeGeometry mit proportionalem Radius für den Umriss
         const outlineGeometry = new THREE.TubeGeometry(
             curve,
-            1,       // tubularSegments (1 for straight line is enough)
-            0.15,    // radius der Röhre (größer als der ursprüngliche Radius von 0.1)
-            8,       // radialSegments
-            false    // geschlossen?
+            40,               // tubularSegments (für sichtbare Kurve)
+            highlightRadius,  // radius der Röhre (proportional zur Kante)
+            8,                // radialSegments
+            false             // geschlossen?
         );
 
-        // Material für den Umriss (Light Blue / Cyan)
+        // Determine outline color
+        let outlineColor = options.color || 0x00aaff;
+
+        // Wenn keine Farbe vorgegeben, nimm Edge-Farbe
+        if (!options.color) {
+            if (edge.userData.color) {
+                outlineColor = edge.userData.color;
+            } else if (edge.userData.edge && edge.userData.edge.color) {
+                outlineColor = edge.userData.edge.color;
+            }
+        }
+
+        // Material für den Umriss (Light Blue / Cyan default, otherwise edge color)
         const outlineMaterial = new THREE.MeshBasicMaterial({
-            color: 0x00aaff, // Theme Blue / Cyan
+            color: outlineColor,
             side: THREE.DoubleSide,
             transparent: true,
             opacity: 0.8
@@ -169,14 +197,13 @@ export class HighlightManager {
 
         // Setze userData für den Umriss
         outlineMesh.userData = {
-            type: 'edge_outline',
-            parentEdge: edge
+            type: 'edge_outline'
         };
 
-        // Speichere den Umriss in userData
+        // Speichere in userData
         edge.userData.outline = outlineMesh;
 
-        // Füge den Umriss zur Szene hinzu (da Proxy-Objekte keinen Parent in der Szene haben)
+        // Füge den Umriss zur Szene hinzu
         if (this.scene) {
             this.scene.add(outlineMesh);
         }
@@ -186,9 +213,10 @@ export class HighlightManager {
      * Entfernt den Umriss von der Edge
      */
     removeEdgeOutline(edge) {
-        if (!edge || !edge.userData || !edge.userData.outline) return;
+        if (!edge || !edge.userData) return;
 
         const outlineMesh = edge.userData.outline;
+        if (!outlineMesh) return;
 
         // Entferne den Umriss aus der Szene
         if (this.scene) {
@@ -282,6 +310,20 @@ export class HighlightManager {
         // Spezieller Umriss-Effekt für Edges entfernen
         if (object.userData.type === 'edge') {
             this.removeEdgeOutline(object);
+
+            // Entferne auch Outlines von verwandten Edges
+            if (this.edgeObjectsManager && object.userData.connectionKey) {
+                const relatedEdges = this.edgeObjectsManager.getRelatedEdges(object.userData.connectionKey);
+
+                relatedEdges.forEach(edgeInfo => {
+                    if (edgeInfo.type === 'curved' && edgeInfo.edgeObj && edgeInfo.edgeObj.tube) {
+                        const curvedEdgeProxy = edgeInfo.edgeObj.tube;
+                        if (curvedEdgeProxy.userData && curvedEdgeProxy.userData.outline) {
+                            this.removeEdgeOutline(curvedEdgeProxy);
+                        }
+                    }
+                });
+            }
         } else if (object.userData.type === 'node') {
             this.removeNodeOutline(object);
         }
@@ -453,8 +495,25 @@ export class HighlightManager {
             // Halo/Umriss für den Node hinzufügen
             this.addNodeOutline(object);
         } else if (object.userData.type === 'edge') {
-            // Umriss-Effekt hinzufügen
+            // Umriss-Effekt für die gehov erte Edge hinzufügen
             this.addEdgeOutline(object);
+
+            // Alle verwandten Edges highlighten (gleiche Verbindung zwischen Nodes)
+            if (this.edgeObjectsManager && object.userData.connectionKey) {
+                const relatedEdges = this.edgeObjectsManager.getRelatedEdges(object.userData.connectionKey);
+
+                relatedEdges.forEach(edgeInfo => {
+                    if (edgeInfo.type === 'curved' && edgeInfo.edgeObj && edgeInfo.edgeObj.tube) {
+                        // Für curved edges: Erstelle ein Proxy-Objekt und füge Outline hinzu
+                        const curvedEdgeProxy = edgeInfo.edgeObj.tube;
+                        if (curvedEdgeProxy.userData && !curvedEdgeProxy.userData.outline) {
+                            this.addEdgeOutline(curvedEdgeProxy);
+                        }
+                    }
+                    // Für straight edges ist der Outline bereits auf dem Haupt-Objekt
+                    // da alle Instanzen über dasselbe Proxy-Objekt zugänglich sind
+                });
+            }
         }
     }
 
@@ -463,6 +522,11 @@ export class HighlightManager {
      */
     applySelectionEffect(object, options = {}) {
         this.glowEffect.applySelectionGlow(object);
+
+        // Für Edges: Füge einen kräftig grünen Umriss hinzu
+        if (object.userData.type === 'edge') {
+            this.addEdgeOutline(object, { color: 0x00ff00 });
+        }
     }
 
     /**

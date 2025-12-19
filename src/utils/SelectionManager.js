@@ -277,8 +277,8 @@ export class SelectionManager {
             this.selectionBoxes.set(object, selectionBox);
             this.scene.add(selectionBox);
         } else if (object.userData.type === 'edge') {
-            // Fuer Edges: Erstelle eine gekruemmte Selektions-Linie die der urspruenglichen Edge folgt
-            this.createEdgeSelectionIndicator(object);
+            // Edges werden nun ausschließlich vom HighlightManager gehandhabt
+            // um redundante und fehlerhafte Geometrien zu vermeiden.
         }
     }
 
@@ -296,65 +296,7 @@ export class SelectionManager {
         }
     }
 
-    /**
-     * Create curved selection indicator for edges
-     */
-    createEdgeSelectionIndicator(edgeObject) {
-        let curve;
-        let radius = 0.2;
-        let segments = 7;
-        let radialSegments = 3;
 
-        // Check for proxy object with start/end (InstancedMesh optimization)
-        if (edgeObject.userData.start && edgeObject.userData.end) {
-            const start = new THREE.Vector3(edgeObject.userData.start.x, edgeObject.userData.start.y, edgeObject.userData.start.z);
-            const end = new THREE.Vector3(edgeObject.userData.end.x, edgeObject.userData.end.y, edgeObject.userData.end.z);
-            curve = new THREE.LineCurve3(start, end);
-            // Default radius for straight lines
-            radius = 0.1;
-            segments = 1; // Straight line needs fewer segments
-        }
-        // Check for standard edge object with curve
-        else if (edgeObject.userData.edge) {
-            const edge = edgeObject.userData.edge;
-            curve = edge.curve;
-
-            if (edge.options) {
-                radius = edge.options.radius || 0.2;
-                segments = edge.options.segments || 7;
-                radialSegments = edge.options.radialSegments || 3;
-            }
-        }
-
-        if (!curve) {
-            return;
-        }
-
-        // Erstelle Geometrie mit etwas groesserem Radius fuer Sichtbarkeit
-        const selectionRadius = radius * 1.3; // 30% groesser
-        const geometry = new THREE.TubeGeometry(
-            curve,
-            segments,
-            selectionRadius,
-            radialSegments,
-            false
-        );
-
-        // Hellgruenes Material fuer Selektion
-        const material = new THREE.MeshBasicMaterial({
-            color: 0x00ff00,
-            transparent: true,
-            opacity: 0.6,
-            side: THREE.DoubleSide
-        });
-
-        const selectionIndicator = new THREE.Mesh(geometry, material);
-        selectionIndicator.userData.type = 'selection-indicator';
-        selectionIndicator.userData.parentEdge = edgeObject;
-
-        this.selectionBoxes.set(edgeObject, selectionIndicator);
-        this.scene.add(selectionIndicator);
-    }
 
     /**
      * Delete selected objects

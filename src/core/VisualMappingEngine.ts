@@ -63,6 +63,11 @@ export class VisualMappingEngine {
             visual.glow = this.applyMapping(preset.glow, entity);
         }
 
+        // Apply animation mapping
+        if (preset.animation) {
+            visual.animation = this.mapToAnimation(preset.animation, entity);
+        }
+
         return visual;
     }
 
@@ -107,13 +112,18 @@ export class VisualMappingEngine {
             visual.opacity = this.applyMapping(preset.opacity, relationship);
         }
 
+        // Apply animation mapping
+        if (preset.animation) {
+            visual.animation = this.mapToAnimation(preset.animation, relationship);
+        }
+
         return visual;
     }
 
     /**
      * Apply a single mapping to data
      */
-    private applyMapping(mapping: VisualMapping, data: EntityData | RelationshipData): number {
+    private applyMapping(mapping: VisualMapping, data: EntityData | RelationshipData): any {
         // Get source value (supports nested properties like "personality.extraversion")
         const value = this.getNestedProperty(data, mapping.source);
 
@@ -137,6 +147,8 @@ export class VisualMappingEngine {
                 return this.heatmapMapping(numValue, mapping);
             case 'bipolar':
                 return this.bipolarMapping(numValue, mapping);
+            case 'pulse':
+                return this.pulseMapping(numValue, mapping);
             default:
                 return numValue;
         }
@@ -201,6 +213,18 @@ export class VisualMappingEngine {
     }
 
     /**
+     * Pulse mapping
+     */
+    private pulseMapping(value: number, mapping: VisualMapping): any {
+        const frequency = mapping.params?.frequency || 1.0;
+        return {
+            type: 'pulse',
+            intensity: value,
+            frequency
+        };
+    }
+
+    /**
      * Map numeric value to color
      */
     private mapToColor(value: number, mapping: VisualMapping): THREE.Color {
@@ -242,16 +266,17 @@ export class VisualMappingEngine {
      */
     private mapToGeometry(mapping: VisualMapping, _data: EntityData): string {
         if (mapping.function === 'sphereComplexity') {
-            // Map value to sphere complexity (complexity handling in NodeObjectsManager)
-            // const value = this.getNestedProperty(data, mapping.source);
-            // const minSegments = mapping.params?.minSegments || 8;
-            // const maxSegments = mapping.params?.maxSegments || 32;
-
-            // For now, just return 'sphere' - actual complexity is handled in NodeObjectsManager
+            // For now, just return 'sphere' - logic would be here
             return 'sphere';
         }
-
         return 'sphere'; // Default
+    }
+
+    /**
+    * Map to animation
+    */
+    private mapToAnimation(mapping: VisualMapping, data: EntityData | RelationshipData): any {
+        return this.applyMapping(mapping, data);
     }
 
     /**
@@ -265,7 +290,8 @@ export class VisualMappingEngine {
             glow: 0,
             opacity: 1.0,
             thickness: 0.1,
-            curvature: 0
+            curvature: 0,
+            animation: undefined
         };
     }
 
@@ -280,7 +306,8 @@ export class VisualMappingEngine {
             glow: 0,
             opacity: 1.0,
             thickness: 0.1,
-            curvature: 0
+            curvature: 0,
+            animation: undefined
         };
     }
 }

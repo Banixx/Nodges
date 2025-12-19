@@ -61,7 +61,7 @@ export class NodeManager {
         entities.forEach(entity => {
             const visual = this.visualMappingEngine.applyToEntity(entity);
             // Default to sphere if unknown
-            let type = visual.geometry || entity.geometryType || 'sphere';
+            let type: string = (visual.geometry as string) || (entity.geometryType as string) || 'sphere';
             if (!this.geometryCache.has(type)) type = 'sphere';
 
             if (!entitiesByType.has(type)) {
@@ -250,5 +250,14 @@ export class NodeManager {
         this.geometryCache.clear();
         this.materialCache.forEach(mat => mat.dispose());
         this.materialCache.clear();
+    }
+
+    public getNodeTypeInfo(type: string): { name: string, faces: number } {
+        const geo = this.geometryCache.get(type);
+        if (!geo) return { name: 'Unknown', faces: 0 };
+        return {
+            name: type,
+            faces: geo.index ? geo.index.count / 3 : geo.attributes.position.count / 3
+        };
     }
 }

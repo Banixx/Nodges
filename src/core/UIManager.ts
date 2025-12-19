@@ -4,6 +4,8 @@
  */
 import type { App } from '../App';
 import { StateManager } from './StateManager';
+import { VisualMappingPanel } from '../ui/VisualMappingPanel';
+import { VisualMappings } from '../types';
 
 interface Bounds {
     x: { min: number, max: number };
@@ -18,6 +20,7 @@ export class UIManager {
     private panelToggles: { [key: string]: HTMLElement | null };
     private filePanelContent: HTMLElement | null;
     private infoPanelContent: HTMLElement | null;
+    private visualMappingPanel: VisualMappingPanel;
 
     constructor(app: App) {
         this.app = app;
@@ -26,6 +29,7 @@ export class UIManager {
         this.panels = {
             fileInfo: document.getElementById('fileInfoPanel'),
             file: document.getElementById('filePanel'),
+            visualMapping: document.getElementById('visualMappingPanel'),
             info: document.getElementById('infoPanel'),
             dev: document.getElementById('devPanel'),
             layout: null // Initialized by LayoutGUI
@@ -34,12 +38,14 @@ export class UIManager {
         this.panelToggles = {
             fileInfo: document.getElementById('fileInfoToggle'),
             file: document.getElementById('filePanelToggle'),
+            visualMapping: document.getElementById('visualMappingToggle'),
             info: document.getElementById('infoPanelToggle'),
             dev: document.getElementById('devPanelToggle')
         };
 
         this.filePanelContent = document.getElementById('filePanelContent');
         this.infoPanelContent = document.getElementById('infoPanelContent');
+        this.visualMappingPanel = new VisualMappingPanel('visualMappingContent');
 
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'ui');
     }
@@ -49,8 +55,8 @@ export class UIManager {
         this.initPanelToggling();
         this.initPanelPositioning();
         this.initHighlightToggle();
+        this.initEdgeControls();
         this.loadAvailableFiles();
-        // The search panel is initialized in main.js, this could also be moved here later.
     }
 
     handleStateChange(state: any) {
@@ -94,7 +100,7 @@ export class UIManager {
                 }
 
                 // Add hover effects
-                toggle.addEventListener('mouseenter', () => toggle.style.backgroundColor = 'rgba(128, 128, 128, 0.2)');
+                toggle.addEventListener('mouseenter', () => toggle.style.backgroundColor = 'rgba(172, 56, 56, 0.83)');
                 toggle.addEventListener('mouseleave', () => toggle.style.backgroundColor = 'transparent');
             }
         }
@@ -121,6 +127,12 @@ export class UIManager {
             observer.observe(fileInfoPanel);
         }
 
+        const visualMappingPanel = this.panels.visualMapping;
+        if (visualMappingPanel) {
+            const observer = new ResizeObserver(() => this.updateAllPanelPositions());
+            observer.observe(visualMappingPanel);
+        }
+
         // We need to wait for LayoutGUI to create the layout panel, then observe it.
         const checkForLayoutPanel = setInterval(() => {
             const layoutPanel = document.getElementById('layoutPanel');
@@ -136,7 +148,7 @@ export class UIManager {
 
     updateAllPanelPositions() {
         // Main stack (Right column)
-        const mainStackOrder = ['fileInfo', 'file', 'layout', 'dev'];
+        const mainStackOrder = ['fileInfo', 'file', 'visualMapping', 'layout', 'dev'];
         let currentTop = 20; // Start margin from top
         const gap = 10; // Gap between panels
 
@@ -184,7 +196,7 @@ export class UIManager {
         const button = document.getElementById('highlightToggleButton');
         if (slider && button) {
             if (isEnabled) {
-                slider.style.backgroundColor = '#4CAF50';
+                slider.style.backgroundColor = '#292f42ff';
                 button.style.transform = 'translateX(16px)';
             } else {
                 slider.style.backgroundColor = '#ccc';
@@ -286,26 +298,49 @@ export class UIManager {
         }
     }
 
+    updateVisualMappings(mappings: VisualMappings) {
+        this.visualMappingPanel.bind(mappings, (newMappings) => {
+            if (this.app.updateVisualMappings) {
+                this.app.updateVisualMappings(newMappings);
+            } else {
+                console.warn('App does not implemented updateVisualMappings');
+            }
+        });
+
+        this.updateAllPanelPositions();
+    }
+
     showInfoPanelFor(object: any) {
         if (!this.panels.info || !this.infoPanelContent) return;
 
         let content = '';
-        if (object.userData.type === 'node') {
-            const { nodeData, geometryType } = object.userData;
-            const geometryInfo = this.app.nodeObjectsManager.getNodeTypeInfo(geometryType);
+        if (object.userData.type === 'node' || object.userData.geometryType) { // Handle node mesh or helper
+            // Use nodeManager instead of nodeObjectsManager
+            const nodeData = object.userData.nodeData || object.userData.entity;
+            const geometryType = object.userData.geometryType || 'sphere';
+            // Correct call to nodeManager
+            const geometryInfo = this.app.nodeManager.getNodeTypeInfo ?
+                this.app.nodeManager.getNodeTypeInfo(geometryType) : { name: geometryType, faces: 0 };
+
             content = `
                 <p><strong>Typ:</strong> Node</p>
-                <p><strong>Name:</strong> ${nodeData.name || 'Unbenannt'}</p>
-                <p><strong>ID:</strong> ${nodeData.id || 'Unbekannt'}</p>
-                <p><strong>Geometrie:</strong> ${geometryInfo.name} (${geometryInfo.faces} Flächen)</p>
+                <p><strong>Name:</strong> ${nodeData?.name || nodeData?.label || 'Unbenannt'}</p>
+                <p><strong>ID:</strong> ${nodeData?.id || 'Unbekannt'}</p>
+                <p><strong>Geometrie:</strong> ${geometryInfo.name} (${geometryInfo.faces} Vertices/Faces)</p>
             `;
         } else if (object.userData.type === 'edge') {
-            const { name, start, end, index } = object.userData;
+            const { name, index } = object.userData;
+            // start/end might be Vector3 in new EdgeObjectsManager.
+            // But we might have 'edge' data in userData.edge
+            const edgeData = object.userData.edge;
+            const sourceInfo = edgeData ? (edgeData.source || edgeData.start) : 'Unknown';
+            const targetInfo = edgeData ? (edgeData.target || edgeData.end) : 'Unknown';
+
             content = `
                 <p><strong>Typ:</strong> Edge</p>
-                <p><strong>Name:</strong> ${name || 'Unbenannt'}</p>
-                <p><strong>Verbindung:</strong> Knoten ${start} ↔ Knoten ${end}</p>
-                <p><strong>Index:</strong> ${index || 'Unbekannt'}</p>
+                <p><strong>Name:</strong> ${name || edgeData?.label || 'Unbenannt'}</p>
+                <p><strong>Verbindung:</strong> ${sourceInfo} ↔ ${targetInfo}</p>
+                <p><strong>Index:</strong> ${index !== undefined ? index : 'Unbekannt'}</p>
             `;
         } else {
             content = '<p>Keine Detailansicht für dieses Objekt.</p>';
@@ -314,6 +349,149 @@ export class UIManager {
         this.infoPanelContent.innerHTML = content;
         this.panels.info.classList.remove('collapsed');
         if (this.panelToggles.info) this.panelToggles.info.innerHTML = 'v';
+    }
+
+    initEdgeControls() {
+        const thicknessSlider = document.getElementById('edgeThicknessSlider') as HTMLInputElement;
+        const thicknessValue = document.getElementById('edgeThicknessValue') as HTMLSpanElement;
+        const segmentsSlider = document.getElementById('edgeSegmentsSlider') as HTMLInputElement;
+        const segmentsValue = document.getElementById('edgeSegmentsValue') as HTMLSpanElement;
+        const radialSlider = document.getElementById('edgeRadialSlider') as HTMLInputElement;
+        const radialValue = document.getElementById('edgeRadialValue') as HTMLSpanElement;
+        const curveSlider = document.getElementById('edgeCurveSlider') as HTMLInputElement;
+        const curveValue = document.getElementById('edgeCurveValue') as HTMLSpanElement;
+        const pulseSlider = document.getElementById('edgePulseSlider') as HTMLInputElement;
+        const pulseValue = document.getElementById('edgePulseValue') as HTMLSpanElement;
+        const opacitySlider = document.getElementById('edgeOpacitySlider') as HTMLInputElement;
+        const opacityValue = document.getElementById('edgeOpacityValue') as HTMLSpanElement;
+        const resetButton = document.getElementById('resetEdgeControls') as HTMLButtonElement;
+
+        const updateStateAndRefresh = (key: string, value: number) => {
+            this.stateManager.update({ [key]: value });
+            if (this.app.edgeObjectsManager) {
+                if (this.app.currentEntities && this.app.currentRelationships) {
+                    this.app.edgeObjectsManager.updateEdges(this.app.currentRelationships, this.app.currentEntities);
+                }
+            }
+        };
+
+        if (thicknessSlider && thicknessValue) {
+            thicknessValue.textContent = parseFloat(thicknessSlider.value).toFixed(2);
+            thicknessSlider.addEventListener('input', (e) => {
+                const value = parseFloat((e.target as HTMLInputElement).value);
+                thicknessValue.textContent = value.toFixed(2);
+                updateStateAndRefresh('edgeThickness', value);
+            });
+        }
+
+        if (segmentsSlider && segmentsValue) {
+            segmentsValue.textContent = segmentsSlider.value;
+            segmentsSlider.addEventListener('input', (e) => {
+                const value = parseInt((e.target as HTMLInputElement).value);
+                segmentsValue.textContent = value.toString();
+                updateStateAndRefresh('edgeTubularSegments', value);
+            });
+        }
+
+        if (radialSlider && radialValue) {
+            radialValue.textContent = radialSlider.value;
+            radialSlider.addEventListener('input', (e) => {
+                const value = parseInt((e.target as HTMLInputElement).value);
+                radialValue.textContent = value.toString();
+                updateStateAndRefresh('edgeRadialSegments', value);
+            });
+        }
+
+        if (curveSlider && curveValue) {
+            curveValue.textContent = parseFloat(curveSlider.value).toFixed(2);
+            curveSlider.addEventListener('input', (e) => {
+                const value = parseFloat((e.target as HTMLInputElement).value);
+                curveValue.textContent = value.toFixed(2);
+                updateStateAndRefresh('edgeCurveFactor', value);
+            });
+        }
+
+        if (pulseSlider && pulseValue) {
+            pulseValue.textContent = parseFloat(pulseSlider.value).toFixed(1);
+            pulseSlider.addEventListener('input', (e) => {
+                const value = parseFloat((e.target as HTMLInputElement).value);
+                pulseValue.textContent = value.toFixed(1);
+                this.stateManager.update({ edgePulseSpeed: value });
+            });
+        }
+
+        if (opacitySlider && opacityValue) {
+            opacityValue.textContent = parseFloat(opacitySlider.value).toFixed(2);
+            opacitySlider.addEventListener('input', (e) => {
+                const value = parseFloat((e.target as HTMLInputElement).value);
+                opacityValue.textContent = value.toFixed(2);
+                this.updateEdgeOpacity(value);
+            });
+        }
+
+        if (resetButton) {
+            resetButton.addEventListener('click', () => {
+                const defaults = {
+                    edgeThickness: 0.1,
+                    edgeTubularSegments: 20,
+                    edgeRadialSegments: 8,
+                    edgeCurveFactor: 0.4,
+                    edgePulseSpeed: 1.0,
+                    edgeOpacity: 1.0
+                };
+
+                // Update UI elements
+                if (thicknessSlider) {
+                    thicknessSlider.value = defaults.edgeThickness.toString();
+                    thicknessValue.textContent = defaults.edgeThickness.toFixed(2);
+                }
+                if (segmentsSlider) {
+                    segmentsSlider.value = defaults.edgeTubularSegments.toString();
+                    segmentsValue.textContent = defaults.edgeTubularSegments.toString();
+                }
+                if (radialSlider) {
+                    radialSlider.value = defaults.edgeRadialSegments.toString();
+                    radialValue.textContent = defaults.edgeRadialSegments.toString();
+                }
+                if (curveSlider) {
+                    curveSlider.value = defaults.edgeCurveFactor.toString();
+                    curveValue.textContent = defaults.edgeCurveFactor.toFixed(2);
+                }
+                if (pulseSlider) {
+                    pulseSlider.value = defaults.edgePulseSpeed.toString();
+                    pulseValue.textContent = defaults.edgePulseSpeed.toFixed(1);
+                }
+                if (opacitySlider) {
+                    opacitySlider.value = defaults.edgeOpacity.toString();
+                    opacityValue.textContent = defaults.edgeOpacity.toFixed(2);
+                }
+
+                // Update State and refresh
+                this.stateManager.update(defaults);
+                if (this.app.edgeObjectsManager && this.app.currentEntities && this.app.currentRelationships) {
+                    this.app.edgeObjectsManager.updateEdges(this.app.currentRelationships, this.app.currentEntities);
+                }
+                this.updateEdgeOpacity(defaults.edgeOpacity);
+            });
+        }
+    }
+
+    updateEdgeThickness(_thickness: number) {
+        // This is now handled within initEdgeControls via updateStateAndRefresh
+    }
+
+    updateEdgeOpacity(opacity: number) {
+        if (this.app.edgeObjectsManager) {
+            // Update opacity for existing edge meshes
+            const edgeMeshes = this.app.edgeObjectsManager.getMeshes();
+            edgeMeshes.forEach((mesh: any) => {
+                if (mesh.material) {
+                    mesh.material.transparent = opacity < 1.0;
+                    mesh.material.opacity = opacity;
+                    mesh.material.needsUpdate = true;
+                }
+            });
+        }
     }
 
     collapseInfoPanel() {

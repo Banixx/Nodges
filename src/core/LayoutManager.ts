@@ -4,7 +4,7 @@
 
 // @ts-ignore
 import LayoutWorker from '../workers/layout-worker.js?worker';
-import { EntityData, RelationshipData, NodeData, EdgeData } from '../types';
+import { EntityData, RelationshipData } from '../types';
 
 interface LayoutOptions {
     [key: string]: any;
@@ -15,6 +15,16 @@ interface LayoutDefinition {
     apply: (nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions) => void | Promise<boolean>;
     options: LayoutOptions;
 }
+
+// Intersect EntityData with layout properties.
+// Using intersection type to handle explicit properties properly.
+type LayoutEntity = EntityData & {
+    fx?: number;
+    fy?: number;
+    fz?: number;
+    disp?: { x: number; y: number; z: number };
+    index?: number; // Worker index
+};
 
 export class LayoutManager {
     private layouts: Map<string, LayoutDefinition>;
@@ -157,11 +167,9 @@ export class LayoutManager {
             });
 
             // Map node IDs to indices for the worker
-            const nodeIndexMap = new Map<string | number, number>();
+            const nodeIndexMap = new Map<string, number>();
             nodes.forEach((node, index) => {
-                if (node.id !== undefined) nodeIndexMap.set(node.id, index);
-                // Also map index if available, just in case
-                if (node.index !== undefined) nodeIndexMap.set(node.index, index);
+                nodeIndexMap.set(node.id, index);
             });
 
             worker.postMessage({
@@ -169,27 +177,16 @@ export class LayoutManager {
                     x: node.position?.x || 0,
                     y: node.position?.y || 0,
                     z: node.position?.z || 0,
-                    index: nodeIndexMap.get(node.id) !== undefined ? nodeIndexMap.get(node.id) : nodes.indexOf(node)
+                    index: nodeIndexMap.get(node.id)!
                 })),
                 edges: edges.map(edge => {
-                    // Resolve start/end to indices
-                    let startIndex = edge.start;
-                    let endIndex = edge.end;
-
-                    if (typeof startIndex !== 'number') {
-                        startIndex = nodeIndexMap.get(startIndex) as number;
-                    }
-                    if (typeof endIndex !== 'number') {
-                        endIndex = nodeIndexMap.get(endIndex) as number;
-                    }
-
-                    // Fallback if mapping failed (should not happen if data is consistent)
-                    if (startIndex === undefined) startIndex = 0;
-                    if (endIndex === undefined) endIndex = 0;
+                    // Resolve source/target IDs to indices
+                    const startIndex = nodeIndexMap.get(edge.source);
+                    const endIndex = nodeIndexMap.get(edge.target);
 
                     return {
-                        start: startIndex,
-                        end: endIndex
+                        start: startIndex !== undefined ? startIndex : 0,
+                        end: endIndex !== undefined ? endIndex : 0
                     };
                 }),
                 algorithm: layoutId,
@@ -230,13 +227,15 @@ export class LayoutManager {
             damping = 0.8
         } = options;
 
-        // Initialisiere Positionen, falls nicht vorhanden
+        // Map for fast lookup
+        const nodeMap = new Map<string, EntityData>();
         nodes.forEach(node => {
+            nodeMap.set(node.id, node);
             if (!node.position) node.position = { x: 0, y: 0, z: 0 };
         });
 
         for (let i = 0; i < maxIterations; i++) {
-            // Repulsion zwischen allen Knoten
+            // Repulsion between all nodes
             for (let j = 0; j < nodes.length; j++) {
                 for (let k = j + 1; k < nodes.length; k++) {
                     const node1 = nodes[j];
@@ -261,40 +260,10 @@ export class LayoutManager {
                 }
             }
 
-            // Attraction entlang Kanten
+            // Attraction along edges
             edges.forEach(edge => {
-                // Sicherstellen, dass die Knotenreferenzen korrekt sind
-                // Note: In non-worker layout, edge.start/end might be indices OR IDs.
-                // We need to handle both or assume indices if pre-processed.
-                // For now, assuming indices for simple implementation or IDs if mapped.
-                // But wait, the worker logic maps them. The local logic here assumes indices?
-                // The original code used: const node1 = nodes[edge.start];
-                // This implies edge.start is an index.
-                // But App.ts passes objects with IDs.
-                // If we run locally, we need to map too!
-                // The original JS code was likely failing locally too if IDs were used.
-                // I should add mapping here too.
-
-                let startIndex = edge.source;
-                let endIndex = edge.target;
-
-                // Check for EntityData
-                let node1: EntityData | undefined;
-                let node2: EntityData | undefined;
-
-                if (typeof startIndex === 'number') {
-                    // @ts-ignore
-                    node1 = nodes[startIndex];
-                } else {
-                    node1 = nodes.find(n => n.id === startIndex);
-                }
-
-                if (typeof endIndex === 'number') {
-                    // @ts-ignore
-                    node2 = nodes[endIndex];
-                } else {
-                    node2 = nodes.find(n => n.id === endIndex);
-                }
+                const node1 = nodeMap.get(edge.source);
+                const node2 = nodeMap.get(edge.target);
 
                 if (node1 && node2 && node1.position && node2.position) {
                     const dx = node2.position.x - node1.position.x;
@@ -315,8 +284,7 @@ export class LayoutManager {
             });
         }
 
-        // Normalisiere Positionen um das Netzwerk kompakt zu halten
-        this.normalizeNodePositions(nodes, 10); // Maximal 10 Einheiten Ausdehnung
+        this.normalizeNodePositions(nodes, 10);
     }
 
     applyCircularLayout(nodes: EntityData[], _edges: RelationshipData[], options: LayoutOptions) {
@@ -369,16 +337,20 @@ export class LayoutManager {
         const k = Math.sqrt(area / nodes.length);
         let temp = temperature;
 
-        // Initialisiere displacement vectors
-        nodes.forEach(node => {
+        const layoutNodes = nodes as LayoutEntity[];
+        const nodeMap = new Map<string, LayoutEntity>();
+
+        // Initialisiere displacement vectors und Map
+        layoutNodes.forEach(node => {
             node.disp = { x: 0, y: 0, z: 0 };
+            nodeMap.set(node.id, node);
         });
 
         for (let iter = 0; iter < maxIterations; iter++) {
             // Calculate repulsive forces
-            nodes.forEach(v => {
+            layoutNodes.forEach(v => {
                 v.disp = { x: 0, y: 0, z: 0 };
-                nodes.forEach(u => {
+                layoutNodes.forEach(u => {
                     if (v !== u && v.position && u.position) {
                         const dx = v.position.x - u.position.x;
                         const dy = v.position.y - u.position.y;
@@ -386,34 +358,19 @@ export class LayoutManager {
                         const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.01;
 
                         const force = (k * k) / distance;
-                        v.disp.x += (dx / distance) * force;
-                        v.disp.y += (dy / distance) * force;
-                        v.disp.z += (dz / distance) * force;
+                        v.disp!.x += (dx / distance) * force;
+                        v.disp!.y += (dy / distance) * force;
+                        v.disp!.z += (dz / distance) * force;
                     }
                 });
             });
 
             // Calculate attractive forces
             edges.forEach(edge => {
-                // Handle ID vs Index
-                let v: EntityData | undefined;
-                let u: EntityData | undefined;
+                const v = nodeMap.get(edge.source);
+                const u = nodeMap.get(edge.target);
 
-                if (typeof edge.source === 'number') {
-                    // @ts-ignore
-                    v = nodes[edge.source];
-                } else {
-                    v = nodes.find(n => n.id === edge.source);
-                }
-
-                if (typeof edge.target === 'number') {
-                    // @ts-ignore
-                    u = nodes[edge.target];
-                } else {
-                    u = nodes.find(n => n.id === edge.target);
-                }
-
-                if (v && u && v.position && u.position) {
+                if (v && u && v.position && u.position && v.disp && u.disp) {
                     const dx = v.position.x - u.position.x;
                     const dy = v.position.y - u.position.y;
                     const dz = v.position.z - u.position.z;
@@ -434,30 +391,37 @@ export class LayoutManager {
             });
 
             // Limit displacement and apply
-            nodes.forEach(v => {
-                const dispLength = Math.sqrt(v.disp.x * v.disp.x + v.disp.y * v.disp.y + v.disp.z * v.disp.z);
-                const limitedLength = Math.min(dispLength, temp);
+            layoutNodes.forEach(v => {
+                if (v.disp) {
+                    const dispLength = Math.sqrt(v.disp.x * v.disp.x + v.disp.y * v.disp.y + v.disp.z * v.disp.z);
+                    const limitedLength = Math.min(dispLength, temp);
 
-                if (dispLength > 0) {
-                    if (!v.position) v.position = { x: 0, y: 0, z: 0 };
-                    v.position.x += (v.disp.x / dispLength) * limitedLength;
-                    v.position.y += (v.disp.y / dispLength) * limitedLength;
-                    v.position.z += (v.disp.z / dispLength) * limitedLength;
+                    if (dispLength > 0 && v.position) {
+                        v.position.x += (v.disp.x / dispLength) * limitedLength;
+                        v.position.y += (v.disp.y / dispLength) * limitedLength;
+                        v.position.z += (v.disp.z / dispLength) * limitedLength;
+                    }
                 }
             });
 
             temp *= 0.95; // Cool down
         }
 
-        // Normalisiere Positionen um das Netzwerk kompakt zu halten
         this.normalizeNodePositions(nodes, 10);
     }
 
     applySpringEmbedderLayout(nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions) {
         const { maxIterations, springConstant, repulsionConstant, damping, naturalLength } = options;
 
+        const layoutNodes = nodes as LayoutEntity[];
+        const nodeMap = new Map<string, LayoutEntity>();
+
+        layoutNodes.forEach(node => {
+            nodeMap.set(node.id, node);
+        });
+
         for (let iter = 0; iter < maxIterations; iter++) {
-            nodes.forEach(node => {
+            layoutNodes.forEach(node => {
                 node.fx = 0;
                 node.fy = 0;
                 node.fz = 0;
@@ -465,19 +429,13 @@ export class LayoutManager {
 
             // Spring forces
             edges.forEach(edge => {
-                let v1: EntityData | undefined;
-                let v2: EntityData | undefined;
+                const v1 = nodeMap.get(edge.source);
+                const v2 = nodeMap.get(edge.target);
 
-                if (typeof edge.start === 'number') v1 = nodes[edge.start];
-                else v1 = nodes.find(n => n.id === edge.start);
-
-                if (typeof edge.end === 'number') v2 = nodes[edge.end];
-                else v2 = nodes.find(n => n.id === edge.end);
-
-                if (v1 && v2) {
-                    const dx = v2.x - v1.x;
-                    const dy = v2.y - v1.y;
-                    const dz = v2.z - v1.z;
+                if (v1 && v2 && v1.position && v2.position) {
+                    const dx = v2.position.x - v1.position.x;
+                    const dy = v2.position.y - v1.position.y;
+                    const dz = v2.position.z - v1.position.z;
                     const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.01;
 
                     const force = springConstant * (distance - naturalLength);
@@ -485,20 +443,20 @@ export class LayoutManager {
                     const fy = (dy / distance) * force;
                     const fz = (dz / distance) * force;
 
-                    v1.fx += fx;
-                    v1.fy += fy;
-                    v1.fz += fz;
-                    v2.fx -= fx;
-                    v2.fy -= fy;
-                    v2.fz -= fz;
+                    v1.fx! += fx;
+                    v1.fy! += fy;
+                    v1.fz! += fz;
+                    v2.fx! -= fx;
+                    v2.fy! -= fy;
+                    v2.fz! -= fz;
                 }
             });
 
             // Repulsion forces
-            for (let i = 0; i < nodes.length; i++) {
-                for (let j = i + 1; j < nodes.length; j++) {
-                    const v1 = nodes[i];
-                    const v2 = nodes[j];
+            for (let i = 0; i < layoutNodes.length; i++) {
+                for (let j = i + 1; j < layoutNodes.length; j++) {
+                    const v1 = layoutNodes[i];
+                    const v2 = layoutNodes[j];
                     if (v1 && v2 && v1.position && v2.position) {
                         const dx = v2.position.x - v1.position.x;
                         const dy = v2.position.y - v1.position.y;
@@ -510,30 +468,21 @@ export class LayoutManager {
                         const fy = (dy / distance) * force;
                         const fz = (dz / distance) * force;
 
-                        // @ts-ignore
-                        v1.fx -= fx;
-                        // @ts-ignore
-                        v1.fy -= fy;
-                        // @ts-ignore
-                        v1.fz -= fz;
-                        // @ts-ignore
-                        v2.fx += fx;
-                        // @ts-ignore
-                        v2.fy += fy;
-                        // @ts-ignore
-                        v2.fz += fz;
+                        v1.fx! -= fx;
+                        v1.fy! -= fy;
+                        v1.fz! -= fz;
+                        v2.fx! += fx;
+                        v2.fy! += fy;
+                        v2.fz! += fz;
                     }
                 }
             }
 
             // Apply forces
-            nodes.forEach(node => {
+            layoutNodes.forEach(node => {
                 if (node.position) {
-                    // @ts-ignore (fx,fy,fz are temp props)
                     node.position.x += (node.fx || 0) * damping;
-                    // @ts-ignore
                     node.position.y += (node.fy || 0) * damping;
-                    // @ts-ignore
                     node.position.z += (node.fz || 0) * damping;
                 }
             });
@@ -543,7 +492,6 @@ export class LayoutManager {
     applyHierarchicalLayout(nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions) {
         const { levelHeight, nodeSpacing } = options;
 
-        // Simple hierarchical layout - arrange nodes in levels
         const levels = this.calculateNodeLevels(nodes, edges);
         const maxLevel = Math.max(...Object.values(levels));
 
@@ -569,43 +517,36 @@ export class LayoutManager {
     }
 
     applyTreeLayout(nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions) {
-        // Similar to hierarchical but with tree structure
         this.applyHierarchicalLayout(nodes, edges, options);
     }
 
     calculateNodeLevels(nodes: EntityData[], edges: RelationshipData[]) {
         const levels: { [key: string]: number } = {};
-        const visited = new Set<string | number>();
-        const adjacencyList: { [key: string]: (string | number)[] } = {};
+        const visited = new Set<string>();
+        const adjacencyList: { [key: string]: string[] } = {};
 
-        // Build adjacency list
         nodes.forEach(node => {
             adjacencyList[node.id] = [];
             levels[node.id] = 0;
         });
 
         edges.forEach(edge => {
-            // Assuming IDs for hierarchical layout for now, or need to resolve
-            const startId = typeof edge.source === 'number' ? nodes[edge.source]?.id : edge.source;
-            const endId = typeof edge.target === 'number' ? nodes[edge.target]?.id : edge.target;
-
-            if (startId !== undefined && endId !== undefined && adjacencyList[startId]) {
-                adjacencyList[startId].push(endId);
+            if (adjacencyList[edge.source]) {
+                adjacencyList[edge.source].push(edge.target);
             }
         });
 
-        // Find root nodes (nodes with no incoming edges)
         const incomingCount: { [key: string]: number } = {};
         nodes.forEach(node => incomingCount[node.id] = 0);
         edges.forEach(edge => {
-            const endId = typeof edge.target === 'number' ? nodes[edge.target]?.id : edge.target;
-            if (endId !== undefined) incomingCount[endId]++;
+            // Safe increment
+            if (incomingCount[edge.target] !== undefined) {
+                incomingCount[edge.target]++;
+            }
         });
-
 
         const roots = nodes.filter(node => incomingCount[node.id] === 0);
 
-        // BFS to assign levels
         const queue = roots.map(root => ({ id: root.id, level: 0 }));
 
         while (queue.length > 0) {
@@ -635,13 +576,11 @@ export class LayoutManager {
         return this.currentLayout;
     }
 
-    // Normalisiert Node-Positionen um das Netzwerk kompakt zu halten
     normalizeNodePositions(nodes: EntityData[], maxExtent = 10) {
         if (nodes.length === 0) return;
 
         if (!nodes[0].position) nodes[0].position = { x: 0, y: 0, z: 0 };
 
-        // Finde Bounding Box
         let minX = nodes[0].position!.x, maxX = nodes[0].position!.x;
         let minY = nodes[0].position!.y, maxY = nodes[0].position!.y;
         let minZ = nodes[0].position!.z, maxZ = nodes[0].position!.z;
@@ -656,21 +595,17 @@ export class LayoutManager {
             maxZ = Math.max(maxZ, node.position!.z);
         });
 
-        // Berechne aktuelle Ausdehnung
         const extentX = maxX - minX;
         const extentY = maxY - minY;
         const extentZ = maxZ - minZ;
         const maxCurrentExtent = Math.max(extentX, extentY, extentZ);
 
-        // Skalierungsfaktor berechnen
         const scale = maxCurrentExtent > 0 ? maxExtent / maxCurrentExtent : 1;
 
-        // Zentrum berechnen
         const centerX = (minX + maxX) / 2;
         const centerY = (minY + maxY) / 2;
         const centerZ = (minZ + maxZ) / 2;
 
-        // Nodes skalieren und zentrieren
         nodes.forEach(node => {
             if (node.position) {
                 node.position.x = (node.position.x - centerX) * scale;

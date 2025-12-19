@@ -1,12 +1,11 @@
+// App.ts - Reload Trigger 2025-12-17 00:10
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { StateManager } from './core/StateManager';
-// @ts-ignore
 import { NodeManager } from './core/NodeManager';
 import { CentralEventManager } from './core/CentralEventManager';
 // @ts-ignore
 import { InteractionManager } from './core/InteractionManager';
-// @ts-ignore
 import { LayoutManager } from './core/LayoutManager';
 // @ts-ignore
 import { UIManager } from './core/UIManager';
@@ -53,7 +52,7 @@ import { EdgeObjectsManager } from './core/EdgeObjectsManager';
 import { DataParser } from './core/DataParser';
 // @ts-ignore
 import { VisualMappingEngine } from './core/VisualMappingEngine';
-import { GraphData, EntityData, RelationshipData, VisualProperties } from './types';
+import { GraphData, EntityData, RelationshipData, NodeObject } from './types';
 
 import './styles/main.css';
 
@@ -72,7 +71,7 @@ export class App {
     public stateManager: StateManager;
     public centralEventManager: any;
     public interactionManager: any;
-    public layoutManager: any;
+    public layoutManager!: LayoutManager;
     public uiManager: any;
     public selectionManager: any;
     public raycastManager: any;
@@ -105,7 +104,7 @@ export class App {
     // Legacy support (DEPRECATED - mapped to entities)
     // public currentNodes: any[] = [];
     // public currentEdges: any[] = [];
-    public nodeObjects: any[] = [];
+    public nodeObjects: NodeObject[] = [];
     public edgeObjects: any[] = [];
 
     private _isInitialized: boolean = false;
@@ -128,7 +127,7 @@ export class App {
 
         this.visualMappingEngine = new VisualMappingEngine();
         this.nodeManager = new NodeManager(this.scene, this.visualMappingEngine);
-        this.edgeObjectsManager = new EdgeObjectsManager(this.scene);
+        this.edgeObjectsManager = new EdgeObjectsManager(this.scene, this.visualMappingEngine, this.stateManager);
 
         this.init();
     }
@@ -149,7 +148,7 @@ export class App {
     }
 
     async initThreeJS() {
-        this.scene.background = new THREE.Color(0xfa5a1a);
+        this.scene.background = new THREE.Color();
         this.camera.position.set(10, 10, 10);
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -212,7 +211,7 @@ export class App {
         this.layoutManager = new LayoutManager();
         this.glowEffect = new GlowEffect();
         this.glowEffect = new GlowEffect();
-        this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect, this.scene, this.nodeManager);
+        this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect, this.scene, this.nodeManager, this.edgeObjectsManager);
         this.uiManager = new UIManager(this);
 
         this.centralEventManager = new CentralEventManager(this.camera, this.renderer, this.stateManager, this.nodeManager, this.edgeObjectsManager, this.scene);
@@ -266,6 +265,11 @@ export class App {
                 infoPanelCollapsed: false,
             });
 
+            // Clear raycast cache
+            if (this.raycastManager && this.raycastManager.clearCache) {
+                this.raycastManager.clearCache();
+            }
+
             const response = await fetch(url);
             const rawData = await response.json();
 
@@ -279,6 +283,9 @@ export class App {
             // Set visual mappings if available
             if (this.currentGraphData.visualMappings) {
                 this.visualMappingEngine.setVisualMappings(this.currentGraphData.visualMappings);
+                if (this.uiManager) {
+                    this.uiManager.updateVisualMappings(this.currentGraphData.visualMappings);
+                }
             }
 
             // Store data directly
@@ -400,6 +407,24 @@ export class App {
         }
     }
 
+    public updateVisualMappings(mappings: any) {
+        if (!this.currentGraphData) return;
+        this.currentGraphData.visualMappings = mappings; // Persist in data
+        this.visualMappingEngine.setVisualMappings(mappings);
+
+        // Re-apply to nodes
+        if (this.nodeManager) {
+            this.nodeManager.updateNodes(this.currentEntities);
+        }
+
+        // Re-apply to edges
+        if (this.edgeObjectsManager) {
+            this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
+        }
+
+        // Re-render scene (implicit in animate loop, but ensuring robust update)
+    }
+
     fitCameraToScene() {
         if (this.currentEntities.length === 0) return;
         const bounds = this.calculateBounds(this.currentEntities);
@@ -443,11 +468,11 @@ export class App {
         if (this.frameCounter % 300 === 0) {
             //console.log(`[TRACE] Render Loop (Frame ${this.frameCounter})`);
             //console.log(`[TRACE] Camera Pos: ${this.camera.position.x.toFixed(1)}, ${this.camera.position.y.toFixed(1)}, ${this.camera.position.z.toFixed(1)}`);
-            const nodeMeshes = this.scene.children.filter(c => c.type === 'InstancedMesh');
-            //console.log(`[TRACE] Scene Children: ${this.scene.children.length}, InstancedMeshes: ${nodeMeshes.length}`);
-            nodeMeshes.forEach((mesh: any, i) => {
-                //  console.log(`[TRACE] Mesh ${i}: count=${mesh.count}, visible=${mesh.visible}`);
-            });
+            // const nodeMeshes = this.scene.children.filter(c => c.type === 'InstancedMesh');
+            // //console.log(`[TRACE] Scene Children: ${this.scene.children.length}, InstancedMeshes: ${nodeMeshes.length}`);
+            // // nodeMeshes.forEach((mesh: any, i) => {
+            // //      console.log(`[TRACE] Mesh ${i}: count=${mesh.count}, visible=${mesh.visible}`);
+            // // });
         }
     }
 }

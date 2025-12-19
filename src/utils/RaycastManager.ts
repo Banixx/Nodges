@@ -47,47 +47,15 @@ export class RaycastManager {
         // Perform raycast against only interactive meshes
         const intersects = this.raycaster.intersectObjects(interactiveMeshes, false);
 
-        // 1. Check for Edges first (Mesh with userData.type === 'edge')
+        // 1. Check for Edges (Mesh with curve data)
         const edgeIntersect = intersects.find(intersect =>
-            intersect.object.userData && intersect.object.userData.type === 'edge'
+            intersect.object.userData &&
+            intersect.object.userData.type === 'edge' &&
+            intersect.object.userData.curve
         );
 
         if (edgeIntersect) {
-            const mesh = edgeIntersect.object;
-            const instanceId = edgeIntersect.instanceId !== undefined ? edgeIntersect.instanceId : undefined;
-
-            if (this.edgeObjectsManager && instanceId !== undefined) {
-                // Retrieve EdgeData from manager using instanceId
-                const edgeData = this.edgeObjectsManager.getInstanceData(instanceId);
-
-                if (edgeData && this.nodeManager) {
-                    // Create a proxy object for the edge
-                    const dummyEdge = new THREE.Object3D();
-
-                    // Get start and end node positions
-                    // Assuming edgeData uses 'source'/'target' or mapped 'start'/'end'
-                    // App.ts mapped source->start, target->end.
-                    const startId = String(edgeData.start || edgeData.source);
-                    const endId = String(edgeData.end || edgeData.target);
-                    const startNode = this.nodeManager.getNodeData(startId);
-                    const endNode = this.nodeManager.getNodeData(endId);
-
-                    if (startNode && endNode && startNode.position && endNode.position) {
-                        dummyEdge.userData = {
-                            type: 'edge',
-                            edge: edgeData,
-                            start: { x: startNode.position.x, y: startNode.position.y, z: startNode.position.z },
-                            end: { x: endNode.position.x, y: endNode.position.y, z: endNode.position.z },
-                            originalObject: mesh
-                        };
-                        return dummyEdge;
-                    }
-                }
-            }
-            // Fallback
-            if (mesh.userData.type === 'edge') {
-                return mesh;
-            }
+            return edgeIntersect.object;
         }
 
         // 2. Check for Nodes (InstancedMesh)
@@ -109,8 +77,8 @@ export class RaycastManager {
 
                 dummyNode.userData = {
                     type: 'node',
-                    node: { data: nodeData }, // Structure expected by UIManager/InteractionManager
-                    nodeData: nodeData,       // Direct access
+                    node: { data: nodeData },
+                    nodeData: nodeData,
                     geometryType: geometryType,
                     id: nodeData.id,
                     instanceId: nodeIntersect.instanceId

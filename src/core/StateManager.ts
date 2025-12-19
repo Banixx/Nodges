@@ -24,6 +24,13 @@ export interface State {
     isInteractionEnabled: boolean;
     currentTool: string;
 
+    // Edge Parameters
+    edgeThickness: number;
+    edgeTubularSegments: number;
+    edgeRadialSegments: number;
+    edgeCurveFactor: number;
+    edgePulseSpeed: number;
+
     // Layout
     layoutEnabled: boolean;
     [key: string]: any; // Allow for dynamic properties during migration
@@ -61,6 +68,13 @@ export class StateManager {
             // System States
             isInteractionEnabled: true,
             currentTool: 'select',
+
+            // Edge Parameters
+            edgeThickness: 0.1,
+            edgeTubularSegments: 20,
+            edgeRadialSegments: 8,
+            edgeCurveFactor: 0.4,
+            edgePulseSpeed: 1.0,
 
             layoutEnabled: true
         };
