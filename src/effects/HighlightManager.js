@@ -159,16 +159,23 @@ export class HighlightManager {
             return; // Keine Kurve verfügbar
         }
 
-        // Hole aktuelle Dicke aus dem StateManager
-        const edgeThickness = this.stateManager?.state?.edgeThickness || 0.1;
-        const highlightRadius = edgeThickness * 1.5; // Highlight etwas dicker als die Edge selbst
+        // Hole Geometrie-Parameter direkt von der Original-Edge
+        const edgeParams = edge.geometry?.parameters;
+        const state = this.stateManager?.state;
 
-        // Erstelle eine TubeGeometry mit proportionalem Radius für den Umriss
+        const tubularSegments = edgeParams?.tubularSegments || state?.edgeTubularSegments || 40;
+        const radialSegments = edgeParams?.radialSegments || state?.edgeRadialSegments || 8;
+        const originalRadius = edgeParams?.radius || state?.edgeThickness || 0.1;
+
+        // Highlight-Radius proportional zur Original-Kante
+        const highlightRadius = originalRadius * 1.05; // Minimaler Versatz für sauberes Outline
+
+        // Erstelle eine TubeGeometry mit exakt synchronisierten Parametern
         const outlineGeometry = new THREE.TubeGeometry(
             curve,
-            40,               // tubularSegments (für sichtbare Kurve)
-            highlightRadius,  // radius der Röhre (proportional zur Kante)
-            8,                // radialSegments
+            tubularSegments,  // Gleiche Segmentanzahl wie das Original
+            highlightRadius,  // Proportionaler Radius
+            radialSegments,   // Gleiche Facettenanzahl wie das Original
             false             // geschlossen?
         );
 
