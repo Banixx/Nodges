@@ -1,0 +1,1292 @@
+{
+  "system": "Nodges 2.0",
+  "metadata": {
+    "created": "2025-12-19T18:17:36.906Z",
+    "version": "1.0",
+    "description": "Pulse Test Dataset"
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "n1",
+        "label": "Node 1",
+        "type": "test-node",
+        "position": {
+          "x": -15.994386700082197,
+          "y": -3.925659556889567,
+          "z": 17.590868768031186
+        }
+      },
+      {
+        "id": "n2",
+        "label": "Node 2",
+        "type": "test-node",
+        "position": {
+          "x": 5.23481473240323,
+          "y": 16.77480090988997,
+          "z": -6.5398306214466295
+        }
+      },
+      {
+        "id": "n3",
+        "label": "Node 3",
+        "type": "test-node",
+        "position": {
+          "x": 2.9931506207019893,
+          "y": 19.513879900420847,
+          "z": 18.86484428253847
+        }
+      },
+      {
+        "id": "n4",
+        "label": "Node 4",
+        "type": "test-node",
+        "position": {
+          "x": 4.798543954552336,
+          "y": -6.586364734606791,
+          "z": -2.4271739441435614
+        }
+      },
+      {
+        "id": "n5",
+        "label": "Node 5",
+        "type": "test-node",
+        "position": {
+          "x": 18.889979669689403,
+          "y": -13.367897814583793,
+          "z": 4.5294966998401165
+        }
+      },
+      {
+        "id": "n6",
+        "label": "Node 6",
+        "type": "test-node",
+        "position": {
+          "x": 9.942255191133043,
+          "y": 11.271504973951451,
+          "z": -15.76631820570955
+        }
+      },
+      {
+        "id": "n7",
+        "label": "Node 7",
+        "type": "test-node",
+        "position": {
+          "x": -0.5084529607962125,
+          "y": 6.961363762077852,
+          "z": -12.661638282820888
+        }
+      },
+      {
+        "id": "n8",
+        "label": "Node 8",
+        "type": "test-node",
+        "position": {
+          "x": -6.997600471571284,
+          "y": 8.51379774024884,
+          "z": 16.55509018758
+        }
+      },
+      {
+        "id": "n9",
+        "label": "Node 9",
+        "type": "test-node",
+        "position": {
+          "x": -18.395274471559773,
+          "y": 15.665087848259809,
+          "z": 19.547930119998604
+        }
+      },
+      {
+        "id": "n10",
+        "label": "Node 10",
+        "type": "test-node",
+        "position": {
+          "x": -16.617135759694683,
+          "y": -16.483373674782456,
+          "z": 15.277108603758535
+        }
+      },
+      {
+        "id": "n11",
+        "label": "Node 11",
+        "type": "test-node",
+        "position": {
+          "x": -8.447071337756471,
+          "y": -3.461934293013318,
+          "z": -11.645474035778749
+        }
+      },
+      {
+        "id": "n12",
+        "label": "Node 12",
+        "type": "test-node",
+        "position": {
+          "x": 11.422813343011981,
+          "y": -18.360605423901887,
+          "z": -17.60542012358232
+        }
+      },
+      {
+        "id": "n13",
+        "label": "Node 13",
+        "type": "test-node",
+        "position": {
+          "x": -16.38963665423752,
+          "y": 19.71331548660382,
+          "z": -8.104469085764094
+        }
+      },
+      {
+        "id": "n14",
+        "label": "Node 14",
+        "type": "test-node",
+        "position": {
+          "x": -4.629980021451221,
+          "y": 7.999470779749611,
+          "z": 19.816347057865855
+        }
+      },
+      {
+        "id": "n15",
+        "label": "Node 15",
+        "type": "test-node",
+        "position": {
+          "x": -11.606505059858323,
+          "y": 7.613193911815266,
+          "z": -8.630085926659152
+        }
+      },
+      {
+        "id": "n16",
+        "label": "Node 16",
+        "type": "test-node",
+        "position": {
+          "x": -5.33742119250177,
+          "y": 14.26777747016041,
+          "z": 12.788564402140715
+        }
+      },
+      {
+        "id": "n17",
+        "label": "Node 17",
+        "type": "test-node",
+        "position": {
+          "x": 2.208330718185401,
+          "y": -2.4303808895029633,
+          "z": -11.903844820266167
+        }
+      },
+      {
+        "id": "n18",
+        "label": "Node 18",
+        "type": "test-node",
+        "position": {
+          "x": -7.933520998689119,
+          "y": -7.861665724319522,
+          "z": -19.943504318773044
+        }
+      },
+      {
+        "id": "n19",
+        "label": "Node 19",
+        "type": "test-node",
+        "position": {
+          "x": 2.1201407980990723,
+          "y": -16.198165014386518,
+          "z": -11.865107382968452
+        }
+      },
+      {
+        "id": "n20",
+        "label": "Node 20",
+        "type": "test-node",
+        "position": {
+          "x": -16.64585006978138,
+          "y": 4.721578346834853,
+          "z": 3.797316906086124
+        }
+      },
+      {
+        "id": "n21",
+        "label": "Node 21",
+        "type": "test-node",
+        "position": {
+          "x": -15.064033979049771,
+          "y": 4.445605793261443,
+          "z": -3.549185196317808
+        }
+      },
+      {
+        "id": "n22",
+        "label": "Node 22",
+        "type": "test-node",
+        "position": {
+          "x": -10.82143397034117,
+          "y": -11.746506260976322,
+          "z": 5.1585455786131895
+        }
+      },
+      {
+        "id": "n23",
+        "label": "Node 23",
+        "type": "test-node",
+        "position": {
+          "x": -11.447350318947125,
+          "y": 18.352953843594406,
+          "z": 16.118140908530464
+        }
+      },
+      {
+        "id": "n24",
+        "label": "Node 24",
+        "type": "test-node",
+        "position": {
+          "x": -3.273460988546219,
+          "y": 10.774089263229065,
+          "z": -5.194235123266742
+        }
+      },
+      {
+        "id": "n25",
+        "label": "Node 25",
+        "type": "test-node",
+        "position": {
+          "x": -0.5090098353856298,
+          "y": -12.131175694261414,
+          "z": 13.15680315416035
+        }
+      },
+      {
+        "id": "n26",
+        "label": "Node 26",
+        "type": "test-node",
+        "position": {
+          "x": 0.7518214482049679,
+          "y": -11.65467073071131,
+          "z": 14.804632348860885
+        }
+      },
+      {
+        "id": "n27",
+        "label": "Node 27",
+        "type": "test-node",
+        "position": {
+          "x": -16.339917243764095,
+          "y": 2.03891405600622,
+          "z": 2.164011443522405
+        }
+      },
+      {
+        "id": "n28",
+        "label": "Node 28",
+        "type": "test-node",
+        "position": {
+          "x": -6.649921729272634,
+          "y": -8.284680502015966,
+          "z": 18.050355539824494
+        }
+      },
+      {
+        "id": "n29",
+        "label": "Node 29",
+        "type": "test-node",
+        "position": {
+          "x": -1.2057792913407255,
+          "y": -18.68192904381356,
+          "z": -0.473541973630482
+        }
+      },
+      {
+        "id": "n30",
+        "label": "Node 30",
+        "type": "test-node",
+        "position": {
+          "x": 15.821316574455977,
+          "y": 5.421200898406269,
+          "z": 19.05751582266361
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "e1",
+        "source": "n23",
+        "target": "n2",
+        "type": "connects",
+        "color": "#651bf3",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e2",
+        "source": "n26",
+        "target": "n23",
+        "type": "connects",
+        "color": "#847bca",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e3",
+        "source": "n29",
+        "target": "n14",
+        "type": "connects",
+        "color": "#b0d5e9",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e4",
+        "source": "n4",
+        "target": "n21",
+        "type": "connects",
+        "color": "#538ff5",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e5",
+        "source": "n22",
+        "target": "n6",
+        "type": "connects",
+        "color": "#b2d6f3",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e6",
+        "source": "n25",
+        "target": "n8",
+        "type": "connects",
+        "color": "#bd029f",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e7",
+        "source": "n5",
+        "target": "n11",
+        "type": "connects",
+        "color": "#0c3a7e",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e8",
+        "source": "n17",
+        "target": "n29",
+        "type": "connects",
+        "color": "#2b0f84",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e9",
+        "source": "n1",
+        "target": "n11",
+        "type": "connects",
+        "color": "#cfb5d8",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e10",
+        "source": "n4",
+        "target": "n30",
+        "type": "connects",
+        "color": "#2f4a26",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e11",
+        "source": "n6",
+        "target": "n13",
+        "type": "connects",
+        "color": "#823103",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e12",
+        "source": "n8",
+        "target": "n20",
+        "type": "connects",
+        "color": "#532cb3",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e13",
+        "source": "n4",
+        "target": "n5",
+        "type": "connects",
+        "color": "#f8758c",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e14",
+        "source": "n6",
+        "target": "n15",
+        "type": "connects",
+        "color": "#06677a",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e15",
+        "source": "n21",
+        "target": "n3",
+        "type": "connects",
+        "color": "#614773",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e16",
+        "source": "n20",
+        "target": "n19",
+        "type": "connects",
+        "color": "#ce6ff1",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e17",
+        "source": "n15",
+        "target": "n26",
+        "type": "connects",
+        "color": "#8369cb",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e18",
+        "source": "n26",
+        "target": "n3",
+        "type": "connects",
+        "color": "#21c109",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e19",
+        "source": "n16",
+        "target": "n4",
+        "type": "connects",
+        "color": "#7b3909",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e20",
+        "source": "n7",
+        "target": "n30",
+        "type": "connects",
+        "color": "#7dcbac",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e21",
+        "source": "n15",
+        "target": "n20",
+        "type": "connects",
+        "color": "#a7d60c",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e22",
+        "source": "n23",
+        "target": "n30",
+        "type": "connects",
+        "color": "#cd1bd0",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e23",
+        "source": "n15",
+        "target": "n20",
+        "type": "connects",
+        "color": "#4325b8",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e24",
+        "source": "n21",
+        "target": "n19",
+        "type": "connects",
+        "color": "#b0767a",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e25",
+        "source": "n2",
+        "target": "n23",
+        "type": "connects",
+        "color": "#ec0eb5",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e26",
+        "source": "n30",
+        "target": "n25",
+        "type": "connects",
+        "color": "#4dc0f7",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e27",
+        "source": "n11",
+        "target": "n16",
+        "type": "connects",
+        "color": "#295773",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e28",
+        "source": "n9",
+        "target": "n16",
+        "type": "connects",
+        "color": "#74b625",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e29",
+        "source": "n29",
+        "target": "n24",
+        "type": "connects",
+        "color": "#684fcc",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e30",
+        "source": "n21",
+        "target": "n11",
+        "type": "connects",
+        "color": "#51825e",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e31",
+        "source": "n19",
+        "target": "n7",
+        "type": "connects",
+        "color": "#633263",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e32",
+        "source": "n12",
+        "target": "n14",
+        "type": "connects",
+        "color": "#c819f8",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e33",
+        "source": "n12",
+        "target": "n23",
+        "type": "connects",
+        "color": "#c4c537",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e34",
+        "source": "n9",
+        "target": "n1",
+        "type": "connects",
+        "color": "#a2f529",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e35",
+        "source": "n28",
+        "target": "n21",
+        "type": "connects",
+        "color": "#293b92",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e36",
+        "source": "n29",
+        "target": "n7",
+        "type": "connects",
+        "color": "#8ee0ca",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e37",
+        "source": "n7",
+        "target": "n6",
+        "type": "connects",
+        "color": "#022fba",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e38",
+        "source": "n23",
+        "target": "n17",
+        "type": "connects",
+        "color": "#0050fc",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e39",
+        "source": "n27",
+        "target": "n30",
+        "type": "connects",
+        "color": "#9f2144",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e40",
+        "source": "n26",
+        "target": "n28",
+        "type": "connects",
+        "color": "#987272",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e41",
+        "source": "n12",
+        "target": "n23",
+        "type": "connects",
+        "color": "#9fbee9",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e42",
+        "source": "n13",
+        "target": "n4",
+        "type": "connects",
+        "color": "#e46052",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e43",
+        "source": "n21",
+        "target": "n28",
+        "type": "connects",
+        "color": "#12ca46",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e44",
+        "source": "n6",
+        "target": "n8",
+        "type": "connects",
+        "color": "#913e5e",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e45",
+        "source": "n17",
+        "target": "n23",
+        "type": "connects",
+        "color": "#194516",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e46",
+        "source": "n16",
+        "target": "n26",
+        "type": "connects",
+        "color": "#8bcdd3",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e47",
+        "source": "n20",
+        "target": "n22",
+        "type": "connects",
+        "color": "#9d4cc4",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e48",
+        "source": "n19",
+        "target": "n20",
+        "type": "connects",
+        "color": "#0d0e0a",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e49",
+        "source": "n3",
+        "target": "n18",
+        "type": "connects",
+        "color": "#3a4a93",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e50",
+        "source": "n8",
+        "target": "n13",
+        "type": "connects",
+        "color": "#613b10",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e51",
+        "source": "n18",
+        "target": "n26",
+        "type": "connects",
+        "color": "#24e2b2",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e52",
+        "source": "n16",
+        "target": "n10",
+        "type": "connects",
+        "color": "#25f1f7",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e53",
+        "source": "n12",
+        "target": "n30",
+        "type": "connects",
+        "color": "#45ad81",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e54",
+        "source": "n29",
+        "target": "n7",
+        "type": "connects",
+        "color": "#87eda7",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e55",
+        "source": "n20",
+        "target": "n14",
+        "type": "connects",
+        "color": "#d8a909",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e56",
+        "source": "n17",
+        "target": "n2",
+        "type": "connects",
+        "color": "#202d2b",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e57",
+        "source": "n7",
+        "target": "n9",
+        "type": "connects",
+        "color": "#f5ec0c",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e58",
+        "source": "n19",
+        "target": "n13",
+        "type": "connects",
+        "color": "#9c8374",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e59",
+        "source": "n2",
+        "target": "n12",
+        "type": "connects",
+        "color": "#430b7e",
+        "pulse": {
+          "frequency": 1
+        }
+      },
+      {
+        "id": "e60",
+        "source": "n10",
+        "target": "n20",
+        "type": "connects",
+        "color": "#26918b",
+        "pulse": {
+          "frequency": "heartbeat"
+        }
+      },
+      {
+        "id": "e61",
+        "source": "n27",
+        "target": "n3",
+        "type": "connects",
+        "color": "#371603"
+      },
+      {
+        "id": "e62",
+        "source": "n14",
+        "target": "n16",
+        "type": "connects",
+        "color": "#5212cc"
+      },
+      {
+        "id": "e63",
+        "source": "n19",
+        "target": "n15",
+        "type": "connects",
+        "color": "#8fe94e"
+      },
+      {
+        "id": "e64",
+        "source": "n24",
+        "target": "n1",
+        "type": "connects",
+        "color": "#477b70"
+      },
+      {
+        "id": "e65",
+        "source": "n9",
+        "target": "n11",
+        "type": "connects",
+        "color": "#a5cae8"
+      },
+      {
+        "id": "e66",
+        "source": "n29",
+        "target": "n22",
+        "type": "connects",
+        "color": "#9552c1"
+      },
+      {
+        "id": "e67",
+        "source": "n26",
+        "target": "n30",
+        "type": "connects",
+        "color": "#319e9f"
+      },
+      {
+        "id": "e68",
+        "source": "n21",
+        "target": "n15",
+        "type": "connects",
+        "color": "#575b6a"
+      },
+      {
+        "id": "e69",
+        "source": "n30",
+        "target": "n17",
+        "type": "connects",
+        "color": "#021e12"
+      },
+      {
+        "id": "e70",
+        "source": "n8",
+        "target": "n15",
+        "type": "connects",
+        "color": "#347fb3"
+      },
+      {
+        "id": "e71",
+        "source": "n7",
+        "target": "n28",
+        "type": "connects",
+        "color": "#79b802"
+      },
+      {
+        "id": "e72",
+        "source": "n23",
+        "target": "n19",
+        "type": "connects",
+        "color": "#804328"
+      },
+      {
+        "id": "e73",
+        "source": "n27",
+        "target": "n3",
+        "type": "connects",
+        "color": "#86a64b"
+      },
+      {
+        "id": "e74",
+        "source": "n22",
+        "target": "n27",
+        "type": "connects",
+        "color": "#31cf4e"
+      },
+      {
+        "id": "e75",
+        "source": "n18",
+        "target": "n29",
+        "type": "connects",
+        "color": "#06cb82"
+      },
+      {
+        "id": "e76",
+        "source": "n25",
+        "target": "n2",
+        "type": "connects",
+        "color": "#1ff781"
+      },
+      {
+        "id": "e77",
+        "source": "n23",
+        "target": "n2",
+        "type": "connects",
+        "color": "#781001"
+      },
+      {
+        "id": "e78",
+        "source": "n4",
+        "target": "n10",
+        "type": "connects",
+        "color": "#234868"
+      },
+      {
+        "id": "e79",
+        "source": "n7",
+        "target": "n20",
+        "type": "connects",
+        "color": "#b4199d"
+      },
+      {
+        "id": "e80",
+        "source": "n25",
+        "target": "n10",
+        "type": "connects",
+        "color": "#ae6179"
+      },
+      {
+        "id": "e81",
+        "source": "n12",
+        "target": "n16",
+        "type": "connects",
+        "color": "#e4e8af"
+      },
+      {
+        "id": "e82",
+        "source": "n19",
+        "target": "n29",
+        "type": "connects",
+        "color": "#fd21c0"
+      },
+      {
+        "id": "e83",
+        "source": "n28",
+        "target": "n13",
+        "type": "connects",
+        "color": "#5659ad"
+      },
+      {
+        "id": "e84",
+        "source": "n29",
+        "target": "n25",
+        "type": "connects",
+        "color": "#56cfd0"
+      },
+      {
+        "id": "e85",
+        "source": "n8",
+        "target": "n18",
+        "type": "connects",
+        "color": "#b9c3bc"
+      },
+      {
+        "id": "e86",
+        "source": "n11",
+        "target": "n1",
+        "type": "connects",
+        "color": "#95286b"
+      },
+      {
+        "id": "e87",
+        "source": "n12",
+        "target": "n8",
+        "type": "connects",
+        "color": "#5327c6"
+      },
+      {
+        "id": "e88",
+        "source": "n17",
+        "target": "n5",
+        "type": "connects",
+        "color": "#cb7383"
+      },
+      {
+        "id": "e89",
+        "source": "n9",
+        "target": "n19",
+        "type": "connects",
+        "color": "#860164"
+      },
+      {
+        "id": "e90",
+        "source": "n15",
+        "target": "n27",
+        "type": "connects",
+        "color": "#ff4007"
+      },
+      {
+        "id": "e91",
+        "source": "n22",
+        "target": "n24",
+        "type": "connects",
+        "color": "#fe3aee"
+      },
+      {
+        "id": "e92",
+        "source": "n29",
+        "target": "n25",
+        "type": "connects",
+        "color": "#730adc"
+      },
+      {
+        "id": "e93",
+        "source": "n10",
+        "target": "n30",
+        "type": "connects",
+        "color": "#a70aa1"
+      },
+      {
+        "id": "e94",
+        "source": "n23",
+        "target": "n17",
+        "type": "connects",
+        "color": "#760620"
+      },
+      {
+        "id": "e95",
+        "source": "n5",
+        "target": "n10",
+        "type": "connects",
+        "color": "#809a9b"
+      },
+      {
+        "id": "e96",
+        "source": "n20",
+        "target": "n21",
+        "type": "connects",
+        "color": "#be8422"
+      },
+      {
+        "id": "e97",
+        "source": "n21",
+        "target": "n6",
+        "type": "connects",
+        "color": "#a27c4f"
+      },
+      {
+        "id": "e98",
+        "source": "n27",
+        "target": "n29",
+        "type": "connects",
+        "color": "#1b6ed8"
+      },
+      {
+        "id": "e99",
+        "source": "n5",
+        "target": "n25",
+        "type": "connects",
+        "color": "#56ceda"
+      },
+      {
+        "id": "e100",
+        "source": "n23",
+        "target": "n14",
+        "type": "connects",
+        "color": "#67a782"
+      },
+      {
+        "id": "e101",
+        "source": "n3",
+        "target": "n28",
+        "type": "connects",
+        "color": "#4431ef"
+      },
+      {
+        "id": "e102",
+        "source": "n27",
+        "target": "n17",
+        "type": "connects",
+        "color": "#57f288"
+      },
+      {
+        "id": "e103",
+        "source": "n27",
+        "target": "n26",
+        "type": "connects",
+        "color": "#055be8"
+      },
+      {
+        "id": "e104",
+        "source": "n6",
+        "target": "n8",
+        "type": "connects",
+        "color": "#acfe82"
+      },
+      {
+        "id": "e105",
+        "source": "n7",
+        "target": "n19",
+        "type": "connects",
+        "color": "#3e8cf2"
+      },
+      {
+        "id": "e106",
+        "source": "n13",
+        "target": "n7",
+        "type": "connects",
+        "color": "#df5872"
+      },
+      {
+        "id": "e107",
+        "source": "n2",
+        "target": "n27",
+        "type": "connects",
+        "color": "#86a076"
+      },
+      {
+        "id": "e108",
+        "source": "n1",
+        "target": "n30",
+        "type": "connects",
+        "color": "#d13ec7"
+      },
+      {
+        "id": "e109",
+        "source": "n5",
+        "target": "n19",
+        "type": "connects",
+        "color": "#e635f1"
+      },
+      {
+        "id": "e110",
+        "source": "n9",
+        "target": "n19",
+        "type": "connects",
+        "color": "#52ad30"
+      },
+      {
+        "id": "e111",
+        "source": "n1",
+        "target": "n15",
+        "type": "connects",
+        "color": "#926fa3"
+      },
+      {
+        "id": "e112",
+        "source": "n23",
+        "target": "n20",
+        "type": "connects",
+        "color": "#028f6e"
+      },
+      {
+        "id": "e113",
+        "source": "n12",
+        "target": "n16",
+        "type": "connects",
+        "color": "#d049cb"
+      },
+      {
+        "id": "e114",
+        "source": "n14",
+        "target": "n29",
+        "type": "connects",
+        "color": "#0828fd"
+      }
+    ]
+  }
+}

@@ -80,10 +80,21 @@ export class EdgeObjectsManager {
                     // Apply Visual Mapping
                     const visual = this.visualMappingEngine.applyToRelationship(edgeData as RelationshipData);
 
+                    // Determine color: priority to visual mapping, then direct color property, then default
                     let colorHex = 0xaaaaaa;
                     let baseColor = new THREE.Color(0xaaaaaa);
 
-                    if (visual.color) {
+                    const directColor = (edgeData as any).color || (edgeData as any).visualColor;
+                    if (visual.color && visual.color instanceof THREE.Color && visual.color.getHex() !== 0xb498db) {
+                        // Mapped color (different from default)
+                        baseColor.copy(visual.color);
+                        colorHex = baseColor.getHex();
+                    } else if (directColor) {
+                        // Direct color from JSON
+                        baseColor.set(directColor);
+                        colorHex = baseColor.getHex();
+                    } else if (visual.color) {
+                        // Default mapped color
                         if (visual.color instanceof THREE.Color) baseColor.copy(visual.color);
                         else baseColor.set(visual.color);
                         colorHex = baseColor.getHex();
@@ -122,11 +133,24 @@ export class EdgeObjectsManager {
                     }
 
                     // Animation Detection (Pulse)
-                    const anim = visual.animation || visual.glow;
-                    if (anim && typeof anim === 'object' && anim.type === 'pulse') {
+                    // Priority: Explicit pulse object in data, then mapped animation/glow
+                    let pulseAnim = (edgeData as any).pulse;
+                    if (pulseAnim) {
+                        if (typeof pulseAnim === 'object' && !pulseAnim.type) {
+                            pulseAnim = { ...pulseAnim, type: 'pulse' };
+                        }
+                        console.log(`[Pulse] Found direct pulse for edge ${edgeData.id}`, pulseAnim);
+                    } else {
+                        const mappedAnim = visual.animation; // Removed visual.glow dependency
+                        if (mappedAnim && typeof mappedAnim === 'object' && (mappedAnim.type === 'pulse')) {
+                            pulseAnim = mappedAnim;
+                        }
+                    }
+
+                    if (pulseAnim && (pulseAnim.type === 'pulse' || pulseAnim.frequency)) {
                         this.animatedEdges.push({
                             baseColor: baseColor.clone(),
-                            pulse: anim,
+                            pulse: pulseAnim,
                             obj: edgeObj
                         });
                     }
@@ -168,19 +192,79 @@ export class EdgeObjectsManager {
         if (this.animatedEdges.length === 0) return;
 
         const time = Date.now() * 0.001;
+        const state = this.stateManager.state;
+        const mode = state.edgeAnimationMode;
+
+        const highlightColor = new THREE.Color(0xffffff);
         const tempColor = new THREE.Color();
 
         this.animatedEdges.forEach(item => {
-            const state = this.stateManager.state;
-            const baseFreq = item.pulse.frequency === 'heartbeat' ? 2.0 : (item.pulse.frequency || 1.0);
+            const mesh = item.obj.tube;
+            if (!mesh || !mesh.geometry) return;
+
+            const geometry = mesh.geometry as THREE.TubeGeometry;
+            const colors = geometry.attributes.color;
+            if (!colors) return;
+
+            const tubularSegments = geometry.parameters.tubularSegments;
+            const radialSegments = geometry.parameters.radialSegments;
+            const vertexCount = colors.count;
+
+            const baseFreq = item.pulse.frequency === 'heartbeat' ? 2.0 : (parseFloat(item.pulse.frequency) || 1.0);
             const freq = baseFreq * state.edgePulseSpeed;
-            const intensity = (Math.sin(time * freq * Math.PI) + 1) * 0.5; // 0..1
 
-            tempColor.copy(item.baseColor);
-            tempColor.lerp(new THREE.Color(0xffffff), intensity * 0.5);
+            if (mode === 'pulse') {
+                // Klassisches Pulsieren (Material-Farbe)
+                const intensity = (Math.sin(time * freq * Math.PI) + 1) * 0.5;
+                tempColor.copy(item.baseColor).lerp(highlightColor, intensity * 0.7);
+                (mesh.material as THREE.MeshPhongMaterial).color.copy(tempColor);
 
-            if (item.obj.tube && item.obj.tube.material) {
-                (item.obj.tube.material as THREE.MeshPhongMaterial).color.copy(tempColor);
+                // Reset Vertex Colors falls vorher ein anderer Mode aktiv war
+                if (colors.needsUpdate === false) {
+                    for (let i = 0; i < vertexCount; i++) {
+                        colors.setXYZ(i, 1, 1, 1); // Materialfarbe dominiert
+                    }
+                    colors.needsUpdate = true;
+                }
+            } else {
+                // Vertex-basierte Animationen
+                (mesh.material as THREE.MeshPhongMaterial).color.set(0xffffff); // Basis Weiß
+
+                for (let t = 0; t <= tubularSegments; t++) {
+                    let segmentIntensity = 0;
+                    tempColor.copy(item.baseColor);
+
+                    if (mode === 'sequential') {
+                        // Welle: Phasenverschiebung pro Segment
+                        const phase = (time * freq * Math.PI) - (t / tubularSegments * Math.PI * 4);
+                        segmentIntensity = (Math.sin(phase) + 1) * 0.5;
+                        tempColor.lerp(highlightColor, segmentIntensity * 0.9);
+                    }
+                    else if (mode === 'flow') {
+                        // Lauflicht: Ein Paket wandert
+                        const pos = (time * freq * 0.5) % 1.5 - 0.25; // 0..1 (mit Puffer)
+                        const dist = Math.abs(t / tubularSegments - pos);
+                        segmentIntensity = Math.max(0, 1 - dist * 4); // Scharfer Punkt
+                        tempColor.lerp(highlightColor, segmentIntensity);
+                    }
+                    else if (mode === 'segments') {
+                        // Bunte Segmente: Jedes Segment eine andere Farbe
+                        const hue = (t / tubularSegments + time * freq * 0.1) % 1;
+                        tempColor.setHSL(hue, 0.8, 0.5);
+                        // Optionales Blinken
+                        const pulse = (Math.sin(time * freq * Math.PI + t) + 1) * 0.5;
+                        tempColor.lerp(highlightColor, pulse * 0.3);
+                    }
+
+                    // Wende Farbe auf alle Vertices dieses Rings an
+                    for (let r = 0; r <= radialSegments; r++) {
+                        const index = t * (radialSegments + 1) + r;
+                        if (index < vertexCount) {
+                            colors.setXYZ(index, tempColor.r, tempColor.g, tempColor.b);
+                        }
+                    }
+                }
+                colors.needsUpdate = true;
             }
         });
     }
@@ -255,9 +339,21 @@ export class EdgeObjectsManager {
             false                         // geschlossen?
         );
 
-        // Material mit der angegebenen Farbe
+        // Initialisiere Vertex-Farben
+        const count = tubeGeometry.attributes.position.count;
+        const colors = new Float32Array(count * 3);
+        const baseColor = new THREE.Color(options.color || 0xb498db);
+        for (let i = 0; i < count; i++) {
+            colors[i * 3] = baseColor.r;
+            colors[i * 3 + 1] = baseColor.g;
+            colors[i * 3 + 2] = baseColor.b;
+        }
+        tubeGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        // Material mit Vertex-Farben Support
         const material = new THREE.MeshPhongMaterial({
-            color: options.color || 0xb498db,
+            color: 0xffffff, // Basis-Multiplikator Weiß
+            vertexColors: true,
             shininess: 30,
             side: THREE.DoubleSide
         });
@@ -311,6 +407,17 @@ export class EdgeObjectsManager {
                     state.edgeRadialSegments,
                     false
                 );
+
+                // Initialisiere Vertex-Farben für neue Geometrie
+                const count = newGeometry.attributes.position.count;
+                const colors = new Float32Array(count * 3);
+                const baseColor = (tube.material as any).userData?.originalColor ? new THREE.Color((tube.material as any).userData.originalColor) : new THREE.Color(0xaaaaaa);
+                for (let i = 0; i < count; i++) {
+                    colors[i * 3] = baseColor.r;
+                    colors[i * 3 + 1] = baseColor.g;
+                    colors[i * 3 + 2] = baseColor.b;
+                }
+                newGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
                 tube.geometry.dispose();
                 tube.geometry = newGeometry;

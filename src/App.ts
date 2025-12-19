@@ -140,7 +140,7 @@ export class App {
             await this.loadDefaultData();
 
             this._isInitialized = true;
-            console.log('Nodges 2.0 initialized');
+            console.log('Nodges initialized');
             this.animate();
         } catch (error) {
             console.error('Initialization error:', error);
@@ -460,6 +460,11 @@ export class App {
 
     animate() {
         requestAnimationFrame(this.animate.bind(this));
+
+        if (this.edgeObjectsManager) {
+            this.edgeObjectsManager.animate();
+        }
+
         this.controls.update();
         this.renderer.render(this.scene, this.camera);
 

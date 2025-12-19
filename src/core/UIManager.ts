@@ -354,19 +354,20 @@ export class UIManager {
     initEdgeControls() {
         const thicknessSlider = document.getElementById('edgeThicknessSlider') as HTMLInputElement;
         const thicknessValue = document.getElementById('edgeThicknessValue') as HTMLSpanElement;
-        const segmentsSlider = document.getElementById('edgeSegmentsSlider') as HTMLInputElement;
-        const segmentsValue = document.getElementById('edgeSegmentsValue') as HTMLSpanElement;
+        const tubularSlider = document.getElementById('edgeSegmentsSlider') as HTMLInputElement;
+        const tubularValue = document.getElementById('edgeSegmentsValue') as HTMLSpanElement;
         const radialSlider = document.getElementById('edgeRadialSlider') as HTMLInputElement;
         const radialValue = document.getElementById('edgeRadialValue') as HTMLSpanElement;
         const curveSlider = document.getElementById('edgeCurveSlider') as HTMLInputElement;
         const curveValue = document.getElementById('edgeCurveValue') as HTMLSpanElement;
         const pulseSlider = document.getElementById('edgePulseSlider') as HTMLInputElement;
-        const pulseValue = document.getElementById('edgePulseValue') as HTMLSpanElement;
+        const pulseValue = document.getElementById('edgePulseValue');
+        const animModeSelect = document.getElementById('edgeAnimModeSelect') as HTMLSelectElement;
         const opacitySlider = document.getElementById('edgeOpacitySlider') as HTMLInputElement;
-        const opacityValue = document.getElementById('edgeOpacityValue') as HTMLSpanElement;
-        const resetButton = document.getElementById('resetEdgeControls') as HTMLButtonElement;
+        const opacityValue = document.getElementById('edgeOpacityValue');
+        const resetButton = document.getElementById('resetEdgeControls');
 
-        const updateStateAndRefresh = (key: string, value: number) => {
+        const updateStateAndRefresh = (key: string, value: any) => {
             this.stateManager.update({ [key]: value });
             if (this.app.edgeObjectsManager) {
                 if (this.app.currentEntities && this.app.currentRelationships) {
@@ -384,11 +385,11 @@ export class UIManager {
             });
         }
 
-        if (segmentsSlider && segmentsValue) {
-            segmentsValue.textContent = segmentsSlider.value;
-            segmentsSlider.addEventListener('input', (e) => {
+        if (tubularSlider && tubularValue) {
+            tubularValue.textContent = tubularSlider.value;
+            tubularSlider.addEventListener('input', (e) => {
                 const value = parseInt((e.target as HTMLInputElement).value);
-                segmentsValue.textContent = value.toString();
+                tubularValue.textContent = value.toString();
                 updateStateAndRefresh('edgeTubularSegments', value);
             });
         }
@@ -412,11 +413,18 @@ export class UIManager {
         }
 
         if (pulseSlider && pulseValue) {
-            pulseValue.textContent = parseFloat(pulseSlider.value).toFixed(1);
+            pulseValue.textContent = parseFloat(pulseSlider.value).toFixed(2);
             pulseSlider.addEventListener('input', (e) => {
                 const value = parseFloat((e.target as HTMLInputElement).value);
-                pulseValue.textContent = value.toFixed(1);
-                this.stateManager.update({ edgePulseSpeed: value });
+                pulseValue.textContent = value.toFixed(2);
+                updateStateAndRefresh('edgePulseSpeed', value);
+            });
+        }
+
+        if (animModeSelect) {
+            animModeSelect.addEventListener('change', (e) => {
+                const value = (e.target as HTMLSelectElement).value;
+                updateStateAndRefresh('edgeAnimationMode', value);
             });
         }
 
@@ -437,34 +445,24 @@ export class UIManager {
                     edgeRadialSegments: 8,
                     edgeCurveFactor: 0.4,
                     edgePulseSpeed: 1.0,
+                    edgeAnimationMode: 'pulse',
                     edgeOpacity: 1.0
                 };
 
                 // Update UI elements
-                if (thicknessSlider) {
-                    thicknessSlider.value = defaults.edgeThickness.toString();
-                    thicknessValue.textContent = defaults.edgeThickness.toFixed(2);
-                }
-                if (segmentsSlider) {
-                    segmentsSlider.value = defaults.edgeTubularSegments.toString();
-                    segmentsValue.textContent = defaults.edgeTubularSegments.toString();
-                }
-                if (radialSlider) {
-                    radialSlider.value = defaults.edgeRadialSegments.toString();
-                    radialValue.textContent = defaults.edgeRadialSegments.toString();
-                }
-                if (curveSlider) {
-                    curveSlider.value = defaults.edgeCurveFactor.toString();
-                    curveValue.textContent = defaults.edgeCurveFactor.toFixed(2);
-                }
-                if (pulseSlider) {
-                    pulseSlider.value = defaults.edgePulseSpeed.toString();
-                    pulseValue.textContent = defaults.edgePulseSpeed.toFixed(1);
-                }
-                if (opacitySlider) {
-                    opacitySlider.value = defaults.edgeOpacity.toString();
-                    opacityValue.textContent = defaults.edgeOpacity.toFixed(2);
-                }
+                if (thicknessSlider) thicknessSlider.value = defaults.edgeThickness.toString();
+                if (thicknessValue) thicknessValue.textContent = defaults.edgeThickness.toFixed(2);
+                if (tubularSlider) tubularSlider.value = defaults.edgeTubularSegments.toString();
+                if (tubularValue) tubularValue.textContent = defaults.edgeTubularSegments.toString();
+                if (radialSlider) radialSlider.value = defaults.edgeRadialSegments.toString();
+                if (radialValue) radialValue.textContent = defaults.edgeRadialSegments.toString();
+                if (curveSlider) curveSlider.value = defaults.edgeCurveFactor.toString();
+                if (curveValue) curveValue.textContent = defaults.edgeCurveFactor.toFixed(2);
+                if (pulseSlider) pulseSlider.value = defaults.edgePulseSpeed.toString();
+                if (pulseValue) pulseValue.textContent = defaults.edgePulseSpeed.toFixed(2);
+                if (animModeSelect) animModeSelect.value = defaults.edgeAnimationMode;
+                if (opacitySlider) opacitySlider.value = defaults.edgeOpacity.toString();
+                if (opacityValue) opacityValue.textContent = defaults.edgeOpacity.toFixed(2);
 
                 // Update State and refresh
                 this.stateManager.update(defaults);

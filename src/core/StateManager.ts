@@ -75,6 +75,7 @@ export class StateManager {
             edgeRadialSegments: 8,
             edgeCurveFactor: 0.4,
             edgePulseSpeed: 1.0,
+            edgeAnimationMode: 'pulse', // pulse, flow, sequential, segments
 
             layoutEnabled: true
         };
