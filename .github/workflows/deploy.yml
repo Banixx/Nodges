@@ -3,7 +3,7 @@ name: Deploy Vite to Pages
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:  # Manuelles Triggern möglicher
+  workflow_dispatch:  # Manuelles Triggern möglicher2
 
 permissions:
   contents: read
