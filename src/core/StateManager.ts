@@ -33,6 +33,12 @@ export interface State {
 
     // Layout
     layoutEnabled: boolean;
+
+    // Environment
+    backgroundColor: string;
+    ambientLightIntensity: number;
+    directionalLightIntensity: number;
+
     [key: string]: any; // Allow for dynamic properties during migration
 }
 
@@ -77,7 +83,12 @@ export class StateManager {
             edgePulseSpeed: 1.0,
             edgeAnimationMode: 'pulse', // pulse, flow, sequential, segments
 
-            layoutEnabled: true
+            layoutEnabled: true,
+
+            // Environment Defaults
+            backgroundColor: '#000000',
+            ambientLightIntensity: 0.6,
+            directionalLightIntensity: 0.8
         };
 
         this.subscribers = new Map();

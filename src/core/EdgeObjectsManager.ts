@@ -148,6 +148,7 @@ export class EdgeObjectsManager {
                     }
 
                     if (pulseAnim && (pulseAnim.type === 'pulse' || pulseAnim.frequency)) {
+                        console.log(`[EdgeObjectsManager] Registering animated edge: ${edgeData.id || index}, type: ${pulseAnim.type}`);
                         this.animatedEdges.push({
                             baseColor: baseColor.clone(),
                             pulse: pulseAnim,

@@ -92,6 +92,9 @@ export class App {
     public nodeManager: NodeManager;
     public edgeObjectsManager: any;
 
+    private ambientLight!: THREE.AmbientLight;
+    private directionalLight!: THREE.DirectionalLight;
+
     // Data management
     public currentGraphData: GraphData | null = null;
     public visualMappingEngine: VisualMappingEngine;
@@ -138,6 +141,7 @@ export class App {
             await this.initManagers();
             await this.initGUI();
             await this.loadDefaultData();
+            this.setupEnvironmentSubscriptions();
 
             this._isInitialized = true;
             console.log('Nodges initialized');
@@ -159,21 +163,21 @@ export class App {
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
 
-        const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
-        this.scene.add(ambientLight);
+        this.ambientLight = new THREE.AmbientLight(0x404040, this.stateManager.state.ambientLightIntensity);
+        this.scene.add(this.ambientLight);
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        directionalLight.position.set(10, 10, 5);
-        directionalLight.castShadow = true;
-        directionalLight.shadow.mapSize.width = 2048;
-        directionalLight.shadow.mapSize.height = 2048;
-        directionalLight.shadow.camera.near = 0.5;
-        directionalLight.shadow.camera.far = 500;
-        directionalLight.shadow.camera.left = -50;
-        directionalLight.shadow.camera.right = 50;
-        directionalLight.shadow.camera.top = 50;
-        directionalLight.shadow.camera.bottom = -50;
-        this.scene.add(directionalLight);
+        this.directionalLight = new THREE.DirectionalLight(0xffffff, this.stateManager.state.directionalLightIntensity);
+        this.directionalLight.position.set(10, 10, 5);
+        this.directionalLight.castShadow = true;
+        this.directionalLight.shadow.mapSize.width = 2048;
+        this.directionalLight.shadow.mapSize.height = 2048;
+        this.directionalLight.shadow.camera.near = 0.5;
+        this.directionalLight.shadow.camera.far = 500;
+        this.directionalLight.shadow.camera.left = -50;
+        this.directionalLight.shadow.camera.right = 50;
+        this.directionalLight.shadow.camera.top = 50;
+        this.directionalLight.shadow.camera.bottom = -50;
+        this.scene.add(this.directionalLight);
 
         this.createGround();
 
@@ -185,7 +189,7 @@ export class App {
     }
 
     createGround() {
-        const groundGeometry = new THREE.PlaneGeometry(100, 100);
+        const groundGeometry = new THREE.PlaneGeometry(1000, 1000);
         const groundMaterial = new THREE.MeshLambertMaterial({
             color: 0x333333,
             transparent: true,
@@ -198,7 +202,7 @@ export class App {
         this.ground.receiveShadow = true;
         this.scene.add(this.ground);
 
-        const gridHelper = new THREE.GridHelper(100, 20, 0x444444, 0x222222);
+        const gridHelper = new THREE.GridHelper(1000, 200, 0x444444, 0x222222);
         gridHelper.position.y = -4.9;
         // @ts-ignore
         gridHelper.material.transparent = true;
@@ -405,6 +409,25 @@ export class App {
         if (this.edgeObjectsManager) {
             this.edgeObjectsManager.updateEdgePositions(this.currentEntities);
         }
+    }
+
+    private setupEnvironmentSubscriptions() {
+        this.stateManager.subscribe((state) => {
+            // Background color
+            if (this.scene.background instanceof THREE.Color) {
+                this.scene.background.set(state.backgroundColor);
+            } else {
+                this.scene.background = new THREE.Color(state.backgroundColor);
+            }
+
+            // Light intensities
+            if (this.ambientLight) {
+                this.ambientLight.intensity = state.ambientLightIntensity;
+            }
+            if (this.directionalLight) {
+                this.directionalLight.intensity = state.directionalLightIntensity;
+            }
+        }, 'environment');
     }
 
     public updateVisualMappings(mappings: any) {

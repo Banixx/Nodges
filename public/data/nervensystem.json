@@ -1,0 +1,300 @@
+{
+    "system": "Menschliches Nervensystem",
+    "metadata": {
+        "created": "2025-12-20T21:49:00Z",
+        "version": "1.0",
+        "author": "Antigravity",
+        "description": "Eine schematische Darstellung des zentralen und peripheren Nervensystems des Menschen für die 3D-Visualisierung."
+    },
+    "dataModel": {
+        "entities": {
+            "cns": {
+                "properties": {
+                    "importance": {
+                        "type": "spatial",
+                        "range": [
+                            0,
+                            100
+                        ]
+                    }
+                }
+            },
+            "pns": {
+                "properties": {
+                    "length": {
+                        "type": "continuous"
+                    }
+                }
+            },
+            "organ": {
+                "properties": {
+                    "function": {
+                        "type": "categorical",
+                        "values": [
+                            "sensory",
+                            "motor",
+                            "vital"
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "signal": {
+                "properties": {
+                    "speed": {
+                        "type": "continuous",
+                        "range": [
+                            1,
+                            120
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "cns": {
+                "size": {
+                    "source": "importance",
+                    "function": "linear",
+                    "range": [
+                        1.5,
+                        3.0
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ff4444"
+                    }
+                }
+            },
+            "pns": {
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.5,
+                        0.5
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ffff44"
+                    }
+                }
+            },
+            "organ": {
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        1.0,
+                        1.0
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#44ff44"
+                    }
+                }
+            },
+            "signal": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.15,
+                        0.15
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ffffff"
+                    }
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 2.0
+                    }
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "brain",
+                "type": "cns",
+                "label": "Gehirn",
+                "importance": 100,
+                "position": {
+                    "x": 0,
+                    "y": 12,
+                    "z": 0
+                }
+            },
+            {
+                "id": "sc_cervical",
+                "type": "cns",
+                "label": "Rückenmark (Zervikal)",
+                "importance": 80,
+                "position": {
+                    "x": 0,
+                    "y": 8,
+                    "z": 0
+                }
+            },
+            {
+                "id": "sc_thoracic",
+                "type": "cns",
+                "label": "Rückenmark (Thorakal)",
+                "importance": 70,
+                "position": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 0
+                }
+            },
+            {
+                "id": "sc_lumbar",
+                "type": "cns",
+                "label": "Rückenmark (Lumbal)",
+                "importance": 60,
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n_optic",
+                "type": "pns",
+                "label": "Sehnerv",
+                "position": {
+                    "x": 1,
+                    "y": 11.5,
+                    "z": 1
+                }
+            },
+            {
+                "id": "eye_r",
+                "type": "organ",
+                "label": "Auge (rechts)",
+                "position": {
+                    "x": 2,
+                    "y": 11.5,
+                    "z": 2
+                }
+            },
+            {
+                "id": "n_vagus",
+                "type": "pns",
+                "label": "Vagusnerv",
+                "position": {
+                    "x": -1,
+                    "y": 6,
+                    "z": 1
+                }
+            },
+            {
+                "id": "heart",
+                "type": "organ",
+                "label": "Herz",
+                "position": {
+                    "x": -2,
+                    "y": 5,
+                    "z": 1.5
+                }
+            },
+            {
+                "id": "n_sciatic",
+                "type": "pns",
+                "label": "Ischiasnerv",
+                "position": {
+                    "x": 1,
+                    "y": -4,
+                    "z": 1
+                }
+            },
+            {
+                "id": "leg_muscle",
+                "type": "organ",
+                "label": "Beinmuskulatur",
+                "position": {
+                    "x": 1.5,
+                    "y": -8,
+                    "z": 2
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "id": "b-c",
+                "type": "signal",
+                "source": "brain",
+                "target": "sc_cervical",
+                "label": "Hauptleitung"
+            },
+            {
+                "id": "c-t",
+                "type": "signal",
+                "source": "sc_cervical",
+                "target": "sc_thoracic"
+            },
+            {
+                "id": "t-l",
+                "type": "signal",
+                "source": "sc_thoracic",
+                "target": "sc_lumbar"
+            },
+            {
+                "id": "b-o",
+                "type": "signal",
+                "source": "brain",
+                "target": "n_optic"
+            },
+            {
+                "id": "o-e",
+                "type": "signal",
+                "source": "n_optic",
+                "target": "eye_r"
+            },
+            {
+                "id": "c-v",
+                "type": "signal",
+                "source": "sc_cervical",
+                "target": "n_vagus"
+            },
+            {
+                "id": "v-h",
+                "type": "signal",
+                "source": "n_vagus",
+                "target": "heart"
+            },
+            {
+                "id": "l-s",
+                "type": "signal",
+                "source": "sc_lumbar",
+                "target": "n_sciatic"
+            },
+            {
+                "id": "s-m",
+                "type": "signal",
+                "source": "n_sciatic",
+                "target": "leg_muscle"
+            }
+        ]
+    }
+}

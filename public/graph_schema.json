@@ -1,0 +1,298 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Nodges Graph Data Schema",
+    "description": "Schema for defining 3D graph visualizations in Nodges.",
+    "type": "object",
+    "required": [
+        "system",
+        "metadata",
+        "data"
+    ],
+    "properties": {
+        "system": {
+            "type": "string",
+            "description": "Name of the graph system or project"
+        },
+        "metadata": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true
+        },
+        "dataModel": {
+            "type": "object",
+            "description": "Optional definition of entity and relationship types.",
+            "properties": {
+                "entities": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                            "properties": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "object",
+                                    "required": [
+                                        "type"
+                                    ],
+                                    "properties": {
+                                        "type": {
+                                            "type": "string",
+                                            "enum": [
+                                                "continuous",
+                                                "categorical",
+                                                "vector",
+                                                "spatial",
+                                                "temporal"
+                                            ]
+                                        },
+                                        "range": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "number"
+                                            },
+                                            "minItems": 2,
+                                            "maxItems": 2
+                                        },
+                                        "unit": {
+                                            "type": "string"
+                                        },
+                                        "values": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "relationships": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                            "properties": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "object",
+                                    "required": [
+                                        "type"
+                                    ],
+                                    "properties": {
+                                        "type": {
+                                            "type": "string",
+                                            "enum": [
+                                                "continuous",
+                                                "categorical",
+                                                "vector",
+                                                "spatial",
+                                                "temporal"
+                                            ]
+                                        },
+                                        "range": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "number"
+                                            },
+                                            "minItems": 2,
+                                            "maxItems": 2
+                                        },
+                                        "unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "visualMappings": {
+            "type": "object",
+            "description": "Mappings from data properties to visual attributes like color, size, and animation.",
+            "properties": {
+                "defaultPresets": {
+                    "type": "object",
+                    "description": "Presets for each entity or relationship type (e.g., 'Node', 'Connection').",
+                    "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                            "color": {
+                                "$ref": "#/definitions/VisualMapping"
+                            },
+                            "size": {
+                                "$ref": "#/definitions/VisualMapping"
+                            },
+                            "thickness": {
+                                "$ref": "#/definitions/VisualMapping"
+                            },
+                            "opacity": {
+                                "$ref": "#/definitions/VisualMapping"
+                            },
+                            "geometry": {
+                                "$ref": "#/definitions/VisualMapping"
+                            },
+                            "animation": {
+                                "$ref": "#/definitions/VisualMapping"
+                            }
+                        },
+                        "additionalProperties": true
+                    }
+                }
+            }
+        },
+        "data": {
+            "type": "object",
+            "required": [
+                "entities",
+                "relationships"
+            ],
+            "properties": {
+                "entities": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "type",
+                            "position"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string"
+                            },
+                            "label": {
+                                "type": "string"
+                            },
+                            "position": {
+                                "type": "object",
+                                "required": [
+                                    "x",
+                                    "y",
+                                    "z"
+                                ],
+                                "properties": {
+                                    "x": {
+                                        "type": "number"
+                                    },
+                                    "y": {
+                                        "type": "number"
+                                    },
+                                    "z": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        },
+                        "additionalProperties": true
+                    }
+                },
+                "relationships": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "type",
+                            "source",
+                            "target"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string"
+                            },
+                            "source": {
+                                "type": "string"
+                            },
+                            "target": {
+                                "type": "string"
+                            },
+                            "label": {
+                                "type": "string"
+                            }
+                        },
+                        "additionalProperties": true
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "VisualMapping": {
+            "type": "object",
+            "required": [
+                "source",
+                "function"
+            ],
+            "properties": {
+                "source": {
+                    "type": "string",
+                    "description": "The data property to map from. Use 'constant' for fixed values."
+                },
+                "function": {
+                    "type": "string",
+                    "enum": [
+                        "linear",
+                        "exponential",
+                        "logarithmic",
+                        "heatmap",
+                        "bipolar",
+                        "pulse",
+                        "geographic",
+                        "sphereComplexity"
+                    ],
+                    "description": "The mapping function to apply."
+                },
+                "range": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "description": "Output range for the mapping (e.g., [minSize, maxSize])."
+                },
+                "params": {
+                    "type": "object",
+                    "description": "Additional parameters for the mapping function.",
+                    "properties": {
+                        "color": {
+                            "type": "string",
+                            "description": "Hex color code (e.g., '#ff0000') for constant color."
+                        },
+                        "frequency": {
+                            "type": "number",
+                            "description": "Frequency for pulse animation."
+                        }
+                    },
+                    "additionalProperties": true
+                },
+                "palette": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

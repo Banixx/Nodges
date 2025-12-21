@@ -5,6 +5,7 @@
 import type { App } from '../App';
 import { StateManager } from './StateManager';
 import { VisualMappingPanel } from '../ui/VisualMappingPanel';
+import { EnvironmentPanel } from '../ui/EnvironmentPanel';
 import { VisualMappings } from '../types';
 
 interface Bounds {
@@ -21,6 +22,7 @@ export class UIManager {
     private filePanelContent: HTMLElement | null;
     private infoPanelContent: HTMLElement | null;
     private visualMappingPanel: VisualMappingPanel;
+    private environmentPanel: EnvironmentPanel;
 
     constructor(app: App) {
         this.app = app;
@@ -30,6 +32,7 @@ export class UIManager {
             fileInfo: document.getElementById('fileInfoPanel'),
             file: document.getElementById('filePanel'),
             visualMapping: document.getElementById('visualMappingPanel'),
+            environment: document.getElementById('environmentPanel'),
             info: document.getElementById('infoPanel'),
             dev: document.getElementById('devPanel'),
             layout: null // Initialized by LayoutGUI
@@ -39,6 +42,7 @@ export class UIManager {
             fileInfo: document.getElementById('fileInfoToggle'),
             file: document.getElementById('filePanelToggle'),
             visualMapping: document.getElementById('visualMappingToggle'),
+            environment: document.getElementById('environmentToggle'),
             info: document.getElementById('infoPanelToggle'),
             dev: document.getElementById('devPanelToggle')
         };
@@ -46,8 +50,21 @@ export class UIManager {
         this.filePanelContent = document.getElementById('filePanelContent');
         this.infoPanelContent = document.getElementById('infoPanelContent');
         this.visualMappingPanel = new VisualMappingPanel('visualMappingContent');
+        this.environmentPanel = new EnvironmentPanel('environmentContent', this.stateManager);
 
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'ui');
+    }
+
+    private sliderToCurvature(val: number): number {
+        // Logarithmic scale: slider 0 -> curvature 0, slider 100 -> curvature ~99.0
+        if (val === 0) return 0;
+        return Math.pow(10, val / 50) - 1;
+    }
+
+    private curvatureToSlider(val: number): number {
+        // Inverse of sliderToCurvature
+        if (val <= 0) return 0;
+        return Math.log10(val + 1) * 50;
     }
 
     init() {
@@ -133,6 +150,12 @@ export class UIManager {
             observer.observe(visualMappingPanel);
         }
 
+        const environmentPanel = this.panels.environment;
+        if (environmentPanel) {
+            const observer = new ResizeObserver(() => this.updateAllPanelPositions());
+            observer.observe(environmentPanel);
+        }
+
         // We need to wait for LayoutGUI to create the layout panel, then observe it.
         const checkForLayoutPanel = setInterval(() => {
             const layoutPanel = document.getElementById('layoutPanel');
@@ -148,7 +171,7 @@ export class UIManager {
 
     updateAllPanelPositions() {
         // Main stack (Right column)
-        const mainStackOrder = ['fileInfo', 'file', 'visualMapping', 'layout', 'dev'];
+        const mainStackOrder = ['fileInfo', 'file', 'visualMapping', 'environment', 'layout', 'dev'];
         let currentTop = 20; // Start margin from top
         const gap = 10; // Gap between panels
 
@@ -404,11 +427,12 @@ export class UIManager {
         }
 
         if (curveSlider && curveValue) {
-            curveValue.textContent = parseFloat(curveSlider.value).toFixed(2);
+            curveValue.textContent = this.sliderToCurvature(parseFloat(curveSlider.value)).toFixed(2);
             curveSlider.addEventListener('input', (e) => {
-                const value = parseFloat((e.target as HTMLInputElement).value);
-                curveValue.textContent = value.toFixed(2);
-                updateStateAndRefresh('edgeCurveFactor', value);
+                const sliderVal = parseFloat((e.target as HTMLInputElement).value);
+                const curvature = this.sliderToCurvature(sliderVal);
+                curveValue.textContent = curvature.toFixed(2);
+                updateStateAndRefresh('edgeCurveFactor', curvature);
             });
         }
 
@@ -456,7 +480,7 @@ export class UIManager {
                 if (tubularValue) tubularValue.textContent = defaults.edgeTubularSegments.toString();
                 if (radialSlider) radialSlider.value = defaults.edgeRadialSegments.toString();
                 if (radialValue) radialValue.textContent = defaults.edgeRadialSegments.toString();
-                if (curveSlider) curveSlider.value = defaults.edgeCurveFactor.toString();
+                if (curveSlider) curveSlider.value = this.curvatureToSlider(defaults.edgeCurveFactor).toString();
                 if (curveValue) curveValue.textContent = defaults.edgeCurveFactor.toFixed(2);
                 if (pulseSlider) pulseSlider.value = defaults.edgePulseSpeed.toString();
                 if (pulseValue) pulseValue.textContent = defaults.edgePulseSpeed.toFixed(2);

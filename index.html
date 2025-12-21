@@ -61,6 +61,17 @@
         </div>
     </div>
 
+    <!-- Environment Panel -->
+    <div id="environmentPanel" class="ui-panel collapsed">
+        <div class="ui-panel-header">
+            <h3>Environment</h3>
+            <button id="environmentToggle" class="ui-panel-toggle">></button>
+        </div>
+        <div id="environmentContent" class="ui-panel-content">
+            <!-- Content dynamically populated -->
+        </div>
+    </div>
+
     <!-- Object Info Panel -->
     <div id="infoPanel" class="ui-panel">
         <div class="ui-panel-header">
@@ -123,7 +134,7 @@
                 <label style="display: block; margin-bottom: 2px; font-size: 11px; font-weight: bold;">Drop out
                     (Curvature):</label>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <input type="range" id="edgeCurveSlider" min="0" max="2.0" step="0.05" value="0.4" style="flex: 1;">
+                    <input type="range" id="edgeCurveSlider" min="0" max="100" step="1" value="7" style="flex: 1;">
                     <span id="edgeCurveValue"
                         style="min-width: 35px; text-align: right; font-family: monospace; font-size: 11px;">0.40</span>
                 </div>

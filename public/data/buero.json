@@ -7,10 +7,14 @@
   },
   "dataModel": {
     "entities": {
-      "node": {}
+      "node": {
+        "properties": {}
+      }
     },
     "relationships": {
-      "connection": {}
+      "connection": {
+        "properties": {}
+      }
     }
   },
   "visualMappings": {
@@ -18,6 +22,7 @@
       "node": {
         "size": {
           "source": "constant",
+          "function": "linear",
           "range": [
             1,
             1
@@ -25,6 +30,7 @@
         },
         "color": {
           "source": "constant",
+          "function": "linear",
           "range": [
             0,
             1
@@ -34,6 +40,7 @@
       "connection": {
         "thickness": {
           "source": "constant",
+          "function": "linear",
           "range": [
             0.1,
             0.1

@@ -80,7 +80,9 @@ export class VisualMappingEngine {
         }
 
         const preset = this.visualMappings.defaultPresets[relationship.type] as RelationshipVisualPreset;
+
         if (!preset) {
+            console.warn(`[VisualMappingEngine] No preset found for relationship type: "${relationship.type}". Available:`, Object.keys(this.visualMappings.defaultPresets));
             return this.getDefaultVisualProperties();
         }
 
@@ -115,6 +117,7 @@ export class VisualMappingEngine {
         // Apply animation mapping
         if (preset.animation) {
             visual.animation = this.mapToAnimation(preset.animation, relationship);
+            console.log(`[VisualMappingEngine] Applied animation for ${relationship.type}:`, visual.animation);
         }
 
         return visual;
@@ -124,8 +127,14 @@ export class VisualMappingEngine {
      * Apply a single mapping to data
      */
     private applyMapping(mapping: VisualMapping, data: EntityData | RelationshipData): any {
-        // Get source value (supports nested properties like "personality.extraversion")
-        const value = this.getNestedProperty(data, mapping.source);
+        // Special case: constant source
+        let value: any;
+        if (mapping.source === 'constant') {
+            value = 1.0;
+        } else {
+            // Get source value (supports nested properties like "personality.extraversion")
+            value = this.getNestedProperty(data, mapping.source);
+        }
 
         if (value === undefined || value === null) {
             // Return middle of range or default
@@ -228,6 +237,11 @@ export class VisualMappingEngine {
      * Map numeric value to color
      */
     private mapToColor(value: number, mapping: VisualMapping): THREE.Color {
+        // Direct color from params
+        if (mapping.params?.color) {
+            return new THREE.Color(mapping.params.color);
+        }
+
         if (mapping.function === 'bipolar' && mapping.params?.positive && mapping.params?.negative) {
             // Bipolar color mapping
             const normalized = this.bipolarMapping(value, mapping);

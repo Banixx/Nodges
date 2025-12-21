@@ -1,0 +1,1430 @@
+{
+    "system": "Menschliches Nervensystem",
+    "metadata": {
+        "created": "2025-12-21T13:14:00Z",
+        "version": "1.2",
+        "author": "AI",
+        "description": "Menschliches Nervensystem mit anatomisch-räumlicher Gliederung (Kopf y=180, Füße y=1). x/z für Rechts-Links und Tiefe, alle zentralen Strukturen, große Hauptnerven und viele Neuronen-/Zelltypen."
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "ZentralesNervensystem": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#2277BB"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        5.0,
+                        5.0
+                    ]
+                }
+            },
+            "PeripheresNervensystem": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#44BB22"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        4.0,
+                        4.0
+                    ]
+                }
+            },
+            "Gehirnregion": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ffcc00"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.0,
+                        3.0
+                    ]
+                }
+            },
+            "Rückenmark": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#aa66cc"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.2,
+                        3.2
+                    ]
+                }
+            },
+            "PeriphererNerv": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#99cc00"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        2.0,
+                        2.0
+                    ]
+                }
+            },
+            "AutonomesNervensystem": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ff44aa"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.0,
+                        3.0
+                    ]
+                }
+            },
+            "Neuron": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ff8800"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        1.5,
+                        1.5
+                    ]
+                }
+            },
+            "Gliazelle": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#cccccc"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            "SignalUebertragung": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FF2222"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.08,
+                        0.08
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 1.5
+                    }
+                }
+            },
+            "StrukturVerbindung": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#55aaff"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.05,
+                        0.05
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "n1",
+                "type": "ZentralesNervensystem",
+                "label": "Zentrales Nervensystem",
+                "position": {
+                    "x": 0,
+                    "y": 160,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n2",
+                "type": "PeripheresNervensystem",
+                "label": "Peripheres Nervensystem",
+                "position": {
+                    "x": 0,
+                    "y": 90,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n3",
+                "type": "Gehirnregion",
+                "label": "Großhirn",
+                "position": {
+                    "x": 0,
+                    "y": 180,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n4",
+                "type": "Gehirnregion",
+                "label": "Kleinhirn",
+                "position": {
+                    "x": -13,
+                    "y": 178,
+                    "z": -10
+                }
+            },
+            {
+                "id": "n5",
+                "type": "Gehirnregion",
+                "label": "Zwischenhirn",
+                "position": {
+                    "x": 0,
+                    "y": 176,
+                    "z": 8
+                }
+            },
+            {
+                "id": "n6",
+                "type": "Gehirnregion",
+                "label": "Mittelhirn",
+                "position": {
+                    "x": 5,
+                    "y": 175,
+                    "z": -8
+                }
+            },
+            {
+                "id": "n7",
+                "type": "Gehirnregion",
+                "label": "Brücke (Pons)",
+                "position": {
+                    "x": -10,
+                    "y": 172,
+                    "z": 1
+                }
+            },
+            {
+                "id": "n8",
+                "type": "Gehirnregion",
+                "label": "Nachhirn",
+                "position": {
+                    "x": -7,
+                    "y": 168,
+                    "z": -6
+                }
+            },
+            {
+                "id": "n9",
+                "type": "Gehirnregion",
+                "label": "Frontallappen",
+                "position": {
+                    "x": 14,
+                    "y": 182,
+                    "z": -7
+                }
+            },
+            {
+                "id": "n10",
+                "type": "Gehirnregion",
+                "label": "Parietallappen",
+                "position": {
+                    "x": 12,
+                    "y": 179,
+                    "z": -5
+                }
+            },
+            {
+                "id": "n11",
+                "type": "Gehirnregion",
+                "label": "Okzipitallappen",
+                "position": {
+                    "x": -15,
+                    "y": 178,
+                    "z": 7
+                }
+            },
+            {
+                "id": "n12",
+                "type": "Gehirnregion",
+                "label": "Temporallappen",
+                "position": {
+                    "x": 10,
+                    "y": 180,
+                    "z": 13
+                }
+            },
+            {
+                "id": "n13",
+                "type": "Gehirnregion",
+                "label": "Thalamus",
+                "position": {
+                    "x": 2,
+                    "y": 175,
+                    "z": 10
+                }
+            },
+            {
+                "id": "n14",
+                "type": "Gehirnregion",
+                "label": "Hypothalamus",
+                "position": {
+                    "x": -4,
+                    "y": 174,
+                    "z": 8
+                }
+            },
+            {
+                "id": "n15",
+                "type": "Gehirnregion",
+                "label": "Hippocampus",
+                "position": {
+                    "x": 7,
+                    "y": 176,
+                    "z": 11
+                }
+            },
+            {
+                "id": "n16",
+                "type": "Gehirnregion",
+                "label": "Amygdala",
+                "position": {
+                    "x": 4,
+                    "y": 175,
+                    "z": 14
+                }
+            },
+            {
+                "id": "n17",
+                "type": "Gehirnregion",
+                "label": "Basalganglien",
+                "position": {
+                    "x": -7,
+                    "y": 170,
+                    "z": 13
+                }
+            },
+            {
+                "id": "n18",
+                "type": "Gehirnregion",
+                "label": "Gyrus precentralis",
+                "position": {
+                    "x": 12,
+                    "y": 181,
+                    "z": -2
+                }
+            },
+            {
+                "id": "n19",
+                "type": "Gehirnregion",
+                "label": "Gyrus postcentralis",
+                "position": {
+                    "x": 11,
+                    "y": 179,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n20",
+                "type": "Gehirnregion",
+                "label": "Broca-Areal",
+                "position": {
+                    "x": 16,
+                    "y": 181,
+                    "z": 3
+                }
+            },
+            {
+                "id": "n21",
+                "type": "Gehirnregion",
+                "label": "Wernicke-Areal",
+                "position": {
+                    "x": 7,
+                    "y": 180,
+                    "z": 11
+                }
+            },
+            {
+                "id": "n22",
+                "type": "Gehirnregion",
+                "label": "Sehzentrum",
+                "position": {
+                    "x": -17,
+                    "y": 180,
+                    "z": 10
+                }
+            },
+            {
+                "id": "n23",
+                "type": "Gehirnregion",
+                "label": "Hörzentrum",
+                "position": {
+                    "x": 13,
+                    "y": 178,
+                    "z": 16
+                }
+            },
+            {
+                "id": "n24",
+                "type": "Rückenmark",
+                "label": "Rückenmark Hals",
+                "position": {
+                    "x": 0,
+                    "y": 150,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n25",
+                "type": "Rückenmark",
+                "label": "Rückenmark Brust",
+                "position": {
+                    "x": 0,
+                    "y": 120,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n26",
+                "type": "Rückenmark",
+                "label": "Rückenmark Lenden",
+                "position": {
+                    "x": 0,
+                    "y": 80,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n27",
+                "type": "Rückenmark",
+                "label": "Rückenmark Sakral",
+                "position": {
+                    "x": 0,
+                    "y": 30,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n28",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv C1",
+                "position": {
+                    "x": 4,
+                    "y": 148,
+                    "z": -6
+                }
+            },
+            {
+                "id": "n29",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv C2",
+                "position": {
+                    "x": -4,
+                    "y": 147,
+                    "z": 5
+                }
+            },
+            {
+                "id": "n30",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv C3",
+                "position": {
+                    "x": 6,
+                    "y": 146,
+                    "z": 4
+                }
+            },
+            {
+                "id": "n31",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv C4",
+                "position": {
+                    "x": -6,
+                    "y": 145,
+                    "z": -3
+                }
+            },
+            {
+                "id": "n32",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv C5",
+                "position": {
+                    "x": 7,
+                    "y": 143,
+                    "z": 7
+                }
+            },
+            {
+                "id": "n33",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv C6",
+                "position": {
+                    "x": -7,
+                    "y": 141,
+                    "z": -5
+                }
+            },
+            {
+                "id": "n34",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv C7",
+                "position": {
+                    "x": 8,
+                    "y": 139,
+                    "z": 6
+                }
+            },
+            {
+                "id": "n35",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv C8",
+                "position": {
+                    "x": -8,
+                    "y": 137,
+                    "z": -8
+                }
+            },
+            {
+                "id": "n36",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv Th1",
+                "position": {
+                    "x": 9,
+                    "y": 135,
+                    "z": 9
+                }
+            },
+            {
+                "id": "n37",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv Th2",
+                "position": {
+                    "x": -9,
+                    "y": 133,
+                    "z": -9
+                }
+            },
+            {
+                "id": "n38",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv Th3",
+                "position": {
+                    "x": 10,
+                    "y": 131,
+                    "z": 8
+                }
+            },
+            {
+                "id": "n39",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv Th4",
+                "position": {
+                    "x": -10,
+                    "y": 129,
+                    "z": -5
+                }
+            },
+            {
+                "id": "n40",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv Th5",
+                "position": {
+                    "x": 11,
+                    "y": 127,
+                    "z": 7
+                }
+            },
+            {
+                "id": "n41",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv L1",
+                "position": {
+                    "x": 12,
+                    "y": 110,
+                    "z": -9
+                }
+            },
+            {
+                "id": "n42",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv L2",
+                "position": {
+                    "x": -12,
+                    "y": 108,
+                    "z": 6
+                }
+            },
+            {
+                "id": "n43",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv L3",
+                "position": {
+                    "x": 13,
+                    "y": 105,
+                    "z": 5
+                }
+            },
+            {
+                "id": "n44",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv L4",
+                "position": {
+                    "x": -13,
+                    "y": 102,
+                    "z": -3
+                }
+            },
+            {
+                "id": "n45",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv S1",
+                "position": {
+                    "x": 14,
+                    "y": 26,
+                    "z": 8
+                }
+            },
+            {
+                "id": "n46",
+                "type": "PeriphererNerv",
+                "label": "Spinalnerv S2",
+                "position": {
+                    "x": -14,
+                    "y": 24,
+                    "z": -8
+                }
+            },
+            {
+                "id": "n47",
+                "type": "PeriphererNerv",
+                "label": "Nervus ischiadicus",
+                "position": {
+                    "x": 13,
+                    "y": 10,
+                    "z": 1
+                }
+            },
+            {
+                "id": "n48",
+                "type": "PeriphererNerv",
+                "label": "Nervus femoralis",
+                "position": {
+                    "x": 5,
+                    "y": 7,
+                    "z": 5
+                }
+            },
+            {
+                "id": "n49",
+                "type": "PeriphererNerv",
+                "label": "Nervus tibialis",
+                "position": {
+                    "x": 6,
+                    "y": 4,
+                    "z": -2
+                }
+            },
+            {
+                "id": "n50",
+                "type": "PeriphererNerv",
+                "label": "Nervus peroneus",
+                "position": {
+                    "x": 10,
+                    "y": 3,
+                    "z": 3
+                }
+            },
+            {
+                "id": "n51",
+                "type": "PeriphererNerv",
+                "label": "Nervus medianus",
+                "position": {
+                    "x": 18,
+                    "y": 43,
+                    "z": 7
+                }
+            },
+            {
+                "id": "n52",
+                "type": "PeriphererNerv",
+                "label": "Nervus ulnaris",
+                "position": {
+                    "x": 19,
+                    "y": 40,
+                    "z": 4
+                }
+            },
+            {
+                "id": "n53",
+                "type": "PeriphererNerv",
+                "label": "Nervus radialis",
+                "position": {
+                    "x": 20,
+                    "y": 37,
+                    "z": 1
+                }
+            },
+            {
+                "id": "n54",
+                "type": "PeriphererNerv",
+                "label": "Nervus phrenicus",
+                "position": {
+                    "x": -19,
+                    "y": 95,
+                    "z": -12
+                }
+            },
+            {
+                "id": "n55",
+                "type": "PeriphererNerv",
+                "label": "Nervus musculocutaneus",
+                "position": {
+                    "x": 17,
+                    "y": 38,
+                    "z": 9
+                }
+            },
+            {
+                "id": "n56",
+                "type": "PeriphererNerv",
+                "label": "Nervus obturatorius",
+                "position": {
+                    "x": -5,
+                    "y": 6,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n57",
+                "type": "PeriphererNerv",
+                "label": "Nervus opticus",
+                "position": {
+                    "x": 8,
+                    "y": 182,
+                    "z": 12
+                }
+            },
+            {
+                "id": "n58",
+                "type": "PeriphererNerv",
+                "label": "Nervus olfactorius",
+                "position": {
+                    "x": -8,
+                    "y": 184,
+                    "z": 16
+                }
+            },
+            {
+                "id": "n59",
+                "type": "PeriphererNerv",
+                "label": "Nervus trigeminus",
+                "position": {
+                    "x": 4,
+                    "y": 176,
+                    "z": 15
+                }
+            },
+            {
+                "id": "n60",
+                "type": "PeriphererNerv",
+                "label": "Nervus facialis",
+                "position": {
+                    "x": 3,
+                    "y": 178,
+                    "z": 14
+                }
+            },
+            {
+                "id": "n61",
+                "type": "PeriphererNerv",
+                "label": "Nervus vestibulocochlearis",
+                "position": {
+                    "x": 2,
+                    "y": 178,
+                    "z": 13
+                }
+            },
+            {
+                "id": "n62",
+                "type": "PeriphererNerv",
+                "label": "Nervus vagus",
+                "position": {
+                    "x": -3,
+                    "y": 168,
+                    "z": 6
+                }
+            },
+            {
+                "id": "n63",
+                "type": "PeriphererNerv",
+                "label": "Nervus glossopharyngeus",
+                "position": {
+                    "x": 5,
+                    "y": 174,
+                    "z": 8
+                }
+            },
+            {
+                "id": "n64",
+                "type": "AutonomesNervensystem",
+                "label": "Sympathikus",
+                "position": {
+                    "x": 14,
+                    "y": 60,
+                    "z": 12
+                }
+            },
+            {
+                "id": "n65",
+                "type": "AutonomesNervensystem",
+                "label": "Parasympathikus",
+                "position": {
+                    "x": -14,
+                    "y": 60,
+                    "z": -12
+                }
+            },
+            {
+                "id": "n66",
+                "type": "AutonomesNervensystem",
+                "label": "Enterisches Nervensystem",
+                "position": {
+                    "x": 0,
+                    "y": 30,
+                    "z": 10
+                }
+            },
+            {
+                "id": "n67",
+                "type": "Neuron",
+                "label": "Motoneuron A",
+                "position": {
+                    "x": 8,
+                    "y": 130,
+                    "z": -2
+                }
+            },
+            {
+                "id": "n68",
+                "type": "Neuron",
+                "label": "Motoneuron B",
+                "position": {
+                    "x": -6,
+                    "y": 115,
+                    "z": 2
+                }
+            },
+            {
+                "id": "n69",
+                "type": "Neuron",
+                "label": "Sensorisches Neuron A",
+                "position": {
+                    "x": 7,
+                    "y": 125,
+                    "z": 7
+                }
+            },
+            {
+                "id": "n70",
+                "type": "Neuron",
+                "label": "Sensorisches Neuron B",
+                "position": {
+                    "x": -5,
+                    "y": 113,
+                    "z": 3
+                }
+            },
+            {
+                "id": "n71",
+                "type": "Neuron",
+                "label": "Interneuron 1",
+                "position": {
+                    "x": 5,
+                    "y": 118,
+                    "z": 6
+                }
+            },
+            {
+                "id": "n72",
+                "type": "Neuron",
+                "label": "Interneuron 2",
+                "position": {
+                    "x": -8,
+                    "y": 104,
+                    "z": -4
+                }
+            },
+            {
+                "id": "n73",
+                "type": "Neuron",
+                "label": "Pyramidenzelle",
+                "position": {
+                    "x": 3,
+                    "y": 178,
+                    "z": -2
+                }
+            },
+            {
+                "id": "n74",
+                "type": "Neuron",
+                "label": "Purkinjezelle",
+                "position": {
+                    "x": -14,
+                    "y": 178,
+                    "z": -13
+                }
+            },
+            {
+                "id": "n75",
+                "type": "Neuron",
+                "label": "Körnerzelle",
+                "position": {
+                    "x": -11,
+                    "y": 175,
+                    "z": -16
+                }
+            },
+            {
+                "id": "n76",
+                "type": "Neuron",
+                "label": "Golgi-Zelle",
+                "position": {
+                    "x": -16,
+                    "y": 175,
+                    "z": -15
+                }
+            },
+            {
+                "id": "n77",
+                "type": "Neuron",
+                "label": "Renshaw-Zelle",
+                "position": {
+                    "x": 9,
+                    "y": 103,
+                    "z": 1
+                }
+            },
+            {
+                "id": "n78",
+                "type": "Neuron",
+                "label": "Alpha-Motoneuron",
+                "position": {
+                    "x": 7,
+                    "y": 132,
+                    "z": 3
+                }
+            },
+            {
+                "id": "n79",
+                "type": "Neuron",
+                "label": "Gamma-Motoneuron",
+                "position": {
+                    "x": -6,
+                    "y": 134,
+                    "z": -4
+                }
+            },
+            {
+                "id": "n80",
+                "type": "Neuron",
+                "label": "Betz-Riese",
+                "position": {
+                    "x": 4,
+                    "y": 179,
+                    "z": -1
+                }
+            },
+            {
+                "id": "n81",
+                "type": "Neuron",
+                "label": "Schaltneuron A",
+                "position": {
+                    "x": 15,
+                    "y": 127,
+                    "z": 2
+                }
+            },
+            {
+                "id": "n82",
+                "type": "Neuron",
+                "label": "Schaltneuron B",
+                "position": {
+                    "x": -15,
+                    "y": 129,
+                    "z": -2
+                }
+            },
+            {
+                "id": "n83",
+                "type": "Neuron",
+                "label": "Sens. Neuron Tastsinn",
+                "position": {
+                    "x": 2,
+                    "y": 123,
+                    "z": 6
+                }
+            },
+            {
+                "id": "n84",
+                "type": "Neuron",
+                "label": "Sens. Neuron Schmerz",
+                "position": {
+                    "x": 1,
+                    "y": 121,
+                    "z": 4
+                }
+            },
+            {
+                "id": "n85",
+                "type": "Neuron",
+                "label": "Sens. Neuron Temperatur",
+                "position": {
+                    "x": 3,
+                    "y": 119,
+                    "z": 2
+                }
+            },
+            {
+                "id": "n86",
+                "type": "Gehirnregion",
+                "label": "Limbisches System",
+                "position": {
+                    "x": 0,
+                    "y": 173,
+                    "z": 13
+                }
+            },
+            {
+                "id": "n87",
+                "type": "Gehirnregion",
+                "label": "Corpus callosum",
+                "position": {
+                    "x": 3,
+                    "y": 177,
+                    "z": -5
+                }
+            },
+            {
+                "id": "n88",
+                "type": "Gehirnregion",
+                "label": "Pons",
+                "position": {
+                    "x": -10,
+                    "y": 170,
+                    "z": -14
+                }
+            },
+            {
+                "id": "n89",
+                "type": "Gehirnregion",
+                "label": "Oblongata",
+                "position": {
+                    "x": -6,
+                    "y": 167,
+                    "z": -8
+                }
+            },
+            {
+                "id": "n90",
+                "type": "Neuron",
+                "label": "Motoneuron C",
+                "position": {
+                    "x": 8,
+                    "y": 88,
+                    "z": 3
+                }
+            },
+            {
+                "id": "n91",
+                "type": "Neuron",
+                "label": "Interneuron C",
+                "position": {
+                    "x": -8,
+                    "y": 84,
+                    "z": 6
+                }
+            },
+            {
+                "id": "n92",
+                "type": "Neuron",
+                "label": "Langstreckeninterneuron 1",
+                "position": {
+                    "x": 7,
+                    "y": 60,
+                    "z": 2
+                }
+            },
+            {
+                "id": "n93",
+                "type": "Neuron",
+                "label": "Langstreckeninterneuron 2",
+                "position": {
+                    "x": -7,
+                    "y": 62,
+                    "z": 3
+                }
+            },
+            {
+                "id": "n94",
+                "type": "Gliazelle",
+                "label": "Astrozyt",
+                "position": {
+                    "x": 2,
+                    "y": 150,
+                    "z": 2
+                }
+            },
+            {
+                "id": "n95",
+                "type": "Gliazelle",
+                "label": "Oligodendrozyt",
+                "position": {
+                    "x": -2,
+                    "y": 150,
+                    "z": 4
+                }
+            },
+            {
+                "id": "n96",
+                "type": "Gliazelle",
+                "label": "Mikroglia",
+                "position": {
+                    "x": 4,
+                    "y": 150,
+                    "z": -3
+                }
+            },
+            {
+                "id": "n97",
+                "type": "Gliazelle",
+                "label": "Schwann-Zelle",
+                "position": {
+                    "x": 8,
+                    "y": 30,
+                    "z": 8
+                }
+            },
+            {
+                "id": "n98",
+                "type": "Gliazelle",
+                "label": "Ependymzelle",
+                "position": {
+                    "x": -4,
+                    "y": 100,
+                    "z": 2
+                }
+            },
+            {
+                "id": "n99",
+                "type": "Gliazelle",
+                "label": "Müller-Zelle",
+                "position": {
+                    "x": 5,
+                    "y": 182,
+                    "z": 17
+                }
+            },
+            {
+                "id": "n100",
+                "type": "AutonomesNervensystem",
+                "label": "Nervus splanchnicus",
+                "position": {
+                    "x": 5,
+                    "y": 60,
+                    "z": 11
+                }
+            },
+            {
+                "id": "n101",
+                "type": "AutonomesNervensystem",
+                "label": "Ganglion coeliacum",
+                "position": {
+                    "x": 1,
+                    "y": 50,
+                    "z": 11
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "id": "e1",
+                "type": "StrukturVerbindung",
+                "source": "n1",
+                "target": "n3",
+                "label": "Teil von"
+            },
+            {
+                "id": "e2",
+                "type": "StrukturVerbindung",
+                "source": "n1",
+                "target": "n4",
+                "label": "Teil von"
+            },
+            {
+                "id": "e3",
+                "type": "StrukturVerbindung",
+                "source": "n1",
+                "target": "n5",
+                "label": "Teil von"
+            },
+            {
+                "id": "e4",
+                "type": "StrukturVerbindung",
+                "source": "n1",
+                "target": "n6",
+                "label": "Teil von"
+            },
+            {
+                "id": "e5",
+                "type": "StrukturVerbindung",
+                "source": "n1",
+                "target": "n7",
+                "label": "Teil von"
+            },
+            {
+                "id": "e6",
+                "type": "StrukturVerbindung",
+                "source": "n1",
+                "target": "n8",
+                "label": "Teil von"
+            },
+            {
+                "id": "e7",
+                "type": "StrukturVerbindung",
+                "source": "n1",
+                "target": "n24",
+                "label": "Teil von"
+            },
+            {
+                "id": "e8",
+                "type": "StrukturVerbindung",
+                "source": "n24",
+                "target": "n25",
+                "label": "Fortsetzung"
+            },
+            {
+                "id": "e9",
+                "type": "StrukturVerbindung",
+                "source": "n25",
+                "target": "n26",
+                "label": "Fortsetzung"
+            },
+            {
+                "id": "e10",
+                "type": "StrukturVerbindung",
+                "source": "n26",
+                "target": "n27",
+                "label": "Fortsetzung"
+            },
+            {
+                "id": "e11",
+                "type": "StrukturVerbindung",
+                "source": "n2",
+                "target": "n28",
+                "label": "Ast"
+            },
+            {
+                "id": "e12",
+                "type": "StrukturVerbindung",
+                "source": "n2",
+                "target": "n29",
+                "label": "Ast"
+            },
+            {
+                "id": "e13",
+                "type": "StrukturVerbindung",
+                "source": "n2",
+                "target": "n30",
+                "label": "Ast"
+            },
+            {
+                "id": "e14",
+                "type": "StrukturVerbindung",
+                "source": "n2",
+                "target": "n47",
+                "label": "Ast"
+            },
+            {
+                "id": "e15",
+                "type": "StrukturVerbindung",
+                "source": "n47",
+                "target": "n48",
+                "label": "Ast"
+            },
+            {
+                "id": "e16",
+                "type": "StrukturVerbindung",
+                "source": "n47",
+                "target": "n49",
+                "label": "Abgang"
+            },
+            {
+                "id": "e17",
+                "type": "StrukturVerbindung",
+                "source": "n47",
+                "target": "n50",
+                "label": "Abgang"
+            },
+            {
+                "id": "e18",
+                "type": "StrukturVerbindung",
+                "source": "n47",
+                "target": "n45",
+                "label": "Endast"
+            },
+            {
+                "id": "e19",
+                "type": "SignalUebertragung",
+                "source": "n67",
+                "target": "n47",
+                "label": "motorisch"
+            },
+            {
+                "id": "e20",
+                "type": "SignalUebertragung",
+                "source": "n81",
+                "target": "n51",
+                "label": "motorisch"
+            },
+            {
+                "id": "e21",
+                "type": "SignalUebertragung",
+                "source": "n78",
+                "target": "n67",
+                "label": "Motoneuron-Schleife"
+            },
+            {
+                "id": "e22",
+                "type": "SignalUebertragung",
+                "source": "n73",
+                "target": "n80",
+                "label": "kortikal"
+            },
+            {
+                "id": "e23",
+                "type": "SignalUebertragung",
+                "source": "n11",
+                "target": "n22",
+                "label": "visuell"
+            },
+            {
+                "id": "e24",
+                "type": "SignalUebertragung",
+                "source": "n12",
+                "target": "n23",
+                "label": "auditorisch"
+            },
+            {
+                "id": "e25",
+                "type": "SignalUebertragung",
+                "source": "n41",
+                "target": "n47",
+                "label": "Beinmotorik"
+            },
+            {
+                "id": "e26",
+                "type": "SignalUebertragung",
+                "source": "n84",
+                "target": "n25",
+                "label": "afferent"
+            },
+            {
+                "id": "e27",
+                "type": "SignalUebertragung",
+                "source": "n83",
+                "target": "n25",
+                "label": "afferent"
+            },
+            {
+                "id": "e28",
+                "type": "SignalUebertragung",
+                "source": "n85",
+                "target": "n25",
+                "label": "afferent"
+            },
+            {
+                "id": "e29",
+                "type": "SignalUebertragung",
+                "source": "n62",
+                "target": "n65",
+                "label": "parasympathisch"
+            },
+            {
+                "id": "e30",
+                "type": "SignalUebertragung",
+                "source": "n64",
+                "target": "n100",
+                "label": "sympathisch"
+            },
+            {
+                "id": "e31",
+                "type": "SignalUebertragung",
+                "source": "n101",
+                "target": "n66",
+                "label": "viszeral"
+            },
+            {
+                "id": "e32",
+                "type": "SignalUebertragung",
+                "source": "n97",
+                "target": "n47",
+                "label": "Myelinisierung"
+            }
+        ]
+    }
+}

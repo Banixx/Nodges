@@ -1,0 +1,253 @@
+{
+    "system": "Menschliches Nervensystem",
+    "metadata": {
+        "created": "2024-07-07T12:00:00Z",
+        "version": "1.0",
+        "author": "AI Assistant",
+        "description": "Graphische Darstellung von Hauptkomponenten und Verbindungen des menschlichen Nervensystems"
+    },
+    "dataModel": {
+        "entities": {
+            "System": {
+                "properties": {}
+            },
+            "Subsystem": {
+                "properties": {}
+            },
+            "Organ": {
+                "properties": {}
+            }
+        },
+        "relationships": {
+            "Teil-von": {
+                "properties": {}
+            },
+            "Besteht-aus": {
+                "properties": {}
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "System": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ffdd00"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        2.5,
+                        2.5
+                    ]
+                }
+            },
+            "Subsystem": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#00aaff"
+                    }
+                }
+            },
+            "Organ": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ff4444"
+                    }
+                }
+            },
+            "Teil-von": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ffffff"
+                    }
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 1.5
+                    }
+                }
+            },
+            "Besteht-aus": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ffffff"
+                    }
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 0.8
+                    }
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "ns_1",
+                "type": "System",
+                "label": "Nervensystem",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "ns_2",
+                "type": "Subsystem",
+                "label": "Zentrales Nervensystem (ZNS)",
+                "position": {
+                    "x": -50,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "ns_3",
+                "type": "Subsystem",
+                "label": "Peripheres Nervensystem (PNS)",
+                "position": {
+                    "x": 50,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "ns_4",
+                "type": "Organ",
+                "label": "Gehirn",
+                "position": {
+                    "x": -70,
+                    "y": 20,
+                    "z": 0
+                }
+            },
+            {
+                "id": "ns_5",
+                "type": "Organ",
+                "label": "Rückenmark",
+                "position": {
+                    "x": -70,
+                    "y": -20,
+                    "z": 0
+                }
+            },
+            {
+                "id": "ns_6",
+                "type": "Subsystem",
+                "label": "Somatisches Nervensystem",
+                "position": {
+                    "x": 70,
+                    "y": 20,
+                    "z": 0
+                }
+            },
+            {
+                "id": "ns_7",
+                "type": "Subsystem",
+                "label": "Vegetatives Nervensystem",
+                "position": {
+                    "x": 70,
+                    "y": -20,
+                    "z": 0
+                }
+            },
+            {
+                "id": "ns_8",
+                "type": "Subsystem",
+                "label": "Sympathikus",
+                "position": {
+                    "x": 90,
+                    "y": -40,
+                    "z": 0
+                }
+            },
+            {
+                "id": "ns_9",
+                "type": "Subsystem",
+                "label": "Parasympathikus",
+                "position": {
+                    "x": 110,
+                    "y": -40,
+                    "z": 0
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "id": "rel_1",
+                "type": "Teil-von",
+                "source": "ns_2",
+                "target": "ns_1",
+                "label": "Teil von"
+            },
+            {
+                "id": "rel_2",
+                "type": "Teil-von",
+                "source": "ns_3",
+                "target": "ns_1",
+                "label": "Teil von"
+            },
+            {
+                "id": "rel_3",
+                "type": "Besteht-aus",
+                "source": "ns_4",
+                "target": "ns_2",
+                "label": "Besteht aus"
+            },
+            {
+                "id": "rel_4",
+                "type": "Besteht-aus",
+                "source": "ns_5",
+                "target": "ns_2",
+                "label": "Besteht aus"
+            },
+            {
+                "id": "rel_5",
+                "type": "Besteht-aus",
+                "source": "ns_6",
+                "target": "ns_3",
+                "label": "Besteht aus"
+            },
+            {
+                "id": "rel_6",
+                "type": "Besteht-aus",
+                "source": "ns_7",
+                "target": "ns_3",
+                "label": "Besteht aus"
+            },
+            {
+                "id": "rel_7",
+                "type": "Besteht-aus",
+                "source": "ns_8",
+                "target": "ns_7",
+                "label": "Besteht aus"
+            },
+            {
+                "id": "rel_8",
+                "type": "Besteht-aus",
+                "source": "ns_9",
+                "target": "ns_7",
+                "label": "Besteht aus"
+            }
+        ]
+    }
+}
