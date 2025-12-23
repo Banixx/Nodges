@@ -1,0 +1,313 @@
+{
+    "system": "Reflexbogen (Rückenmark)",
+    "metadata": {
+        "created": "2025-12-22T16:25:00Z",
+        "version": "1.0",
+        "author": "AI",
+        "description": "Funktionale Darstellung eines monosynaptischen und polysynaptischen Reflexbogens (z.B. Rückziehreflex)."
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Rezeptor": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FF9F43"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        5.0,
+                        5.0
+                    ]
+                }
+            },
+            "Neuron (Sensibel)": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#54A0FF"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        4.0,
+                        4.0
+                    ]
+                }
+            },
+            "Neuron (Inter)": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#DDDDDD"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.0,
+                        3.0
+                    ]
+                }
+            },
+            "Neuron (Motorisch)": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#EE5253"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        6.0,
+                        6.0
+                    ]
+                }
+            },
+            "Effektor": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#D63031"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        8.0,
+                        8.0
+                    ]
+                }
+            },
+            "ZNS Struktur": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#Feca57"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        10.0,
+                        10.0
+                    ]
+                },
+                "opacity": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.4,
+                        0.4
+                    ]
+                }
+            },
+            "Signal (Afferent)": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#54A0FF"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.4,
+                        0.4
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 3.0,
+                        "color": "#FFFFFF",
+                        "speed": 2.0
+                    }
+                }
+            },
+            "Signal (Efferent)": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#EE5253"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.6,
+                        0.6
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 4.0,
+                        "color": "#FFFF00",
+                        "speed": 3.0
+                    }
+                }
+            },
+            "Signal (Inter)": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#AAAAAA"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.2,
+                        0.2
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "skin_receptor",
+                "type": "Rezeptor",
+                "label": "Hautrezeptor (Schmerz)",
+                "position": {
+                    "x": -40,
+                    "y": -20,
+                    "z": 0
+                }
+            },
+            {
+                "id": "dorsal_root_ganglion",
+                "type": "Neuron (Sensibel)",
+                "label": "Spinalganglion",
+                "position": {
+                    "x": -15,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "spinal_cord_bg",
+                "type": "ZNS Struktur",
+                "label": "Rückenmark (Querschnitt)",
+                "position": {
+                    "x": 0,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "dorsal_horn",
+                "type": "ZNS Struktur",
+                "label": "Hinterhorn",
+                "position": {
+                    "x": 0,
+                    "y": 15,
+                    "z": -2
+                }
+            },
+            {
+                "id": "interneuron",
+                "type": "Neuron (Inter)",
+                "label": "Interneuron",
+                "position": {
+                    "x": 0,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "ventral_horn",
+                "type": "ZNS Struktur",
+                "label": "Vorderhorn",
+                "position": {
+                    "x": 0,
+                    "y": 5,
+                    "z": 2
+                }
+            },
+            {
+                "id": "motor_neuron",
+                "type": "Neuron (Motorisch)",
+                "label": "Alpha-Motoneuron",
+                "position": {
+                    "x": 5,
+                    "y": 3,
+                    "z": 2
+                }
+            },
+            {
+                "id": "muscle",
+                "type": "Effektor",
+                "label": "Muskel (Bizeps)",
+                "position": {
+                    "x": 30,
+                    "y": -25,
+                    "z": 0
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "id": "aff1",
+                "type": "Signal (Afferent)",
+                "source": "skin_receptor",
+                "target": "dorsal_root_ganglion",
+                "label": "Schmerzsignal"
+            },
+            {
+                "id": "aff2",
+                "type": "Signal (Afferent)",
+                "source": "dorsal_root_ganglion",
+                "target": "dorsal_horn",
+                "label": "Eintritt ZNS"
+            },
+            {
+                "id": "syn1",
+                "type": "Signal (Inter)",
+                "source": "dorsal_horn",
+                "target": "interneuron",
+                "label": "Synapse 1"
+            },
+            {
+                "id": "syn2",
+                "type": "Signal (Inter)",
+                "source": "interneuron",
+                "target": "motor_neuron",
+                "label": "Synapse 2 (Erregend)"
+            },
+            {
+                "id": "eff1",
+                "type": "Signal (Efferent)",
+                "source": "motor_neuron",
+                "target": "muscle",
+                "label": "Kontraktion!"
+            }
+        ]
+    }
+}

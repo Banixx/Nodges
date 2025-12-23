@@ -1,0 +1,432 @@
+{
+    "system": "Zentralnervensystem (Makro-Anatomie)",
+    "metadata": {
+        "created": "2025-12-22T16:20:00Z",
+        "version": "1.0",
+        "author": "AI",
+        "description": "Detaillierte Darstellung der groben Anatomie des menschlichen Gehirns und der Hauptverbindungen."
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Frontallappen": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FF6B6B"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        12.0,
+                        12.0
+                    ]
+                }
+            },
+            "Parietallappen": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#4ECDC4"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        10.0,
+                        10.0
+                    ]
+                }
+            },
+            "Temporallappen": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#45B7D1"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        10.0,
+                        10.0
+                    ]
+                }
+            },
+            "Okzipitallappen": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#96CEB4"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        8.0,
+                        8.0
+                    ]
+                }
+            },
+            "Cerebellum": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FFEEAD"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        9.0,
+                        9.0
+                    ]
+                }
+            },
+            "Hirnstamm": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#D4A5A5"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        6.0,
+                        6.0
+                    ]
+                }
+            },
+            "Limbisches System": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#9B59B6"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        5.0,
+                        5.0
+                    ]
+                }
+            },
+            "Assoziationsbahn": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FFFFFF"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.3,
+                        0.3
+                    ]
+                },
+                "opacity": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.6,
+                        0.6
+                    ]
+                }
+            },
+            "Projektionsbahn": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FFD700"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.5,
+                        0.5
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 1.5
+                    }
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "frontal_l",
+                "type": "Frontallappen",
+                "label": "Frontallappen (Links)",
+                "position": {
+                    "x": -15,
+                    "y": 30,
+                    "z": 20
+                }
+            },
+            {
+                "id": "frontal_r",
+                "type": "Frontallappen",
+                "label": "Frontallappen (Rechts)",
+                "position": {
+                    "x": 15,
+                    "y": 30,
+                    "z": 20
+                }
+            },
+            {
+                "id": "parietal_l",
+                "type": "Parietallappen",
+                "label": "Parietallappen (Links)",
+                "position": {
+                    "x": -18,
+                    "y": 35,
+                    "z": -5
+                }
+            },
+            {
+                "id": "parietal_r",
+                "type": "Parietallappen",
+                "label": "Parietallappen (Rechts)",
+                "position": {
+                    "x": 18,
+                    "y": 35,
+                    "z": -5
+                }
+            },
+            {
+                "id": "temporal_l",
+                "type": "Temporallappen",
+                "label": "Temporallappen (Links)",
+                "position": {
+                    "x": -25,
+                    "y": 15,
+                    "z": 5
+                }
+            },
+            {
+                "id": "temporal_r",
+                "type": "Temporallappen",
+                "label": "Temporallappen (Rechts)",
+                "position": {
+                    "x": 25,
+                    "y": 15,
+                    "z": 5
+                }
+            },
+            {
+                "id": "occipital_l",
+                "type": "Okzipitallappen",
+                "label": "Okzipitallappen (Links)",
+                "position": {
+                    "x": -12,
+                    "y": 25,
+                    "z": -25
+                }
+            },
+            {
+                "id": "occipital_r",
+                "type": "Okzipitallappen",
+                "label": "Okzipitallappen (Rechts)",
+                "position": {
+                    "x": 12,
+                    "y": 25,
+                    "z": -25
+                }
+            },
+            {
+                "id": "cerebellum",
+                "type": "Cerebellum",
+                "label": "Kleinhirn",
+                "position": {
+                    "x": 0,
+                    "y": 5,
+                    "z": -20
+                }
+            },
+            {
+                "id": "thalamus",
+                "type": "Limbisches System",
+                "label": "Thalamus",
+                "position": {
+                    "x": 0,
+                    "y": 20,
+                    "z": 0
+                }
+            },
+            {
+                "id": "hypothalamus",
+                "type": "Limbisches System",
+                "label": "Hypothalamus",
+                "position": {
+                    "x": 0,
+                    "y": 15,
+                    "z": 5
+                }
+            },
+            {
+                "id": "hippocampus_l",
+                "type": "Limbisches System",
+                "label": "Hippocampus (L)",
+                "position": {
+                    "x": -10,
+                    "y": 12,
+                    "z": 0
+                }
+            },
+            {
+                "id": "hippocampus_r",
+                "type": "Limbisches System",
+                "label": "Hippocampus (R)",
+                "position": {
+                    "x": 10,
+                    "y": 12,
+                    "z": 0
+                }
+            },
+            {
+                "id": "brainstem",
+                "type": "Hirnstamm",
+                "label": "Hirnstamm",
+                "position": {
+                    "x": 0,
+                    "y": -10,
+                    "z": -5
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "id": "c1",
+                "type": "Assoziationsbahn",
+                "source": "frontal_l",
+                "target": "parietal_l",
+                "label": "Planung -> Sensorik"
+            },
+            {
+                "id": "c2",
+                "type": "Assoziationsbahn",
+                "source": "frontal_r",
+                "target": "parietal_r",
+                "label": "Planung -> Sensorik"
+            },
+            {
+                "id": "c3",
+                "type": "Assoziationsbahn",
+                "source": "temporal_l",
+                "target": "frontal_l",
+                "label": "Sprache/Gedächtnis"
+            },
+            {
+                "id": "c4",
+                "type": "Assoziationsbahn",
+                "source": "occipital_l",
+                "target": "parietal_l",
+                "label": "Visuelle Verarbeitung"
+            },
+            {
+                "id": "c5",
+                "type": "Assoziationsbahn",
+                "source": "occipital_r",
+                "target": "parietal_r",
+                "label": "Visuelle Verarbeitung"
+            },
+            {
+                "id": "p1",
+                "type": "Projektionsbahn",
+                "source": "thalamus",
+                "target": "frontal_l",
+                "label": "Filterung"
+            },
+            {
+                "id": "p2",
+                "type": "Projektionsbahn",
+                "source": "thalamus",
+                "target": "frontal_r",
+                "label": "Filterung"
+            },
+            {
+                "id": "p3",
+                "type": "Projektionsbahn",
+                "source": "thalamus",
+                "target": "parietal_l",
+                "label": "Filterung"
+            },
+            {
+                "id": "p4",
+                "type": "Projektionsbahn",
+                "source": "thalamus",
+                "target": "parietal_r",
+                "label": "Filterung"
+            },
+            {
+                "id": "m1",
+                "type": "Projektionsbahn",
+                "source": "frontal_l",
+                "target": "brainstem",
+                "label": "Motorische Befehle"
+            },
+            {
+                "id": "m2",
+                "type": "Projektionsbahn",
+                "source": "frontal_r",
+                "target": "brainstem",
+                "label": "Motorische Befehle"
+            },
+            {
+                "id": "l1",
+                "type": "Assoziationsbahn",
+                "source": "hippocampus_l",
+                "target": "temporal_l",
+                "label": "Gedächtnisabruf"
+            },
+            {
+                "id": "l2",
+                "type": "Assoziationsbahn",
+                "source": "hippocampus_r",
+                "target": "temporal_r",
+                "label": "Gedächtnisabruf"
+            },
+            {
+                "id": "cb1",
+                "type": "Projektionsbahn",
+                "source": "brainstem",
+                "target": "cerebellum",
+                "label": "Feinmotorik Feedback"
+            },
+            {
+                "id": "cb2",
+                "type": "Projektionsbahn",
+                "source": "cerebellum",
+                "target": "brainstem",
+                "label": "Korrektursignale"
+            }
+        ]
+    }
+}

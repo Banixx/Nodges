@@ -1,0 +1,325 @@
+{
+    "system": "Menschliches Nervensystem",
+    "metadata": {
+        "created": "2025-12-21T12:00:00Z",
+        "version": "1.0",
+        "author": "AI",
+        "description": "Ein strukturierter Überblick über das menschliche Nervensystem als Netzwerk aus zentralem und peripherem Nervensystem, ihren wichtigsten Komponenten und signalleitenden Verbindungen."
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Gehirn": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FFCC00"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        8.0,
+                        8.0
+                    ]
+                }
+            },
+            "Rückenmark": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FF8800"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        6.0,
+                        6.0
+                    ]
+                }
+            },
+            "Peripherer Nerv": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#00CCFF"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.5,
+                        3.5
+                    ]
+                }
+            },
+            "Sensorisches Organ": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#66FF66"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        4.0,
+                        4.0
+                    ]
+                }
+            },
+            "Muskel": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FF3366"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        4.0,
+                        4.0
+                    ]
+                }
+            },
+            "Signalübertragung": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FFFFFF"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.15,
+                        0.15
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 2.5
+                    }
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "n1",
+                "type": "Gehirn",
+                "label": "Großhirn (Cerebrum)",
+                "position": {
+                    "x": 0,
+                    "y": 50,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n2",
+                "type": "Gehirn",
+                "label": "Kleinhirn (Cerebellum)",
+                "position": {
+                    "x": -10,
+                    "y": 45,
+                    "z": -5
+                }
+            },
+            {
+                "id": "n3",
+                "type": "Gehirn",
+                "label": "Hirnstamm",
+                "position": {
+                    "x": 0,
+                    "y": 40,
+                    "z": 3
+                }
+            },
+            {
+                "id": "n4",
+                "type": "Rückenmark",
+                "label": "Rückenmark",
+                "position": {
+                    "x": 0,
+                    "y": 20,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n5",
+                "type": "Peripherer Nerv",
+                "label": "Spinalnerven",
+                "position": {
+                    "x": 15,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n6",
+                "type": "Peripherer Nerv",
+                "label": "Autonomes Nervensystem",
+                "position": {
+                    "x": -15,
+                    "y": 10,
+                    "z": 5
+                }
+            },
+            {
+                "id": "n7",
+                "type": "Sensorisches Organ",
+                "label": "Auge",
+                "position": {
+                    "x": 20,
+                    "y": 40,
+                    "z": 10
+                }
+            },
+            {
+                "id": "n8",
+                "type": "Sensorisches Organ",
+                "label": "Ohr",
+                "position": {
+                    "x": 20,
+                    "y": 38,
+                    "z": -10
+                }
+            },
+            {
+                "id": "n9",
+                "type": "Sensorisches Organ",
+                "label": "Hautrezeptoren",
+                "position": {
+                    "x": 25,
+                    "y": 5,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n10",
+                "type": "Muskel",
+                "label": "Skelettmuskeln",
+                "position": {
+                    "x": 0,
+                    "y": -10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "n11",
+                "type": "Muskel",
+                "label": "Herzmuskel",
+                "position": {
+                    "x": -20,
+                    "y": -8,
+                    "z": 5
+                }
+            },
+            {
+                "id": "n12",
+                "type": "Muskel",
+                "label": "Glatte Muskulatur (Organe)",
+                "position": {
+                    "x": -25,
+                    "y": -12,
+                    "z": -5
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "id": "e1",
+                "type": "Signalübertragung",
+                "source": "n7",
+                "target": "n1",
+                "label": "Visuelle Reizung → Gehirn"
+            },
+            {
+                "id": "e2",
+                "type": "Signalübertragung",
+                "source": "n8",
+                "target": "n1",
+                "label": "Auditive Reizung → Gehirn"
+            },
+            {
+                "id": "e3",
+                "type": "Signalübertragung",
+                "source": "n9",
+                "target": "n4",
+                "label": "Sensorische Reizung der Haut"
+            },
+            {
+                "id": "e4",
+                "type": "Signalübertragung",
+                "source": "n1",
+                "target": "n3",
+                "label": "Signalverarbeitung im Hirnstamm"
+            },
+            {
+                "id": "e5",
+                "type": "Signalübertragung",
+                "source": "n3",
+                "target": "n4",
+                "label": "Motorische Leitung zum Rückenmark"
+            },
+            {
+                "id": "e6",
+                "type": "Signalübertragung",
+                "source": "n4",
+                "target": "n5",
+                "label": "Signalweiterleitung zu Spinalnerven"
+            },
+            {
+                "id": "e7",
+                "type": "Signalübertragung",
+                "source": "n4",
+                "target": "n6",
+                "label": "Automatische Steuerung über autonomes NS"
+            },
+            {
+                "id": "e8",
+                "type": "Signalübertragung",
+                "source": "n5",
+                "target": "n10",
+                "label": "Motorischer Impuls zu Skelettmuskeln"
+            },
+            {
+                "id": "e9",
+                "type": "Signalübertragung",
+                "source": "n6",
+                "target": "n11",
+                "label": "Vegetative Steuerung des Herzens"
+            },
+            {
+                "id": "e10",
+                "type": "Signalübertragung",
+                "source": "n6",
+                "target": "n12",
+                "label": "Vegetative Steuerung innerer Organe"
+            },
+            {
+                "id": "e11",
+                "type": "Signalübertragung",
+                "source": "n10",
+                "target": "n9",
+                "label": "Bewegung → Rückmeldung der Hautrezeptoren"
+            }
+        ]
+    }
+}

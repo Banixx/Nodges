@@ -1,0 +1,411 @@
+{
+    "system": "Neuron (Mikro-Struktur)",
+    "metadata": {
+        "created": "2025-12-22T16:30:00Z",
+        "version": "1.0",
+        "author": "AI",
+        "description": "Detaillierte Darstellung eines einzelnen motorischen Neurons mit Dendritenbaum, Soma, Axonhügel und myelinisiertem Axon."
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Soma": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#8E44AD"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        15.0,
+                        15.0
+                    ]
+                }
+            },
+            "Zellkern": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#2C3E50"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        5.0,
+                        5.0
+                    ]
+                }
+            },
+            "Dendriten-Segment": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#9B59B6"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        2.0,
+                        2.0
+                    ]
+                }
+            },
+            "Axonhügel": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#E67E22"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        6.0,
+                        6.0
+                    ]
+                }
+            },
+            "Ranvier-Schnürring": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#E74C3C"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.0,
+                        3.0
+                    ]
+                }
+            },
+            "Axon-Terminal": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#F1C40F"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        4.0,
+                        4.0
+                    ]
+                }
+            },
+            "Membran (Dendrit)": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#9B59B6"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.5,
+                        0.5
+                    ]
+                }
+            },
+            "Myelinscheide": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#F1C40F"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.0,
+                        3.0
+                    ]
+                },
+                "opacity": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.8,
+                        0.8
+                    ]
+                }
+            },
+            "Synapse": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#2ECC71"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.2,
+                        0.2
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "soma",
+                "type": "Soma",
+                "label": "Soma (Zellkörper)",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "nucleus",
+                "type": "Zellkern",
+                "label": "Zellkern",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 2
+                }
+            },
+            {
+                "id": "ah",
+                "type": "Axonhügel",
+                "label": "Axonhügel (Triggerzone)",
+                "position": {
+                    "x": 10,
+                    "y": -5,
+                    "z": 0
+                }
+            },
+            {
+                "id": "d1_root",
+                "type": "Dendriten-Segment",
+                "label": "Dendrit 1",
+                "position": {
+                    "x": -10,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "d1_a",
+                "type": "Dendriten-Segment",
+                "label": "Dendrit 1a",
+                "position": {
+                    "x": -15,
+                    "y": 15,
+                    "z": 5
+                }
+            },
+            {
+                "id": "d1_b",
+                "type": "Dendriten-Segment",
+                "label": "Dendrit 1b",
+                "position": {
+                    "x": -15,
+                    "y": 12,
+                    "z": -5
+                }
+            },
+            {
+                "id": "d2_root",
+                "type": "Dendriten-Segment",
+                "label": "Dendrit 2",
+                "position": {
+                    "x": 0,
+                    "y": 15,
+                    "z": 0
+                }
+            },
+            {
+                "id": "d2_a",
+                "type": "Dendriten-Segment",
+                "label": "Dendrit 2a",
+                "position": {
+                    "x": 5,
+                    "y": 20,
+                    "z": 0
+                }
+            },
+            {
+                "id": "d3_root",
+                "type": "Dendriten-Segment",
+                "label": "Dendrit 3",
+                "position": {
+                    "x": 10,
+                    "y": 5,
+                    "z": -5
+                }
+            },
+            {
+                "id": "node1",
+                "type": "Ranvier-Schnürring",
+                "label": "Node 1",
+                "position": {
+                    "x": 25,
+                    "y": -10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "node2",
+                "type": "Ranvier-Schnürring",
+                "label": "Node 2",
+                "position": {
+                    "x": 40,
+                    "y": -15,
+                    "z": 0
+                }
+            },
+            {
+                "id": "node3",
+                "type": "Ranvier-Schnürring",
+                "label": "Node 3",
+                "position": {
+                    "x": 55,
+                    "y": -20,
+                    "z": 0
+                }
+            },
+            {
+                "id": "term1",
+                "type": "Axon-Terminal",
+                "label": "Terminal A",
+                "position": {
+                    "x": 65,
+                    "y": -25,
+                    "z": 5
+                }
+            },
+            {
+                "id": "term2",
+                "type": "Axon-Terminal",
+                "label": "Terminal B",
+                "position": {
+                    "x": 65,
+                    "y": -20,
+                    "z": -5
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "id": "myelin1",
+                "type": "Myelinscheide",
+                "source": "ah",
+                "target": "node1",
+                "label": "Schwann-Zelle 1"
+            },
+            {
+                "id": "myelin2",
+                "type": "Myelinscheide",
+                "source": "node1",
+                "target": "node2",
+                "label": "Schwann-Zelle 2"
+            },
+            {
+                "id": "myelin3",
+                "type": "Myelinscheide",
+                "source": "node2",
+                "target": "node3",
+                "label": "Schwann-Zelle 3"
+            },
+            {
+                "id": "syn_t1",
+                "type": "Synapse",
+                "source": "node3",
+                "target": "term1",
+                "label": "Telodendron"
+            },
+            {
+                "id": "syn_t2",
+                "type": "Synapse",
+                "source": "node3",
+                "target": "term2",
+                "label": "Telodendron"
+            },
+            {
+                "id": "in_core",
+                "type": "Dendriten-Segment",
+                "source": "soma",
+                "target": "nucleus",
+                "label": ""
+            },
+            {
+                "id": "d_link1",
+                "type": "Membran (Dendrit)",
+                "source": "soma",
+                "target": "d1_root",
+                "label": ""
+            },
+            {
+                "id": "d_link1a",
+                "type": "Membran (Dendrit)",
+                "source": "d1_root",
+                "target": "d1_a",
+                "label": ""
+            },
+            {
+                "id": "d_link1b",
+                "type": "Membran (Dendrit)",
+                "source": "d1_root",
+                "target": "d1_b",
+                "label": ""
+            },
+            {
+                "id": "d_link2",
+                "type": "Membran (Dendrit)",
+                "source": "soma",
+                "target": "d2_root",
+                "label": ""
+            },
+            {
+                "id": "d_link2a",
+                "type": "Membran (Dendrit)",
+                "source": "d2_root",
+                "target": "d2_a",
+                "label": ""
+            },
+            {
+                "id": "d_link3",
+                "type": "Membran (Dendrit)",
+                "source": "soma",
+                "target": "d3_root",
+                "label": ""
+            },
+            {
+                "id": "axon_start",
+                "type": "Membran (Dendrit)",
+                "source": "soma",
+                "target": "ah",
+                "label": "Integration"
+            }
+        ]
+    }
+}
