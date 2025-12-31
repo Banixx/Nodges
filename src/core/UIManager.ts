@@ -22,7 +22,6 @@ export class UIManager {
     private filePanelContent: HTMLElement | null;
     private infoPanelContent: HTMLElement | null;
     private visualMappingPanel: VisualMappingPanel;
-    private environmentPanel: EnvironmentPanel;
 
     constructor(app: App) {
         this.app = app;
@@ -50,7 +49,7 @@ export class UIManager {
         this.filePanelContent = document.getElementById('filePanelContent');
         this.infoPanelContent = document.getElementById('infoPanelContent');
         this.visualMappingPanel = new VisualMappingPanel('visualMappingContent');
-        this.environmentPanel = new EnvironmentPanel('environmentContent', this.stateManager);
+        new EnvironmentPanel('environmentContent', this.stateManager);
 
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'ui');
     }
@@ -65,6 +64,22 @@ export class UIManager {
         // Inverse of sliderToCurvature
         if (val <= 0) return 0;
         return Math.log10(val + 1) * 50;
+    }
+
+    private sliderToHighlightPercent(s: number): number {
+        // Range 1% to 200%, middle (50) is 30%
+        const B = 170 / 29;
+        const P = 841 / 141;
+        const Q = -700 / 141;
+        return P * Math.pow(B, s / 50) + Q;
+    }
+
+    private highlightPercentToSlider(v: number): number {
+        const B = 170 / 29;
+        const P = 841 / 141;
+        const Q = -700 / 141;
+        if (v <= Q) return 0;
+        return 50 * Math.log((v - Q) / P) / Math.log(B);
     }
 
     init() {
@@ -381,6 +396,10 @@ export class UIManager {
         const tubularValue = document.getElementById('edgeSegmentsValue') as HTMLSpanElement;
         const radialSlider = document.getElementById('edgeRadialSlider') as HTMLInputElement;
         const radialValue = document.getElementById('edgeRadialValue') as HTMLSpanElement;
+        const highlightSlider = document.getElementById('edgeHighlightSlider') as HTMLInputElement;
+        const highlightValue = document.getElementById('edgeHighlightValue') as HTMLSpanElement;
+        const selectionSlider = document.getElementById('edgeSelectionSlider') as HTMLInputElement;
+        const selectionValue = document.getElementById('edgeSelectionValue') as HTMLSpanElement;
         const curveSlider = document.getElementById('edgeCurveSlider') as HTMLInputElement;
         const curveValue = document.getElementById('edgeCurveValue') as HTMLSpanElement;
         const pulseSlider = document.getElementById('edgePulseSlider') as HTMLInputElement;
@@ -436,6 +455,39 @@ export class UIManager {
             });
         }
 
+        if (highlightSlider && highlightValue) {
+            const initialVal = this.stateManager.state.highlightThickness;
+            highlightSlider.value = this.highlightPercentToSlider(initialVal).toString();
+            highlightValue.textContent = `${initialVal.toFixed(0)}%`;
+
+            highlightSlider.addEventListener('input', (e) => {
+                const sliderVal = parseFloat((e.target as HTMLInputElement).value);
+                const percent = this.sliderToHighlightPercent(sliderVal);
+                highlightValue.textContent = `${percent.toFixed(0)}%`;
+                this.stateManager.update({ highlightThickness: percent });
+                // Note: We don't always need to refresh all edges, but highlighting is dynamic anyway.
+                // However, if an object is already highlighted, we might want to refresh it.
+                if (this.app.highlightManager) {
+                    this.app.highlightManager.updateHighlights(this.stateManager.state);
+                }
+            });
+        }
+
+        if (selectionSlider && selectionValue) {
+            const initialVal = this.stateManager.state.selectionThickness;
+            selectionSlider.value = initialVal.toString();
+            selectionValue.textContent = `${initialVal.toFixed(0)}%`;
+
+            selectionSlider.addEventListener('input', (e) => {
+                const value = parseFloat((e.target as HTMLInputElement).value);
+                selectionValue.textContent = `${value.toFixed(0)}%`;
+                this.stateManager.update({ selectionThickness: value });
+                if (this.app.highlightManager) {
+                    this.app.highlightManager.updateHighlights(this.stateManager.state);
+                }
+            });
+        }
+
         if (pulseSlider && pulseValue) {
             pulseValue.textContent = parseFloat(pulseSlider.value).toFixed(2);
             pulseSlider.addEventListener('input', (e) => {
@@ -469,6 +521,8 @@ export class UIManager {
                     edgeRadialSegments: 8,
                     edgeCurveFactor: 0.4,
                     edgePulseSpeed: 1.0,
+                    highlightThickness: 10,
+                    selectionThickness: 20,
                     edgeAnimationMode: 'pulse',
                     edgeOpacity: 1.0
                 };
@@ -484,6 +538,10 @@ export class UIManager {
                 if (curveValue) curveValue.textContent = defaults.edgeCurveFactor.toFixed(2);
                 if (pulseSlider) pulseSlider.value = defaults.edgePulseSpeed.toString();
                 if (pulseValue) pulseValue.textContent = defaults.edgePulseSpeed.toFixed(2);
+                if (highlightSlider) highlightSlider.value = this.highlightPercentToSlider(defaults.highlightThickness).toString();
+                if (highlightValue) highlightValue.textContent = `${defaults.highlightThickness}%`;
+                if (selectionSlider) selectionSlider.value = defaults.selectionThickness.toString();
+                if (selectionValue) selectionValue.textContent = `${defaults.selectionThickness}%`;
                 if (animModeSelect) animModeSelect.value = defaults.edgeAnimationMode;
                 if (opacitySlider) opacitySlider.value = defaults.edgeOpacity.toString();
                 if (opacityValue) opacityValue.textContent = defaults.edgeOpacity.toFixed(2);

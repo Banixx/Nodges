@@ -1,0 +1,51 @@
+graph TB
+    subgraph "Einstiegspunkt"
+        App["App.ts"]
+    end
+    
+    subgraph "Kern-Manager"
+        SM["StateManager"]
+        CEM["CentralEventManager"]
+        DP["DataParser"]
+        NOM["NodeObjectsManager"]
+        EOM["EdgeObjectsManager"]
+        LM["LayoutManager"]
+        UI["UIManager"]
+        VME["VisualMappingEngine"]
+    end
+    
+    subgraph "Effekte"
+        HM["HighlightManager"]
+        GE["GlowEffect"]
+    end
+    
+    subgraph "Three.js"
+        Scene["THREE.Scene"]
+        Camera["THREE.PerspectiveCamera"]
+        Renderer["THREE.WebGLRenderer"]
+        Controls["OrbitControls"]
+    end
+    
+    App --> SM
+    App --> CEM
+    App --> DP
+    App --> NOM
+    App --> EOM
+    App --> LM
+    App --> UI
+    App --> VME
+    App --> Scene
+    App --> Camera
+    App --> Renderer
+    App --> Controls
+    
+    CEM --> SM
+    CEM --> NOM
+    CEM --> EOM
+    
+    HM --> SM
+    HM --> GE
+    HM --> Scene
+    
+    NOM --> Scene
+    EOM --> Scene

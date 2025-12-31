@@ -1,0 +1,20 @@
+flowchart TD
+    subgraph "Datenladen"
+        A["JSON-Datei"] --> B["App.loadData()"]
+        B --> C["DataParser.parse()"]
+        C --> D["GraphData"]
+    end
+    
+    subgraph "3D-Erstellung"
+        D --> E["NodeObjectsManager.updateNodes()"]
+        D --> F["EdgeObjectsManager.updateEdges()"]
+        E --> G["THREE.InstancedMesh (Nodes)"]
+        F --> H["THREE.InstancedMesh (Edges)"]
+    end
+    
+    subgraph "Rendering"
+        G --> I["THREE.Scene"]
+        H --> I
+        I --> J["THREE.WebGLRenderer"]
+        J --> K["Canvas"]
+    end

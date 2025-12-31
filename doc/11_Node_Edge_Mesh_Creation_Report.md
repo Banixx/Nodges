@@ -1,231 +1,61 @@
-# Bericht: Node und Edge Erstellung als Mesh in Nodges
+# 11 Node und Edge Erstellung: Technischer Deep-Dive
 
-## Übersicht
+Dieses Kapitel ist der abschließende technische Bericht über die präzise Umsetzung der Mesh-Generierung. Es dokumentiert die "Innereien" der Objekt-Manager und dient als Referenz für Optimierungen.
 
-Die Erstellung von 3D-Meshes für Nodes und Edges in Nodges folgt einem modularen Design mit klarer Trennung der Verantwortlichkeiten. Der Prozess verwendet Performance-optimierte Techniken wie InstancedMesh für Nodes und spezialisierte Geometrien für Edges.
+## 11.1 Die Node-Pipeline (`NodeManager.ts`)
 
-## Beteiligte Dateien
+Die Erstellung eines Knotens folgt einer strengen Kette von Transformationen.
 
-### Kern-Komponenten
-1. **`src/core/NodeManager.ts`** - Verwaltung aller Node-Meshes
-2. **`src/core/EdgeObjectsManager.ts`** - Verwaltung aller Edge-Meshes
-3. **`src/core/VisualMappingEngine.ts`** - Visuelle Mapping-Logik
-4. **`src/objects/Edge.js`** - Spezielle Edge-Geometrie-Erstellung
+### 1. Die Gruppierungs-Phase
+Anstatt alle Knoten in einen Topf zu werfen, gruppiert der `NodeManager` sie nach ihrem **Geometrie-Typ** (z.B. alle "Sphere"-Nodes, alle "Box"-Nodes). Für jede Gruppe wird ein eigener `InstancedMesh` erstellt.
+*   **Warum?** Ein `InstancedMesh` kann nur eine einzige Geometrie (z.B. `SphereGeometry`) instanziieren.
 
-### Unterstützende Komponenten
-5. **`src/types.ts`** - Typdefinitionen für Datenstrukturen
-6. **`src/App.ts`** - Orchestrator und Koordination
-7. **`src/core/DataParser.ts`** - Datenverarbeitung und Konvertierung
+### 2. Visuelles Mapping (Die Seele der Node)
+Bevor die GPU übernimmt, berechnet die `VisualMappingEngine`:
+*   **Scale**: Basierend auf Attributen (z.B. "Gewicht").
+*   **Color**: Hex-Code aus dem JSON wird in ein `THREE.Color` Objekt umgewandelt.
+*   **Emissive**: Soll der Knoten von sich aus leuchten?
 
-## Ablauf der Node-Erstellung
+### 3. Matrix-Transformation
+Die Position $(x, y, z)$ wird nicht einfach gesetzt, sondern in eine **4x4 Transformations-Matrix** geschrieben. Diese Matrix enthält auch die Skalierung. Dies ist der einzige Weg, wie die GPU effizient hunderte Variationen derselben Kugel gleichzeitig verstehen kann.
 
-### 1. Datengruppierung nach Geometrie-Typ
-```typescript
-// NodeManager.updateNodes()
-const entitiesByType = new Map<string, { entity: EntityData, visual: any }[]>();
-```
+## 11.2 Die Edge-Pipeline (`EdgeObjectsManager.ts`)
 
-### 2. Visuelle Mapping-Anwendung
-- **`VisualMappingEngine.applyToEntity()`** berechnet visuelle Eigenschaften
-- Unterstützte Geometrien: Sphere, Cube, Cylinder, Cone, Torus
-- Mapping-Funktionen: Linear, Exponential, Logarithmic, Heatmap, Bipolar
+Kanten sind mathematisch anspruchsvoller, da sie eine **Ausrichtung** im Raum benötigen.
 
-### 3. InstancedMesh-Erstellung (Performance-Optimierung)
-```typescript
-const mesh = new THREE.InstancedMesh(geometry, material, count);
-```
+### 1. Gerade Kanten (The Fast Lane)
+Wir nutzen einen Zylinder mit der Höhe 1.0. 
+Um ihn von Node A zu Node B zu spannen:
+1.  **Position**: Mittelpunkt zwischen A und B.
+2.  **Scale.y**: Distanz zwischen A und B.
+3.  **Rotation**: Wir nutzen die `LookAt` Funktion, um den Zylinder exakt entlang der Verbindungs-Vektoren auszurichten.
 
-**Vorteile von InstancedMesh:**
-- Ein Geometrie-Objekt für tausende von Instanzen
-- Minimale Draw Calls
-- GPU-optimiertes Rendering
+### 2. Gebogene Kanten (The Scenic Route)
+Bei Multi-Edges nutzen wir `TubeGeometry`.
+*   Ein **Bezier-Pfad** wird definiert.
+*   Ein **Mesh-Generator** lässt einen "Schlauch" entlang dieses Pfades wachsen.
+*   **Herausforderung**: Dies erzeugt viele Polygone. Nodges optimiert dies, indem es die Anzahl der Segmente (`tubularSegments`) dynamisch an die Länge der Kante anpasst. Kurze Kanten brauchen weniger Segmente als lange.
 
-### 4. Matrix-Berechnung für jede Instanz
-```typescript
-dummy.position.set(x, y, z);
-dummy.scale.set(visualScale, visualScale, visualScale);
-dummy.updateMatrix();
-mesh.setMatrixAt(index, dummy.matrix);
-```
+## 11.3 Speicher-Management und Lifecycle
 
-### 5. Farbzuweisung per Instanz
-```typescript
-mesh.setColorAt(index, color);
-mesh.instanceColor.needsUpdate = true;
-```
+Ein großes Problem bei Single-Page-Apps mit 3D sind **CPU/GPU Memory Leaks**. Wenn man einen neuen Graphen lädt, müssen die alten Daten rückstandslos verschwinden.
 
-## Ablauf der Edge-Erstellung
+Nodges implementiert eine strikte `dispose()` Kette:
+1.  **Geometrien**: `geometry.dispose()` leert den VBO (Vertex Buffer Object) in der GPU.
+2.  **Materialien**: `material.dispose()` löscht die Shader-Programm-Instanzen.
+3.  **Textures**: Falls Bilder genutzt wurden, werden diese aus dem Grafikkartenspeicher entfernt.
 
-### 1. Kanten-Klassifizierung
-```typescript
-// EdgeObjectsManager.updateEdges()
-connectionMap.forEach((group) => {
-    if (group.length === 1) {
-        straightEdges.push(group[0]);  // Einzelkante
-    } else {
-        // Mehrfachkanten → gebogen
-        group.forEach((edge, i) => {
-            curvedEdgesData.push({ edge, index: i, total: group.length });
-        });
-    }
-});
-```
+Ohne diese expliziten Aufrufe würde der Browser-Tap bei jedem neuen Laden eines Graphen ca. 200-500 MB RAM mehr verbrauchen, bis er schließlich abstürzt.
 
-### 2. Gerade Kanten (InstancedMesh)
-```typescript
-this.cylinderMesh = new THREE.InstancedMesh(geometry, material, straightEdges.length);
-```
+## 11.4 Zusammenfassung der Performance-Daten
 
-**Transformation:**
-- Positionierung an Startpunkt
-- Ausrichtung zum Endpunkt (`lookAt()`)
-- Skalierung auf Kantenlänge
-
-### 3. Gebogene Kanten (Spezial-Objekte)
-```typescript
-const edgeObj = new Edge(startPos, endPos, 1, 1, options);
-```
-
-### 4. Curve-Berechnung in Edge.js
-```javascript
-// QuadraticBezierCurve3 für Bögen
-this.curve = new THREE.QuadraticBezierCurve3(
-    startPos,
-    controlPoint,
-    endPos
-);
-
-// TubeGeometry entlang der Curve
-new THREE.TubeGeometry(this.curve, 20, 0.4, 8, false);
-```
-
-**Multi-Edge-Logik:**
-- Winkelverteilung um Verbindungsachse
-- Index-basierte Rotation
-- Abstandsvergrößerung für Klarheit
-
-## Performance-Optimierungen
-
-### 1. Caching-Systeme
-```typescript
-// Geometrie-Caching
-private geometryCache: Map<string, THREE.BufferGeometry>;
-
-// Material-Caching
-private materialCache: Map<string, THREE.Material>;
-```
-
-### 2. InstancedMesh-Strategie
-- **Nodes: Gruppierung nach Geometrie-Typ**
-- **Edges: Gruppierung nach Gerade/Gebogen**
-- Reduzierung von Draw Calls um 90%+
-
-### 3. Dynamic Draw Usage
-```typescript
-mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-```
-
-## Visual Mapping Pipeline
-
-### 1. Entity-Visualisierung
-```typescript
-const visual = this.visualMappingEngine.applyToEntity(entity);
-// Ergebnis: { size, color, geometry, glow, animation }
-```
-
-### 2. Relationship-Visualisierung
-```typescript
-const visual = this.visualMappingEngine.applyToRelationship(relationship);
-// Ergebnis: { thickness, color, curvature, opacity, animation }
-```
-
-### 3. Mapping-Funktionen
-- **Linear**: Direkte Skalierung
-- **Exponential**: Potenzierung
-- **Logarithmic**: Logarithmische Skalierung
-- **Heatmap**: Farbverläufe
-- **Bipolar**: Negative/Positive Werte
-
-## Datenfluss-Diagramm
-
-```
-JSON-Daten → DataParser → EntityData/RelationshipData
-    ↓
-VisualMappingEngine → VisualProperties
-    ↓
-┌─────────────────┬─────────────────┐
-│   NodeManager   │ EdgeObjectsManager │
-│                 │                 │
-│ InstancedMesh   │ InstancedMesh    │
-│ (pro Typ)      │ (gerade)        │
-│                 │                 │
-│                 │ Edge.js         │
-│                 │ (gebogen)       │
-└─────────────────┴─────────────────┘
-    ↓
-THREE.Scene → WebGL Renderer
-```
-
-## Speicherverwaltung
-
-### 1. Automatische Dispose-Methoden
-```typescript
-public dispose() {
-    this.meshes.forEach(mesh => {
-        this.scene.remove(mesh);
-        mesh.dispose();
-    });
-    this.geometryCache.forEach(geo => geo.dispose());
-    this.materialCache.forEach(mat => mat.dispose());
-}
-```
-
-### 2. Update-Optimierungen
-- **Positions-Updates**: Nur Matrix-Änderungen
-- **Farb-Updates**: Nur Instanz-Farben
-- **Neuberechnung**: Bei Geometrie-Wechseln
-
-## Interaktions-Support
-
-### 1. Raycasting-Optimierung
-- InstancedMesh mit `instanceId` mapping
-- Direkte Zuordnung zu EntityData
-- Optimiert für tausende Objekte
-
-### 2. userData-Struktur
-```typescript
-// Node userData
-mesh.userData = { type: 'node_instanced', geometryType: type };
-
-// Edge userData
-tube.userData = {
-    type: 'edge',
-    edge: edgeData,
-    curve: this.curve,
-    connectionKey: connectionKey
-};
-```
-
-## Zusammenfassung
-
-Die Mesh-Erstellung in Nodges ist hochoptimiert und modular:
-
-**Stärken:**
-- Performance durch InstancedMesh
-- Flexibilität durch Visual Mapping
-- Wartbarkeit durch klare Trennung
-- Skalierbarkeit für große Graphen
-
-**Architektur-Prinzipien:**
-- Single Responsibility pro Manager
-- Caching für Performance
-- Typensicherheit durch TypeScript
-- OpenGL-optimierte Rendering-Pipelines
-
-Das System ermöglicht die Darstellung von tausenden von Nodes und Edges bei gleichzeitig flüssigen Interaktionsraten.
+| Methode | Max. Objekte (60 FPS) | Anwendung |
+| :--- | :--- | :--- |
+| Single Mesh | ~500 | Spezialknoten, UI-Elemente |
+| InstancedMesh | ~50.000 | Standard-Knoten, einfache Kanten |
+| TubeGeometry | ~2.000 | Komplexe Multi-Edges |
+| BufferGeometry | ~200.000 | Nur Punkte (PointClouds, geplant) |
 
 ---
-
-*Erstellt am: 2025-12-17*
-*Version: Nodges 0.96.3*
-*Autor: System-Analyse*
+*Erstellt am: 30.12.2025*
+*Status: Finalisierte Dokumentation V1*

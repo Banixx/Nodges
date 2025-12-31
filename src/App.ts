@@ -4,53 +4,32 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { StateManager } from './core/StateManager';
 import { NodeManager } from './core/NodeManager';
 import { CentralEventManager } from './core/CentralEventManager';
-// @ts-ignore
 import { InteractionManager } from './core/InteractionManager';
 import { LayoutManager } from './core/LayoutManager';
-// @ts-ignore
 import { UIManager } from './core/UIManager';
-// @ts-ignore
-import { SelectionManager } from './utils/SelectionManager.js';
-// @ts-ignore
+import { SelectionManager } from './utils/SelectionManager';
 import { RaycastManager } from './utils/RaycastManager';
+import { NetworkAnalyzer } from './utils/NetworkAnalyzer';
+import { PathFinder } from './utils/PathFinder';
+import { PerformanceOptimizer } from './utils/PerformanceOptimizer';
+import { FileHandler } from './utils/FileHandler';
+import { ImportManager } from './utils/ImportManager';
+import { ExportManager } from './utils/ExportManager';
+import { EdgeLabelManager } from './utils/EdgeLabelManager';
 // @ts-ignore
-import { NetworkAnalyzer } from './utils/NetworkAnalyzer.js';
-// @ts-ignore
-import { PathFinder } from './utils/PathFinder.js';
-// @ts-ignore
-import { PerformanceOptimizer } from './utils/PerformanceOptimizer.js';
-// @ts-ignore
-import { FileHandler } from './utils/FileHandler.js';
-// @ts-ignore
-import { ImportManager } from './utils/ImportManager.js';
-// @ts-ignore
-import { ExportManager } from './utils/ExportManager.js';
-// @ts-ignore
-import { EdgeLabelManager } from './utils/EdgeLabelManager.js';
-// @ts-ignore
-import { NeighborhoodHighlighter } from './utils/NeighborhoodHighlighter.js';
-// @ts-ignore
-import { KeyboardShortcuts } from './utils/KeyboardShortcuts.js';
-// @ts-ignore
-import { BatchOperations } from './utils/BatchOperations.js';
-// @ts-ignore
-import { NodeGroupManager } from './utils/NodeGroupManager.js';
-// @ts-ignore
-import { LayoutGUI } from './utils/LayoutGUI.js';
-// @ts-ignore
-import { FutureDataParser } from './utils/FutureDataParser.js';
-// @ts-ignore
-import { HighlightManager } from './effects/HighlightManager.js';
-// @ts-ignore
-import { GlowEffect } from './effects/GlowEffect.js';
+import { NeighborhoodHighlighter } from './utils/NeighborhoodHighlighter';
+import { KeyboardShortcuts } from './utils/KeyboardShortcuts';
+import { BatchOperations } from './utils/BatchOperations';
+import { NodeGroupManager } from './utils/NodeGroupManager';
+import { LayoutGUI } from './utils/LayoutGUI';
+// import { FutureDataParser } from './utils/FutureDataParser';
+import { HighlightManager } from './effects/HighlightManager';
+import { GlowEffect } from './effects/GlowEffect';
 // @ts-ignore
 // @ts-ignore
 // import { NodeObjectsManager } from './core/NodeObjectsManager';
-// @ts-ignore
 import { EdgeObjectsManager } from './core/EdgeObjectsManager';
-// @ts-ignore
 import { DataParser } from './core/DataParser';
-// @ts-ignore
 import { VisualMappingEngine } from './core/VisualMappingEngine';
 import { GraphData, EntityData, RelationshipData, NodeObject } from './types';
 
@@ -234,14 +213,14 @@ export class App {
         this.networkAnalyzer = new NetworkAnalyzer();
         this.pathFinder = new PathFinder(this.scene, this.stateManager);
         this.performanceOptimizer = new PerformanceOptimizer(this.scene, this.camera, this.renderer);
-        this.fileHandler = new FileHandler();
+        this.fileHandler = new FileHandler(this.loadGraphData.bind(this));
         this.importManager = new ImportManager();
         this.exportManager = new ExportManager();
         this.edgeLabelManager = new EdgeLabelManager(this.scene, this.camera);
-        this.neighborhoodHighlighter = new NeighborhoodHighlighter();
+        this.neighborhoodHighlighter = new NeighborhoodHighlighter(this.scene, this.stateManager);
+        this.nodeGroupManager = new NodeGroupManager(this.scene, this.stateManager);
+        this.batchOperations = new BatchOperations(this.selectionManager, this.nodeGroupManager);
         this.keyboardShortcuts = new KeyboardShortcuts();
-        this.batchOperations = new BatchOperations();
-        this.nodeGroupManager = new NodeGroupManager();
     }
 
     async initGUI() {
@@ -255,12 +234,11 @@ export class App {
         await this.loadData('data/small.json');
     }
 
-    async loadData(url: string) {
+    async loadGraphData(graphData: GraphData, sourceName: string = 'Imported Data') {
         try {
-            // Clear existing scene
+            console.log(`[App] Loading GraphData from ${sourceName}...`);
             this.clearScene();
 
-            // Reset application state universally before reloading data
             this.stateManager.update({
                 selectedObject: null,
                 hoveredObject: null,
@@ -269,20 +247,11 @@ export class App {
                 infoPanelCollapsed: false,
             });
 
-            // Clear raycast cache
             if (this.raycastManager && this.raycastManager.clearCache) {
                 this.raycastManager.clearCache();
             }
 
-            const response = await fetch(url);
-            const rawData = await response.json();
-
-            console.log(`[TRACE] Loaded Raw Data: ${rawData.data?.entities?.length} entities`);
-
-            // Parse data using DataParser (handles both legacy and future formats)
-            this.currentGraphData = DataParser.parse(rawData);
-
-            console.log(`[TRACE] Parsed Data: ${this.currentGraphData.data.entities.length} entities`);
+            this.currentGraphData = graphData;
 
             // Set visual mappings if available
             if (this.currentGraphData.visualMappings) {
@@ -296,22 +265,10 @@ export class App {
             this.currentEntities = this.currentGraphData.data.entities;
             this.currentRelationships = this.currentGraphData.data.relationships;
 
-            // Initialize visual mappings
-            // Note: VisualMappingEngine is already used by NodeManager during updateNodes
-
-            // Create Nodes (Entities)
-            console.log('[App] Calling createNodes...');
+            console.log(`[App] Creating nodes... (${this.currentEntities.length})`);
             await this.createNodes();
-            console.log('[App] createNodes finished.');
 
-            // Create Edges (Relationships)
-            // Note: EdgeObjectsManager still needs updates to handle RelationshipData fully, 
-            // but we pass standard arrays for now.
-            // We need to map RelationshipData to standard Edge structure if EdgeObjectsManager wasn't updated to RelationshipData fully?
-            // Wait, we didn't update EdgeObjectsManager to take RelationshipData?
-            // We should map it here temporarily or trust strict typing if we updated it (we didn't).
-            // Let's do a quick mapping for EdgeObjectsManager compatibility.
-            // Actually, let's cast it for now as EdgeObjectsManager is loosely typed in some places.
+            console.log(`[App] Creating edges... (${this.currentRelationships.length})`);
             await this.createEdges();
 
             // Only apply layout if entities don't have positions
@@ -320,26 +277,36 @@ export class App {
             );
 
             if (this.layoutManager && !hasPositions) {
-                // LayoutManager was updated to accept EntityData[]
                 await this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships);
                 this.updateNodePositions();
             }
 
             // Update UI
             if (this.uiManager) {
-                const filename = url.split('/').pop()?.replace('.json', '') || 'unknown';
                 const bounds = this.calculateBounds(this.currentEntities);
                 this.uiManager.updateFileInfo(
-                    filename,
+                    sourceName,
                     this.currentEntities.length,
                     this.currentRelationships.length,
                     bounds
                 );
             }
 
-            // Auto-focus camera on loaded nodes
             this.fitCameraToScene();
 
+        } catch (error) {
+            console.error('Failed to load graph data:', error);
+        }
+    }
+
+    async loadData(url: string) {
+        try {
+            const response = await fetch(url);
+            const rawData = await response.json();
+            console.log(`[TRACE] Loaded Raw Data from ${url}`);
+
+            const graphData = DataParser.parse(rawData);
+            await this.loadGraphData(graphData, url.split('/').pop());
         } catch (e) {
             console.error('Failed to load data:', e);
         }

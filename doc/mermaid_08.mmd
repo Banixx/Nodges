@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant User
+    participant Canvas
+    participant CEM as CentralEventManager
+    participant Raycast as RaycastManager
+    participant SM as StateManager
+    participant HM as HighlightManager
+    participant UI as UIManager
+    
+    User->>Canvas: "Mausklick"
+    Canvas->>CEM: "click Event"
+    CEM->>Raycast: "performRaycast()"
+    Raycast-->>CEM: "Object3D oder null"
+    CEM->>SM: "setSelectedObject(object)"
+    SM->>HM: "notifySubscribers()"
+    HM->>HM: "updateHighlights()"
+    SM->>UI: "notifySubscribers()"
+    UI->>UI: "showInfoPanelFor(object)"

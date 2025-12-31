@@ -1,15 +1,39 @@
+import * as THREE from 'three';
+import { SelectionManager } from './SelectionManager';
+import { NodeGroupManager } from './NodeGroupManager';
+// import { NodeObject } from '../types';
+
+interface Operation {
+    type: string;
+    timestamp: number;
+    objects: any[];
+    [key: string]: any;
+}
+
+interface BatchNodeObject extends THREE.Object3D {
+    userData: {
+        node?: any;
+        edge?: any;
+        type?: string;
+        [key: string]: any;
+    };
+    material: THREE.Material | THREE.MeshBasicMaterial | THREE.MeshPhongMaterial; // Broaden type to allow color access
+}
+
 /**
  * BatchOperations - Handles batch operations on multiple selected objects
  * Supports: Color changes, grouping, transformations, property modifications
  */
-
-import * as THREE from 'three';
-
 export class BatchOperations {
-    constructor(selectionManager, nodeGroupManager) {
+    private selectionManager: SelectionManager;
+    private nodeGroupManager: NodeGroupManager;
+    private operationHistory: Operation[];
+    private maxHistorySize: number;
+
+    constructor(selectionManager: SelectionManager, nodeGroupManager: NodeGroupManager) {
         this.selectionManager = selectionManager;
         this.nodeGroupManager = nodeGroupManager;
-        
+
         // Operation history for undo functionality
         this.operationHistory = [];
         this.maxHistorySize = 50;
@@ -17,13 +41,12 @@ export class BatchOperations {
 
     /**
      * Change color of selected objects
-     * @param {number} color - New color as hex number
      */
-    changeColor(color) {
-        const selectedObjects = this.selectionManager.getSelectedObjects();
+    changeColor(color: number) {
+        const selectedObjects = this.selectionManager.getSelectedObjects() as BatchNodeObject[];
         if (selectedObjects.length === 0) return;
 
-        const operation = {
+        const operation: Operation = {
             type: 'color_change',
             objects: [],
             timestamp: Date.now()
@@ -31,16 +54,18 @@ export class BatchOperations {
 
         selectedObjects.forEach(object => {
             // Store original color for undo
-            const originalColor = object.material.color.getHex();
+            let originalColor = 0xffffff;
+            if (object.material && 'color' in object.material) {
+                originalColor = (object.material as any).color.getHex();
+                (object.material as any).color.setHex(color);
+            }
+
             operation.objects.push({
                 object: object,
                 originalColor: originalColor,
                 newColor: color
             });
 
-            // Apply new color
-            object.material.color.setHex(color);
-            
             // Update object's stored color if it's a node or edge
             if (object.userData.node) {
                 object.userData.node.options.color = color;
@@ -54,13 +79,12 @@ export class BatchOperations {
 
     /**
      * Change size of selected nodes
-     * @param {number} size - New size
      */
-    changeSize(size) {
-        const selectedNodes = this.selectionManager.getSelectedNodes();
+    changeSize(size: number) {
+        const selectedNodes = this.selectionManager.getSelectedNodes() as BatchNodeObject[];
         if (selectedNodes.length === 0) return;
 
-        const operation = {
+        const operation: Operation = {
             type: 'size_change',
             objects: [],
             timestamp: Date.now()
@@ -89,13 +113,12 @@ export class BatchOperations {
 
     /**
      * Change type of selected nodes
-     * @param {string} type - New node type
      */
-    changeNodeType(type) {
-        const selectedNodes = this.selectionManager.getSelectedNodes();
+    changeNodeType(type: string) {
+        const selectedNodes = this.selectionManager.getSelectedNodes() as BatchNodeObject[];
         if (selectedNodes.length === 0) return;
 
-        const operation = {
+        const operation: Operation = {
             type: 'type_change',
             objects: [],
             timestamp: Date.now()
@@ -113,8 +136,12 @@ export class BatchOperations {
                 newType: type
             });
 
-            // Apply new type (this requires recreating the geometry)
-            node.setType(type);
+            // Apply new type (this might need checking if setType exists on node)
+            if (typeof node.setType === 'function') {
+                node.setType(type);
+            } else {
+                node.options.type = type; // Fallback
+            }
         });
 
         this.addToHistory(operation);
@@ -122,13 +149,12 @@ export class BatchOperations {
 
     /**
      * Move selected objects by offset
-     * @param {THREE.Vector3} offset - Movement offset
      */
-    moveObjects(offset) {
+    moveObjects(offset: THREE.Vector3) {
         const selectedObjects = this.selectionManager.getSelectedObjects();
         if (selectedObjects.length === 0) return;
 
-        const operation = {
+        const operation: Operation = {
             type: 'move',
             objects: [],
             offset: offset.clone(),
@@ -149,13 +175,12 @@ export class BatchOperations {
 
     /**
      * Scale selected objects
-     * @param {number} scaleFactor - Scale factor
      */
-    scaleObjects(scaleFactor) {
+    scaleObjects(scaleFactor: number) {
         const selectedObjects = this.selectionManager.getSelectedObjects();
         if (selectedObjects.length === 0) return;
 
-        const operation = {
+        const operation: Operation = {
             type: 'scale',
             objects: [],
             scaleFactor: scaleFactor,
@@ -176,18 +201,17 @@ export class BatchOperations {
 
     /**
      * Add selected nodes to a group
-     * @param {string} groupId - Group ID
      */
-    addToGroup(groupId) {
+    addToGroup(groupId: string) {
         if (!this.nodeGroupManager) {
             console.warn('NodeGroupManager not available');
             return;
         }
 
-        const selectedNodes = this.selectionManager.getSelectedNodes();
+        const selectedNodes = this.selectionManager.getSelectedNodes() as BatchNodeObject[];
         if (selectedNodes.length === 0) return;
 
-        const operation = {
+        const operation: Operation = {
             type: 'group_add',
             objects: [],
             groupId: groupId,
@@ -219,10 +243,10 @@ export class BatchOperations {
             return;
         }
 
-        const selectedNodes = this.selectionManager.getSelectedNodes();
+        const selectedNodes = this.selectionManager.getSelectedNodes() as BatchNodeObject[];
         if (selectedNodes.length === 0) return;
 
-        const operation = {
+        const operation: Operation = {
             type: 'group_remove',
             objects: [],
             timestamp: Date.now()
@@ -246,14 +270,12 @@ export class BatchOperations {
 
     /**
      * Set property for selected objects
-     * @param {string} property - Property name
-     * @param {*} value - Property value
      */
-    setProperty(property, value) {
-        const selectedObjects = this.selectionManager.getSelectedObjects();
+    setProperty(property: string, value: any) {
+        const selectedObjects = this.selectionManager.getSelectedObjects() as BatchNodeObject[];
         if (selectedObjects.length === 0) return;
 
-        const operation = {
+        const operation: Operation = {
             type: 'property_change',
             property: property,
             objects: [],
@@ -261,15 +283,15 @@ export class BatchOperations {
         };
 
         selectedObjects.forEach(object => {
-            let target = null;
-            let originalValue = undefined;
+            let target: any = null;
+            let originalValue: any = undefined;
 
             if (object.userData.node) {
                 target = object.userData.node.metadata;
-                originalValue = target[property];
+                originalValue = target ? target[property] : undefined;
             } else if (object.userData.edge) {
                 target = object.userData.edge.metadata;
-                originalValue = target[property];
+                originalValue = target ? target[property] : undefined;
             }
 
             if (target) {
@@ -288,15 +310,13 @@ export class BatchOperations {
 
     /**
      * Align selected objects
-     * @param {string} axis - Alignment axis ('x', 'y', 'z')
-     * @param {string} mode - Alignment mode ('min', 'max', 'center', 'average')
      */
-    alignObjects(axis, mode = 'center') {
+    alignObjects(axis: 'x' | 'y' | 'z', mode: 'min' | 'max' | 'center' | 'average' = 'center') {
         const selectedObjects = this.selectionManager.getSelectedObjects();
         if (selectedObjects.length < 2) return;
 
         // Calculate alignment position
-        let alignPosition;
+        let alignPosition: number;
         const positions = selectedObjects.map(obj => obj.position[axis]);
 
         switch (mode) {
@@ -315,7 +335,7 @@ export class BatchOperations {
                 break;
         }
 
-        const operation = {
+        const operation: Operation = {
             type: 'align',
             axis: axis,
             mode: mode,
@@ -338,21 +358,20 @@ export class BatchOperations {
 
     /**
      * Distribute selected objects evenly
-     * @param {string} axis - Distribution axis ('x', 'y', 'z')
      */
-    distributeObjects(axis) {
+    distributeObjects(axis: 'x' | 'y' | 'z') {
         const selectedObjects = this.selectionManager.getSelectedObjects();
         if (selectedObjects.length < 3) return;
 
         // Sort objects by position on the specified axis
         const sortedObjects = selectedObjects.slice().sort((a, b) => a.position[axis] - b.position[axis]);
-        
+
         const firstPos = sortedObjects[0].position[axis];
         const lastPos = sortedObjects[sortedObjects.length - 1].position[axis];
         const totalDistance = lastPos - firstPos;
         const step = totalDistance / (sortedObjects.length - 1);
 
-        const operation = {
+        const operation: Operation = {
             type: 'distribute',
             axis: axis,
             objects: [],
@@ -375,13 +394,12 @@ export class BatchOperations {
 
     /**
      * Copy selected objects
-     * @param {THREE.Vector3} offset - Offset for copies
      */
-    copyObjects(offset = new THREE.Vector3(2, 0, 0)) {
-        const selectedObjects = this.selectionManager.getSelectedObjects();
+    copyObjects(offset: THREE.Vector3 = new THREE.Vector3(2, 0, 0)) {
+        const selectedObjects = this.selectionManager.getSelectedObjects() as BatchNodeObject[];
         if (selectedObjects.length === 0) return;
 
-        const copies = [];
+        const copies: any[] = [];
 
         selectedObjects.forEach(object => {
             if (object.userData.type === 'node') {
@@ -396,10 +414,8 @@ export class BatchOperations {
 
     /**
      * Copy a node
-     * @param {THREE.Object3D} nodeObject - Node to copy
-     * @param {THREE.Vector3} offset - Position offset
      */
-    copyNode(nodeObject, offset) {
+    copyNode(nodeObject: BatchNodeObject, offset: THREE.Vector3) {
         const node = nodeObject.userData.node;
         if (!node) return null;
 
@@ -422,11 +438,11 @@ export class BatchOperations {
      * Get statistics about selected objects
      */
     getSelectionStatistics() {
-        const selectedObjects = this.selectionManager.getSelectedObjects();
-        const nodes = this.selectionManager.getSelectedNodes();
-        const edges = this.selectionManager.getSelectedEdges();
+        const selectedObjects = this.selectionManager.getSelectedObjects() as BatchNodeObject[];
+        const nodes = this.selectionManager.getSelectedNodes() as BatchNodeObject[];
+        const edges = this.selectionManager.getSelectedEdges() as BatchNodeObject[];
 
-        const stats = {
+        const stats: any = {
             total: selectedObjects.length,
             nodes: nodes.length,
             edges: edges.length,
@@ -470,11 +486,10 @@ export class BatchOperations {
 
     /**
      * Add operation to history
-     * @param {Object} operation - Operation to add
      */
-    addToHistory(operation) {
+    addToHistory(operation: Operation) {
         this.operationHistory.push(operation);
-        
+
         // Limit history size
         if (this.operationHistory.length > this.maxHistorySize) {
             this.operationHistory.shift();
@@ -487,41 +502,43 @@ export class BatchOperations {
     undo() {
         if (this.operationHistory.length === 0) return;
 
-        const operation = this.operationHistory.pop();
-        
+        const operation = this.operationHistory.pop()!;
+
         switch (operation.type) {
             case 'color_change':
                 operation.objects.forEach(({ object, originalColor }) => {
-                    object.material.color.setHex(originalColor);
+                    if (object.material && 'color' in object.material) {
+                        (object.material as any).color.setHex(originalColor);
+                    }
                 });
                 break;
-                
+
             case 'size_change':
                 operation.objects.forEach(({ object, originalSize, newSize }) => {
                     const scale = originalSize / newSize;
                     object.scale.multiplyScalar(scale);
                 });
                 break;
-                
+
             case 'move':
                 operation.objects.forEach(({ object, originalPosition }) => {
                     object.position.copy(originalPosition);
                 });
                 break;
-                
+
             case 'scale':
                 operation.objects.forEach(({ object, originalScale }) => {
                     object.scale.copy(originalScale);
                 });
                 break;
-                
+
             case 'align':
             case 'distribute':
                 operation.objects.forEach(({ object, originalPosition }) => {
                     object.position.copy(originalPosition);
                 });
                 break;
-                
+
             case 'property_change':
                 operation.objects.forEach(({ target, originalValue }) => {
                     if (originalValue !== undefined) {

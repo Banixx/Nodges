@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Nodges 0.97</title>
+    <title>Nodges 0.97.1</title>
     <link rel="icon" type="image/png" href="favicon-32x32.png">
     <link rel="stylesheet" href="/src/styles/main.css">
 </head>
@@ -104,6 +104,28 @@
                         style="flex: 1;">
                     <span id="edgeThicknessValue"
                         style="min-width: 35px; text-align: right; font-family: monospace; font-size: 11px;">0.10</span>
+                </div>
+            </div>
+
+            <!-- Edge Highlight Thickness (Logarithmic) -->
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; margin-bottom: 2px; font-size: 11px; font-weight: bold;">Highlight
+                    Size:</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="range" id="edgeHighlightSlider" min="0" max="100" step="1" value="50" style="flex: 1;">
+                    <span id="edgeHighlightValue"
+                        style="min-width: 35px; text-align: right; font-family: monospace; font-size: 11px;">30%</span>
+                </div>
+            </div>
+
+            <!-- Edge Selection Increment -->
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; margin-bottom: 2px; font-size: 11px; font-weight: bold;">Selection
+                    Bonus:</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="range" id="edgeSelectionSlider" min="0" max="100" step="1" value="20" style="flex: 1;">
+                    <span id="edgeSelectionValue"
+                        style="min-width: 35px; text-align: right; font-family: monospace; font-size: 11px;">20%</span>
                 </div>
             </div>
 

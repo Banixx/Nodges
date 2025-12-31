@@ -1,0 +1,8 @@
+flowchart TD
+    A["JSON-Daten laden"] --> B{"Format pruefen"}
+    B -->|"nodes/edges vorhanden"| C["Legacy-Format"]
+    B -->|"data.entities vorhanden"| D["Future-Format"]
+    C --> E["convertLegacyFormat()"]
+    D --> F["normalizeFutureFormat()"]
+    E --> G["GraphData"]
+    F --> G

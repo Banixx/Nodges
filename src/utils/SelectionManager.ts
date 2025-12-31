@@ -1,12 +1,32 @@
-/**
- * SelectionManager - Handles multi-selection and batch operations
- * Supports: Multi-select, Box-select, Keyboard shortcuts, Visual feedback
- */
-
 import * as THREE from 'three';
+import { StateManager } from '../core/StateManager';
 
 export class SelectionManager {
-    constructor(scene, camera, renderer, stateManager) {
+    private scene: THREE.Scene;
+    private camera: THREE.Camera;
+    private renderer: THREE.WebGLRenderer;
+    private stateManager: StateManager;
+
+    private selectedObjects: Set<THREE.Object3D>;
+    private selectionMode: 'single' | 'multi' | 'box';
+    private isBoxSelecting: boolean;
+
+    private selectionBoxes: Map<THREE.Object3D, THREE.Mesh>;
+    private selectionBoxMaterial: THREE.MeshBasicMaterial;
+
+    private boxSelectStart: THREE.Vector2;
+    private boxSelectEnd: THREE.Vector2;
+    private boxSelectDiv: HTMLDivElement;
+
+    private isUpdatingFromState: boolean;
+
+    private _onMouseDown: (event: MouseEvent) => void;
+    private _onMouseMove: (event: MouseEvent) => void;
+    private _onMouseUp: (event: MouseEvent) => void;
+    private _onKeyDown: (event: KeyboardEvent) => void;
+    private _onKeyUp: (event: KeyboardEvent) => void;
+
+    constructor(scene: THREE.Scene, camera: THREE.Camera, renderer: THREE.WebGLRenderer, stateManager: StateManager) {
         this.scene = scene;
         this.camera = camera;
         this.renderer = renderer;
@@ -29,34 +49,30 @@ export class SelectionManager {
         // Box selection
         this.boxSelectStart = new THREE.Vector2();
         this.boxSelectEnd = new THREE.Vector2();
-        this.boxSelectDiv = null;
+        this.boxSelectDiv = document.createElement('div'); // Initialized in separate method in JS, but better here or in create method
 
-        // Raycaster for selection
-        this.raycaster = new THREE.Raycaster();
-        this.mouse = new THREE.Vector2();
-
-        this.setupEventListeners();
-        this.createSelectionBoxDiv();
-
-        // Flag to prevent infinite recursion during state updates
         this.isUpdatingFromState = false;
 
-        // Subscribe to StateManager for selection synchronization (visual feedback update)
+        // Bind events
+        this._onMouseDown = this.onMouseDown.bind(this);
+        this._onMouseMove = this.onMouseMove.bind(this);
+        this._onMouseUp = this.onMouseUp.bind(this);
+        this._onKeyDown = this.onKeyDown.bind(this);
+        this._onKeyUp = this.onKeyUp.bind(this);
+
+        this.createSelectionBoxDiv();
+        this.setupEventListeners();
+
+        // Subscribe to StateManager
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'selection');
     }
 
     setupEventListeners() {
-        this.onMouseDown = this.onMouseDown.bind(this);
-        this.onMouseMove = this.onMouseMove.bind(this);
-        this.onMouseUp = this.onMouseUp.bind(this);
-        this.onKeyDown = this.onKeyDown.bind(this);
-        this.onKeyUp = this.onKeyUp.bind(this);
-
-        this.renderer.domElement.addEventListener('mousedown', this.onMouseDown);
-        this.renderer.domElement.addEventListener('mousemove', this.onMouseMove);
-        this.renderer.domElement.addEventListener('mouseup', this.onMouseUp);
-        document.addEventListener('keydown', this.onKeyDown);
-        document.addEventListener('keyup', this.onKeyUp);
+        this.renderer.domElement.addEventListener('mousedown', this._onMouseDown);
+        window.addEventListener('mousemove', this._onMouseMove); // Window for drag outside canvas
+        window.addEventListener('mouseup', this._onMouseUp);
+        document.addEventListener('keydown', this._onKeyDown);
+        document.addEventListener('keyup', this._onKeyUp);
     }
 
     createSelectionBoxDiv() {
@@ -70,13 +86,13 @@ export class SelectionManager {
         document.body.appendChild(this.boxSelectDiv);
     }
 
-    setSingleSelection(object) {
+    setSingleSelection(object: THREE.Object3D) {
         this.clearSelection();
         this.addToSelection(object);
         this.updateVisualFeedback();
     }
 
-    onMouseDown(event) {
+    onMouseDown(event: MouseEvent) {
         // Only handle if shift key is pressed or mode is box
         if (event.button === 0 && (this.selectionMode === 'box' || event.shiftKey)) {
             this.isBoxSelecting = true;
@@ -94,7 +110,7 @@ export class SelectionManager {
         }
     }
 
-    onMouseMove(event) {
+    onMouseMove(event: MouseEvent) {
         if (this.isBoxSelecting) {
             this.boxSelectEnd.set(event.clientX, event.clientY);
 
@@ -110,7 +126,7 @@ export class SelectionManager {
         }
     }
 
-    onMouseUp(event) {
+    onMouseUp(event: MouseEvent) {
         if (this.isBoxSelecting) {
             this.isBoxSelecting = false;
             this.boxSelectDiv.style.display = 'none';
@@ -118,7 +134,7 @@ export class SelectionManager {
         }
     }
 
-    performBoxSelection(event) {
+    performBoxSelection(event: MouseEvent) {
         const minX = Math.min(this.boxSelectStart.x, this.boxSelectEnd.x);
         const maxX = Math.max(this.boxSelectStart.x, this.boxSelectEnd.x);
         const minY = Math.min(this.boxSelectStart.y, this.boxSelectEnd.y);
@@ -150,13 +166,13 @@ export class SelectionManager {
         this.updateVisualFeedback();
     }
 
-    onKeyDown(event) {
+    onKeyDown(event: KeyboardEvent) {
         if (event.key === 'Shift') {
             this.renderer.domElement.style.cursor = 'crosshair';
         }
     }
 
-    onKeyUp(event) {
+    onKeyUp(event: KeyboardEvent) {
         if (event.key === 'Shift') {
             this.renderer.domElement.style.cursor = 'default';
         }
@@ -165,7 +181,7 @@ export class SelectionManager {
     /**
      * Handle state changes from StateManager to synchronize visualization
      */
-    handleStateChange(state) {
+    handleStateChange(state: any) {
         // Prevent re-entry or circular updates
         if (this.isUpdatingFromState) return;
 
@@ -191,12 +207,10 @@ export class SelectionManager {
         }
     }
 
-    // ... (existing methods) ...
-
     /**
      * Add object to selection
      */
-    addToSelection(object) {
+    addToSelection(object: THREE.Object3D) {
         this.selectedObjects.add(object);
 
         // Update state manager for compatibility
@@ -204,8 +218,6 @@ export class SelectionManager {
             this.stateManager.setSelectedObject(object);
         }
     }
-
-    // ... (existing methods) ...
 
     /**
      * Clear all selections (without closing panel)
@@ -263,7 +275,7 @@ export class SelectionManager {
     /**
      * Create selection box for object
      */
-    createSelectionBox(object) {
+    createSelectionBox(object: THREE.Object3D) {
         // Nur fuer Nodes - Edges verwenden das HighlightManager-System
         if (object.userData.type === 'node') {
             let scale = 1.1;
@@ -285,18 +297,16 @@ export class SelectionManager {
     /**
      * Remove selection box for object
      */
-    removeSelectionBox(object) {
+    removeSelectionBox(object: THREE.Object3D) {
         const box = this.selectionBoxes.get(object);
         if (box) {
             this.scene.remove(box);
             // Dispose geometry and material for proper cleanup
             if (box.geometry) box.geometry.dispose();
-            if (box.material) box.material.dispose();
+            if (box.material) (box.material as THREE.Material).dispose();
             this.selectionBoxes.delete(object);
         }
     }
-
-
 
     /**
      * Delete selected objects
@@ -320,12 +330,12 @@ export class SelectionManager {
     /**
      * Delete a node and its connected edges
      */
-    deleteNode(nodeObject) {
+    deleteNode(nodeObject: THREE.Object3D) {
         const node = nodeObject.userData.node;
         if (!node) return;
 
         // Find and remove connected edges
-        const edgesToRemove = [];
+        const edgesToRemove: THREE.Object3D[] = [];
         this.scene.traverse((object) => {
             if (object.userData && object.userData.type === 'edge') {
                 const edge = object.userData.edge;
@@ -337,23 +347,23 @@ export class SelectionManager {
 
         edgesToRemove.forEach(edgeObject => {
             this.scene.remove(edgeObject);
-            edgeObject.geometry.dispose();
-            edgeObject.material.dispose();
+            if ((edgeObject as any).geometry) (edgeObject as any).geometry.dispose();
+            if ((edgeObject as any).material) (edgeObject as any).material.dispose();
         });
 
         // Remove node
         this.scene.remove(nodeObject);
-        nodeObject.geometry.dispose();
-        nodeObject.material.dispose();
+        if ((nodeObject as any).geometry) (nodeObject as any).geometry.dispose();
+        if ((nodeObject as any).material) (nodeObject as any).material.dispose();
     }
 
     /**
      * Delete an edge
      */
-    deleteEdge(edgeObject) {
+    deleteEdge(edgeObject: THREE.Object3D) {
         this.scene.remove(edgeObject);
-        edgeObject.geometry.dispose();
-        edgeObject.material.dispose();
+        if ((edgeObject as any).geometry) (edgeObject as any).geometry.dispose();
+        if ((edgeObject as any).material) (edgeObject as any).material.dispose();
     }
 
     /**
@@ -380,7 +390,7 @@ export class SelectionManager {
     /**
      * Check if object is selected
      */
-    isSelected(object) {
+    isSelected(object: THREE.Object3D) {
         return this.selectedObjects.has(object);
     }
 
@@ -411,11 +421,11 @@ export class SelectionManager {
      */
     destroy() {
         // Remove event listeners
-        this.renderer.domElement.removeEventListener('mousedown', this.onMouseDown);
-        this.renderer.domElement.removeEventListener('mousemove', this.onMouseMove);
-        this.renderer.domElement.removeEventListener('mouseup', this.onMouseUp);
-        document.removeEventListener('keydown', this.onKeyDown);
-        document.removeEventListener('keyup', this.onKeyUp);
+        this.renderer.domElement.removeEventListener('mousedown', this._onMouseDown);
+        window.removeEventListener('mousemove', this._onMouseMove);
+        window.removeEventListener('mouseup', this._onMouseUp);
+        document.removeEventListener('keydown', this._onKeyDown);
+        document.removeEventListener('keyup', this._onKeyUp);
 
         // Remove selection boxes
         this.clearSelection();

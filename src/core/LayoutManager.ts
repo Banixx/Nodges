@@ -42,6 +42,16 @@ export class LayoutManager {
         this.registerDefaultLayouts();
     }
 
+    public stopAnimation() {
+        this.isAnimating = false;
+    }
+
+    public setAnimationDuration(duration: number) {
+        // Convert duration (ms) to speed factor or store it
+        // For now just storing it, though logic might need update to use it
+        this.animationSpeed = 1000 / duration;
+    }
+
     registerDefaultLayouts() {
         // Force-Directed Layout
         this.registerLayout('force-directed', {

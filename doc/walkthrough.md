@@ -58,59 +58,8 @@ Nodges/
 
 ## Architektur-Diagramm
 
-```mermaid
-graph TB
-    subgraph "Einstiegspunkt"
-        App["App.ts"]
-    end
-    
-    subgraph "Kern-Manager"
-        SM["StateManager"]
-        CEM["CentralEventManager"]
-        DP["DataParser"]
-        NOM["NodeObjectsManager"]
-        EOM["EdgeObjectsManager"]
-        LM["LayoutManager"]
-        UI["UIManager"]
-        VME["VisualMappingEngine"]
-    end
-    
-    subgraph "Effekte"
-        HM["HighlightManager"]
-        GE["GlowEffect"]
-    end
-    
-    subgraph "Three.js"
-        Scene["THREE.Scene"]
-        Camera["THREE.PerspectiveCamera"]
-        Renderer["THREE.WebGLRenderer"]
-        Controls["OrbitControls"]
-    end
-    
-    App --> SM
-    App --> CEM
-    App --> DP
-    App --> NOM
-    App --> EOM
-    App --> LM
-    App --> UI
-    App --> VME
-    App --> Scene
-    App --> Camera
-    App --> Renderer
-    App --> Controls
-    
-    CEM --> SM
-    CEM --> NOM
-    CEM --> EOM
-    
-    HM --> SM
-    HM --> GE
-    HM --> Scene
-    
-    NOM --> Scene
-    EOM --> Scene
-```
+Siehe Diagramm: [mermaid_03.mmd](mermaid_03.mmd)
+
 
 ---
 
@@ -203,16 +152,8 @@ Der `CentralEventManager` ist das **zentrale Event-System** fuer alle Benutzerin
 Der `DataParser` unterstuetzt **zwei Datenformate**: Legacy und Future.
 
 **Datenformat-Erkennung:**
-```mermaid
-flowchart TD
-    A["JSON-Daten laden"] --> B{"Format pruefen"}
-    B -->|"nodes/edges vorhanden"| C["Legacy-Format"]
-    B -->|"data.entities vorhanden"| D["Future-Format"]
-    C --> E["convertLegacyFormat()"]
-    D --> F["normalizeFutureFormat()"]
-    E --> G["GraphData"]
-    F --> G
-```
+Siehe Diagramm: [mermaid_04.mmd](mermaid_04.mmd)
+
 
 **Legacy-Format:**
 ```json
@@ -268,14 +209,8 @@ Verwaltet die 3D-Darstellung von **Knoten/Nodes** mittels **InstancedMesh** fuer
 Verwaltet die 3D-Darstellung von **Kanten/Edges** als Zylinder.
 
 **Rendering-Strategie:**
-```mermaid
-flowchart LR
-    A["Kanten-Daten"] --> B{"Klassifizierung"}
-    B -->|"Einzelne Verbindung"| C["Gerade Linie"]
-    B -->|"Mehrfach-Verbindung"| D["Gekruemmte Linie"]
-    C --> E["InstancedMesh"]
-    D --> F["TubeGeometry"]
-```
+Siehe Diagramm: [mermaid_05.mmd](mermaid_05.mmd)
+
 
 **Features:**
 - Automatische Erkennung von Mehrfach-Verbindungen zwischen Knoten
@@ -323,19 +258,8 @@ Verwaltet **visuelle Hervorhebungen** fuer Hover- und Auswahl-Zustaende.
 - **Animierte Glow-Intensitaet**
 
 **Node-Highlight:**
-```mermaid
-sequenceDiagram
-    participant User
-    participant CEM as CentralEventManager
-    participant SM as StateManager
-    participant HM as HighlightManager
-    
-    User->>CEM: Maus ueber Node
-    CEM->>SM: setHoveredObject(node)
-    SM->>HM: updateHighlights(state)
-    HM->>HM: applyNodeHoverHighlight(node)
-    HM->>HM: addNodeOutline(node)
-```
+Siehe Diagramm: [mermaid_06.mmd](mermaid_06.mmd)
+
 
 ---
 
@@ -359,53 +283,15 @@ Verwaltet alle **HTML-UI-Komponenten**.
 
 ## Datenfluss-Diagramm
 
-```mermaid
-flowchart TD
-    subgraph "Datenladen"
-        A["JSON-Datei"] --> B["App.loadData()"]
-        B --> C["DataParser.parse()"]
-        C --> D["GraphData"]
-    end
-    
-    subgraph "3D-Erstellung"
-        D --> E["NodeObjectsManager.updateNodes()"]
-        D --> F["EdgeObjectsManager.updateEdges()"]
-        E --> G["THREE.InstancedMesh (Nodes)"]
-        F --> H["THREE.InstancedMesh (Edges)"]
-    end
-    
-    subgraph "Rendering"
-        G --> I["THREE.Scene"]
-        H --> I
-        I --> J["THREE.WebGLRenderer"]
-        J --> K["Canvas"]
-    end
-```
+Siehe Diagramm: [mermaid_07.mmd](mermaid_07.mmd)
+
 
 ---
 
 ## Interaktionssystem
 
-```mermaid
-sequenceDiagram
-    participant User
-    participant Canvas
-    participant CEM as CentralEventManager
-    participant Raycast as RaycastManager
-    participant SM as StateManager
-    participant HM as HighlightManager
-    participant UI as UIManager
-    
-    User->>Canvas: Mausklick
-    Canvas->>CEM: click Event
-    CEM->>Raycast: performRaycast()
-    Raycast-->>CEM: Object3D oder null
-    CEM->>SM: setSelectedObject(object)
-    SM->>HM: notifySubscribers()
-    HM->>HM: updateHighlights()
-    SM->>UI: notifySubscribers()
-    UI->>UI: showInfoPanelFor(object)
-```
+Siehe Diagramm: [mermaid_08.mmd](mermaid_08.mmd)
+
 
 ---
 
@@ -453,13 +339,24 @@ Die Anwendung enthaelt mehrere Beispieldateien in `/public/data/`:
 
 ---
 
-## Zusammenfassung
+## Dokumentations-Uebersicht
 
-Nodges ist eine **gut strukturierte, modulare 3D-Graphvisualisierungs-Anwendung** mit:
+Das Projekt verfuegt ueber eine umfangreiche, modulare Dokumentation im `/doc` Verzeichnis:
 
-- **Klarer Trennung von Verantwortlichkeiten** (Manager-Pattern)
-- **Reaktivem Zustandsmanagement** (StateManager mit Pub/Sub)
-- **Unterstuetzung von Legacy und modernen Datenformaten**
-- **8 verschiedenen Layout-Algorithmen**
-- **Umfangreichem Highlight-System** fuer visuelle Rueckmeldung
-- **Performance-Optimierungen** durch InstancedMesh und Web Workers
+1.  **[01 Einführung und Projektvision](01_Einfuehrung_und_Projektvision.md)**: Ziele, Hairball-Problem und Tech-Stack.
+2.  **[02 Systemarchitektur](02_Systemarchitektur_und_Design_Prinzipien.md)**: Manager-Pattern und Datenfluss.
+3.  **[03 Datenmanagement](03_Datenmanagement_und_Validierung.md)**: JSON-Formate und Zod-Validierung.
+4.  **[04 3D-Rendering](04_3D_Rendering_und_Szenen_Management.md)**: Three.js, Instancing und Kanten-Strategien.
+5.  **[05 Visuelle Effekte](05_Visuelle_Effekte_und_Feedback_Systeme.md)**: Highlights und Glow-Animationen.
+6.  **[06 Interaktions-Design](06_Interaktions_Design_und_Input_Processing.md)**: Raycasting und Kamera-Fahrten.
+7.  **[07 Algorithmen](07_Algorithmen_und_Layout_Engine.md)**: Physik-Simulationen und Web Worker.
+8.  **[08 Benutzeroberflaeche](08_Benutzeroberflaeche_und_UX.md)**: Hybrid-UI und Design-Philosophie.
+9.  **[09 Utilities](09_Utilities_und_Hilfssysteme.md)**: Mathematische Helfer und Farbmanagement.
+10. **[10 Entwicklungs-Guide](10_Entwicklungs_Guide_und_Deployment.md)**: Setup, Debugging und Deployment.
+11. **[11 Technischer Bericht](11_Node_Edge_Mesh_Creation_Report.md)**: Deep-Dive in die Mesh-Generierung.
+12. **[12 Ideensammlung](12_Ideensammlung_Weiterentwicklung.md)**: Zukuenftige Features (VR, KI, Collaboration).
+13. **[13 Kritik und Limitationen](13_Kritik_und_Limitationen.md)**: Ehrliche Analyse von Schwachstellen.
+14. **[14 Use-Cases](14_Use_Cases_und_Szenarien.md)**: Praktische Einsatzgebiete (Cybersec, Bio, IT).
+
+---
+*Ende des Berichts*

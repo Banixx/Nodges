@@ -30,6 +30,8 @@ export interface State {
     edgeRadialSegments: number;
     edgeCurveFactor: number;
     edgePulseSpeed: number;
+    highlightThickness: number; // Percentage above base (1-200)
+    selectionThickness: number; // Percentage above highlight (0-100)
 
     // Layout
     layoutEnabled: boolean;
@@ -82,6 +84,8 @@ export class StateManager {
             edgeCurveFactor: 0.4,
             edgePulseSpeed: 1.0,
             edgeAnimationMode: 'pulse', // pulse, flow, sequential, segments
+            highlightThickness: 10, // 10% larger than original (corresponds to multiplier 1.1)
+            selectionThickness: 20, // 20% larger than highlight
 
             layoutEnabled: true,
 

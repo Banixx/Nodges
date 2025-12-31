@@ -37,6 +37,7 @@ export const PropertySchemaSchema = z.object({
     dimensions: z.array(z.string()).optional(),
     values: z.array(z.string()).optional(),
     coordinates: z.array(z.string()).optional(),
+    default: z.any().optional(),
 });
 export type PropertySchema = z.infer<typeof PropertySchemaSchema>;
 

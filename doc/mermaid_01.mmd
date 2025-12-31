@@ -1,0 +1,14 @@
+graph LR
+    JSON["JSON File"] -->|"Load"| DP["DataParser"]
+    DP -->|"Validate (Zod)"| Schema{"Valid?"}
+    Schema -->|"No"| Error["Error Toast"]
+    Schema -->|"Yes"| GD["GraphData Normalized"]
+    
+    GD -->|"Inject"| NM["NodeManager"]
+    GD -->|"Inject"| EOM["EdgeObjectsManager"]
+    
+    NM -->|"Generate"| IM_N["InstancedMesh (Nodes)"]
+    EOM -->|"Generate"| IM_E["InstancedMesh (Edges)"]
+    
+    IM_N & IM_E -->|"Add"| Scene["THREE.Scene"]
+    Scene -->|"Render loop"| Canvas["Canvas"]

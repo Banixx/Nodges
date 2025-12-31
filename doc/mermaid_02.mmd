@@ -1,0 +1,15 @@
+graph TD
+    User["User Input"] --> CEM["CentralEventManager"]
+    CEM -->|"Normalize"| IM["InteractionManager"]
+    IM -->|"Request"| RC["RaycastManager"]
+    RC -->|"Return Hit"| IM
+    
+    IM -->|"Action"| SM["StateManager"]
+    
+    SM -->|"Notify: NEW_SELECTION"| HM["HighlightManager"]
+    SM -->|"Notify: NEW_SELECTION"| UI["UIManager"]
+    SM -->|"Notify: NEW_SELECTION"| CAM["CameraSystem"]
+    
+    HM -->|"Update Materials"| Scene["THREE.Scene"]
+    UI -->|"Update DOM"| InfoPanel["Info-Panel"]
+    CAM -->|"Animate Position"| Scene

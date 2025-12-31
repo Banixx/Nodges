@@ -6,6 +6,9 @@ Diese Dokumentation analysiert die Implementierung der Typsicherheit in `types.t
 ---
 
 ## 2. Analyse der `types.ts`
+
+Siehe Struktur-Diagramm: [mermaid_10.mmd](mermaid_10.mmd)
+
 Die Datei `types.ts` ist in logische Sektionen unterteilt, die den hybriden Zustand der Anwendung widerspiegeln.
 
 ### 2.1 Legacy Typen (`NodeData`, `EdgeData`)
@@ -127,6 +130,8 @@ if (!result.success) {
 
 ## 5. Einbettung des JSON-Ladens im Code
 
+Siehe Datenfluss-Diagramm: [mermaid_09.mmd](mermaid_09.mmd)
+
 Der aktuelle Datenfluss im Projekt ist wie folgt implementiert:
 
 1.  **Initialisierung (`App.ts`):** `loadDefaultData` oder `loadData(url)` ruft `fetch` auf und übergibt das Ergebnis an den Parser.
@@ -152,6 +157,8 @@ TypeScript mag statische Typen, JSON-Daten von Nutzern sind dynamisch (`customFi
 ---
 
 ## 7. Zukunftsszenarien: Erweiterung des Modells
+
+Siehe Konzept-Diagramm: [mermaid_11.mmd](mermaid_11.mmd)
 
 ### 7.1 One-to-Many Edges (Hyperedges)
 Eine Edge könnte eine Liste von Targets haben (Broadcast/Multicast).

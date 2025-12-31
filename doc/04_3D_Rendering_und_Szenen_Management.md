@@ -1,69 +1,73 @@
 # 04 3D-Rendering und Szenen-Management
 
-Die grafische Darstellung ist das Kernstück von Nodges. Dieses Kapitel behandelt die Implementierung der 3D-Engine mittels Three.js und die verwendeten Strategien zur effizienten Darstellung grosser Graphen.
+Die grafische Darstellung ist das Herzstück von Nodges. Dieses Kapitel taucht tief in die Implementierung der 3D-Engine mittels **Three.js** ein und erläutert die Strategien, mit denen wir tausende Objekte flüssig (60 FPS) im Browser rendern.
 
-## 04.1 Three.js Integration
+## 04.1 Three.js Integration & Setup
 
-Nodges nutzt **Three.js** als WebGL-Abstraktionslayer. Der Renderer wird in der `App`-Klasse initialisiert und verwaltet.
+Nodges nutzt Three.js als Abstraktionsschicht über WebGL. Der Renderer wird vollständig in der `App`-Klasse gekapselt und initialisiert.
 
-### Szenen-Setup (`App.initThreeJS`)
-*   **Scene**: Der Container für alle 3D-Objekte.
-*   **Camera**: Eine `PerspectiveCamera` simuliert das menschliche Sehfeld (FOV 75°). Sie wird so positioniert, dass der Graph initial vollständig sichtbar ist.
-*   **Renderer**: Der `WebGLRenderer` zeichnet die Szene in ein HTML5-Canvas. Anti-Aliasing ist aktiviert, um glatte Kanten zu gewährleisten.
-*   **Controls**: Die `OrbitControls` ermöglichen dem Benutzer, die Kamera um den Mittelpunkt des Graphen zu drehen, zu zoomen und zu verschieben.
+### Der Szenen-Graph (Scene Graph)
+*   **Scene**: Die Wurzel aller Objekte.
+*   **Camera**: Wir nutzen eine `PerspectiveCamera` (FOV 75°). Die `Far`-Clipping-Plane wird dynamisch angepasst, um auch riesige Graphen vollständig darzustellen, ohne Z-Fighting Fehler bei nahen Objekten zu riskieren.
+*   **Renderer**: Der `WebGLRenderer` ist konfiguriert für:
+    *   `antialias: true`: Glättung von Treppchen-Effekten (MSAA).
+    *   `alpha: true`: Transparenter Hintergrund (falls nötig).
+    *   `logarithmicDepthBuffer: true`: Essentiell für Netzwerke mit extremen Größenunterschieden, um Flackern bei überlappenden Geometrien zu verhindern.
 
-### Beleuchtungskonzept
-Um Tiefe und Dreidimensionalität zu erzeugen, wird ein kombiniertes Beleuchtungssetup verwendet:
-1.  **AmbientLight**: Sorgt für eine Grundhelligkeit, damit Schattenbereiche nicht komplett schwarz sind.
-2.  **DirectionalLight**: Simuliert Sonnenlicht und erzeugt Schatten und Glanzlichter (Specular Highlights) auf den Knotenoberflächen, was deren Form (z.B. Kugelrundung) betont.
-3.  **PointLights**: Werden dynamisch eingesetzt, z.B. bei Glow-Effekten (optional).
+### Beleuchtung (Lighting Strategy)
+Licht ist nicht nur Ästhetik, es ist Information (Tiefe, Form). Wir nutzen ein **3-Punkt-Setup**:
+1.  **AmbientLight**: Weiches Grundlicht, hellt Schatten auf (Intensität 0.4).
+2.  **DirectionalLight (Key Light)**: Simuliert Sonnenlicht, wirft Schatten, definiert die Form der Kugeln (Specular Highlights).
+3.  **HemisphereLight**: Simuliert Himmels- und Boden-Reflektion für natürlicheren Look.
 
-### Post-Processing
-Die Architektur ist für Post-Processing vorbereitet (z.B. Bloom-Effekte für stärkeres Leuchten), aktuell werden visuelle Effekte jedoch primär über Material-Eigenschaften (`emissive`) gelöst, um die Performance hoch zu halten.
+## 04.2 High-Performance Rendering: Instancing
 
-## 04.2 Knoten-Visualisierung (`NodeObjectsManager`)
+Wenn ein Graph 10.000 Knoten hat, darf Three.js nicht 10.000 einzelne `Mesh`-Objekte erstellen. Jeder `Mesh` erzeugt einen "Draw Call" an die GPU (CPU-Overhead). Das würde den Browser bei ~1000 Objekten in die Knie zwingen.
 
-Der `NodeObjectsManager` ist für die Erstellung und Verwaltung der Knoten (Nodes) verantwortlich. Da ein Graph tausende Knoten enthalten kann, ist Performance hier der kritische Faktor.
+### Die Lösung: `InstancedMesh`
+Nodges nutzt aggressiv **Instancing**.
+*   **Konzept**: Wir senden die Geometrie (z.B. eine Kugel mit vielen Polygonen) *einmal* an die Grafikkarte.
+*   **Instanzen**: Dann senden wir eine Liste von Transformationen (Position, Rotation, Skalierung) und Farben.
+*   **Resultat**: Die GPU zeichnet alle 10.000 Knoten in einem *einzigen* Draw Call.
 
-### InstancedMesh für maximale Performance
-Anstatt für jeden Knoten ein eigenes `THREE.Mesh`-Objekt zu erstellen (was tausende Draw-Calls verursachen würde), nutzt Nodges **InstancedMesh**.
-*   **Prinzip**: Eine Geometrie (z.B. eine Kugel) und ein Material werden nur *einmal* an die GPU gesendet.
-*   **Instancing**: Die Position, Skalierung und Rotation für tausende Kopien werden in einem einzelnen Buffer übergeben.
-*   **Vorteil**: Die Grafikkarte kann 10.000+ Knoten in einem einzigen Draw-Call zeichnen, was die Framerate auch bei grossen Netzwerken stabil bei 60 FPS hält.
-*   **Herausforderung**: Individuelle Eigenschaften (wie Farbe) müssen über Instanz-Attribute oder Texture-Maps verwaltet werden, nicht über einfache Material-Änderungen.
+### Implementation Details (`NodeManager`)
+Die Verwaltung ist komplex:
+1.  **Dummy Object**: Ein temporäres `Object3D` ("Dummy") wird genutzt, um Positionen zu berechnen.
+2.  **Matrix Updates**: `dummy.updateMatrix()` generiert eine 4x4 Matrix.
+3.  **Buffer Write**: Diese Matrix wird in den Buffer des `InstancedMesh` an Index `i` geschrieben (`setMatrixAt(i, matrix)`).
+4.  **Flags**: `instanceMatrix.needsUpdate = true` signalisiert Three.js, die Daten bei nächten Frame an die GPU zu pushen.
 
-### Geometrie-Typen
-Nodges unterstützt verschiedene Formen zur Repräsentation von Knoten-Typen:
-*   **Sphere**: Standard für generische Knoten.
-*   **Box**: Oft für Infrastruktur-Komponenten (Server, Datenbanken).
-*   **Icosahedron / Octahedron**: Für spezielle Entitäten.
+*Herausforderung*: Da Instancing alles zusammenfasst, ist individuelles Picking ("Welche Kugel habe ich geklickt?") schwieriger. Node-IDs müssen auf `instanceId`-Indizes gemappt werden.
 
-Der Manager verfügt über einen Cache für Geometrien und Materialien, um Speicher zu sparen.
+## 04.3 Kanten-Visualisierung: Die Königsdisziplin
 
-## 04.3 Kanten-Visualisierung (`EdgeObjectsManager`)
+Siehe Diagramm zur Rendering-Strategie: [mermaid_05.mmd](mermaid_05.mmd)
 
-Die Darstellung von Verbindungen (Edges) ist komplexer als die von Knoten, da sie zwei Punkte im Raum verbinden und unterschiedliche Formen annehmen können.
+Kanten (Edges) sind komplexer als Knoten, da sie sich verformen müssen und Abhängigkeiten zu *zwei* Knoten haben.
 
-### Rendering-Strategien
-Der `EdgeObjectsManager` entscheidet intelligent, welche Geometrie verwendet wird:
+### Strategie 1: Instanced Cylinders (Performant)
+Für einfache Verbindungen (A nach B) nutzen wir ebenfalls `InstancedMesh`, aber mit einem Twist:
+*   Geometrie ist ein Zylinder der Höhe 1.
+*   Wir transformieren (rotieren, skalieren, positionieren) jede Instanz so, dass sie exakt die Lücke zwischen Node A und Node B füllt.
+*   Dies nutzt Quaternions für die Rotation ("LookAt"-Mathematik).
+*   *Vorteil*: Extrem schnell für tausende Kanten.
 
-1.  **InstancedMesh (Cylinders)**:
-    *   **Einsatz**: Für einfache, gerade Verbindungen zwischen zwei Knoten.
-    *   **Technik**: Ein Einheits-Zylinder wird so skaliert und rotiert (mittels Quaternions), dass er von Punkt A nach Punkt B reicht. Auch hier wird Instancing für Performance genutzt.
+### Strategie 2: TubeGeometries (Ästhetisch / Multi-Edge)
+Wenn zwei Knoten durch *mehrere* Kanten verbunden sind, würden Zylinder ineinander liegen. Hier schaltet Nodges um auf **TubeGeometry**:
+*   Wir berechnen eine **Bézier-Kurve** (`QuadraticBezierCurve3`) zwischen Start und Ziel.
+*   Ein "Control Point" zieht die Kurve nach außen.
+*   Jede Kante bekommt einen anderen Offset, sodass sie wie Kabelstränge nebeneinander liegen ("Bauchig").
+*   *Nachteil*: Jede Tube ist ein eigenes Mesh (teurer). Wir nutzen dies also nur für Multi-Edges oder selektierte Pfade.
 
-2.  **TubeGeometry (Curved Lines)**:
-    *   **Einsatz**: Wenn *mehrere* Kanten zwischen denselben zwei Knoten existieren (Multi-Edges).
-    *   **Problem**: Gerade Linien würden sich exakt überlagern und wären nicht unterscheidbar.
-    *   **Lösung**: Es werden Bezier-Kurven (`QuadraticBezierCurve3`) berechnet. Jede zusätzliche Kante erhält einen stärkeren "Bauch" (Offset), sodass alle Verbindungen wie Kabelstränge nebeneinander sichtbar sind.
-    *   **Performance**: Da Tubes komplexe Geometrien sind, werden sie individuell erstellt (kein Instancing), was bei sehr vielen Multi-Edges rechenintensiver ist.
+## 04.4 Render-Loop Optimierung
 
-3.  **LineSegments (Debugging/Legacy)**:
-    *   Einfache Linien (1px breit) werden primär für Debugging oder als Fallback auf schwacher Hardware genutzt.
+Der Render-Loop (`animate()`) ist heilig. Er muss in < 16ms fertig sein (für 60 FPS).
+*   **Keine Garbage Collection**: Wir vermeiden es tunlichst, im Loop neue Objekte (Vektoren, Materialien) mit `new` zu erstellen. Nodges nutzt stattdessen Objekt-Pools oder wiederverwendbare, statische Hilfsvariablen (`_tempVector`), um den Garbage Collector nicht zu wecken (was Ruckler verursachen würde).
+*   **Frustum Culling**: Three.js prüft automatisch, ob Objekte im Sichtfeld der Kamera sind. Wir unterstützen dies, indem wir Bounding-Spheres korrekt berechnen.
+*   **On-Demand Rendering**: (Geplant) Wenn sich nichts bewegt (kein Layout, keine Mausbewegung), stoppt der Loop, um Laptop-Batterien zu schonen.
 
-### Dynamische Updates
-Wenn sich Knoten bewegen (z.B. durch Layout-Algorithmen), müssen die Kanten nachgezogen werden. Der Manager optimiert dies:
-*   **Gerade Kanten**: Nur die Matrix-Transformation der Instanzen wird aktualisiert (sehr schnell).
-*   **Kurvige Kanten**: Die Geometrie-Punkte müssen neu berechnet werden.
+### Zusammenfassung des 3D-Datenflusses
+Siehe Diagramm: [mermaid_07.mmd](mermaid_07.mmd)
 
 ---
 *Ende Kapitel 04*

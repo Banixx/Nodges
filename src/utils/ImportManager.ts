@@ -1,9 +1,38 @@
+
 /**
  * ImportManager - Handles importing network data from various formats
  * Supports: JSON (native), CSV, GEXF, GraphML
  */
 
+export interface ImportedData {
+    metadata: {
+        type: string;
+        source: string;
+        nodeCount: number;
+        edgeCount: number;
+        [key: string]: any;
+    };
+    nodes: Array<{
+        id: string;
+        name: string;
+        position: { x: number; y: number; z: number };
+        metadata: any;
+        [key: string]: any;
+    }>;
+    edges: Array<{
+        source: string;
+        target: string;
+        name: string;
+        weight: number;
+        metadata: any;
+        [key: string]: any;
+    }>;
+}
+
 export class ImportManager {
+    public supportedFormats: string[];
+    private parser: DOMParser;
+
     constructor() {
         this.supportedFormats = ['json', 'csv', 'gexf', 'graphml'];
         this.parser = new DOMParser();
@@ -11,22 +40,20 @@ export class ImportManager {
 
     /**
      * Import network data from file
-     * @param {File} file - The file to import
-     * @returns {Promise<Object>} - Parsed network data in Nodges format
      */
-    async importFile(file) {
+    async importFile(file: File): Promise<ImportedData> {
         if (!file) {
             throw new Error('No file provided');
         }
 
         const extension = this.getFileExtension(file.name).toLowerCase();
-        
+
         if (!this.supportedFormats.includes(extension)) {
             throw new Error(`Unsupported file format: ${extension}. Supported formats: ${this.supportedFormats.join(', ')}`);
         }
 
         const content = await this.readFileContent(file);
-        
+
         switch (extension) {
             case 'json':
                 return this.parseJSON(content);
@@ -41,52 +68,29 @@ export class ImportManager {
         }
     }
 
-    /**
-     * Read file content as text
-     * @param {File} file - The file to read
-     * @returns {Promise<string>} - File content as string
-     */
-    readFileContent(file) {
+    readFileContent(file: File): Promise<string> {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = (e) => resolve(e.target.result);
-            reader.onerror = (e) => reject(new Error('Failed to read file'));
+            reader.onload = (e) => resolve(e.target?.result as string);
+            reader.onerror = (_e) => reject(new Error('Failed to read file'));
             reader.readAsText(file);
         });
     }
 
-    /**
-     * Get file extension from filename
-     * @param {string} filename - The filename
-     * @returns {string} - File extension
-     */
-    getFileExtension(filename) {
+    getFileExtension(filename: string): string {
         return filename.split('.').pop() || '';
     }
 
-    /**
-     * Parse JSON format (native Nodges format)
-     * @param {string} content - JSON content
-     * @returns {Object} - Parsed network data
-     */
-    parseJSON(content) {
+    parseJSON(content: string): ImportedData {
         try {
             const data = JSON.parse(content);
             return this.validateAndNormalizeData(data);
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(`Invalid JSON format: ${error.message}`);
         }
     }
 
-    /**
-     * Parse CSV format
-     * Expected formats:
-     * - Nodes: id,name,x,y,z,color,size,type,metadata...
-     * - Edges: source,target,weight,color,style,name,metadata...
-     * @param {string} content - CSV content
-     * @returns {Object} - Parsed network data in Nodges format
-     */
-    parseCSV(content) {
+    parseCSV(content: string): ImportedData {
         const lines = content.trim().split('\n');
         if (lines.length < 2) {
             throw new Error('CSV file must contain at least a header and one data row');
@@ -106,25 +110,20 @@ export class ImportManager {
         }
     }
 
-    /**
-     * Parse nodes CSV
-     * @param {string[]} lines - CSV lines
-     * @returns {Object} - Network data with nodes
-     */
-    parseNodesCSV(lines) {
+    parseNodesCSV(lines: string[]): ImportedData {
         const headers = this.parseCSVLine(lines[0]);
-        const nodes = [];
+        const nodes: any[] = [];
 
         for (let i = 1; i < lines.length; i++) {
             const values = this.parseCSVLine(lines[i]);
             if (values.length !== headers.length) continue;
 
-            const node = {};
-            const metadata = {};
+            const node: any = {};
+            const metadata: any = {};
 
             headers.forEach((header, index) => {
                 const value = values[index];
-                
+
                 switch (header.toLowerCase()) {
                     case 'id':
                         node.id = value;
@@ -174,25 +173,20 @@ export class ImportManager {
         };
     }
 
-    /**
-     * Parse edges CSV
-     * @param {string[]} lines - CSV lines
-     * @returns {Object} - Network data with edges
-     */
-    parseEdgesCSV(lines) {
+    parseEdgesCSV(lines: string[]): ImportedData {
         const headers = this.parseCSVLine(lines[0]);
-        const edges = [];
+        const edges: any[] = [];
 
         for (let i = 1; i < lines.length; i++) {
             const values = this.parseCSVLine(lines[i]);
             if (values.length !== headers.length) continue;
 
-            const edge = {};
-            const metadata = {};
+            const edge: any = {};
+            const metadata: any = {};
 
             headers.forEach((header, index) => {
                 const value = values[index];
-                
+
                 switch (header.toLowerCase()) {
                     case 'source':
                     case 'from':
@@ -237,16 +231,11 @@ export class ImportManager {
         };
     }
 
-    /**
-     * Parse GEXF format
-     * @param {string} content - GEXF XML content
-     * @returns {Object} - Parsed network data in Nodges format
-     */
-    parseGEXF(content) {
+    parseGEXF(content: string): ImportedData {
         try {
             const xmlDoc = this.parser.parseFromString(content, 'text/xml');
             const gexf = xmlDoc.getElementsByTagName('gexf')[0];
-            
+
             if (!gexf) {
                 throw new Error('Invalid GEXF format: missing gexf root element');
             }
@@ -269,23 +258,18 @@ export class ImportManager {
                 nodes: nodes,
                 edges: edges
             };
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(`Failed to parse GEXF: ${error.message}`);
         }
     }
 
-    /**
-     * Parse nodes from GEXF
-     * @param {Element} graph - Graph XML element
-     * @returns {Array} - Array of nodes
-     */
-    parseGEXFNodes(graph) {
-        const nodes = [];
+    parseGEXFNodes(graph: Element): any[] {
+        const nodes: any[] = [];
         const nodeElements = graph.getElementsByTagName('node');
 
         for (let i = 0; i < nodeElements.length; i++) {
             const nodeEl = nodeElements[i];
-            const node = {
+            const node: any = {
                 id: nodeEl.getAttribute('id'),
                 name: nodeEl.getAttribute('label') || nodeEl.getAttribute('id'),
                 position: { x: 0, y: 0, z: 0 },
@@ -295,24 +279,24 @@ export class ImportManager {
             // Parse position from viz:position
             const positionEl = nodeEl.getElementsByTagName('viz:position')[0];
             if (positionEl) {
-                node.position.x = parseFloat(positionEl.getAttribute('x')) || 0;
-                node.position.y = parseFloat(positionEl.getAttribute('y')) || 0;
-                node.position.z = parseFloat(positionEl.getAttribute('z')) || 0;
+                node.position.x = parseFloat(positionEl.getAttribute('x') || '0');
+                node.position.y = parseFloat(positionEl.getAttribute('y') || '0');
+                node.position.z = parseFloat(positionEl.getAttribute('z') || '0');
             }
 
             // Parse color from viz:color
             const colorEl = nodeEl.getElementsByTagName('viz:color')[0];
             if (colorEl) {
-                const r = parseInt(colorEl.getAttribute('r')) || 0;
-                const g = parseInt(colorEl.getAttribute('g')) || 0;
-                const b = parseInt(colorEl.getAttribute('b')) || 0;
+                const r = parseInt(colorEl.getAttribute('r') || '0');
+                const g = parseInt(colorEl.getAttribute('g') || '0');
+                const b = parseInt(colorEl.getAttribute('b') || '0');
                 node.metadata.color = (r << 16) | (g << 8) | b;
             }
 
             // Parse size from viz:size
             const sizeEl = nodeEl.getElementsByTagName('viz:size')[0];
             if (sizeEl) {
-                node.metadata.size = parseFloat(sizeEl.getAttribute('value')) || 1;
+                node.metadata.size = parseFloat(sizeEl.getAttribute('value') || '1');
             }
 
             // Parse attributes
@@ -332,31 +316,26 @@ export class ImportManager {
         return nodes;
     }
 
-    /**
-     * Parse edges from GEXF
-     * @param {Element} graph - Graph XML element
-     * @returns {Array} - Array of edges
-     */
-    parseGEXFEdges(graph) {
-        const edges = [];
+    parseGEXFEdges(graph: Element): any[] {
+        const edges: any[] = [];
         const edgeElements = graph.getElementsByTagName('edge');
 
         for (let i = 0; i < edgeElements.length; i++) {
             const edgeEl = edgeElements[i];
-            const edge = {
+            const edge: any = {
                 source: edgeEl.getAttribute('source'),
                 target: edgeEl.getAttribute('target'),
                 name: edgeEl.getAttribute('label') || `Edge ${i}`,
-                weight: parseFloat(edgeEl.getAttribute('weight')) || 1,
+                weight: parseFloat(edgeEl.getAttribute('weight') || '1'),
                 metadata: {}
             };
 
             // Parse color from viz:color
             const colorEl = edgeEl.getElementsByTagName('viz:color')[0];
             if (colorEl) {
-                const r = parseInt(colorEl.getAttribute('r')) || 0;
-                const g = parseInt(colorEl.getAttribute('g')) || 0;
-                const b = parseInt(colorEl.getAttribute('b')) || 0;
+                const r = parseInt(colorEl.getAttribute('r') || '0');
+                const g = parseInt(colorEl.getAttribute('g') || '0');
+                const b = parseInt(colorEl.getAttribute('b') || '0');
                 edge.metadata.color = (r << 16) | (g << 8) | b;
             }
 
@@ -377,16 +356,11 @@ export class ImportManager {
         return edges;
     }
 
-    /**
-     * Parse GraphML format
-     * @param {string} content - GraphML XML content
-     * @returns {Object} - Parsed network data in Nodges format
-     */
-    parseGraphML(content) {
+    parseGraphML(content: string): ImportedData {
         try {
             const xmlDoc = this.parser.parseFromString(content, 'text/xml');
             const graphml = xmlDoc.getElementsByTagName('graphml')[0];
-            
+
             if (!graphml) {
                 throw new Error('Invalid GraphML format: missing graphml root element');
             }
@@ -411,18 +385,13 @@ export class ImportManager {
                 nodes: nodes,
                 edges: edges
             };
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(`Failed to parse GraphML: ${error.message}`);
         }
     }
 
-    /**
-     * Parse GraphML key definitions
-     * @param {Element} graphml - GraphML root element
-     * @returns {Object} - Key definitions
-     */
-    parseGraphMLKeys(graphml) {
-        const keys = {};
+    parseGraphMLKeys(graphml: Element): any {
+        const keys: any = {};
         const keyElements = graphml.getElementsByTagName('key');
 
         for (let i = 0; i < keyElements.length; i++) {
@@ -444,19 +413,13 @@ export class ImportManager {
         return keys;
     }
 
-    /**
-     * Parse nodes from GraphML
-     * @param {Element} graph - Graph XML element
-     * @param {Object} keys - Key definitions
-     * @returns {Array} - Array of nodes
-     */
-    parseGraphMLNodes(graph, keys) {
-        const nodes = [];
+    parseGraphMLNodes(graph: Element, keys: any): any[] {
+        const nodes: any[] = [];
         const nodeElements = graph.getElementsByTagName('node');
 
         for (let i = 0; i < nodeElements.length; i++) {
             const nodeEl = nodeElements[i];
-            const node = {
+            const node: any = {
                 id: nodeEl.getAttribute('id'),
                 name: nodeEl.getAttribute('id'), // Default name to id
                 position: { x: Math.random() * 20 - 10, y: Math.random() * 20 - 10, z: Math.random() * 20 - 10 },
@@ -468,7 +431,7 @@ export class ImportManager {
             for (let j = 0; j < dataElements.length; j++) {
                 const dataEl = dataElements[j];
                 const key = dataEl.getAttribute('key');
-                const value = dataEl.textContent;
+                const value = dataEl.textContent || '';
 
                 if (key && keys[key]) {
                     const keyDef = keys[key];
@@ -508,19 +471,13 @@ export class ImportManager {
         return nodes;
     }
 
-    /**
-     * Parse edges from GraphML
-     * @param {Element} graph - Graph XML element
-     * @param {Object} keys - Key definitions
-     * @returns {Array} - Array of edges
-     */
-    parseGraphMLEdges(graph, keys) {
-        const edges = [];
+    parseGraphMLEdges(graph: Element, keys: any): any[] {
+        const edges: any[] = [];
         const edgeElements = graph.getElementsByTagName('edge');
 
         for (let i = 0; i < edgeElements.length; i++) {
             const edgeEl = edgeElements[i];
-            const edge = {
+            const edge: any = {
                 source: edgeEl.getAttribute('source'),
                 target: edgeEl.getAttribute('target'),
                 name: `Edge ${i}`,
@@ -533,7 +490,7 @@ export class ImportManager {
             for (let j = 0; j < dataElements.length; j++) {
                 const dataEl = dataElements[j];
                 const key = dataEl.getAttribute('key');
-                const value = dataEl.textContent;
+                const value = dataEl.textContent || '';
 
                 if (key && keys[key]) {
                     const keyDef = keys[key];
@@ -564,19 +521,14 @@ export class ImportManager {
         return edges;
     }
 
-    /**
-     * Parse CSV line handling quoted values
-     * @param {string} line - CSV line
-     * @returns {Array} - Array of values
-     */
-    parseCSVLine(line) {
-        const result = [];
+    parseCSVLine(line: string): string[] {
+        const result: string[] = [];
         let current = '';
         let inQuotes = false;
 
         for (let i = 0; i < line.length; i++) {
             const char = line[i];
-            
+
             if (char === '"') {
                 inQuotes = !inQuotes;
             } else if (char === ',' && !inQuotes) {
@@ -586,18 +538,14 @@ export class ImportManager {
                 current += char;
             }
         }
-        
+
         result.push(current.trim());
         return result;
     }
 
-    /**
-     * Parse color value
-     * @param {string} value - Color value (hex, rgb, name)
-     * @returns {number} - Color as hex number
-     */
-    parseColor(value) {
+    parseColor(value: string | any): number {
         if (!value) return 0xff4500; // Default orange
+        if (typeof value !== 'string') return 0xff4500;
 
         // Remove whitespace
         value = value.trim();
@@ -619,7 +567,7 @@ export class ImportManager {
         }
 
         // Named colors (basic set)
-        const namedColors = {
+        const namedColors: { [key: string]: number } = {
             'red': 0xff0000,
             'green': 0x00ff00,
             'blue': 0x0000ff,
@@ -637,12 +585,7 @@ export class ImportManager {
         return namedColors[value.toLowerCase()] || 0xff4500;
     }
 
-    /**
-     * Parse value with automatic type detection
-     * @param {string} value - String value
-     * @returns {*} - Parsed value
-     */
-    parseValue(value) {
+    parseValue(value: string): any {
         if (!value || value === '') return '';
 
         // Try number
@@ -659,13 +602,7 @@ export class ImportManager {
         return value;
     }
 
-    /**
-     * Parse value by specified type
-     * @param {string} value - String value
-     * @param {string} type - Expected type
-     * @returns {*} - Parsed value
-     */
-    parseValueByType(value, type) {
+    parseValueByType(value: string, type: string): any {
         switch (type) {
             case 'int':
                 return parseInt(value) || 0;
@@ -682,18 +619,13 @@ export class ImportManager {
         }
     }
 
-    /**
-     * Validate and normalize imported data to Nodges format
-     * @param {Object} data - Imported data
-     * @returns {Object} - Validated and normalized data
-     */
-    validateAndNormalizeData(data) {
+    validateAndNormalizeData(data: any): ImportedData {
         if (!data || typeof data !== 'object') {
             throw new Error('Invalid data format: expected object');
         }
 
         // Ensure required structure
-        const normalized = {
+        const normalized: ImportedData = {
             metadata: data.metadata || {
                 type: 'imported',
                 source: 'Unknown',

@@ -1,13 +1,58 @@
 import * as THREE from 'three';
+import { StateManager } from '../core/StateManager';
+
+interface PathNode {
+    id: string | number;
+    mesh: THREE.Mesh;
+    [key: string]: any;
+}
+
+interface PathEdge {
+    startNode: { id: string | number; mesh: THREE.Mesh };
+    endNode: { id: string | number; mesh: THREE.Mesh };
+    line?: THREE.Line | THREE.Mesh; // Can be line or mesh (tube)
+    metadata?: any;
+    [key: string]: any;
+}
+
+interface QueueItem {
+    node: PathNode;
+    path: PathNode[];
+}
+
+interface AnimationSettings {
+    speed?: number;
+    active?: boolean;
+    color?: number;
+}
 
 /**
  * PathFinder provides path finding algorithms and visualization
  * for finding and highlighting paths between nodes in the network.
  */
 export class PathFinder {
-    constructor(scene, stateManager) {
+    private scene: THREE.Scene;
+    // private stateManager: StateManager;
+    private nodes: PathNode[];
+    private edges: PathEdge[];
+    private adjacencyList: Map<string | number, Map<string | number, PathEdge>>;
+    private currentPath: PathNode[];
+    private pathVisualization: THREE.Object3D[]; // Stores lines/meshes that are modified
+    private startNode: PathNode | null;
+    private endNode: PathNode | null;
+
+    // Path visualization settings
+    private pathColor: number;
+    // private pathWidth: number;
+    private pathOpacity: number;
+    private animationSpeed: number;
+    private animationActive: boolean;
+    private animationPhase: number;
+    private animationMarker: THREE.Mesh | null;
+
+    constructor(scene: THREE.Scene, _stateManager: StateManager) {
         this.scene = scene;
-        this.stateManager = stateManager;
+        // this.stateManager = stateManager;
         this.nodes = [];
         this.edges = [];
         this.adjacencyList = new Map();
@@ -15,22 +60,21 @@ export class PathFinder {
         this.pathVisualization = [];
         this.startNode = null;
         this.endNode = null;
-        
+
         // Path visualization settings
         this.pathColor = 0x00ff00; // Green for path
-        this.pathWidth = 5;
+        // this.pathWidth = 5;
         this.pathOpacity = 0.8;
         this.animationSpeed = 1.0;
         this.animationActive = false;
         this.animationPhase = 0;
+        this.animationMarker = null;
     }
 
     /**
      * Initialize the path finder with current network data
-     * @param {Array} nodes - Array of Node objects
-     * @param {Array} edges - Array of Edge objects
      */
-    initialize(nodes, edges) {
+    initialize(nodes: PathNode[], edges: PathEdge[]) {
         this.nodes = nodes;
         this.edges = edges;
         this.buildAdjacencyList();
@@ -42,7 +86,7 @@ export class PathFinder {
      */
     buildAdjacencyList() {
         this.adjacencyList.clear();
-        
+
         // Initialize adjacency list for all nodes
         this.nodes.forEach(node => {
             this.adjacencyList.set(node.id, new Map());
@@ -52,37 +96,34 @@ export class PathFinder {
         this.edges.forEach(edge => {
             const startId = edge.startNode.id;
             const endId = edge.endNode.id;
-            
+
             if (this.adjacencyList.has(startId) && this.adjacencyList.has(endId)) {
-                this.adjacencyList.get(startId).set(endId, edge);
-                this.adjacencyList.get(endId).set(startId, edge); // Assuming undirected graph
+                this.adjacencyList.get(startId)!.set(endId, edge);
+                this.adjacencyList.get(endId)!.set(startId, edge); // Assuming undirected graph
             }
         });
     }
 
     /**
      * Set the start node for path finding
-     * @param {Object} node - Node object
      */
-    setStartNode(node) {
+    setStartNode(node: PathNode) {
         this.startNode = node;
         this.updatePathVisualization();
     }
 
     /**
      * Set the end node for path finding
-     * @param {Object} node - Node object
      */
-    setEndNode(node) {
+    setEndNode(node: PathNode) {
         this.endNode = node;
         this.updatePathVisualization();
     }
 
     /**
      * Find shortest path between start and end nodes using BFS
-     * @returns {Array} Array of node objects representing the path
      */
-    findShortestPath() {
+    findShortestPath(): PathNode[] {
         if (!this.startNode || !this.endNode) {
             return [];
         }
@@ -91,29 +132,29 @@ export class PathFinder {
             return [this.startNode];
         }
 
-        const visited = new Set();
-        const queue = [{ node: this.startNode, path: [this.startNode] }];
+        const visited = new Set<string | number>();
+        const queue: QueueItem[] = [{ node: this.startNode, path: [this.startNode] }];
 
         while (queue.length > 0) {
-            const { node, path } = queue.shift();
-            
+            const { node, path } = queue.shift()!;
+
             if (visited.has(node.id)) continue;
             visited.add(node.id);
 
             const neighbors = this.adjacencyList.get(node.id);
             if (neighbors) {
-                for (const [neighborId, edge] of neighbors) {
+                for (const neighborId of neighbors.keys()) {
                     const neighborNode = this.nodes.find(n => n.id === neighborId);
-                    
+
                     if (neighborNode) {
                         if (neighborNode.id === this.endNode.id) {
                             return [...path, neighborNode];
                         }
-                        
+
                         if (!visited.has(neighborId)) {
-                            queue.push({ 
-                                node: neighborNode, 
-                                path: [...path, neighborNode] 
+                            queue.push({
+                                node: neighborNode,
+                                path: [...path, neighborNode]
                             });
                         }
                     }
@@ -126,9 +167,8 @@ export class PathFinder {
 
     /**
      * Find path using A* algorithm with Euclidean distance heuristic
-     * @returns {Array} Array of node objects representing the path
      */
-    findAStarPath() {
+    findAStarPath(): PathNode[] {
         if (!this.startNode || !this.endNode) {
             console.warn('Start or end node not set');
             return [];
@@ -138,10 +178,10 @@ export class PathFinder {
             return [this.startNode];
         }
 
-        const openSet = new Set([this.startNode.id]);
-        const cameFrom = new Map();
-        const gScore = new Map();
-        const fScore = new Map();
+        const openSet = new Set<string | number>([this.startNode.id]);
+        const cameFrom = new Map<string | number, string | number>();
+        const gScore = new Map<string | number, number>();
+        const fScore = new Map<string | number, number>();
 
         // Initialize scores
         this.nodes.forEach(node => {
@@ -154,14 +194,14 @@ export class PathFinder {
 
         while (openSet.size > 0) {
             // Find node with lowest fScore
-            let current = null;
+            let current: PathNode | null = null;
             let lowestFScore = Infinity;
-            
+
             for (const nodeId of openSet) {
-                const score = fScore.get(nodeId);
+                const score = fScore.get(nodeId)!;
                 if (score < lowestFScore) {
                     lowestFScore = score;
-                    current = this.nodes.find(n => n.id === nodeId);
+                    current = this.nodes.find(n => n.id === nodeId) || null;
                 }
             }
 
@@ -171,33 +211,33 @@ export class PathFinder {
                 // Reconstruct path
                 const path = [current];
                 let currentId = current.id;
-                
+
                 while (cameFrom.has(currentId)) {
-                    currentId = cameFrom.get(currentId);
+                    currentId = cameFrom.get(currentId)!;
                     const node = this.nodes.find(n => n.id === currentId);
                     if (node) {
                         path.unshift(node);
                     }
                 }
-                
+
                 return path;
             }
 
             openSet.delete(current.id);
             const neighbors = this.adjacencyList.get(current.id);
-            
+
             if (neighbors) {
                 for (const [neighborId, edge] of neighbors) {
                     const neighbor = this.nodes.find(n => n.id === neighborId);
                     if (!neighbor) continue;
 
-                    const tentativeGScore = gScore.get(current.id) + this.getEdgeWeight(edge);
+                    const tentativeGScore = gScore.get(current.id)! + this.getEdgeWeight(edge);
 
-                    if (tentativeGScore < gScore.get(neighborId)) {
+                    if (tentativeGScore < gScore.get(neighborId)!) {
                         cameFrom.set(neighborId, current.id);
                         gScore.set(neighborId, tentativeGScore);
                         fScore.set(neighborId, tentativeGScore + this.heuristic(neighbor, this.endNode));
-                        
+
                         openSet.add(neighborId);
                     }
                 }
@@ -209,11 +249,8 @@ export class PathFinder {
 
     /**
      * Calculate heuristic distance between two nodes (Euclidean distance)
-     * @param {Object} node1 - First node
-     * @param {Object} node2 - Second node
-     * @returns {number} Euclidean distance
      */
-    heuristic(node1, node2) {
+    heuristic(node1: PathNode, node2: PathNode): number {
         const pos1 = node1.mesh.position;
         const pos2 = node2.mesh.position;
         return pos1.distanceTo(pos2);
@@ -221,15 +258,13 @@ export class PathFinder {
 
     /**
      * Get weight of an edge (can be customized based on edge properties)
-     * @param {Object} edge - Edge object
-     * @returns {number} Edge weight
      */
-    getEdgeWeight(edge) {
+    getEdgeWeight(edge: PathEdge): number {
         // Default weight is 1, but can be customized based on edge properties
         if (edge.metadata && edge.metadata.weight) {
             return edge.metadata.weight;
         }
-        
+
         // Use Euclidean distance as weight
         const startPos = edge.startNode.mesh.position;
         const endPos = edge.endNode.mesh.position;
@@ -237,52 +272,11 @@ export class PathFinder {
     }
 
     /**
-     * Find all paths between start and end nodes (up to a maximum depth)
-     * @param {number} maxDepth - Maximum path length to search
-     * @returns {Array} Array of path arrays
-     */
-    findAllPaths(maxDepth = 10) {
-        if (!this.startNode || !this.endNode) {
-            console.warn('Start or end node not set');
-            return [];
-        }
-
-        const allPaths = [];
-        const visited = new Set();
-
-        const dfs = (currentNode, path, depth) => {
-            if (depth > maxDepth) return;
-            
-            if (currentNode.id === this.endNode.id && path.length > 1) {
-                allPaths.push([...path]);
-                return;
-            }
-
-            visited.add(currentNode.id);
-            const neighbors = this.adjacencyList.get(currentNode.id);
-            
-            if (neighbors) {
-                for (const [neighborId, edge] of neighbors) {
-                    const neighbor = this.nodes.find(n => n.id === neighborId);
-                    if (neighbor && !visited.has(neighborId)) {
-                        dfs(neighbor, [...path, neighbor], depth + 1);
-                    }
-                }
-            }
-            
-            visited.delete(currentNode.id);
-        };
-
-        dfs(this.startNode, [this.startNode], 0);
-        return allPaths;
-    }
-
-    /**
      * Update path visualization based on current start and end nodes
      */
     updatePathVisualization() {
         this.clearPathVisualization();
-        
+
         if (this.startNode && this.endNode) {
             this.currentPath = this.findShortestPath();
             this.createPathVisualization();
@@ -297,26 +291,34 @@ export class PathFinder {
 
         // Highlight path nodes
         this.currentPath.forEach((node, index) => {
-            if (node.mesh) {
+            if (node.mesh && node.mesh.material instanceof THREE.Material) {
+                // Cast to any to access custom userData and properties that aren't on standard Material
+                const mesh = node.mesh as any;
+                const material = mesh.material;
+
                 // Store original material properties
-                if (!node.mesh.userData.originalEmissive) {
-                    node.mesh.userData.originalEmissive = node.mesh.material.emissive.clone();
-                    node.mesh.userData.originalEmissiveIntensity = node.mesh.material.emissiveIntensity;
+                if (!mesh.userData.originalEmissive) {
+                    if (material.emissive) {
+                        mesh.userData.originalEmissive = material.emissive.clone();
+                        mesh.userData.originalEmissiveIntensity = material.emissiveIntensity;
+                    }
                 }
 
                 // Apply path highlighting
-                if (index === 0) {
-                    // Start node - green
-                    node.mesh.material.emissive.setHex(0x00ff00);
-                    node.mesh.material.emissiveIntensity = 0.5;
-                } else if (index === this.currentPath.length - 1) {
-                    // End node - red
-                    node.mesh.material.emissive.setHex(0xff0000);
-                    node.mesh.material.emissiveIntensity = 0.5;
-                } else {
-                    // Intermediate nodes - yellow
-                    node.mesh.material.emissive.setHex(0xffff00);
-                    node.mesh.material.emissiveIntensity = 0.3;
+                if (material.emissive) {
+                    if (index === 0) {
+                        // Start node - green
+                        material.emissive.setHex(0x00ff00);
+                        material.emissiveIntensity = 0.5;
+                    } else if (index === this.currentPath.length - 1) {
+                        // End node - red
+                        material.emissive.setHex(0xff0000);
+                        material.emissiveIntensity = 0.5;
+                    } else {
+                        // Intermediate nodes - yellow
+                        material.emissive.setHex(0xffff00);
+                        material.emissiveIntensity = 0.3;
+                    }
                 }
             }
         });
@@ -325,24 +327,33 @@ export class PathFinder {
         for (let i = 0; i < this.currentPath.length - 1; i++) {
             const currentNode = this.currentPath[i];
             const nextNode = this.currentPath[i + 1];
-            
+
             const neighbors = this.adjacencyList.get(currentNode.id);
             if (neighbors && neighbors.has(nextNode.id)) {
                 const edge = neighbors.get(nextNode.id);
-                
-                if (edge && edge.line) {
+
+                // Check if edge has a visual representation (line or mesh)
+                const object3D = edge?.line as any;
+
+                if (object3D) {
                     // Store original material properties
-                    if (!edge.line.userData.originalColor) {
-                        edge.line.userData.originalColor = edge.line.material.color.clone();
-                        edge.line.userData.originalOpacity = edge.line.material.opacity;
+                    if (!object3D.userData.originalColor) {
+                        // Check material type, assume it has color and opacity for now
+                        const material = object3D.material;
+                        if (material && material.color) {
+                            object3D.userData.originalColor = material.color.clone();
+                            object3D.userData.originalOpacity = material.opacity;
+                        }
                     }
 
                     // Apply path highlighting to edge
-                    edge.line.material.color.setHex(this.pathColor);
-                    edge.line.material.opacity = this.pathOpacity;
-                    edge.line.material.transparent = true;
-                    
-                    this.pathVisualization.push(edge.line);
+                    if (object3D.material) {
+                        if (object3D.material.color) object3D.material.color.setHex(this.pathColor);
+                        if (object3D.material.opacity !== undefined) object3D.material.opacity = this.pathOpacity;
+                        object3D.material.transparent = true;
+                    }
+
+                    this.pathVisualization.push(object3D);
                 }
             }
         }
@@ -368,8 +379,11 @@ export class PathFinder {
         if (!this.animationActive || this.currentPath.length < 2) return;
 
         const animate = () => {
+            // Stop if animation is no longer active
+            if (!this.animationActive) return;
+
             this.animationPhase += 0.016 * this.animationSpeed; // Assuming 60fps
-            
+
             if (this.animationPhase >= this.currentPath.length - 1) {
                 this.animationPhase = 0; // Loop animation
             }
@@ -377,9 +391,7 @@ export class PathFinder {
             // Update visual indicators based on animation phase
             this.updateAnimationVisuals();
 
-            if (this.animationActive) {
-                requestAnimationFrame(animate);
-            }
+            requestAnimationFrame(animate);
         };
 
         animate();
@@ -396,7 +408,7 @@ export class PathFinder {
         // Create or update animation marker
         if (!this.animationMarker) {
             const geometry = new THREE.SphereGeometry(0.3, 16, 16);
-            const material = new THREE.MeshBasicMaterial({ 
+            const material = new THREE.MeshBasicMaterial({
                 color: 0xffffff,
                 transparent: true,
                 opacity: 0.8
@@ -409,7 +421,7 @@ export class PathFinder {
         if (currentIndex < this.currentPath.length && nextIndex < this.currentPath.length) {
             const currentPos = this.currentPath[currentIndex].mesh.position;
             const nextPos = this.currentPath[nextIndex].mesh.position;
-            
+
             this.animationMarker.position.lerpVectors(currentPos, nextPos, t);
             this.animationMarker.position.y += 1; // Slightly above the path
         }
@@ -421,21 +433,22 @@ export class PathFinder {
     clearPathVisualization() {
         // Restore original node materials
         this.currentPath.forEach(node => {
-            if (node.mesh && node.mesh.userData.originalEmissive) {
-                node.mesh.material.emissive.copy(node.mesh.userData.originalEmissive);
-                node.mesh.material.emissiveIntensity = node.mesh.userData.originalEmissiveIntensity;
-                
-                delete node.mesh.userData.originalEmissive;
-                delete node.mesh.userData.originalEmissiveIntensity;
+            const mesh = node.mesh as any;
+            if (mesh && mesh.userData && mesh.userData.originalEmissive && mesh.material && mesh.material.emissive) {
+                mesh.material.emissive.copy(mesh.userData.originalEmissive);
+                mesh.material.emissiveIntensity = mesh.userData.originalEmissiveIntensity;
+
+                delete mesh.userData.originalEmissive;
+                delete mesh.userData.originalEmissiveIntensity;
             }
         });
 
         // Restore original edge materials
-        this.pathVisualization.forEach(edgeLine => {
-            if (edgeLine.userData.originalColor) {
+        this.pathVisualization.forEach((edgeLine: any) => {
+            if (edgeLine.userData && edgeLine.userData.originalColor && edgeLine.material && edgeLine.material.color) {
                 edgeLine.material.color.copy(edgeLine.userData.originalColor);
-                edgeLine.material.opacity = edgeLine.userData.originalOpacity;
-                
+                if (edgeLine.material.opacity !== undefined) edgeLine.material.opacity = edgeLine.userData.originalOpacity;
+
                 delete edgeLine.userData.originalColor;
                 delete edgeLine.userData.originalOpacity;
             }
@@ -443,12 +456,16 @@ export class PathFinder {
 
         this.pathVisualization = [];
         this.currentPath = [];
-        
+
         // Remove animation marker
         if (this.animationMarker) {
             this.scene.remove(this.animationMarker);
             this.animationMarker.geometry.dispose();
-            this.animationMarker.material.dispose();
+            if (Array.isArray(this.animationMarker.material)) {
+                this.animationMarker.material.forEach(m => m.dispose());
+            } else {
+                this.animationMarker.material.dispose();
+            }
             this.animationMarker = null;
         }
     }
@@ -465,9 +482,8 @@ export class PathFinder {
 
     /**
      * Get information about the current path
-     * @returns {Object} Path information
      */
-    getPathInfo() {
+    getPathInfo(): any {
         if (this.currentPath.length === 0) {
             return {
                 exists: false,
@@ -497,9 +513,8 @@ export class PathFinder {
 
     /**
      * Set animation settings
-     * @param {Object} settings - Animation settings
      */
-    setAnimationSettings(settings) {
+    setAnimationSettings(settings: AnimationSettings) {
         if (settings.speed !== undefined) {
             this.animationSpeed = settings.speed;
         }
@@ -516,7 +531,6 @@ export class PathFinder {
 
     /**
      * Get path finding statistics
-     * @returns {Object} Statistics about path finding
      */
     getStatistics() {
         return {

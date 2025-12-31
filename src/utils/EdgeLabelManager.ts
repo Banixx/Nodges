@@ -1,15 +1,50 @@
 import * as THREE from 'three';
+// import { NodeObject } from '../types';
+
+export interface LabelConfig {
+    fontSize: number;
+    color: number;
+    backgroundColor: number;
+    backgroundOpacity: number;
+    padding: number;
+    visible: boolean;
+    alwaysVisible: boolean;
+    distanceThreshold: number;
+}
+
+interface EdgeWithPosition {
+    line?: THREE.Object3D;
+    startNode: { mesh: THREE.Object3D };
+    endNode: { mesh: THREE.Object3D };
+    name?: string;
+    metadata?: any;
+    options?: {
+        offset?: number;
+    };
+}
+
+interface LabelData {
+    sprite: THREE.Sprite;
+    edge: EdgeWithPosition;
+    text: string;
+}
 
 export class EdgeLabelManager {
-    constructor(scene, camera) {
+    private scene: THREE.Scene;
+    private camera: THREE.Camera;
+    private labels: Map<number, LabelData>; // Map from Edge ID (object id) to LabelData
+    private labelGroup: THREE.Group;
+    public config: LabelConfig;
+
+    constructor(scene: THREE.Scene, camera: THREE.Camera) {
         this.scene = scene;
         this.camera = camera;
-        this.labels = new Map(); // Map von Edge-IDs zu Label-Objekten
+        this.labels = new Map();
         this.labelGroup = new THREE.Group();
         this.labelGroup.name = 'edgeLabels';
         this.scene.add(this.labelGroup);
-        
-        // Konfiguration
+
+        // Configuration
         this.config = {
             fontSize: 0.3,
             color: 0x000000,
@@ -18,228 +53,216 @@ export class EdgeLabelManager {
             padding: 0.05,
             visible: true,
             alwaysVisible: false,
-            distanceThreshold: 15 // Maximale Entfernung fuer Sichtbarkeit
+            distanceThreshold: 15
         };
-        
+
         // Bind update method to use in animation loop
         this.update = this.update.bind(this);
     }
-    
+
     /**
-     * Erstellt oder aktualisiert ein Label fuer eine Kante
-     * @param {Edge} edge - Die Kante, fuer die ein Label erstellt werden soll
-     * @param {string} text - Der anzuzeigende Text
+     * Create or update a label for an edge
      */
-    createOrUpdateLabel(edge, text) {
+    createOrUpdateLabel(edge: EdgeWithPosition, text: string): THREE.Sprite | undefined {
         if (!edge || !edge.line || !text) return;
-        
+
         const edgeId = edge.line.id;
-        
-        // Wenn bereits ein Label fuer diese Kante existiert, entferne es
+
+        // If label exists, remove it first
         if (this.labels.has(edgeId)) {
             this.removeLabel(edgeId);
         }
-        
-        // Erstelle ein Canvas fuer das Label
+
+        // Create canvas for the label
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
-        
-        // Setze die Groesse des Canvas
+        if (!context) return;
+
+        // Set canvas size
         const fontSize = 24;
         context.font = `${fontSize}px Arial`;
-        const textWidth = context.measureText(text).width;
+        const textMetrics = context.measureText(text);
+        const textWidth = textMetrics.width;
         const padding = 8;
         canvas.width = textWidth + padding * 2;
         canvas.height = fontSize + padding * 2;
-        
-        // Zeichne den Hintergrund
+
+        // Draw background
         context.fillStyle = `rgba(255, 255, 255, ${this.config.backgroundOpacity})`;
         context.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // Zeichne den Text
+
+        // Draw text
         context.font = `${fontSize}px Arial`;
         context.fillStyle = '#000000';
         context.textAlign = 'center';
         context.textBaseline = 'middle';
         context.fillText(text, canvas.width / 2, canvas.height / 2);
-        
-        // Erstelle eine Textur aus dem Canvas
+
+        // Create texture from canvas
         const texture = new THREE.CanvasTexture(canvas);
         texture.needsUpdate = true;
-        
-        // Erstelle ein Material mit der Textur
+
+        // Create material
         const material = new THREE.SpriteMaterial({
             map: texture,
             transparent: true
         });
-        
-        // Erstelle ein Sprite mit dem Material
+
+        // Create sprite
         const sprite = new THREE.Sprite(material);
-        
-        // Skaliere das Sprite basierend auf der Textgroesse
+
+        // Scale sprite based on text size
         const scale = this.config.fontSize;
         sprite.scale.set(scale * canvas.width / fontSize, scale, 1);
-        
-        // Positioniere das Sprite in der Mitte der Kante
+
+        // Position sprite
         this.updateLabelPosition(sprite, edge);
-        
-        // Fuege das Sprite zur Szene hinzu
+
+        // Add sprite to group
         this.labelGroup.add(sprite);
-        
-        // Speichere das Label in der Map
+
+        // Store label logic
         this.labels.set(edgeId, {
             sprite: sprite,
             edge: edge,
             text: text
         });
-        
+
         return sprite;
     }
-    
+
     /**
-     * Aktualisiert die Position eines Labels basierend auf der Kantenposition
-     * @param {THREE.Sprite} sprite - Das Label-Sprite
-     * @param {Edge} edge - Die zugehoerige Kante
+     * Update label position based on edge position
      */
-    updateLabelPosition(sprite, edge) {
+    updateLabelPosition(sprite: THREE.Sprite, edge: EdgeWithPosition) {
         if (!sprite || !edge || !edge.line) return;
-        
-        // Berechne die Position in der Mitte der Kante
+
+        // Calculate midpoint
         const startPos = edge.startNode.mesh.position;
         const endPos = edge.endNode.mesh.position;
-        
-        // Mittelpunkt der Kante
+
         const midPoint = new THREE.Vector3(
             (startPos.x + endPos.x) / 2,
             (startPos.y + endPos.y) / 2,
             (startPos.z + endPos.z) / 2
         );
-        
-        // Beruecksichtige den Offset der Kante
-        if (edge.options && edge.options.offset !== 0) {
+
+        // Apply offset if exists
+        if (edge.options && edge.options.offset && edge.options.offset !== 0) {
             const direction = new THREE.Vector3().subVectors(endPos, startPos).normalize();
+            // Calculate perpendicular vector for offset
             const offsetDirection = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
             midPoint.addScaledVector(offsetDirection, edge.options.offset);
-            
-            // Fuege etwas Hoehe hinzu, damit das Label ueber der Kante schwebt
+
+            // Add some height
             midPoint.y += 0.5;
         }
-        
-        // Setze die Position des Sprites
+
         sprite.position.copy(midPoint);
     }
-    
+
     /**
-     * Entfernt ein Label basierend auf der Kanten-ID
-     * @param {number} edgeId - Die ID der Kante
+     * Remove label by edge ID
      */
-    removeLabel(edgeId) {
+    removeLabel(edgeId: number) {
         if (!this.labels.has(edgeId)) return;
-        
-        const label = this.labels.get(edgeId);
+
+        const label = this.labels.get(edgeId)!;
         this.labelGroup.remove(label.sprite);
-        
-        // Bereinige die Ressourcen
+
+        // Cleanup resources
         if (label.sprite.material) {
             if (label.sprite.material.map) {
                 label.sprite.material.map.dispose();
             }
             label.sprite.material.dispose();
         }
-        
+
         this.labels.delete(edgeId);
     }
-    
+
     /**
-     * Entfernt alle Labels
+     * Remove all labels
      */
     removeAllLabels() {
-        this.labels.forEach((label, edgeId) => {
+        // Create a copy of keys to iterate safely while deleting
+        const edgeIds = Array.from(this.labels.keys());
+        edgeIds.forEach(edgeId => {
             this.removeLabel(edgeId);
         });
     }
-    
+
     /**
-     * Aktualisiert die Sichtbarkeit und Position aller Labels
-     * Sollte im Animation-Loop aufgerufen werden
+     * Update visibility and orientation of all labels
      */
     update() {
         if (!this.config.visible) {
             this.labelGroup.visible = false;
             return;
         }
-        
+
         this.labelGroup.visible = true;
-        
-        // Aktualisiere jedes Label
-        this.labels.forEach((label, edgeId) => {
-            // Aktualisiere die Position
+
+        // Update each label
+        this.labels.forEach((label) => {
+            // Update position
             this.updateLabelPosition(label.sprite, label.edge);
-            
-            // Bestimme die Sichtbarkeit basierend auf der Entfernung zur Kamera
+
+            // Check distance visibility
             if (!this.config.alwaysVisible) {
                 const distance = this.camera.position.distanceTo(label.sprite.position);
                 label.sprite.visible = distance < this.config.distanceThreshold;
             } else {
                 label.sprite.visible = true;
             }
-            
-            // Drehe das Sprite zur Kamera
+
+            // Face camera
             label.sprite.quaternion.copy(this.camera.quaternion);
         });
     }
-    
+
     /**
-     * Aktualisiert die Konfiguration des Label-Managers
-     * @param {Object} config - Neue Konfigurationseinstellungen
+     * Update configuration
      */
-    updateConfig(config) {
+    updateConfig(config: Partial<LabelConfig>) {
         this.config = { ...this.config, ...config };
-        
-        // Aktualisiere alle Labels, wenn sich die Konfiguration aendert
+
+        // attributes triggering redraw
         if (config.fontSize || config.color || config.backgroundColor || config.backgroundOpacity) {
             this.refreshAllLabels();
         }
     }
-    
+
     /**
-     * Aktualisiert alle Labels mit den aktuellen Einstellungen
+     * Refresh all labels
      */
     refreshAllLabels() {
-        const labelsToRefresh = [];
-        
-        // Sammle alle Label-Informationen
-        this.labels.forEach((label, edgeId) => {
+        const labelsToRefresh: { edge: EdgeWithPosition, text: string }[] = [];
+
+        this.labels.forEach((label) => {
             labelsToRefresh.push({
                 edge: label.edge,
                 text: label.text
             });
         });
-        
-        // Entferne alle Labels
+
         this.removeAllLabels();
-        
-        // Erstelle die Labels neu
+
         labelsToRefresh.forEach(item => {
             this.createOrUpdateLabel(item.edge, item.text);
         });
     }
-    
+
     /**
-     * Erstellt Labels fuer alle Kanten im Netzwerk
-     * @param {Array} edges - Array von Kanten-Objekten
+     * Create labels for all edges
      */
-    createLabelsForAllEdges(edges) {
-        // Entferne zuerst alle vorhandenen Labels
+    createLabelsForAllEdges(edges: EdgeWithPosition[]) {
         this.removeAllLabels();
-        
-        // Erstelle neue Labels fuer alle Kanten
+
         edges.forEach(edge => {
             if (edge && edge.line) {
-                // Bestimme den anzuzeigenden Text
                 let labelText = edge.name;
-                
-                // Wenn kein Name vorhanden ist, verwende andere Eigenschaften
+
                 if (!labelText && edge.metadata) {
                     if (edge.metadata.type) {
                         labelText = edge.metadata.type;
@@ -247,12 +270,11 @@ export class EdgeLabelManager {
                         labelText = edge.metadata.name;
                     }
                 }
-                
-                // Fallback, wenn kein Text gefunden wurde
+
                 if (!labelText) {
                     labelText = `Edge ${edge.line.id}`;
                 }
-                
+
                 this.createOrUpdateLabel(edge, labelText);
             }
         });

@@ -1,24 +1,32 @@
+
 /**
  * FileHandler - Manages file upload/download operations and GUI integration
  * Provides user-friendly interface for import/export operations
  */
 
-import { ImportManager } from './ImportManager.js';
-import { ExportManager } from './ExportManager.js';
+import { ImportManager, ImportedData } from './ImportManager';
+import { ExportManager } from './ExportManager';
+
+type LoadNetworkCallback = (data: any, filename: string) => Promise<void>;
 
 export class FileHandler {
-    constructor(loadNetworkCallback) {
+    private importManager: ImportManager;
+    private exportManager: ExportManager;
+    private loadNetworkCallback?: LoadNetworkCallback;
+    private fileInput!: HTMLInputElement;
+
+    constructor(loadNetworkCallback?: LoadNetworkCallback) {
         this.importManager = new ImportManager();
         this.exportManager = new ExportManager();
         this.loadNetworkCallback = loadNetworkCallback;
-        
+
         this.setupFileInput();
     }
 
     /**
      * Setup hidden file input for file selection
      */
-    setupFileInput() {
+    setupFileInput(): void {
         // Create hidden file input
         this.fileInput = document.createElement('input');
         this.fileInput.type = 'file';
@@ -31,21 +39,21 @@ export class FileHandler {
     /**
      * Open file dialog for import
      */
-    openImportDialog() {
+    openImportDialog(): void {
         this.fileInput.click();
     }
 
     /**
      * Handle file selection
-     * @param {Event} event - File input change event
      */
-    async handleFileSelect(event) {
-        const file = event.target.files[0];
+    async handleFileSelect(event: Event): Promise<void> {
+        const target = event.target as HTMLInputElement;
+        const file = target.files?.[0];
         if (!file) return;
 
         try {
             await this.importFile(file);
-        } catch (error) {
+        } catch (error: any) {
             this.showError('Import Error', error.message);
         } finally {
             // Reset file input
@@ -55,9 +63,8 @@ export class FileHandler {
 
     /**
      * Import file and load into application
-     * @param {File} file - File to import
      */
-    async importFile(file) {
+    async importFile(file: File): Promise<void> {
         this.showProgress('Importing file...', 0);
 
         try {
@@ -79,10 +86,12 @@ export class FileHandler {
             this.showProgress('Loading network...', 90);
             if (this.loadNetworkCallback) {
                 await this.loadNetworkCallback(convertedData, file.name);
+            } else {
+                console.warn('FileHandler: No loadNetworkCallback provided, data imported but not loaded.');
             }
 
             this.showProgress('Import completed!', 100);
-            this.showSuccess('Import Successful', 
+            this.showSuccess('Import Successful',
                 `Successfully imported ${networkData.nodes.length} nodes and ${networkData.edges.length} edges from ${file.name}`);
 
         } catch (error) {
@@ -95,13 +104,8 @@ export class FileHandler {
 
     /**
      * Export current network data
-     * @param {Array} currentNodes - Current nodes in the scene
-     * @param {Array} currentEdges - Current edges in the scene
-     * @param {string} format - Export format
-     * @param {string} filename - Output filename
-     * @param {Object} options - Export options
      */
-    async exportNetwork(currentNodes, currentEdges, format, filename, options = {}) {
+    async exportNetwork(currentNodes: any[], currentEdges: any[], format: string, filename: string, options: any = {}): Promise<void> {
         try {
             this.showProgress('Preparing export...', 0);
 
@@ -122,7 +126,7 @@ export class FileHandler {
             this.showProgress('Export completed!', 100);
             this.showSuccess('Export Successful', `Network exported as ${filename}`);
 
-        } catch (error) {
+        } catch (error: any) {
             this.hideProgress();
             this.showError('Export Error', error.message);
         }
@@ -132,47 +136,45 @@ export class FileHandler {
 
     /**
      * Convert imported data to application format
-     * @param {Object} networkData - Imported network data
-     * @returns {Object} - Data in application format
      */
-    convertToApplicationFormat(networkData) {
-        // Convert nodes to application format
-        const nodes = networkData.nodes.map(node => {
+    convertToApplicationFormat(networkData: ImportedData): any {
+        // Convert nodes to EntityData
+        const entities = networkData.nodes.map(node => {
             return {
                 id: node.id,
-                name: node.name,
-                x: node.position.x,
-                y: node.position.y,
-                z: node.position.z,
+                type: node.metadata?.type || 'default',
+                label: node.name,
                 position: node.position,
-                metadata: node.metadata || {}
+                ...node.metadata // Spread metadata as properties
             };
         });
 
-        // Convert edges to application format
-        const edges = networkData.edges.map(edge => {
+        // Convert edges to RelationshipData
+        const relationships = networkData.edges.map(edge => {
             return {
-                start: { id: edge.source },
-                end: { id: edge.target },
-                name: edge.name,
-                weight: edge.weight || 1,
-                offset: Math.random() * 2 - 1, // Random offset for visual variety
-                metadata: edge.metadata || {}
+                id: `edge_${edge.source}_${edge.target}`, // Generate ID if missing
+                type: edge.metadata?.type || 'default',
+                source: edge.source,
+                target: edge.target,
+                label: edge.name,
+                ...edge.metadata
             };
         });
 
         return {
+            system: 'Nodges',
             metadata: networkData.metadata,
-            nodes: nodes,
-            edges: edges
+            data: {
+                entities: entities,
+                relationships: relationships
+            }
         };
     }
 
     /**
      * Get current visualization state
-     * @returns {Object} - Visualization state
      */
-    getVisualizationState() {
+    getVisualizationState(): any {
         // This would capture current camera position, settings, etc.
         // For now, return basic state
         return {
@@ -189,10 +191,8 @@ export class FileHandler {
 
     /**
      * Show progress indicator
-     * @param {string} message - Progress message
-     * @param {number} percentage - Progress percentage (0-100)
      */
-    showProgress(message, percentage) {
+    showProgress(message: string, percentage: number): void {
         // Remove existing progress if any
         this.hideProgress();
 
@@ -266,7 +266,7 @@ export class FileHandler {
     /**
      * Hide progress indicator
      */
-    hideProgress() {
+    hideProgress(): void {
         const existing = document.getElementById('import-export-progress');
         if (existing) {
             existing.remove();
@@ -275,30 +275,23 @@ export class FileHandler {
 
     /**
      * Show success message
-     * @param {string} title - Success title
-     * @param {string} message - Success message
      */
-    showSuccess(title, message) {
+    showSuccess(title: string, message: string): void {
         this.showNotification(title, message, 'success');
     }
 
     /**
      * Show error message
-     * @param {string} title - Error title
-     * @param {string} message - Error message
      */
-    showError(title, message) {
+    showError(title: string, message: string): void {
         this.showNotification(title, message, 'error');
         console.error(`${title}: ${message}`);
     }
 
     /**
      * Show notification
-     * @param {string} title - Notification title
-     * @param {string} message - Notification message
-     * @param {string} type - Notification type ('success', 'error', 'info')
      */
-    showNotification(title, message, type = 'info') {
+    showNotification(title: string, message: string, type: string = 'info'): void {
         const notification = document.createElement('div');
         notification.style.cssText = `
             position: fixed;
@@ -333,19 +326,23 @@ export class FileHandler {
         notification.appendChild(titleEl);
         notification.appendChild(messageEl);
 
-        // Add animation styles
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
+        // Add animation styles (injected once per active session ideally, but okay for here)
+        // Check if style exists to avoid dupes?
+        if (!document.getElementById('notification-styles')) {
+            const style = document.createElement('style');
+            style.id = 'notification-styles';
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
 
         document.body.appendChild(notification);
 
@@ -372,30 +369,26 @@ export class FileHandler {
 
     /**
      * Get supported import formats
-     * @returns {Array} - Array of supported formats
      */
-    getSupportedImportFormats() {
+    getSupportedImportFormats(): string[] {
         return this.importManager.supportedFormats;
     }
 
     /**
      * Get supported export formats
-     * @returns {Array} - Array of supported formats
      */
-    getSupportedExportFormats() {
+    getSupportedExportFormats(): string[] {
         return this.exportManager.supportedFormats;
     }
 
     /**
      * Validate file before import
-     * @param {File} file - File to validate
-     * @returns {Object} - Validation result
      */
-    validateFile(file) {
+    validateFile(file: File): { valid: boolean; errors: string[]; warnings: string[] } {
         const maxSize = 50 * 1024 * 1024; // 50MB
-        const extension = file.name.split('.').pop().toLowerCase();
-        
-        const result = {
+        const extension = file.name.split('.').pop()?.toLowerCase() || '';
+
+        const result: { valid: boolean; errors: string[]; warnings: string[] } = {
             valid: true,
             errors: [],
             warnings: []

@@ -1,6 +1,27 @@
 import * as THREE from 'three';
 
+interface GlowOptions {
+    color?: THREE.Color;
+    baseIntensity?: number;
+    maxIntensity?: number;
+    hue?: number;
+    saturation?: number;
+}
+
 export class GlowEffect {
+    private defaultNodeGlow: {
+        color: THREE.Color;
+        baseIntensity: number;
+        maxIntensity: number;
+    };
+
+    private defaultEdgeGlow: {
+        hue: number;
+        saturation: number;
+        baseIntensity: number;
+        maxIntensity: number;
+    };
+
     constructor() {
         this.defaultNodeGlow = {
             color: new THREE.Color(1, 0.5, 0),
@@ -16,7 +37,9 @@ export class GlowEffect {
         };
     }
 
-    applyGlow(object, intensity, options = {}) {
+    applyGlow(object: THREE.Object3D, intensity: number, options: GlowOptions = {}) {
+        if (!object.userData) return;
+
         if (object.userData.type === 'node') {
             this.applyNodeGlow(object, intensity, options);
         } else if (object.userData.type === 'edge') {
@@ -24,19 +47,25 @@ export class GlowEffect {
         }
     }
 
-    applyNodeGlow(node, intensity, options = {}) {
-        if (!node.material) return;
+    applyNodeGlow(node: THREE.Object3D, intensity: number, options: GlowOptions = {}) {
+        if (!(node as any).material) return;
+        const material = (node as any).material as THREE.MeshStandardMaterial; // Assuming compatible material
+
         const glowColor = options.color || this.defaultNodeGlow.color;
         const baseIntensity = options.baseIntensity || this.defaultNodeGlow.baseIntensity;
         const maxIntensity = options.maxIntensity || this.defaultNodeGlow.maxIntensity;
 
-        node.material.emissive.copy(glowColor);
-        node.material.emissiveIntensity = baseIntensity +
-            (maxIntensity - baseIntensity) * intensity;
+        if (material.emissive) {
+            material.emissive.copy(glowColor);
+            material.emissiveIntensity = baseIntensity +
+                (maxIntensity - baseIntensity) * intensity;
+        }
     }
 
-    applyEdgeGlow(edge, intensity, options = {}) {
-        if (!edge.material) return;
+    applyEdgeGlow(edge: THREE.Object3D, intensity: number, options: GlowOptions = {}) {
+        if (!(edge as any).material) return;
+        const material = (edge as any).material as THREE.MeshBasicMaterial;
+
         const hue = options.hue || this.defaultEdgeGlow.hue;
         const saturation = options.saturation || this.defaultEdgeGlow.saturation;
         const baseIntensity = options.baseIntensity || this.defaultEdgeGlow.baseIntensity;
@@ -47,40 +76,46 @@ export class GlowEffect {
             (maxIntensity - baseIntensity) * intensity;
 
         color.setHSL(hue, saturation, lightness);
-        edge.material.color = color;
+        material.color = color;
     }
 
-    removeGlow(object) {
+    removeGlow(object: THREE.Object3D) {
+        if (!object.userData) return;
+
         if (object.userData.type === 'node') {
-            if (object.material) {
-                object.material.emissive.setRGB(0, 0, 0);
-                object.material.emissiveIntensity = 0;
-                // Ursprüngliche Farbe wiederherstellen
-                if (object.parent && object.parent.options) {
-                    object.material.color.setHex(object.parent.options.color);
+            const material = (object as any).material;
+            if (material && material.emissive) {
+                material.emissive.setRGB(0, 0, 0);
+                material.emissiveIntensity = 0;
+                // Restore original color if parent options exist (legacy structure?)
+                if (object.parent && (object.parent as any).options) {
+                    material.color.setHex((object.parent as any).options.color);
                 }
             }
         } else if (object.userData.type === 'edge') {
-            if (object.material) {
-                // Ursprüngliche Kantenfarbe wiederherstellen
-                if (object.material.userData && object.material.userData.originalColor) {
-                    object.material.color.setHex(object.material.userData.originalColor);
+            const material = (object as any).material;
+            if (material) {
+                // Restore original edge color
+                if (material.userData && material.userData.originalColor) {
+                    material.color.setHex(material.userData.originalColor);
                 } else {
-                    // Fallback auf Standard-Kantenfarbe (theme blue)
-                    object.material.color.setHex(0x00aaff);
+                    // Fallback to default theme blue
+                    material.color.setHex(0x00aaff);
                 }
             }
         }
     }
 
-    // Hilfsmethode für pulsierende Glow-Berechnung
-    calculatePulsingIntensity(baseIntensity, time, frequency = 1) {
+    // Helper for pulsing glow calculation
+    calculatePulsingIntensity(baseIntensity: number, time: number, frequency: number = 1): number {
         const phase = (time * Math.PI * 2 * frequency) % (Math.PI * 2);
         return baseIntensity + (1 - baseIntensity) * (Math.sin(phase) * 0.5 + 0.5);
     }
 
-    // Spezielle Effekte
-    applyHighlightGlow(object) {
+    // Special Effects
+    applyHighlightGlow(object: THREE.Object3D) {
+        if (!object.userData) return;
+
         if (object.userData.type === 'node') {
             this.applyNodeGlow(object, 0.5, {
                 color: new THREE.Color(0, 1, 1), // Cyan Highlight-Glow
@@ -89,7 +124,7 @@ export class GlowEffect {
             });
         } else if (object.userData.type === 'edge') {
             this.applyEdgeGlow(object, 0.5, {
-                hue: 0.55, // Light Blue Ton
+                hue: 0.55, // Light Blue Tone
                 saturation: 0.8,
                 baseIntensity: 0.4,
                 maxIntensity: 0.6
@@ -97,16 +132,18 @@ export class GlowEffect {
         }
     }
 
-    applySelectionGlow(object) {
+    applySelectionGlow(object: THREE.Object3D) {
+        if (!object.userData) return;
+
         if (object.userData.type === 'node') {
             this.applyNodeGlow(object, 0.8, {
-                color: new THREE.Color(0, 1, 0), // Grüner Selektions-Glow
+                color: new THREE.Color(0, 1, 0), // Green Selection-Glow
                 baseIntensity: 0.4,
                 maxIntensity: 1.0
             });
         } else if (object.userData.type === 'edge') {
             this.applyEdgeGlow(object, 0.8, {
-                hue: 0.3, // Grünlicher Ton
+                hue: 0.3, // Greenish Tone
                 saturation: 1,
                 baseIntensity: 0.5,
                 maxIntensity: 0.9

@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant User
+    participant CEM as CentralEventManager
+    participant SM as StateManager
+    participant HM as HighlightManager
+    
+    User->>CEM: "Maus ueber Node"
+    CEM->>SM: "setHoveredObject(node)"
+    SM->>HM: "updateHighlights(state)"
+    HM->>HM: "applyNodeHoverHighlight(node)"
+    HM->>HM: "addNodeOutline(node)"

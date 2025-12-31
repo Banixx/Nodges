@@ -1,70 +1,63 @@
 # 05 Visuelle Effekte und Feedback-Systeme
 
-Ein intuitives visuelles Feedback ist entscheidend, um dem Benutzer Orientierung in der komplexen 3D-Welt zu geben. Nodges implementiert hierfür ein mehrschichtiges System aus Highlights und Animationen.
+Ein intuitives visuelles Feedback ist entscheidend, um dem Benutzer Orientierung in der komplexen 3D-Welt zu geben. Nodges implementiert hierfür ein mehrschichtiges System aus Highlights, Animationen und atmosphärischen Effekten.
 
 ## 05.1 Das Highlight-System (`HighlightManager`)
 
-Der `HighlightManager` ist die zentrale Instanz für alle visuellen Hervorhebungen. Er verwaltet, welches Objekt gerade warum hervorgehoben wird und stellt sicher, dass sich Effekte nicht gegenseitig stören.
+Der `HighlightManager` ist die zentrale Instanz für alle visuellen Hervorhebungen. Er stellt sicher, dass sich verschiedene Interaktionszustände (z.B. "Ich fahre über einen Knoten" vs. "Ich habe diesen Knoten markiert") nicht gegenseitig visuell zerstören.
 
 ### Architektur der Highlight-Verwaltung
-Das System basiert auf einer **Highlight-Registry** (`Map<Object3D, HighlightData>`). Jedes aktive Highlight wird dort registriert, zusammen mit Metadaten (Typ, Zeitstempel, Original-Material).
 
-*   **Vermeidung von Konflikten**: Wenn ein Objekt bereits markiert ist (z.B. durch eine Selektion), verhindert die Registry, dass ein niedriger priorisierter Effekt (z.B. ein Hover-Effekt einer anderen Komponente) den Status überschreibt.
-*   **Material-Sicherheit**: Bevor ein Objekt visuell verändert wird, legt der Manager ein Backup des originalen Materials an. Beim Entfernen des Highlights wird dieser Originalzustand exakt wiederhergestellt. Dies verhindert "Geister-Effekte", bei denen Objekte versehentlich die Highlight-Farbe behalten.
-*   **Cleanup**: Eine automatische Bereinigung entfernt Highlights, die nicht mehr gültig sind (z.B. wenn ein Objekt gelöscht wird).
+Siehe Sequenz-Diagramm zum Highlight-Prozess: [mermaid_06.mmd](mermaid_06.mmd)
 
-### Priorisierung
-Effekte haben implizite Prioritäten. Ein `SELECTION`-Effekt ist "stärker" als ein `HOVER`-Effekt. Der Manager sorgt dafür, dass ein selektiertes Objekt seinen Status behält, auch wenn die Maus darüber hin- und herbewegt wird.
+Das System basiert auf einer internen **Highlight-Registry** (`Map<Object3D, HighlightData>`).
+
+*   **Zustandssicherung**: Bevor ein Objekt visuell verändert wird, legt der Manager ein Backup des originalen Materials an. Beim Entfernen des Highlights wird dieser Originalzustand exakt wiederhergestellt. Das verhindert "Geister-Materialien", bei denen Objekte versehentlich in der Highlight-Farbe verweilen.
+*   **Vermeidung von Farbsprüngen**: Übergänge zwischen Zuständen (z.B. Hover-Ende bei gleichzeitigem Search-Highlight) werden logisch aufgelöst. Das System prüft: "Gibt es noch einen anderen Grund, warum dieses Objekt leuchten sollte?"
+
+### Prioritäten-Kaskade
+Da ein Objekt mehrere Gründe haben kann, hervorgehoben zu werden, gibt es eine Priorisierung:
+1.  **SELECTION** (Höchste Prio): Der Benutzer fokussiert dieses Objekt aktiv.
+2.  **SEARCH**: Das Objekt ist Teil eines Suchergebnisses.
+3.  **PATH**: Das Objekt liegt auf einem berechneten Pfad.
+4.  **HOVER** (Niedrigste Prio): Die Maus ist nur kurzzeitig über dem Objekt.
 
 ## 05.2 Highlight-Modi im Detail
 
-Das System unterscheidet fünf spezifische Modi, die unterschiedliche semantische Bedeutungen haben und visuell unterscheidbar sind.
+### 1. HOVER-Modus (Feedback der Erreichbarkeit)
+*   **Zweck**: Signalisiert dem User: "Dieses Objekt ist anfassbar".
+*   **Visuell (Nodes)**: Helligkeitsboost (+30%) und ein cyanfarbener, transparenter Halo-Umriss.
+*   **Visuell (Edges)**: Die Kante wird "dicker" (durch Einblenden einer Tube-Geometrie) und leuchtet bläulich.
 
-### 1. HOVER-Modus (Temporäre Interaktion)
-*   **Zweck**: Signalisiert "Interaktivität". Zeigt an, welches Element bei einem Klick ausgewählt würde.
-*   **Aktivierung**: Automatisch durch Raycasting bei Mausbewegung.
-*   **Visuell (Nodes)**: Helligkeit +20%, Cyan-transparenter Halo-Umriss, Opacity 0.3.
-*   **Visuell (Edges)**: Cyan-blauer Umriss (TubeGeometry mit größerem Radius), Opacity 0.8.
+### 2. SELECTION-Modus (Der Fokus)
+*   **Zweck**: Dauerhafte Markierung für Detailanalyse.
+*   **Visuell**: Ein kräftiger grüner Glow-Effekt (Emissive Color).
+*   **Besonderheit**: Selektierte Objekte "atmen" (Pulsation der Leuchtintensität), um sie vom statischen Rest des Graphen abzuheben.
 
-### 2. SELECTION-Modus (Fokus)
-*   **Zweck**: Dauerhafter Fokus auf ein Element zur Detailansicht. Triggert das Info-Panel.
-*   **Aktivierung**: Linksklick auf ein Objekt.
-*   **Visuell**: Grüner Glow (RGB 0,1,0), erhöhte Intensität (0.4-1.0).
-*   **Besonderheit**: Nutzt eine **animierte Pulsation**, um die Aufmerksamkeit dauerhaft zu binden (siehe 05.3).
+### 3. SEARCH & PATH (Semantische Highlights)
+*   **SEARCH**: Nutzt Kontrastfarben (Gelb/Magenta), um Treffer in der Weite des Raums schnell auffindbar zu machen.
+*   **PATH**: Markiert Ketten von Kanten und Knoten. Hier ist besonders die **Durchsichtigkeit** wichtig: Damit ein Pfad durch den ganzen Graphen verfolgt werden kann, werden nicht-beteiligte Knoten oft leicht ausgegraut (Ghosting-Effekt).
 
-### 3. SEARCH-Modus (Finden)
-*   **Zweck**: Hervorhebung von Ergebnissen einer Suchanfrage (z.B. "Finde Node 'Server-01'").
-*   **Aktivierung**: Programmatisch durch Suchfunktion.
-*   **Visuell**: Hochkontrastierendes Gelb (0xFFFF00) mit Cyan-Glow. Bleibt aktiv, bis die Suche gelöscht wird.
+## 05.3 Der "Breathing" Glow-Effekt
 
-### 4. PATH-Modus (Analyse)
-*   **Zweck**: Visualisierung von Verbindungen, z.B. der kürzeste Weg zwischen zwei Knoten.
-*   **Aktivierung**: Algorithmen (Dijkstra, BFS).
-*   **Visuell**: Cyan (0x00FFFF) für alle Elemente entlang des Pfades. Ermöglicht das Verfolgen von Linien durch das "Dickicht" des Graphen.
+Anstatt statischer Farben nutzt Nodges dynamisches Leuchten. Dies erzeugt einen organischen, hochwertigen Look ("Premium Aesthetics").
 
-### 5. GROUP-Modus (Clustering)
-*   **Zweck**: Kennzeichnung von Communities oder Kategorien.
-*   **Aktivierung**: Cluster-Algorithmen oder manuelle Gruppierung.
-*   **Visuell**: Benutzerdefinierte Farbe (Standard: Magenta), die konsistent auf alle Mitglieder der Gruppe angewendet wird.
+### Die Mathematik dahinter
+Die Pulsation wird über einen **Sinus-Oszillator** gesteuert:
+`Intensity = Base + Amplitude * sin(Time * Frequency)`
 
-## 05.3 Der Glow-Effekt (`GlowEffect`)
+*   **Base**: Die minimale Helligkeit (z.B. 0.2).
+*   **Amplitude**: Wie stark schlägt das Blinken aus?
+*   **Frequency**: Wie schnell atmet das Objekt? (Standard: 0.5 Hz für beruhigende Wirkung).
 
-Nodges nutzt keine teuren Post-Processing Shader (wie Unreal Bloom) für den Standard-Glow, um Performance auf mobilen Geräten zu sparen. Stattdessen wird ein geometrischer und material-basierter Ansatz verfolgt.
+Diese Werte werden in jedem Frame an die `emissiveIntensity` des Materials übergeben.
 
-### Technik: Emissive Materials & Halos
-*   **Emissive Property**: Three.js Materialien besitzen eine `emissive` Eigenschaft (Selbstleuchten). Diese wird genutzt, um die Grundfarbe des Objekts zu überstrahlen.
-*   **Halo-Meshes**: Für den "Schein" um ein Objekt herum (Outline) wird ein separates, transparentes Mesh erzeugt, das etwas größer ist als das Originalobjekt ("Shell"-Technik).
+## 05.4 Halo-Technik (Outline Rendering)
 
-### Animierte Pulsation
-Aktivierte Objekte (besonders im Selection-Modus) "atmen". Diese Animation wird vom `StateManager` gesteuert.
-
-**Funktionsweise:**
-*   Eine `animate()`-Schleife läuft mit 60 FPS.
-*   Ein Oszillator berechnet die Intensität basierend auf einer Sinus-Kurve oder einem Ping-Pong-Algorithmus (0.0 -> 1.0 -> 0.0).
-*   Formel: `newIntensity = currentIntensity + deltaTime * π * 0.2 * frequency * direction`.
-*   Dieser Wert steuert direkt die `emissiveIntensity` des Materials.
-
-Dies erzeugt einen organischen, lebendigen Eindruck, der den Benutzer subtil daran erinnert, welches Objekt gerade aktiv ist.
+Echte Outlines sind in WebGL schwierig (erfordern oft Post-Processing Shader). Nodges nutzt eine performante geometrische Alternative:
+*   Wir erzeugen ein zweites Mesh, das ca. 10% größer ist als das Originalobjekt.
+*   Wir verwenden ein spezielles Material, das nur die **Innenseiten** (`THREE.BackSide`) rendert oder dessen Normalen invertiert sind.
+*   Dadurch entsteht der Eindruck eines Lichtkranzes (Halo) um das Objekt herum, ohne dass teure Bildverarbeitungs-Algorithmen nötig sind.
 
 ---
 *Ende Kapitel 05*

@@ -1,49 +1,53 @@
 # 07 Algorithmen und Layout-Engine
 
-Die Art und Weise, wie Knoten angeordnet sind, bestimmt massgeblich die Lesbarkeit eines Graphen. Nodges bietet eine leistungsfähige Layout-Engine, die verschiedene Algorithmen unterstützt und rechenintensive Aufgaben effizient parallelisiert.
+Ein Haufen Daten ist erst dann ein Graph, wenn er Struktur hat. Die Layout-Engine von Nodges ist dafür verantwortlich, tausenden Knoten eine räumliche Position ($x, y, z$) zuzuweisen, die menschliche Interpretationen erst ermöglicht.
 
-## 07.1 Layout-Manager Architektur
+## 07.1 Die Philosophie des Layouts
 
-Der `LayoutManager` ist für die Berechnung der Positionen ($x, y, z$) aller Knoten verantwortlich. Er folgt dem **Strategy Pattern**: Unterschiedliche Algorithmen (Strategien) können zur Laufzeit ausgetauscht werden, ohne dass der Rest der Anwendung angepasst werden muss.
+Nodges verfolgt zwei Ziele:
+1.  **Ästhetik**: Kantenkreuzungen minimieren, Abstände gleichmäßig halten.
+2.  **Topologische Wahrheit**: Zusammengehörige Dinge (Communities) sollen auch räumlich nah beieinander liegen.
 
-### Synchron vs. Asynchron
-*   **Synchrone Algorithmen**: Einfache geometrische Anordnungen (wie Grid oder Circle) werden direkt im Haupt-Thread berechnet, da sie mathematisch trivial und extrem schnell sind (< 10ms).
-*   **Asynchrone Algorithmen**: Komplexe Simulationen (wie Force-Directed Layouts), die hunderte Iterationen benötigen, laufen asynchron im Hintergrund, um das UI nicht einzufrieren.
+## 07.2 Force-Directed Layouts (FDL)
 
-## 07.2 Web Worker Integration
+Dies sind die wichtigsten Algorithmen in Nodges. Sie simulieren ein physikalisches System.
 
-Physik-Simulationen sind teuer ($O(n^2)$ oder $O(n \log n)$). Wenn sie im Haupt-Thread (Main Thread) laufen würden, würde die Benutzeroberfläche und das Rendering ruckeln oder komplett blockieren.
+### Das Prinzip ("Kräfte-Balance")
+*   **Abstoßung (Coulomb's Law)**: Alle Knoten stoßen sich gegenseitig ab, wie gleichgepolte Magnete. Dies verhindert Überlappungen.
+*   **Anziehung (Hooke's Law)**: Kanten wirken wie Federn. Je weiter zwei verbundene Knoten voneinander entfernt sind, desto stärker ziehen sie sich an.
+*   **Reibung / Dämpfung**: Ein simulierter Widerstand verhindert, dass das System ewig schwingt.
 
-### Multithreading
-Nodges lagert diese Berechnungen in **Web Workers** aus. Ein Web Worker ist ein Skript, das in einem separaten Thread läuft.
-1.  **Bootstrapping**: Beim Start initialisiert der LayoutManager einen Worker.
-2.  **Daten-Transfer**: Die Knoten- und Kanten-Daten werden an den Worker gesendet (mittels `postMessage`).
-3.  **Iteration**: Der Worker berechnet einen Simulations-Schritt (Tick).
-4.  **Synchronisation**: Nach jedem Schritt sendet der Worker die neuen Positionen zurück an den Main Thread.
-5.  **Rendering**: Der `NodeObjectsManager` aktualisiert die 3D-Szene live. Der Benutzer sieht, wie sich der Graph "entfaltet".
+### Mathematische Komplexität: $O(n^2)$
+Das Problem: Jeder Knoten muss eigentlich mit jedem anderen verglichen werden. Bei 10.000 Knoten sind das 100.000.000 Berechnungen *pro Frame*.
+**Optimierung (Barnes-Hut)**: Wir nutzen einen **Octree** (eine 3D-Baumstruktur), um entfernte Knotengruppen als eine einzige "Super-Masse" zusammenzufassen. Das reduziert die Komplexität auf $O(n \log n)$, was die Simulation von tausenden Knoten in Echtzeit erst möglich macht.
 
-## 07.3 Implementierte Algorithmen
+## 07.3 Multithreading mit Web Workers
 
-Nodges stellt eine breite Palette an Algorithmen bereit, um unterschiedliche Datenstrukturen optimal darzustellen.
+Physik-Simulationen sind CPU-intensiv. Würden wir sie im Haupt-Thread berechnen, würde der Browser einfrieren.
+**Die Lösung**: Der `LayoutManager` startet einen separaten **Web Worker**.
+*   Der Worker berechnet die Positionen in einer Endlosschleife im Hintergrund.
+*   Er sendet die Ergebnisse als "Positions-Paket" (Float32Array) zurück.
+*   Der Haupt-Thread nimmt die Daten nur noch entgegen und schiebt sie in die GPU. 
+*   *Effekt*: Die Navigation bleibt flüssig (60 FPS), selbst wenn im Hintergrund Schwerstarbeit geleistet wird.
 
-### Force-Directed Layouts
-Diese Algorithmen simulieren physikalische Kräfte: Knoten stossen sich ab (wie Magnete), Kanten ziehen verbundene Knoten zusammen (wie Federn).
-*   **ForceAtlas2 (ähnlich)**: Eignet sich hervorragend für Cluster-Bildung.
-*   **Fruchterman-Reingold**: Ein Klassiker, der ästhetisch ansprechende, symmetrische Graphen erzeugt.
-*   **Spring-Embedder**: Einfaches Feder-Masse-Modell.
+## 07.4 Geometrische & Strukturelle Layouts
 
-**Vorteil**: Deckt organische Strukturen und Cluster automatisch auf.
+Manchmal ist Physik nicht die beste Wahl. Nodges bietet deterministische Alternativen:
 
-### Strukturelle Layouts
-Diese Algorithmen ordnen Knoten deterministisch nach festen Regeln an.
-*   **Grid (Raster)**: Ordnet Knoten in einem 3D-Würfelraster an. Ideal, um Mengenverhältnisse abzuschätzen.
-*   **Circular (Kreis)**: Alle Knoten auf einem Ring. Gut für kleine Netzwerke.
-*   **Spherical (Kugel)**: Verteilt Knoten auf der Oberfläche einer Kugel (Fibonacci Sphere).
-*   **Helix**: Anordnung in einer Spirale (z.B. für Zeitreihen).
+### 1. Grid-Layout (Raster)
+Ordnet Knoten in einem 3D-Würfelgitter an. Perfekt, um eine unstrukturierte Masse an Objekten erst einmal sortiert zu "parken" oder um Mengenverhältnisse (Volumen) zu visualisieren.
 
-### Hierarchische Layouts (Tree)
-*   Für Daten mit klarer Eltern-Kind-Beziehung (Bäume).
-*   **3D-Tree**: Nutzt die Z-Achse für die Tiefe oder ordnet Ebenen radial an (Cone Tree).
+### 2. Spherical-Layout (Kugeloberfläche)
+Verteilt alle Knoten gleichmäßig auf der Oberfläche einer Kugel (Fibonacci-Sphere). Dies ist ideal für Netzwerke ohne klare Hierarchie, da kein Knoten bevorzugt wird.
+
+### 3. Hierarchische Layouts (3D-Trees)
+Für Daten mit einer klaren Richtung (z.B. IT-Infrastruktur vom Gateway zum Endgerät).
+*   **Z-Achse als Zeit/Ebene**: Die Tiefe wird genutzt, um Hierarchie-Level darzustellen.
+*   **Radial Trees**: Kinderknoten kreisen fächerförmig um ihre Eltern.
+
+## 07.5 Layout-Stabilisierung (Simulated Annealing)
+
+Ein Layout-Vorgang startet "heiß" (Knoten bewegen sich schnell und weit) und "kühlt" dann ab. Das System wird immer ruhiger, bis es in einem stabilen Zustand (Energieminimum) verharrt. Der Benutzer kann dies über das UI beeinflussen, indem er die "Simulations-Temperatur" manuell wieder erhöht.
 
 ---
 *Ende Kapitel 07*

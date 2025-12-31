@@ -3,7 +3,17 @@
  * Shows help overlay with all available shortcuts
  */
 
+interface ShortcutMap {
+    [category: string]: {
+        [key: string]: string;
+    }
+}
+
 export class KeyboardShortcuts {
+    private shortcuts: ShortcutMap;
+    private helpOverlay: HTMLDivElement | null;
+    private isVisible: boolean;
+
     constructor() {
         this.shortcuts = {
             'Selection': {
@@ -26,10 +36,10 @@ export class KeyboardShortcuts {
                 'Strg + O': 'Datei importieren (geplant)'
             }
         };
-        
+
         this.helpOverlay = null;
         this.isVisible = false;
-        
+
         this.setupEventListeners();
     }
 
@@ -37,7 +47,7 @@ export class KeyboardShortcuts {
      * Setup keyboard event listeners
      */
     setupEventListeners() {
-        document.addEventListener('keydown', (e) => {
+        document.addEventListener('keydown', (e: KeyboardEvent) => {
             if (e.key === 'F1') {
                 e.preventDefault();
                 this.toggleHelp();
@@ -137,7 +147,9 @@ export class KeyboardShortcuts {
 
         helpContent.innerHTML = html;
         this.helpOverlay.appendChild(helpContent);
-        document.body.appendChild(this.helpOverlay);
+        if (document.body) {
+            document.body.appendChild(this.helpOverlay);
+        }
 
         // Close on click
         this.helpOverlay.addEventListener('click', () => this.hideHelp());
@@ -158,11 +170,8 @@ export class KeyboardShortcuts {
 
     /**
      * Add custom shortcut
-     * @param {string} category - Shortcut category
-     * @param {string} key - Key combination
-     * @param {string} description - Description
      */
-    addShortcut(category, key, description) {
+    addShortcut(category: string, key: string, description: string) {
         if (!this.shortcuts[category]) {
             this.shortcuts[category] = {};
         }
@@ -171,10 +180,8 @@ export class KeyboardShortcuts {
 
     /**
      * Remove shortcut
-     * @param {string} category - Shortcut category
-     * @param {string} key - Key combination
      */
-    removeShortcut(category, key) {
+    removeShortcut(category: string, key: string) {
         if (this.shortcuts[category] && this.shortcuts[category][key]) {
             delete this.shortcuts[category][key];
         }
@@ -182,9 +189,8 @@ export class KeyboardShortcuts {
 
     /**
      * Get all shortcuts
-     * @returns {Object} - All shortcuts
      */
-    getAllShortcuts() {
+    getAllShortcuts(): ShortcutMap {
         return this.shortcuts;
     }
 }

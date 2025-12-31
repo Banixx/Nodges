@@ -1,0 +1,6 @@
+flowchart LR
+    A["Kanten-Daten"] --> B{"Klassifizierung"}
+    B -->|"Einzelne Verbindung"| C["Gerade Linie"]
+    B -->|"Mehrfach-Verbindung"| D["Gekruemmte Linie"]
+    C --> E["InstancedMesh"]
+    D --> F["TubeGeometry"]

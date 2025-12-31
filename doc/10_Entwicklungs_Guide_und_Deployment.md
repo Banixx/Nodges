@@ -1,64 +1,51 @@
 # 10 Entwicklungs-Guide und Deployment
 
-Dieses Kapitel richtet sich an Entwickler, die Nodges lokal aufsetzen, weiterentwickeln oder deployen möchten.
+Dieses Kapitel ist das Handbuch für alle, die unter die Motorhaube von Nodges schauen, den Code erweitern oder die Anwendung für die Welt bereitstellen möchten.
 
-## 10.1 Setup und Installation
+## 10.1 Lokale Entwicklung: Einsteigen leicht gemacht
 
-### Voraussetzungen
-*   **Node.js**: Version 18 oder höher wird empfohlen.
-*   **npm**: Wird automatisch mit Node.js installiert.
+Nodges ist so konfiguriert, dass der "Time-to-Code" (die Zeit vom Klonen bis zur ersten Änderung) weniger als 2 Minuten beträgt.
 
-### Installation
-1.  **Repository klonen**:
-    ```bash
-    git clone https://github.com/IhrRepo/Nodges.git
-    cd Nodges
-    ```
-2.  **Abhängigkeiten installieren**:
-    ```bash
-    npm install
-    ```
-    Dies installiert alle in `package.json` definierten Pakete (Three.js, Typescript, Vite, Zod, etc.).
+### Setup-Schritte
+1.  **Repository beziehen**: `git clone [...]`
+2.  **Abhängigkeiten laden**: `npm install`. Wir nutzen ein flaches Dependency-Modell, um Versionskonflikte zu vermeiden.
+3.  **Dev-Server starten**: `npm run dev`. Dank **Vite** startet der Server in Millisekunden.
 
-## 10.2 Build-Pipeline mit Vite
+### Der HMR-Vorteil (Hot Module Replacement)
+Wir haben die App so strukturiert, dass bei Code-Änderungen nur die geänderten Module im Browser ausgetauscht werden.
+*   Ändere die Highlight-Farbe im Code -> Die 3D-Szene aktualisiert sich sofort, **ohne** dass die Seite neu lädt.
+*   Die Kamera-Position und das aktuelle Layout bleiben erhalten. Das ermöglicht einen extrem schnellen Iterationszyklus ("Trial and Error").
 
-Nodges nutzt **Vite** als Build-Tool, was signifikante Vorteile gegenüber älteren Tools wie Webpack bietet.
+## 10.2 Debugging-Strategien
 
-### Development Server
-```bash
-npm run dev
-```
-*   Startet einen lokalen Server (meist `http://localhost:5173`).
-*   **HMR (Hot Module Replacement)**: Änderungen am Code werden sofort im Browser reflektiert, ohne die Seite neu laden zu müssen. Der State (z.B. Kameraposition) bleibt dabei oft erhalten.
+3D-Code ist schwer zu debuggen, da "Fehler" oft visuell sind (z.B. ein Objekt ist an der falschen Stelle). Nodges bietet Tools:
+*   **Visual Helpers**: Im `DebugManager` können wir Achsen-Kreuze, Bounding-Boxen der InstancedMeshes und Licht-Positionen einblenden.
+*   **Stats-Overlay**: Ein kleines Panel in der Ecke zeigt Draw-Calls, Dreiecks-Zahlen und GPU-Speicherverbrauch an.
+*   **Log-Levels**: Wir nutzen ein abgestuftes Logging (`INFO`, `WARN`, `ERROR`, `DEBUG_RAY`). Über die URL (`?debug=true`) kann man tiefe Trace-Logs aktivieren.
 
-### Production Build
-```bash
-npm run build
-```
-*   Kompiliert TypeScript zu JavaScript.
-*   Bundled und minifiziert den Code.
-*   Erstellt optimierte Assets im `/dist` Verzeichnis.
-*   Splitted Code in Chunks für schnelleres Laden (Lazy Loading).
+## 10.3 Die Build-Pipeline
 
-### Vorschau des Builds
-```bash
-npm run preview
-```
-Startet einen lokalen Server, der das `/dist` Verzeichnis ausliefert, um den Produktions-Build vor dem Deployment zu testen.
+Wenn die Entwicklung abgeschlossen ist, transformiert Vite den TypeScript-Quellcode in ein hochoptimiertes Produkt.
 
-## 10.3 Code-Style und Best Practices
+`npm run build` führt folgende Schritte aus:
+1.  **TypeScript Check**: Der Compiler prüft alle Typen. Bei Fehlern bricht der Build ab (Sicherheitsnetz).
+2.  **Tree-Shaking**: Code, der nicht benutzt wird (z.B. ungenutzte Three.js Funktionen), wird radikal entfernt. Das reduziert die Dateigröße um bis zu 60%.
+3.  **Minifizierung**: Der Code wird unlesbar gemacht und komprimiert, um Ladezeiten zu minimieren.
+4.  **Content Hashing**: Dateien erhalten Namen wie `main-a6f2b.js`. Dies verhindert Cache-Probleme beim Deployment von Updates.
 
-### TypeScript
-Nodges verwendet striktes TypeScript (`"strict": true` in `tsconfig.json`).
-*   **Kein `any`**: Explizite Typen für alle Variablen und Funktionsparameter.
-*   **Interfaces**: Definition von Datenstrukturen über Interfaces (in `types.ts`).
+## 10.4 Deployment-Optionen
 
-### Modul-Struktur
-*   **ES Modules**: Nutzung von `import` / `export` Syntax.
-*   **Dateinamen**: PascalCase für Klassen (`HighlightManager.js`), camelCase für Instanzen und Funktionen.
+Nodges ist eine "Static Web App". Es gibt kein Backend (außer man will eines anbinden). Dies macht das Hosting extrem einfach und günstig.
 
-### Linter & Formatter
-Es wird empfohlen, **ESLint** und **Prettier** zu verwenden, um einen einheitlichen Code-Stil (Einrückung, Semikolons) sicherzustellen.
+### Empfohlene Plattformen
+*   **Vercel / Netlify**: Ideal durch automatische "Deploy on Push" Integration.
+*   **GitHub Pages**: Perfekt für Dokumentations-Demos oder Open-Source Präsentationen.
+*   **Docker**: Für Firmen-Intranets stellen wir eine minimale `nginx`-basierte Dockerfile bereit, die den Graphen sicher hinter einer Firewall ausliefert.
+
+## 10.5 Versions-Workflow
+
+Wir nutzen das **Semantic Versioning** (Major.Minor.Patch).
+Besonderheit: In unserem Repository gibt es einen Workflow `/versionierungworkflow`, der automatisch die Patch-Version erhöht und die Dokumentation synchronisiert. Dies stellt sicher, dass die "About"-Box in der App immer korrekt ist.
 
 ---
 *Ende Kapitel 10*

@@ -8,11 +8,61 @@
  * - Preset-Verwaltung
  */
 
+import * as THREE from 'three';
+import { LayoutManager } from '../core/LayoutManager';
+
+interface LayoutParameter {
+    type: string;
+    min: number;
+    max: number;
+    default: number;
+    step: number;
+}
+
+interface LayoutParameters {
+    [layoutName: string]: {
+        [paramName: string]: LayoutParameter;
+    };
+}
+
+interface Preset {
+    layout: string;
+    params: {
+        [key: string]: number;
+    };
+}
+
+// Interface to avoid circular dependency with App.ts
+interface IApp {
+    layoutManager: LayoutManager;
+    uiManager: any; // UIManager
+    layoutEnabled: boolean;
+    nodeObjects: any[];
+    edgeObjects: any[];
+    scene: THREE.Scene;
+    highlightManager: any;
+}
+
 export class LayoutGUI {
-    constructor(app, container) {
+    private app: IApp;
+    private layoutManager: LayoutManager;
+    // private container: HTMLElement;
+    private panel: HTMLElement | null;
+    private layoutSelect: HTMLSelectElement | null;
+    private parameterContainer: HTMLElement | null;
+    private animationControls: HTMLElement | null;
+    private toggleButton: HTMLButtonElement | null;
+    private contentContainer: HTMLElement | null;
+    private isCollapsed: boolean;
+    // private layoutToggleSwitch: HTMLElement | null;
+    private layoutEnabled: boolean;
+    private layoutParameters: LayoutParameters;
+    private presets: { [name: string]: Preset };
+    private currentParameters: { [key: string]: number };
+
+    constructor(app: IApp, _container: HTMLElement) {
         this.app = app;
         this.layoutManager = app.layoutManager;
-        this.container = container;
 
         // GUI-Elemente
         this.panel = null;
@@ -22,7 +72,7 @@ export class LayoutGUI {
         this.toggleButton = null;
         this.contentContainer = null;
         this.isCollapsed = true; // Standardmaessig kollabiert
-        this.layoutToggleSwitch = null;
+        // this.layoutToggleSwitch = null;
         this.layoutEnabled = false; // Standardmaessig ausgeschaltet
 
         // Layout-Parameter fuer verschiedene Algorithmen
@@ -109,16 +159,18 @@ export class LayoutGUI {
         this.updateLayoutState();
 
         // Initial collapsed state setzen
-        if (this.isCollapsed) {
-            this.contentContainer.style.maxHeight = '0px';
-            this.contentContainer.style.opacity = '0';
-            this.contentContainer.style.display = 'none';
-            this.toggleButton.innerHTML = '>';
-        } else {
-            this.contentContainer.style.maxHeight = '1000px';
-            this.contentContainer.style.opacity = '1';
-            this.contentContainer.style.display = 'block';
-            this.toggleButton.innerHTML = 'v';
+        if (this.contentContainer && this.toggleButton) {
+            if (this.isCollapsed) {
+                this.contentContainer.style.maxHeight = '0px';
+                this.contentContainer.style.opacity = '0';
+                this.contentContainer.style.display = 'none';
+                this.toggleButton.innerHTML = '>';
+            } else {
+                this.contentContainer.style.maxHeight = '1000px';
+                this.contentContainer.style.opacity = '1';
+                this.contentContainer.style.display = 'block';
+                this.toggleButton.innerHTML = 'v';
+            }
         }
     }
 
@@ -148,7 +200,7 @@ export class LayoutGUI {
         this.panel.appendChild(header);
 
         // Panel Click (Expand when collapsed)
-        this.panel.addEventListener('click', (e) => {
+        this.panel.addEventListener('click', (_e) => {
             if (this.isCollapsed) {
                 this.toggleCollapse();
             }
@@ -177,6 +229,8 @@ export class LayoutGUI {
     }
 
     createLayoutSelector() {
+        if (!this.contentContainer) return;
+
         // Auto-Layout Toggle oben
         const toggleContainer = document.createElement('div');
         toggleContainer.style.cssText = `
@@ -208,6 +262,8 @@ export class LayoutGUI {
             cursor: pointer;
             transition: background-color 0.3s;
         `;
+        // this.layoutToggleSwitch = toggleSwitch; // Used internally or not needed? Remove reference if unused property.
+
 
         const toggleButton = document.createElement('div');
         toggleButton.style.cssText = `
@@ -243,7 +299,7 @@ export class LayoutGUI {
             }
         });
 
-        this.layoutToggleSwitch = toggleSwitch;
+        // this.layoutToggleSwitch = toggleSwitch;
 
         toggleContainer.appendChild(toggleLabel);
         toggleContainer.appendChild(toggleSwitch);
@@ -273,15 +329,16 @@ export class LayoutGUI {
 
         // Layout-Optionen hinzufuegen
         const layouts = this.layoutManager.getAvailableLayouts();
-        layouts.forEach(layout => {
+        layouts.forEach((layout: string) => {
             const option = document.createElement('option');
             option.value = layout;
             option.textContent = this.getLayoutDisplayName(layout);
-            this.layoutSelect.appendChild(option);
+            if (this.layoutSelect) this.layoutSelect.appendChild(option);
         });
 
-        this.layoutSelect.addEventListener('change', (e) => {
-            this.selectLayout(e.target.value);
+        this.layoutSelect.addEventListener('change', (e: Event) => {
+            const target = e.target as HTMLSelectElement;
+            this.selectLayout(target.value);
         });
 
         selectorContainer.appendChild(label);
@@ -290,6 +347,8 @@ export class LayoutGUI {
     }
 
     createParameterControls() {
+        if (!this.contentContainer) return;
+
         this.parameterContainer = document.createElement('div');
         this.parameterContainer.style.marginBottom = '15px';
 
@@ -305,6 +364,8 @@ export class LayoutGUI {
     }
 
     createAnimationControls() {
+        if (!this.contentContainer) return;
+
         this.animationControls = document.createElement('div');
         this.animationControls.style.marginBottom = '15px';
 
@@ -329,10 +390,10 @@ export class LayoutGUI {
 
         const speedSlider = document.createElement('input');
         speedSlider.type = 'range';
-        speedSlider.min = 500;
-        speedSlider.max = 5000;
-        speedSlider.value = 2000;
-        speedSlider.step = 250;
+        speedSlider.min = '500';
+        speedSlider.max = '5000';
+        speedSlider.value = '2000';
+        speedSlider.step = '250';
         speedSlider.style.width = '100%';
 
         const speedValue = document.createElement('span');
@@ -343,8 +404,9 @@ export class LayoutGUI {
             margin-left: 10px;
         `;
 
-        speedSlider.addEventListener('input', (e) => {
-            const value = e.target.value;
+        speedSlider.addEventListener('input', (e: Event) => {
+            const target = e.target as HTMLInputElement;
+            const value = target.value;
             speedValue.textContent = value + 'ms';
             this.layoutManager.setAnimationDuration(parseInt(value));
         });
@@ -363,6 +425,8 @@ export class LayoutGUI {
     }
 
     createPresetControls() {
+        if (!this.contentContainer) return;
+
         const presetContainer = document.createElement('div');
         presetContainer.style.marginBottom = '15px';
 
@@ -397,10 +461,11 @@ export class LayoutGUI {
             presetSelect.appendChild(option);
         });
 
-        presetSelect.addEventListener('change', (e) => {
-            if (e.target.value) {
-                this.applyPreset(e.target.value);
-                e.target.value = ''; // Reset selection
+        presetSelect.addEventListener('change', (e: Event) => {
+            const target = e.target as HTMLSelectElement;
+            if (target.value) {
+                this.applyPreset(target.value);
+                target.value = ''; // Reset selection
             }
         });
 
@@ -410,6 +475,8 @@ export class LayoutGUI {
     }
 
     createActionButtons() {
+        if (!this.contentContainer) return;
+
         const buttonContainer = document.createElement('div');
         buttonContainer.style.cssText = `
             display: flex;
@@ -482,16 +549,20 @@ export class LayoutGUI {
         this.contentContainer.appendChild(buttonContainer);
     }
 
-    selectLayout(layoutName) {
-        this.layoutSelect.value = layoutName;
-        this.updateParameterControls(layoutName);
+    selectLayout(layoutName: string) {
+        if (this.layoutSelect) {
+            this.layoutSelect.value = layoutName;
+            this.updateParameterControls(layoutName);
+        }
     }
 
-    updateParameterControls(layoutName) {
+    updateParameterControls(layoutName: string) {
+        if (!this.parameterContainer) return;
+
         // Parameter-Container leeren
         const title = this.parameterContainer.querySelector('h4');
         this.parameterContainer.innerHTML = '';
-        this.parameterContainer.appendChild(title);
+        if (title) this.parameterContainer.appendChild(title);
 
         const parameters = this.layoutParameters[layoutName] || {};
         this.currentParameters = {};
@@ -513,14 +584,14 @@ export class LayoutGUI {
             if (param.type === 'range') {
                 const slider = document.createElement('input');
                 slider.type = 'range';
-                slider.min = param.min;
-                slider.max = param.max;
-                slider.value = param.default;
-                slider.step = param.step;
+                slider.min = param.min.toString();
+                slider.max = param.max.toString();
+                slider.value = param.default.toString();
+                slider.step = param.step.toString();
                 slider.style.width = '70%';
 
                 const valueDisplay = document.createElement('span');
-                valueDisplay.textContent = param.default;
+                valueDisplay.textContent = param.default.toString();
                 valueDisplay.style.cssText = `
                     margin-left: 10px;
                     font-size: 12px;
@@ -528,9 +599,10 @@ export class LayoutGUI {
                     font-weight: bold;
                 `;
 
-                slider.addEventListener('input', (e) => {
-                    const value = parseFloat(e.target.value);
-                    valueDisplay.textContent = value;
+                slider.addEventListener('input', (e: Event) => {
+                    const target = e.target as HTMLInputElement;
+                    const value = parseFloat(target.value);
+                    valueDisplay.textContent = value.toString();
                     this.currentParameters[paramName] = value;
                 });
 
@@ -547,11 +619,11 @@ export class LayoutGUI {
                 container.appendChild(controlRow);
             }
 
-            this.parameterContainer.appendChild(container);
+            if (this.parameterContainer) this.parameterContainer.appendChild(container);
         });
     }
 
-    applyPreset(presetName) {
+    applyPreset(presetName: string) {
         const preset = this.presets[presetName];
         if (!preset) return;
 
@@ -563,17 +635,33 @@ export class LayoutGUI {
             this.currentParameters[paramName] = preset.params[paramName];
 
             // GUI aktualisieren
-            const slider = this.parameterContainer.querySelector(`input[type="range"]`);
-            if (slider && slider.parentElement.previousElementSibling.textContent.includes(this.getParameterDisplayName(paramName))) {
-                slider.value = preset.params[paramName];
-                slider.nextElementSibling.textContent = preset.params[paramName];
+            if (this.parameterContainer) {
+                // Find all sliders
+                const sliders = this.parameterContainer.querySelectorAll('input[type="range"]');
+                sliders.forEach((slider: Element) => {
+                    const input = slider as HTMLInputElement;
+                    // Check if this slider corresponds to the parameter
+                    // This is a bit fragile based on DOM structure, but follows previous logic
+                    // The label is in the parent's previous sibling
+                    const parent = input.parentElement;
+                    if (parent) {
+                        const label = parent.previousElementSibling;
+                        if (label && label.textContent && label.textContent.includes(this.getParameterDisplayName(paramName))) {
+                            input.value = preset.params[paramName].toString();
+                            if (input.nextElementSibling) {
+                                input.nextElementSibling.textContent = preset.params[paramName].toString();
+                            }
+                        }
+                    }
+                });
             }
         });
 
     }
 
     async applyCurrentLayout() {
-        const layoutName = this.layoutSelect.value;
+        // const layoutName = this.layoutSelect.value;
+        const layoutName = this.layoutSelect ? this.layoutSelect.value : 'force-directed';
 
         // Direkt LayoutManager aufrufen statt Event
         if (this.app && this.app.layoutManager) {
@@ -584,25 +672,18 @@ export class LayoutGUI {
                 x: nodeObj.position.x,
                 y: nodeObj.position.y,
                 z: nodeObj.position.z,
-                id: nodeObj.id || Math.random().toString(36)
+                id: nodeObj.id || Math.random().toString(36),
+                type: 'default' // Add default type to satisfy EntityData interface
             }));
 
             const edges = edgeObjects.map(edgeObj => ({
-                start: {
-                    x: edgeObj.startNode.position.x,
-                    y: edgeObj.startNode.position.y,
-                    z: edgeObj.startNode.position.z,
-                    id: edgeObj.startNode.id || Math.random().toString(36)
-                },
-                end: {
-                    x: edgeObj.endNode.position.x,
-                    y: edgeObj.endNode.position.y,
-                    z: edgeObj.endNode.position.z,
-                    id: edgeObj.endNode.id || Math.random().toString(36)
-                }
+                source: edgeObj.startNode.id || 'unknown_source',
+                target: edgeObj.endNode.id || 'unknown_target',
+                type: 'default',
+                id: edgeObj.id || `edge_${Math.random()}`
             }));
 
-            const success = this.app.layoutManager.applyLayout(
+            const success = await this.app.layoutManager.applyLayout(
                 layoutName,
                 nodes,
                 edges,
@@ -618,7 +699,7 @@ export class LayoutGUI {
         }
     }
 
-    updateNodePositions(nodeObjects, nodes) {
+    updateNodePositions(nodeObjects: any[], nodes: any[]) {
         nodeObjects.forEach((nodeObj, index) => {
             if (nodes[index] && nodeObj.mesh) {
                 const newX = nodes[index].x || 0;
@@ -635,8 +716,8 @@ export class LayoutGUI {
         });
     }
 
-    updateEdgePositions(edgeObjects) {
-        edgeObjects.forEach((edgeObj, index) => {
+    updateEdgePositions(edgeObjects: any[]) {
+        edgeObjects.forEach((edgeObj) => {
             if (edgeObj.line && edgeObj.startNode && edgeObj.endNode) {
                 // Edge komplett neu erstellen statt Geometrie zu modifizieren
                 const scene = this.app.scene;
@@ -647,11 +728,17 @@ export class LayoutGUI {
                 // Entferne alte Edge aus HighlightManager falls selektiert
                 if (this.app && this.app.highlightManager) {
                     this.app.highlightManager.removeHighlight(edgeObj.line);
-                    this.app.highlightManager.highlightedObjects.delete(edgeObj.line);
+                    if (this.app.highlightManager.highlightedObjects) {
+                        this.app.highlightManager.highlightedObjects.delete(edgeObj.line);
+                    }
                 }
 
                 edgeObj.line.geometry?.dispose();
-                edgeObj.line.material?.dispose();
+                if (Array.isArray(edgeObj.line.material)) {
+                    edgeObj.line.material.forEach((m: THREE.Material) => m.dispose());
+                } else if (edgeObj.line.material) {
+                    edgeObj.line.material.dispose();
+                }
 
                 // Neue Edge erstellen
                 edgeObj.line = edgeObj.createLine();
@@ -664,8 +751,8 @@ export class LayoutGUI {
         });
     }
 
-    getLayoutDisplayName(layoutName) {
-        const displayNames = {
+    getLayoutDisplayName(layoutName: string): string {
+        const displayNames: { [key: string]: string } = {
             'force-directed': 'Force-Directed',
             'fruchterman-reingold': 'Fruchterman-Reingold',
             'spring-embedder': 'Spring-Embedder',
@@ -679,8 +766,8 @@ export class LayoutGUI {
         return displayNames[layoutName] || layoutName;
     }
 
-    getParameterDisplayName(paramName) {
-        const displayNames = {
+    getParameterDisplayName(paramName: string): string {
+        const displayNames: { [key: string]: string } = {
             maxIterations: 'Max. Iterationen',
             repulsionStrength: 'Abstossungskraft',
             attractionStrength: 'Anziehungskraft',
@@ -704,30 +791,42 @@ export class LayoutGUI {
 
     // Panel ein-/ausblenden
     toggle() {
+        if (!this.panel) return;
         this.panel.style.display = this.panel.style.display === 'none' ? 'block' : 'none';
     }
 
     // Panel anzeigen
     show() {
+        if (!this.panel) return;
         this.panel.style.display = 'block';
         // Beim ersten Anzeigen ausgeklappt starten fuer bessere UX
         if (this.isCollapsed === undefined) {
             this.isCollapsed = false;
-            this.contentContainer.style.maxHeight = '1000px';
-            this.contentContainer.style.opacity = '1';
-            this.toggleButton.innerHTML = '▼';
+
+            if (this.contentContainer && this.toggleButton) {
+                this.contentContainer.style.maxHeight = '1000px';
+                this.contentContainer.style.opacity = '1';
+                this.toggleButton.innerHTML = '▼';
+            }
         }
         this.updatePosition();
     }
 
+    updatePosition() {
+        // Placeholder if used elsewhere
+    }
+
     // Panel verstecken
     hide() {
+        if (!this.panel) return;
         this.panel.style.display = 'none';
     }
 
     // Content ein-/ausklappen (wie bei Info Panel)
     toggleCollapse() {
         this.isCollapsed = !this.isCollapsed;
+
+        if (!this.panel || !this.contentContainer || !this.toggleButton) return;
 
         if (this.isCollapsed) {
             // Einklappen
@@ -754,8 +853,11 @@ export class LayoutGUI {
 
     // Layout-Status aktualisieren
     updateLayoutState() {
-        const applyButton = this.contentContainer.querySelector('button');
-        const stopButton = this.contentContainer.querySelectorAll('button')[1];
+        if (!this.contentContainer) return;
+
+        const applyButton = this.contentContainer.querySelector('button') as HTMLElement;
+        const buttons = this.contentContainer.querySelectorAll('button');
+        const stopButton = buttons.length > 1 ? buttons[1] as HTMLElement : null;
 
         if (this.layoutEnabled) {
             // Layout aktiviert - Buttons aktivieren
@@ -783,9 +885,6 @@ export class LayoutGUI {
             }
         }
     }
-
-    // Positionierung unter fileInfoPanel
-    // Positionierung entfernt - wird nun vom UIManager uebernommen
 
     // Cleanup
     destroy() {

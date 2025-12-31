@@ -1,111 +1,110 @@
 # 03 Datenmanagement und Validierung
 
-Ein robustes Datenmanagement ist essentiell für Nodges, da die Anwendung unterschiedlichste Graph-Strukturen verarbeiten muss. Dieses Kapitel erläutert die Strategie zur Datenhaltung, Validierung und Transformation.
+Ein robustes, typ-sicheres Datenmanagement ist das Rückgrat von Nodges. Da die Anwendung Graphen aus völlig unterschiedlichen Quellen (APIs, Dateien, User-Input) verarbeiten muss, ist eine strikte Validierungsstrategie unerlässlich, um die Stabilität der 3D-Engine zu gewährleisten.
 
-## 03.1 Das Datenmodell: Legacy vs. Future
+## 03.1 Das Datenmodell: Strategie "Evolution"
 
-Nodges unterstützt historisch bedingt zwei verschiedene JSON-Datenformate. Die Architektur ist so ausgelegt, dass sie beide Formate nahtlos verarbeiten kann, wobei intern alles auf das moderne Format normalisiert wird.
+Das Projekt befindet sich in einer geordneten Migration von einem simplen "Legacy-Format" hin zu einem semantisch reichen "Future-Format". Die Architektur ist **dual-fähig**: Sie kann beide Formate lesen, normalisiert intern aber alles auf gemeinsame Strukturen.
 
-### Das Legacy-Format
-Dies ist das ursprüngliche Format, das auf Einfachheit ausgelegt war. Es eignet sich hervorragend für schnelle Prototypen oder einfache Graphen.
-
-**Struktur:**
-*   **nodes**: Ein flaches Array von Objekten mit `id`, `x`, `y`, `z` Koordinaten und optionalen Attributen.
-*   **edges**: Ein flaches Array von Verbindungen, definiert durch `start` und `end` (die auf Node-IDs verweisen).
+### Das Legacy-Format (Der "Quick Start")
+Dieses Format ist auf absolute Minimalistik ausgelegt. Es eignet sich für schnelle Prototypen oder manuelle JSON-Erstellung.
+*   **Fokus**: Rein visuell / geometrisch.
+*   **Struktur**: Flache Listen.
 
 ```json
 {
   "nodes": [
-    { "id": 1, "x": 0, "y": 0, "z": 0, "label": "Start" },
-    { "id": 2, "x": 10, "y": 5, "z": -2, "label": "End" }
+    { "id": "router_01", "x": 10, "y": 0, "z": 5, "label": "Router" },
+    { "id": "pc_02", "x": -5, "y": 2, "z": 0, "color": "#ff0000" }
   ],
   "edges": [
-    { "start": 1, "end": 2, "type": "connects_to" }
+    { "start": "router_01", "end": "pc_02", "type": "lan_cable" }
   ]
 }
 ```
+*Nachteil*: Metadaten (z.B. "Was bedeutet die Farbe Rot?") fehlen. Die Semantik ist implizit.
 
-### Das Future-Format
-Das neue Format ist semantisch reicher und flexibler. Es trennt Strukturdaten von Metadaten und visuellen Definitionen. Es orientiert sich an modernen Graph-Datenbank-Exporten und Standards wie GEXF oder GraphML.
+### Das Future-Format (Der "Semantic Graph")
+Das neue Format trennt **Strukturdaten** (Topologie), **Metadaten** (Semantik) und **Visuelle Mappings** (Style). Es orientiert sich an modernen Standards wie GEXF oder GraphML.
 
-**Struktur:**
-1.  **data**: Enthält `entities` (Knoten) und `relationships` (Kanten).
-2.  **metadata**: Autor, Version, Beschreibung, Erstellungsdatum.
-3.  **dataModel**: Beschreibt das Schema der Eigenschaften (z.B. "weight ist eine Zahl zwischen 0 und 1").
-4.  **visualMappings**: Definiert Regeln, wie Daten auf visuelle Eigenschaften abgebildet werden (z.B. "Map 'weight' auf 'edge-thickness'").
+**Komponenten:**
+1.  **System/Metadata**: Wer hat den Graphen erstellt? Welche Version?
+2.  **Data**: Die reinen Entitäten (`entities`) und Beziehungen (`relationships`). Hier stehen *keine* Farben oder Größen, sondern Daten (z.B. `traffic: 500mbps`, `role: 'Server'`).
+3.  **VisualMappings**: Ein Regelwerk, das Daten in Grafik übersetzt.
 
 ```json
 {
-  "system": "Network V2",
-  "metadata": { "version": "2.0", "author": "User" },
+  "system": "NetworkAnalytics V2",
   "data": {
     "entities": [
-      { "id": "n1", "type": "server", "position": { "x": 0, "y": 0, "z": 0 } }
+      { "id": "n1", "type": "server", "attributes": { "cpu_load": 0.85, "region": "eu-central" } }
     ],
     "relationships": [
-      { "source": "n1", "target": "n2", "type": "http_request" }
+      { "source": "n1", "target": "n2", "type": "connection", "attributes": { "latency": 20 } }
     ]
+  },
+  "visualMappings": {
+    "nodes": {
+      "color": { "field": "cpu_load", "mapping": "heatmap", "range": [0, 1], "colors": ["green", "red"] },
+      "size": { "field": "attributes.region", "mapping": "categorical", "values": { "eu-central": 2.0, "us-east": 1.0 } }
+    }
   }
 }
 ```
+*Vorteil*: Totale Flexibilität. Man kann denselben Datensatz visualisieren, um CPU-Last zu zeigen (Rot=Hoch), oder um Regionen zu zeigen (Blau=EU), indem man nur das Mapping ändert, nicht die Daten.
 
-## 03.2 Schema-Validierung mit Zod
+## 03.2 Schema-Validierung mit Zod (The Gatekeeper)
 
-Um die Integrität der importierten Daten zu gewährleisten, setzt Nodges auf **Zod**. Zod ist eine TypeScript-First Schema-Deklarations- und Validierungsbibliothek.
+Nodges vertraut keinen externen Daten. Um Laufzeitfehler der Rendering-Engine (z.B. Absturz durch Zugriff auf `undefined` bei Koordinaten) zu verhindern, wird **Zod** eingesetzt. Zod ist eine Schema-Validierungs-Bibliothek für TypeScript.
 
 ### Warum Zod?
-In JavaScript/TypeScript sind Daten, die von "außen" kommen (wie ein JSON-Import aus einer Datei), zur Laufzeit typ-unsicher (`any`). Ein einfacher Cast (`as GraphData`) täuscht Sicherheit vor, die nicht existiert. Zod löst dieses Problem durch strikte Laufzeit-Überprüfungen.
+In reinem TypeScript sind Typen (`interface Node`) zur Laufzeit weg. Ein `JSON.parse()` liefert `any`. Wenn das JSON fehlerhaft ist, merkt man es erst, wenn die App crasht.
+Zod prüft die Daten *zur Laufzeit* Byte für Byte gegen den Plan.
 
-### Schema-Definitionen (`types.ts`)
-In `types.ts` werden Zod-Schemas definiert, die exakt beschreiben, wie valide Daten auszusehen haben.
+### Schema-Definition & Type Interference
+Ein mächtiges Feature von Zod ist, dass wir den TypeScript-Typ aus dem Schema ableiten können. Das verhindert, dass Validierungscode und Type-Interfaces asynchron werden.
 
-Beispiel (vereinfacht):
+*(Ausschnitt aus `types.ts`)*
 ```typescript
-const NodeSchema = z.object({
-  id: z.union([z.string(), z.number()]),
-  x: z.number(),
-  y: z.number(),
-  z: z.number(),
-  // Optionale Felder
-  label: z.string().optional()
-});
+import { z } from 'zod';
 
-const GraphSchema = z.object({
-  nodes: z.array(NodeSchema),
-  edges: z.array(EdgeSchema)
-});
-```
+// 1. Definition des Schemas
+export const NodeSchema = z.object({
+  id: z.coerce.string(), // Erzwingt String (konvertiert Numbers)
+  x: z.number().default(0), // Fills in default Werte
+  y: z.number().default(0),
+  z: z.number().default(0),
+  label: z.string().optional(),
+  // .passthrough() erlaubt unbekannte Zusatz-Properties für Flexibilität
+}).passthrough();
 
-### Automatische Typ-Generierung
-Ein großer Vorteil von Zod ist, dass TypeScript-Interfaces direkt aus den Schemas abgeleitet werden können:
-```typescript
+// 2. Ableitung des Typs
 export type NodeData = z.infer<typeof NodeSchema>;
 ```
-Dies garantiert, dass die Validierungslogik und die verwendeten TypeScript-Typen niemals auseinanderlaufen (**Single Source of Truth**).
 
-### Error-Handling
-Wenn eine importierte Datei nicht dem Schema entspricht (z.B. fehlende Koordinaten, falsche Datentypen), wirft Zod detaillierte Fehler. Nodges fängt diese ab und zeigt dem Benutzer präzise Fehlermeldungen an (z.B. *"Fehler in Datei: In 'nodes[5]' fehlt das Feld 'z'"*), anstatt dass die Anwendung abstürzt oder undefiniertes Verhalten zeigt.
+### Error-Handling & User Feedback
+Wenn Zod einen Fehler findet, ist dieser extrem präzise. Nodges fängt diese `ZodError` Objekte ab und generiert lesbare Fehlermeldungen für den Benutzer, statt kryptischer Stacktraces.
+*   *Schlecht*: `Cannot read x of undefined`
+*   *Nodges*: `Validation Error in 'nodes[42]': Required field 'x' is missing.`
 
-## 03.3 Der `DataParser`
+## 03.3 Der `DataParser` & Normalisierung
 
-Der `DataParser` (`src/core/DataParser.ts`) ist die zentrale Komponente, die Rohdaten in das interne Format der Applikation überführt.
+Der `DataParser.ts` ist die zentrale "Waschmaschine" für Daten.
 
-### Format-Erkennung
-Beim Laden einer Datei analysiert der Parser zunächst die Struktur, um das Format zu bestimmen:
-*   Hat das Objekt `img` und `nodes` Properties? -> Legacy Format.
-*   Hat es `data.entities` Properties? -> Future Format.
+### Pipeline-Schritte
 
-### Normalisierungs-Pipeline
-Unabhängig vom Eingabeformat ist das Ziel der `App`, immer mit einheitlichen Datenstrukturen zu arbeiten.
+Siehe Diagramm zur Format-Erkennung: [mermaid_04.mmd](mermaid_04.mmd)
 
-1.  **Legacy-Input**: Wird in temporäre Future-Strukturen konvertiert.
-    *   `nodes` -> `entities` (Typ wird auf 'default' gesetzt).
-    *   `edges` -> `relationships`.
-2.  **Future-Input**: Wird validiert und ggf. mit Default-Werten angereichert.
-3.  **ID-Management**: Da IDs Strings oder Numbers sein können, werden sie intern konsistent zu Strings normalisiert, um Lookup-Maps (`Map<string, Node>`) effizient nutzen zu können.
+1.  **Format-Erkennung**: Der Parser scannt die Struktur ("Heuristik") und entscheidet: Legacy oder Future?
+2.  **Validierung**: Das entsprechende Zod-Schema wird angewendet. Ungültige Dateien werden abgelehnt.
+3.  **Normalisierung**: Egal was reinkommt, es wird in eine interne Intermediär-Struktur konvertiert.
+    *   IDs werden zu Strings normalisiert.
+    *   Fehlende Koordinaten werden (optional) randomisiert oder auf (0,0,0) gesetzt.
+    *   Dangling Edges (Kanten zu nicht existierenden Knoten) werden bereinigt oder gemeldet.
+4.  **Indexing**: Um den Zugriff in O(1) zu ermöglichen, werden Arrays in Maps (`Map<string, Node>`) umgewandelt.
 
-### Konvertierung für visuelle Komponenten
-Nach der Daten-Normalisierung bereitet der Parser die Daten für die `ObjectManager` auf. Er extrahiert Positionsdaten und Attribute, die für das Rendering relevant sind, und stellt sicher, dass keine "Dangling Edges" existieren (Kanten, die auf nicht existierende Knoten verweisen).
+### Spezialfall: Visuelle Vorberechnung
+Im Schritt der Normalisierung bereitet der Parser oft schon Daten für die GPU vor. Beispielsweise werden Hex-Farbcodes (`#ff0000`) bereits in Three.js `Color`-Objekte oder normalisierte Float-Arrays (`[1.0, 0.0, 0.0]`) umgerechnet, um dies nicht in jedem Render-Frame tun zu müssen.
 
 ---
 *Ende Kapitel 03*

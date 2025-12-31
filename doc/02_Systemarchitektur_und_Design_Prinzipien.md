@@ -1,95 +1,105 @@
 # 02 Systemarchitektur und Design-Prinzipien
 
-Dieses Kapitel widmet sich dem technischen Fundament von Nodges. Die Architektur folgt strikten Prinzipien der Modularisierung und Entkopplung, um Wartbarkeit und Erweiterbarkeit zu gewährleisten.
+Dieses Kapitel widmet sich dem technischen Fundament von Nodges. Die Architektur folgt strikten Prinzipien der **Modularisierung** (`Separation of Concerns`) und **Entkopplung**, um Wartbarkeit, Testbarkeit und Erweiterbarkeit über Jahre hinweg zu gewährleisten.
 
-## 02.1 Architektur-Überblick
+## 02.1 Architektur-Überblick: Das "Manager-Orchestrator-Pattern"
 
-Nodges implementiert eine Architektur, die stark auf dem **Manager-Pattern** basiert. Anstatt einer monolithischen Applikationslogik werden Verantwortlichkeiten in spezialisierte Manager-Klassen ausgelagert. Die Klasse `App` fungiert hierbei als Orchestrator und Einstiegspunkt, enthält aber selbst nur minimale Geschäftslogik.
+Nodges vermeidet monolithischen Code ("God Classes"). Stattdessen implementiert es eine Architektur, die wir als **Manager-Orchestrator-Pattern** bezeichnen.
+
+### Die Rolle der `App`-Klasse
+Die Klasse `App.ts` ist der **Orchestrator**. Sie enthält kaum eigene Geschäftslogik. Ihre Aufgaben sind:
+1.  **Bootstrapping**: Initialisierung der 3D-Szene (Three.js) und des DOM.
+2.  **Dependency Injection**: Instanziierung aller Manager und Injektion der Abhängigkeiten (z.B. bekommt der `RaycastManager` Zugriff auf die `Camera`).
+3.  **Loop-Management**: Steuerung des zentralen Render-Loops (`requestAnimationFrame`).
 
 ### Das Manager-Ecosystem
-Jeder Aspekt der Anwendung wird von einem dedizierten Manager verwaltet:
-*   `NodeObjectsManager` / `EdgeObjectsManager`: Verwalten die 3D-Repräsentation.
-*   `LayoutManager`: Berechnet Positionen.
-*   `HighlightManager`: Steuert visuelle Effekte.
-*   `UIManager`: Verwaltet das HTML-Overlay.
+Jeder funktionale Aspekt der Anwendung wird in eine spezialisierte Manager-Klasse gekapselt. Ein Manager kümmert sich um *genau eine* Domäne:
 
-### Dependency Injection & Kopplung
-Die `App`-Klasse initialisiert alle Manager und injiziert notwendige Abhängigkeiten (wie `scene`, `camera` oder andere Manager) in deren Konstruktoren. Dies ermöglicht eine klare Hierarchie.
-Um eine zu enge Kopplung ("Spaghetti-Code") zu vermeiden, kommunizieren Manager untereinander primär über zwei Mechanismen:
+| Manager | Verantwortlichkeit |
+| :--- | :--- |
+| `NodeManager` | Erstellung, Update und Rendering der Knoten (Spheres, InstancedMeshes). |
+| `EdgeObjectsManager` | Verwaltung der Kanten (Lines, Tubes), Handling von Kurvengeometrien. |
+| `LayoutManager` | Berechnung von Positionen ($x, y, z$), Steuerung von Physik-Simulationen. |
+| `HighlightManager` | Visuelle Effekte (Selektion, Hover, Glow), Verwaltung von Materialzuständen. |
+| `UIManager` | Steuerung des HTML-Overlays (Panels, Ladebalken), Brücke zum DOM. |
+| `RaycastManager` | Mathematische Berechnung von Schnittpunkten Maus ↔ 3D-Welt. |
+| `InteractionManager` | Interpretation von User-Inputs (Klick, Drag) in Aktionen. |
+
+Siehe Architektur-Diagramm: [mermaid_03.mmd](mermaid_03.mmd)
+
+### Vermeidung von "Spaghetti-Code"
+Um eine zu enge Kopplung zu vermeiden, dürfen Manager (mit wenigen Ausnahmen) nicht direkt aufeinander zugreifen. Wenn der `LayoutManager` fertig ist, ruft er nicht direkt `NodeManager.update()` auf. Stattdessen nutzen sie zwei Kommunikationswege:
 1.  **Shared State** (via `StateManager`)
 2.  **Events** (via `CentralEventManager`)
 
 ## 02.2 Zentrales Zustandsmanagement (`StateManager`)
 
-Der `StateManager` ist das Herzstück der Reaktivität in Nodges. Er folgt dem **Single Source of Truth** Prinzip.
+Der `StateManager` ist das Herzstück der Reaktivität in Nodges ("Single Source of Truth").
 
 ### Reaktives State-Design
-Der gesamte Anwendungszustand (Selektion, Hover, UI-Sichtbarkeit, Einstellungen) wird in einem zentralen `State`-Objekt gehalten. Manager halten keinen redundanten Zustand, sondern lesen diesen aus dem `StateManager` oder abonnieren Änderungen.
+Ähnlich wie Redux oder Vuex hält der `StateManager` den kompletten relevanten Anwendungszustand in einem zentralen Objekt. Dazu gehören:
+*   `selectedObject`: Welcher Knoten ist gerade aktiv?
+*   `hoveredObject`: Wo ist die Maus?
+*   `graphData`: Die aktuellen Rohdaten.
+*   `config`: Visuelle Einstellungen (Farben, Größen).
 
-### Observer-Pattern (Subscribe/Notify)
-Der `StateManager` implementiert ein klassisches Observer-Pattern:
+### Observer-Pattern
+Der Manager implementiert ein **Publish/Subscribe** System. Komponenten können sich auf spezifische State-Änderungen abonnieren.
+
 ```typescript
-// Beispiel: Ein Manager abonniert Änderungen
-stateManager.subscribe((state) => {
-    if (state.selectedObject) {
-       // Reagiere auf Selektion
+// Beispiel: Der UIManager lauscht auf Selektions-Änderungen
+stateManager.subscribe('selection', (newState) => {
+    if (newState.selectedObject) {
+       uiManager.openPanel(newState.selectedObject);
+    } else {
+       uiManager.closePanel();
     }
-}, 'categoryName');
+});
 ```
-Änderungen am State werden über `update()` oder `batchUpdate()` ausgelöst, was automatisch alle Subscriber benachrichtigt. Dies entkoppelt den Auslöser einer Änderung (z.B. User klickt) von der Reaktion (z.B. Info-Panel öffnet sich).
 
-### Batch-Updates
-Um unnötige Render-Zyklen oder Rechenoperationen zu vermeiden, unterstützt der `StateManager` atomare Batch-Updates. Mehrere Änderungen (z.B. "Selektiere Objekt X" UND "Öffne Info-Panel" UND "Aktiviere Glow") werden gesammelt und lösen nur *eine* Benachrichtigung an die Subscriber aus.
+### Batch-Updates & Performance
+Jede State-Änderung könnte potenziell teure Render-Updates auslösen. Der `StateManager` unterstützt daher **Batch-Updates**. Mehrere logische Änderungen (z.B. "Selektiere Node A" UND "Setze Kamera-Fokus auf A" UND "Ändere UI-Text") werden gesammelt und lösen nur *ein* Benachrichtigungs-Event ("Tick") aus. Dies verhindert unnötige Zyklen ("Data Thrashing").
 
 ## 02.3 Event-Driven Architecture (`CentralEventManager`)
 
-Der `CentralEventManager` (CEM) abstrahiert die rohen Browser-Events und bietet eine einheitliche Schnittstelle für Interaktionen.
+Der `CentralEventManager` (CEM) ist die Abstraktionsschicht zwischen dem Browser (DOM) und der Applikationslogik.
 
-### Entkopplung von Input und Logik
-Anstatt dass jeder Manager eigene `addEventListener` am DOM registriert, laufen alle Inputs (Maus, Tastatur, Touch) über den CEM. Dieser normalisiert die Events und reichert sie mit Kontext an (z.B. "Welches 3D-Objekt wurde getroffen?").
+### Abstraktion von Raw Inputs
+Der CEM fängt rohe Browser-Events (`mousemove`, `pointerdown`, `keydown`) ab. Er normalisiert diese – z.B. rechnet er Pixel-Koordinaten in relative Screen-Koordinaten um – und reichert sie mit Kontext an. Er fungiert als "Pförtner": Kein anderer Manager sollte direkt `document.addEventListener` aufrufen.
 
-### Event-Bus System
-Der CEM fungiert auch als globaler Event-Bus. Komponenten können Custom Events publishen (`publish('PROJECT_LOADED', data)`) und subscriben. Dies ist besonders nützlich für lose gekoppelte Systemteile, die nicht direkten Zugriff aufeinander haben sollen.
+### Der globale Event-Bus
+Über Input-Events hinaus dient der CEM als systemweiter Event-Bus für entkoppelte Kommunikation ("Fire and Forget").
+*   Module A feuert: `CEM.emit('DATA_LOADED', { nodes: 500 })`
+*   Module B (z.B. ein Logging-Service) hört zu: `CEM.on('DATA_LOADED', ...)`
 
-### Interaktions-Pipeline
-1.  **Raw Input**: Browser feuert `mousemove` oder `click`.
-2.  **Normalization**: CEM berechnet relative Koordinaten.
-3.  **Contextualization**: Raycaster ermittelt getroffenens 3D-Objekt.
-4.  **Distribution**: CEM benachrichtigt StateManager oder feuert spezifische Events.
-5.  **Debouncing**: Hover-Events werden gedrosselt (z.B. 100ms), um Performance-Spikes bei schnellen Mausbewegungen zu verhindern.
+So kann man neue Funktionen hinzufügen (z.B. Analytics), ohne den bestehenden Code (den Loading-Prozess) ändern zu müssen.
 
 ## 02.4 Datenfluss-Diagramme
 
-Der Datenfluss in Nodges ist unidirektional konzipiert, um Seiteneffekte zu minimieren.
+Der Datenfluss in Nodges ist streng **unidirektional** konzipiert, um Seiteneffekte zu minimieren und den Status deterministisch zu halten.
 
-### Flow: Daten-Import bis Rendering
-```mermaid
-graph LR
-    JSON[JSON Data] -->|Load| DP[DataParser]
-    DP -->|Validate & Normalize| GD[GraphData]
-    GD -->|Inject| NOM[NodeObjectsManager] & EOM[EdgeObjectsManager]
-    NOM -->|Generate Geometry| IM_N[InstancedMesh (Nodes)]
-    EOM -->|Generate Geometry| IM_E[InstancedMesh (Edges)]
-    IM_N & IM_E -->|Add to| Scene[THREE.Scene]
-    Scene -->|Render| Canvas
-```
+### Flow 1: Daten-Import bis Rendering
+Dieser Prozess beschreibt, wie aus einer JSON-Datei ein 3D-Bild wird.
 
-### Flow: User-Interaktion (Selektion)
-```mermaid
-graph TD
-    User[User Click] --> CEM[CentralEventManager]
-    CEM -->|Raycast| RC[RaycastManager]
-    RC -->|Hit Object| CEM
-    CEM -->|Set Selection| SM[StateManager]
-    
-    SM -->|Notify| HM[HighlightManager]
-    SM -->|Notify| UI[UIManager]
-    SM -->|Notify| GE[GlowEffect]
-    
-    HM -->|Update Visualization| Scene
-    UI -->|Show Details| DOM[InfoPanel]
-    GE -->|Animate Intensity| Scene
-```
+Siehe Diagramm: [mermaid_01.mmd](mermaid_01.mmd)
+
+
+### Flow 2: User-Interaktion (Loop of Interaction)
+Wie ein Mausklick verarbeitet wird.
+
+Siehe Diagramm: [mermaid_02.mmd](mermaid_02.mmd)
+
+
+## 02.5 Design-Prinzipien im Detail
+
+### 1. "Prefer Immutability where possible"
+Auch wenn JavaScript Objekte per Reference übergibt, versuchen wir im State-Management, Daten nicht "in place" zu mutieren, sondern neue State-Objekte zu erzeugen. Dies erleichtert das Debugging (Time-Travel) und verhindert "Spooky Action at a Distance".
+
+### 2. "Graceful Degradation"
+Wenn ein Feature auf dem System des Nutzers nicht verfügbar ist (z.B. WebGL 2.0 Features oder Web Workers), sollte die App nicht abstürzen, sondern auf einen einfacheren Modus zurückfallen (z.B. einfacheres Rendering, synchrone Berechnung).
+
+### 3. "Configuration over Code"
+Das System ist hochgradig konfigurierbar. Farben, Größenverhältnisse, Physik-Parameter und Rendering-Optionen sind nicht hardcoded, sondern in Config-Objekten zentralisiert. Dies ermöglicht schnelle Anpassungen (auch durch Designer) ohne Code-Eingriffe.
 
 ---
 *Ende Kapitel 02*

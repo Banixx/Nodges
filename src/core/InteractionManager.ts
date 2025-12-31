@@ -7,7 +7,6 @@ import * as THREE from 'three';
 import { StateManager } from './StateManager';
 // @ts-ignore
 import { CentralEventManager } from './CentralEventManager';
-// @ts-ignore
 import { HighlightManager } from '../effects/HighlightManager';
 
 export class InteractionManager {
