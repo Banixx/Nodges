@@ -149,7 +149,9 @@ export class InteractionManager {
         }
 
         if (clickedObject) {
-            this.selectObject(clickedObject);
+            // Die Daten kommen von CentralEventManager via notifySubscribers
+            const isAdditive = !!(data.event?.ctrlKey || data.event?.shiftKey);
+            this.selectObject(clickedObject, isAdditive);
         } else {
             this.deselectAll();
         }
@@ -258,30 +260,54 @@ export class InteractionManager {
     /**
      * Selektiert ein Objekt
      */
-    selectObject(object: THREE.Object3D) {
-        // Altes Objekt deselektieren
-        const oldSelected = this.stateManager.state.selectedObject;
-        if (oldSelected && oldSelected !== object) {
-            this.highlightManager.removeHighlight(oldSelected);
+    selectObject(object: THREE.Object3D, isAdditive: boolean = false) {
+        if (isAdditive) {
+            const currentSelection = new Set(this.stateManager.state.selectedObjects);
+            const equivalent = this.findEquivalentObject(currentSelection, object);
+
+            if (equivalent) {
+                currentSelection.delete(equivalent);
+                // Also update primary selectedObject if it was the one removed
+                if (this.stateManager.state.selectedObject === equivalent) {
+                    const nextPrimary = currentSelection.size > 0 ? Array.from(currentSelection)[0] : null;
+                    this.stateManager.update({ selectedObject: nextPrimary });
+                }
+            } else {
+                currentSelection.add(object);
+            }
+            this.stateManager.setSelectedObjects(currentSelection);
+        } else {
+            // Standard replacement
+            this.stateManager.setSelectedObject(object);
         }
 
-        // Neues Objekt selektieren
-        this.stateManager.setSelectedObject(object);
-        this.highlightManager.highlightSelectedObject(object);
+        this.highlightManager.updateHighlights(this.stateManager.state);
+    }
 
-        // Info Panel logic is now handled by UIManager observing StateManager
+    /**
+     * Hilfsmethode um ein gleichwertiges Objekt in einem Set zu finden (ID-basiert fuer Proxys)
+     */
+    private findEquivalentObject(set: Set<THREE.Object3D>, obj: THREE.Object3D): THREE.Object3D | null {
+        if (set.has(obj)) return obj;
+
+        const objId = obj.userData.id;
+        const objType = obj.userData.type;
+
+        if (!objId || !objType) return null;
+
+        for (const item of set) {
+            if (item.userData.type === objType && item.userData.id === objId) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
      * Deselektiert alle Objekte
      */
     deselectAll() {
-        const selectedObject = this.stateManager.state.selectedObject;
-        if (selectedObject) {
-            this.highlightManager.removeHighlight(selectedObject);
-        }
-
-        this.stateManager.setSelectedObject(null);
+        this.stateManager.setSelectedObjects(new Set());
     }
 
     /**

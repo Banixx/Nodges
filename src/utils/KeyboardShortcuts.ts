@@ -17,15 +17,17 @@ export class KeyboardShortcuts {
     constructor() {
         this.shortcuts = {
             'Selection': {
-                'Strg + Click': 'Mehrfachauswahl (Multi-Select)',
-                'Shift + Drag': 'Box-Auswahl (Bereich auswaehlen)',
+                'Strg + Click': 'Selektion umschalten / Hinzufuegen',
+                'Shift + Drag': 'Neue Box-Auswahl (ersetzt alte)',
+                'Strg + Drag': 'Box-Auswahl hinzufügen',
                 'Strg + A': 'Alle auswaehlen',
                 'Escape': 'Auswahl aufheben',
                 'Delete': 'Ausgewaehlte Objekte loeschen'
             },
             'Navigation': {
                 'Linke Maustaste + Ziehen': 'Kamera rotieren',
-                'Rechte Maustaste + Ziehen': 'Kamera schwenken',
+                'Rechte Maustaste + Ziehen': 'Kamera schwenken (Pan)',
+                'Alt + Ziehen': 'Kamera schwenken (Pan)',
                 'Mausrad': 'Zoom'
             },
             'General': {

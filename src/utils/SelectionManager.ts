@@ -30,6 +30,10 @@ export class SelectionManager {
 
     private controls: any;
     private previousControlsEnabled: boolean = true;
+    private isShiftDown: boolean = false;
+    private isCtrlDown: boolean = false;
+    private isMouseDown: boolean = false;
+    private mouseDownPosition: THREE.Vector2 = new THREE.Vector2();
 
     constructor(scene: THREE.Scene, camera: THREE.Camera, renderer: THREE.WebGLRenderer, stateManager: StateManager, controls: any, nodeManager: any = null) {
         this.scene = scene;
@@ -102,34 +106,49 @@ export class SelectionManager {
     }
 
     onMouseDown(event: MouseEvent) {
-        // Only handle if shift key is pressed or mode is box
-        if (event.button === 0 && (this.selectionMode === 'box' || event.shiftKey)) {
-            this.isBoxSelecting = true;
+        // Only handle if shift or ctrl key is pressed or mode is box
+        if (event.button === 0 && (this.selectionMode === 'box' || event.shiftKey || event.ctrlKey)) {
+            this.isMouseDown = true;
+            this.mouseDownPosition.set(event.clientX, event.clientY);
             this.boxSelectStart.set(event.clientX, event.clientY);
-            this.boxSelectEnd.set(event.clientX, event.clientY);
 
-            this.boxSelectDiv.style.left = event.clientX + 'px';
-            this.boxSelectDiv.style.top = event.clientY + 'px';
-            this.boxSelectDiv.style.width = '0px';
-            this.boxSelectDiv.style.height = '0px';
-            this.boxSelectDiv.style.display = 'block';
-
-            // Speicher leeren, wenn eine Rechteck-Selektion gestartet wird (User-Request)
-            this.clearSelection();
-
-            // Sync with global state
-            this.stateManager.update({ isBoxSelecting: true });
-
-            // Prevent OrbitControls from taking over if we are box selecting
-            if (this.controls) {
-                this.previousControlsEnabled = this.controls.enabled;
-                this.controls.enabled = false;
+            // We don't set isBoxSelecting = true yet, to allow single clicks
+            // But we might want to prevent OrbitControls if we are in a mode that implies selection
+            if (event.shiftKey || event.ctrlKey || this.selectionMode === 'box') {
+                // Disable OrbitControls to prepare for potential drag
+                this.updateOrbitState();
             }
-            event.stopImmediatePropagation();
+
+            // event.stopImmediatePropagation(); // Don't stop yet, let others know mouse is down
         }
     }
 
     onMouseMove(event: MouseEvent) {
+        if (!this.isMouseDown && !this.isBoxSelecting) return;
+
+        if (this.isMouseDown && !this.isBoxSelecting) {
+            const distance = this.mouseDownPosition.distanceTo(new THREE.Vector2(event.clientX, event.clientY));
+            if (distance > 5) {
+                this.isBoxSelecting = true;
+                this.boxSelectDiv.style.display = 'block';
+                this.boxSelectDiv.style.left = this.boxSelectStart.x + 'px';
+                this.boxSelectDiv.style.top = this.boxSelectStart.y + 'px';
+                this.boxSelectDiv.style.width = '0px';
+                this.boxSelectDiv.style.height = '0px';
+
+                // Speicher leeren, wenn eine Rechteck-Selektion gestartet wird (User-Request)
+                // Aber nur, wenn NICHT die Strg-Taste gedrückt ist (additive Auswahl)
+                // Note: We check the keys from the current event
+                if (!event.ctrlKey) {
+                    this.clearSelection();
+                }
+
+                // Sync with global state
+                this.stateManager.update({ isBoxSelecting: true });
+                this.updateOrbitState();
+            }
+        }
+
         if (this.isBoxSelecting) {
             this.boxSelectEnd.set(event.clientX, event.clientY);
 
@@ -145,13 +164,14 @@ export class SelectionManager {
         }
     }
 
-    onMouseUp(event: MouseEvent) {
+    onMouseUp() {
+        this.isMouseDown = false;
         if (this.isBoxSelecting) {
             this.isBoxSelecting = false;
             this.boxSelectDiv.style.display = 'none';
 
             // Perform selection first
-            this.performBoxSelection(event);
+            this.performBoxSelection();
 
             // Sync with global state, but with a tiny delay to let click events pass/be ignored
             // CentralEventManager processes clicks after 100ms
@@ -159,17 +179,12 @@ export class SelectionManager {
                 this.stateManager.update({ isBoxSelecting: false });
             }, 200);
 
-            // Re-enable controls
-            if (this.controls && !event.shiftKey) {
-                this.controls.enabled = this.previousControlsEnabled;
-            } else if (this.controls && event.shiftKey) {
-                // Keep disabled if shift is still held (managed by KeyUp)
-                this.controls.enabled = false;
-            }
+            // Re-enable controls if no longer box selecting or shift/ctrl held
+            this.updateOrbitState();
         }
     }
 
-    performBoxSelection(event: MouseEvent) {
+    performBoxSelection() {
         const minX = Math.min(this.boxSelectStart.x, this.boxSelectEnd.x);
         const maxX = Math.max(this.boxSelectStart.x, this.boxSelectEnd.x);
         const minY = Math.min(this.boxSelectStart.y, this.boxSelectEnd.y);
@@ -178,9 +193,8 @@ export class SelectionManager {
         // If box is too small, ignore (it was a click)
         if (maxX - minX < 5 && maxY - minY < 5) return;
 
-        if (!event.shiftKey) {
-            this.clearSelection();
-        }
+        // Note: clearSelection is already handled in onMouseDown for box selection
+        // to provide immediate visual feedback of what is being replaced vs added.
 
         const dummy = new THREE.Object3D();
 
@@ -248,24 +262,74 @@ export class SelectionManager {
 
     onKeyDown(event: KeyboardEvent) {
         if (event.key === 'Shift') {
+            this.isShiftDown = true;
             this.renderer.domElement.style.cursor = 'crosshair';
-            if (this.controls) this.controls.enabled = false;
+            this.updateOrbitState();
+        }
+
+        if (event.key === 'Control') {
+            this.isCtrlDown = true;
+            this.updateOrbitState();
+        }
+
+        if (event.key === 'Alt') {
+            if (this.controls) {
+                this.controls.mouseButtons.LEFT = THREE.MOUSE.PAN;
+            }
         }
     }
 
     onKeyUp(event: KeyboardEvent) {
         if (event.key === 'Shift') {
+            this.isShiftDown = false;
             this.renderer.domElement.style.cursor = 'default';
-            if (this.controls) this.controls.enabled = true;
+            this.updateOrbitState();
+        }
+
+        if (event.key === 'Control') {
+            this.isCtrlDown = false;
+            this.updateOrbitState();
+        }
+
+        if (event.key === 'Alt') {
+            if (this.controls) {
+                this.controls.mouseButtons.LEFT = THREE.MOUSE.ROTATE;
+            }
         }
     }
 
     onBlur(_event: FocusEvent) {
-        // Reset state on window blur to prevent stuck keys/controls
-        this.renderer.domElement.style.cursor = 'default';
-        if (this.controls) this.controls.enabled = true;
+        this.isShiftDown = false;
+        this.isCtrlDown = false;
         this.isBoxSelecting = false;
+
+        if (this.controls) {
+            this.controls.enabled = this.previousControlsEnabled;
+            this.controls.mouseButtons.LEFT = THREE.MOUSE.ROTATE;
+        }
+        this.renderer.domElement.style.cursor = 'default';
         this.boxSelectDiv.style.display = 'none';
+        this.stateManager.update({ isBoxSelecting: false });
+    }
+
+    /**
+     * Managed OrbitControls enabled state based on active modifiers or actions
+     */
+    private updateOrbitState() {
+        if (!this.controls) return;
+
+        const shouldBeDisabled = this.isShiftDown || this.isCtrlDown || this.isBoxSelecting;
+
+        if (shouldBeDisabled) {
+            // If it's currently enabled, capture the state and disable
+            if (this.controls.enabled) {
+                this.previousControlsEnabled = true;
+                this.controls.enabled = false;
+            }
+        } else {
+            // Restore to previous state
+            this.controls.enabled = this.previousControlsEnabled;
+        }
     }
 
     /**
@@ -275,25 +339,37 @@ export class SelectionManager {
         // Prevent re-entry or circular updates
         if (this.isUpdatingFromState) return;
 
-        const newSelectedObject = state.selectedObject;
-
         if (this.isBoxSelecting || state.currentTool !== 'select') return;
 
         this.isUpdatingFromState = true;
         try {
-            if (newSelectedObject) {
-                // If state selection changes, verify if we need to update our selection set
-                // If the object is already selected and we have a multi-selection, we keep it
-                if (this.selectedObjects.has(newSelectedObject)) {
-                    return;
-                }
+            const stateSelectedObjects = state.selectedObjects as Set<THREE.Object3D>;
 
-                // If it's a new object or we're coming from no selection, enforce single selection visualization
-                this.setSingleSelection(newSelectedObject);
-            } else if (this.selectedObjects.size > 0) {
-                // Selection was cleared globally
-                this.clearSelection();
-            }
+            // Synchronize our internal set with the state
+            const toAdd: THREE.Object3D[] = [];
+            const toRemove: THREE.Object3D[] = [];
+
+            stateSelectedObjects.forEach(obj => {
+                const equivalent = this.findEquivalentObject(this.selectedObjects, obj);
+                if (!equivalent) toAdd.push(obj);
+            });
+
+            this.selectedObjects.forEach(obj => {
+                const equivalent = this.findEquivalentObject(stateSelectedObjects, obj);
+                if (!equivalent) toRemove.push(obj);
+            });
+
+            // Apply changes
+            toRemove.forEach(obj => {
+                this.removeSelectionBox(obj);
+                this.selectedObjects.delete(obj);
+            });
+
+            toAdd.forEach(obj => {
+                this.selectedObjects.add(obj);
+            });
+
+            this.updateVisualFeedback();
         } finally {
             this.isUpdatingFromState = false;
         }
@@ -303,8 +379,30 @@ export class SelectionManager {
      * Add object to selection
      */
     addToSelection(object: THREE.Object3D) {
-        this.selectedObjects.add(object);
-        this.syncState();
+        const equivalent = this.findEquivalentObject(this.selectedObjects, object);
+        if (!equivalent) {
+            this.selectedObjects.add(object);
+            this.syncState();
+        }
+    }
+
+    /**
+     * Hilfsmethode um ein gleichwertiges Objekt in einem Set zu finden (ID-basiert fuer Proxys)
+     */
+    private findEquivalentObject(set: Set<THREE.Object3D>, obj: THREE.Object3D): THREE.Object3D | null {
+        if (set.has(obj)) return obj;
+
+        const objId = obj.userData.id;
+        const objType = obj.userData.type;
+
+        if (!objId || !objType) return null;
+
+        for (const item of set) {
+            if (item.userData.type === objType && item.userData.id === objId) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**

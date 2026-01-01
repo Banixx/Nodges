@@ -263,7 +263,7 @@ export class CentralEventManager {
         this.raycastManager.updateMousePosition(event);
         const clickedObject = this.raycastManager.findIntersectedObject();
 
-        this.updateSelectionState(clickedObject);
+        // Selektion wird via 'click' event an den InteractionManager delegiert
 
         this.notifySubscribers('click', {
             event,
