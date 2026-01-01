@@ -26,8 +26,7 @@ export class KeyboardShortcuts {
             'Navigation': {
                 'Linke Maustaste + Ziehen': 'Kamera rotieren',
                 'Rechte Maustaste + Ziehen': 'Kamera schwenken',
-                'Mausrad': 'Zoom',
-                'Shift + Linke Maustaste': 'Kamera schwenken'
+                'Mausrad': 'Zoom'
             },
             'General': {
                 'F1': 'Diese Hilfe anzeigen',

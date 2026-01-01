@@ -93,7 +93,9 @@ export class UIManager {
 
     handleStateChange(state: any) {
         // Handle changes related to UI, e.g., showing/hiding panels based on selected objects.
-        if (state.selectedObject) {
+        if (state.selectedObjects && state.selectedObjects.size > 1) {
+            this.showMultiSelectionInfo(state.selectedObjects);
+        } else if (state.selectedObject) {
             this.showInfoPanelFor(state.selectedObject);
         } else {
             this.collapseInfoPanel();
@@ -383,6 +385,53 @@ export class UIManager {
         } else {
             content = '<p>Keine Detailansicht für dieses Objekt.</p>';
         }
+
+        this.infoPanelContent.innerHTML = content;
+        this.panels.info.classList.remove('collapsed');
+        if (this.panelToggles.info) this.panelToggles.info.innerHTML = 'v';
+    }
+
+    showMultiSelectionInfo(objects: Set<THREE.Object3D>) {
+        if (!this.panels.info || !this.infoPanelContent) return;
+
+        let rows = '';
+        objects.forEach(obj => {
+            const type = obj.userData.type || 'Unknown';
+            let name = 'Unbenannt';
+
+            if (type === 'node') {
+                const nodeData = obj.userData.nodeData || obj.userData.entity;
+                name = nodeData?.name || nodeData?.label || name;
+            } else if (type === 'edge') {
+                const edgeData = obj.userData.edge;
+                name = obj.userData.name || edgeData?.label || name;
+            }
+
+            rows += `
+                <tr>
+                    <td>${name}</td>
+                    <td><span class="type-tag ${type}">${type}</span></td>
+                </tr>
+            `;
+        });
+
+        const content = `
+            <p style="margin-bottom: 10px; font-weight: 600; color: var(--accent-color);">
+                ${objects.size} Objekte ausgewählt
+            </p>
+            <table class="selection-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rows}
+                </tbody>
+            </table>
+            <button class="action-button" style="margin-top: 15px; font-size: 11px;">Gruppe erstellen (Beta)</button>
+        `;
 
         this.infoPanelContent.innerHTML = content;
         this.panels.info.classList.remove('collapsed');

@@ -66,28 +66,35 @@ export class HighlightManager {
     }
 
     updateHighlights(state: any) {
-        const { hoveredObject, selectedObject } = state;
+        const { hoveredObject, selectedObject, selectedObjects } = state;
 
         // Cleanup unused highlights
-        this.cleanupUnusedHighlights(hoveredObject, selectedObject);
+        this.cleanupUnusedHighlights(hoveredObject, selectedObject, selectedObjects);
 
-        // Apply new highlights
-        if (selectedObject) {
+        // Apply selection highlights
+        if (selectedObjects && selectedObjects.size > 0) {
+            selectedObjects.forEach((obj: THREE.Object3D) => {
+                this.applyHighlight(obj, this.types.SELECTION);
+            });
+        }
+        else if (selectedObject) {
             this.applyHighlight(selectedObject, this.types.SELECTION);
         }
 
-        if (hoveredObject && hoveredObject !== selectedObject) {
+        if (hoveredObject && !state.selectedObjects?.has(hoveredObject) && hoveredObject !== selectedObject) {
             this.applyHighlight(hoveredObject, this.types.HOVER);
         }
     }
 
-    cleanupUnusedHighlights(hoveredObject: THREE.Object3D | null, selectedObject: THREE.Object3D | null) {
+    cleanupUnusedHighlights(hoveredObject: THREE.Object3D | null, selectedObject: THREE.Object3D | null, selectedObjects: Set<THREE.Object3D> | null = null) {
         const toRemove: THREE.Object3D[] = [];
 
         for (const [object, highlightData] of this.highlightRegistry) {
+            const isSelected = (object === selectedObject) || (selectedObjects && selectedObjects.has(object));
+
             const shouldKeep = (
                 (object === hoveredObject && highlightData.type === this.types.HOVER) ||
-                (object === selectedObject && highlightData.type === this.types.SELECTION) ||
+                (isSelected && highlightData.type === this.types.SELECTION) ||
                 (highlightData.type === this.types.SEARCH) ||
                 (highlightData.type === this.types.PATH) ||
                 (highlightData.type === this.types.GROUP)
@@ -268,11 +275,13 @@ export class HighlightManager {
         const outlineScale = visualScale * 1.4;
 
         const geometry = new THREE.SphereGeometry(1, 16, 16);
-        const material = new THREE.MeshBasicMaterial({
+        const material = new THREE.MeshPhongMaterial({
             color: 0x00ffff,
             transparent: true,
             opacity: 0.3,
-            depthWrite: false
+            depthWrite: false,
+            emissive: new THREE.Color(0x000000),
+            emissiveIntensity: 0
         });
 
         const outlineMesh = new THREE.Mesh(geometry, material);
@@ -461,7 +470,15 @@ export class HighlightManager {
     applySelectionEffect(object: THREE.Object3D, _options: any = {}) {
         this.glowEffect.applySelectionGlow(object);
 
-        if (object.userData.type === 'edge') {
+        if (object.userData.type === 'node') {
+            this.addNodeOutline(object);
+
+            // If the node object has no material (it's a proxy for an instanced node),
+            // apply the selection glow directly to the outline mesh instead
+            if (!(object as any).material && object.userData.outline) {
+                this.glowEffect.applySelectionGlow(object.userData.outline);
+            }
+        } else if (object.userData.type === 'edge') {
             this.addEdgeOutline(object, { color: 0x00ff00, isSelection: true });
         }
     }

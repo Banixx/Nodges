@@ -4,6 +4,8 @@ export interface State {
     // Interaction States
     hoveredObject: THREE.Object3D | null;
     selectedObject: THREE.Object3D | null;
+    selectedObjects: Set<THREE.Object3D>;
+    isBoxSelecting: boolean;
 
     // Visual States
     highlightedObjects: Set<THREE.Object3D>;
@@ -57,6 +59,8 @@ export class StateManager {
             // Interaction States
             hoveredObject: null,
             selectedObject: null,
+            selectedObjects: new Set(),
+            isBoxSelecting: false,
 
             // Visual States
             highlightedObjects: new Set(),
@@ -170,13 +174,30 @@ export class StateManager {
 
     setSelectedObject(object: THREE.Object3D | null) {
         if (this.state.selectedObject !== object) {
+            const selectedObjects = new Set<THREE.Object3D>();
+            if (object) selectedObjects.add(object);
+
             this.update({
                 selectedObject: object,
+                selectedObjects: selectedObjects,
                 glowIntensity: 0,
                 glowDirection: 1,
                 infoPanelCollapsed: false
             });
         }
+    }
+
+    setSelectedObjects(objects: Set<THREE.Object3D>) {
+        // Find a primary selected object (first one in set or null)
+        const primary = objects.size > 0 ? Array.from(objects)[0] : null;
+
+        this.update({
+            selectedObject: primary,
+            selectedObjects: objects,
+            glowIntensity: 0,
+            glowDirection: 1,
+            infoPanelCollapsed: false
+        });
     }
 
     updateTooltip(visible: boolean, content: string | null = null, position: { x: number, y: number } | null = null) {

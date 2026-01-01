@@ -208,7 +208,7 @@ export class App {
             this.scene
         );
 
-        this.selectionManager = new SelectionManager(this.scene, this.camera, this.renderer, this.stateManager);
+        this.selectionManager = new SelectionManager(this.scene, this.camera, this.renderer, this.stateManager, this.controls, this.nodeManager);
         this.raycastManager = new RaycastManager(this.camera, this.nodeManager, this.edgeObjectsManager);
         this.networkAnalyzer = new NetworkAnalyzer();
         this.pathFinder = new PathFinder(this.scene, this.stateManager);

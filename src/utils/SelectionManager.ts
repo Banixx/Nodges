@@ -6,6 +6,7 @@ export class SelectionManager {
     private camera: THREE.Camera;
     private renderer: THREE.WebGLRenderer;
     private stateManager: StateManager;
+    private nodeManager: any; // Using any to avoid circular dependency issues if they exist
 
     private selectedObjects: Set<THREE.Object3D>;
     private selectionMode: 'single' | 'multi' | 'box';
@@ -25,12 +26,18 @@ export class SelectionManager {
     private _onMouseUp: (event: MouseEvent) => void;
     private _onKeyDown: (event: KeyboardEvent) => void;
     private _onKeyUp: (event: KeyboardEvent) => void;
+    private _onBlur: (event: FocusEvent) => void;
 
-    constructor(scene: THREE.Scene, camera: THREE.Camera, renderer: THREE.WebGLRenderer, stateManager: StateManager) {
+    private controls: any;
+    private previousControlsEnabled: boolean = true;
+
+    constructor(scene: THREE.Scene, camera: THREE.Camera, renderer: THREE.WebGLRenderer, stateManager: StateManager, controls: any, nodeManager: any = null) {
         this.scene = scene;
         this.camera = camera;
         this.renderer = renderer;
         this.stateManager = stateManager;
+        this.controls = controls;
+        this.nodeManager = nodeManager;
 
         // Selection state
         this.selectedObjects = new Set();
@@ -59,6 +66,7 @@ export class SelectionManager {
         this._onMouseUp = this.onMouseUp.bind(this);
         this._onKeyDown = this.onKeyDown.bind(this);
         this._onKeyUp = this.onKeyUp.bind(this);
+        this._onBlur = this.onBlur.bind(this);
 
         this.createSelectionBoxDiv();
         this.setupEventListeners();
@@ -68,11 +76,12 @@ export class SelectionManager {
     }
 
     setupEventListeners() {
-        this.renderer.domElement.addEventListener('mousedown', this._onMouseDown);
+        this.renderer.domElement.addEventListener('mousedown', this._onMouseDown, { capture: true });
         window.addEventListener('mousemove', this._onMouseMove); // Window for drag outside canvas
         window.addEventListener('mouseup', this._onMouseUp);
         document.addEventListener('keydown', this._onKeyDown);
         document.addEventListener('keyup', this._onKeyUp);
+        window.addEventListener('blur', this._onBlur);
     }
 
     createSelectionBoxDiv() {
@@ -105,8 +114,18 @@ export class SelectionManager {
             this.boxSelectDiv.style.height = '0px';
             this.boxSelectDiv.style.display = 'block';
 
+            // Speicher leeren, wenn eine Rechteck-Selektion gestartet wird (User-Request)
+            this.clearSelection();
+
+            // Sync with global state
+            this.stateManager.update({ isBoxSelecting: true });
+
             // Prevent OrbitControls from taking over if we are box selecting
-            event.stopPropagation();
+            if (this.controls) {
+                this.previousControlsEnabled = this.controls.enabled;
+                this.controls.enabled = false;
+            }
+            event.stopImmediatePropagation();
         }
     }
 
@@ -130,7 +149,23 @@ export class SelectionManager {
         if (this.isBoxSelecting) {
             this.isBoxSelecting = false;
             this.boxSelectDiv.style.display = 'none';
+
+            // Perform selection first
             this.performBoxSelection(event);
+
+            // Sync with global state, but with a tiny delay to let click events pass/be ignored
+            // CentralEventManager processes clicks after 100ms
+            setTimeout(() => {
+                this.stateManager.update({ isBoxSelecting: false });
+            }, 200);
+
+            // Re-enable controls
+            if (this.controls && !event.shiftKey) {
+                this.controls.enabled = this.previousControlsEnabled;
+            } else if (this.controls && event.shiftKey) {
+                // Keep disabled if shift is still held (managed by KeyUp)
+                this.controls.enabled = false;
+            }
         }
     }
 
@@ -147,8 +182,46 @@ export class SelectionManager {
             this.clearSelection();
         }
 
+        const dummy = new THREE.Object3D();
+
         this.scene.traverse((object) => {
-            if (object.userData && (object.userData.type === 'node' || object.userData.type === 'edge')) {
+            // Handle Instanced Nodes
+            if (object.userData && object.userData.type === 'node_instanced' && (object as THREE.InstancedMesh).isInstancedMesh) {
+                const mesh = object as THREE.InstancedMesh;
+                const count = mesh.count;
+                const geometryType = mesh.userData.geometryType || 'sphere';
+
+                for (let i = 0; i < count; i++) {
+                    mesh.getMatrixAt(i, dummy.matrix);
+                    dummy.position.setFromMatrixPosition(dummy.matrix);
+
+                    const pos = dummy.position.clone();
+                    pos.project(this.camera);
+
+                    const screenX = (pos.x * 0.5 + 0.5) * window.innerWidth;
+                    const screenY = (-(pos.y * 0.5) + 0.5) * window.innerHeight;
+
+                    if (screenX >= minX && screenX <= maxX && screenY >= minY && screenY <= maxY) {
+                        const nodeData = this.nodeManager?.getNodeAt(geometryType, i);
+                        if (nodeData) {
+                            // Create proxy just like RaycastManager
+                            const dummyNode = new THREE.Object3D();
+                            dummyNode.position.copy(dummy.position);
+                            dummyNode.userData = {
+                                type: 'node',
+                                node: { data: nodeData },
+                                nodeData: nodeData,
+                                geometryType: geometryType,
+                                id: nodeData.id,
+                                instanceId: i
+                            };
+                            this.addToSelection(dummyNode);
+                        }
+                    }
+                }
+            }
+            // Handle regular objects (Edges etc)
+            else if (object.userData && (object.userData.type === 'node' || object.userData.type === 'edge')) {
                 // Project position to screen space
                 const pos = object.position.clone();
                 pos.project(this.camera);
@@ -164,18 +237,35 @@ export class SelectionManager {
         });
 
         this.updateVisualFeedback();
+        this.syncState();
+    }
+
+    syncState() {
+        if (!this.isUpdatingFromState) {
+            this.stateManager.setSelectedObjects(new Set(this.selectedObjects));
+        }
     }
 
     onKeyDown(event: KeyboardEvent) {
         if (event.key === 'Shift') {
             this.renderer.domElement.style.cursor = 'crosshair';
+            if (this.controls) this.controls.enabled = false;
         }
     }
 
     onKeyUp(event: KeyboardEvent) {
         if (event.key === 'Shift') {
             this.renderer.domElement.style.cursor = 'default';
+            if (this.controls) this.controls.enabled = true;
         }
+    }
+
+    onBlur(_event: FocusEvent) {
+        // Reset state on window blur to prevent stuck keys/controls
+        this.renderer.domElement.style.cursor = 'default';
+        if (this.controls) this.controls.enabled = true;
+        this.isBoxSelecting = false;
+        this.boxSelectDiv.style.display = 'none';
     }
 
     /**
@@ -192,11 +282,13 @@ export class SelectionManager {
         this.isUpdatingFromState = true;
         try {
             if (newSelectedObject) {
-                // If state selection changes, enforce single selection visualization
-                // Check if we already have this object selected to avoid unnecessary work
-                if (this.selectedObjects.size === 1 && this.selectedObjects.has(newSelectedObject)) {
+                // If state selection changes, verify if we need to update our selection set
+                // If the object is already selected and we have a multi-selection, we keep it
+                if (this.selectedObjects.has(newSelectedObject)) {
                     return;
                 }
+
+                // If it's a new object or we're coming from no selection, enforce single selection visualization
                 this.setSingleSelection(newSelectedObject);
             } else if (this.selectedObjects.size > 0) {
                 // Selection was cleared globally
@@ -212,11 +304,7 @@ export class SelectionManager {
      */
     addToSelection(object: THREE.Object3D) {
         this.selectedObjects.add(object);
-
-        // Update state manager for compatibility
-        if (this.selectedObjects.size === 1 && !this.isUpdatingFromState) {
-            this.stateManager.setSelectedObject(object);
-        }
+        this.syncState();
     }
 
     /**
@@ -227,10 +315,10 @@ export class SelectionManager {
         this.selectedObjects.clear();
         this.selectionMode = 'single';
 
-        // Notify state manager without closing panel
+        // Notify state manager
         if (!this.isUpdatingFromState) {
+            this.stateManager.setSelectedObjects(new Set());
             this.stateManager.update({
-                selectedObject: null,
                 infoPanelCollapsed: false // Keep panel visible but collapsed
             });
         }
@@ -426,6 +514,7 @@ export class SelectionManager {
         window.removeEventListener('mouseup', this._onMouseUp);
         document.removeEventListener('keydown', this._onKeyDown);
         document.removeEventListener('keyup', this._onKeyUp);
+        window.removeEventListener('blur', this._onBlur);
 
         // Remove selection boxes
         this.clearSelection();

@@ -239,6 +239,12 @@ export class CentralEventManager {
      * Handler fuer Click Events
      */
     handleClick(event: MouseEvent) {
+        // Ignoriere Klicks, wenn gerade eine Box-Selektion stattfindet oder gerade abgeschlossen wurde
+        if (this.stateManager.state.isBoxSelecting) {
+            console.log('[CentralEventManager] Click ignored due to active BoxSelecting');
+            return;
+        }
+
         // Verhindere mehrfache Clicks
         if (this.clickTimeout) {
             clearTimeout(this.clickTimeout);

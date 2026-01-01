@@ -215,6 +215,53 @@ input[type="range"] {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* --- Selection Table --- */
+.selection-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 5px;
+  font-size: 11px;
+}
+
+.selection-table th {
+  text-align: left;
+  padding: 6px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--accent-color);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+.selection-table td {
+  padding: 6px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+}
+
+.selection-table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.selection-table .type-tag {
+  font-size: 9px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background-color: rgba(52, 152, 219, 0.2);
+  color: var(--accent-color);
+  text-transform: uppercase;
+}
+
+.selection-table .type-tag.node {
+  background-color: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+}
+
+.selection-table .type-tag.edge {
+  background-color: rgba(155, 89, 182, 0.2);
+  color: #9b59b6;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
