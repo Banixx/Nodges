@@ -2,31 +2,7 @@ import * as THREE from 'three';
 import { z } from 'zod';
 
 // ============================================================================
-// Legacy Types (for backward compatibility)
-// ============================================================================
-
-// @deprecated Use EntityData instead
-export interface NodeData {
-    id: string | number;
-    name?: string;
-    x: number;
-    y: number;
-    z: number;
-    type?: string;
-    [key: string]: any;
-}
-
-// @deprecated Use RelationshipData instead
-export interface EdgeData {
-    start: number | string; // Index or ID of start node
-    end: number | string;   // Index or ID of end node
-    name?: string;
-    type?: string;
-    [key: string]: any;
-}
-
-// ============================================================================
-// Future Format Types (Zod Definitions)
+// Data Model Types (Zod Definitions)
 // ============================================================================
 
 // Data Model Schema
@@ -160,7 +136,7 @@ export interface NodeObject {
     position: THREE.Vector3;
     mesh: THREE.Object3D;
     geometryType: string;
-    nodeData: NodeData | EntityData;
+    nodeData: EntityData;
 }
 
 export interface EdgeObject {

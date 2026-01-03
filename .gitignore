@@ -37,5 +37,6 @@ build/
 !project_report.md
 !architecture_diagrams.md
 !edge_interaction_analysis.md
-!/.agent/
-!/.agent/workflows/
+!.agent/
+!.agent/workflows/
+!.agent/rules/

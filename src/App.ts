@@ -205,7 +205,8 @@ export class App {
             this.highlightManager,
             this.camera,
             this.controls,
-            this.scene
+            this.scene,
+            this.renderer
         );
 
         this.selectionManager = new SelectionManager(this.scene, this.camera, this.renderer, this.stateManager, this.controls, this.nodeManager);
@@ -225,6 +226,7 @@ export class App {
         // Subscribe to app events
         this.centralEventManager.subscribe('data_updated', this.handleDataUpdate.bind(this));
         this.centralEventManager.subscribe('edge_created', this.handleEdgeCreated.bind(this));
+        this.centralEventManager.subscribe('node_created', this.handleNodeCreated.bind(this));
     }
 
     async initGUI() {
@@ -507,6 +509,31 @@ export class App {
         this.currentRelationships.push(newEdge);
         this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
         console.log(`[App] Neue Kante erstellt: ${data.source} -> ${data.target}`);
+    }
+
+    private handleNodeCreated(data: { position: THREE.Vector3, data: any }) {
+        const newEntity: EntityData = {
+            id: data.data.id,
+            type: 'node',
+            label: data.data.name || 'Neuer Node',
+            position: {
+                x: data.position.x,
+                y: data.position.y,
+                z: data.position.z
+            },
+            properties: {}
+        };
+
+        this.currentEntities.push(newEntity);
+        this.nodeManager.updateNodes(this.currentEntities);
+
+        // Notify subscribers that the node is now available in the scene
+        this.centralEventManager.publish('node_added_to_scene', {
+            id: newEntity.id,
+            entity: newEntity
+        });
+
+        console.log(`[App] Neuer Node erstellt: ${newEntity.label} an Position (${data.position.x.toFixed(2)}, ${data.position.y.toFixed(2)}, ${data.position.z.toFixed(2)})`);
     }
 }
 

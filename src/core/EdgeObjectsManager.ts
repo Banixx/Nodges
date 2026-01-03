@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { EdgeData, NodeData, EntityData, RelationshipData } from '../types';
+import { EntityData, RelationshipData } from '../types';
 import { VisualMappingEngine } from './VisualMappingEngine';
 import { StateManager } from './StateManager';
 
@@ -39,16 +39,16 @@ export class EdgeObjectsManager {
         this.connectionToEdges = new Map();
     }
 
-    public updateEdges(edges: (EdgeData | RelationshipData)[], nodes: (NodeData | EntityData)[]) {
+    public updateEdges(edges: RelationshipData[], nodes: EntityData[]) {
         // 1. Clear existing
         this.dispose();
 
         // 2. Map nodes for fast lookup
-        const nodeMap = new Map<string | number, NodeData | EntityData>();
+        const nodeMap = new Map<string | number, EntityData>();
         nodes.forEach(node => nodeMap.set(node.id, node));
 
         // 3. Group edges by connection (start-end) to identify duplicates
-        const connectionMap = new Map<string, (EdgeData | RelationshipData)[]>();
+        const connectionMap = new Map<string, RelationshipData[]>();
 
         edges.forEach((edge: any) => {
             const s = edge.source !== undefined ? edge.source : edge.start;
@@ -169,8 +169,8 @@ export class EdgeObjectsManager {
         });
     }
 
-    public updateEdgePositions(nodes: (NodeData | EntityData)[]) {
-        const nodeMap = new Map<string | number, NodeData | EntityData>();
+    public updateEdgePositions(nodes: EntityData[]) {
+        const nodeMap = new Map<string | number, EntityData>();
         nodes.forEach(node => nodeMap.set(node.id, node));
 
         this.edges.forEach(edgeObj => {

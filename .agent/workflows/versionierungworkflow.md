@@ -2,6 +2,8 @@
 description: Erhöht die Patch-Version (letzte Ziffer) von Nodges um eins
 ---
 
+// turbo-all
+
 # Versionierung Workflow
 
 Dieser Workflow beschreibt, wie die **Patch-Version** (die dritte Zahl) der `package.json` von Nodges erhöht wird.

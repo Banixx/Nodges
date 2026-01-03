@@ -10,6 +10,7 @@ import { CentralEventManager } from './CentralEventManager';
 import { HighlightManager } from '../effects/HighlightManager';
 import { ContextMenu } from '../utils/ContextMenu';
 import { DataEditor } from '../utils/DataEditor';
+import { AxisPositionHelper } from '../utils/AxisPositionHelper';
 
 export class InteractionManager {
     private eventManager: CentralEventManager;
@@ -41,10 +42,12 @@ export class InteractionManager {
     // UI Utilities
     private contextMenu: ContextMenu;
     private dataEditor: DataEditor;
+    private axisPositionHelper: AxisPositionHelper;
 
     // Creation State
     private edgeSourceNode: THREE.Object3D | null = null;
     private isCreatingEdge: boolean = false;
+    private renderer: THREE.WebGLRenderer;
 
     constructor(
         centralEventManager: CentralEventManager,
@@ -52,7 +55,8 @@ export class InteractionManager {
         highlightManager: HighlightManager,
         camera: THREE.Camera,
         controls: any,
-        scene: THREE.Scene
+        scene: THREE.Scene,
+        renderer: THREE.WebGLRenderer
     ) {
         this.eventManager = centralEventManager;
         this.stateManager = stateManager;
@@ -60,6 +64,7 @@ export class InteractionManager {
         this.camera = camera;
         this.controls = controls;
         this.scene = scene;
+        this.renderer = renderer;
 
         this.currentMode = this.modes.SELECT;
 
@@ -76,6 +81,7 @@ export class InteractionManager {
         // UI Utilities
         this.contextMenu = new ContextMenu();
         this.dataEditor = new DataEditor();
+        this.axisPositionHelper = new AxisPositionHelper(scene, camera, renderer);
 
         this.initializeEventSubscriptions();
     }
@@ -163,9 +169,14 @@ export class InteractionManager {
         }
 
         if (clickedObject) {
-            // Wenn wir gerade eine Kante erstellen, ist dieser Klick das Ziel
+            // Wenn wir gerade eine Kante erstellen, ist dieser Klick Quelle oder Ziel
             if (this.isCreatingEdge && clickedObject.userData.type === 'node') {
-                this.finishEdgeCreation(clickedObject);
+                if (!this.edgeSourceNode) {
+                    this.edgeSourceNode = clickedObject;
+                    console.log('[InteractionManager] Source node selected. Select target node.');
+                } else {
+                    this.finishEdgeCreation(clickedObject);
+                }
                 return;
             }
 
@@ -174,7 +185,37 @@ export class InteractionManager {
             this.selectObject(clickedObject, isAdditive);
         } else {
             if (this.isCreatingEdge) {
-                this.cancelEdgeCreation();
+                // Klick ins Leere während Kanten-Erstellung -> Neuen Node an dieser Stelle erstellen
+                this.createNewNode(data.event, (position) => {
+                    const newNodeId = `node_${Date.now()}`;
+
+                    // Node erstellen
+                    this.eventManager.publish('node_created', {
+                        position: position,
+                        data: { id: newNodeId, name: 'Neuer Node' }
+                    });
+
+                    if (!this.edgeSourceNode) {
+                        console.log('[InteractionManager] New node created as source. Please select target node or click empty space again.');
+                        const sub = this.eventManager.subscribe('node_added_to_scene', (nodeData: any) => {
+                            if (nodeData.id === newNodeId) {
+                                this.edgeSourceNode = this.createNodeProxy(nodeData.entity);
+                                this.isCreatingEdge = true;
+                                document.body.style.cursor = 'crosshair';
+                                sub();
+                            }
+                        });
+                    } else {
+                        const sub = this.eventManager.subscribe('node_added_to_scene', (nodeData: any) => {
+                            if (nodeData.id === newNodeId) {
+                                const targetProxy = this.createNodeProxy(nodeData.entity);
+                                this.finishEdgeCreation(targetProxy);
+                                sub();
+                            }
+                        });
+                    }
+                });
+                return;
             }
             this.deselectAll();
         }
@@ -246,11 +287,8 @@ export class InteractionManager {
 
         const { event, clickedObject } = data;
 
-        if (clickedObject) {
-            this.showContextMenu(clickedObject, event);
-        } else {
-            this.contextMenu.hide();
-        }
+        // Zeige Kontextmenü immer, auch ohne Objekt
+        this.showContextMenu(clickedObject, event);
     }
 
     /**
@@ -263,17 +301,13 @@ export class InteractionManager {
 
         switch (event.key) {
             case 'Escape':
-                this.deselectAll();
-                // this.hideInfoPanel(); // Handled by deselectAll -> state change
-                break;
-            case 'Delete':
-                this.deleteSelected();
-                break;
-            case 'Escape':
                 if (this.isCreatingEdge) {
                     this.cancelEdgeCreation();
                 }
                 this.deselectAll();
+                break;
+            case 'Delete':
+                this.deleteSelected();
                 break;
             case 'f':
             case 'F':
@@ -377,27 +411,29 @@ export class InteractionManager {
      * Loescht selektierte Objekte
      */
     deleteSelected() {
-        const selectedObject = this.stateManager.state.selectedObject;
-        if (selectedObject) {
-            // Lsche das Objekt aus der Szene
-            this.scene.remove(selectedObject);
+        const selectedObjects = Array.from(this.stateManager.state.selectedObjects);
+        if (selectedObjects.length > 0) {
+            selectedObjects.forEach(obj => {
+                // Lsche das Objekt aus der Szene
+                this.scene.remove(obj);
 
-            // Entferne Highlight und Ressourcen
-            this.highlightManager.removeHighlight(selectedObject);
+                // Entferne Highlight und Ressourcen
+                this.highlightManager.removeHighlight(obj);
 
-            // Freigabe von Geometrie und Material
-            if ((selectedObject as any).geometry) {
-                (selectedObject as any).geometry.dispose();
-            }
-            if ((selectedObject as any).material) {
-                (selectedObject as any).material.dispose();
-            }
+                // Freigabe von Geometrie und Material
+                if ((obj as any).geometry) {
+                    (obj as any).geometry.dispose();
+                }
+                if ((obj as any).material) {
+                    (obj as any).material.dispose();
+                }
 
-            // Deselektiere das Objekt
+                // Event verffentlichen
+                this.eventManager.publish('object_deleted', { object: obj });
+            });
+
+            // Deselektiere alle
             this.deselectAll();
-
-            // Event verffentlichen
-            this.eventManager.publish('object_deleted', { object: selectedObject });
         }
     }
 
@@ -408,8 +444,6 @@ export class InteractionManager {
         if (!object || !object.userData) return;
 
         const content = this.generateTooltipContent(object);
-        // Tooltip-Position wird vom Event-System bereitgestellt
-        // Note: Position handling needs to be verified in CentralEventManager
         this.stateManager.showTooltip(content, { x: 0, y: 0 }); // Placeholder pos
     }
 
@@ -435,37 +469,43 @@ export class InteractionManager {
     /**
      * Zeigt Context Menu an
      */
-    showContextMenu(object: THREE.Object3D, event: any) {
+    showContextMenu(object: THREE.Object3D | null, event: any) {
+        const hasSelection = this.stateManager.state.selectedObjects.size > 0;
+        const hasNodeSelection = Array.from(this.stateManager.state.selectedObjects)
+            .some(obj => obj.userData.type === 'node');
+
         const options: any[] = [
             {
+                label: 'Neuer Node',
+                action: () => this.createNewNode(event)
+            },
+            {
+                label: 'Neue Edge',
+                action: () => this.startEdgeCreationMode(),
+                disabled: !hasNodeSelection
+            },
+            {
+                label: 'Duplizieren',
+                action: () => this.duplicateSelected(),
+                disabled: !hasSelection
+            }
+        ];
+
+        // Wenn ein Objekt angeklickt wurde, füge objektspezifische Optionen hinzu
+        if (object) {
+            options.unshift({
                 label: 'Data',
                 action: () => {
                     const data = object.userData.nodeData || object.userData.edge || object.userData.entity || {};
                     this.dataEditor.show(data, (updatedData) => {
                         this.eventManager.publish('data_updated', { object, updatedData });
-
-                        // Sofortige Aktualisierung des Info Panels
                         this.stateManager.update({ selectedObject: object });
                     });
                 }
-            }
-        ];
-
-        if (object.userData.type === 'node') {
-            options.push({
-                label: 'neu Edge',
-                action: () => this.startEdgeCreation(object)
             });
         }
 
         this.contextMenu.show(event.clientX, event.clientY, options);
-    }
-
-    private startEdgeCreation(sourceNode: THREE.Object3D) {
-        this.edgeSourceNode = sourceNode;
-        this.isCreatingEdge = true;
-        document.body.style.cursor = 'crosshair';
-        console.log('[InteractionManager] Edge creation started. Select target node.');
     }
 
     private finishEdgeCreation(targetNode: THREE.Object3D) {
@@ -491,44 +531,283 @@ export class InteractionManager {
     }
 
     /**
-     * Setzt Interaction Mode
+     * Erstellt einen neuen Node mit Achsen-Positionierung
      */
-    setMode(mode: string) {
-        if (Object.values(this.modes).includes(mode)) {
-            this.currentMode = mode;
-            this.stateManager.setCurrentTool(mode);
+    private createNewNode(event: MouseEvent, callback?: (pos: THREE.Vector3) => void) {
+        // Prüfe ob eine Edge selektiert ist (Snapping)
+        const selectedEdges = Array.from(this.stateManager.state.selectedObjects)
+            .filter(obj => obj.userData.type === 'edge');
+
+        if (selectedEdges.length > 0 && !callback) {
+            // Edge-Snapping: Node an Edge-Endpunkt einrasten
+            this.createNodeAtEdgeEndpoint(selectedEdges[0], event);
+            return;
+        }
+
+        // Initiale Position aus Raycast ermitteln
+        const rect = this.renderer.domElement.getBoundingClientRect();
+        const mouse = new THREE.Vector2(
+            ((event.clientX - rect.left) / rect.width) * 2 - 1,
+            -((event.clientY - rect.top) / rect.height) * 2 + 1
+        );
+
+        const raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera(mouse, this.camera);
+
+        // Erstelle eine Ebene senkrecht zur Kamera
+        const cameraDirection = new THREE.Vector3();
+        this.camera.getWorldDirection(cameraDirection);
+        const distance = 10; // Abstand von der Kamera
+        const planePoint = new THREE.Vector3().addVectors(
+            this.camera.position,
+            cameraDirection.multiplyScalar(distance)
+        );
+        const plane = new THREE.Plane().setFromNormalAndCoplanarPoint(cameraDirection, planePoint);
+
+        const intersectionPoint = new THREE.Vector3();
+        raycaster.ray.intersectPlane(plane, intersectionPoint);
+
+        if (intersectionPoint) {
+            this.axisPositionHelper.start(intersectionPoint);
+
+            // Event-Listener für Mausbewegung und Klick hinzufügen
+            const mouseMoveHandler = (e: MouseEvent) => {
+                this.axisPositionHelper.update(e);
+            };
+
+            const clickHandler = (e: MouseEvent) => {
+                e.preventDefault();
+                const isFinished = this.axisPositionHelper.confirmAxis();
+
+                if (isFinished) {
+                    // Positionierung abgeschlossen
+                    const finalPosition = this.axisPositionHelper.finish();
+
+                    if (callback) {
+                        callback(finalPosition);
+                    } else {
+                        this.finishNodeCreation(finalPosition);
+                    }
+
+                    // Event-Listener entfernen
+                    this.removeNodeCreationListeners(mouseMoveHandler, clickHandler, cancelHandler, escapeHandler);
+                }
+            };
+
+            const cancelHandler = (e: MouseEvent) => {
+                e.preventDefault();
+                this.axisPositionHelper.cancel();
+                this.removeNodeCreationListeners(mouseMoveHandler, clickHandler, cancelHandler, escapeHandler);
+            };
+
+            const escapeHandler = (e: KeyboardEvent) => {
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    this.axisPositionHelper.cancel();
+                    this.removeNodeCreationListeners(mouseMoveHandler, clickHandler, cancelHandler, escapeHandler);
+                }
+            };
+
+            window.addEventListener('mousemove', mouseMoveHandler);
+            window.addEventListener('click', clickHandler, true); // Capture phase
+            window.addEventListener('contextmenu', cancelHandler);
+            window.addEventListener('keydown', escapeHandler);
         }
     }
 
     /**
-     * Aktiviert/Deaktiviert Interaktionen
+     * Erstellt einen Node an einem Edge-Endpunkt
      */
-    setEnabled(enabled: boolean) {
-        this.isEnabled = enabled;
-        this.stateManager.setInteractionEnabled(enabled);
+    private createNodeAtEdgeEndpoint(edge: THREE.Object3D, event: MouseEvent) {
+        const edgeData = edge.userData.edge || edge.userData.relationship;
+        if (!edgeData) return;
+
+        // Finde Source- und Target-Nodes
+        const sourceNode = this.scene.children.find(obj =>
+            obj.userData.type === 'node' &&
+            (obj.userData.id === edgeData.source || obj.userData.nodeData?.id === edgeData.source)
+        );
+        const targetNode = this.scene.children.find(obj =>
+            obj.userData.type === 'node' &&
+            (obj.userData.id === edgeData.target || obj.userData.nodeData?.id === edgeData.target)
+        );
+
+        if (!sourceNode || !targetNode) return;
+
+        // Bestimme welcher Endpunkt näher zur Maus ist
+        const rect = this.renderer.domElement.getBoundingClientRect();
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        const sourcePos = new THREE.Vector3();
+        sourceNode.getWorldPosition(sourcePos);
+        const sourceScreen = sourcePos.clone().project(this.camera);
+        const sourceScreenX = (sourceScreen.x + 1) / 2 * rect.width;
+        const sourceScreenY = (-sourceScreen.y + 1) / 2 * rect.height;
+
+        const targetPos = new THREE.Vector3();
+        targetNode.getWorldPosition(targetPos);
+        const targetScreen = targetPos.clone().project(this.camera);
+        const targetScreenX = (targetScreen.x + 1) / 2 * rect.width;
+        const targetScreenY = (-targetScreen.y + 1) / 2 * rect.height;
+
+        const distToSource = Math.hypot(mouseX - sourceScreenX, mouseY - sourceScreenY);
+        const distToTarget = Math.hypot(mouseX - targetScreenX, mouseY - targetScreenY);
+
+        const snapPosition = distToSource < distToTarget ? sourcePos : targetPos;
+
+        // Erstelle Node direkt an der Position (ein Klick beendet)
+        this.finishNodeCreation(snapPosition);
     }
 
     /**
-     * Debug-Informationen
+     * Entfernt alle Event-Listener für Node-Erstellung
      */
-    getDebugInfo() {
+    private removeNodeCreationListeners(
+        mouseMoveHandler: (e: MouseEvent) => void,
+        clickHandler: (e: MouseEvent) => void,
+        cancelHandler: (e: MouseEvent) => void,
+        escapeHandler: (e: KeyboardEvent) => void
+    ) {
+        window.removeEventListener('mousemove', mouseMoveHandler);
+        window.removeEventListener('click', clickHandler, true);
+        window.removeEventListener('contextmenu', cancelHandler);
+        window.removeEventListener('keydown', escapeHandler);
+    }
+
+    /**
+     * Beendet die Node-Erstellung und publiziert Event
+     */
+    private finishNodeCreation(position: THREE.Vector3) {
+        this.eventManager.publish('node_created', {
+            position: position,
+            data: {
+                id: `node_${Date.now()}`,
+                name: 'Neuer Node'
+            }
+        });
+    }
+
+    /**
+     * Startet Edge-Erstellung
+     */
+    private startEdgeCreationMode() {
+        this.isCreatingEdge = true;
+        document.body.style.cursor = 'crosshair';
+
+        // Nutze den ersten selektierten Node als Source (falls vorhanden)
+        const selectedNodes = Array.from(this.stateManager.state.selectedObjects)
+            .filter(obj => obj.userData.type === 'node');
+
+        if (selectedNodes.length > 0) {
+            this.edgeSourceNode = selectedNodes[0];
+            console.log('[InteractionManager] Edge creation started with source. Select target node.');
+        } else {
+            this.edgeSourceNode = null;
+            console.log('[InteractionManager] Edge creation started. Select source node (or click empty space).');
+        }
+    }
+
+    /**
+     * Erstellt einen Proxy für einen Node (ähnlich RaycastManager)
+     */
+    private createNodeProxy(entityData: any): THREE.Object3D {
+        const dummyNode = new THREE.Object3D();
+        if (entityData.position) {
+            dummyNode.position.set(entityData.position.x || 0, entityData.position.y || 0, entityData.position.z || 0);
+        }
+
+        dummyNode.userData = {
+            type: 'node',
+            node: { data: entityData },
+            nodeData: entityData,
+            id: entityData.id
+        };
+
+        return dummyNode;
+    }
+
+    /**
+     * Dupliziert alle selektierten Objekte
+     */
+    private duplicateSelected() {
+        const selectedObjects = Array.from(this.stateManager.state.selectedObjects);
+
+        if (selectedObjects.length === 0) return;
+
+        selectedObjects.forEach(obj => {
+            if (obj.userData.type === 'node') {
+                this.duplicateNode(obj);
+            } else if (obj.userData.type === 'edge') {
+                this.duplicateEdge(obj);
+            }
+        });
+    }
+
+    /**
+     * Dupliziert einen einzelnen Node
+     */
+    private duplicateNode(node: THREE.Object3D) {
+        const position = new THREE.Vector3();
+        node.getWorldPosition(position);
+
+        // Offset für Sichtbarkeit
+        position.x += 2;
+        position.y += 2;
+
+        const nodeData = node.userData.nodeData || node.userData.entity || {};
+
+        this.eventManager.publish('node_created', {
+            position: position,
+            data: {
+                ...nodeData,
+                id: `node_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                name: `${nodeData.name || 'Node'} (Kopie)`
+            }
+        });
+    }
+
+    /**
+     * Dupliziert eine einzelne Edge
+     */
+    private duplicateEdge(edge: THREE.Object3D) {
+        const edgeData = edge.userData.edge || edge.userData.relationship || {};
+
+        this.eventManager.publish('edge_created', {
+            source: edgeData.source,
+            target: edgeData.target,
+            data: {
+                ...edgeData,
+                id: `edge_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                name: `${edgeData.name || 'Edge'} (Kopie)`
+            }
+        });
+    }
+
+    public setMode(mode: string) {
+        this.currentMode = mode;
+        this.eventManager.publish('mode_changed', { mode });
+        if (mode === this.modes.PAN) {
+            this.controls.enablePan = true;
+        } else {
+            this.controls.enablePan = false;
+        }
+    }
+
+    public setEnabled(enabled: boolean) {
+        this.isEnabled = enabled;
+        this.controls.enabled = enabled;
+    }
+
+    public getDebugInfo() {
         return {
+            mode: this.currentMode,
             isEnabled: this.isEnabled,
-            currentMode: this.currentMode,
-            isDragging: this.isDragging,
-            dragStartPosition: this.dragStartPosition,
-            lastInteractionTime: this.lastInteractionTime,
-            infoPanelVisible: this.stateManager.state.infoPanelVisible,
-            selectedObject: this.stateManager.state.selectedObject?.userData?.type || null,
-            hoveredObject: this.stateManager.state.hoveredObject?.userData?.type || null
+            selectedCount: this.stateManager.state.selectedObjects.size
         };
     }
 
-    /**
-     * Cleanup
-     */
-    destroy() {
-        // Event-Subscriptions werden automatisch durch CentralEventManager bereinigt
-        this.hideTooltip();
+    public destroy() {
+        // Cleanup subscriptions if needed
     }
 }

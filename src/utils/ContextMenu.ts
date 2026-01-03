@@ -5,6 +5,7 @@ export interface ContextMenuOption {
     label: string;
     action: () => void;
     icon?: string;
+    disabled?: boolean;
 }
 
 export class ContextMenu {
@@ -34,12 +35,17 @@ export class ContextMenu {
         options.forEach(option => {
             const item = document.createElement('div');
             item.className = 'context-menu-item';
+            if (option.disabled) {
+                item.classList.add('disabled');
+            }
             item.textContent = option.label;
-            item.onclick = (e) => {
-                e.stopPropagation();
-                option.action();
-                this.hide();
-            };
+            if (!option.disabled) {
+                item.onclick = (e) => {
+                    e.stopPropagation();
+                    option.action();
+                    this.hide();
+                };
+            }
             this.container.appendChild(item);
         });
 

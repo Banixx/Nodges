@@ -322,7 +322,6 @@
                     "z": 0
                 }
             },
-            // Gehirnregionen (21 Beispiele, in Wirklichkeit deutlich mehr!)
             {
                 "id": "n10",
                 "type": "Gehirnregion",
@@ -453,7 +452,6 @@
                     "z": -9
                 }
             },
-            // Rückenmark und Segmente
             {
                 "id": "n30",
                 "type": "Gehirnregion",
@@ -504,7 +502,6 @@
                     "z": 1
                 }
             },
-            // Gliazellen (Beispielhaft)
             {
                 "id": "n40",
                 "type": "Glia",
@@ -545,7 +542,6 @@
                     "z": 8
                 }
             },
-            // Beispielhafte Sinnesorgane
             {
                 "id": "n50",
                 "type": "Sinnesorgan",
@@ -596,7 +592,6 @@
                     "z": 0
                 }
             },
-            // Beispielhafte Nerven (PNS)
             {
                 "id": "n60",
                 "type": "Nerv",
@@ -637,7 +632,6 @@
                     "z": 1
                 }
             },
-            // Rezeptoren
             {
                 "id": "n70",
                 "type": "Rezeptor",
@@ -688,7 +682,6 @@
                     "z": 1
                 }
             },
-            // Effektoren (Beispiele)
             {
                 "id": "n80",
                 "type": "Effektor",
@@ -719,7 +712,6 @@
                     "z": -7
                 }
             },
-            // Beispielhafte Nervenfaserbahnen
             {
                 "id": "n90",
                 "type": "Nervenfaserbahn",
@@ -770,7 +762,6 @@
                     "z": 3
                 }
             },
-            // Beispielhafte Nervenzellen (Generisch, als Kopien von einzelnen Bahnen/Räumen, durchnummeriert)
             {
                 "id": "n100",
                 "type": "Nervenzelle",
@@ -871,9 +862,6 @@
                     "z": 7
                 }
             },
-            // Mehr Nervenzellen im peripheren System (damit über 100 Knoten)
-            // Diese werden algorithmisch generiert (n110...n150)
-            // Beispiel: sensorische Neuronen auf Haut (Schritt von x = 26 bis x = 38, 14 Elemente)
             {
                 "id": "n110",
                 "type": "Nervenzelle",
@@ -974,7 +962,6 @@
                     "z": 0
                 }
             },
-            // Motorneuronen (n120...n129)
             {
                 "id": "n120",
                 "type": "Nervenzelle",
@@ -1035,8 +1022,6 @@
                     "z": -8
                 }
             },
-            // Weitere Nervenzellen bis n150
-            // [Hier könnten algorithmisch weitere Zellen generiert werden.]
             {
                 "id": "n126",
                 "type": "Nervenzelle",
@@ -1077,8 +1062,6 @@
                     "z": 7
                 }
             },
-            // (n130-n160: weitere generische Nervenzellen, z.B. in Sensorikfeldern, PNS und ZNS - siehe Muster oben)
-            // Zentrale Nodes zur besseren Übersicht
             {
                 "id": "n1000",
                 "type": "ZentralesNervensystem",
@@ -1101,7 +1084,6 @@
             }
         ],
         "relationships": [
-            // Zentral <-> Peripher (Struktur)
             {
                 "id": "e1",
                 "type": "BestehtAus",
@@ -1123,7 +1105,6 @@
                 "target": "n2",
                 "label": "steuert"
             },
-            // Großhirn Aufteilung
             {
                 "id": "e10",
                 "type": "BestehtAus",
@@ -1152,7 +1133,6 @@
                 "target": "n14",
                 "label": "enthält Okzipitallappen"
             },
-            // Gliazellen - Regionen
             {
                 "id": "e45",
                 "type": "Verbindet",
@@ -1174,7 +1154,6 @@
                 "target": "n42",
                 "label": "enthalten Schwann-Zellen"
             },
-            // Sinnesorgane und Rezeptoren
             {
                 "id": "e50",
                 "type": "BestehtAus",
@@ -1210,7 +1189,6 @@
                 "target": "n74",
                 "label": "enthält Thermorezeptoren"
             },
-            // Nerv -> Sinnesorgan
             {
                 "id": "e60",
                 "type": "Innerviert",
@@ -1232,7 +1210,6 @@
                 "target": "n54",
                 "label": "Trigeminus innerviert Haut"
             },
-            // Signalübertragung (rezeptorisch)
             {
                 "id": "e70",
                 "type": "SignalUebertragung",
@@ -1261,7 +1238,6 @@
                 "target": "n62",
                 "label": "Signal - Temperatur"
             },
-            // ZNS zu Motoneuronen/Effektoren
             {
                 "id": "e80",
                 "type": "Innerviert",
@@ -1283,7 +1259,6 @@
                 "target": "n82",
                 "label": "motorische Steuerung glatter Muskel"
             },
-            // Bahnen zwischen Regionen
             {
                 "id": "e90",
                 "type": "Verbindet",
@@ -1298,7 +1273,6 @@
                 "target": "n30",
                 "label": "Mittelhirn -> Rückenmark"
             },
-            // Aufgliederung des Rückenmarks
             {
                 "id": "e95",
                 "type": "BestehtAus",
@@ -1327,7 +1301,6 @@
                 "target": "n34",
                 "label": "geht über in Thorakalsegment 2"
             },
-            // Sensorische Nervenzellen der Haut werden mit Rezeptor(n74) und Nerv(n62) verbunden
             {
                 "id": "e110",
                 "type": "SignalUebertragung",
@@ -1356,7 +1329,6 @@
                 "target": "n62",
                 "label": "zum Trigeminusnerv"
             },
-            // Pyramidenbahn zu Motoneuronen
             {
                 "id": "e120",
                 "type": "Verbindet",
@@ -1364,7 +1336,6 @@
                 "target": "n108",
                 "label": "pyramidal-motorischer Fluss"
             },
-            // ZNS interne Verschaltungen
             {
                 "id": "e130",
                 "type": "EmpfaengtSignal",
@@ -1386,7 +1357,6 @@
                 "target": "n101",
                 "label": "Interneuron -> Motoneuron"
             },
-            // Bahnen zwischen Nervenfaserbahnen und Regionen/Motoneuronen
             {
                 "id": "e140",
                 "type": "Verbindet",
@@ -1401,7 +1371,6 @@
                 "target": "n17",
                 "label": "Tractus spinothalamicus -> Thalamus"
             },
-            // Beispielhafte weitere signalübertragende Beziehungen (mit Animation/Pulse)
             {
                 "id": "e150",
                 "type": "SignalUebertragung",
@@ -1416,7 +1385,6 @@
                 "target": "n1001",
                 "label": "zum Rückenmark"
             },
-            // Zentrale Bündelungen
             {
                 "id": "e200",
                 "type": "BestehtAus",
@@ -1438,8 +1406,6 @@
                 "target": "n60",
                 "label": "Teil des PNS"
             },
-            // (Viele weitere Verbindungen wie oben nach Belieben & Logik hinzufügen, bis über 200 Edges...)
-            // ...
             {
                 "id": "e999",
                 "type": "BestehtAus",

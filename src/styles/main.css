@@ -364,6 +364,17 @@ input[type="range"] {
   color: white;
 }
 
+.context-menu-item.disabled {
+  color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.context-menu-item.disabled:hover {
+  background-color: transparent;
+  color: var(--text-muted);
+}
+
 /* --- Modal Editor --- */
 .modal-overlay {
   position: fixed;

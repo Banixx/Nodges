@@ -2,119 +2,32 @@ import {
     GraphData,
     EntityData,
     RelationshipData,
-    NodeData,
-    EdgeData,
-    DataModel,
     GraphDataSchema,
     PropertySchema
 } from '../types';
 
 /**
- * DataParser - Parses both legacy and future format graph data
- * Provides backward compatibility while supporting the new unified format
+ * DataParser - Parses graph data in the unified format
  */
 export class DataParser {
     /**
-     * Parse graph data from either legacy or future format
+     * Parse graph data
      */
     static parse(rawData: any): GraphData {
-        // Detect format
-        if (this.isLegacyFormat(rawData)) {
-            console.log('Detected legacy format, converting...');
-            return this.convertLegacyFormat(rawData);
-        } else if (this.isFutureFormat(rawData)) {
-            console.log('Detected future format');
+        if (this.isFutureFormat(rawData)) {
+            console.log('Parsing graph data...');
             return this.normalizeFutureFormat(rawData);
         } else {
-            throw new Error('Unknown data format');
+            throw new Error('Invalid data format. Expected format with data.entities and data.relationships');
         }
     }
 
     /**
-     * Check if data is in legacy format (has nodes/edges)
-     */
-    private static isLegacyFormat(data: any): boolean {
-        return data.nodes !== undefined || data.edges !== undefined;
-    }
-
-    /**
-     * Check if data is in future format (has data.entities/relationships)
+     * Check if data is in the correct format (has data.entities/relationships)
      */
     private static isFutureFormat(data: any): boolean {
         return data.data !== undefined &&
             (data.data.entities !== undefined || data.data.relationships !== undefined);
-    }
-
-    /**
-     * Convert legacy format to future format
-     */
-    private static convertLegacyFormat(legacyData: any): GraphData {
-        // ... (Legacy conversion logic remains same, assuming it was working correctly)
-        // Re-implementing briefly to ensure full file integrity or just skipping if Replace allows partial?
-        // Using replace_file_content requires full replacement of the context?
-        // I will copy the existing legacy logic to be safe.
-        const nodes: NodeData[] = legacyData.nodes || [];
-        const edges: EdgeData[] = legacyData.edges || [];
-
-        const entities: EntityData[] = nodes.map((node, index) => {
-            const entity: EntityData = {
-                id: node.id !== undefined ? String(node.id) : `entity_${index}`,
-                type: node.type || 'node',
-                label: node.name || node.label || `Entity ${index}`,
-            };
-            if (node.x !== undefined && node.y !== undefined && node.z !== undefined) {
-                entity.position = { x: node.x, y: node.y, z: node.z };
-            }
-            Object.keys(node).forEach(key => {
-                if (!['id', 'name', 'label', 'x', 'y', 'z', 'type'].includes(key)) {
-                    entity[key] = node[key];
-                }
-            });
-            return entity;
-        });
-
-        const relationships: RelationshipData[] = edges.map((edge, index) => {
-            let source: string;
-            let target: string;
-
-            if (edge.source !== undefined) source = String(edge.source);
-            else if (edge.start !== undefined) source = typeof edge.start === 'number' ? (entities[edge.start]?.id || `entity_${edge.start}`) : String(edge.start);
-            else throw new Error(`Edge ${index} missing source/start`);
-
-            if (edge.target !== undefined) target = String(edge.target);
-            else if (edge.end !== undefined) target = typeof edge.end === 'number' ? (entities[edge.end]?.id || `entity_${edge.end}`) : String(edge.end);
-            else throw new Error(`Edge ${index} missing target/end`);
-
-            const relationship: RelationshipData = {
-                id: edge.id || `relationship_${index}`,
-                type: edge.type || edge.relationship || 'connection',
-                source,
-                target,
-                label: edge.name || edge.label,
-            };
-
-            Object.keys(edge).forEach(key => {
-                if (!['id', 'name', 'label', 'type', 'source', 'target', 'start', 'end', 'relationship'].includes(key)) {
-                    relationship[key] = edge[key];
-                }
-            });
-            return relationship;
-        });
-
-        const dataModel = this.generateDataModelFromData(entities, relationships);
-
-        return {
-            system: legacyData.system || legacyData.metadata?.title || 'Converted Legacy Graph',
-            metadata: {
-                created: new Date().toISOString(),
-                version: '1.0',
-                author: 'DataParser (auto-converted)',
-                description: legacyData.metadata?.description || 'Automatically converted from legacy format',
-                ...legacyData.metadata
-            },
-            dataModel,
-            data: { entities, relationships }
-        };
     }
 
     /**
@@ -248,46 +161,6 @@ export class DataParser {
             return isNaN(date.getTime()) ? 0 : date.getTime();
         }
         return parseFloat(value) || 0;
-    }
-
-
-    /**
-     * Generate a basic data model by analyzing the actual data
-     */
-    private static generateDataModelFromData(
-        entities: EntityData[],
-        relationships: RelationshipData[]
-    ): DataModel {
-        const entityTypes = new Set<string>();
-        const relationshipTypes = new Set<string>();
-
-        entities.forEach(e => entityTypes.add(e.type));
-        relationships.forEach(r => relationshipTypes.add(r.type));
-
-        const dataModel: DataModel = {
-            entities: {},
-            relationships: {}
-        };
-
-        // Create basic schemas for each type
-        entityTypes.forEach(type => {
-            dataModel.entities[type] = {
-                properties: {
-                    position: {
-                        type: 'spatial',
-                        coordinates: ['x', 'y', 'z']
-                    }
-                }
-            };
-        });
-
-        relationshipTypes.forEach(type => {
-            dataModel.relationships[type] = {
-                properties: {}
-            };
-        });
-
-        return dataModel;
     }
 
     /**
