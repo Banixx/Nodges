@@ -1,0 +1,758 @@
+{
+    "system": "Feature Showcase System",
+    "metadata": {
+        "created": "2026-01-01T23:30:00Z",
+        "version": "1.2",
+        "author": "Antigravity",
+        "description": "Ein umfangreiches Testsystem mit verschiedenen Clustern zur Demonstration von Pulse-Animationen, dichten Netzwerken, Mehrfachkanten und Datenstrukturen."
+    },
+    "dataModel": {
+        "entities": {
+            "generator": {
+                "properties": {
+                    "power": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            100
+                        ]
+                    }
+                }
+            },
+            "consumer": {
+                "properties": {
+                    "load": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            100
+                        ]
+                    }
+                }
+            },
+            "structure": {
+                "properties": {
+                    "importance": {
+                        "type": "categorical",
+                        "values": [
+                            "high",
+                            "medium",
+                            "low"
+                        ]
+                    }
+                }
+            },
+            "data_node": {
+                "properties": {
+                    "status": {
+                        "type": "categorical",
+                        "values": [
+                            "active",
+                            "idle",
+                            "error"
+                        ]
+                    },
+                    "temperature": {
+                        "type": "continuous"
+                    },
+                    "last_sync": {
+                        "type": "temporal"
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "power_line": {
+                "properties": {
+                    "voltage": {
+                        "type": "continuous"
+                    }
+                }
+            },
+            "mesh_link": {
+                "properties": {
+                    "bandwidth": {
+                        "type": "continuous"
+                    }
+                }
+            },
+            "stress_edge": {
+                "properties": {
+                    "index": {
+                        "type": "continuous"
+                    }
+                }
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "generator": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ff4d4d"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        4.0,
+                        4.0
+                    ]
+                }
+            },
+            "consumer": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#4da6ff"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        2.5,
+                        2.5
+                    ]
+                }
+            },
+            "power_line": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ffff66"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.15,
+                        0.15
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 2.5,
+                        "speed": 1.5
+                    }
+                }
+            },
+            "structure": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#aaaaaa"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        2.0,
+                        2.0
+                    ]
+                }
+            },
+            "mesh_link": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#888888"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.05,
+                        0.05
+                    ]
+                },
+                "opacity": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.4,
+                        0.4
+                    ]
+                }
+            },
+            "stress_edge": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ff00ff"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.1,
+                        0.1
+                    ]
+                }
+            },
+            "data_node": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#00ffcc"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.0,
+                        3.0
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "p_gen",
+                "type": "generator",
+                "label": "Haupt-Reaktor",
+                "position": {
+                    "x": -40,
+                    "y": 0,
+                    "z": -40
+                },
+                "power": 85
+            },
+            {
+                "id": "p_c1",
+                "type": "consumer",
+                "label": "Stadt West",
+                "position": {
+                    "x": -55,
+                    "y": 5,
+                    "z": -50
+                },
+                "load": 40
+            },
+            {
+                "id": "p_c2",
+                "type": "consumer",
+                "label": "Stadt Nord",
+                "position": {
+                    "x": -40,
+                    "y": -5,
+                    "z": -60
+                },
+                "load": 65
+            },
+            {
+                "id": "p_c3",
+                "type": "consumer",
+                "label": "Industriegebiet",
+                "position": {
+                    "x": -25,
+                    "y": 10,
+                    "z": -50
+                },
+                "load": 90
+            },
+            {
+                "id": "p_c4",
+                "type": "consumer",
+                "label": "Hafen",
+                "position": {
+                    "x": -30,
+                    "y": -5,
+                    "z": -25
+                },
+                "load": 30
+            },
+            {
+                "id": "p_c5",
+                "type": "consumer",
+                "label": "Forschungszentrum",
+                "position": {
+                    "x": -50,
+                    "y": 0,
+                    "z": -25
+                },
+                "load": 55
+            },
+            {
+                "id": "m1",
+                "type": "structure",
+                "label": "Mesh Node A",
+                "position": {
+                    "x": 40,
+                    "y": 0,
+                    "z": -40
+                }
+            },
+            {
+                "id": "m2",
+                "type": "structure",
+                "label": "Mesh Node B",
+                "position": {
+                    "x": 55,
+                    "y": 5,
+                    "z": -35
+                }
+            },
+            {
+                "id": "m3",
+                "type": "structure",
+                "label": "Mesh Node C",
+                "position": {
+                    "x": 60,
+                    "y": -5,
+                    "z": -45
+                }
+            },
+            {
+                "id": "m4",
+                "type": "structure",
+                "label": "Mesh Node D",
+                "position": {
+                    "x": 50,
+                    "y": 10,
+                    "z": -55
+                }
+            },
+            {
+                "id": "m5",
+                "type": "structure",
+                "label": "Mesh Node E",
+                "position": {
+                    "x": 35,
+                    "y": -10,
+                    "z": -50
+                }
+            },
+            {
+                "id": "m6",
+                "type": "structure",
+                "label": "Mesh Node F",
+                "position": {
+                    "x": 30,
+                    "y": 5,
+                    "z": -35
+                }
+            },
+            {
+                "id": "s1",
+                "type": "structure",
+                "label": "Stress A",
+                "position": {
+                    "x": -40,
+                    "y": 0,
+                    "z": 40
+                }
+            },
+            {
+                "id": "s2",
+                "type": "structure",
+                "label": "Stress B",
+                "position": {
+                    "x": -20,
+                    "y": 0,
+                    "z": 40
+                }
+            },
+            {
+                "id": "t_root",
+                "type": "structure",
+                "label": "Zentrale",
+                "position": {
+                    "x": 40,
+                    "y": 30,
+                    "z": 40
+                },
+                "importance": "high"
+            },
+            {
+                "id": "t_b1",
+                "type": "structure",
+                "label": "Zweig Alpha",
+                "position": {
+                    "x": 30,
+                    "y": 15,
+                    "z": 30
+                },
+                "importance": "medium"
+            },
+            {
+                "id": "t_b2",
+                "type": "structure",
+                "label": "Zweig Beta",
+                "position": {
+                    "x": 50,
+                    "y": 15,
+                    "z": 50
+                },
+                "importance": "medium"
+            },
+            {
+                "id": "t_l1",
+                "type": "structure",
+                "label": "Blatt 1",
+                "position": {
+                    "x": 20,
+                    "y": 0,
+                    "z": 20
+                },
+                "importance": "low"
+            },
+            {
+                "id": "t_l2",
+                "type": "structure",
+                "label": "Blatt 2",
+                "position": {
+                    "x": 35,
+                    "y": 0,
+                    "z": 25
+                },
+                "importance": "low"
+            },
+            {
+                "id": "t_l3",
+                "type": "structure",
+                "label": "Blatt 3",
+                "position": {
+                    "x": 45,
+                    "y": 0,
+                    "z": 55
+                },
+                "importance": "low"
+            },
+            {
+                "id": "t_l4",
+                "type": "structure",
+                "label": "Blatt 4",
+                "position": {
+                    "x": 60,
+                    "y": 0,
+                    "z": 60
+                },
+                "importance": "low"
+            },
+            {
+                "id": "d1",
+                "type": "data_node",
+                "label": "Sensor 01",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "status": "active",
+                "temperature": 24.5,
+                "last_sync": "2026-01-01T22:00:00Z",
+                "firmware": "v2.1.3",
+                "battery": "89%"
+            },
+            {
+                "id": "d2",
+                "type": "data_node",
+                "label": "Sensor 02",
+                "position": {
+                    "x": 0,
+                    "y": 10,
+                    "z": 5
+                },
+                "status": "active",
+                "temperature": 22.8,
+                "last_sync": "2026-01-01T22:05:00Z",
+                "firmware": "v2.1.3",
+                "battery": "92%"
+            },
+            {
+                "id": "d3",
+                "type": "data_node",
+                "label": "Sensor 03",
+                "position": {
+                    "x": 5,
+                    "y": -5,
+                    "z": 10
+                },
+                "status": "idle",
+                "temperature": 19.2,
+                "last_sync": "2026-01-01T21:45:00Z",
+                "firmware": "v2.1.0",
+                "battery": "45%"
+            }
+        ],
+        "relationships": [
+            {
+                "id": "ep1",
+                "type": "power_line",
+                "source": "p_gen",
+                "target": "p_c1",
+                "label": "Line 1",
+                "voltage": 220000
+            },
+            {
+                "id": "ep2",
+                "type": "power_line",
+                "source": "p_gen",
+                "target": "p_c2",
+                "label": "Line 2",
+                "voltage": 220000
+            },
+            {
+                "id": "ep3",
+                "type": "power_line",
+                "source": "p_gen",
+                "target": "p_c3",
+                "label": "Line 3",
+                "voltage": 380000
+            },
+            {
+                "id": "ep4",
+                "type": "power_line",
+                "source": "p_gen",
+                "target": "p_c4",
+                "label": "Line 4",
+                "voltage": 110000
+            },
+            {
+                "id": "ep5",
+                "type": "power_line",
+                "source": "p_gen",
+                "target": "p_c5",
+                "label": "Line 5",
+                "voltage": 220000
+            },
+            {
+                "id": "em12",
+                "type": "mesh_link",
+                "source": "m1",
+                "target": "m2"
+            },
+            {
+                "id": "em13",
+                "type": "mesh_link",
+                "source": "m1",
+                "target": "m3"
+            },
+            {
+                "id": "em14",
+                "type": "mesh_link",
+                "source": "m1",
+                "target": "m4"
+            },
+            {
+                "id": "em15",
+                "type": "mesh_link",
+                "source": "m1",
+                "target": "m5"
+            },
+            {
+                "id": "em16",
+                "type": "mesh_link",
+                "source": "m1",
+                "target": "m6"
+            },
+            {
+                "id": "em23",
+                "type": "mesh_link",
+                "source": "m2",
+                "target": "m3"
+            },
+            {
+                "id": "em24",
+                "type": "mesh_link",
+                "source": "m2",
+                "target": "m4"
+            },
+            {
+                "id": "em25",
+                "type": "mesh_link",
+                "source": "m2",
+                "target": "m5"
+            },
+            {
+                "id": "em26",
+                "type": "mesh_link",
+                "source": "m2",
+                "target": "m6"
+            },
+            {
+                "id": "em34",
+                "type": "mesh_link",
+                "source": "m3",
+                "target": "m4"
+            },
+            {
+                "id": "em35",
+                "type": "mesh_link",
+                "source": "m3",
+                "target": "m5"
+            },
+            {
+                "id": "em36",
+                "type": "mesh_link",
+                "source": "m3",
+                "target": "m6"
+            },
+            {
+                "id": "em45",
+                "type": "mesh_link",
+                "source": "m4",
+                "target": "m5"
+            },
+            {
+                "id": "em46",
+                "type": "mesh_link",
+                "source": "m4",
+                "target": "m6"
+            },
+            {
+                "id": "em56",
+                "type": "mesh_link",
+                "source": "m5",
+                "target": "m6"
+            },
+            {
+                "id": "es1",
+                "type": "stress_edge",
+                "source": "s1",
+                "target": "s2",
+                "label": "Parallel 1"
+            },
+            {
+                "id": "es2",
+                "type": "stress_edge",
+                "source": "s1",
+                "target": "s2",
+                "label": "Parallel 2"
+            },
+            {
+                "id": "es3",
+                "type": "stress_edge",
+                "source": "s1",
+                "target": "s2",
+                "label": "Parallel 3"
+            },
+            {
+                "id": "es4",
+                "type": "stress_edge",
+                "source": "s2",
+                "target": "s1",
+                "label": "Parallel 4"
+            },
+            {
+                "id": "es5",
+                "type": "stress_edge",
+                "source": "s2",
+                "target": "s1",
+                "label": "Parallel 5"
+            },
+            {
+                "id": "es6",
+                "type": "stress_edge",
+                "source": "s1",
+                "target": "s2",
+                "label": "Parallel 6"
+            },
+            {
+                "id": "es7",
+                "type": "stress_edge",
+                "source": "s1",
+                "target": "s2",
+                "label": "Parallel 7"
+            },
+            {
+                "id": "es8",
+                "type": "stress_edge",
+                "source": "s2",
+                "target": "s1",
+                "label": "Parallel 8"
+            },
+            {
+                "id": "es9",
+                "type": "stress_edge",
+                "source": "s1",
+                "target": "s2",
+                "label": "Parallel 9"
+            },
+            {
+                "id": "es10",
+                "type": "stress_edge",
+                "source": "s1",
+                "target": "s2",
+                "label": "Parallel 10"
+            },
+            {
+                "id": "et1",
+                "type": "mesh_link",
+                "source": "t_root",
+                "target": "t_b1"
+            },
+            {
+                "id": "et2",
+                "type": "mesh_link",
+                "source": "t_root",
+                "target": "t_b2"
+            },
+            {
+                "id": "et3",
+                "type": "mesh_link",
+                "source": "t_b1",
+                "target": "t_l1"
+            },
+            {
+                "id": "et4",
+                "type": "mesh_link",
+                "source": "t_b1",
+                "target": "t_l2"
+            },
+            {
+                "id": "et5",
+                "type": "mesh_link",
+                "source": "t_b2",
+                "target": "t_l3"
+            },
+            {
+                "id": "et6",
+                "type": "mesh_link",
+                "source": "t_b2",
+                "target": "t_l4"
+            },
+            {
+                "id": "ed1",
+                "type": "mesh_link",
+                "source": "d1",
+                "target": "t_root",
+                "label": "Report"
+            },
+            {
+                "id": "ed2",
+                "type": "mesh_link",
+                "source": "d2",
+                "target": "t_root",
+                "label": "Report"
+            },
+            {
+                "id": "ed3",
+                "type": "mesh_link",
+                "source": "d3",
+                "target": "t_root",
+                "label": "Report"
+            }
+        ]
+    }
+}

@@ -47,44 +47,42 @@ export class RaycastManager {
         // Perform raycast against only interactive meshes
         const intersects = this.raycaster.intersectObjects(interactiveMeshes, false);
 
-        // 1. Check for Edges (Mesh with curve data)
-        const edgeIntersect = intersects.find(intersect =>
-            intersect.object.userData &&
-            intersect.object.userData.type === 'edge' &&
-            intersect.object.userData.curve
-        );
+        if (intersects.length === 0) return null;
 
-        if (edgeIntersect) {
-            return edgeIntersect.object;
-        }
+        // Gehe die Treffer der Reihe nach durch (sie sind nach Entfernung sortiert)
+        for (const intersect of intersects) {
+            const object = intersect.object;
+            const userData = object.userData;
 
-        // 2. Check for Nodes (InstancedMesh)
-        const nodeIntersect = intersects.find(intersect =>
-            (intersect.object as any).isInstancedMesh && intersect.object.userData.type === 'node_instanced'
-        );
+            // 1. Check for Edges (Mesh with curve data)
+            if (userData && userData.type === 'edge' && userData.curve) {
+                return object;
+            }
 
-        if (nodeIntersect && nodeIntersect.instanceId !== undefined && this.nodeManager) {
-            const mesh = nodeIntersect.object as THREE.InstancedMesh;
-            const geometryType = mesh.userData.geometryType || 'sphere';
+            // 2. Check for Nodes (InstancedMesh)
+            if ((object as any).isInstancedMesh && userData.type === 'node_instanced' &&
+                intersect.instanceId !== undefined && this.nodeManager) {
 
-            // Retrieve real EntityData from manager
-            const nodeData = this.nodeManager.getNodeAt(geometryType, nodeIntersect.instanceId);
+                const mesh = object as THREE.InstancedMesh;
+                const geometryType = mesh.userData.geometryType || 'sphere';
+                const nodeData = this.nodeManager.getNodeAt(geometryType, intersect.instanceId);
 
-            if (nodeData && nodeData.position) {
-                // Return a proxy object that looks like a selected node
-                const dummyNode = new THREE.Object3D();
-                dummyNode.position.set(nodeData.position.x || 0, nodeData.position.y || 0, nodeData.position.z || 0);
+                if (nodeData && nodeData.position) {
+                    // Return a proxy object that looks like a selected node
+                    const dummyNode = new THREE.Object3D();
+                    dummyNode.position.set(nodeData.position.x || 0, nodeData.position.y || 0, nodeData.position.z || 0);
 
-                dummyNode.userData = {
-                    type: 'node',
-                    node: { data: nodeData },
-                    nodeData: nodeData,
-                    geometryType: geometryType,
-                    id: nodeData.id,
-                    instanceId: nodeIntersect.instanceId
-                };
+                    dummyNode.userData = {
+                        type: 'node',
+                        node: { data: nodeData },
+                        nodeData: nodeData,
+                        geometryType: geometryType,
+                        id: nodeData.id,
+                        instanceId: intersect.instanceId
+                    };
 
-                return dummyNode;
+                    return dummyNode;
+                }
             }
         }
 

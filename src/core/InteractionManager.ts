@@ -8,6 +8,8 @@ import { StateManager } from './StateManager';
 // @ts-ignore
 import { CentralEventManager } from './CentralEventManager';
 import { HighlightManager } from '../effects/HighlightManager';
+import { ContextMenu } from '../utils/ContextMenu';
+import { DataEditor } from '../utils/DataEditor';
 
 export class InteractionManager {
     private eventManager: CentralEventManager;
@@ -36,6 +38,14 @@ export class InteractionManager {
     private lastInteractionTime: number;
     private interactionCooldown: number; // ms
 
+    // UI Utilities
+    private contextMenu: ContextMenu;
+    private dataEditor: DataEditor;
+
+    // Creation State
+    private edgeSourceNode: THREE.Object3D | null = null;
+    private isCreatingEdge: boolean = false;
+
     constructor(
         centralEventManager: CentralEventManager,
         stateManager: StateManager,
@@ -62,6 +72,10 @@ export class InteractionManager {
         // Timing
         this.lastInteractionTime = 0;
         this.interactionCooldown = 50; // ms
+
+        // UI Utilities
+        this.contextMenu = new ContextMenu();
+        this.dataEditor = new DataEditor();
 
         this.initializeEventSubscriptions();
     }
@@ -149,10 +163,19 @@ export class InteractionManager {
         }
 
         if (clickedObject) {
+            // Wenn wir gerade eine Kante erstellen, ist dieser Klick das Ziel
+            if (this.isCreatingEdge && clickedObject.userData.type === 'node') {
+                this.finishEdgeCreation(clickedObject);
+                return;
+            }
+
             // Die Daten kommen von CentralEventManager via notifySubscribers
             const isAdditive = !!(data.event?.ctrlKey || data.event?.shiftKey);
             this.selectObject(clickedObject, isAdditive);
         } else {
+            if (this.isCreatingEdge) {
+                this.cancelEdgeCreation();
+            }
             this.deselectAll();
         }
     }
@@ -225,6 +248,8 @@ export class InteractionManager {
 
         if (clickedObject) {
             this.showContextMenu(clickedObject, event);
+        } else {
+            this.contextMenu.hide();
         }
     }
 
@@ -243,6 +268,12 @@ export class InteractionManager {
                 break;
             case 'Delete':
                 this.deleteSelected();
+                break;
+            case 'Escape':
+                if (this.isCreatingEdge) {
+                    this.cancelEdgeCreation();
+                }
+                this.deselectAll();
                 break;
             case 'f':
             case 'F':
@@ -404,8 +435,59 @@ export class InteractionManager {
     /**
      * Zeigt Context Menu an
      */
-    showContextMenu(_object: THREE.Object3D, _event: any) {
-        // Context Menu Implementierung - spaeter
+    showContextMenu(object: THREE.Object3D, event: any) {
+        const options: any[] = [
+            {
+                label: 'Data',
+                action: () => {
+                    const data = object.userData.nodeData || object.userData.edge || object.userData.entity || {};
+                    this.dataEditor.show(data, (updatedData) => {
+                        this.eventManager.publish('data_updated', { object, updatedData });
+
+                        // Sofortige Aktualisierung des Info Panels
+                        this.stateManager.update({ selectedObject: object });
+                    });
+                }
+            }
+        ];
+
+        if (object.userData.type === 'node') {
+            options.push({
+                label: 'neu Edge',
+                action: () => this.startEdgeCreation(object)
+            });
+        }
+
+        this.contextMenu.show(event.clientX, event.clientY, options);
+    }
+
+    private startEdgeCreation(sourceNode: THREE.Object3D) {
+        this.edgeSourceNode = sourceNode;
+        this.isCreatingEdge = true;
+        document.body.style.cursor = 'crosshair';
+        console.log('[InteractionManager] Edge creation started. Select target node.');
+    }
+
+    private finishEdgeCreation(targetNode: THREE.Object3D) {
+        if (!this.edgeSourceNode) return;
+
+        const sourceId = this.edgeSourceNode.userData.id || this.edgeSourceNode.userData.nodeData?.id;
+        const targetId = targetNode.userData.id || targetNode.userData.nodeData?.id;
+
+        if (sourceId && targetId) {
+            this.eventManager.publish('edge_created', {
+                source: sourceId,
+                target: targetId
+            });
+        }
+
+        this.cancelEdgeCreation();
+    }
+
+    private cancelEdgeCreation() {
+        this.edgeSourceNode = null;
+        this.isCreatingEdge = false;
+        document.body.style.cursor = 'default';
     }
 
     /**

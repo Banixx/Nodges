@@ -221,6 +221,10 @@ export class App {
         this.nodeGroupManager = new NodeGroupManager(this.scene, this.stateManager);
         this.batchOperations = new BatchOperations(this.selectionManager, this.nodeGroupManager);
         this.keyboardShortcuts = new KeyboardShortcuts();
+
+        // Subscribe to app events
+        this.centralEventManager.subscribe('data_updated', this.handleDataUpdate.bind(this));
+        this.centralEventManager.subscribe('edge_created', this.handleEdgeCreated.bind(this));
     }
 
     async initGUI() {
@@ -469,6 +473,40 @@ export class App {
             // //      console.log(`[TRACE] Mesh ${i}: count=${mesh.count}, visible=${mesh.visible}`);
             // // });
         }
+    }
+
+    private handleDataUpdate(data: { object: THREE.Object3D, updatedData: any }) {
+        const { object, updatedData } = data;
+        const type = object.userData.type;
+
+        if (type === 'node') {
+            const index = this.currentEntities.findIndex(e => e.id === updatedData.id);
+            if (index !== -1) {
+                this.currentEntities[index] = { ...this.currentEntities[index], ...updatedData };
+                this.nodeManager.updateNodes(this.currentEntities);
+            }
+        } else if (type === 'edge') {
+            const edgeData = object.userData.edge;
+            const index = this.currentRelationships.findIndex(r => r.id === edgeData.id || (r.source === edgeData.source && r.target === edgeData.target));
+            if (index !== -1) {
+                this.currentRelationships[index] = { ...this.currentRelationships[index], ...updatedData };
+                this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
+            }
+        }
+    }
+
+    private handleEdgeCreated(data: { source: string, target: string }) {
+        const newEdge: RelationshipData = {
+            id: `e${Date.now()}`,
+            type: 'connection',
+            source: data.source,
+            target: data.target,
+            label: 'Neue Verbindung'
+        };
+
+        this.currentRelationships.push(newEdge);
+        this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
+        console.log(`[App] Neue Kante erstellt: ${data.source} -> ${data.target}`);
     }
 }
 

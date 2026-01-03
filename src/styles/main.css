@@ -109,8 +109,6 @@ canvas {
   overflow: hidden;
 }
 
-
-
 /* --- Content Elements --- */
 
 /* Key-Value Pairs (e.g. Info Panel) */
@@ -129,6 +127,7 @@ canvas {
   color: var(--text-color);
   font-weight: 500;
   text-align: right;
+  word-break: break-word;
 }
 
 /* File List Items */
@@ -280,10 +279,6 @@ input[type="range"] {
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* --- Specific Panel IDs (for JS targeting) --- */
-/* We rely on the generic classes for styling, IDs are just for JS hooks */
-
-
 /* --- Hover Info Panel --- */
 #hoverInfoPanel {
   position: fixed;
@@ -341,4 +336,96 @@ input[type="range"] {
   font-weight: 500;
   text-align: right;
   word-break: break-word;
+}
+
+/* --- Context Menu --- */
+.context-menu {
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: var(--panel-border);
+  border-radius: 6px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  padding: 5px 0;
+  min-width: 150px;
+  z-index: 2000;
+}
+
+.context-menu-item {
+  padding: 8px 15px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-color);
+  transition: background-color 0.2s;
+}
+
+.context-menu-item:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+/* --- Modal Editor --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: var(--panel-bg);
+  border: var(--panel-border);
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.modal-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: var(--accent-color);
+  font-size: 16px;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
 }
