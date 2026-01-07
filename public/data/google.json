@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "name": "Google AI Ecosystem Visualization",
+    "description": "Visualisierung der Verknüpfungen zwischen Gemini, Workspace und GitHub für Nodges",
+    "version": "1.0"
+  },
+  "nodes": [
+    { "id": "google_ai", "label": "Google AI Ecosystem", "group": "core", "size": 20, "color": "#4285F4" },
+    
+    {"id": "gemini_web", "label": "Gemini Web App", "group": "interface", "size": 15, "color": "#8AB4F8" },
+    {"id": "ai_studio", "label": "Google AI Studio", "group": "dev_tool", "size": 15, "color": "#1A73E8" },
+    {"id": "notebook_lm", "label": "NotebookLM", "group": "knowledge", "size": 15, "color": "#FBBC04" },
+    
+    {"id": "extensions", "label": "Extensions / Erweiterungen", "group": "middleware", "size": 12, "color": "#34A853" },
+    {"id": "workspace", "label": "Google Workspace", "group": "data_source", "size": 12, "color": "#EA4335" },
+    {"id": "github", "label": "GitHub Repository", "group": "external", "size": 12, "color": "#6e5494" },
+    
+    {"id": "drive", "label": "Google Drive", "group": "data_source", "size": 8, "color": "#EA4335" },
+    {"id": "gmail", "label": "Gmail", "group": "data_source", "size": 8, "color": "#EA4335" },
+    {"id": "gittodoc", "label": "Gittodoc / Repopack", "group": "tool", "size": 8, "color": "#6e5494" }
+  ],
+  "links": [
+    { "source": "google_ai", "target": "gemini_web", "relation": "contains" },
+    { "source": "google_ai", "target": "ai_studio", "relation": "contains" },
+    { "source": "google_ai", "target": "notebook_lm", "relation": "contains" },
+    
+    { "source": "gemini_web", "target": "extensions", "relation": "uses" },
+    { "source": "extensions", "target": "workspace", "relation": "connects" },
+    { "source": "extensions", "target": "github", "relation": "connects" },
+    
+    { "source": "workspace", "target": "drive", "relation": "includes" },
+    { "source": "workspace", "target": "gmail", "relation": "includes" },
+    
+    { "source": "github", "target": "ai_studio", "relation": "direct_sync" },
+    { "source": "github", "target": "gittodoc", "relation": "pre-processing" },
+    { "source": "gittodoc", "target": "notebook_lm", "relation": "source_input" },
+    { "source": "drive", "target": "notebook_lm", "relation": "file_import" }
+  ]
+}
