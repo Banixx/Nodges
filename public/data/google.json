@@ -1,39 +1,37 @@
 {
+  "system": "Google AI Ecosystem",
   "metadata": {
-    "name": "Google AI Ecosystem Visualization",
-    "description": "Visualisierung der Verknüpfungen zwischen Gemini, Workspace und GitHub für Nodges",
-    "version": "1.0"
+    "created": "2026-01-07T21:00:00Z",
+    "version": "1.0",
+    "author": "Gemini Pro",
+    "description": "Visualisierung der Google AI Komponenten und GitHub Integration"
   },
-  "nodes": [
-    { "id": "google_ai", "label": "Google AI Ecosystem", "group": "core", "size": 20, "color": "#4285F4" },
-    
-    {"id": "gemini_web", "label": "Gemini Web App", "group": "interface", "size": 15, "color": "#8AB4F8" },
-    {"id": "ai_studio", "label": "Google AI Studio", "group": "dev_tool", "size": 15, "color": "#1A73E8" },
-    {"id": "notebook_lm", "label": "NotebookLM", "group": "knowledge", "size": 15, "color": "#FBBC04" },
-    
-    {"id": "extensions", "label": "Extensions / Erweiterungen", "group": "middleware", "size": 12, "color": "#34A853" },
-    {"id": "workspace", "label": "Google Workspace", "group": "data_source", "size": 12, "color": "#EA4335" },
-    {"id": "github", "label": "GitHub Repository", "group": "external", "size": 12, "color": "#6e5494" },
-    
-    {"id": "drive", "label": "Google Drive", "group": "data_source", "size": 8, "color": "#EA4335" },
-    {"id": "gmail", "label": "Gmail", "group": "data_source", "size": 8, "color": "#EA4335" },
-    {"id": "gittodoc", "label": "Gittodoc / Repopack", "group": "tool", "size": 8, "color": "#6e5494" }
-  ],
-  "links": [
-    { "source": "google_ai", "target": "gemini_web", "relation": "contains" },
-    { "source": "google_ai", "target": "ai_studio", "relation": "contains" },
-    { "source": "google_ai", "target": "notebook_lm", "relation": "contains" },
-    
-    { "source": "gemini_web", "target": "extensions", "relation": "uses" },
-    { "source": "extensions", "target": "workspace", "relation": "connects" },
-    { "source": "extensions", "target": "github", "relation": "connects" },
-    
-    { "source": "workspace", "target": "drive", "relation": "includes" },
-    { "source": "workspace", "target": "gmail", "relation": "includes" },
-    
-    { "source": "github", "target": "ai_studio", "relation": "direct_sync" },
-    { "source": "github", "target": "gittodoc", "relation": "pre-processing" },
-    { "source": "gittodoc", "target": "notebook_lm", "relation": "source_input" },
-    { "source": "drive", "target": "notebook_lm", "relation": "file_import" }
-  ]
+  "visualMappings": {
+    "defaultPresets": {
+      "Core": {
+        "color": { "source": "constant", "function": "linear", "params": { "color": "#4285F4" } },
+        "size": { "source": "constant", "function": "linear", "range": [5.0, 5.0] }
+      },
+      "Tool": {
+        "color": { "source": "constant", "function": "linear", "params": { "color": "#34A853" } },
+        "size": { "source": "constant", "function": "linear", "range": [3.0, 3.0] }
+      },
+      "DataFlow": {
+        "color": { "source": "constant", "function": "linear", "params": { "color": "#FBBC04" } },
+        "thickness": { "source": "constant", "function": "linear", "range": [0.2, 0.2] },
+        "animation": { "source": "constant", "function": "pulse", "params": { "frequency": 1.5 } }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      { "id": "gemini", "label": "Gemini Web", "type": "Core" },
+      { "id": "github", "label": "GitHub Repo", "type": "Tool" },
+      { "id": "notebook", "label": "NotebookLM", "type": "Core" }
+    ],
+    "relationships": [
+      { "id": "rel1", "source": "github", "target": "gemini", "type": "DataFlow" },
+      { "id": "rel2", "source": "gemini", "target": "notebook", "type": "DataFlow" }
+    ]
+  }
 }
