@@ -1,0 +1,37 @@
+{
+  "system": "Google AI Ecosystem",
+  "metadata": {
+    "created": "2026-01-07T21:00:00Z",
+    "version": "1.0",
+    "author": "Gemini Pro",
+    "description": "Visualisierung der Google AI Komponenten und GitHub Integration"
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Core": {
+        "color": { "source": "constant", "function": "linear", "params": { "color": "#4285F4" } },
+        "size": { "source": "constant", "function": "linear", "range": [5.0, 5.0] }
+      },
+      "Tool": {
+        "color": { "source": "constant", "function": "linear", "params": { "color": "#34A853" } },
+        "size": { "source": "constant", "function": "linear", "range": [3.0, 3.0] }
+      },
+      "DataFlow": {
+        "color": { "source": "constant", "function": "linear", "params": { "color": "#FBBC04" } },
+        "thickness": { "source": "constant", "function": "linear", "range": [0.2, 0.2] },
+        "animation": { "source": "constant", "function": "pulse", "params": { "frequency": 1.5 } }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      { "id": "gemini", "label": "Gemini Web", "type": "Core" },
+      { "id": "github", "label": "GitHub Repo", "type": "Tool" },
+      { "id": "notebook", "label": "NotebookLM", "type": "Core" }
+    ],
+    "relationships": [
+      { "id": "rel1", "source": "github", "target": "gemini", "type": "DataFlow" },
+      { "id": "rel2", "source": "gemini", "target": "notebook", "type": "DataFlow" }
+    ]
+  }
+}
