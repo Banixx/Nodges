@@ -16,7 +16,6 @@ import { FileHandler } from './utils/FileHandler';
 import { ImportManager } from './utils/ImportManager';
 import { ExportManager } from './utils/ExportManager';
 import { EdgeLabelManager } from './utils/EdgeLabelManager';
-// @ts-ignore
 import { NeighborhoodHighlighter } from './utils/NeighborhoodHighlighter';
 import { KeyboardShortcuts } from './utils/KeyboardShortcuts';
 import { BatchOperations } from './utils/BatchOperations';
@@ -25,8 +24,6 @@ import { LayoutGUI } from './utils/LayoutGUI';
 // import { FutureDataParser } from './utils/FutureDataParser';
 import { HighlightManager } from './effects/HighlightManager';
 import { GlowEffect } from './effects/GlowEffect';
-// @ts-ignore
-// @ts-ignore
 // import { NodeObjectsManager } from './core/NodeObjectsManager';
 import { EdgeObjectsManager } from './core/EdgeObjectsManager';
 import { DataParser } from './core/DataParser';
@@ -108,7 +105,7 @@ export class App {
         this.stateManager = new StateManager();
 
         this.visualMappingEngine = new VisualMappingEngine();
-        this.nodeManager = new NodeManager(this.scene, this.visualMappingEngine);
+        this.nodeManager = new NodeManager(this.scene, this.visualMappingEngine, this.stateManager);
         this.edgeObjectsManager = new EdgeObjectsManager(this.scene, this.visualMappingEngine, this.stateManager);
 
         this.init();
@@ -183,10 +180,10 @@ export class App {
 
         const gridHelper = new THREE.GridHelper(1000, 200, 0x444444, 0x222222);
         gridHelper.position.y = -4.9;
-        // @ts-ignore
-        gridHelper.material.transparent = true;
-        // @ts-ignore
-        gridHelper.material.opacity = 0.3;
+        if (gridHelper.material instanceof THREE.Material) {
+            gridHelper.material.transparent = true;
+            gridHelper.material.opacity = 0.3;
+        }
         this.scene.add(gridHelper);
     }
 
@@ -223,10 +220,22 @@ export class App {
         this.batchOperations = new BatchOperations(this.selectionManager, this.nodeGroupManager);
         this.keyboardShortcuts = new KeyboardShortcuts();
 
-        // Subscribe to app events
-        this.centralEventManager.subscribe('data_updated', this.handleDataUpdate.bind(this));
-        this.centralEventManager.subscribe('edge_created', this.handleEdgeCreated.bind(this));
-        this.centralEventManager.subscribe('node_created', this.handleNodeCreated.bind(this));
+        // Global Undo/Redo Shortcuts
+        window.addEventListener('keydown', (e) => {
+            // Undo: Ctrl+Z
+            if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key.toLowerCase() === 'z') {
+                e.preventDefault();
+                console.log('[App] Triggering Undo');
+                this.stateManager.undo();
+            }
+            // Redo: Ctrl+Y or Ctrl+Shift+Z
+            if (((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') ||
+                ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'z')) {
+                e.preventDefault();
+                console.log('[App] Triggering Redo');
+                this.stateManager.redo();
+            }
+        });
     }
 
     async initGUI() {
@@ -270,6 +279,9 @@ export class App {
             // Store data directly
             this.currentEntities = this.currentGraphData.data.entities;
             this.currentRelationships = this.currentGraphData.data.relationships;
+
+            // Update StateManager (Source of Truth)
+            this.stateManager.setGraphData(this.currentEntities, this.currentRelationships);
 
             console.log(`[App] Creating nodes... (${this.currentEntities.length})`);
             await this.createNodes();
@@ -475,65 +487,6 @@ export class App {
             // //      console.log(`[TRACE] Mesh ${i}: count=${mesh.count}, visible=${mesh.visible}`);
             // // });
         }
-    }
-
-    private handleDataUpdate(data: { object: THREE.Object3D, updatedData: any }) {
-        const { object, updatedData } = data;
-        const type = object.userData.type;
-
-        if (type === 'node') {
-            const index = this.currentEntities.findIndex(e => e.id === updatedData.id);
-            if (index !== -1) {
-                this.currentEntities[index] = { ...this.currentEntities[index], ...updatedData };
-                this.nodeManager.updateNodes(this.currentEntities);
-            }
-        } else if (type === 'edge') {
-            const edgeData = object.userData.edge;
-            const index = this.currentRelationships.findIndex(r => r.id === edgeData.id || (r.source === edgeData.source && r.target === edgeData.target));
-            if (index !== -1) {
-                this.currentRelationships[index] = { ...this.currentRelationships[index], ...updatedData };
-                this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
-            }
-        }
-    }
-
-    private handleEdgeCreated(data: { source: string, target: string }) {
-        const newEdge: RelationshipData = {
-            id: `e${Date.now()}`,
-            type: 'connection',
-            source: data.source,
-            target: data.target,
-            label: 'Neue Verbindung'
-        };
-
-        this.currentRelationships.push(newEdge);
-        this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
-        console.log(`[App] Neue Kante erstellt: ${data.source} -> ${data.target}`);
-    }
-
-    private handleNodeCreated(data: { position: THREE.Vector3, data: any }) {
-        const newEntity: EntityData = {
-            id: data.data.id,
-            type: 'node',
-            label: data.data.name || 'Neuer Node',
-            position: {
-                x: data.position.x,
-                y: data.position.y,
-                z: data.position.z
-            },
-            properties: {}
-        };
-
-        this.currentEntities.push(newEntity);
-        this.nodeManager.updateNodes(this.currentEntities);
-
-        // Notify subscribers that the node is now available in the scene
-        this.centralEventManager.publish('node_added_to_scene', {
-            id: newEntity.id,
-            entity: newEntity
-        });
-
-        console.log(`[App] Neuer Node erstellt: ${newEntity.label} an Position (${data.position.x.toFixed(2)}, ${data.position.y.toFixed(2)}, ${data.position.z.toFixed(2)})`);
     }
 }
 

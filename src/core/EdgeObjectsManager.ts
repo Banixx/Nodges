@@ -37,20 +37,28 @@ export class EdgeObjectsManager {
         this.visualMappingEngine = visualMappingEngine;
         this.stateManager = stateManager;
         this.connectionToEdges = new Map();
+
+        // Reactive Rendering
+        this.stateManager.subscribe(() => {
+            this.updateEdges();
+        }, 'data_changed');
     }
 
-    public updateEdges(edges: RelationshipData[], nodes: EntityData[]) {
+    public updateEdges(edges?: RelationshipData[], nodes?: EntityData[]) {
+        const edgesToRender = edges || this.stateManager.getRelationships();
+        const nodesToUse = nodes || this.stateManager.getEntities();
+
         // 1. Clear existing
         this.dispose();
 
         // 2. Map nodes for fast lookup
         const nodeMap = new Map<string | number, EntityData>();
-        nodes.forEach(node => nodeMap.set(node.id, node));
+        nodesToUse.forEach(node => nodeMap.set(node.id, node));
 
         // 3. Group edges by connection (start-end) to identify duplicates
         const connectionMap = new Map<string, RelationshipData[]>();
 
-        edges.forEach((edge: any) => {
+        edgesToRender.forEach((edge: any) => {
             const s = edge.source !== undefined ? edge.source : edge.start;
             const t = edge.target !== undefined ? edge.target : edge.end;
 

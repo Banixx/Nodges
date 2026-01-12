@@ -32,7 +32,8 @@ export class KeyboardShortcuts {
             },
             'General': {
                 'F1': 'Diese Hilfe anzeigen',
-                'Strg + Z': 'Rueckgaengig (Batch-Operationen)',
+                'Strg + Z': 'Rueckgaengig',
+                'Strg + Y': 'Wiederherstellen (Redo)',
                 'Strg + S': 'Netzwerk exportieren (geplant)',
                 'Strg + O': 'Datei importieren (geplant)'
             }

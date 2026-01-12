@@ -75,6 +75,9 @@ export const VisualMappingsSchema = z.object({
 export type VisualMappings = z.infer<typeof VisualMappingsSchema>;
 
 // Entity and Relationship Data
+// Note: passthrough() is intentional - entities/relationships can have
+// arbitrary user-defined properties (e.g., age, personality, trust, etc.)
+// that are defined in the dataModel schema at runtime, not compile-time.
 export const EntityDataSchema = z.object({
     id: z.string(),
     type: z.string(),
@@ -84,8 +87,8 @@ export const EntityDataSchema = z.object({
         y: z.number(),
         z: z.number()
     }).optional(),
-}).passthrough(); // Allow extra properties!
-export type EntityData = z.infer<typeof EntityDataSchema>;
+}).passthrough();
+export type EntityData = z.infer<typeof EntityDataSchema> & Record<string, unknown>;
 
 export const RelationshipDataSchema = z.object({
     id: z.string().optional(),
@@ -93,8 +96,8 @@ export const RelationshipDataSchema = z.object({
     source: z.string(),
     target: z.string(),
     label: z.string().optional(),
-}).passthrough(); // Allow extra properties!
-export type RelationshipData = z.infer<typeof RelationshipDataSchema>;
+}).passthrough();
+export type RelationshipData = z.infer<typeof RelationshipDataSchema> & Record<string, unknown>;
 
 // Main Graph Data Structure
 export const GraphDataSchema = z.object({

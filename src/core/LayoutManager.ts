@@ -2,7 +2,6 @@
  * LayoutManager - Zentrale Verwaltung aller Layout-Algorithmen fuer Nodges
  */
 
-// @ts-ignore
 import LayoutWorker from '../workers/layout-worker.js?worker';
 import { EntityData, RelationshipData } from '../types';
 

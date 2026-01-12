@@ -1,6 +1,26 @@
+import { EntityData, RelationshipData } from '../types';
 import * as THREE from 'three';
 
+
+export type ActionType =
+    | 'ADD_NODE' | 'REMOVE_NODE' | 'UPDATE_NODE'
+    | 'ADD_EDGE' | 'REMOVE_EDGE' | 'UPDATE_EDGE'
+    | 'BATCH';
+
+export interface HistoryAction {
+    type: ActionType;
+    undo: () => void;
+    redo: () => void;
+    description: string;
+}
+
 export interface State {
+    // Data State (Single Source of Truth)
+    graphData: {
+        entities: EntityData[];
+        relationships: RelationshipData[];
+    };
+
     // Interaction States
     hoveredObject: THREE.Object3D | null;
     selectedObject: THREE.Object3D | null;
@@ -47,15 +67,30 @@ export interface State {
 }
 
 type StateCallback = (state: State) => void;
+type BatchCallback = (data: { oldState: State; newState: State; updates: Partial<State> }) => void;
 
 export class StateManager {
     public state: State;
     private subscribers: Map<string, Set<StateCallback>>;
+    private batchSubscribers: Map<string, Set<BatchCallback>>;
     private eventQueue: any[];
     private lastTime: number;
 
+    // History System
+    private undoStack: HistoryAction[] = [];
+    private redoStack: HistoryAction[] = [];
+    private isUndoing: boolean = false;
+    private currentBatch: HistoryAction[] | null = null;
+    private batchDescription: string | null = null;
+
     constructor() {
         this.state = {
+            // Data State
+            graphData: {
+                entities: [],
+                relationships: []
+            },
+
             // Interaction States
             hoveredObject: null,
             selectedObject: null,
@@ -100,6 +135,7 @@ export class StateManager {
         };
 
         this.subscribers = new Map();
+        this.batchSubscribers = new Map();
         this.eventQueue = [];
         this.lastTime = performance.now();
 
@@ -264,11 +300,10 @@ export class StateManager {
         const oldState = { ...this.state };
         Object.assign(this.state, updates);
 
-        const batchSubscribers = this.subscribers.get('batch');
-        if (batchSubscribers) {
-            batchSubscribers.forEach(callback => {
+        const batchSubs = this.batchSubscribers.get('batch');
+        if (batchSubs) {
+            batchSubs.forEach(callback => {
                 try {
-                    // @ts-ignore - Batch callback signature might differ
                     callback({ oldState, newState: this.state, updates });
                 } catch (error) {
                     console.error('[StateManager] Error in Batch-Subscriber:', error);
@@ -350,5 +385,256 @@ export class StateManager {
     destroy() {
         this.subscribers.clear();
         this.eventQueue.length = 0;
+    }
+
+    // ============================================================================
+    // Data Management (Single Source of Truth)
+    // ============================================================================
+
+    setGraphData(entities: EntityData[], relationships: RelationshipData[]) {
+        this.update({
+            graphData: {
+                entities: [...entities],
+                relationships: [...relationships]
+            }
+        });
+        // Notify specialized subscribers
+        this.notifySubscribers('data_changed');
+    }
+
+    getEntities(): EntityData[] {
+        return this.state.graphData.entities;
+    }
+
+    getRelationships(): RelationshipData[] {
+        return this.state.graphData.relationships;
+    }
+
+    addNode(node: EntityData) {
+        const newEntities = [...this.state.graphData.entities, node];
+        this.update({
+            graphData: {
+                ...this.state.graphData,
+                entities: newEntities
+            }
+        });
+
+        this.addToHistory({
+            type: 'ADD_NODE',
+            description: `Add Node ${node.label || node.id}`,
+            undo: () => this.removeNode(node.id),
+            redo: () => this.addNode(node)
+        });
+
+        this.notifySubscribers('data_changed');
+    }
+
+    updateNode(nodeId: string, updates: Partial<EntityData>, skipHistory: boolean = false) {
+        const index = this.state.graphData.entities.findIndex(e => e.id === nodeId);
+        if (index !== -1) {
+            const oldNode = { ...this.state.graphData.entities[index] };
+            const newEntities = [...this.state.graphData.entities];
+            newEntities[index] = { ...newEntities[index], ...updates };
+            this.update({
+                graphData: {
+                    ...this.state.graphData,
+                    entities: newEntities
+                }
+            });
+
+            if (!skipHistory) {
+                this.addToHistory({
+                    type: 'UPDATE_NODE',
+                    description: `Update Node ${oldNode.label || nodeId}`,
+                    undo: () => this.updateNode(nodeId, oldNode),
+                    redo: () => this.updateNode(nodeId, updates)
+                });
+            }
+
+            this.notifySubscribers('data_changed');
+        }
+    }
+
+    removeNode(nodeId: string) {
+        const node = this.state.graphData.entities.find(e => e.id === nodeId);
+        if (!node) return;
+
+        // Auch verbundene Edges entfernen und für Undo merken
+        const removedEdges = this.state.graphData.relationships.filter(
+            r => r.source === nodeId || r.target === nodeId
+        );
+
+        const newEntities = this.state.graphData.entities.filter(e => e.id !== nodeId);
+        const newRelationships = this.state.graphData.relationships.filter(
+            r => r.source !== nodeId && r.target !== nodeId
+        );
+
+        this.update({
+            graphData: {
+                entities: newEntities,
+                relationships: newRelationships
+            }
+        });
+
+        this.addToHistory({
+            type: 'REMOVE_NODE',
+            description: `Remove Node ${node.label || nodeId}`,
+            undo: () => {
+                this.addNode(node);
+                removedEdges.forEach(e => this.addEdge(e));
+            },
+            redo: () => this.removeNode(nodeId)
+        });
+
+        this.notifySubscribers('data_changed');
+    }
+
+    addEdge(edge: RelationshipData) {
+        const newRelationships = [...this.state.graphData.relationships, edge];
+        this.update({
+            graphData: {
+                ...this.state.graphData,
+                relationships: newRelationships
+            }
+        });
+
+        this.addToHistory({
+            type: 'ADD_EDGE',
+            description: `Add Edge ${edge.source}->${edge.target}`,
+            undo: () => this.removeEdge(edge.id || 'unknown'),
+            redo: () => this.addEdge(edge)
+        });
+
+        this.notifySubscribers('data_changed');
+    }
+
+    updateEdge(edgeId: string, updates: Partial<RelationshipData>, skipHistory: boolean = false) {
+        const index = this.state.graphData.relationships.findIndex(r => r.id === edgeId);
+        if (index !== -1) {
+            const oldEdge = { ...this.state.graphData.relationships[index] };
+            const newRelationships = [...this.state.graphData.relationships];
+            newRelationships[index] = { ...newRelationships[index], ...updates };
+            this.update({
+                graphData: {
+                    ...this.state.graphData,
+                    relationships: newRelationships
+                }
+            });
+
+            if (!skipHistory) {
+                this.addToHistory({
+                    type: 'UPDATE_EDGE',
+                    description: `Update Edge ${edgeId}`,
+                    undo: () => this.updateEdge(edgeId, oldEdge),
+                    redo: () => this.updateEdge(edgeId, updates)
+                });
+            }
+
+            this.notifySubscribers('data_changed');
+        }
+    }
+
+    removeEdge(edgeId: string) {
+        const edge = this.state.graphData.relationships.find(r => r.id === edgeId);
+        if (!edge) return;
+
+        const newRelationships = this.state.graphData.relationships.filter(r => r.id !== edgeId);
+        this.update({
+            graphData: {
+                ...this.state.graphData,
+                relationships: newRelationships
+            }
+        });
+
+        this.addToHistory({
+            type: 'REMOVE_EDGE',
+            description: `Remove Edge ${edgeId}`,
+            undo: () => this.addEdge(edge),
+            redo: () => this.removeEdge(edgeId)
+        });
+
+        this.notifySubscribers('data_changed');
+    }
+
+    // --- History System ---
+
+    addToHistory(action: HistoryAction) {
+        if (this.isUndoing) return;
+
+        if (this.currentBatch) {
+            this.currentBatch.push(action);
+        } else {
+            this.undoStack.push(action);
+            if (this.undoStack.length > 50) this.undoStack.shift();
+            this.redoStack = [];
+        }
+    }
+
+    undo() {
+        if (this.undoStack.length === 0) return;
+
+        const action = this.undoStack.pop()!;
+        this.redoStack.push(action);
+
+        this.isUndoing = true;
+        try {
+            console.log(`[StateManager] Undo: ${action.description}`);
+            if (action.type === 'BATCH' && (action as any).actions) {
+                const batch = (action as any).actions as HistoryAction[];
+                [...batch].reverse().forEach(a => a.undo());
+            } else {
+                action.undo();
+            }
+        } finally {
+            this.isUndoing = false;
+        }
+    }
+
+    redo() {
+        if (this.redoStack.length === 0) return;
+
+        const action = this.redoStack.pop()!;
+        this.undoStack.push(action);
+
+        this.isUndoing = true;
+        try {
+            console.log(`[StateManager] Redo: ${action.description}`);
+            if (action.type === 'BATCH' && (action as any).actions) {
+                const batch = (action as any).actions as HistoryAction[];
+                batch.forEach(a => a.redo());
+            } else {
+                action.redo();
+            }
+        } finally {
+            this.isUndoing = false;
+        }
+    }
+
+    beginTransaction(description: string) {
+        if (this.currentBatch) return;
+        this.currentBatch = [];
+        this.batchDescription = description;
+    }
+
+    commitTransaction() {
+        if (this.currentBatch && this.currentBatch.length > 0) {
+            const batchAction: HistoryAction = {
+                type: 'BATCH',
+                description: this.batchDescription || 'Batch Operation',
+                undo: () => { },
+                redo: () => { },
+            };
+            (batchAction as any).actions = this.currentBatch;
+
+            this.undoStack.push(batchAction);
+            this.redoStack = [];
+        }
+        this.currentBatch = null;
+        this.batchDescription = null;
+    }
+
+    cancelTransaction() {
+        this.currentBatch = null;
+        this.batchDescription = null;
     }
 }

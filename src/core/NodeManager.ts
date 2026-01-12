@@ -2,9 +2,12 @@ import * as THREE from 'three';
 import { EntityData } from '../types';
 import { VisualMappingEngine } from './VisualMappingEngine';
 
+import { StateManager } from './StateManager';
+
 export class NodeManager {
     private scene: THREE.Scene;
     private visualMappingEngine: VisualMappingEngine;
+    private stateManager: StateManager;
     private meshes: Map<string, THREE.InstancedMesh>;
     private geometryCache: Map<string, THREE.BufferGeometry>;
     private materialCache: Map<string, THREE.Material>;
@@ -18,9 +21,10 @@ export class NodeManager {
 
     private defaultColor = new THREE.Color(0x3498db);
 
-    constructor(scene: THREE.Scene, visualMappingEngine: VisualMappingEngine) {
+    constructor(scene: THREE.Scene, visualMappingEngine: VisualMappingEngine, stateManager: StateManager) {
         this.scene = scene;
         this.visualMappingEngine = visualMappingEngine;
+        this.stateManager = stateManager;
         this.meshes = new Map();
         this.geometryCache = new Map();
         this.materialCache = new Map();
@@ -30,6 +34,19 @@ export class NodeManager {
 
         this.initializeGeometries();
         this.initializeMaterials();
+
+        // Reactive Rendering: Subscribe to Data Changes
+        this.stateManager.subscribe((_state) => {
+            // Optional: Fine-grained updates check?
+            // For now we rely on explicit 'data_changed' event trigger by StateManager
+        }, 'default');
+
+        // We use a specific method because StateManager calls notifySubscribers('data_changed')
+        // But our subscribe method in StateManager is generic.
+        // Actually StateManager uses categories. So we can subscribe to 'data_changed'.
+        this.stateManager.subscribe(() => {
+            this.updateNodes();
+        }, 'data_changed');
     }
 
     private initializeGeometries() {
@@ -52,13 +69,15 @@ export class NodeManager {
     /**
      * Updates the visual representation of entities
      */
-    public updateNodes(entities: EntityData[]) {
+    public updateNodes(entities?: EntityData[]) {
+        const entitiesToRender = entities || this.stateManager.getEntities();
+
         // 1. Group entities by their Visual Geometry Type
         // We need to determine the geometry for each entity using VisualMappingEngine
         const entitiesByType = new Map<string, { entity: EntityData, visual: any }[]>();
 
 
-        entities.forEach(entity => {
+        entitiesToRender.forEach(entity => {
             const visual = this.visualMappingEngine.applyToEntity(entity);
             // Default to sphere if unknown
             let type: string = (visual.geometry as string) || (entity.geometryType as string) || 'sphere';

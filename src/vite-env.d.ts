@@ -9,3 +9,11 @@ interface ImportMeta {
     readonly env: ImportMetaEnv
     readonly glob: (pattern: string) => Record<string, () => Promise<any>>
 }
+
+// Vite Worker imports
+declare module '*?worker' {
+    const workerConstructor: {
+        new(): Worker;
+    };
+    export default workerConstructor;
+}

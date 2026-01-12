@@ -237,8 +237,8 @@ export class LayoutGUI {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding: 10px;
+            margin-bottom: 8px;
+            padding: 6px;
             background-color: #f5f5f5;
             border-radius: 4px;
         `;
@@ -248,7 +248,7 @@ export class LayoutGUI {
         toggleLabel.style.cssText = `
             font-weight: bold;
             color: #555;
-            font-size: 13px;
+            font-size: 11px;
         `;
 
         // Toggle Switch
@@ -307,7 +307,7 @@ export class LayoutGUI {
 
         // Layout-Selector
         const selectorContainer = document.createElement('div');
-        selectorContainer.style.marginBottom = '15px';
+        selectorContainer.style.marginBottom = '8px';
 
         const label = document.createElement('label');
         label.textContent = 'Layout-Algorithmus:';
@@ -321,11 +321,22 @@ export class LayoutGUI {
         this.layoutSelect = document.createElement('select');
         this.layoutSelect.style.cssText = `
             width: 100%;
-            padding: 8px;
+            padding: 4px;
             border: 1px solid #ddd;
             border-radius: 4px;
             background-color: white;
+            font-size: 11px;
+            color: #444;
+            transition: color 0.2s;
+            cursor: pointer;
         `;
+
+        this.layoutSelect.addEventListener('mouseenter', () => {
+            if (this.layoutSelect) this.layoutSelect.style.color = 'black';
+        });
+        this.layoutSelect.addEventListener('mouseleave', () => {
+            if (this.layoutSelect) this.layoutSelect.style.color = '#444';
+        });
 
         // Layout-Optionen hinzufuegen
         const layouts = this.layoutManager.getAvailableLayouts();
@@ -350,16 +361,10 @@ export class LayoutGUI {
         if (!this.contentContainer) return;
 
         this.parameterContainer = document.createElement('div');
-        this.parameterContainer.style.marginBottom = '15px';
+        this.parameterContainer.style.marginBottom = '8px';
 
-        const title = document.createElement('h4');
-        title.textContent = 'Parameter:';
-        title.style.cssText = `
-            margin: 0 0 10px 0;
-            color: #555;
-        `;
+        // Title removed as requested
 
-        this.parameterContainer.appendChild(title);
         this.contentContainer.appendChild(this.parameterContainer);
     }
 
@@ -367,25 +372,26 @@ export class LayoutGUI {
         if (!this.contentContainer) return;
 
         this.animationControls = document.createElement('div');
-        this.animationControls.style.marginBottom = '15px';
+        this.animationControls.style.marginBottom = '8px';
 
         const title = document.createElement('h4');
         title.textContent = 'Animation:';
         title.style.cssText = `
-            margin: 0 0 10px 0;
+            margin: 0 0 5px 0;
             color: #555;
+            font-size: 11px;
         `;
 
         // Animation-Geschwindigkeit
         const speedContainer = document.createElement('div');
-        speedContainer.style.marginBottom = '10px';
+        speedContainer.style.marginBottom = '5px';
 
         const speedLabel = document.createElement('label');
         speedLabel.textContent = 'Geschwindigkeit (ms):';
         speedLabel.style.cssText = `
             display: block;
-            margin-bottom: 5px;
-            font-size: 12px;
+            margin-bottom: 2px;
+            font-size: 10px;
         `;
 
         const speedSlider = document.createElement('input');
@@ -428,23 +434,25 @@ export class LayoutGUI {
         if (!this.contentContainer) return;
 
         const presetContainer = document.createElement('div');
-        presetContainer.style.marginBottom = '15px';
+        presetContainer.style.marginBottom = '8px';
 
         const title = document.createElement('h4');
         title.textContent = 'Presets:';
         title.style.cssText = `
-            margin: 0 0 10px 0;
+            margin: 0 0 5px 0;
             color: #555;
+            font-size: 11px;
         `;
 
         const presetSelect = document.createElement('select');
         presetSelect.style.cssText = `
             width: 100%;
-            padding: 6px;
+            padding: 4px;
             border: 1px solid #ddd;
             border-radius: 4px;
             background-color: white;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
+            font-size: 11px;
         `;
 
         // Default-Option
@@ -481,7 +489,7 @@ export class LayoutGUI {
         buttonContainer.style.cssText = `
             display: flex;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 8px;
         `;
 
         // Layout anwenden Button
@@ -560,9 +568,7 @@ export class LayoutGUI {
         if (!this.parameterContainer) return;
 
         // Parameter-Container leeren
-        const title = this.parameterContainer.querySelector('h4');
         this.parameterContainer.innerHTML = '';
-        if (title) this.parameterContainer.appendChild(title);
 
         const parameters = this.layoutParameters[layoutName] || {};
         this.currentParameters = {};
@@ -570,14 +576,14 @@ export class LayoutGUI {
         Object.keys(parameters).forEach(paramName => {
             const param = parameters[paramName];
             const container = document.createElement('div');
-            container.style.marginBottom = '10px';
+            container.style.marginBottom = '5px';
 
             const label = document.createElement('label');
             label.textContent = this.getParameterDisplayName(paramName) + ':';
             label.style.cssText = `
                 display: block;
-                margin-bottom: 3px;
-                font-size: 12px;
+                margin-bottom: 1px;
+                font-size: 10px;
                 color: #666;
             `;
 

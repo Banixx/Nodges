@@ -1,53 +1,99 @@
-# 07 Algorithmen und Layout-Engine
+# 07 Algorithmen und Layout Engine
 
-Ein Haufen Daten ist erst dann ein Graph, wenn er Struktur hat. Die Layout-Engine von Nodges ist dafür verantwortlich, tausenden Knoten eine räumliche Position ($x, y, z$) zuzuweisen, die menschliche Interpretationen erst ermöglicht.
+## 7.1 Die Physik-Engine (Deep Dive)
 
-## 07.1 Die Philosophie des Layouts
+Nodges nutzt eine eigens geschriebene, Web-Worker-basierte Physik-Simulation, um organische Strukturen zu erzeugen. Wir verlassen uns nicht auf Black-Box-Bibliotheken wie `d3-force-3d`, sondern implementieren die Kräfte "from scratch" für maximale Kontrolle.
 
-Nodges verfolgt zwei Ziele:
-1.  **Ästhetik**: Kantenkreuzungen minimieren, Abstände gleichmäßig halten.
-2.  **Topologische Wahrheit**: Zusammengehörige Dinge (Communities) sollen auch räumlich nah beieinander liegen.
+### Die Kräfte
 
-## 07.2 Force-Directed Layouts (FDL)
+Das System basiert auf zwei gegensätzlichen Kräften, die ein energetisches Gleichgewicht suchen:
 
-Dies sind die wichtigsten Algorithmen in Nodges. Sie simulieren ein physikalisches System.
+1. **Coulomb-Abstoßung (Node-Repulsion)**
+    * Jeder Knoten ist ein geladenes Teilchen, das alle anderen abstößt.
+    * **Formel**: $F = \frac{k_{rep}}{d^2}$
+    * Hierbei ist $k_{rep}$ die `repulsionStrength` (Standard: 50) und $d$ die Distanz.
+    * **Effekt**: Verhindert, dass Knoten überlappen und drückt unverbundene Cluster auseinander.
 
-### Das Prinzip ("Kräfte-Balance")
-*   **Abstoßung (Coulomb's Law)**: Alle Knoten stoßen sich gegenseitig ab, wie gleichgepolte Magnete. Dies verhindert Überlappungen.
-*   **Anziehung (Hooke's Law)**: Kanten wirken wie Federn. Je weiter zwei verbundene Knoten voneinander entfernt sind, desto stärker ziehen sie sich an.
-*   **Reibung / Dämpfung**: Ein simulierter Widerstand verhindert, dass das System ewig schwingt.
+2. **Hooke-Anziehung (Spring-Attraction)**
+    * Kanten verhalten sich wie mechanische Federn.
+    * **Formel**: $F = k_{att} \cdot d$
+    * Hierbei ist $k_{att}$ die `attractionStrength` (Standard: 0.5).
+    * **Effekt**: Zieht verbundene Knoten zusammen.
 
-### Mathematische Komplexität: $O(n^2)$
-Das Problem: Jeder Knoten muss eigentlich mit jedem anderen verglichen werden. Bei 10.000 Knoten sind das 100.000.000 Berechnungen *pro Frame*.
-**Optimierung (Barnes-Hut)**: Wir nutzen einen **Octree** (eine 3D-Baumstruktur), um entfernte Knotengruppen als eine einzige "Super-Masse" zusammenzufassen. Das reduziert die Komplexität auf $O(n \log n)$, was die Simulation von tausenden Knoten in Echtzeit erst möglich macht.
+### Der Integrator (Euler vs. Verlet)
 
-## 07.3 Multithreading mit Web Workers
+Aktuell nutzen wir eine **Euler-Integration** für die Bewegungsgleichungen:
 
-Physik-Simulationen sind CPU-intensiv. Würden wir sie im Haupt-Thread berechnen, würde der Browser einfrieren.
-**Die Lösung**: Der `LayoutManager` startet einen separaten **Web Worker**.
-*   Der Worker berechnet die Positionen in einer Endlosschleife im Hintergrund.
-*   Er sendet die Ergebnisse als "Positions-Paket" (Float32Array) zurück.
-*   Der Haupt-Thread nimmt die Daten nur noch entgegen und schiebt sie in die GPU. 
-*   *Effekt*: Die Navigation bleibt flüssig (60 FPS), selbst wenn im Hintergrund Schwerstarbeit geleistet wird.
+1. Summiere alle Kräfte auf einen Knoten (Vektor-Addition).
+2. `Velocity = (Velocity + Force) * Damping`
+3. `Position = Position + Velocity`
 
-## 07.4 Geometrische & Strukturelle Layouts
-
-Manchmal ist Physik nicht die beste Wahl. Nodges bietet deterministische Alternativen:
-
-### 1. Grid-Layout (Raster)
-Ordnet Knoten in einem 3D-Würfelgitter an. Perfekt, um eine unstrukturierte Masse an Objekten erst einmal sortiert zu "parken" oder um Mengenverhältnisse (Volumen) zu visualisieren.
-
-### 2. Spherical-Layout (Kugeloberfläche)
-Verteilt alle Knoten gleichmäßig auf der Oberfläche einer Kugel (Fibonacci-Sphere). Dies ist ideal für Netzwerke ohne klare Hierarchie, da kein Knoten bevorzugt wird.
-
-### 3. Hierarchische Layouts (3D-Trees)
-Für Daten mit einer klaren Richtung (z.B. IT-Infrastruktur vom Gateway zum Endgerät).
-*   **Z-Achse als Zeit/Ebene**: Die Tiefe wird genutzt, um Hierarchie-Level darzustellen.
-*   **Radial Trees**: Kinderknoten kreisen fächerförmig um ihre Eltern.
-
-## 07.5 Layout-Stabilisierung (Simulated Annealing)
-
-Ein Layout-Vorgang startet "heiß" (Knoten bewegen sich schnell und weit) und "kühlt" dann ab. Das System wird immer ruhiger, bis es in einem stabilen Zustand (Energieminimum) verharrt. Der Benutzer kann dies über das UI beeinflussen, indem er die "Simulations-Temperatur" manuell wieder erhöht.
+Der `Damping`-Faktor (Standard: 0.8) wirkt wie Luftwiderstand und verhindert, dass das System explodiert oder ewig schwingt. Es entzieht dem System kinetische Energie, bis es friert ("Freezing").
 
 ---
-*Ende Kapitel 07*
+
+## 7.2 Web Worker Architektur & Protokoll
+
+Um den Main-Thread (und damit das Rendering) nicht zu blockieren, läuft die gesamte Physik $O(n^2)$ in einem isolierten Thread (`src/workers/layout-worker.js`).
+
+### Das Kommunikations-Protokoll
+
+Der Datenaustausch ist leistungsoptimiert. Wir senden keine komplexen Objekte, sondern flache Arrays.
+
+**1. Main -> Worker (Initialisierung)**
+Bevor der Worker startet, mappt der `LayoutManager` alle String-IDs (z.B. "Server_01") auf Integer-Indizes (0, 1, 2...). Das beschleunigt Array-Zugriffe im Worker massiv.
+
+```javascript
+{
+  nodes: [{ x, y, z, index: 0 }, ...],
+  edges: [{ start: 0, end: 5 }, ...], // Nur Indizes!
+  options: { repulsionStrength: 50, ... }
+}
+```
+
+**2. Worker -> Main (Pro Frame)**
+Der Worker sendet nach jeder Iteration (oder am Ende) die neuen Koordinaten zurück:
+
+```javascript
+{
+  positions: [{ x: 10.5, y: -2.1, z: 5.0 }, ...] // Array-Reihenfolge entspricht Input
+}
+```
+
+Der Main-Thread appliziert diese dann direkt auf die `Object3D.position` der Three.js Meshes.
+
+---
+
+## 7.3 Komplexität und Skalierungs-Grenzen
+
+### Das $O(n^2)$ Problem
+
+Unsere aktuelle Implementierung ist ein "All-Pairs" Algorithmus.
+
+* Bei 1.000 Knoten: $1.000^2 = 1.000.000$ Vergleiche pro Iteration.
+* Bei 10.000 Knoten: $100.000.000$ Vergleiche.
+
+Ab ca. 2.000 Knoten sinkt die Berechnungsgeschwindigkeit unter 60 HZ. Da dies aber im Worker geschieht, bleibt die UI responsive – die Simulation läuft nur "in Zeitlupe" ab.
+
+### Geplante Optimierung: Barnes-Hut (Octree)
+
+Um auf 100.000 Knoten zu skalieren, ist die Implementierung des Barnes-Hut Algorithmus geplant.
+
+* **Idee**: Teile den Raum rekursiv in 8 Würfel (Octree).
+* **Trick**: Wenn ein Würfel weit weg ist, behandle alle Knoten darin als einen einzigen "Super-Knoten" (Schwerpunkt).
+* **Gewinn**: Reduziert die Komplexität auf $O(n \log n)$.
+
+---
+
+## 7.4 Deterministische Layouts
+
+Neben der Physik bietet Nodges mathematisch exakte Layouts für strukturierte Daten:
+
+* **Grid**: Ordnet Knoten in einem 3D-Gitter an. Perfekt, um einfach nur "alle Daten" zu sehen.
+* **Sphere**: Projiziert Knoten auf die Oberfläche einer Kugel.
+* **Helix**: Anordnung in einer Spirale (z.B. für Zeitreihen geeignet).
+* **Hierarchical (Tree)**: Klassischer Baum, aber in 3D (Kegel-Baum). Wichtig für Org-Charts oder Verzeichnis-Strukturen.
+
+---
+*Dokumentations-Status: V2.0 (Deep Dive)*
+*Geprüft gegen Build: 0.97.5*

@@ -1,10 +1,6 @@
 import * as THREE from 'three';
-// @ts-ignore
 import { NodeManager } from '../core/NodeManager';
-// @ts-ignore
 import { EdgeObjectsManager } from '../core/EdgeObjectsManager';
-// @ts-ignore
-import { EntityData } from '../types';
 
 export class RaycastManager {
     private camera: THREE.Camera;

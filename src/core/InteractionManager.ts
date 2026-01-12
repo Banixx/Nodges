@@ -5,12 +5,12 @@
  */
 import * as THREE from 'three';
 import { StateManager } from './StateManager';
-// @ts-ignore
 import { CentralEventManager } from './CentralEventManager';
 import { HighlightManager } from '../effects/HighlightManager';
 import { ContextMenu } from '../utils/ContextMenu';
 import { DataEditor } from '../utils/DataEditor';
 import { AxisPositionHelper } from '../utils/AxisPositionHelper';
+import { EntityData, RelationshipData } from '../types';
 
 export class InteractionManager {
     private eventManager: CentralEventManager;
@@ -48,6 +48,12 @@ export class InteractionManager {
     private edgeSourceNode: THREE.Object3D | null = null;
     private isCreatingEdge: boolean = false;
     private renderer: THREE.WebGLRenderer;
+
+    // Dragging State
+    private dragObject: THREE.Object3D | null = null;
+    private dragPlane: THREE.Plane = new THREE.Plane();
+    private dragOffset: THREE.Vector3 = new THREE.Vector3();
+    private raycaster: THREE.Raycaster = new THREE.Raycaster();
 
     constructor(
         centralEventManager: CentralEventManager,
@@ -185,34 +191,29 @@ export class InteractionManager {
             this.selectObject(clickedObject, isAdditive);
         } else {
             if (this.isCreatingEdge) {
-                // Klick ins Leere während Kanten-Erstellung -> Neuen Node an dieser Stelle erstellen
                 this.createNewNode(data.event, (position) => {
                     const newNodeId = `node_${Date.now()}`;
 
-                    // Node erstellen
-                    this.eventManager.publish('node_created', {
-                        position: position,
-                        data: { id: newNodeId, name: 'Neuer Node' }
-                    });
+                    const newEntity: EntityData = {
+                        id: newNodeId,
+                        type: 'node',
+                        label: 'Neuer Node',
+                        position: { x: position.x, y: position.y, z: position.z },
+                        properties: {}
+                    };
+
+                    // Direkt State updaten
+                    this.stateManager.addNode(newEntity);
 
                     if (!this.edgeSourceNode) {
-                        console.log('[InteractionManager] New node created as source. Please select target node or click empty space again.');
-                        const sub = this.eventManager.subscribe('node_added_to_scene', (nodeData: any) => {
-                            if (nodeData.id === newNodeId) {
-                                this.edgeSourceNode = this.createNodeProxy(nodeData.entity);
-                                this.isCreatingEdge = true;
-                                document.body.style.cursor = 'crosshair';
-                                sub();
-                            }
-                        });
+                        console.log('[InteractionManager] New node created as source. Please select target node.');
+                        // Da addNode synchron ist, können wir den Proxy direkt erstellen
+                        this.edgeSourceNode = this.createNodeProxy(newEntity);
+                        this.isCreatingEdge = true;
+                        document.body.style.cursor = 'crosshair';
                     } else {
-                        const sub = this.eventManager.subscribe('node_added_to_scene', (nodeData: any) => {
-                            if (nodeData.id === newNodeId) {
-                                const targetProxy = this.createNodeProxy(nodeData.entity);
-                                this.finishEdgeCreation(targetProxy);
-                                sub();
-                            }
-                        });
+                        const targetProxy = this.createNodeProxy(newEntity);
+                        this.finishEdgeCreation(targetProxy);
                     }
                 });
                 return;
@@ -240,14 +241,44 @@ export class InteractionManager {
     handleMouseDown(data: any) {
         if (!this.isEnabled) return;
 
-        const { event } = data;
+        const { event, object } = data; // Note: CentralEventManager provides 'object' if hit
 
         this.dragStartPosition = {
             x: event.clientX,
             y: event.clientY
         };
 
-        this.isDragging = false;
+        // Drag Init
+        if (object && object.userData.type === 'node') {
+            this.isDragging = true;
+            this.controls.enabled = false; // Disable OrbitControls
+            this.dragObject = object;
+
+            // Define Drag Plane (parallel to camera, at object depth)
+            const normal = new THREE.Vector3();
+            this.camera.getWorldDirection(normal); // Kamera blickt in negative Z
+            normal.negate(); // Plane normal zeigt zur Kamera? Egal, intersectPlane rechnet signed distance.
+            // Plane defined by normal and coplanar point (the object itself to start)
+            // Or better: Plane passing through object, facing camera
+            this.dragPlane.setFromNormalAndCoplanarPoint(this.camera.position.clone().sub(object.position).normalize(), object.position);
+            // Eigentlich will man oft auf einer fixen Ebene draggen (z.B. XZ), aber "Screen Space Drag" ist intuitiver in 3D.
+            // Einfacher ist Plane mit Normal = Camera View Direction.
+            this.dragPlane.setFromNormalAndCoplanarPoint(this.camera.getWorldDirection(new THREE.Vector3()), object.position);
+
+            // Wir brauchen den genauen Hitpoint auf dem Objekt/Plane für Offset
+            // Wir machen einen neuen Raycast um den exakten Punkt auf der Plane zu finden
+            const mouse = new THREE.Vector2(
+                (event.clientX / window.innerWidth) * 2 - 1,
+                -(event.clientY / window.innerHeight) * 2 + 1
+            );
+            this.raycaster.setFromCamera(mouse, this.camera);
+            const intersectPoint = new THREE.Vector3();
+            this.raycaster.ray.intersectPlane(this.dragPlane, intersectPoint);
+
+            if (intersectPoint) {
+                this.dragOffset.subVectors(object.position, intersectPoint);
+            }
+        }
     }
 
     /**
@@ -255,6 +286,24 @@ export class InteractionManager {
      */
     handleMouseUp(_data: any) {
         if (!this.isEnabled) return;
+
+        if (this.dragObject) {
+            // Final Commit
+            const pos = this.dragObject.position;
+            const id = this.dragObject.userData.id; // or userData.nodeData.id
+            const nodeId = id || (this.dragObject.userData.nodeData ? this.dragObject.userData.nodeData.id : null);
+
+            if (nodeId) {
+                this.stateManager.updateNode(
+                    nodeId,
+                    { position: { x: pos.x, y: pos.y, z: pos.z } },
+                    false // Add to history!
+                );
+            }
+
+            this.dragObject = null;
+            this.controls.enabled = true;
+        }
 
         this.isDragging = false;
         this.dragStartPosition = null;
@@ -268,7 +317,33 @@ export class InteractionManager {
 
         const { event } = data;
 
-        // Drag-Detection
+        // 1. Dragging Logic
+        if (this.dragObject && this.isDragging) {
+            const mouse = new THREE.Vector2(
+                (event.clientX / window.innerWidth) * 2 - 1,
+                -(event.clientY / window.innerHeight) * 2 + 1
+            );
+            this.raycaster.setFromCamera(mouse, this.camera);
+            const intersectPoint = new THREE.Vector3();
+
+            if (this.raycaster.ray.intersectPlane(this.dragPlane, intersectPoint)) {
+                const newPos = intersectPoint.add(this.dragOffset);
+                this.dragObject.position.copy(newPos);
+
+                // Transient Update
+                const nodeId = this.dragObject.userData.id || this.dragObject.userData.nodeData?.id;
+                if (nodeId) {
+                    this.stateManager.updateNode(
+                        nodeId,
+                        { position: { x: newPos.x, y: newPos.y, z: newPos.z } },
+                        true // skipHistory (Transient)
+                    );
+                }
+            }
+            return; // Consume event
+        }
+
+        // 2. Drag Start Detection (only if not already dragging an object)
         if (this.dragStartPosition && !this.isDragging) {
             const deltaX = Math.abs(event.clientX - this.dragStartPosition.x);
             const deltaY = Math.abs(event.clientY - this.dragStartPosition.y);
@@ -324,6 +399,7 @@ export class InteractionManager {
 
     /**
      * Selektiert ein Objekt
+     * Note: HighlightManager wird automatisch über StateManager-Subscription benachrichtigt
      */
     selectObject(object: THREE.Object3D, isAdditive: boolean = false) {
         if (isAdditive) {
@@ -345,8 +421,7 @@ export class InteractionManager {
             // Standard replacement
             this.stateManager.setSelectedObject(object);
         }
-
-        this.highlightManager.updateHighlights(this.stateManager.state);
+        // Removed: this.highlightManager.updateHighlights() - HighlightManager subscribes to StateManager
     }
 
     /**
@@ -413,27 +488,28 @@ export class InteractionManager {
     deleteSelected() {
         const selectedObjects = Array.from(this.stateManager.state.selectedObjects);
         if (selectedObjects.length > 0) {
+
+            this.stateManager.beginTransaction(`Delete ${selectedObjects.length} Objects`);
+
+            // Erst deselektieren (entfernt Highlights)
+            this.deselectAll();
+
             selectedObjects.forEach(obj => {
-                // Lsche das Objekt aus der Szene
-                this.scene.remove(obj);
-
-                // Entferne Highlight und Ressourcen
-                this.highlightManager.removeHighlight(obj);
-
-                // Freigabe von Geometrie und Material
-                if ((obj as any).geometry) {
-                    (obj as any).geometry.dispose();
+                if (obj.userData.type === 'node') {
+                    const id = obj.userData.id || obj.userData.nodeData?.id;
+                    if (id) {
+                        this.stateManager.removeNode(id);
+                    }
+                } else if (obj.userData.type === 'edge') {
+                    const edgeData = obj.userData.edge || obj.userData.relationship;
+                    const id = edgeData?.id;
+                    if (id) {
+                        this.stateManager.removeEdge(id);
+                    }
                 }
-                if ((obj as any).material) {
-                    (obj as any).material.dispose();
-                }
-
-                // Event verffentlichen
-                this.eventManager.publish('object_deleted', { object: obj });
             });
 
-            // Deselektiere alle
-            this.deselectAll();
+            this.stateManager.commitTransaction();
         }
     }
 
@@ -498,7 +574,19 @@ export class InteractionManager {
                 action: () => {
                     const data = object.userData.nodeData || object.userData.edge || object.userData.entity || {};
                     this.dataEditor.show(data, (updatedData) => {
-                        this.eventManager.publish('data_updated', { object, updatedData });
+                        if (object.userData.type === 'node') {
+                            const id = object.userData.id || object.userData.nodeData?.id;
+                            if (id) {
+                                this.stateManager.updateNode(id, updatedData);
+                            }
+                        } else if (object.userData.type === 'edge') {
+                            const edgeData = object.userData.edge || object.userData.relationship;
+                            const id = edgeData?.id;
+                            if (id) {
+                                this.stateManager.updateEdge(id, updatedData);
+                            }
+                        }
+                        // Update selection state to trigger UI refresh if needed
                         this.stateManager.update({ selectedObject: object });
                     });
                 }
@@ -515,10 +603,14 @@ export class InteractionManager {
         const targetId = targetNode.userData.id || targetNode.userData.nodeData?.id;
 
         if (sourceId && targetId) {
-            this.eventManager.publish('edge_created', {
+            const newEdge: RelationshipData = {
+                id: `e${Date.now()}`,
+                type: 'connection',
                 source: sourceId,
-                target: targetId
-            });
+                target: targetId,
+                label: 'Neue Verbindung'
+            };
+            this.stateManager.addEdge(newEdge);
         }
 
         this.cancelEdgeCreation();
@@ -679,13 +771,18 @@ export class InteractionManager {
      * Beendet die Node-Erstellung und publiziert Event
      */
     private finishNodeCreation(position: THREE.Vector3) {
-        this.eventManager.publish('node_created', {
-            position: position,
-            data: {
-                id: `node_${Date.now()}`,
-                name: 'Neuer Node'
-            }
-        });
+        const newEntity: EntityData = {
+            id: `node_${Date.now()}`,
+            type: 'node',
+            label: 'Neuer Node',
+            position: {
+                x: position.x,
+                y: position.y,
+                z: position.z
+            },
+            properties: {}
+        };
+        this.stateManager.addNode(newEntity);
     }
 
     /**

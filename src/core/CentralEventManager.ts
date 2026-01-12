@@ -5,13 +5,9 @@
  */
 
 import * as THREE from 'three';
-// @ts-ignore
 import { RaycastManager } from '../utils/RaycastManager';
 import { StateManager } from './StateManager';
-// @ts-ignore
-// @ts-ignore
 import { NodeManager } from './NodeManager';
-// @ts-ignore
 import { EdgeObjectsManager } from './EdgeObjectsManager';
 import { HoverInfoPanel } from '../utils/HoverInfoPanel';
 
