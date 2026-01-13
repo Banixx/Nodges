@@ -32,6 +32,7 @@ export class InteractionManager {
     public currentMode: string;
     public isEnabled: boolean;
     public isDragging: boolean;
+    private wasDragging: boolean; // Flag to remember drag state until click event
     private dragStartPosition: { x: number, y: number } | null;
     private dragThreshold: number; // Pixel
 
@@ -77,6 +78,7 @@ export class InteractionManager {
         // Interaction State
         this.isEnabled = true;
         this.isDragging = false;
+        this.wasDragging = false;
         this.dragStartPosition = null;
         this.dragThreshold = 5; // Pixel
 
@@ -169,8 +171,9 @@ export class InteractionManager {
         this.lastInteractionTime = now;
 
         // Drag-Check: War es ein Drag oder ein echter Click?
-        if (this.isDragging) {
-            this.isDragging = false;
+        // wasDragging wird in handleMouseUp gesetzt und hier zurückgesetzt
+        if (this.wasDragging) {
+            this.wasDragging = false;
             return;
         }
 
@@ -305,6 +308,11 @@ export class InteractionManager {
             this.controls.enabled = true;
         }
 
+        // Speichere den Drag-Status für den Click-Handler
+        // wasDragging wird erst in handleClick zurückgesetzt
+        if (this.isDragging) {
+            this.wasDragging = true;
+        }
         this.isDragging = false;
         this.dragStartPosition = null;
     }

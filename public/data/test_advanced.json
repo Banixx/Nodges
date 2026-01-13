@@ -1,0 +1,626 @@
+{
+    "system": "Advanced Test - Ökosystem Wald",
+    "metadata": {
+        "created": "2026-01-12T23:10:00Z",
+        "version": "1.0",
+        "author": "Test",
+        "description": "Komplexes Testbeispiel mit allen Features: verschiedene Geometrien, Animationen, bidirektionale Beziehungen"
+    },
+    "dataModel": {
+        "entities": {
+            "produzent": {
+                "properties": {
+                    "biomasse_kg": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            10000
+                        ]
+                    },
+                    "hoehe_m": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            50
+                        ]
+                    }
+                }
+            },
+            "konsument_1": {
+                "properties": {
+                    "population": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            1000
+                        ]
+                    },
+                    "niveau": {
+                        "type": "categorical",
+                        "values": [
+                            "herbivor"
+                        ]
+                    }
+                }
+            },
+            "konsument_2": {
+                "properties": {
+                    "population": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            100
+                        ]
+                    },
+                    "niveau": {
+                        "type": "categorical",
+                        "values": [
+                            "karnivor",
+                            "omnivor"
+                        ]
+                    }
+                }
+            },
+            "destruent": {
+                "properties": {
+                    "aktivitaet": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            100
+                        ]
+                    }
+                }
+            },
+            "abiotisch": {
+                "properties": {
+                    "wert": {
+                        "type": "continuous"
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "energiefluss": {
+                "properties": {
+                    "energie_kj": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            10000
+                        ]
+                    }
+                }
+            },
+            "stoffkreislauf": {
+                "properties": {
+                    "naehrstoff": {
+                        "type": "categorical",
+                        "values": [
+                            "kohlenstoff",
+                            "stickstoff",
+                            "phosphor"
+                        ]
+                    }
+                }
+            },
+            "symbiose": {
+                "properties": {
+                    "staerke": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            1
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "produzent": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#228B22"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        5.0,
+                        5.0
+                    ]
+                }
+            },
+            "konsument_1": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#8B4513"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.0,
+                        3.0
+                    ]
+                }
+            },
+            "konsument_2": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#DC143C"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        4.0,
+                        4.0
+                    ]
+                }
+            },
+            "destruent": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#4B0082"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        2.0,
+                        2.0
+                    ]
+                }
+            },
+            "abiotisch": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#87CEEB"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.5,
+                        3.5
+                    ]
+                }
+            },
+            "energiefluss": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FFD700"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.15,
+                        0.15
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 1.5,
+                        "speed": 0.8
+                    }
+                }
+            },
+            "stoffkreislauf": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#00CED1"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.1,
+                        0.1
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 0.5,
+                        "speed": 0.3
+                    }
+                }
+            },
+            "symbiose": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FF69B4"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.08,
+                        0.08
+                    ]
+                },
+                "opacity": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.7,
+                        0.7
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "sonne",
+                "type": "abiotisch",
+                "label": "Sonne",
+                "position": {
+                    "x": 0,
+                    "y": 50,
+                    "z": 0
+                },
+                "wert": 100
+            },
+            {
+                "id": "boden",
+                "type": "abiotisch",
+                "label": "Waldboden",
+                "position": {
+                    "x": 0,
+                    "y": -5,
+                    "z": 0
+                },
+                "wert": 80
+            },
+            {
+                "id": "eiche",
+                "type": "produzent",
+                "label": "Eiche",
+                "position": {
+                    "x": -20,
+                    "y": 20,
+                    "z": -15
+                },
+                "biomasse_kg": 8000,
+                "hoehe_m": 25
+            },
+            {
+                "id": "buche",
+                "type": "produzent",
+                "label": "Buche",
+                "position": {
+                    "x": 0,
+                    "y": 22,
+                    "z": -10
+                },
+                "biomasse_kg": 6500,
+                "hoehe_m": 30
+            },
+            {
+                "id": "fichte",
+                "type": "produzent",
+                "label": "Fichte",
+                "position": {
+                    "x": 20,
+                    "y": 18,
+                    "z": -15
+                },
+                "biomasse_kg": 5000,
+                "hoehe_m": 35
+            },
+            {
+                "id": "moos",
+                "type": "produzent",
+                "label": "Moos",
+                "position": {
+                    "x": 10,
+                    "y": 2,
+                    "z": 5
+                },
+                "biomasse_kg": 50,
+                "hoehe_m": 0.1
+            },
+            {
+                "id": "reh",
+                "type": "konsument_1",
+                "label": "Reh",
+                "position": {
+                    "x": -25,
+                    "y": 8,
+                    "z": 10
+                },
+                "population": 120,
+                "niveau": "herbivor"
+            },
+            {
+                "id": "eichhoernchen",
+                "type": "konsument_1",
+                "label": "Eichhörnchen",
+                "position": {
+                    "x": -15,
+                    "y": 15,
+                    "z": 5
+                },
+                "population": 450,
+                "niveau": "herbivor"
+            },
+            {
+                "id": "raupe",
+                "type": "konsument_1",
+                "label": "Raupe",
+                "position": {
+                    "x": 5,
+                    "y": 12,
+                    "z": 0
+                },
+                "population": 800,
+                "niveau": "herbivor"
+            },
+            {
+                "id": "regenwurm",
+                "type": "konsument_1",
+                "label": "Regenwurm",
+                "position": {
+                    "x": 15,
+                    "y": 3,
+                    "z": 10
+                },
+                "population": 900,
+                "niveau": "herbivor"
+            },
+            {
+                "id": "fuchs",
+                "type": "konsument_2",
+                "label": "Fuchs",
+                "position": {
+                    "x": -30,
+                    "y": 10,
+                    "z": 25
+                },
+                "population": 15,
+                "niveau": "karnivor"
+            },
+            {
+                "id": "habicht",
+                "type": "konsument_2",
+                "label": "Habicht",
+                "position": {
+                    "x": 0,
+                    "y": 35,
+                    "z": 20
+                },
+                "population": 8,
+                "niveau": "karnivor"
+            },
+            {
+                "id": "wildschwein",
+                "type": "konsument_2",
+                "label": "Wildschwein",
+                "position": {
+                    "x": 25,
+                    "y": 8,
+                    "z": 25
+                },
+                "population": 45,
+                "niveau": "omnivor"
+            },
+            {
+                "id": "pilze",
+                "type": "destruent",
+                "label": "Pilze",
+                "position": {
+                    "x": -10,
+                    "y": 2,
+                    "z": 15
+                },
+                "aktivitaet": 85
+            },
+            {
+                "id": "bakterien",
+                "type": "destruent",
+                "label": "Bodenbakterien",
+                "position": {
+                    "x": 5,
+                    "y": 0,
+                    "z": 20
+                },
+                "aktivitaet": 95
+            }
+        ],
+        "relationships": [
+            {
+                "id": "e_sonne_eiche",
+                "type": "energiefluss",
+                "source": "sonne",
+                "target": "eiche",
+                "label": "Photosynthese",
+                "energie_kj": 8000
+            },
+            {
+                "id": "e_sonne_buche",
+                "type": "energiefluss",
+                "source": "sonne",
+                "target": "buche",
+                "label": "Photosynthese",
+                "energie_kj": 7500
+            },
+            {
+                "id": "e_sonne_fichte",
+                "type": "energiefluss",
+                "source": "sonne",
+                "target": "fichte",
+                "label": "Photosynthese",
+                "energie_kj": 6000
+            },
+            {
+                "id": "e_sonne_moos",
+                "type": "energiefluss",
+                "source": "sonne",
+                "target": "moos",
+                "label": "Photosynthese",
+                "energie_kj": 500
+            },
+            {
+                "id": "e_eiche_reh",
+                "type": "energiefluss",
+                "source": "eiche",
+                "target": "reh",
+                "label": "Fressen",
+                "energie_kj": 2000
+            },
+            {
+                "id": "e_eiche_eichh",
+                "type": "energiefluss",
+                "source": "eiche",
+                "target": "eichhoernchen",
+                "label": "Eicheln",
+                "energie_kj": 1500
+            },
+            {
+                "id": "e_buche_raupe",
+                "type": "energiefluss",
+                "source": "buche",
+                "target": "raupe",
+                "label": "Fressen",
+                "energie_kj": 1000
+            },
+            {
+                "id": "e_moos_regenwurm",
+                "type": "energiefluss",
+                "source": "moos",
+                "target": "regenwurm",
+                "label": "Zersetzung",
+                "energie_kj": 300
+            },
+            {
+                "id": "e_reh_fuchs",
+                "type": "energiefluss",
+                "source": "reh",
+                "target": "fuchs",
+                "label": "Jagd",
+                "energie_kj": 500
+            },
+            {
+                "id": "e_eichh_habicht",
+                "type": "energiefluss",
+                "source": "eichhoernchen",
+                "target": "habicht",
+                "label": "Jagd",
+                "energie_kj": 400
+            },
+            {
+                "id": "e_raupe_habicht",
+                "type": "energiefluss",
+                "source": "raupe",
+                "target": "habicht",
+                "label": "Fressen",
+                "energie_kj": 200
+            },
+            {
+                "id": "e_regenwurm_ws",
+                "type": "energiefluss",
+                "source": "regenwurm",
+                "target": "wildschwein",
+                "label": "Fressen",
+                "energie_kj": 350
+            },
+            {
+                "id": "e_eiche_ws",
+                "type": "energiefluss",
+                "source": "eiche",
+                "target": "wildschwein",
+                "label": "Eicheln",
+                "energie_kj": 800
+            },
+            {
+                "id": "s_pilze_boden",
+                "type": "stoffkreislauf",
+                "source": "pilze",
+                "target": "boden",
+                "label": "Mineralisierung",
+                "naehrstoff": "kohlenstoff"
+            },
+            {
+                "id": "s_bakterien_boden",
+                "type": "stoffkreislauf",
+                "source": "bakterien",
+                "target": "boden",
+                "label": "Stickstoff-Fixierung",
+                "naehrstoff": "stickstoff"
+            },
+            {
+                "id": "s_boden_eiche",
+                "type": "stoffkreislauf",
+                "source": "boden",
+                "target": "eiche",
+                "label": "Nährstoffaufnahme",
+                "naehrstoff": "phosphor"
+            },
+            {
+                "id": "s_boden_buche",
+                "type": "stoffkreislauf",
+                "source": "boden",
+                "target": "buche",
+                "label": "Nährstoffaufnahme",
+                "naehrstoff": "stickstoff"
+            },
+            {
+                "id": "s_boden_fichte",
+                "type": "stoffkreislauf",
+                "source": "boden",
+                "target": "fichte",
+                "label": "Nährstoffaufnahme",
+                "naehrstoff": "kohlenstoff"
+            },
+            {
+                "id": "sym_pilz_eiche",
+                "type": "symbiose",
+                "source": "pilze",
+                "target": "eiche",
+                "label": "Mykorrhiza",
+                "staerke": 0.9
+            },
+            {
+                "id": "sym_pilz_buche",
+                "type": "symbiose",
+                "source": "pilze",
+                "target": "buche",
+                "label": "Mykorrhiza",
+                "staerke": 0.85
+            }
+        ]
+    }
+}

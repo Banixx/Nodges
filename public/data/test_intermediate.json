@@ -1,0 +1,315 @@
+{
+    "system": "Intermediate Test - Firmennetzwerk",
+    "metadata": {
+        "created": "2026-01-12T23:10:00Z",
+        "version": "1.0",
+        "author": "Test",
+        "description": "Mittleres Testbeispiel mit dataModel und verschiedenen Typen"
+    },
+    "dataModel": {
+        "entities": {
+            "server": {
+                "properties": {
+                    "load": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            100
+                        ]
+                    },
+                    "status": {
+                        "type": "categorical",
+                        "values": [
+                            "online",
+                            "offline",
+                            "maintenance"
+                        ]
+                    }
+                }
+            },
+            "client": {
+                "properties": {
+                    "user_count": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            50
+                        ]
+                    }
+                }
+            },
+            "router": {
+                "properties": {
+                    "throughput": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            1000
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "data_flow": {
+                "properties": {
+                    "bandwidth_mbps": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            1000
+                        ]
+                    }
+                }
+            },
+            "management": {
+                "properties": {}
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "server": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ff4d4d"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        4.0,
+                        4.0
+                    ]
+                }
+            },
+            "client": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#4da6ff"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        2.0,
+                        2.0
+                    ]
+                }
+            },
+            "router": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ffcc00"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.0,
+                        3.0
+                    ]
+                }
+            },
+            "data_flow": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#00ff88"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.12,
+                        0.12
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 2.0,
+                        "speed": 1.0
+                    }
+                }
+            },
+            "management": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#888888"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.08,
+                        0.08
+                    ]
+                },
+                "opacity": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.5,
+                        0.5
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "main_server",
+                "type": "server",
+                "label": "Hauptserver",
+                "position": {
+                    "x": 0,
+                    "y": 20,
+                    "z": 0
+                },
+                "load": 75,
+                "status": "online"
+            },
+            {
+                "id": "backup_server",
+                "type": "server",
+                "label": "Backup-Server",
+                "position": {
+                    "x": 20,
+                    "y": 20,
+                    "z": 0
+                },
+                "load": 30,
+                "status": "online"
+            },
+            {
+                "id": "router_main",
+                "type": "router",
+                "label": "Hauptrouter",
+                "position": {
+                    "x": 10,
+                    "y": 10,
+                    "z": 0
+                },
+                "throughput": 850
+            },
+            {
+                "id": "client_1",
+                "type": "client",
+                "label": "Arbeitsplatz 1",
+                "position": {
+                    "x": -15,
+                    "y": 2,
+                    "z": -10
+                },
+                "user_count": 3
+            },
+            {
+                "id": "client_2",
+                "type": "client",
+                "label": "Arbeitsplatz 2",
+                "position": {
+                    "x": 0,
+                    "y": 2,
+                    "z": -10
+                },
+                "user_count": 5
+            },
+            {
+                "id": "client_3",
+                "type": "client",
+                "label": "Arbeitsplatz 3",
+                "position": {
+                    "x": 15,
+                    "y": 2,
+                    "z": -10
+                },
+                "user_count": 2
+            },
+            {
+                "id": "client_4",
+                "type": "client",
+                "label": "Arbeitsplatz 4",
+                "position": {
+                    "x": 30,
+                    "y": 2,
+                    "z": -10
+                },
+                "user_count": 4
+            }
+        ],
+        "relationships": [
+            {
+                "id": "srv_router",
+                "type": "data_flow",
+                "source": "main_server",
+                "target": "router_main",
+                "label": "Server-Uplink",
+                "bandwidth_mbps": 1000
+            },
+            {
+                "id": "backup_router",
+                "type": "data_flow",
+                "source": "backup_server",
+                "target": "router_main",
+                "label": "Backup-Uplink",
+                "bandwidth_mbps": 500
+            },
+            {
+                "id": "router_c1",
+                "type": "data_flow",
+                "source": "router_main",
+                "target": "client_1",
+                "label": "Client 1",
+                "bandwidth_mbps": 100
+            },
+            {
+                "id": "router_c2",
+                "type": "data_flow",
+                "source": "router_main",
+                "target": "client_2",
+                "label": "Client 2",
+                "bandwidth_mbps": 100
+            },
+            {
+                "id": "router_c3",
+                "type": "data_flow",
+                "source": "router_main",
+                "target": "client_3",
+                "label": "Client 3",
+                "bandwidth_mbps": 100
+            },
+            {
+                "id": "router_c4",
+                "type": "data_flow",
+                "source": "router_main",
+                "target": "client_4",
+                "label": "Client 4",
+                "bandwidth_mbps": 100
+            },
+            {
+                "id": "mgmt_main",
+                "type": "management",
+                "source": "main_server",
+                "target": "backup_server",
+                "label": "Replikation"
+            }
+        ]
+    }
+}

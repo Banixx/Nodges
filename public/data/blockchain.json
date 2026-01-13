@@ -1,0 +1,337 @@
+{
+    "system": "Blockchain Transaction Viewer",
+    "metadata": {
+        "created": "2026-01-13T10:05:00Z",
+        "description": "Visualisierung einer einfachen Blockchain mit Blocks und Wallets"
+    },
+    "dataModel": {
+        "entities": {
+            "Block": {
+                "properties": {
+                    "Height": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            1000
+                        ]
+                    },
+                    "Transactions": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            5000
+                        ]
+                    },
+                    "Miner": {
+                        "type": "categorical",
+                        "values": [
+                            "Pool A",
+                            "Pool B",
+                            "SoloMiner",
+                            "Unknown"
+                        ]
+                    }
+                }
+            },
+            "Wallet": {
+                "properties": {
+                    "Balance": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            1000
+                        ]
+                    },
+                    "Type": {
+                        "type": "categorical",
+                        "values": [
+                            "Exchange",
+                            "User",
+                            "Contract"
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "LinkedTo": {
+                "properties": {}
+            },
+            "Transaction": {
+                "properties": {
+                    "Amount": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            100
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Block": {
+                "geometry": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "box"
+                },
+                "color": {
+                    "source": "Miner",
+                    "function": "categorical",
+                    "palette": "schemeSet2"
+                },
+                "size": {
+                    "source": "Transactions",
+                    "function": "linear",
+                    "range": [
+                        1,
+                        3
+                    ]
+                },
+                "position": {
+                    "source": "Height",
+                    "function": "linear",
+                    "range": [
+                        0,
+                        100
+                    ],
+                    "params": {
+                        "axis": "x",
+                        "scale": 10
+                    }
+                }
+            },
+            "Wallet": {
+                "geometry": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "sphere"
+                },
+                "color": {
+                    "source": "Type",
+                    "function": "categorical",
+                    "palette": "schemeSet3"
+                },
+                "size": {
+                    "source": "Balance",
+                    "function": "logarithmic",
+                    "range": [
+                        0.5,
+                        2
+                    ]
+                }
+            },
+            "LinkedTo": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.2,
+                        0.2
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#FFFFFF"
+                    }
+                }
+            },
+            "Transaction": {
+                "thickness": {
+                    "source": "Amount",
+                    "function": "linear",
+                    "range": [
+                        0.05,
+                        0.3
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "speed": 1
+                    }
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#00FF00"
+                    }
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "B0",
+                "type": "Block",
+                "label": "Genesis Block",
+                "Height": 0,
+                "Transactions": 1,
+                "Miner": "Unknown",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "B1",
+                "type": "Block",
+                "label": "Block 1",
+                "Height": 1,
+                "Transactions": 50,
+                "Miner": "Pool A",
+                "position": {
+                    "x": 10,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "B2",
+                "type": "Block",
+                "label": "Block 2",
+                "Height": 2,
+                "Transactions": 120,
+                "Miner": "Pool B",
+                "position": {
+                    "x": 20,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "B3",
+                "type": "Block",
+                "label": "Block 3",
+                "Height": 3,
+                "Transactions": 80,
+                "Miner": "Pool A",
+                "position": {
+                    "x": 30,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "B4",
+                "type": "Block",
+                "label": "Block 4",
+                "Height": 4,
+                "Transactions": 200,
+                "Miner": "SoloMiner",
+                "position": {
+                    "x": 40,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "W1",
+                "type": "Wallet",
+                "label": "Exchange X",
+                "Balance": 500,
+                "Type": "Exchange",
+                "position": {
+                    "x": 10,
+                    "y": 10,
+                    "z": 5
+                }
+            },
+            {
+                "id": "W2",
+                "type": "Wallet",
+                "label": "User Alice",
+                "Balance": 10,
+                "Type": "User",
+                "position": {
+                    "x": 20,
+                    "y": -10,
+                    "z": 5
+                }
+            },
+            {
+                "id": "W3",
+                "type": "Wallet",
+                "label": "User Bob",
+                "Balance": 50,
+                "Type": "User",
+                "position": {
+                    "x": 30,
+                    "y": 15,
+                    "z": -5
+                }
+            },
+            {
+                "id": "W4",
+                "type": "Wallet",
+                "label": "DeFi Contract",
+                "Balance": 200,
+                "Type": "Contract",
+                "position": {
+                    "x": 40,
+                    "y": -5,
+                    "z": -5
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "source": "B1",
+                "target": "B0",
+                "type": "LinkedTo"
+            },
+            {
+                "source": "B2",
+                "target": "B1",
+                "type": "LinkedTo"
+            },
+            {
+                "source": "B3",
+                "target": "B2",
+                "type": "LinkedTo"
+            },
+            {
+                "source": "B4",
+                "target": "B3",
+                "type": "LinkedTo"
+            },
+            {
+                "source": "W1",
+                "target": "W2",
+                "type": "Transaction",
+                "Amount": 5,
+                "label": "Withdrawal"
+            },
+            {
+                "source": "W2",
+                "target": "W3",
+                "type": "Transaction",
+                "Amount": 2,
+                "label": "Payment"
+            },
+            {
+                "source": "W3",
+                "target": "W4",
+                "type": "Transaction",
+                "Amount": 40,
+                "label": "Deposit"
+            },
+            {
+                "source": "W1",
+                "target": "W4",
+                "type": "Transaction",
+                "Amount": 100,
+                "label": "Liquidity"
+            }
+        ]
+    }
+}

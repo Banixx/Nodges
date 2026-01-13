@@ -1,0 +1,333 @@
+{
+    "system": "Human Body Systems",
+    "metadata": {
+        "created": "2026-01-13T10:25:00Z",
+        "description": "Vereinfachte Darstellung der menschlichen Organsysteme"
+    },
+    "dataModel": {
+        "entities": {
+            "System": {
+                "properties": {
+                    "Criticality": {
+                        "type": "continuous",
+                        "range": [
+                            1,
+                            10
+                        ]
+                    }
+                }
+            },
+            "Organ": {
+                "properties": {
+                    "Mass_g": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            2000
+                        ]
+                    },
+                    "Type": {
+                        "type": "categorical",
+                        "values": [
+                            "Vital",
+                            "Support",
+                            "Sensory"
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "PartOf": {
+                "properties": {}
+            },
+            "ConnectedTo": {
+                "properties": {
+                    "FlowType": {
+                        "type": "categorical",
+                        "values": [
+                            "Blood",
+                            "Nerve",
+                            "Air",
+                            "Food"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "System": {
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#FF5555"
+                    }
+                },
+                "size": {
+                    "source": "Criticality",
+                    "function": "linear",
+                    "range": [
+                        2,
+                        5
+                    ]
+                },
+                "geometry": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "octahedron"
+                }
+            },
+            "Organ": {
+                "color": {
+                    "source": "Type",
+                    "function": "categorical",
+                    "palette": "schemeSet1"
+                },
+                "size": {
+                    "source": "Mass_g",
+                    "function": "linear",
+                    "range": [
+                        1,
+                        4
+                    ]
+                }
+            },
+            "ConnectedTo": {
+                "color": {
+                    "source": "FlowType",
+                    "function": "categorical",
+                    "palette": "schemeCategory10"
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.2,
+                        0.2
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "speed": 1.5
+                    }
+                }
+            },
+            "PartOf": {
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#AAAAAA"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.3,
+                        0.3
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "Circulatory",
+                "type": "System",
+                "label": "Kreislaufsystem",
+                "Criticality": 10,
+                "position": {
+                    "x": 0,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Respiratory",
+                "type": "System",
+                "label": "Atmungssystem",
+                "Criticality": 9,
+                "position": {
+                    "x": 10,
+                    "y": 5,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Nervous",
+                "type": "System",
+                "label": "Nervensystem",
+                "Criticality": 10,
+                "position": {
+                    "x": -10,
+                    "y": 20,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Digestive",
+                "type": "System",
+                "label": "Verdauungssystem",
+                "Criticality": 8,
+                "position": {
+                    "x": 0,
+                    "y": -10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Heart",
+                "type": "Organ",
+                "label": "Herz",
+                "Mass_g": 300,
+                "Type": "Vital",
+                "position": {
+                    "x": 0,
+                    "y": 5,
+                    "z": 5
+                }
+            },
+            {
+                "id": "Lungs",
+                "type": "Organ",
+                "label": "Lunge",
+                "Mass_g": 1000,
+                "Type": "Vital",
+                "position": {
+                    "x": 5,
+                    "y": 8,
+                    "z": 2
+                }
+            },
+            {
+                "id": "Brain",
+                "type": "Organ",
+                "label": "Gehirn",
+                "Mass_g": 1400,
+                "Type": "Vital",
+                "position": {
+                    "x": -5,
+                    "y": 25,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Stomach",
+                "type": "Organ",
+                "label": "Magen",
+                "Mass_g": 150,
+                "Type": "Support",
+                "position": {
+                    "x": 0,
+                    "y": -5,
+                    "z": 5
+                }
+            },
+            {
+                "id": "Liver",
+                "type": "Organ",
+                "label": "Leber",
+                "Mass_g": 1500,
+                "Type": "Support",
+                "position": {
+                    "x": 5,
+                    "y": -8,
+                    "z": 5
+                }
+            },
+            {
+                "id": "Intestines",
+                "type": "Organ",
+                "label": "Darm",
+                "Mass_g": 2000,
+                "Type": "Support",
+                "position": {
+                    "x": 0,
+                    "y": -15,
+                    "z": 0
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "source": "Heart",
+                "target": "Circulatory",
+                "type": "PartOf"
+            },
+            {
+                "source": "Lungs",
+                "target": "Respiratory",
+                "type": "PartOf"
+            },
+            {
+                "source": "Brain",
+                "target": "Nervous",
+                "type": "PartOf"
+            },
+            {
+                "source": "Stomach",
+                "target": "Digestive",
+                "type": "PartOf"
+            },
+            {
+                "source": "Liver",
+                "target": "Digestive",
+                "type": "PartOf"
+            },
+            {
+                "source": "Intestines",
+                "target": "Digestive",
+                "type": "PartOf"
+            },
+            {
+                "source": "Heart",
+                "target": "Lungs",
+                "type": "ConnectedTo",
+                "FlowType": "Blood"
+            },
+            {
+                "source": "Heart",
+                "target": "Brain",
+                "type": "ConnectedTo",
+                "FlowType": "Blood"
+            },
+            {
+                "source": "Heart",
+                "target": "Liver",
+                "type": "ConnectedTo",
+                "FlowType": "Blood"
+            },
+            {
+                "source": "Brain",
+                "target": "Heart",
+                "type": "ConnectedTo",
+                "FlowType": "Nerve"
+            },
+            {
+                "source": "Brain",
+                "target": "Stomach",
+                "type": "ConnectedTo",
+                "FlowType": "Nerve"
+            },
+            {
+                "source": "Stomach",
+                "target": "Intestines",
+                "type": "ConnectedTo",
+                "FlowType": "Food"
+            },
+            {
+                "source": "Liver",
+                "target": "Intestines",
+                "type": "ConnectedTo",
+                "FlowType": "Blood"
+            }
+        ]
+    }
+}

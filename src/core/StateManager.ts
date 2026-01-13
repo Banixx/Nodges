@@ -129,7 +129,7 @@ export class StateManager {
             layoutEnabled: true,
 
             // Environment Defaults
-            backgroundColor: '#000000',
+            backgroundColor: '#8fa649',
             ambientLightIntensity: 0.6,
             directionalLightIntensity: 0.8
         };
@@ -244,7 +244,12 @@ export class StateManager {
         });
     }
 
-    updateGlowState(deltaTime: number) {
+    /**
+     * Updates glow state SILENTLY (without notifying subscribers)
+     * This is critical for performance - glow animation runs every frame
+     * and should not trigger expensive HighlightManager updates.
+     */
+    updateGlowStateSilent(deltaTime: number) {
         if (this.state.selectedObject) {
             let glowFrequency = 0.5;
             if (this.state.selectedObject.userData.type === 'node') {
@@ -257,20 +262,15 @@ export class StateManager {
             let newIntensity = this.state.glowIntensity +
                 deltaTime * Math.PI * 0.2 * glowFrequency * this.state.glowDirection;
 
+            // Update state directly WITHOUT triggering subscribers
             if (newIntensity >= 1) {
-                newIntensity = 1;
-                this.update({
-                    glowIntensity: newIntensity,
-                    glowDirection: -1
-                });
+                this.state.glowIntensity = 1;
+                this.state.glowDirection = -1;
             } else if (newIntensity <= 0) {
-                newIntensity = 0;
-                this.update({
-                    glowIntensity: newIntensity,
-                    glowDirection: 1
-                });
+                this.state.glowIntensity = 0;
+                this.state.glowDirection = 1;
             } else {
-                this.update({ glowIntensity: newIntensity });
+                this.state.glowIntensity = newIntensity;
             }
         }
     }
@@ -280,7 +280,8 @@ export class StateManager {
         const deltaTime = (currentTime - this.lastTime) / 1000;
         this.lastTime = currentTime;
 
-        this.updateGlowState(deltaTime);
+        // Use silent update to avoid triggering expensive subscriber updates every frame
+        this.updateGlowStateSilent(deltaTime);
         requestAnimationFrame(this.animate.bind(this));
     }
 

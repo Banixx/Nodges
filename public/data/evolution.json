@@ -1,0 +1,364 @@
+{
+    "system": "Evolutionsstammbaum der Primaten",
+    "metadata": {
+        "created": "2026-01-13T10:00:00Z",
+        "version": "1.0",
+        "description": "Vereinfachter Stammbaum der Primaten bis zum Homo Sapiens"
+    },
+    "dataModel": {
+        "entities": {
+            "Spezies": {
+                "properties": {
+                    "Zeitraum_Mio_Jahre": {
+                        "type": "continuous",
+                        "range": [
+                            -60,
+                            0
+                        ]
+                    },
+                    "Gehirnvolumen_ccm": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            1500
+                        ]
+                    }
+                }
+            },
+            "Kladus": {
+                "properties": {
+                    "Zeitraum_Mio_Jahre": {
+                        "type": "continuous",
+                        "range": [
+                            -100,
+                            0
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "EntwickeltAus": {
+                "properties": {
+                    "Dauer_Mio_Jahre": {
+                        "type": "continuous"
+                    }
+                }
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Spezies": {
+                "color": {
+                    "source": "Zeitraum_Mio_Jahre",
+                    "function": "heatmap",
+                    "range": [
+                        -60,
+                        0
+                    ],
+                    "palette": "magma"
+                },
+                "size": {
+                    "source": "Gehirnvolumen_ccm",
+                    "function": "linear",
+                    "range": [
+                        1,
+                        4
+                    ]
+                },
+                "position": {
+                    "source": "Zeitraum_Mio_Jahre",
+                    "function": "linear",
+                    "range": [
+                        -60,
+                        0
+                    ],
+                    "params": {
+                        "axis": "y"
+                    }
+                }
+            },
+            "Kladus": {
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#888888"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        2,
+                        2
+                    ]
+                }
+            },
+            "EntwickeltAus": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.1,
+                        0.1
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#666666"
+                    }
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "Primaten",
+                "type": "Kladus",
+                "label": "Primaten (Ordnung)",
+                "Zeitraum_Mio_Jahre": -60,
+                "position": {
+                    "x": 0,
+                    "y": -60,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Trockennasen",
+                "type": "Kladus",
+                "label": "Trockennasenprimaten",
+                "Zeitraum_Mio_Jahre": -58,
+                "position": {
+                    "x": 0,
+                    "y": -58,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Altweltaffen",
+                "type": "Kladus",
+                "label": "Altweltaffen",
+                "Zeitraum_Mio_Jahre": -40,
+                "position": {
+                    "x": 0,
+                    "y": -40,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Menschenartige",
+                "type": "Kladus",
+                "label": "Menschenartige (Hominoidea)",
+                "Zeitraum_Mio_Jahre": -25,
+                "position": {
+                    "x": 0,
+                    "y": -25,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Hominidae",
+                "type": "Kladus",
+                "label": "Hominidae (Große Menschenaffen)",
+                "Zeitraum_Mio_Jahre": -15,
+                "position": {
+                    "x": 0,
+                    "y": -15,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Homininae",
+                "type": "Kladus",
+                "label": "Homininae",
+                "Zeitraum_Mio_Jahre": -8,
+                "position": {
+                    "x": 10,
+                    "y": -8,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Ponginae",
+                "type": "Kladus",
+                "label": "Ponginae (Orang-Utans)",
+                "Zeitraum_Mio_Jahre": -12,
+                "position": {
+                    "x": -20,
+                    "y": -12,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Gorillini",
+                "type": "Kladus",
+                "label": "Gorillini",
+                "Zeitraum_Mio_Jahre": -8,
+                "position": {
+                    "x": -10,
+                    "y": -8,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Hominini",
+                "type": "Kladus",
+                "label": "Hominini",
+                "Zeitraum_Mio_Jahre": -6,
+                "position": {
+                    "x": 20,
+                    "y": -6,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Pan",
+                "type": "Kladus",
+                "label": "Pan (Schimpansen)",
+                "Zeitraum_Mio_Jahre": -6,
+                "position": {
+                    "x": 10,
+                    "y": -6,
+                    "z": 5
+                }
+            },
+            {
+                "id": "Australopithecus",
+                "type": "Spezies",
+                "label": "Australopithecus afarensis",
+                "Zeitraum_Mio_Jahre": -3.9,
+                "Gehirnvolumen_ccm": 450,
+                "position": {
+                    "x": 25,
+                    "y": -3.9,
+                    "z": 0
+                }
+            },
+            {
+                "id": "HomoHabilis",
+                "type": "Spezies",
+                "label": "Homo habilis",
+                "Zeitraum_Mio_Jahre": -2.3,
+                "Gehirnvolumen_ccm": 600,
+                "position": {
+                    "x": 30,
+                    "y": -2.3,
+                    "z": 0
+                }
+            },
+            {
+                "id": "HomoErectus",
+                "type": "Spezies",
+                "label": "Homo erectus",
+                "Zeitraum_Mio_Jahre": -1.9,
+                "Gehirnvolumen_ccm": 900,
+                "position": {
+                    "x": 35,
+                    "y": -1.9,
+                    "z": 0
+                }
+            },
+            {
+                "id": "HomoNeanderthalensis",
+                "type": "Spezies",
+                "label": "Homo neanderthalensis",
+                "Zeitraum_Mio_Jahre": -0.4,
+                "Gehirnvolumen_ccm": 1400,
+                "position": {
+                    "x": 30,
+                    "y": -0.4,
+                    "z": 5
+                }
+            },
+            {
+                "id": "HomoSapiens",
+                "type": "Spezies",
+                "label": "Homo sapiens",
+                "Zeitraum_Mio_Jahre": -0.3,
+                "Gehirnvolumen_ccm": 1350,
+                "position": {
+                    "x": 40,
+                    "y": 0,
+                    "z": 0
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "source": "Primaten",
+                "target": "Trockennasen",
+                "type": "EntwickeltAus"
+            },
+            {
+                "source": "Trockennasen",
+                "target": "Altweltaffen",
+                "type": "EntwickeltAus"
+            },
+            {
+                "source": "Altweltaffen",
+                "target": "Menschenartige",
+                "type": "EntwickeltAus"
+            },
+            {
+                "source": "Menschenartige",
+                "target": "Hominidae",
+                "type": "EntwickeltAus"
+            },
+            {
+                "source": "Hominidae",
+                "target": "Homininae",
+                "type": "EntwickeltAus"
+            },
+            {
+                "source": "Hominidae",
+                "target": "Ponginae",
+                "type": "EntwickeltAus"
+            },
+            {
+                "source": "Homininae",
+                "target": "Gorillini",
+                "type": "EntwickeltAus"
+            },
+            {
+                "source": "Homininae",
+                "target": "Hominini",
+                "type": "EntwickeltAus"
+            },
+            {
+                "source": "Hominini",
+                "target": "Pan",
+                "type": "EntwickeltAus"
+            },
+            {
+                "source": "Hominini",
+                "target": "Australopithecus",
+                "type": "EntwickeltAus"
+            },
+            {
+                "source": "Australopithecus",
+                "target": "HomoHabilis",
+                "type": "EntwickeltAus"
+            },
+            {
+                "source": "HomoHabilis",
+                "target": "HomoErectus",
+                "type": "EntwickeltAus"
+            },
+            {
+                "source": "HomoErectus",
+                "target": "HomoNeanderthalensis",
+                "type": "EntwickeltAus"
+            },
+            {
+                "source": "HomoErectus",
+                "target": "HomoSapiens",
+                "type": "EntwickeltAus"
+            }
+        ]
+    }
+}

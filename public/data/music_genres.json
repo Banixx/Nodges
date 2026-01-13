@@ -1,0 +1,391 @@
+{
+    "system": "Music Genres Evolution",
+    "metadata": {
+        "created": "2026-01-13T10:30:00Z",
+        "description": "Stammbaum der Musikgenres"
+    },
+    "dataModel": {
+        "entities": {
+            "Genre": {
+                "properties": {
+                    "YearOrigin": {
+                        "type": "continuous",
+                        "range": [
+                            1900,
+                            2020
+                        ]
+                    },
+                    "Popularity": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            100
+                        ]
+                    },
+                    "Category": {
+                        "type": "categorical",
+                        "values": [
+                            "Roots",
+                            "Rock",
+                            "Electronic",
+                            "Urban",
+                            "Pop"
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "Influenced": {
+                "properties": {}
+            },
+            "SubgenreOf": {
+                "properties": {}
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Genre": {
+                "color": {
+                    "source": "Category",
+                    "function": "categorical",
+                    "palette": "schemeSet2"
+                },
+                "size": {
+                    "source": "Popularity",
+                    "function": "linear",
+                    "range": [
+                        1,
+                        4
+                    ]
+                },
+                "position": {
+                    "source": "YearOrigin",
+                    "function": "linear",
+                    "range": [
+                        1900,
+                        2020
+                    ],
+                    "params": {
+                        "axis": "y",
+                        "scale": 15
+                    }
+                }
+            },
+            "Influenced": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.1,
+                        0.1
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#666666"
+                    }
+                },
+                "curvature": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.5,
+                        0.5
+                    ]
+                }
+            },
+            "SubgenreOf": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.3,
+                        0.3
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#DDDDDD"
+                    }
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "Blues",
+                "type": "Genre",
+                "label": "Blues",
+                "YearOrigin": 1900,
+                "Popularity": 40,
+                "Category": "Roots",
+                "position": {
+                    "x": -10,
+                    "y": -100,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Folk",
+                "type": "Genre",
+                "label": "Folk",
+                "YearOrigin": 1920,
+                "Popularity": 30,
+                "Category": "Roots",
+                "position": {
+                    "x": 10,
+                    "y": -80,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Jazz",
+                "type": "Genre",
+                "label": "Jazz",
+                "YearOrigin": 1910,
+                "Popularity": 50,
+                "Category": "Roots",
+                "position": {
+                    "x": -20,
+                    "y": -90,
+                    "z": 0
+                }
+            },
+            {
+                "id": "RnB",
+                "type": "Genre",
+                "label": "R&B",
+                "YearOrigin": 1940,
+                "Popularity": 60,
+                "Category": "Urban",
+                "position": {
+                    "x": -5,
+                    "y": -60,
+                    "z": 0
+                }
+            },
+            {
+                "id": "RockAndRoll",
+                "type": "Genre",
+                "label": "Rock & Roll",
+                "YearOrigin": 1950,
+                "Popularity": 90,
+                "Category": "Rock",
+                "position": {
+                    "x": 0,
+                    "y": -50,
+                    "z": 5
+                }
+            },
+            {
+                "id": "Rock",
+                "type": "Genre",
+                "label": "Rock",
+                "YearOrigin": 1960,
+                "Popularity": 95,
+                "Category": "Rock",
+                "position": {
+                    "x": 0,
+                    "y": -40,
+                    "z": 10
+                }
+            },
+            {
+                "id": "Soul",
+                "type": "Genre",
+                "label": "Soul",
+                "YearOrigin": 1960,
+                "Popularity": 70,
+                "Category": "Urban",
+                "position": {
+                    "x": -15,
+                    "y": -40,
+                    "z": -5
+                }
+            },
+            {
+                "id": "Funk",
+                "type": "Genre",
+                "label": "Funk",
+                "YearOrigin": 1970,
+                "Popularity": 65,
+                "Category": "Urban",
+                "position": {
+                    "x": -15,
+                    "y": -30,
+                    "z": -5
+                }
+            },
+            {
+                "id": "Metal",
+                "type": "Genre",
+                "label": "Heavy Metal",
+                "YearOrigin": 1970,
+                "Popularity": 80,
+                "Category": "Rock",
+                "position": {
+                    "x": 10,
+                    "y": -30,
+                    "z": 10
+                }
+            },
+            {
+                "id": "Punk",
+                "type": "Genre",
+                "label": "Punk",
+                "YearOrigin": 1975,
+                "Popularity": 60,
+                "Category": "Rock",
+                "position": {
+                    "x": 5,
+                    "y": -25,
+                    "z": 5
+                }
+            },
+            {
+                "id": "HipHop",
+                "type": "Genre",
+                "label": "Hip Hop",
+                "YearOrigin": 1975,
+                "Popularity": 99,
+                "Category": "Urban",
+                "position": {
+                    "x": -10,
+                    "y": -25,
+                    "z": -10
+                }
+            },
+            {
+                "id": "Disco",
+                "type": "Genre",
+                "label": "Disco",
+                "YearOrigin": 1975,
+                "Popularity": 50,
+                "Category": "Pop",
+                "position": {
+                    "x": 20,
+                    "y": -25,
+                    "z": 0
+                }
+            },
+            {
+                "id": "House",
+                "type": "Genre",
+                "label": "House",
+                "YearOrigin": 1980,
+                "Popularity": 75,
+                "Category": "Electronic",
+                "position": {
+                    "x": 20,
+                    "y": -20,
+                    "z": -5
+                }
+            },
+            {
+                "id": "Techno",
+                "type": "Genre",
+                "label": "Techno",
+                "YearOrigin": 1985,
+                "Popularity": 70,
+                "Category": "Electronic",
+                "position": {
+                    "x": 25,
+                    "y": -15,
+                    "z": -5
+                }
+            },
+            {
+                "id": "Grunge",
+                "type": "Genre",
+                "label": "Grunge",
+                "YearOrigin": 1990,
+                "Popularity": 65,
+                "Category": "Rock",
+                "position": {
+                    "x": 0,
+                    "y": -10,
+                    "z": 8
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "source": "Blues",
+                "target": "Jazz",
+                "type": "Influenced"
+            },
+            {
+                "source": "Blues",
+                "target": "RnB",
+                "type": "Influenced"
+            },
+            {
+                "source": "RnB",
+                "target": "RockAndRoll",
+                "type": "Influenced"
+            },
+            {
+                "source": "Folk",
+                "target": "RockAndRoll",
+                "type": "Influenced"
+            },
+            {
+                "source": "RockAndRoll",
+                "target": "Rock",
+                "type": "SubgenreOf"
+            },
+            {
+                "source": "Rock",
+                "target": "Metal",
+                "type": "SubgenreOf"
+            },
+            {
+                "source": "Rock",
+                "target": "Punk",
+                "type": "SubgenreOf"
+            },
+            {
+                "source": "RnB",
+                "target": "Soul",
+                "type": "SubgenreOf"
+            },
+            {
+                "source": "Soul",
+                "target": "Funk",
+                "type": "SubgenreOf"
+            },
+            {
+                "source": "Funk",
+                "target": "HipHop",
+                "type": "Influenced"
+            },
+            {
+                "source": "Disco",
+                "target": "House",
+                "type": "Influenced"
+            },
+            {
+                "source": "House",
+                "target": "Techno",
+                "type": "SubgenreOf"
+            },
+            {
+                "source": "Punk",
+                "target": "Grunge",
+                "type": "Influenced"
+            },
+            {
+                "source": "Metal",
+                "target": "Grunge",
+                "type": "Influenced"
+            }
+        ]
+    }
+}

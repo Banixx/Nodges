@@ -1,0 +1,726 @@
+{
+    "system": "Sonnensystem Layout Demo",
+    "metadata": {
+        "created": "2026-01-12T22:55:00Z",
+        "version": "1.0",
+        "author": "Antigravity",
+        "description": "Eine Visualisierung des Sonnensystems zur Demonstration der Layout-Funktionalität von Nodges. Zeigt die Sonne, alle Planeten und wichtige Monde mit ihren Beziehungen."
+    },
+    "dataModel": {
+        "entities": {
+            "stern": {
+                "properties": {
+                    "temperatur": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            6000
+                        ]
+                    },
+                    "masse": {
+                        "type": "continuous"
+                    }
+                }
+            },
+            "planet": {
+                "properties": {
+                    "planetentyp": {
+                        "type": "categorical",
+                        "values": [
+                            "gesteinsplanet",
+                            "gasriese",
+                            "eisriese"
+                        ]
+                    },
+                    "hat_ringe": {
+                        "type": "categorical",
+                        "values": [
+                            "ja",
+                            "nein"
+                        ]
+                    },
+                    "durchmesser_km": {
+                        "type": "continuous"
+                    }
+                }
+            },
+            "mond": {
+                "properties": {
+                    "durchmesser_km": {
+                        "type": "continuous"
+                    }
+                }
+            },
+            "zwergplanet": {
+                "properties": {
+                    "durchmesser_km": {
+                        "type": "continuous"
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "orbit": {
+                "properties": {
+                    "umlaufzeit_tage": {
+                        "type": "continuous"
+                    },
+                    "entfernung_mio_km": {
+                        "type": "continuous"
+                    }
+                }
+            },
+            "satellit": {
+                "properties": {
+                    "umlaufzeit_tage": {
+                        "type": "continuous"
+                    }
+                }
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "stern": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ffcc00"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        8.0,
+                        8.0
+                    ]
+                }
+            },
+            "planet": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#4a90d9"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.5,
+                        3.5
+                    ]
+                }
+            },
+            "mond": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#888888"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        1.5,
+                        1.5
+                    ]
+                }
+            },
+            "zwergplanet": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#aa77cc"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        2.0,
+                        2.0
+                    ]
+                }
+            },
+            "orbit": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#ffaa33"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.12,
+                        0.12
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 1.5,
+                        "speed": 0.8
+                    }
+                }
+            },
+            "satellit": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#666666"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.06,
+                        0.06
+                    ]
+                },
+                "opacity": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.6,
+                        0.6
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "sonne",
+                "type": "stern",
+                "label": "Sonne",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "temperatur": 5778,
+                "masse": 1989000,
+                "spektralklasse": "G2V",
+                "alter_mrd_jahre": 4.6
+            },
+            {
+                "id": "merkur",
+                "type": "planet",
+                "label": "Merkur",
+                "position": {
+                    "x": -20,
+                    "y": 2,
+                    "z": 5
+                },
+                "planetentyp": "gesteinsplanet",
+                "hat_ringe": "nein",
+                "durchmesser_km": 4879,
+                "entfernung_sonne_mio_km": 57.9,
+                "anzahl_monde": 0
+            },
+            {
+                "id": "venus",
+                "type": "planet",
+                "label": "Venus",
+                "position": {
+                    "x": -35,
+                    "y": -3,
+                    "z": 12
+                },
+                "planetentyp": "gesteinsplanet",
+                "hat_ringe": "nein",
+                "durchmesser_km": 12104,
+                "entfernung_sonne_mio_km": 108.2,
+                "anzahl_monde": 0
+            },
+            {
+                "id": "erde",
+                "type": "planet",
+                "label": "Erde",
+                "position": {
+                    "x": -50,
+                    "y": 5,
+                    "z": -8
+                },
+                "planetentyp": "gesteinsplanet",
+                "hat_ringe": "nein",
+                "durchmesser_km": 12756,
+                "entfernung_sonne_mio_km": 149.6,
+                "anzahl_monde": 1
+            },
+            {
+                "id": "mond_erde",
+                "type": "mond",
+                "label": "Mond",
+                "position": {
+                    "x": -55,
+                    "y": 8,
+                    "z": -10
+                },
+                "durchmesser_km": 3475
+            },
+            {
+                "id": "mars",
+                "type": "planet",
+                "label": "Mars",
+                "position": {
+                    "x": -65,
+                    "y": -2,
+                    "z": 15
+                },
+                "planetentyp": "gesteinsplanet",
+                "hat_ringe": "nein",
+                "durchmesser_km": 6792,
+                "entfernung_sonne_mio_km": 227.9,
+                "anzahl_monde": 2
+            },
+            {
+                "id": "phobos",
+                "type": "mond",
+                "label": "Phobos",
+                "position": {
+                    "x": -68,
+                    "y": 0,
+                    "z": 18
+                },
+                "durchmesser_km": 22
+            },
+            {
+                "id": "deimos",
+                "type": "mond",
+                "label": "Deimos",
+                "position": {
+                    "x": -62,
+                    "y": -5,
+                    "z": 18
+                },
+                "durchmesser_km": 12
+            },
+            {
+                "id": "jupiter",
+                "type": "planet",
+                "label": "Jupiter",
+                "position": {
+                    "x": 40,
+                    "y": 10,
+                    "z": -30
+                },
+                "planetentyp": "gasriese",
+                "hat_ringe": "ja",
+                "durchmesser_km": 142984,
+                "entfernung_sonne_mio_km": 778.5,
+                "anzahl_monde": 95
+            },
+            {
+                "id": "io",
+                "type": "mond",
+                "label": "Io",
+                "position": {
+                    "x": 45,
+                    "y": 8,
+                    "z": -25
+                },
+                "durchmesser_km": 3643
+            },
+            {
+                "id": "europa",
+                "type": "mond",
+                "label": "Europa",
+                "position": {
+                    "x": 48,
+                    "y": 12,
+                    "z": -32
+                },
+                "durchmesser_km": 3122
+            },
+            {
+                "id": "ganymed",
+                "type": "mond",
+                "label": "Ganymed",
+                "position": {
+                    "x": 35,
+                    "y": 15,
+                    "z": -35
+                },
+                "durchmesser_km": 5268
+            },
+            {
+                "id": "kallisto",
+                "type": "mond",
+                "label": "Kallisto",
+                "position": {
+                    "x": 38,
+                    "y": 5,
+                    "z": -38
+                },
+                "durchmesser_km": 4821
+            },
+            {
+                "id": "saturn",
+                "type": "planet",
+                "label": "Saturn",
+                "position": {
+                    "x": 55,
+                    "y": -5,
+                    "z": 40
+                },
+                "planetentyp": "gasriese",
+                "hat_ringe": "ja",
+                "durchmesser_km": 120536,
+                "entfernung_sonne_mio_km": 1432.0,
+                "anzahl_monde": 146
+            },
+            {
+                "id": "titan",
+                "type": "mond",
+                "label": "Titan",
+                "position": {
+                    "x": 60,
+                    "y": -8,
+                    "z": 45
+                },
+                "durchmesser_km": 5150
+            },
+            {
+                "id": "enceladus",
+                "type": "mond",
+                "label": "Enceladus",
+                "position": {
+                    "x": 52,
+                    "y": -2,
+                    "z": 35
+                },
+                "durchmesser_km": 504
+            },
+            {
+                "id": "uranus",
+                "type": "planet",
+                "label": "Uranus",
+                "position": {
+                    "x": -30,
+                    "y": 20,
+                    "z": 55
+                },
+                "planetentyp": "eisriese",
+                "hat_ringe": "ja",
+                "durchmesser_km": 51118,
+                "entfernung_sonne_mio_km": 2867.0,
+                "anzahl_monde": 28
+            },
+            {
+                "id": "miranda",
+                "type": "mond",
+                "label": "Miranda",
+                "position": {
+                    "x": -25,
+                    "y": 23,
+                    "z": 52
+                },
+                "durchmesser_km": 472
+            },
+            {
+                "id": "titania",
+                "type": "mond",
+                "label": "Titania",
+                "position": {
+                    "x": -35,
+                    "y": 18,
+                    "z": 60
+                },
+                "durchmesser_km": 1578
+            },
+            {
+                "id": "neptun",
+                "type": "planet",
+                "label": "Neptun",
+                "position": {
+                    "x": 20,
+                    "y": -15,
+                    "z": 70
+                },
+                "planetentyp": "eisriese",
+                "hat_ringe": "ja",
+                "durchmesser_km": 49528,
+                "entfernung_sonne_mio_km": 4515.0,
+                "anzahl_monde": 16
+            },
+            {
+                "id": "triton",
+                "type": "mond",
+                "label": "Triton",
+                "position": {
+                    "x": 25,
+                    "y": -18,
+                    "z": 75
+                },
+                "durchmesser_km": 2707
+            },
+            {
+                "id": "pluto",
+                "type": "zwergplanet",
+                "label": "Pluto",
+                "position": {
+                    "x": -10,
+                    "y": 8,
+                    "z": 85
+                },
+                "durchmesser_km": 2377,
+                "entfernung_sonne_mio_km": 5906.4
+            },
+            {
+                "id": "charon",
+                "type": "mond",
+                "label": "Charon",
+                "position": {
+                    "x": -8,
+                    "y": 10,
+                    "z": 88
+                },
+                "durchmesser_km": 1212
+            },
+            {
+                "id": "ceres",
+                "type": "zwergplanet",
+                "label": "Ceres",
+                "position": {
+                    "x": -75,
+                    "y": 0,
+                    "z": -5
+                },
+                "durchmesser_km": 939,
+                "entfernung_sonne_mio_km": 413.7
+            },
+            {
+                "id": "eris",
+                "type": "zwergplanet",
+                "label": "Eris",
+                "position": {
+                    "x": 5,
+                    "y": -25,
+                    "z": 95
+                },
+                "durchmesser_km": 2326,
+                "entfernung_sonne_mio_km": 10125
+            }
+        ],
+        "relationships": [
+            {
+                "id": "o_merkur",
+                "type": "orbit",
+                "source": "sonne",
+                "target": "merkur",
+                "label": "Orbit Merkur",
+                "umlaufzeit_tage": 88,
+                "entfernung_mio_km": 57.9
+            },
+            {
+                "id": "o_venus",
+                "type": "orbit",
+                "source": "sonne",
+                "target": "venus",
+                "label": "Orbit Venus",
+                "umlaufzeit_tage": 225,
+                "entfernung_mio_km": 108.2
+            },
+            {
+                "id": "o_erde",
+                "type": "orbit",
+                "source": "sonne",
+                "target": "erde",
+                "label": "Orbit Erde",
+                "umlaufzeit_tage": 365,
+                "entfernung_mio_km": 149.6
+            },
+            {
+                "id": "s_mond",
+                "type": "satellit",
+                "source": "erde",
+                "target": "mond_erde",
+                "label": "Satellit",
+                "umlaufzeit_tage": 27.3
+            },
+            {
+                "id": "o_mars",
+                "type": "orbit",
+                "source": "sonne",
+                "target": "mars",
+                "label": "Orbit Mars",
+                "umlaufzeit_tage": 687,
+                "entfernung_mio_km": 227.9
+            },
+            {
+                "id": "s_phobos",
+                "type": "satellit",
+                "source": "mars",
+                "target": "phobos",
+                "label": "Satellit",
+                "umlaufzeit_tage": 0.32
+            },
+            {
+                "id": "s_deimos",
+                "type": "satellit",
+                "source": "mars",
+                "target": "deimos",
+                "label": "Satellit",
+                "umlaufzeit_tage": 1.26
+            },
+            {
+                "id": "o_ceres",
+                "type": "orbit",
+                "source": "sonne",
+                "target": "ceres",
+                "label": "Orbit Ceres",
+                "umlaufzeit_tage": 1680,
+                "entfernung_mio_km": 413.7
+            },
+            {
+                "id": "o_jupiter",
+                "type": "orbit",
+                "source": "sonne",
+                "target": "jupiter",
+                "label": "Orbit Jupiter",
+                "umlaufzeit_tage": 4333,
+                "entfernung_mio_km": 778.5
+            },
+            {
+                "id": "s_io",
+                "type": "satellit",
+                "source": "jupiter",
+                "target": "io",
+                "label": "Satellit",
+                "umlaufzeit_tage": 1.77
+            },
+            {
+                "id": "s_europa",
+                "type": "satellit",
+                "source": "jupiter",
+                "target": "europa",
+                "label": "Satellit",
+                "umlaufzeit_tage": 3.55
+            },
+            {
+                "id": "s_ganymed",
+                "type": "satellit",
+                "source": "jupiter",
+                "target": "ganymed",
+                "label": "Satellit",
+                "umlaufzeit_tage": 7.15
+            },
+            {
+                "id": "s_kallisto",
+                "type": "satellit",
+                "source": "jupiter",
+                "target": "kallisto",
+                "label": "Satellit",
+                "umlaufzeit_tage": 16.69
+            },
+            {
+                "id": "o_saturn",
+                "type": "orbit",
+                "source": "sonne",
+                "target": "saturn",
+                "label": "Orbit Saturn",
+                "umlaufzeit_tage": 10759,
+                "entfernung_mio_km": 1432.0
+            },
+            {
+                "id": "s_titan",
+                "type": "satellit",
+                "source": "saturn",
+                "target": "titan",
+                "label": "Satellit",
+                "umlaufzeit_tage": 15.95
+            },
+            {
+                "id": "s_enceladus",
+                "type": "satellit",
+                "source": "saturn",
+                "target": "enceladus",
+                "label": "Satellit",
+                "umlaufzeit_tage": 1.37
+            },
+            {
+                "id": "o_uranus",
+                "type": "orbit",
+                "source": "sonne",
+                "target": "uranus",
+                "label": "Orbit Uranus",
+                "umlaufzeit_tage": 30687,
+                "entfernung_mio_km": 2867.0
+            },
+            {
+                "id": "s_miranda",
+                "type": "satellit",
+                "source": "uranus",
+                "target": "miranda",
+                "label": "Satellit",
+                "umlaufzeit_tage": 1.41
+            },
+            {
+                "id": "s_titania",
+                "type": "satellit",
+                "source": "uranus",
+                "target": "titania",
+                "label": "Satellit",
+                "umlaufzeit_tage": 8.71
+            },
+            {
+                "id": "o_neptun",
+                "type": "orbit",
+                "source": "sonne",
+                "target": "neptun",
+                "label": "Orbit Neptun",
+                "umlaufzeit_tage": 60190,
+                "entfernung_mio_km": 4515.0
+            },
+            {
+                "id": "s_triton",
+                "type": "satellit",
+                "source": "neptun",
+                "target": "triton",
+                "label": "Satellit",
+                "umlaufzeit_tage": 5.88
+            },
+            {
+                "id": "o_pluto",
+                "type": "orbit",
+                "source": "sonne",
+                "target": "pluto",
+                "label": "Orbit Pluto",
+                "umlaufzeit_tage": 90560,
+                "entfernung_mio_km": 5906.4
+            },
+            {
+                "id": "s_charon",
+                "type": "satellit",
+                "source": "pluto",
+                "target": "charon",
+                "label": "Satellit",
+                "umlaufzeit_tage": 6.39
+            },
+            {
+                "id": "o_eris",
+                "type": "orbit",
+                "source": "sonne",
+                "target": "eris",
+                "label": "Orbit Eris",
+                "umlaufzeit_tage": 203830,
+                "entfernung_mio_km": 10125
+            }
+        ]
+    }
+}

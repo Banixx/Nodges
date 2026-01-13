@@ -65,7 +65,7 @@ export class DataParser {
             const entityType = entity.type;
             const definition = graphData.dataModel?.entities[entityType];
 
-            if (definition) {
+            if (definition && definition.properties) {
                 // Iterate over defined properties in schema
                 Object.entries(definition.properties).forEach(([propName, propSchema]) => {
                     // Parse existing value
@@ -81,7 +81,7 @@ export class DataParser {
             const relType = rel.type;
             const definition = graphData.dataModel?.relationships[relType];
 
-            if (definition) {
+            if (definition && definition.properties) {
                 Object.entries(definition.properties).forEach(([propName, propSchema]) => {
                     if (rel[propName] !== undefined) {
                         rel[propName] = this.parseValue(rel[propName], propSchema);

@@ -31,6 +31,11 @@ export class HighlightManager {
     private highlightRegistry: Map<THREE.Object3D, HighlightData>;
     private materialBackups: Map<THREE.Object3D, MaterialBackup>;
 
+    // Performance: Track previous state to avoid unnecessary updates
+    private previousHoveredObject: THREE.Object3D | null = null;
+    private previousSelectedObject: THREE.Object3D | null = null;
+    private previousSelectedObjectsSize: number = 0;
+
     // Highlight Types
     public readonly types = {
         HOVER: 'hover',
@@ -62,6 +67,21 @@ export class HighlightManager {
     }
 
     handleStateChange(state: any) {
+        // Performance optimization: Only update if relevant state actually changed
+        // This prevents expensive updates when only glowIntensity changes (every frame!)
+        const hoveredChanged = state.hoveredObject !== this.previousHoveredObject;
+        const selectedChanged = state.selectedObject !== this.previousSelectedObject;
+        const selectedSetChanged = (state.selectedObjects?.size || 0) !== this.previousSelectedObjectsSize;
+
+        if (!hoveredChanged && !selectedChanged && !selectedSetChanged) {
+            return; // Nothing relevant changed, skip expensive update
+        }
+
+        // Update tracking
+        this.previousHoveredObject = state.hoveredObject;
+        this.previousSelectedObject = state.selectedObject;
+        this.previousSelectedObjectsSize = state.selectedObjects?.size || 0;
+
         this.updateHighlights(state);
     }
 

@@ -1,0 +1,325 @@
+{
+    "system": "Social Network Cluster",
+    "metadata": {
+        "created": "2026-01-13T10:10:00Z",
+        "description": "Visualisierung eines sozialen Netzwerks mit Influencern und Gruppen"
+    },
+    "dataModel": {
+        "entities": {
+            "Person": {
+                "properties": {
+                    "Followers": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            100000
+                        ]
+                    },
+                    "Interest": {
+                        "type": "categorical",
+                        "values": [
+                            "Tech",
+                            "Art",
+                            "Music",
+                            "Politics"
+                        ]
+                    }
+                }
+            },
+            "Group": {
+                "properties": {
+                    "Members": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            5000
+                        ]
+                    },
+                    "Category": {
+                        "type": "categorical",
+                        "values": [
+                            "Public",
+                            "Private"
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "Follows": {
+                "properties": {
+                    "InteractionRate": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            1
+                        ]
+                    }
+                }
+            },
+            "MemberOf": {
+                "properties": {}
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Person": {
+                "color": {
+                    "source": "Interest",
+                    "function": "categorical",
+                    "palette": "schemeCategory10"
+                },
+                "size": {
+                    "source": "Followers",
+                    "function": "logarithmic",
+                    "range": [
+                        1,
+                        5
+                    ]
+                },
+                "glow": {
+                    "source": "Followers",
+                    "function": "linear",
+                    "range": [
+                        0,
+                        0.5
+                    ]
+                }
+            },
+            "Group": {
+                "geometry": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "dodecahedron"
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#FFD700"
+                    }
+                },
+                "size": {
+                    "source": "Members",
+                    "function": "logarithmic",
+                    "range": [
+                        3,
+                        8
+                    ]
+                }
+            },
+            "Follows": {
+                "thickness": {
+                    "source": "InteractionRate",
+                    "function": "linear",
+                    "range": [
+                        0.05,
+                        0.3
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#88CCFF"
+                    }
+                },
+                "opacity": {
+                    "source": "InteractionRate",
+                    "function": "linear",
+                    "range": [
+                        0.2,
+                        0.8
+                    ]
+                }
+            },
+            "MemberOf": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.2,
+                        0.2
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#AAAAAA"
+                    }
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "p1",
+                "type": "Person",
+                "label": "Influencer Tech",
+                "Followers": 85000,
+                "Interest": "Tech",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "p2",
+                "type": "Person",
+                "label": "Dev A",
+                "Followers": 1200,
+                "Interest": "Tech",
+                "position": {
+                    "x": 10,
+                    "y": 5,
+                    "z": 5
+                }
+            },
+            {
+                "id": "p3",
+                "type": "Person",
+                "label": "Artist B",
+                "Followers": 5000,
+                "Interest": "Art",
+                "position": {
+                    "x": -15,
+                    "y": 10,
+                    "z": -5
+                }
+            },
+            {
+                "id": "p4",
+                "type": "Person",
+                "label": "Musician C",
+                "Followers": 25000,
+                "Interest": "Music",
+                "position": {
+                    "x": 5,
+                    "y": -20,
+                    "z": 10
+                }
+            },
+            {
+                "id": "p5",
+                "type": "Person",
+                "label": "Journalist D",
+                "Followers": 45000,
+                "Interest": "Politics",
+                "position": {
+                    "x": 20,
+                    "y": 15,
+                    "z": -10
+                }
+            },
+            {
+                "id": "p6",
+                "type": "Person",
+                "label": "Fan E",
+                "Followers": 100,
+                "Interest": "Music",
+                "position": {
+                    "x": 10,
+                    "y": -25,
+                    "z": 12
+                }
+            },
+            {
+                "id": "p7",
+                "type": "Person",
+                "label": "Fan F",
+                "Followers": 50,
+                "Interest": "Tech",
+                "position": {
+                    "x": 15,
+                    "y": 8,
+                    "z": 8
+                }
+            },
+            {
+                "id": "g1",
+                "type": "Group",
+                "label": "Tech Innovators",
+                "Members": 2000,
+                "Category": "Public",
+                "position": {
+                    "x": 5,
+                    "y": 5,
+                    "z": 0
+                }
+            },
+            {
+                "id": "g2",
+                "type": "Group",
+                "label": "Indie Music",
+                "Members": 450,
+                "Category": "Public",
+                "position": {
+                    "x": 8,
+                    "y": -22,
+                    "z": 11
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "source": "p2",
+                "target": "p1",
+                "type": "Follows",
+                "InteractionRate": 0.8
+            },
+            {
+                "source": "p7",
+                "target": "p1",
+                "type": "Follows",
+                "InteractionRate": 0.2
+            },
+            {
+                "source": "p6",
+                "target": "p4",
+                "type": "Follows",
+                "InteractionRate": 0.9
+            },
+            {
+                "source": "p3",
+                "target": "p1",
+                "type": "Follows",
+                "InteractionRate": 0.1
+            },
+            {
+                "source": "p5",
+                "target": "p1",
+                "type": "Follows",
+                "InteractionRate": 0.4
+            },
+            {
+                "source": "p1",
+                "target": "g1",
+                "type": "MemberOf"
+            },
+            {
+                "source": "p2",
+                "target": "g1",
+                "type": "MemberOf"
+            },
+            {
+                "source": "p7",
+                "target": "g1",
+                "type": "MemberOf"
+            },
+            {
+                "source": "p4",
+                "target": "g2",
+                "type": "MemberOf"
+            },
+            {
+                "source": "p6",
+                "target": "g2",
+                "type": "MemberOf"
+            }
+        ]
+    }
+}

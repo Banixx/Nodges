@@ -18,12 +18,12 @@ export const PropertySchemaSchema = z.object({
 export type PropertySchema = z.infer<typeof PropertySchemaSchema>;
 
 export const EntityTypeSchemaSchema = z.object({
-    properties: z.record(PropertySchemaSchema),
+    properties: z.record(PropertySchemaSchema).optional().default({}),
 });
 export type EntityTypeSchema = z.infer<typeof EntityTypeSchemaSchema>;
 
 export const RelationshipTypeSchemaSchema = z.object({
-    properties: z.record(PropertySchemaSchema),
+    properties: z.record(PropertySchemaSchema).optional().default({}),
 });
 export type RelationshipTypeSchema = z.infer<typeof RelationshipTypeSchemaSchema>;
 
@@ -36,7 +36,8 @@ export type DataModel = z.infer<typeof DataModelSchema>;
 // Visual Mappings
 export const MappingFunctionSchema = z.enum([
     'linear', 'exponential', 'logarithmic', 'heatmap',
-    'bipolar', 'pulse', 'geographic', 'sphereComplexity'
+    'bipolar', 'pulse', 'geographic', 'sphereComplexity',
+    'categorical', 'constant'
 ]);
 export type MappingFunction = z.infer<typeof MappingFunctionSchema>;
 

@@ -1,0 +1,80 @@
+{
+    "system": "Minimal Test",
+    "metadata": {
+        "created": "2026-01-12T23:10:00Z",
+        "version": "1.0",
+        "author": "Test",
+        "description": "Minimales Testbeispiel mit nur Pflichtfeldern"
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "node": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#4488ff"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        2.5,
+                        2.5
+                    ]
+                }
+            },
+            "edge": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#88ff88"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.15,
+                        0.15
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "node_a",
+                "type": "node",
+                "label": "Node A",
+                "position": {
+                    "x": -10,
+                    "y": 5,
+                    "z": 0
+                }
+            },
+            {
+                "id": "node_b",
+                "type": "node",
+                "label": "Node B",
+                "position": {
+                    "x": 10,
+                    "y": 5,
+                    "z": 0
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "id": "edge_1",
+                "type": "edge",
+                "source": "node_a",
+                "target": "node_b",
+                "label": "Verbindung A-B"
+            }
+        ]
+    }
+}

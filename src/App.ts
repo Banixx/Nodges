@@ -88,6 +88,8 @@ export class App {
 
     private _isInitialized: boolean = false;
     private frameCounter: number = 0;
+    private lastFpsTime: number = 0;
+    private fpsFrameCount: number = 0;
 
     public get isInitialized(): boolean {
         return this._isInitialized;
@@ -180,10 +182,20 @@ export class App {
 
         const gridHelper = new THREE.GridHelper(1000, 200, 0x444444, 0x222222);
         gridHelper.position.y = -4.9;
-        if (gridHelper.material instanceof THREE.Material) {
-            gridHelper.material.transparent = true;
-            gridHelper.material.opacity = 0.3;
-        }
+
+        // Handle grid material (can be single or array of materials)
+        const materials = Array.isArray(gridHelper.material)
+            ? gridHelper.material
+            : [gridHelper.material];
+
+        materials.forEach(mat => {
+            if (mat instanceof THREE.Material) {
+                mat.transparent = true;
+                mat.opacity = 0.3;
+                mat.depthWrite = false; // Prevents z-fighting and view angle flicker
+            }
+        });
+
         this.scene.add(gridHelper);
     }
 
@@ -476,16 +488,24 @@ export class App {
         this.controls.update();
         this.renderer.render(this.scene, this.camera);
 
-        // [TRACE] Log every 60 frames (approx 1 sec)
+        // FPS Berechnung
+        this.fpsFrameCount++;
+        const now = performance.now();
+        if (this.lastFpsTime === 0) {
+            this.lastFpsTime = now;
+        } else if (now - this.lastFpsTime >= 1000) {
+            const fps = Math.round(this.fpsFrameCount * 1000 / (now - this.lastFpsTime));
+            if (this.uiManager) {
+                this.uiManager.updateFps(fps);
+            }
+            this.fpsFrameCount = 0;
+            this.lastFpsTime = now;
+        }
+
+        // [TRACE] Log every 300 frames (approx 5 sec)
         this.frameCounter++;
         if (this.frameCounter % 300 === 0) {
             //console.log(`[TRACE] Render Loop (Frame ${this.frameCounter})`);
-            //console.log(`[TRACE] Camera Pos: ${this.camera.position.x.toFixed(1)}, ${this.camera.position.y.toFixed(1)}, ${this.camera.position.z.toFixed(1)}`);
-            // const nodeMeshes = this.scene.children.filter(c => c.type === 'InstancedMesh');
-            // //console.log(`[TRACE] Scene Children: ${this.scene.children.length}, InstancedMeshes: ${nodeMeshes.length}`);
-            // // nodeMeshes.forEach((mesh: any, i) => {
-            // //      console.log(`[TRACE] Mesh ${i}: count=${mesh.count}, visible=${mesh.visible}`);
-            // // });
         }
     }
 }

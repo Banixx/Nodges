@@ -1,0 +1,342 @@
+{
+    "system": "Nodges Layout Demo",
+    "metadata": {
+        "created": "2025-01-12",
+        "version": "1.0",
+        "author": "Nodges Assistant",
+        "description": "A demo dataset representing a project management structure to test layout algorithms."
+    },
+    "dataModel": {
+        "entities": {
+            "person": {
+                "properties": {
+                    "role": {
+                        "type": "categorical",
+                        "values": [
+                            "Manager",
+                            "Lead",
+                            "Developer",
+                            "Designer"
+                        ]
+                    },
+                    "experience": {
+                        "type": "continuous",
+                        "range": [
+                            1,
+                            20
+                        ],
+                        "unit": "years"
+                    }
+                }
+            },
+            "task": {
+                "properties": {
+                    "priority": {
+                        "type": "categorical",
+                        "values": [
+                            "High",
+                            "Medium",
+                            "Low"
+                        ]
+                    },
+                    "estimatedHours": {
+                        "type": "continuous",
+                        "range": [
+                            1,
+                            100
+                        ],
+                        "unit": "hours"
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "reports_to": {
+                "properties": {
+                    "strength": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            1
+                        ]
+                    }
+                }
+            },
+            "assigned_to": {
+                "properties": {
+                    "allocation": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            100
+                        ],
+                        "unit": "%"
+                    }
+                }
+            },
+            "depends_on": {
+                "properties": {}
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "person": {
+                "color": {
+                    "source": "role",
+                    "function": "categorical",
+                    "palette": "schemeCategory10"
+                },
+                "size": {
+                    "source": "experience",
+                    "function": "linear",
+                    "range": [
+                        1,
+                        5
+                    ]
+                },
+                "geometry": {
+                    "source": "fixed",
+                    "function": "constant",
+                    "value": "sphere"
+                }
+            },
+            "task": {
+                "color": {
+                    "source": "priority",
+                    "function": "categorical",
+                    "palette": "schemeSet1"
+                },
+                "size": {
+                    "source": "estimatedHours",
+                    "function": "logarithmic",
+                    "range": [
+                        1,
+                        3
+                    ]
+                },
+                "geometry": {
+                    "source": "fixed",
+                    "function": "constant",
+                    "value": "box"
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "p1",
+                "type": "person",
+                "label": "Alice (Manager)",
+                "role": "Manager",
+                "experience": 15
+            },
+            {
+                "id": "p2",
+                "type": "person",
+                "label": "Bob (Lead)",
+                "role": "Lead",
+                "experience": 8
+            },
+            {
+                "id": "p3",
+                "type": "person",
+                "label": "Charlie (Lead)",
+                "role": "Lead",
+                "experience": 7
+            },
+            {
+                "id": "p4",
+                "type": "person",
+                "label": "Dave (Dev)",
+                "role": "Developer",
+                "experience": 3
+            },
+            {
+                "id": "p5",
+                "type": "person",
+                "label": "Eve (Dev)",
+                "role": "Developer",
+                "experience": 4
+            },
+            {
+                "id": "p6",
+                "type": "person",
+                "label": "Frank (Design)",
+                "role": "Designer",
+                "experience": 5
+            },
+            {
+                "id": "t1",
+                "type": "task",
+                "label": "Project Kickoff",
+                "priority": "High",
+                "estimatedHours": 8
+            },
+            {
+                "id": "t2",
+                "type": "task",
+                "label": "Architecture Design",
+                "priority": "High",
+                "estimatedHours": 40
+            },
+            {
+                "id": "t3",
+                "type": "task",
+                "label": "Database Setup",
+                "priority": "Medium",
+                "estimatedHours": 16
+            },
+            {
+                "id": "t4",
+                "type": "task",
+                "label": "API Development",
+                "priority": "High",
+                "estimatedHours": 80
+            },
+            {
+                "id": "t5",
+                "type": "task",
+                "label": "Frontend MVP",
+                "priority": "Medium",
+                "estimatedHours": 60
+            },
+            {
+                "id": "t6",
+                "type": "task",
+                "label": "User Testing",
+                "priority": "Low",
+                "estimatedHours": 24
+            },
+            {
+                "id": "t7",
+                "type": "task",
+                "label": "Deployment",
+                "priority": "High",
+                "estimatedHours": 8
+            },
+            {
+                "id": "m1",
+                "type": "milestone",
+                "label": "Phase 1 Complete",
+                "description": "Foundation ready"
+            }
+        ],
+        "relationships": [
+            {
+                "source": "p2",
+                "target": "p1",
+                "type": "reports_to"
+            },
+            {
+                "source": "p3",
+                "target": "p1",
+                "type": "reports_to"
+            },
+            {
+                "source": "p4",
+                "target": "p2",
+                "type": "reports_to"
+            },
+            {
+                "source": "p5",
+                "target": "p2",
+                "type": "reports_to"
+            },
+            {
+                "source": "p6",
+                "target": "p3",
+                "type": "reports_to"
+            },
+            {
+                "source": "t1",
+                "target": "p1",
+                "type": "assigned_to",
+                "allocation": 10
+            },
+            {
+                "source": "t2",
+                "target": "p2",
+                "type": "assigned_to",
+                "allocation": 100
+            },
+            {
+                "source": "t3",
+                "target": "p4",
+                "type": "assigned_to",
+                "allocation": 50
+            },
+            {
+                "source": "t3",
+                "target": "p5",
+                "type": "assigned_to",
+                "allocation": 50
+            },
+            {
+                "source": "t4",
+                "target": "p4",
+                "type": "assigned_to",
+                "allocation": 100
+            },
+            {
+                "source": "t4",
+                "target": "p5",
+                "type": "assigned_to",
+                "allocation": 100
+            },
+            {
+                "source": "t5",
+                "target": "p6",
+                "type": "assigned_to",
+                "allocation": 100
+            },
+            {
+                "source": "t7",
+                "target": "p2",
+                "type": "assigned_to",
+                "allocation": 20
+            },
+            {
+                "source": "t2",
+                "target": "t1",
+                "type": "depends_on"
+            },
+            {
+                "source": "t3",
+                "target": "t2",
+                "type": "depends_on"
+            },
+            {
+                "source": "t4",
+                "target": "t2",
+                "type": "depends_on"
+            },
+            {
+                "source": "t5",
+                "target": "t2",
+                "type": "depends_on"
+            },
+            {
+                "source": "t6",
+                "target": "t5",
+                "type": "depends_on"
+            },
+            {
+                "source": "t7",
+                "target": "t6",
+                "type": "depends_on"
+            },
+            {
+                "source": "t7",
+                "target": "t4",
+                "type": "depends_on"
+            },
+            {
+                "source": "m1",
+                "target": "t7",
+                "type": "depends_on"
+            }
+        ]
+    }
+}

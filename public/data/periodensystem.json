@@ -1,0 +1,764 @@
+{
+    "system": "Periodensystem der Elemente",
+    "metadata": {
+        "created": "2026-01-13T09:00:00Z",
+        "version": "1.0",
+        "author": "Nodges AI",
+        "description": "Visualisierung der Elemente H (1) bis Kr (36) mit Gruppenfärbung und Masse als Größe."
+    },
+    "dataModel": {
+        "entities": {
+            "Element": {
+                "properties": {
+                    "Ordnungszahl": {
+                        "type": "continuous",
+                        "range": [
+                            1,
+                            118
+                        ]
+                    },
+                    "Atommasse": {
+                        "type": "continuous",
+                        "range": [
+                            1,
+                            300
+                        ],
+                        "unit": "u"
+                    },
+                    "Gruppe": {
+                        "type": "categorical",
+                        "values": [
+                            "Alkalimetalle",
+                            "Erdalkalimetalle",
+                            "Übergangsmetalle",
+                            "Metalle",
+                            "Halbmetalle",
+                            "Nichtmetalle",
+                            "Halogene",
+                            "Edelgase",
+                            "Lanthanoide",
+                            "Actinoide"
+                        ]
+                    },
+                    "Periode": {
+                        "type": "continuous",
+                        "range": [
+                            1,
+                            7
+                        ]
+                    },
+                    "Aggregatzustand": {
+                        "type": "categorical",
+                        "values": [
+                            "fest",
+                            "flüssig",
+                            "gasförmig"
+                        ]
+                    },
+                    "Elektronegativität": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            4
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "Benachbart": {
+                "properties": {
+                    "Richtung": {
+                        "type": "categorical",
+                        "values": [
+                            "horizontal",
+                            "vertikal"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Element": {
+                "color": {
+                    "source": "Gruppe",
+                    "function": "categorical",
+                    "palette": "schemeCategory10"
+                },
+                "size": {
+                    "source": "Atommasse",
+                    "function": "linear",
+                    "range": [
+                        1.5,
+                        3.5
+                    ]
+                },
+                "glow": {
+                    "source": "Elektronegativität",
+                    "function": "linear",
+                    "range": [
+                        0,
+                        0.5
+                    ]
+                }
+            },
+            "Benachbart": {
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#333333"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.05,
+                        0.05
+                    ]
+                },
+                "opacity": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.2,
+                        0.2
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "H",
+                "type": "Element",
+                "label": "H - Wasserstoff",
+                "position": {
+                    "x": 10,
+                    "y": 70,
+                    "z": 0
+                },
+                "Ordnungszahl": 1,
+                "Atommasse": 1.008,
+                "Gruppe": "Nichtmetalle",
+                "Periode": 1,
+                "Aggregatzustand": "gasförmig",
+                "Elektronegativität": 2.2
+            },
+            {
+                "id": "He",
+                "type": "Element",
+                "label": "He - Helium",
+                "position": {
+                    "x": 180,
+                    "y": 70,
+                    "z": 0
+                },
+                "Ordnungszahl": 2,
+                "Atommasse": 4.0026,
+                "Gruppe": "Edelgase",
+                "Periode": 1,
+                "Aggregatzustand": "gasförmig",
+                "Elektronegativität": 0
+            },
+            {
+                "id": "Li",
+                "type": "Element",
+                "label": "Li - Lithium",
+                "position": {
+                    "x": 10,
+                    "y": 60,
+                    "z": 0
+                },
+                "Ordnungszahl": 3,
+                "Atommasse": 6.94,
+                "Gruppe": "Alkalimetalle",
+                "Periode": 2,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 0.98
+            },
+            {
+                "id": "Be",
+                "type": "Element",
+                "label": "Be - Beryllium",
+                "position": {
+                    "x": 20,
+                    "y": 60,
+                    "z": 0
+                },
+                "Ordnungszahl": 4,
+                "Atommasse": 9.0122,
+                "Gruppe": "Erdalkalimetalle",
+                "Periode": 2,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.57
+            },
+            {
+                "id": "B",
+                "type": "Element",
+                "label": "B - Bor",
+                "position": {
+                    "x": 130,
+                    "y": 60,
+                    "z": 0
+                },
+                "Ordnungszahl": 5,
+                "Atommasse": 10.81,
+                "Gruppe": "Halbmetalle",
+                "Periode": 2,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 2.04
+            },
+            {
+                "id": "C",
+                "type": "Element",
+                "label": "C - Kohlenstoff",
+                "position": {
+                    "x": 140,
+                    "y": 60,
+                    "z": 0
+                },
+                "Ordnungszahl": 6,
+                "Atommasse": 12.011,
+                "Gruppe": "Nichtmetalle",
+                "Periode": 2,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 2.55
+            },
+            {
+                "id": "N",
+                "type": "Element",
+                "label": "N - Stickstoff",
+                "position": {
+                    "x": 150,
+                    "y": 60,
+                    "z": 0
+                },
+                "Ordnungszahl": 7,
+                "Atommasse": 14.007,
+                "Gruppe": "Nichtmetalle",
+                "Periode": 2,
+                "Aggregatzustand": "gasförmig",
+                "Elektronegativität": 3.04
+            },
+            {
+                "id": "O",
+                "type": "Element",
+                "label": "O - Sauerstoff",
+                "position": {
+                    "x": 160,
+                    "y": 60,
+                    "z": 0
+                },
+                "Ordnungszahl": 8,
+                "Atommasse": 15.999,
+                "Gruppe": "Nichtmetalle",
+                "Periode": 2,
+                "Aggregatzustand": "gasförmig",
+                "Elektronegativität": 3.44
+            },
+            {
+                "id": "F",
+                "type": "Element",
+                "label": "F - Fluor",
+                "position": {
+                    "x": 170,
+                    "y": 60,
+                    "z": 0
+                },
+                "Ordnungszahl": 9,
+                "Atommasse": 18.998,
+                "Gruppe": "Halogene",
+                "Periode": 2,
+                "Aggregatzustand": "gasförmig",
+                "Elektronegativität": 3.98
+            },
+            {
+                "id": "Ne",
+                "type": "Element",
+                "label": "Ne - Neon",
+                "position": {
+                    "x": 180,
+                    "y": 60,
+                    "z": 0
+                },
+                "Ordnungszahl": 10,
+                "Atommasse": 20.180,
+                "Gruppe": "Edelgase",
+                "Periode": 2,
+                "Aggregatzustand": "gasförmig",
+                "Elektronegativität": 0
+            },
+            {
+                "id": "Na",
+                "type": "Element",
+                "label": "Na - Natrium",
+                "position": {
+                    "x": 10,
+                    "y": 50,
+                    "z": 0
+                },
+                "Ordnungszahl": 11,
+                "Atommasse": 22.990,
+                "Gruppe": "Alkalimetalle",
+                "Periode": 3,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 0.93
+            },
+            {
+                "id": "Mg",
+                "type": "Element",
+                "label": "Mg - Magnesium",
+                "position": {
+                    "x": 20,
+                    "y": 50,
+                    "z": 0
+                },
+                "Ordnungszahl": 12,
+                "Atommasse": 24.305,
+                "Gruppe": "Erdalkalimetalle",
+                "Periode": 3,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.31
+            },
+            {
+                "id": "Al",
+                "type": "Element",
+                "label": "Al - Aluminium",
+                "position": {
+                    "x": 130,
+                    "y": 50,
+                    "z": 0
+                },
+                "Ordnungszahl": 13,
+                "Atommasse": 26.982,
+                "Gruppe": "Metalle",
+                "Periode": 3,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.61
+            },
+            {
+                "id": "Si",
+                "type": "Element",
+                "label": "Si - Silicium",
+                "position": {
+                    "x": 140,
+                    "y": 50,
+                    "z": 0
+                },
+                "Ordnungszahl": 14,
+                "Atommasse": 28.085,
+                "Gruppe": "Halbmetalle",
+                "Periode": 3,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.90
+            },
+            {
+                "id": "P",
+                "type": "Element",
+                "label": "P - Phosphor",
+                "position": {
+                    "x": 150,
+                    "y": 50,
+                    "z": 0
+                },
+                "Ordnungszahl": 15,
+                "Atommasse": 30.974,
+                "Gruppe": "Nichtmetalle",
+                "Periode": 3,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 2.19
+            },
+            {
+                "id": "S",
+                "type": "Element",
+                "label": "S - Schwefel",
+                "position": {
+                    "x": 160,
+                    "y": 50,
+                    "z": 0
+                },
+                "Ordnungszahl": 16,
+                "Atommasse": 32.06,
+                "Gruppe": "Nichtmetalle",
+                "Periode": 3,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 2.58
+            },
+            {
+                "id": "Cl",
+                "type": "Element",
+                "label": "Cl - Chlor",
+                "position": {
+                    "x": 170,
+                    "y": 50,
+                    "z": 0
+                },
+                "Ordnungszahl": 17,
+                "Atommasse": 35.45,
+                "Gruppe": "Halogene",
+                "Periode": 3,
+                "Aggregatzustand": "gasförmig",
+                "Elektronegativität": 3.16
+            },
+            {
+                "id": "Ar",
+                "type": "Element",
+                "label": "Ar - Argon",
+                "position": {
+                    "x": 180,
+                    "y": 50,
+                    "z": 0
+                },
+                "Ordnungszahl": 18,
+                "Atommasse": 39.948,
+                "Gruppe": "Edelgase",
+                "Periode": 3,
+                "Aggregatzustand": "gasförmig",
+                "Elektronegativität": 0
+            },
+            {
+                "id": "K",
+                "type": "Element",
+                "label": "K - Kalium",
+                "position": {
+                    "x": 10,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 19,
+                "Atommasse": 39.098,
+                "Gruppe": "Alkalimetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 0.82
+            },
+            {
+                "id": "Ca",
+                "type": "Element",
+                "label": "Ca - Calcium",
+                "position": {
+                    "x": 20,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 20,
+                "Atommasse": 40.078,
+                "Gruppe": "Erdalkalimetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.00
+            },
+            {
+                "id": "Sc",
+                "type": "Element",
+                "label": "Sc - Scandium",
+                "position": {
+                    "x": 30,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 21,
+                "Atommasse": 44.956,
+                "Gruppe": "Übergangsmetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.36
+            },
+            {
+                "id": "Ti",
+                "type": "Element",
+                "label": "Ti - Titan",
+                "position": {
+                    "x": 40,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 22,
+                "Atommasse": 47.867,
+                "Gruppe": "Übergangsmetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.54
+            },
+            {
+                "id": "V",
+                "type": "Element",
+                "label": "V - Vanadium",
+                "position": {
+                    "x": 50,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 23,
+                "Atommasse": 50.942,
+                "Gruppe": "Übergangsmetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.63
+            },
+            {
+                "id": "Cr",
+                "type": "Element",
+                "label": "Cr - Chrom",
+                "position": {
+                    "x": 60,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 24,
+                "Atommasse": 51.996,
+                "Gruppe": "Übergangsmetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.66
+            },
+            {
+                "id": "Mn",
+                "type": "Element",
+                "label": "Mn - Mangan",
+                "position": {
+                    "x": 70,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 25,
+                "Atommasse": 54.938,
+                "Gruppe": "Übergangsmetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.55
+            },
+            {
+                "id": "Fe",
+                "type": "Element",
+                "label": "Fe - Eisen",
+                "position": {
+                    "x": 80,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 26,
+                "Atommasse": 55.845,
+                "Gruppe": "Übergangsmetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.83
+            },
+            {
+                "id": "Co",
+                "type": "Element",
+                "label": "Co - Cobalt",
+                "position": {
+                    "x": 90,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 27,
+                "Atommasse": 58.933,
+                "Gruppe": "Übergangsmetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.88
+            },
+            {
+                "id": "Ni",
+                "type": "Element",
+                "label": "Ni - Nickel",
+                "position": {
+                    "x": 100,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 28,
+                "Atommasse": 58.693,
+                "Gruppe": "Übergangsmetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.91
+            },
+            {
+                "id": "Cu",
+                "type": "Element",
+                "label": "Cu - Kupfer",
+                "position": {
+                    "x": 110,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 29,
+                "Atommasse": 63.546,
+                "Gruppe": "Übergangsmetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.90
+            },
+            {
+                "id": "Zn",
+                "type": "Element",
+                "label": "Zn - Zink",
+                "position": {
+                    "x": 120,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 30,
+                "Atommasse": 65.38,
+                "Gruppe": "Übergangsmetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.65
+            },
+            {
+                "id": "Ga",
+                "type": "Element",
+                "label": "Ga - Gallium",
+                "position": {
+                    "x": 130,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 31,
+                "Atommasse": 69.723,
+                "Gruppe": "Metalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 1.81
+            },
+            {
+                "id": "Ge",
+                "type": "Element",
+                "label": "Ge - Germanium",
+                "position": {
+                    "x": 140,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 32,
+                "Atommasse": 72.630,
+                "Gruppe": "Halbmetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 2.01
+            },
+            {
+                "id": "As",
+                "type": "Element",
+                "label": "As - Arsen",
+                "position": {
+                    "x": 150,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 33,
+                "Atommasse": 74.922,
+                "Gruppe": "Halbmetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 2.18
+            },
+            {
+                "id": "Se",
+                "type": "Element",
+                "label": "Se - Selen",
+                "position": {
+                    "x": 160,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 34,
+                "Atommasse": 78.96,
+                "Gruppe": "Nichtmetalle",
+                "Periode": 4,
+                "Aggregatzustand": "fest",
+                "Elektronegativität": 2.55
+            },
+            {
+                "id": "Br",
+                "type": "Element",
+                "label": "Br - Brom",
+                "position": {
+                    "x": 170,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 35,
+                "Atommasse": 79.904,
+                "Gruppe": "Halogene",
+                "Periode": 4,
+                "Aggregatzustand": "flüssig",
+                "Elektronegativität": 2.96
+            },
+            {
+                "id": "Kr",
+                "type": "Element",
+                "label": "Kr - Krypton",
+                "position": {
+                    "x": 180,
+                    "y": 40,
+                    "z": 0
+                },
+                "Ordnungszahl": 36,
+                "Atommasse": 83.798,
+                "Gruppe": "Edelgase",
+                "Periode": 4,
+                "Aggregatzustand": "gasförmig",
+                "Elektronegativität": 3.00
+            }
+        ],
+        "relationships": [
+            {
+                "source": "H",
+                "target": "Li",
+                "type": "Benachbart",
+                "Richtung": "vertikal"
+            },
+            {
+                "source": "Li",
+                "target": "Na",
+                "type": "Benachbart",
+                "Richtung": "vertikal"
+            },
+            {
+                "source": "Na",
+                "target": "K",
+                "type": "Benachbart",
+                "Richtung": "vertikal"
+            },
+            {
+                "source": "Li",
+                "target": "Be",
+                "type": "Benachbart",
+                "Richtung": "horizontal"
+            },
+            {
+                "source": "Na",
+                "target": "Mg",
+                "type": "Benachbart",
+                "Richtung": "horizontal"
+            },
+            {
+                "source": "K",
+                "target": "Ca",
+                "type": "Benachbart",
+                "Richtung": "horizontal"
+            },
+            {
+                "source": "O",
+                "target": "F",
+                "type": "Benachbart",
+                "Richtung": "horizontal"
+            },
+            {
+                "source": "F",
+                "target": "Ne",
+                "type": "Benachbart",
+                "Richtung": "horizontal"
+            }
+        ]
+    }
+}
