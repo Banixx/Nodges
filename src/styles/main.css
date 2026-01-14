@@ -1,15 +1,20 @@
 :root {
-  --bg-color: #1a1a1a;
+  /* Default Theme: Slate Earth */
+  --bg-color: #1e1e1c;
   --text-color: #e0e0e0;
-  --text-muted: #aaaaaa;
-  --panel-bg: rgba(30, 30, 30, 0.85);
-  /* Slightly darker for better contrast */
-  --panel-border: 1px solid rgba(255, 255, 255, 0.15);
-  --accent-color: #3498db;
-  --accent-hover: #2980b9;
+  --text-muted: #9a9a9a;
+  --panel-bg: rgba(42, 42, 40, 0.95);
+  --panel-bg-solid: #2a2a28;
+  --panel-border: 1px solid rgba(255, 255, 255, 0.1);
+  --accent-color: #a08060;
+  --accent-hover: #8a6a50;
   --font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  --panel-width: 250px;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --sidebar-width: 280px;
   --panel-spacing: 10px;
+
+  /* Legacy support */
+  --panel-width: 250px;
 }
 
 body {
@@ -439,4 +444,290 @@ input[type="range"] {
 
 .form-group {
   margin-bottom: 15px;
+}
+
+/* ======================= */
+/* MAIN SIDEBAR            */
+/* ======================= */
+.main-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--panel-bg-solid);
+  border-left: var(--panel-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 200;
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-header {
+  padding: 15px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-color);
+  text-transform: uppercase;
+}
+
+.sidebar-version {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Tab Navigation */
+.sidebar-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-tab {
+  flex: 1;
+  padding: 10px 5px;
+  font-size: 11px;
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sidebar-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+}
+
+.sidebar-tab.active {
+  color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* Tab Content */
+.sidebar-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.tab-content {
+  display: none;
+  padding: 15px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Panel Sections */
+.panel-section {
+  margin-bottom: 20px;
+}
+
+.section-header {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--accent-color);
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-toggle {
+  cursor: pointer;
+}
+
+.section-toggle:hover {
+  color: var(--text-color);
+}
+
+.toggle-arrow {
+  font-size: 10px;
+  margin-left: 5px;
+}
+
+/* Collapsible Content */
+.collapsible-content {
+  max-height: 1000px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.collapsible-content.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+
+/* Control Groups */
+.control-group {
+  margin-bottom: 12px;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.label-row label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.value-display {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--accent-color);
+}
+
+.checkbox-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkbox-row input[type="checkbox"] {
+  accent-color: var(--accent-color);
+}
+
+/* Loading Text */
+.loading-text {
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 20px 10px;
+}
+
+/* ======================= */
+/* FLOATING INFO PANEL     */
+/* ======================= */
+.floating-info-panel {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 280px;
+  max-height: 400px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: var(--panel-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 150;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.floating-info-panel.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+}
+
+.floating-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.floating-panel-header h3 {
+  margin: 0;
+  font-size: 13px;
+  color: var(--accent-color);
+  text-transform: uppercase;
+}
+
+.panel-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.panel-close-btn:hover {
+  color: var(--text-color);
+}
+
+.floating-panel-content {
+  padding: 12px 15px;
+  overflow-y: auto;
+  max-height: 340px;
+}
+
+/* ======================= */
+/* COLOR SCHEME SWATCHES   */
+/* ======================= */
+.color-scheme-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.color-swatch {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.color-swatch.active {
+  border-color: white;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+/* Specific Swatches (for reference) */
+.swatch-slate-earth {
+  background: #1e1e1c;
+}
+
+.swatch-terracotta {
+  background: #1a1512;
+}
+
+.swatch-ocean {
+  background: #2c3e50;
+}
+
+.swatch-midnight {
+  background: #19101f;
+}
+
+.swatch-forest {
+  background: #0f1a15;
 }

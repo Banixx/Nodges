@@ -1,0 +1,325 @@
+{
+    "system": "Forest Food Web",
+    "metadata": {
+        "created": "2026-01-13T10:45:00Z",
+        "description": "Nahrungsnetz eines gemäßigten Mischwaldes"
+    },
+    "dataModel": {
+        "entities": {
+            "Organism": {
+                "properties": {
+                    "Biomass": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            5000
+                        ]
+                    },
+                    "TrophicLevel": {
+                        "type": "categorical",
+                        "values": [
+                            "Producer",
+                            "PrimaryConsumer",
+                            "SecondaryConsumer",
+                            "TertiaryConsumer",
+                            "Decomposer"
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "Eats": {
+                "properties": {
+                    "EnergyTransfer": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            100
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Organism": {
+                "color": {
+                    "source": "TrophicLevel",
+                    "function": "categorical",
+                    "palette": "schemeCategory10"
+                },
+                "size": {
+                    "source": "Biomass",
+                    "function": "logarithmic",
+                    "range": [
+                        1,
+                        5
+                    ]
+                },
+                "position": {
+                    "source": "TrophicLevel",
+                    "function": "categorical",
+                    "params": {
+                        "Producer": {
+                            "y": -20
+                        },
+                        "PrimaryConsumer": {
+                            "y": -5
+                        },
+                        "SecondaryConsumer": {
+                            "y": 10
+                        },
+                        "TertiaryConsumer": {
+                            "y": 25
+                        },
+                        "Decomposer": {
+                            "y": -30
+                        }
+                    }
+                }
+            },
+            "Eats": {
+                "thickness": {
+                    "source": "EnergyTransfer",
+                    "function": "linear",
+                    "range": [
+                        0.1,
+                        0.5
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "speed": 2
+                    }
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#00FFaa"
+                    }
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "Grass",
+                "type": "Organism",
+                "label": "Gras",
+                "Biomass": 5000,
+                "TrophicLevel": "Producer",
+                "position": {
+                    "x": 0,
+                    "y": -20,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Tree",
+                "type": "Organism",
+                "label": "Eiche",
+                "Biomass": 10000,
+                "TrophicLevel": "Producer",
+                "position": {
+                    "x": 20,
+                    "y": -20,
+                    "z": 10
+                }
+            },
+            {
+                "id": "Berry",
+                "type": "Organism",
+                "label": "Beerenstrauch",
+                "Biomass": 2000,
+                "TrophicLevel": "Producer",
+                "position": {
+                    "x": -20,
+                    "y": -20,
+                    "z": -10
+                }
+            },
+            {
+                "id": "Rabbit",
+                "type": "Organism",
+                "label": "Hase",
+                "Biomass": 500,
+                "TrophicLevel": "PrimaryConsumer",
+                "position": {
+                    "x": -10,
+                    "y": -5,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Deer",
+                "type": "Organism",
+                "label": "Reh",
+                "Biomass": 1200,
+                "TrophicLevel": "PrimaryConsumer",
+                "position": {
+                    "x": 10,
+                    "y": -5,
+                    "z": 5
+                }
+            },
+            {
+                "id": "Insect",
+                "type": "Organism",
+                "label": "Insekt",
+                "Biomass": 100,
+                "TrophicLevel": "PrimaryConsumer",
+                "position": {
+                    "x": 0,
+                    "y": -5,
+                    "z": -10
+                }
+            },
+            {
+                "id": "Fox",
+                "type": "Organism",
+                "label": "Fuchs",
+                "Biomass": 200,
+                "TrophicLevel": "SecondaryConsumer",
+                "position": {
+                    "x": -5,
+                    "y": 10,
+                    "z": 5
+                }
+            },
+            {
+                "id": "Frog",
+                "type": "Organism",
+                "label": "Frosch",
+                "Biomass": 50,
+                "TrophicLevel": "SecondaryConsumer",
+                "position": {
+                    "x": 5,
+                    "y": 10,
+                    "z": -5
+                }
+            },
+            {
+                "id": "Eagle",
+                "type": "Organism",
+                "label": "Adler",
+                "Biomass": 80,
+                "TrophicLevel": "TertiaryConsumer",
+                "position": {
+                    "x": 0,
+                    "y": 25,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Fungi",
+                "type": "Organism",
+                "label": "Pilze",
+                "Biomass": 300,
+                "TrophicLevel": "Decomposer",
+                "position": {
+                    "x": 0,
+                    "y": -30,
+                    "z": 5
+                }
+            },
+            {
+                "id": "Bacteria",
+                "type": "Organism",
+                "label": "Bakterien",
+                "Biomass": 100,
+                "TrophicLevel": "Decomposer",
+                "position": {
+                    "x": 10,
+                    "y": -30,
+                    "z": -5
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "source": "Rabbit",
+                "target": "Grass",
+                "type": "Eats",
+                "EnergyTransfer": 50
+            },
+            {
+                "source": "Deer",
+                "target": "Grass",
+                "type": "Eats",
+                "EnergyTransfer": 80
+            },
+            {
+                "source": "Deer",
+                "target": "Tree",
+                "type": "Eats",
+                "EnergyTransfer": 60
+            },
+            {
+                "source": "Insect",
+                "target": "Berry",
+                "type": "Eats",
+                "EnergyTransfer": 20
+            },
+            {
+                "source": "Fox",
+                "target": "Rabbit",
+                "type": "Eats",
+                "EnergyTransfer": 40
+            },
+            {
+                "source": "Fox",
+                "target": "Insect",
+                "type": "Eats",
+                "EnergyTransfer": 10
+            },
+            {
+                "source": "Frog",
+                "target": "Insect",
+                "type": "Eats",
+                "EnergyTransfer": 25
+            },
+            {
+                "source": "Eagle",
+                "target": "Fox",
+                "type": "Eats",
+                "EnergyTransfer": 30
+            },
+            {
+                "source": "Eagle",
+                "target": "Rabbit",
+                "type": "Eats",
+                "EnergyTransfer": 35
+            },
+            {
+                "source": "Eagle",
+                "target": "Frog",
+                "type": "Eats",
+                "EnergyTransfer": 15
+            },
+            {
+                "source": "Fungi",
+                "target": "Tree",
+                "type": "Eats",
+                "EnergyTransfer": 10
+            },
+            {
+                "source": "Fungi",
+                "target": "Deer",
+                "type": "Eats",
+                "EnergyTransfer": 5
+            },
+            {
+                "source": "Bacteria",
+                "target": "Rabbit",
+                "type": "Eats",
+                "EnergyTransfer": 5
+            }
+        ]
+    }
+}

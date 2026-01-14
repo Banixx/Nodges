@@ -6,6 +6,7 @@ import type { App } from '../App';
 import { StateManager } from './StateManager';
 import { VisualMappingPanel } from '../ui/VisualMappingPanel';
 import { EnvironmentPanel } from '../ui/EnvironmentPanel';
+import { ViewPanel } from '../ui/ViewPanel';
 import { VisualMappings } from '../types';
 
 interface Bounds {
@@ -23,16 +24,20 @@ export class UIManager {
     private infoPanelContent: HTMLElement | null;
     private visualMappingPanel: VisualMappingPanel;
 
+
     constructor(app: App) {
         this.app = app;
         this.stateManager = app.stateManager;
 
+        // New sidebar-based panel references
         this.panels = {
+            mainSidebar: document.getElementById('mainSidebar'),
+            info: document.getElementById('infoPanel'),
+            // Legacy references (may be null in new structure)
             fileInfo: document.getElementById('fileInfoPanel'),
             file: document.getElementById('filePanel'),
             visualMapping: document.getElementById('visualMappingPanel'),
             environment: document.getElementById('environmentPanel'),
-            info: document.getElementById('infoPanel'),
             dev: document.getElementById('devPanel'),
             layout: null // Initialized by LayoutGUI
         };
@@ -48,8 +53,25 @@ export class UIManager {
 
         this.filePanelContent = document.getElementById('filePanelContent');
         this.infoPanelContent = document.getElementById('infoPanelContent');
-        this.visualMappingPanel = new VisualMappingPanel('visualMappingContent');
+
+        // Initialize new ViewPanel for the 'Ansicht' tab (self-registers with StateManager)
+        new ViewPanel('viewPanelContent', this.stateManager);
+
+        // Initialize Visual Mapping panel (inside ViewPanel)
+        // We use the container created by ViewPanel above
+        const vmContent = document.getElementById('visualMappingContainer');
+        if (vmContent) {
+            this.visualMappingPanel = new VisualMappingPanel('visualMappingContainer');
+        } else {
+            console.warn('visualMappingContainer not found inside ViewPanel');
+            this.visualMappingPanel = null as any;
+        }
+
+        // Initialize Environment panel
         new EnvironmentPanel('environmentContent', this.stateManager);
+
+        // Initialize floating info panel close button
+        this.initInfoPanelClose();
 
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'ui');
     }
@@ -80,6 +102,23 @@ export class UIManager {
         const Q = -700 / 141;
         if (v <= Q) return 0;
         return 50 * Math.log((v - Q) / P) / Math.log(B);
+    }
+
+    private initInfoPanelClose(): void {
+        const closeBtn = document.getElementById('infoPanelClose');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                this.hideInfoPanel();
+            });
+        }
+    }
+
+    private hideInfoPanel(): void {
+        const infoPanel = this.panels.info;
+        if (infoPanel) {
+            infoPanel.classList.add('hidden');
+        }
+        this.stateManager.setSelectedObject(null);
     }
 
     init() {
@@ -339,6 +378,8 @@ export class UIManager {
     }
 
     updateVisualMappings(mappings: VisualMappings) {
+        if (!this.visualMappingPanel) return; // Not available in new sidebar structure
+
         this.visualMappingPanel.bind(mappings, (newMappings) => {
             if (this.app.updateVisualMappings) {
                 this.app.updateVisualMappings(newMappings);
@@ -387,8 +428,17 @@ export class UIManager {
         }
 
         this.infoPanelContent.innerHTML = content;
+        // Show floating panel (remove hidden class)
+        this.panels.info.classList.remove('hidden');
         this.panels.info.classList.remove('collapsed');
-        if (this.panelToggles.info) this.panelToggles.info.innerHTML = 'v';
+
+        // Update title based on object type
+        const titleEl = document.getElementById('infoPanelTitle');
+        if (titleEl) {
+            const nodeData = object.userData.nodeData || object.userData.entity;
+            const name = nodeData?.name || nodeData?.label || object.userData.name || 'Info';
+            titleEl.textContent = name;
+        }
     }
 
     showMultiSelectionInfo(objects: Set<THREE.Object3D>) {

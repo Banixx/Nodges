@@ -1,0 +1,409 @@
+{
+    "system": "E-Commerce Microservices",
+    "metadata": {
+        "created": "2026-01-13T11:00:00Z",
+        "description": "Microservices-Architektur eines Online-Shops"
+    },
+    "dataModel": {
+        "entities": {
+            "Service": {
+                "properties": {
+                    "RPS": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            5000
+                        ]
+                    },
+                    "Status": {
+                        "type": "categorical",
+                        "values": [
+                            "Healthy",
+                            "Degraded",
+                            "Critical"
+                        ]
+                    },
+                    "Language": {
+                        "type": "categorical",
+                        "values": [
+                            "Go",
+                            "Node",
+                            "Java",
+                            "Python"
+                        ]
+                    }
+                }
+            },
+            "Database": {
+                "properties": {
+                    "Size_GB": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            1000
+                        ]
+                    },
+                    "Type": {
+                        "type": "categorical",
+                        "values": [
+                            "SQL",
+                            "NoSQL",
+                            "Cache"
+                        ]
+                    }
+                }
+            },
+            "Queue": {
+                "properties": {
+                    "Lag": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            1000
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "Call": {
+                "properties": {
+                    "Latency_ms": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            500
+                        ]
+                    }
+                }
+            },
+            "Access": {
+                "properties": {}
+            },
+            "Consume": {
+                "properties": {}
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Service": {
+                "color": {
+                    "source": "Status",
+                    "function": "categorical",
+                    "values": [
+                        "#00FF00",
+                        "#FFFF00",
+                        "#FF0000"
+                    ]
+                },
+                "size": {
+                    "source": "RPS",
+                    "function": "logarithmic",
+                    "range": [
+                        1,
+                        4
+                    ]
+                },
+                "geometry": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "box"
+                }
+            },
+            "Database": {
+                "color": {
+                    "source": "Type",
+                    "function": "categorical",
+                    "palette": "schemeSet2"
+                },
+                "size": {
+                    "source": "Size_GB",
+                    "function": "logarithmic",
+                    "range": [
+                        2,
+                        5
+                    ]
+                },
+                "geometry": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "cylinder"
+                }
+            },
+            "Queue": {
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#0099FF"
+                    }
+                },
+                "geometry": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "torus"
+                }
+            },
+            "Call": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.2,
+                        0.2
+                    ]
+                },
+                "color": {
+                    "source": "Latency_ms",
+                    "function": "linear",
+                    "palette": "viridis",
+                    "range": [
+                        0,
+                        500
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "speed": 2
+                    }
+                }
+            },
+            "Access": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.1,
+                        0.1
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#AAAAAA"
+                    }
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "Frontend",
+                "type": "Service",
+                "label": "Web Frontend",
+                "RPS": 2000,
+                "Status": "Healthy",
+                "Language": "Node",
+                "position": {
+                    "x": 0,
+                    "y": 30,
+                    "z": 0
+                }
+            },
+            {
+                "id": "APIGateway",
+                "type": "Service",
+                "label": "API Gateway",
+                "RPS": 2000,
+                "Status": "Healthy",
+                "Language": "Go",
+                "position": {
+                    "x": 0,
+                    "y": 20,
+                    "z": 0
+                }
+            },
+            {
+                "id": "AuthService",
+                "type": "Service",
+                "label": "Auth Service",
+                "RPS": 1500,
+                "Status": "Healthy",
+                "Language": "Go",
+                "position": {
+                    "x": -20,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "ProductService",
+                "type": "Service",
+                "label": "Product Service",
+                "RPS": 800,
+                "Status": "Healthy",
+                "Language": "Java",
+                "position": {
+                    "x": 0,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "OrderService",
+                "type": "Service",
+                "label": "Order Service",
+                "RPS": 200,
+                "Status": "Degraded",
+                "Language": "Java",
+                "position": {
+                    "x": 20,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "PaymentService",
+                "type": "Service",
+                "label": "Payment Service",
+                "RPS": 100,
+                "Status": "Critical",
+                "Language": "Node",
+                "position": {
+                    "x": 25,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "NotificationService",
+                "type": "Service",
+                "label": "Notification Service",
+                "RPS": 50,
+                "Status": "Healthy",
+                "Language": "Python",
+                "position": {
+                    "x": 30,
+                    "y": -10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "UserDB",
+                "type": "Database",
+                "label": "User DB",
+                "Size_GB": 50,
+                "Type": "SQL",
+                "position": {
+                    "x": -25,
+                    "y": 10,
+                    "z": -10
+                }
+            },
+            {
+                "id": "ProductDB",
+                "type": "Database",
+                "label": "Product DB",
+                "Size_GB": 200,
+                "Type": "NoSQL",
+                "position": {
+                    "x": 0,
+                    "y": 10,
+                    "z": -10
+                }
+            },
+            {
+                "id": "OrderDB",
+                "type": "Database",
+                "label": "Order DB",
+                "Size_GB": 100,
+                "Type": "SQL",
+                "position": {
+                    "x": 20,
+                    "y": 10,
+                    "z": -10
+                }
+            },
+            {
+                "id": "Cache",
+                "type": "Database",
+                "label": "Redis Cache",
+                "Size_GB": 5,
+                "Type": "Cache",
+                "position": {
+                    "x": 0,
+                    "y": 15,
+                    "z": 0
+                }
+            },
+            {
+                "id": "OrderQueue",
+                "type": "Queue",
+                "label": "Order Queue",
+                "Lag": 10,
+                "position": {
+                    "x": 25,
+                    "y": 0,
+                    "z": -5
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "source": "Frontend",
+                "target": "APIGateway",
+                "type": "Call",
+                "Latency_ms": 20
+            },
+            {
+                "source": "APIGateway",
+                "target": "AuthService",
+                "type": "Call",
+                "Latency_ms": 10
+            },
+            {
+                "source": "APIGateway",
+                "target": "ProductService",
+                "type": "Call",
+                "Latency_ms": 30
+            },
+            {
+                "source": "APIGateway",
+                "target": "OrderService",
+                "type": "Call",
+                "Latency_ms": 40
+            },
+            {
+                "source": "OrderService",
+                "target": "OrderQueue",
+                "type": "Access"
+            },
+            {
+                "source": "OrderQueue",
+                "target": "PaymentService",
+                "type": "Consume"
+            },
+            {
+                "source": "PaymentService",
+                "target": "NotificationService",
+                "type": "Call",
+                "Latency_ms": 450
+            },
+            {
+                "source": "AuthService",
+                "target": "UserDB",
+                "type": "Access"
+            },
+            {
+                "source": "ProductService",
+                "target": "ProductDB",
+                "type": "Access"
+            },
+            {
+                "source": "ProductService",
+                "target": "Cache",
+                "type": "Access"
+            },
+            {
+                "source": "OrderService",
+                "target": "OrderDB",
+                "type": "Access"
+            }
+        ]
+    }
+}

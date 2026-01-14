@@ -356,8 +356,13 @@ export class CentralEventManager {
                 this.hoverTimeout = null;
             }, this.config.hoverDelay);
 
-            // HoverInfoPanel anzeigen
-            if (mouseX !== undefined && mouseY !== undefined) {
+            // HoverInfoPanel anzeigen - aber nur wenn:
+            // - showLabelsAlways ist AUS (sonst sind Labels ohnehin sichtbar)
+            // - showLabelsOnHover ist AN
+            const showLabelsAlways = this.stateManager.state.showLabelsAlways;
+            const showLabelsOnHover = this.stateManager.state.showLabelsOnHover;
+
+            if (!showLabelsAlways && showLabelsOnHover && mouseX !== undefined && mouseY !== undefined) {
                 this.hoverInfoPanel.show(newHoveredObject, mouseX, mouseY);
             }
         }

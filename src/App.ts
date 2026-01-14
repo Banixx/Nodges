@@ -251,7 +251,8 @@ export class App {
     }
 
     async initGUI() {
-        this.layoutGUI = new LayoutGUI(this, document.body);
+        const layoutContent = document.getElementById('layoutPanelContent');
+        this.layoutGUI = new LayoutGUI(this, layoutContent || document.body);
         this.uiManager.init();
     }
 

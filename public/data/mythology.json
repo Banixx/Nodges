@@ -1,0 +1,492 @@
+{
+    "system": "Greek Mythology Pantheon",
+    "metadata": {
+        "created": "2026-01-13T11:05:00Z",
+        "description": "Stammbaum und Domänen der griechischen Götter"
+    },
+    "dataModel": {
+        "entities": {
+            "Deity": {
+                "properties": {
+                    "Generation": {
+                        "type": "continuous",
+                        "range": [
+                            1,
+                            3
+                        ]
+                    },
+                    "Power": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            100
+                        ]
+                    },
+                    "Domain": {
+                        "type": "categorical",
+                        "values": [
+                            "Sky",
+                            "Sea",
+                            "Underworld",
+                            "Earth",
+                            "War",
+                            "Love",
+                            "Wisdom",
+                            "Hunt",
+                            "Sun",
+                            "Fire",
+                            "Wine",
+                            "Messenger"
+                        ]
+                    }
+                }
+            },
+            "Location": {
+                "properties": {
+                    "Type": {
+                        "type": "categorical",
+                        "values": [
+                            "Mountain",
+                            "Realm"
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "ParentOf": {
+                "properties": {}
+            },
+            "MarriedTo": {
+                "properties": {}
+            },
+            "ResidesIn": {
+                "properties": {}
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Deity": {
+                "color": {
+                    "source": "Domain",
+                    "function": "categorical",
+                    "palette": "schemePaired"
+                },
+                "size": {
+                    "source": "Power",
+                    "function": "linear",
+                    "range": [
+                        2,
+                        5
+                    ]
+                },
+                "position": {
+                    "source": "Generation",
+                    "function": "categorical",
+                    "params": {
+                        "1": {
+                            "y": 30
+                        },
+                        "2": {
+                            "y": 10
+                        },
+                        "3": {
+                            "y": -10
+                        }
+                    }
+                }
+            },
+            "Location": {
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#DDDDDD"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        6,
+                        6
+                    ]
+                },
+                "geometry": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "icosahedron"
+                }
+            },
+            "ParentOf": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.3,
+                        0.3
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#FFFFFF"
+                    }
+                }
+            },
+            "MarriedTo": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.2,
+                        0.2
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#FFC0CB"
+                    }
+                },
+                "curvature": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        1,
+                        1
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "Olympus",
+                "type": "Location",
+                "label": "Mount Olympus",
+                "Type": "Mountain",
+                "position": {
+                    "x": 0,
+                    "y": 40,
+                    "z": 0
+                }
+            },
+            {
+                "id": "HadesRealm",
+                "type": "Location",
+                "label": "Underworld",
+                "Type": "Realm",
+                "position": {
+                    "x": 0,
+                    "y": -40,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Cronus",
+                "type": "Deity",
+                "label": "Cronus",
+                "Generation": 1,
+                "Power": 90,
+                "Domain": "Earth",
+                "position": {
+                    "x": -10,
+                    "y": 30,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Rhea",
+                "type": "Deity",
+                "label": "Rhea",
+                "Generation": 1,
+                "Power": 85,
+                "Domain": "Earth",
+                "position": {
+                    "x": 10,
+                    "y": 30,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Zeus",
+                "type": "Deity",
+                "label": "Zeus",
+                "Generation": 2,
+                "Power": 100,
+                "Domain": "Sky",
+                "position": {
+                    "x": 0,
+                    "y": 15,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Hera",
+                "type": "Deity",
+                "label": "Hera",
+                "Generation": 2,
+                "Power": 95,
+                "Domain": "Sky",
+                "position": {
+                    "x": 10,
+                    "y": 15,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Poseidon",
+                "type": "Deity",
+                "label": "Poseidon",
+                "Generation": 2,
+                "Power": 98,
+                "Domain": "Sea",
+                "position": {
+                    "x": -20,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Hades",
+                "type": "Deity",
+                "label": "Hades",
+                "Generation": 2,
+                "Power": 98,
+                "Domain": "Underworld",
+                "position": {
+                    "x": 20,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Demeter",
+                "type": "Deity",
+                "label": "Demeter",
+                "Generation": 2,
+                "Power": 90,
+                "Domain": "Earth",
+                "position": {
+                    "x": -30,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Hestia",
+                "type": "Deity",
+                "label": "Hestia",
+                "Generation": 2,
+                "Power": 80,
+                "Domain": "Fire",
+                "position": {
+                    "x": 30,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Athena",
+                "type": "Deity",
+                "label": "Athena",
+                "Generation": 3,
+                "Power": 88,
+                "Domain": "Wisdom",
+                "position": {
+                    "x": -5,
+                    "y": -10,
+                    "z": 10
+                }
+            },
+            {
+                "id": "Apollo",
+                "type": "Deity",
+                "label": "Apollo",
+                "Generation": 3,
+                "Power": 85,
+                "Domain": "Sun",
+                "position": {
+                    "x": 5,
+                    "y": -10,
+                    "z": 5
+                }
+            },
+            {
+                "id": "Artemis",
+                "type": "Deity",
+                "label": "Artemis",
+                "Generation": 3,
+                "Power": 85,
+                "Domain": "Hunt",
+                "position": {
+                    "x": 10,
+                    "y": -10,
+                    "z": 5
+                }
+            },
+            {
+                "id": "Ares",
+                "type": "Deity",
+                "label": "Ares",
+                "Generation": 3,
+                "Power": 85,
+                "Domain": "War",
+                "position": {
+                    "x": -15,
+                    "y": -10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Aphrodite",
+                "type": "Deity",
+                "label": "Aphrodite",
+                "Generation": 3,
+                "Power": 85,
+                "Domain": "Love",
+                "position": {
+                    "x": 15,
+                    "y": -10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Hephaestus",
+                "type": "Deity",
+                "label": "Hephaestus",
+                "Generation": 3,
+                "Power": 80,
+                "Domain": "Fire",
+                "position": {
+                    "x": 20,
+                    "y": -15,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Hermes",
+                "type": "Deity",
+                "label": "Hermes",
+                "Generation": 3,
+                "Power": 82,
+                "Domain": "Messenger",
+                "position": {
+                    "x": 25,
+                    "y": -5,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Dionysus",
+                "type": "Deity",
+                "label": "Dionysus",
+                "Generation": 3,
+                "Power": 80,
+                "Domain": "Wine",
+                "position": {
+                    "x": 30,
+                    "y": -10,
+                    "z": 0
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "source": "Cronus",
+                "target": "Zeus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Rhea",
+                "target": "Zeus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Cronus",
+                "target": "Hera",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Cronus",
+                "target": "Poseidon",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Cronus",
+                "target": "Hades",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Hera",
+                "type": "MarriedTo"
+            },
+            {
+                "source": "Cronus",
+                "target": "Rhea",
+                "type": "MarriedTo"
+            },
+            {
+                "source": "Hephaestus",
+                "target": "Aphrodite",
+                "type": "MarriedTo"
+            },
+            {
+                "source": "Zeus",
+                "target": "Athena",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Apollo",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Artemis",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Ares",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Hera",
+                "target": "Ares",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Hermes",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Dionysus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Olympus",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Hera",
+                "target": "Olympus",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Hades",
+                "target": "HadesRealm",
+                "type": "ResidesIn"
+            }
+        ]
+    }
+}

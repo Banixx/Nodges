@@ -1,0 +1,339 @@
+{
+    "system": "Philosophical Schools Network",
+    "metadata": {
+        "created": "2026-01-13T10:40:00Z",
+        "description": "Verbindungen zwischen Philosophen und Schulen der Antike"
+    },
+    "dataModel": {
+        "entities": {
+            "Philosopher": {
+                "properties": {
+                    "Era": {
+                        "type": "continuous",
+                        "range": [
+                            -600,
+                            300
+                        ]
+                    },
+                    "Influence": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            100
+                        ]
+                    }
+                }
+            },
+            "School": {
+                "properties": {
+                    "Founded": {
+                        "type": "continuous",
+                        "range": [
+                            -600,
+                            0
+                        ]
+                    }
+                }
+            },
+            "Concept": {
+                "properties": {
+                    "Category": {
+                        "type": "categorical",
+                        "values": [
+                            "Ethics",
+                            "Metaphysics",
+                            "Logic",
+                            "Epistemology"
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "StudentOf": {
+                "properties": {}
+            },
+            "Founded": {
+                "properties": {}
+            },
+            "Developed": {
+                "properties": {}
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Philosopher": {
+                "size": {
+                    "source": "Influence",
+                    "function": "linear",
+                    "range": [
+                        1,
+                        3
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#FFCC00"
+                    }
+                },
+                "position": {
+                    "source": "Era",
+                    "function": "linear",
+                    "range": [
+                        -600,
+                        300
+                    ],
+                    "params": {
+                        "axis": "x",
+                        "scale": 15
+                    }
+                }
+            },
+            "School": {
+                "size": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        4,
+                        4
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#AA0000"
+                    }
+                },
+                "geometry": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "tetrahedron"
+                }
+            },
+            "Concept": {
+                "color": {
+                    "source": "Category",
+                    "function": "categorical",
+                    "palette": "schemeSet3"
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        1.5,
+                        1.5
+                    ]
+                }
+            },
+            "StudentOf": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.2,
+                        0.2
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#FFFFFF"
+                    }
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "Sokrates",
+                "type": "Philosopher",
+                "label": "Sokrates",
+                "Era": -470,
+                "Influence": 95,
+                "position": {
+                    "x": -47,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Platon",
+                "type": "Philosopher",
+                "label": "Platon",
+                "Era": -427,
+                "Influence": 98,
+                "position": {
+                    "x": -42,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Aristoteles",
+                "type": "Philosopher",
+                "label": "Aristoteles",
+                "Era": -384,
+                "Influence": 100,
+                "position": {
+                    "x": -38,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Akademie",
+                "type": "School",
+                "label": "Platonische Akademie",
+                "Founded": -387,
+                "position": {
+                    "x": -38,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Peripatos",
+                "type": "School",
+                "label": "Peripatos",
+                "Founded": -335,
+                "position": {
+                    "x": -33,
+                    "y": -10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Stoizismus",
+                "type": "School",
+                "label": "Stoizismus",
+                "Founded": -300,
+                "position": {
+                    "x": -30,
+                    "y": 20,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Zenon",
+                "type": "Philosopher",
+                "label": "Zenon von Kition",
+                "Era": -334,
+                "Influence": 80,
+                "position": {
+                    "x": -33,
+                    "y": 15,
+                    "z": 5
+                }
+            },
+            {
+                "id": "Epikur",
+                "type": "Philosopher",
+                "label": "Epikur",
+                "Era": -341,
+                "Influence": 85,
+                "position": {
+                    "x": -34,
+                    "y": -20,
+                    "z": -5
+                }
+            },
+            {
+                "id": "Epikureismus",
+                "type": "School",
+                "label": "Epikureismus",
+                "Founded": -306,
+                "position": {
+                    "x": -30,
+                    "y": -25,
+                    "z": -5
+                }
+            },
+            {
+                "id": "Ideenlehre",
+                "type": "Concept",
+                "label": "Ideenlehre",
+                "Category": "Metaphysics",
+                "position": {
+                    "x": -40,
+                    "y": 15,
+                    "z": 5
+                }
+            },
+            {
+                "id": "Logik",
+                "type": "Concept",
+                "label": "Syllogistik",
+                "Category": "Logic",
+                "position": {
+                    "x": -38,
+                    "y": -5,
+                    "z": 5
+                }
+            },
+            {
+                "id": "Ataraxia",
+                "type": "Concept",
+                "label": "Ataraxia",
+                "Category": "Ethics",
+                "position": {
+                    "x": -32,
+                    "y": -15,
+                    "z": -10
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "source": "Platon",
+                "target": "Sokrates",
+                "type": "StudentOf"
+            },
+            {
+                "source": "Aristoteles",
+                "target": "Platon",
+                "type": "StudentOf"
+            },
+            {
+                "source": "Platon",
+                "target": "Akademie",
+                "type": "Founded"
+            },
+            {
+                "source": "Aristoteles",
+                "target": "Peripatos",
+                "type": "Founded"
+            },
+            {
+                "source": "Zenon",
+                "target": "Stoizismus",
+                "type": "Founded"
+            },
+            {
+                "source": "Epikur",
+                "target": "Epikureismus",
+                "type": "Founded"
+            },
+            {
+                "source": "Platon",
+                "target": "Ideenlehre",
+                "type": "Developed"
+            },
+            {
+                "source": "Aristoteles",
+                "target": "Logik",
+                "type": "Developed"
+            },
+            {
+                "source": "Epikur",
+                "target": "Ataraxia",
+                "type": "Developed"
+            }
+        ]
+    }
+}

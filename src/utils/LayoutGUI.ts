@@ -46,7 +46,7 @@ interface IApp {
 export class LayoutGUI {
     private app: IApp;
     private layoutManager: LayoutManager;
-    // private container: HTMLElement;
+    private container: HTMLElement;
     private panel: HTMLElement | null;
     private layoutSelect: HTMLSelectElement | null;
     private parameterContainer: HTMLElement | null;
@@ -60,8 +60,9 @@ export class LayoutGUI {
     private presets: { [name: string]: Preset };
     private currentParameters: { [key: string]: number };
 
-    constructor(app: IApp, _container: HTMLElement) {
+    constructor(app: IApp, container: HTMLElement) {
         this.app = app;
+        this.container = container;
         this.layoutManager = app.layoutManager;
 
         // GUI-Elemente
@@ -158,8 +159,8 @@ export class LayoutGUI {
         // Initial Layout-Status setzen (deaktiviert)
         this.updateLayoutState();
 
-        // Initial collapsed state setzen
-        if (this.contentContainer && this.toggleButton) {
+        // Initial collapsed state setzen (nur für Floating Panel)
+        if (this.panel && this.contentContainer && this.toggleButton) {
             if (this.isCollapsed) {
                 this.contentContainer.style.maxHeight = '0px';
                 this.contentContainer.style.opacity = '0';
@@ -175,6 +176,16 @@ export class LayoutGUI {
     }
 
     createPanel() {
+        // Wenn ein spezifischer Container übergeben wurde (nicht body), nutzen wir diesen direkt.
+        // Das ist der Fall bei der neuen Sidebar-Integration.
+        if (this.container && this.container !== document.body) {
+            this.contentContainer = this.container;
+            this.contentContainer.innerHTML = ''; // Clean up
+            // Kein Header, kein Panel-Wrapper, kein Toggle Button nötig
+            return;
+        }
+
+        // Fallback: Erstelle Floating Panel (Legacy support)
         this.panel = document.createElement('div');
         this.panel.id = 'layoutPanel';
         this.panel.className = 'ui-panel collapsed'; // Start collapsed

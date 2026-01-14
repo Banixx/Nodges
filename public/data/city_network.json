@@ -1,0 +1,286 @@
+{
+    "system": "Global City Network",
+    "metadata": {
+        "created": "2026-01-13T10:50:00Z",
+        "description": "Netzwerk von Großstädten und Flugverbindungen"
+    },
+    "dataModel": {
+        "entities": {
+            "City": {
+                "properties": {
+                    "Population": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            40000000
+                        ]
+                    },
+                    "Continent": {
+                        "type": "categorical",
+                        "values": [
+                            "Europe",
+                            "Asia",
+                            "America",
+                            "Africa",
+                            "Australia"
+                        ]
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "Flight": {
+                "properties": {
+                    "Distance_km": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            20000
+                        ]
+                    },
+                    "FlightsPerDay": {
+                        "type": "continuous",
+                        "range": [
+                            0,
+                            100
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "City": {
+                "color": {
+                    "source": "Continent",
+                    "function": "categorical",
+                    "palette": "schemeCategory10"
+                },
+                "size": {
+                    "source": "Population",
+                    "function": "logarithmic",
+                    "range": [
+                        0.5,
+                        3
+                    ]
+                },
+                "label": {
+                    "source": "Population",
+                    "function": "constant",
+                    "value": "visible"
+                }
+            },
+            "Flight": {
+                "thickness": {
+                    "source": "FlightsPerDay",
+                    "function": "linear",
+                    "range": [
+                        0.05,
+                        0.4
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#FFFFFF"
+                    }
+                },
+                "opacity": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.1,
+                        0.1
+                    ]
+                },
+                "curvature": {
+                    "source": "Distance_km",
+                    "function": "linear",
+                    "range": [
+                        0.2,
+                        2.0
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "London",
+                "type": "City",
+                "label": "London",
+                "Population": 9000000,
+                "Continent": "Europe",
+                "position": {
+                    "x": 0,
+                    "y": 51,
+                    "z": 0
+                }
+            },
+            {
+                "id": "NewYork",
+                "type": "City",
+                "label": "New York",
+                "Population": 8400000,
+                "Continent": "America",
+                "position": {
+                    "x": -74,
+                    "y": 40,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Tokyo",
+                "type": "City",
+                "label": "Tokyo",
+                "Population": 37000000,
+                "Continent": "Asia",
+                "position": {
+                    "x": 139,
+                    "y": 35,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Berlin",
+                "type": "City",
+                "label": "Berlin",
+                "Population": 3700000,
+                "Continent": "Europe",
+                "position": {
+                    "x": 13,
+                    "y": 52,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Beijing",
+                "type": "City",
+                "label": "Beijing",
+                "Population": 21500000,
+                "Continent": "Asia",
+                "position": {
+                    "x": 116,
+                    "y": 39,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Sydney",
+                "type": "City",
+                "label": "Sydney",
+                "Population": 5300000,
+                "Continent": "Australia",
+                "position": {
+                    "x": 151,
+                    "y": -33,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Dubai",
+                "type": "City",
+                "label": "Dubai",
+                "Population": 3300000,
+                "Continent": "Asia",
+                "position": {
+                    "x": 55,
+                    "y": 25,
+                    "z": 0
+                }
+            },
+            {
+                "id": "SaoPaulo",
+                "type": "City",
+                "label": "São Paulo",
+                "Population": 12300000,
+                "Continent": "America",
+                "position": {
+                    "x": -46,
+                    "y": -23,
+                    "z": 0
+                }
+            },
+            {
+                "id": "Johannesburg",
+                "type": "City",
+                "label": "Johannesburg",
+                "Population": 5600000,
+                "Continent": "Africa",
+                "position": {
+                    "x": 28,
+                    "y": -26,
+                    "z": 0
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "source": "London",
+                "target": "NewYork",
+                "type": "Flight",
+                "Distance_km": 5500,
+                "FlightsPerDay": 30
+            },
+            {
+                "source": "London",
+                "target": "Berlin",
+                "type": "Flight",
+                "Distance_km": 930,
+                "FlightsPerDay": 40
+            },
+            {
+                "source": "London",
+                "target": "Dubai",
+                "type": "Flight",
+                "Distance_km": 5500,
+                "FlightsPerDay": 20
+            },
+            {
+                "source": "NewYork",
+                "target": "Tokyo",
+                "type": "Flight",
+                "Distance_km": 10800,
+                "FlightsPerDay": 10
+            },
+            {
+                "source": "Tokyo",
+                "target": "Beijing",
+                "type": "Flight",
+                "Distance_km": 2100,
+                "FlightsPerDay": 25
+            },
+            {
+                "source": "Dubai",
+                "target": "Sydney",
+                "type": "Flight",
+                "Distance_km": 12000,
+                "FlightsPerDay": 5
+            },
+            {
+                "source": "SaoPaulo",
+                "target": "Johannesburg",
+                "type": "Flight",
+                "Distance_km": 7400,
+                "FlightsPerDay": 3
+            },
+            {
+                "source": "Johannesburg",
+                "target": "Dubai",
+                "type": "Flight",
+                "Distance_km": 6400,
+                "FlightsPerDay": 15
+            },
+            {
+                "source": "Berlin",
+                "target": "Beijing",
+                "type": "Flight",
+                "Distance_km": 7300,
+                "FlightsPerDay": 8
+            }
+        ]
+    }
+}

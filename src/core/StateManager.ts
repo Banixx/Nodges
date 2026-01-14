@@ -63,6 +63,11 @@ export interface State {
     ambientLightIntensity: number;
     directionalLightIntensity: number;
 
+    // View Settings (NEW)
+    showLabelsAlways: boolean;
+    showLabelsOnHover: boolean;
+    activeColorScheme: string;
+
     [key: string]: any; // Allow for dynamic properties during migration
 }
 
@@ -131,7 +136,12 @@ export class StateManager {
             // Environment Defaults
             backgroundColor: '#8fa649',
             ambientLightIntensity: 0.6,
-            directionalLightIntensity: 0.8
+            directionalLightIntensity: 0.8,
+
+            // View Settings (NEW)
+            showLabelsAlways: false,
+            showLabelsOnHover: true,
+            activeColorScheme: 'slate-earth'
         };
 
         this.subscribers = new Map();
