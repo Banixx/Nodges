@@ -17,7 +17,7 @@ export class ContextMenu {
         this.container.className = 'context-menu';
         this.container.style.display = 'none';
         this.container.style.position = 'fixed';
-        this.container.style.zIndex = '1000';
+        this.container.style.zIndex = '10000';
         document.body.appendChild(this.container);
 
         // Close on click elsewhere
@@ -61,7 +61,12 @@ export class ContextMenu {
 
         this.container.style.left = `${posX}px`;
         this.container.style.top = `${posY}px`;
-        this.isOpen = true;
+
+        // Delay setting isOpen via setTimeout to prevent the current event (which triggered show)
+        // from immediately triggering the window-level close listener due to event bubbling.
+        setTimeout(() => {
+            this.isOpen = true;
+        }, 0);
     }
 
     hide() {

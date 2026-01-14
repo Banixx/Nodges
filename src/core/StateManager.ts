@@ -141,7 +141,7 @@ export class StateManager {
             // View Settings (NEW)
             showLabelsAlways: false,
             showLabelsOnHover: true,
-            activeColorScheme: 'slate-earth'
+            activeColorScheme: 'start-olive'
         };
 
         this.subscribers = new Map();

@@ -10,43 +10,55 @@ interface ColorScheme {
     bgColor: string;
     panelBg: string;
     accentColor: string;
+    textColor?: string;
+    textMuted?: string;
 }
 
 const COLOR_SCHEMES: ColorScheme[] = [
     {
-        id: 'slate-earth',
-        name: 'Slate Earth',
-        bgColor: '#1e1e1c',
+        id: 'start-olive',
+        name: 'Start Olive',
+        bgColor: '#8fa649',
         panelBg: '#2a2a28',
-        accentColor: '#a08060'
+        accentColor: '#a08060',
+        textColor: '#f5f5f5',
+        textMuted: '#9a9a9a'
     },
     {
-        id: 'terracotta',
-        name: 'Terracotta',
-        bgColor: '#1a1512',
-        panelBg: '#2b221d',
-        accentColor: '#c67a4f'
+        id: 'caramel-light',
+        name: 'Light Caramel',
+        bgColor: '#f5e6d3',
+        panelBg: '#ffffff',
+        accentColor: '#d2691e',
+        textColor: '#2c2c2c',
+        textMuted: '#666666'
     },
     {
-        id: 'ocean',
-        name: 'Deep Ocean',
-        bgColor: '#2c3e50',
-        panelBg: '#34495e',
-        accentColor: '#1abc9c'
+        id: 'ocher-gold',
+        name: 'Golden Ocher',
+        bgColor: '#fdf5e6',
+        panelBg: '#ffffff',
+        accentColor: '#daa520',
+        textColor: '#333333',
+        textMuted: '#777777'
     },
     {
-        id: 'midnight',
-        name: 'Midnight',
-        bgColor: '#19101f',
-        panelBg: '#2d1e36',
-        accentColor: '#9b59b6'
+        id: 'aquamarine-soft',
+        name: 'Soft Aquamarine',
+        bgColor: '#e0f7fa',
+        panelBg: '#ffffff',
+        accentColor: '#00838f',
+        textColor: '#004d40',
+        textMuted: '#00695c'
     },
     {
-        id: 'forest',
-        name: 'Forest',
-        bgColor: '#0f1a15',
-        panelBg: '#16261f',
-        accentColor: '#27ae60'
+        id: 'modern-white',
+        name: 'Ivory Clean',
+        bgColor: '#faf9f6',
+        panelBg: '#ffffff',
+        accentColor: '#c2b280',
+        textColor: '#1a1a1a',
+        textMuted: '#888888'
     }
 ];
 
@@ -69,7 +81,13 @@ export class ViewPanel {
         // Subscribe to state changes to keep UI in sync
         this.stateManager.subscribe((state) => {
             this.updateUI(state);
+            // Highlight the active swatch if the scheme changed from elsewhere
+            this.updateActiveSwatch(state.activeColorScheme);
         }, 'view_panel');
+
+        // Apply initial scheme based on state
+        const initialScheme = COLOR_SCHEMES.find(s => s.id === this.stateManager.state.activeColorScheme) || COLOR_SCHEMES[0];
+        this.applyColorScheme(initialScheme);
     }
 
     private render(): void {
@@ -133,19 +151,6 @@ export class ViewPanel {
         colorSection.appendChild(swatchGrid);
         this.container.appendChild(colorSection);
 
-        // --- DATA MAP SECTION ---
-        // Container for VisualMappingPanel to render into
-        const mappingSection = document.createElement('section');
-        mappingSection.className = 'panel-section';
-        const mappingTitle = document.createElement('h4');
-        mappingTitle.className = 'section-header';
-        mappingTitle.textContent = 'Daten-Visualisierung';
-        mappingSection.appendChild(mappingTitle);
-
-        const vmContainer = document.createElement('div');
-        vmContainer.id = 'visualMappingContainer';
-        mappingSection.appendChild(vmContainer);
-        this.container.appendChild(mappingSection);
     }
 
     private createCheckboxRow(label: string, stateKey: string, initialValue: boolean): HTMLElement {
@@ -180,6 +185,14 @@ export class ViewPanel {
         root.style.setProperty('--panel-bg', `rgba(${this.hexToRgb(scheme.panelBg)}, 0.95)`);
         root.style.setProperty('--accent-color', scheme.accentColor);
 
+        // Optional text colors for light/dark mode support
+        if (scheme.textColor) {
+            root.style.setProperty('--text-color', scheme.textColor);
+        }
+        if (scheme.textMuted) {
+            root.style.setProperty('--text-muted', scheme.textMuted);
+        }
+
         // Also update the 3D scene background color via stateManager
         this.stateManager.update({
             activeColorScheme: scheme.id,
@@ -187,11 +200,15 @@ export class ViewPanel {
         });
 
         // Update swatch active state
+        this.updateActiveSwatch(scheme.id);
+    }
+
+    private updateActiveSwatch(schemeId: string): void {
         const grid = document.getElementById('colorSchemeGrid');
         if (grid) {
             grid.querySelectorAll('.color-swatch').forEach(sw => {
                 sw.classList.remove('active');
-                if ((sw as HTMLElement).dataset.schemeId === scheme.id) {
+                if ((sw as HTMLElement).dataset.schemeId === schemeId) {
                     sw.classList.add('active');
                 }
             });

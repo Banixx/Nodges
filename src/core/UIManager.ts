@@ -57,13 +57,12 @@ export class UIManager {
         // Initialize new ViewPanel for the 'Ansicht' tab (self-registers with StateManager)
         new ViewPanel('viewPanelContent', this.stateManager);
 
-        // Initialize Visual Mapping panel (inside ViewPanel)
-        // We use the container created by ViewPanel above
+        // Initialize Visual Mapping panel (now in its own tab)
         const vmContent = document.getElementById('visualMappingContainer');
         if (vmContent) {
             this.visualMappingPanel = new VisualMappingPanel('visualMappingContainer');
         } else {
-            console.warn('visualMappingContainer not found inside ViewPanel');
+            console.warn('visualMappingContainer not found');
             this.visualMappingPanel = null as any;
         }
 

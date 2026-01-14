@@ -44,6 +44,8 @@ export class CentralEventManager {
     private lastMouseMoveTime: number;
     private mouseMoveThrottle: number;
 
+    private isCameraMoving: boolean = false;
+
     private hoverTimeout: any;
     private clickTimeout: any;
 
@@ -170,6 +172,11 @@ export class CentralEventManager {
 
         // Mausposition aktualisieren
         this.updateMousePosition(event);
+
+        // Performance: Kein Raycast während Kamerabewegung (Orbit/Pan via Controls)
+        if (this.isCameraMoving) {
+            return;
+        }
 
         // Raycast durchfuehren
         this.raycastManager.updateMousePosition(event);
@@ -392,6 +399,18 @@ export class CentralEventManager {
             this.notifySubscribers('selection_start', {
                 object: newSelectedObject
             });
+        }
+    }
+
+    /**
+     * Setzt den Status der Kamerabewegung
+     */
+    setCameraMoving(isMoving: boolean) {
+        this.isCameraMoving = isMoving;
+        if (isMoving) {
+            // Wenn sich die Kamera bewegt, Hover-Status zuruecksetzen,
+            // um Performance zu sparen und visuelles Flackern zu vermeiden
+            this.updateHoverState(null);
         }
     }
 

@@ -21,40 +21,18 @@
 
         <!-- Tab Navigation -->
         <nav class="sidebar-tabs">
-            <button class="sidebar-tab active" data-tab="tab-files">Files</button>
+            <button class="sidebar-tab active" data-tab="tab-system">System</button>
+            <button class="sidebar-tab" data-tab="tab-files">Files</button>
             <button class="sidebar-tab" data-tab="tab-view">Ansicht</button>
+            <button class="sidebar-tab" data-tab="tab-mappings">Mappings</button>
             <button class="sidebar-tab" data-tab="tab-layout">Layout</button>
-            <button class="sidebar-tab" data-tab="tab-system">System</button>
         </nav>
 
         <!-- Tab Content Area -->
         <div class="sidebar-body">
 
-            <!-- ===== FILES TAB ===== -->
-            <div id="tab-files" class="tab-content active">
-                <div id="filePanelContent">
-                    <div id="fileLoadingIndicator" class="loading-text">
-                        Lade verfuegbare Dateien...
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== VIEW (ANSICHT) TAB ===== -->
-            <div id="tab-view" class="tab-content">
-                <div id="viewPanelContent">
-                    <!-- Populated by ViewPanel.ts -->
-                </div>
-            </div>
-
-            <!-- ===== LAYOUT TAB ===== -->
-            <div id="tab-layout" class="tab-content">
-                <div id="layoutPanelContent">
-                    <!-- Populated by LayoutGUI.ts -->
-                </div>
-            </div>
-
             <!-- ===== SYSTEM TAB ===== -->
-            <div id="tab-system" class="tab-content">
+            <div id="tab-system" class="tab-content active">
                 <section class="panel-section">
                     <h4 class="section-header">Info</h4>
                     <div class="info-row"><span class="info-label">Version:</span><span class="info-value"
@@ -85,94 +63,122 @@
                         <!-- Populated by EnvironmentPanel.ts -->
                     </div>
                 </section>
+            </div>
 
-                <section class="panel-section collapsible">
-                    <h4 class="section-header section-toggle" data-target="devOptionsContent">Dev Options <span
-                            class="toggle-arrow">▸</span></h4>
-                    <div id="devOptionsContent" class="collapsible-content collapsed">
-                        <!-- Edge Thickness Control -->
-                        <div class="control-group">
-                            <div class="label-row">
-                                <label>Edge Thickness</label>
-                                <span id="edgeThicknessValue" class="value-display">0.10</span>
-                            </div>
-                            <input type="range" id="edgeThicknessSlider" min="0.01" max="0.5" step="0.01" value="0.1">
-                        </div>
-
-                        <div class="control-group checkbox-row">
-                            <label>Highlight Effects</label>
-                            <input type="checkbox" id="highlightToggleInput" checked>
-                        </div>
-
-                        <div class="control-group">
-                            <div class="label-row">
-                                <label>Highlight Size</label>
-                                <span id="edgeHighlightValue" class="value-display">30%</span>
-                            </div>
-                            <input type="range" id="edgeHighlightSlider" min="0" max="100" step="1" value="50">
-                        </div>
-
-                        <div class="control-group">
-                            <div class="label-row">
-                                <label>Selection Bonus</label>
-                                <span id="edgeSelectionValue" class="value-display">20%</span>
-                            </div>
-                            <input type="range" id="edgeSelectionSlider" min="0" max="100" step="1" value="20">
-                        </div>
-
-                        <div class="control-group">
-                            <div class="label-row">
-                                <label>Curve Segments</label>
-                                <span id="edgeSegmentsValue" class="value-display">20</span>
-                            </div>
-                            <input type="range" id="edgeSegmentsSlider" min="2" max="100" step="1" value="20">
-                        </div>
-
-                        <div class="control-group">
-                            <div class="label-row">
-                                <label>Tube Facets</label>
-                                <span id="edgeRadialValue" class="value-display">8</span>
-                            </div>
-                            <input type="range" id="edgeRadialSlider" min="3" max="32" step="1" value="8">
-                        </div>
-
-                        <div class="control-group">
-                            <div class="label-row">
-                                <label>Drop Out (Curvature)</label>
-                                <span id="edgeCurveValue" class="value-display">0.40</span>
-                            </div>
-                            <input type="range" id="edgeCurveSlider" min="0" max="100" step="1" value="7">
-                        </div>
-
-                        <div class="control-group">
-                            <div class="label-row">
-                                <label>Pulse Speed</label>
-                                <span id="edgePulseValue" class="value-display">1.00</span>
-                            </div>
-                            <input type="range" id="edgePulseSlider" min="0.1" max="5.0" step="0.1" value="1.0">
-                        </div>
-
-                        <div class="control-group">
-                            <label>Anim Mode</label>
-                            <select id="edgeAnimModeSelect">
-                                <option value="pulse">Pulse (Global)</option>
-                                <option value="sequential">Sequential (Wave)</option>
-                                <option value="flow">Flow (Moving Point)</option>
-                                <option value="segments">Segments (Colors)</option>
-                            </select>
-                        </div>
-
-                        <div class="control-group">
-                            <div class="label-row">
-                                <label>Opacity</label>
-                                <span id="edgeOpacityValue" class="value-display">1.00</span>
-                            </div>
-                            <input type="range" id="edgeOpacitySlider" min="0.1" max="1.0" step="0.05" value="1.0">
-                        </div>
-
-                        <button id="resetEdgeControls" class="action-button secondary">Reset Edge Controls</button>
+            <!-- ===== FILES TAB ===== -->
+            <div id="tab-files" class="tab-content">
+                <div id="filePanelContent">
+                    <div id="fileLoadingIndicator" class="loading-text">
+                        Lade verfuegbare Dateien...
                     </div>
+                </div>
+            </div>
+
+            <!-- ===== VIEW (ANSICHT) TAB ===== -->
+            <div id="tab-view" class="tab-content">
+                <div id="viewPanelContent">
+                    <!-- Populated by ViewPanel.ts -->
+                </div>
+
+                <!-- Edge / View Controls (formerly Dev Options) -->
+                <section class="panel-section">
+                    <h4 class="section-header">Kanten & Darstellung</h4>
+                    <!-- Edge Thickness Control -->
+                    <div class="control-group">
+                        <div class="label-row">
+                            <label>Edge Thickness</label>
+                            <span id="edgeThicknessValue" class="value-display">0.10</span>
+                        </div>
+                        <input type="range" id="edgeThicknessSlider" min="0.01" max="0.5" step="0.01" value="0.1">
+                    </div>
+
+                    <div class="control-group checkbox-row">
+                        <label>Highlight Effects</label>
+                        <input type="checkbox" id="highlightToggleInput" checked>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="label-row">
+                            <label>Highlight Size</label>
+                            <span id="edgeHighlightValue" class="value-display">30%</span>
+                        </div>
+                        <input type="range" id="edgeHighlightSlider" min="0" max="100" step="1" value="50">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="label-row">
+                            <label>Selection Bonus</label>
+                            <span id="edgeSelectionValue" class="value-display">20%</span>
+                        </div>
+                        <input type="range" id="edgeSelectionSlider" min="0" max="100" step="1" value="20">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="label-row">
+                            <label>Curve Segments</label>
+                            <span id="edgeSegmentsValue" class="value-display">20</span>
+                        </div>
+                        <input type="range" id="edgeSegmentsSlider" min="2" max="100" step="1" value="20">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="label-row">
+                            <label>Tube Facets</label>
+                            <span id="edgeRadialValue" class="value-display">8</span>
+                        </div>
+                        <input type="range" id="edgeRadialSlider" min="3" max="32" step="1" value="8">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="label-row">
+                            <label>Drop Out (Curvature)</label>
+                            <span id="edgeCurveValue" class="value-display">0.40</span>
+                        </div>
+                        <input type="range" id="edgeCurveSlider" min="0" max="100" step="1" value="7">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="label-row">
+                            <label>Pulse Speed</label>
+                            <span id="edgePulseValue" class="value-display">1.00</span>
+                        </div>
+                        <input type="range" id="edgePulseSlider" min="0.1" max="5.0" step="0.1" value="1.0">
+                    </div>
+
+                    <div class="control-group">
+                        <label>Anim Mode</label>
+                        <select id="edgeAnimModeSelect">
+                            <option value="pulse">Pulse (Global)</option>
+                            <option value="sequential">Sequential (Wave)</option>
+                            <option value="flow">Flow (Moving Point)</option>
+                            <option value="segments">Segments (Colors)</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="label-row">
+                            <label>Opacity</label>
+                            <span id="edgeOpacityValue" class="value-display">1.00</span>
+                        </div>
+                        <input type="range" id="edgeOpacitySlider" min="0.1" max="1.0" step="0.05" value="1.0">
+                    </div>
+
+                    <button id="resetEdgeControls" class="action-button secondary">Reset Edge Controls</button>
                 </section>
+            </div>
+
+            <!-- ===== MAPPINGS TAB ===== -->
+            <div id="tab-mappings" class="tab-content">
+                <div id="visualMappingContainer">
+                    <!-- Populated by VisualMappingPanel.ts -->
+                </div>
+            </div>
+
+            <!-- ===== LAYOUT TAB ===== -->
+            <div id="tab-layout" class="tab-content">
+                <div id="layoutPanelContent">
+                    <!-- Populated by LayoutGUI.ts -->
+                </div>
             </div>
 
         </div><!-- /sidebar-body -->

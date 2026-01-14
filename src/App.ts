@@ -16,6 +16,7 @@ import { FileHandler } from './utils/FileHandler';
 import { ImportManager } from './utils/ImportManager';
 import { ExportManager } from './utils/ExportManager';
 import { EdgeLabelManager } from './utils/EdgeLabelManager';
+import { NodeLabelManager } from './utils/NodeLabelManager';
 import { NeighborhoodHighlighter } from './utils/NeighborhoodHighlighter';
 import { KeyboardShortcuts } from './utils/KeyboardShortcuts';
 import { BatchOperations } from './utils/BatchOperations';
@@ -58,6 +59,7 @@ export class App {
     public importManager: any;
     public exportManager: any;
     public edgeLabelManager: any;
+    public nodeLabelManager: any;
     public neighborhoodHighlighter: any;
     public keyboardShortcuts: any;
     public batchOperations: any;
@@ -140,6 +142,23 @@ export class App {
 
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
+        this.controls.maxPolarAngle = Math.PI / 2 - 0.05; // Prevent camera from going below ground
+        this.controls.minDistance = 2; // Prevent getting too close
+        this.controls.maxDistance = 500; // Limit far zoom
+
+        // OrbitControls Event-Listener für Performance-Optimierung
+        // Deaktiviert Raycasting während Kamerabewegung
+        this.controls.addEventListener('start', () => {
+            if (this.centralEventManager) {
+                this.centralEventManager.setCameraMoving(true);
+            }
+        });
+
+        this.controls.addEventListener('end', () => {
+            if (this.centralEventManager) {
+                this.centralEventManager.setCameraMoving(false);
+            }
+        });
 
         this.ambientLight = new THREE.AmbientLight(0x404040, this.stateManager.state.ambientLightIntensity);
         this.scene.add(this.ambientLight);
@@ -171,7 +190,8 @@ export class App {
         const groundMaterial = new THREE.MeshLambertMaterial({
             color: 0x333333,
             transparent: true,
-            opacity: 0.8
+            opacity: 0.8,
+            depthWrite: false // Prevent z-fighting and sort issues with transparent objects
         });
 
         this.ground = new THREE.Mesh(groundGeometry, groundMaterial);
@@ -227,6 +247,7 @@ export class App {
         this.importManager = new ImportManager();
         this.exportManager = new ExportManager();
         this.edgeLabelManager = new EdgeLabelManager(this.scene, this.camera);
+        this.nodeLabelManager = new NodeLabelManager(this.scene, this.camera);
         this.neighborhoodHighlighter = new NeighborhoodHighlighter(this.scene, this.stateManager);
         this.nodeGroupManager = new NodeGroupManager(this.scene, this.stateManager);
         this.batchOperations = new BatchOperations(this.selectionManager, this.nodeGroupManager);
@@ -310,6 +331,11 @@ export class App {
             if (this.layoutManager && !hasPositions) {
                 await this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships);
                 this.updateNodePositions();
+            }
+
+            // Create labels for nodes
+            if (this.nodeLabelManager) {
+                this.nodeLabelManager.createLabelsForAllEntities(this.currentEntities);
             }
 
             // Update UI
@@ -407,6 +433,19 @@ export class App {
         if (this.edgeObjectsManager) {
             this.edgeObjectsManager.updateEdgePositions(this.currentEntities);
         }
+        // Update label positions
+        if (this.nodeLabelManager) {
+            this.currentEntities.forEach(entity => {
+                if (entity && entity.position && entity.id) {
+                    const position = new THREE.Vector3(
+                        entity.position.x || 0,
+                        entity.position.y || 0,
+                        entity.position.z || 0
+                    );
+                    this.nodeLabelManager.updateLabelPosition(String(entity.id), position);
+                }
+            });
+        }
     }
 
     private setupEnvironmentSubscriptions() {
@@ -426,6 +465,20 @@ export class App {
                 this.directionalLight.intensity = state.directionalLightIntensity;
             }
         }, 'environment');
+
+        // Label visibility subscription
+        this.stateManager.subscribe((state) => {
+            if (this.nodeLabelManager) {
+                this.nodeLabelManager.setAlwaysVisible(state.showLabelsAlways);
+                this.nodeLabelManager.setVisible(state.showLabelsAlways || state.showLabelsOnHover);
+            }
+            if (this.edgeLabelManager) {
+                this.edgeLabelManager.updateConfig({
+                    alwaysVisible: state.showLabelsAlways,
+                    visible: state.showLabelsAlways || state.showLabelsOnHover
+                });
+            }
+        }, 'label_visibility');
     }
 
     public updateVisualMappings(mappings: any) {
@@ -484,6 +537,14 @@ export class App {
 
         if (this.edgeObjectsManager) {
             this.edgeObjectsManager.animate();
+        }
+
+        // Update label managers
+        if (this.nodeLabelManager) {
+            this.nodeLabelManager.update();
+        }
+        if (this.edgeLabelManager) {
+            this.edgeLabelManager.update();
         }
 
         this.controls.update();
