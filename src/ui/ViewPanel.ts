@@ -2,7 +2,7 @@
  * ViewPanel - UI component for the "Ansicht" (View) tab
  * Controls label visibility, color scheme selection, and other visual settings.
  */
-import { StateManager } from '../core/StateManager';
+import { IStateManager } from '../core/interfaces';
 
 interface ColorScheme {
     id: string;
@@ -64,9 +64,9 @@ const COLOR_SCHEMES: ColorScheme[] = [
 
 export class ViewPanel {
     private container: HTMLElement;
-    private stateManager: StateManager;
+    private stateManager: IStateManager;
 
-    constructor(containerId: string, stateManager: StateManager) {
+    constructor(containerId: string, stateManager: IStateManager) {
         const el = document.getElementById(containerId);
         if (!el) {
             console.warn(`[ViewPanel] Container '${containerId}' not found. Creating stub.`);

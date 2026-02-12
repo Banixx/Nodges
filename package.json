@@ -1,24 +1,32 @@
 {
-  "name": "nodges",
-  "private": true,
-  "version": "0.97.7",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "type-check": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@tweenjs/tween.js": "^18.6.4",
-    "lil-gui": "^0.19.1",
-    "three": "^0.161.0",
-    "zod": "^3.22.4"
-  },
-  "devDependencies": {
-    "@types/node": "^20.11.19",
-    "@types/three": "^0.161.2",
-    "typescript": "^5.3.3",
-    "vite": "^5.1.4"
-  }
+    "name": "nodges",
+    "version": "0.98.0",
+    "description": "3D Network Visualization with Three.js",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview",
+        "test": "vitest",
+        "test:ui": "vitest --ui",
+        "test:coverage": "vitest --coverage"
+    },
+    "dependencies": {
+        "@tweenjs/tween.js": "^18.6.4",
+        "lil-gui": "^0.19.1",
+        "three": "^0.161.0",
+        "zod": "^3.22.4"
+    },
+    "devDependencies": {
+        "@testing-library/dom": "^10.4.1",
+        "@types/node": "^20.11.19",
+        "@types/three": "^0.161.2",
+        "@vitest/coverage-v8": "^1.6.1",
+        "@vitest/ui": "^1.6.1",
+        "happy-dom": "^20.6.1",
+        "jsdom": "^28.0.0",
+        "typescript": "^5.3.3",
+        "vite": "^5.1.4",
+        "vitest": "^1.6.1"
+    }
 }

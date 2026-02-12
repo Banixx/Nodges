@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { StateManager } from '../core/StateManager';
+import { IStateManager } from '../core/interfaces';
 import { NodeObject } from '../types';
 
 interface GroupOutline {
@@ -32,13 +32,13 @@ interface NodeGroupNode extends NodeObject {
  */
 export class NodeGroupManager {
     private scene: THREE.Scene;
-    private stateManager: StateManager;
+    private stateManager: IStateManager;
     private groups: Map<string, GroupData>;
     private nodeGroups: Map<string | number, string>;
     private outlineObjects: Map<string | number, THREE.Mesh>;
     private defaultColors: number[];
 
-    constructor(scene: THREE.Scene, stateManager: StateManager) {
+    constructor(scene: THREE.Scene, stateManager: IStateManager) {
         this.scene = scene;
         this.stateManager = stateManager;
         this.groups = new Map(); // Map of group ID to group data
@@ -141,7 +141,7 @@ export class NodeGroupManager {
     applyGroupVisualIndicators(node: NodeGroupNode, group: GroupData) {
         // Apply color coding
         if (group.color) {
-            if (node.mesh && node.mesh.material instanceof THREE.MeshBasicMaterial || node.mesh.material instanceof THREE.MeshPhongMaterial || node.mesh.material instanceof THREE.MeshLambertMaterial) {
+            if (node.mesh && (node.mesh.material instanceof THREE.MeshBasicMaterial || node.mesh.material instanceof THREE.MeshPhongMaterial || node.mesh.material instanceof THREE.MeshLambertMaterial)) {
                 node.mesh.material.color.setHex(group.color);
             }
             node.originalColor = group.color; // Update original color reference
@@ -237,7 +237,7 @@ export class NodeGroupManager {
                 outlineMesh.visible = node.mesh.visible;
 
                 // If the node is selected, make the outline more visible
-                if (this.stateManager && this.stateManager.state.selectedObject === node.mesh) {
+                if (this.stateManager && this.stateManager.getSelectedObject() === node.mesh) {
                     if (outlineMesh.material instanceof THREE.Material) {
                         outlineMesh.material.opacity = 1.0;
                     }

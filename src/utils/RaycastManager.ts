@@ -1,6 +1,5 @@
 import * as THREE from 'three';
-import { NodeManager } from '../core/NodeManager';
-import { EdgeObjectsManager } from '../core/EdgeObjectsManager';
+import { INodeManager, IEdgeManager } from '../core/interfaces';
 
 export class RaycastManager {
     private camera: THREE.Camera;
@@ -8,10 +7,10 @@ export class RaycastManager {
     private mouse: THREE.Vector2;
     private lastRaycastTime: number;
     private lastIntersectedObject: THREE.Object3D | null;
-    private nodeManager: NodeManager | null;
-    private edgeObjectsManager: EdgeObjectsManager | null;
+    private nodeManager: INodeManager | null;
+    private edgeObjectsManager: IEdgeManager | null;
 
-    constructor(camera: THREE.Camera, nodeManager: NodeManager | null = null, edgeObjectsManager: EdgeObjectsManager | null = null) {
+    constructor(camera: THREE.Camera, nodeManager: INodeManager | null = null, edgeObjectsManager: IEdgeManager | null = null) {
         this.camera = camera;
         this.nodeManager = nodeManager;
         this.edgeObjectsManager = edgeObjectsManager;
@@ -19,6 +18,11 @@ export class RaycastManager {
         this.mouse = new THREE.Vector2();
         this.lastRaycastTime = 0;
         this.lastIntersectedObject = null;
+    }
+
+    clearCache() {
+        this.lastIntersectedObject = null;
+        this.lastRaycastTime = 0;
     }
 
     updateMousePosition(event: MouseEvent) {

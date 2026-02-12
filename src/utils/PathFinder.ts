@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { StateManager } from '../core/StateManager';
+import { IStateManager } from '../core/interfaces';
 
 interface PathNode {
     id: string | number;
@@ -32,7 +32,7 @@ interface AnimationSettings {
  */
 export class PathFinder {
     private scene: THREE.Scene;
-    // private stateManager: StateManager;
+    // private stateManager: IStateManager;
     private nodes: PathNode[];
     private edges: PathEdge[];
     private adjacencyList: Map<string | number, Map<string | number, PathEdge>>;
@@ -50,7 +50,7 @@ export class PathFinder {
     private animationPhase: number;
     private animationMarker: THREE.Mesh | null;
 
-    constructor(scene: THREE.Scene, _stateManager: StateManager) {
+    constructor(scene: THREE.Scene, _stateManager: IStateManager) {
         this.scene = scene;
         // this.stateManager = stateManager;
         this.nodes = [];

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { EntityData, RelationshipData } from '../types';
 import { VisualMappingEngine } from './VisualMappingEngine';
-import { StateManager } from './StateManager';
+import { IStateManager } from './interfaces';
 
 // Interface für Edge Objekte
 interface EdgeObject {
@@ -21,7 +21,7 @@ interface EdgeObject {
 export class EdgeObjectsManager {
     private scene: THREE.Scene;
     private visualMappingEngine: VisualMappingEngine;
-    private stateManager: StateManager;
+    private stateManager: IStateManager;
     private edges: EdgeObject[] = [];
     private animatedEdges: {
         baseColor: THREE.Color;
@@ -32,7 +32,7 @@ export class EdgeObjectsManager {
     // Map connection key to all edge objects with that connection
     private connectionToEdges: Map<string, EdgeObject[]>;
 
-    constructor(scene: THREE.Scene, visualMappingEngine: VisualMappingEngine, stateManager: StateManager) {
+    constructor(scene: THREE.Scene, visualMappingEngine: VisualMappingEngine, stateManager: IStateManager) {
         this.scene = scene;
         this.visualMappingEngine = visualMappingEngine;
         this.stateManager = stateManager;

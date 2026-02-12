@@ -22,16 +22,17 @@ import { KeyboardShortcuts } from './utils/KeyboardShortcuts';
 import { BatchOperations } from './utils/BatchOperations';
 import { NodeGroupManager } from './utils/NodeGroupManager';
 import { LayoutGUI } from './utils/LayoutGUI';
-// import { FutureDataParser } from './utils/FutureDataParser';
 import { HighlightManager } from './effects/HighlightManager';
 import { GlowEffect } from './effects/GlowEffect';
-// import { NodeObjectsManager } from './core/NodeObjectsManager';
 import { EdgeObjectsManager } from './core/EdgeObjectsManager';
 import { DataParser } from './core/DataParser';
 import { VisualMappingEngine } from './core/VisualMappingEngine';
+import { IStateManager, IEventManager } from './core/interfaces';
 import { GraphData, EntityData, RelationshipData, NodeObject } from './types';
 
+import { ServiceContainer } from './core/di/ServiceContainer';
 import './styles/main.css';
+import pkg from '../package.json'; // Direct import dependent on resolveJsonModule
 
 declare global {
     interface Window {
@@ -45,30 +46,32 @@ export class App {
     public renderer: THREE.WebGLRenderer;
     public controls: OrbitControls;
 
-    public stateManager: StateManager;
-    public centralEventManager: any;
-    public interactionManager: any;
+    private container: ServiceContainer;
+
+    public stateManager: IStateManager;
+    public centralEventManager!: IEventManager;
+    public interactionManager!: InteractionManager;
     public layoutManager!: LayoutManager;
-    public uiManager: any;
-    public selectionManager: any;
-    public raycastManager: any;
-    public networkAnalyzer: any;
-    public pathFinder: any;
-    public performanceOptimizer: any;
-    public fileHandler: any;
-    public importManager: any;
-    public exportManager: any;
-    public edgeLabelManager: any;
-    public nodeLabelManager: any;
-    public neighborhoodHighlighter: any;
-    public keyboardShortcuts: any;
-    public batchOperations: any;
-    public nodeGroupManager: any;
-    public layoutGUI: any;
-    public highlightManager: any;
-    public glowEffect: any;
+    public uiManager!: UIManager;
+    public selectionManager!: SelectionManager;
+    public raycastManager!: RaycastManager;
+    public networkAnalyzer!: NetworkAnalyzer;
+    public pathFinder!: PathFinder;
+    public performanceOptimizer!: PerformanceOptimizer;
+    public fileHandler!: FileHandler;
+    public importManager!: ImportManager;
+    public exportManager!: ExportManager;
+    public edgeLabelManager!: EdgeLabelManager;
+    public nodeLabelManager!: NodeLabelManager;
+    public neighborhoodHighlighter!: NeighborhoodHighlighter;
+    public keyboardShortcuts!: KeyboardShortcuts;
+    public batchOperations!: BatchOperations;
+    public nodeGroupManager!: NodeGroupManager;
+    public layoutGUI!: LayoutGUI;
+    public highlightManager!: HighlightManager;
+    public glowEffect!: GlowEffect;
     public nodeManager: NodeManager;
-    public edgeObjectsManager: any;
+    public edgeObjectsManager: EdgeObjectsManager;
 
     private ambientLight!: THREE.AmbientLight;
     private directionalLight!: THREE.DirectionalLight;
@@ -82,9 +85,6 @@ export class App {
     public currentEntities: EntityData[] = [];
     public currentRelationships: RelationshipData[] = [];
 
-    // Legacy support (DEPRECATED - mapped to entities)
-    // public currentNodes: any[] = [];
-    // public currentEdges: any[] = [];
     public nodeObjects: NodeObject[] = [];
     public edgeObjects: any[] = [];
 
@@ -101,18 +101,66 @@ export class App {
     constructor() {
         console.log('Initializing Nodges');
 
+        this.container = ServiceContainer.getInstance();
+
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+
+        // Robust WebGL Renderer Initialization
+        try {
+            this.renderer = new THREE.WebGLRenderer({
+                antialias: true,
+                powerPreference: "high-performance"
+            });
+        } catch (e) {
+            console.warn('High-performance WebGL context creation failed, trying fallback...', e);
+            try {
+                this.renderer = new THREE.WebGLRenderer({
+                    antialias: false,
+                    powerPreference: "default",
+                    failIfMajorPerformanceCaveat: false
+                });
+            } catch (e2) {
+                console.warn('Standard fallback failed, trying minimal...', e2);
+                try {
+                    // Maximum minimal: no options at all
+                    this.renderer = new THREE.WebGLRenderer();
+                } catch (e3) {
+                    console.error('Critical: WebGL context creation failed completely.', e3);
+                    this.showWebGLError();
+                    // Create a dummy renderer to prevent immediate crashes in other components before we stop
+                    this.renderer = { domElement: document.createElement('canvas'), setSize: () => { }, render: () => { }, shadowMap: {} } as any;
+                    throw new Error('WebGL not supported');
+                }
+            }
+        }
+
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
-        this.stateManager = new StateManager();
+        this.displayVersion();
 
-        this.visualMappingEngine = new VisualMappingEngine();
+        // Register Core Services
+        this.initCoreServices();
+
+        // Retrieve instances for local usage (backward compatibility)
+        this.stateManager = this.container.get<IStateManager>('IStateManager');
+        this.visualMappingEngine = this.container.get<VisualMappingEngine>('VisualMappingEngine');
+
+        // These still need manual instantiation until fully refactored, but using injected dependencies
         this.nodeManager = new NodeManager(this.scene, this.visualMappingEngine, this.stateManager);
         this.edgeObjectsManager = new EdgeObjectsManager(this.scene, this.visualMappingEngine, this.stateManager);
 
         this.init();
+    }
+
+    private initCoreServices() {
+        // Core State
+        const stateManager = new StateManager();
+        this.container.register('IStateManager', stateManager);
+
+        // Engines
+        const visualMappingEngine = new VisualMappingEngine();
+        this.container.register('VisualMappingEngine', visualMappingEngine);
     }
 
     async init() {
@@ -220,15 +268,30 @@ export class App {
     }
 
     async initManagers() {
-        this.layoutManager = new LayoutManager();
-        this.glowEffect = new GlowEffect();
-        this.glowEffect = new GlowEffect();
-        this.highlightManager = new HighlightManager(this.stateManager, this.glowEffect, this.scene, this.nodeManager, this.edgeObjectsManager);
+        // Init & Register LayoutManager
+        const layoutManager = new LayoutManager();
+        this.container.register('LayoutManager', layoutManager);
+        this.layoutManager = this.container.get<LayoutManager>('LayoutManager');
+
+        // Init & Register GlowEffect
+        const glowEffect = new GlowEffect();
+        this.container.register('GlowEffect', glowEffect);
+        this.glowEffect = this.container.get<GlowEffect>('GlowEffect');
+
+        // Init & Register HighlightManager
+        const highlightManager = new HighlightManager(this.stateManager, this.glowEffect, this.scene, this.nodeManager, this.edgeObjectsManager);
+        this.container.register('HighlightManager', highlightManager);
+        this.highlightManager = this.container.get<HighlightManager>('HighlightManager');
+
         this.uiManager = new UIManager(this);
 
-        this.centralEventManager = new CentralEventManager(this.camera, this.renderer, this.stateManager, this.nodeManager, this.edgeObjectsManager, this.scene);
+        // Init & Register CentralEventManager
+        const centralEventManager = new CentralEventManager(this.camera, this.renderer, this.stateManager, this.nodeManager, this.edgeObjectsManager, this.scene);
+        this.container.register('IEventManager', centralEventManager);
+        this.centralEventManager = this.container.get<IEventManager>('IEventManager');
 
-        this.interactionManager = new InteractionManager(
+        // Init & Register InteractionManager
+        const interactionManager = new InteractionManager(
             this.centralEventManager,
             this.stateManager,
             this.highlightManager,
@@ -237,21 +300,73 @@ export class App {
             this.scene,
             this.renderer
         );
+        this.container.register('InteractionManager', interactionManager);
+        this.interactionManager = this.container.get<InteractionManager>('InteractionManager');
 
-        this.selectionManager = new SelectionManager(this.scene, this.camera, this.renderer, this.stateManager, this.controls, this.nodeManager);
-        this.raycastManager = new RaycastManager(this.camera, this.nodeManager, this.edgeObjectsManager);
-        this.networkAnalyzer = new NetworkAnalyzer();
-        this.pathFinder = new PathFinder(this.scene, this.stateManager);
-        this.performanceOptimizer = new PerformanceOptimizer(this.scene, this.camera, this.renderer);
-        this.fileHandler = new FileHandler(this.loadGraphData.bind(this));
+        // Init & Register SelectionManager
+        const selectionManager = new SelectionManager(this.scene, this.camera, this.renderer, this.stateManager, this.controls, this.nodeManager);
+        this.container.register('SelectionManager', selectionManager);
+        this.selectionManager = this.container.get<SelectionManager>('SelectionManager');
+
+        // Init & Register RaycastManager
+        const raycastManager = new RaycastManager(this.camera, this.nodeManager, this.edgeObjectsManager);
+        this.container.register('RaycastManager', raycastManager);
+        this.raycastManager = this.container.get<RaycastManager>('RaycastManager');
+        // Init & Register NetworkAnalyzer
+        const networkAnalyzer = new NetworkAnalyzer();
+        this.container.register('NetworkAnalyzer', networkAnalyzer);
+        this.networkAnalyzer = this.container.get<NetworkAnalyzer>('NetworkAnalyzer');
+
+        // Init & Register PathFinder
+        const pathFinder = new PathFinder(this.scene, this.stateManager);
+        this.container.register('PathFinder', pathFinder);
+        this.pathFinder = this.container.get<PathFinder>('PathFinder');
+
+        // Init & Register PerformanceOptimizer
+        const performanceOptimizer = new PerformanceOptimizer(this.scene, this.camera, this.renderer);
+        this.container.register('PerformanceOptimizer', performanceOptimizer);
+        this.performanceOptimizer = this.container.get<PerformanceOptimizer>('PerformanceOptimizer');
+
+        // Init & Register FileHandler
+        const fileHandler = new FileHandler(this.loadGraphData.bind(this));
+        this.container.register('FileHandler', fileHandler);
+        this.fileHandler = this.container.get<FileHandler>('FileHandler');
+
+        // Init & Register Import/Export Managers
         this.importManager = new ImportManager();
+        this.container.register('ImportManager', this.importManager);
+
         this.exportManager = new ExportManager();
-        this.edgeLabelManager = new EdgeLabelManager(this.scene, this.camera);
-        this.nodeLabelManager = new NodeLabelManager(this.scene, this.camera);
-        this.neighborhoodHighlighter = new NeighborhoodHighlighter(this.scene, this.stateManager);
-        this.nodeGroupManager = new NodeGroupManager(this.scene, this.stateManager);
-        this.batchOperations = new BatchOperations(this.selectionManager, this.nodeGroupManager);
-        this.keyboardShortcuts = new KeyboardShortcuts();
+        this.container.register('ExportManager', this.exportManager);
+
+        // Init & Register EdgeLabelManager
+        const edgeLabelManager = new EdgeLabelManager(this.scene, this.camera);
+        this.container.register('EdgeLabelManager', edgeLabelManager);
+        this.edgeLabelManager = this.container.get<EdgeLabelManager>('EdgeLabelManager');
+
+        // Init & Register NodeLabelManager
+        const nodeLabelManager = new NodeLabelManager(this.scene, this.camera);
+        this.container.register('NodeLabelManager', nodeLabelManager);
+        this.nodeLabelManager = this.container.get<NodeLabelManager>('NodeLabelManager');
+        // Init & Register NeighborhoodHighlighter
+        const neighborhoodHighlighter = new NeighborhoodHighlighter(this.scene, this.stateManager);
+        this.container.register('NeighborhoodHighlighter', neighborhoodHighlighter);
+        this.neighborhoodHighlighter = this.container.get<NeighborhoodHighlighter>('NeighborhoodHighlighter');
+
+        // Init & Register NodeGroupManager
+        const nodeGroupManager = new NodeGroupManager(this.scene, this.stateManager);
+        this.container.register('NodeGroupManager', nodeGroupManager);
+        this.nodeGroupManager = this.container.get<NodeGroupManager>('NodeGroupManager');
+
+        // Init & Register BatchOperations
+        const batchOperations = new BatchOperations(this.selectionManager, this.nodeGroupManager);
+        this.container.register('BatchOperations', batchOperations);
+        this.batchOperations = this.container.get<BatchOperations>('BatchOperations');
+
+        // Init & Register KeyboardShortcuts
+        const keyboardShortcuts = new KeyboardShortcuts();
+        this.container.register('KeyboardShortcuts', keyboardShortcuts);
+        this.keyboardShortcuts = this.container.get<KeyboardShortcuts>('KeyboardShortcuts');
 
         // Global Undo/Redo Shortcuts
         window.addEventListener('keydown', (e) => {
@@ -569,6 +684,38 @@ export class App {
         if (this.frameCounter % 300 === 0) {
             //console.log(`[TRACE] Render Loop (Frame ${this.frameCounter})`);
         }
+    }
+
+    private displayVersion() {
+        const versionSpan = document.getElementById('fileVersion');
+        const sidebarVersion = document.getElementById('sidebarVersion');
+        if (pkg.version) {
+            if (versionSpan) versionSpan.textContent = pkg.version;
+            if (sidebarVersion) sidebarVersion.textContent = 'v' + pkg.version;
+        }
+    }
+
+    private showWebGLError() {
+        const errorDiv = document.createElement('div');
+        errorDiv.style.position = 'absolute';
+        errorDiv.style.top = '50%';
+        errorDiv.style.left = '50%';
+        errorDiv.style.transform = 'translate(-50%, -50%)';
+        errorDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+        errorDiv.style.color = '#ff4444';
+        errorDiv.style.padding = '20px';
+        errorDiv.style.border = '2px solid #ff4444';
+        errorDiv.style.borderRadius = '8px';
+        errorDiv.style.zIndex = '9999';
+        errorDiv.style.textAlign = 'center';
+        errorDiv.innerHTML = `
+            <h2>WebGL Error</h2>
+            <p>Could not initialize 3D graphics context.</p>
+            <p>Please check your browser settings or hardware acceleration.</p>
+            <p style="font-size: small; color: #aaa; margin-top: 10px">If running in a VM/Container, ensure 3D acceleration is enabled.</p>
+        `;
+        document.body.appendChild(errorDiv);
+        console.error('WebGL Fatal Error Displayed');
     }
 }
 

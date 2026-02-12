@@ -6,7 +6,7 @@
 
 import * as THREE from 'three';
 import { RaycastManager } from '../utils/RaycastManager';
-import { StateManager } from './StateManager';
+// import { StateManager } from './StateManager';
 import { NodeManager } from './NodeManager';
 import { EdgeObjectsManager } from './EdgeObjectsManager';
 import { HoverInfoPanel } from '../utils/HoverInfoPanel';
@@ -24,9 +24,11 @@ interface EventConfig {
     doubleClickThreshold: number;
 }
 
-export class CentralEventManager {
+import { IEventManager, IStateManager } from './interfaces';
+
+export class CentralEventManager implements IEventManager {
     private renderer: THREE.WebGLRenderer;
-    private stateManager: StateManager;
+    private stateManager: IStateManager;
     private raycastManager: any; // RaycastManager
     private hoverInfoPanel: HoverInfoPanel;
     // private nodeManager: NodeManager; // Unused
@@ -54,7 +56,7 @@ export class CentralEventManager {
     constructor(
         camera: THREE.Camera,
         renderer: THREE.WebGLRenderer,
-        stateManager: StateManager,
+        stateManager: IStateManager,
         nodeManager: NodeManager,
         edgeObjectsManager: EdgeObjectsManager,
         scene?: THREE.Scene
@@ -158,6 +160,25 @@ export class CentralEventManager {
     /**
      * Haupthandler fuer Mouse-Move Events
      */
+    /**
+     * Haupthandler fuer Mouse-Move Events (IEventManager Implementation)
+     */
+    onMouseMove(event: MouseEvent) {
+        this.handleMouseMove(event);
+    }
+
+    onMouseDown(event: MouseEvent) {
+        this.handleMouseDown(event);
+    }
+
+    onMouseUp(event: MouseEvent) {
+        this.handleMouseUp(event);
+    }
+
+    onClick(event: MouseEvent) {
+        this.handleClick(event);
+    }
+
     handleMouseMove(event: MouseEvent) {
         // Performance-Throttling
         const now = performance.now();

@@ -2,12 +2,12 @@ import * as THREE from 'three';
 import { EntityData } from '../types';
 import { VisualMappingEngine } from './VisualMappingEngine';
 
-import { StateManager } from './StateManager';
+import { IStateManager } from './interfaces';
 
 export class NodeManager {
     private scene: THREE.Scene;
     private visualMappingEngine: VisualMappingEngine;
-    private stateManager: StateManager;
+    private stateManager: IStateManager;
     private meshes: Map<string, THREE.InstancedMesh>;
     private geometryCache: Map<string, THREE.BufferGeometry>;
     private materialCache: Map<string, THREE.Material>;
@@ -21,7 +21,7 @@ export class NodeManager {
 
     private defaultColor = new THREE.Color(0x3498db);
 
-    constructor(scene: THREE.Scene, visualMappingEngine: VisualMappingEngine, stateManager: StateManager) {
+    constructor(scene: THREE.Scene, visualMappingEngine: VisualMappingEngine, stateManager: IStateManager) {
         this.scene = scene;
         this.visualMappingEngine = visualMappingEngine;
         this.stateManager = stateManager;

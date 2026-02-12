@@ -3,10 +3,12 @@
  * This class encapsulates all logic for panels, buttons, and other UI elements.
  */
 import type { App } from '../App';
-import { StateManager } from './StateManager';
+import { IStateManager } from './interfaces';
 import { VisualMappingPanel } from '../ui/VisualMappingPanel';
 import { EnvironmentPanel } from '../ui/EnvironmentPanel';
 import { ViewPanel } from '../ui/ViewPanel';
+import { StatsUI } from '../ui/StatsUI';
+import { ToolsUI } from '../ui/ToolsUI';
 import { VisualMappings } from '../types';
 
 interface Bounds {
@@ -17,17 +19,25 @@ interface Bounds {
 
 export class UIManager {
     private app: App;
-    private stateManager: StateManager;
+    private stateManager: IStateManager;
     private panels: { [key: string]: HTMLElement | null };
     private panelToggles: { [key: string]: HTMLElement | null };
     private filePanelContent: HTMLElement | null;
     private infoPanelContent: HTMLElement | null;
     private visualMappingPanel: VisualMappingPanel;
 
+    // New Components
+    private statsUI: StatsUI;
+    public toolsUI: ToolsUI; // Public/used to suppress warning for now, or use it later
+
 
     constructor(app: App) {
         this.app = app;
         this.stateManager = app.stateManager;
+
+        // Initialize Sub-Components
+        this.statsUI = new StatsUI(this.stateManager);
+        this.toolsUI = new ToolsUI(this.stateManager);
 
         // New sidebar-based panel references
         this.panels = {
@@ -347,34 +357,22 @@ export class UIManager {
 
     // --- Public API for main.js ---
 
-    updateFileInfo(filename: string, nodeCount: number, edgeCount: number, bounds: Bounds) {
+    public updateFileInfo(filename: string, nodeCount: number, edgeCount: number, bounds: Bounds) {
         const elFilename = document.getElementById('fileFilename');
         if (elFilename) elFilename.textContent = `Dateiname: ${filename}`;
 
-        const elNodeCount = document.getElementById('fileNodeCount');
-        if (elNodeCount) elNodeCount.textContent = `Anzahl Knoten: ${nodeCount}`;
-
-        const elEdgeCount = document.getElementById('fileEdgeCount');
-        if (elEdgeCount) elEdgeCount.textContent = `Anzahl Kanten: ${edgeCount}`;
-
-        if (bounds) {
-            const elX = document.getElementById('fileXAxis');
-            if (elX) elX.textContent = `X-Achse: ${bounds.x.min.toFixed(2)} bis ${bounds.x.max.toFixed(2)}`;
-
-            const elY = document.getElementById('fileYAxis');
-            if (elY) elY.textContent = `Y-Achse: ${bounds.y.min.toFixed(2)} bis ${bounds.y.max.toFixed(2)}`;
-
-            const elZ = document.getElementById('fileZAxis');
-            if (elZ) elZ.textContent = `Z-Achse: ${bounds.z.min.toFixed(2)} bis ${bounds.z.max.toFixed(2)}`;
+        if (this.statsUI) {
+            this.statsUI.updateGraphStats(nodeCount, edgeCount);
+            if (bounds) this.statsUI.updateBounds(bounds);
         }
     }
 
-    updateFps(fps: number) {
-        const fpsElement = document.getElementById('fileFPS');
-        if (fpsElement) {
-            fpsElement.textContent = `FPS: ${fps}`;
+    public updateFps(fps: number) {
+        if (this.statsUI) {
+            this.statsUI.updateFps(fps);
         }
     }
+    // ... rest of methods
 
     updateVisualMappings(mappings: VisualMappings) {
         if (!this.visualMappingPanel) return; // Not available in new sidebar structure
@@ -675,8 +673,6 @@ export class UIManager {
     collapseInfoPanel() {
         if (!this.panels.info) return;
         // Do not auto-collapse the panel
-        // this.panels.info.classList.add('collapsed');
-        // if (this.panelToggles.info) this.panelToggles.info.innerHTML = '>';
         if (this.infoPanelContent) this.infoPanelContent.innerHTML = '<p>Kein Objekt ausgewählt</p>';
     }
 }

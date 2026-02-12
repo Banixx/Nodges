@@ -96,4 +96,4 @@ Neben der Physik bietet Nodges mathematisch exakte Layouts für strukturierte Da
 
 ---
 *Dokumentations-Status: V2.0 (Deep Dive)*
-*Geprüft gegen Build: 0.97.5*
+*Geprüft gegen Build: 0.97.7*

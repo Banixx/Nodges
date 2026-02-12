@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Nodges 0.97.7</title>
+    <title>Nodges 0.98.0</title>
     <link rel="icon" type="image/png" href="favicon-32x32.png">
     <link rel="stylesheet" href="/src/styles/main.css">
 </head>
@@ -201,17 +201,7 @@
     <script type="module" src="/src/App.ts"></script>
     <script>
         // Fetch version from package.json and display
-        fetch('/package.json')
-            .then(r => r.json())
-            .then(pkg => {
-                const versionSpan = document.getElementById('fileVersion');
-                const sidebarVersion = document.getElementById('sidebarVersion');
-                if (pkg.version) {
-                    if (versionSpan) versionSpan.textContent = pkg.version;
-                    if (sidebarVersion) sidebarVersion.textContent = 'v' + pkg.version;
-                }
-            })
-            .catch(() => { /* fallback: keep existing text */ });
+        // Version is now handled in App.ts
 
         // Tab Switching Logic
         document.querySelectorAll('.sidebar-tab').forEach(tab => {

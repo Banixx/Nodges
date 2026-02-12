@@ -74,7 +74,9 @@ export interface State {
 type StateCallback = (state: State) => void;
 type BatchCallback = (data: { oldState: State; newState: State; updates: Partial<State> }) => void;
 
-export class StateManager {
+import { IStateManager } from './interfaces';
+
+export class StateManager implements IStateManager {
     public state: State;
     private subscribers: Map<string, Set<StateCallback>>;
     private batchSubscribers: Map<string, Set<BatchCallback>>;
@@ -239,11 +241,38 @@ export class StateManager {
 
         this.update({
             selectedObject: primary,
-            selectedObjects: objects,
+            selectedObjects: new Set(objects), // Create new Set to ensure reactivity
             glowIntensity: 0,
             glowDirection: 1,
             infoPanelCollapsed: false
         });
+    }
+
+    /**
+     * Get primary selected object
+     */
+    getSelectedObject(): THREE.Object3D | null {
+        return this.state.selectedObject;
+    }
+
+    getSelectedObjects(): Set<THREE.Object3D> {
+        return this.state.selectedObjects;
+    }
+
+    addToSelection(object: THREE.Object3D) {
+        const newSelection = new Set(this.state.selectedObjects);
+        newSelection.add(object);
+        this.setSelectedObjects(newSelection);
+    }
+
+    removeFromSelection(object: THREE.Object3D) {
+        const newSelection = new Set(this.state.selectedObjects);
+        newSelection.delete(object);
+        this.setSelectedObjects(newSelection);
+    }
+
+    clearSelection() {
+        this.setSelectedObjects(new Set());
     }
 
     updateTooltip(visible: boolean, content: string | null = null, position: { x: number, y: number } | null = null) {

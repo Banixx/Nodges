@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { StateManager } from '../core/StateManager';
+import { IStateManager } from '../core/interfaces';
 import { GlowEffect } from './GlowEffect';
 import { NodeManager } from '../core/NodeManager';
 import { EdgeObjectsManager } from '../core/EdgeObjectsManager';
@@ -22,7 +22,7 @@ interface HighlightData {
 }
 
 export class HighlightManager {
-    private stateManager: StateManager;
+    private stateManager: IStateManager;
     private glowEffect: GlowEffect;
     private scene: THREE.Scene;
     private nodeManager: NodeManager | null;
@@ -46,7 +46,7 @@ export class HighlightManager {
     };
 
     constructor(
-        stateManager: StateManager,
+        stateManager: IStateManager,
         glowEffect: GlowEffect,
         scene: THREE.Scene,
         nodeManager: NodeManager | null = null,

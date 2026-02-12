@@ -1,5 +1,5 @@
 ---
-trigger: always_on
+trigger: glob
 ---
 
 unterlasse es symbole wie 🎨zu verwenden.

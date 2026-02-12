@@ -1,10 +1,10 @@
-import { StateManager } from '../core/StateManager';
+import { IStateManager } from '../core/interfaces';
 
 export class EnvironmentPanel {
     private container: HTMLElement;
-    private stateManager: StateManager;
+    private stateManager: IStateManager;
 
-    constructor(elementId: string, stateManager: StateManager) {
+    constructor(elementId: string, stateManager: IStateManager) {
         const el = document.getElementById(elementId);
         if (!el) throw new Error(`Element ${elementId} not found`);
         this.container = el;

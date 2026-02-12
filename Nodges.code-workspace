@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../_assets/Nodges"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Nodges"
+	}
+}

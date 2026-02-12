@@ -3,8 +3,8 @@ import path from 'path';
 
 export default defineConfig({
 
-  base: '/Nodges/',
-  
+  base: './',
+
 
   resolve: {
     alias: {
@@ -22,7 +22,7 @@ export default defineConfig({
     sourcemap: true,
   },
 
-  
+
   optimizeDeps: {
     include: ['three'],
   },

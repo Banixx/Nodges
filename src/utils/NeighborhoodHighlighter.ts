@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { StateManager } from '../core/StateManager';
+import { IStateManager } from '../core/interfaces';
 
 interface Neighborhood {
     nodes: Set<THREE.Mesh>;
@@ -18,7 +18,7 @@ interface UserData {
 
 export class NeighborhoodHighlighter {
     private scene: THREE.Scene;
-    // private stateManager: StateManager;
+    // private stateManager: IStateManager;
     private highlightedNodes: Set<number>; // IDs
     private highlightedEdges: Set<number>; // IDs
     private originalMaterials: Map<number, THREE.Material | THREE.Material[]>;
@@ -28,7 +28,7 @@ export class NeighborhoodHighlighter {
     private dimMaterial: THREE.MeshPhongMaterial;
     private edgeDimMaterial: THREE.MeshPhongMaterial;
 
-    constructor(scene: THREE.Scene, _stateManager: StateManager) {
+    constructor(scene: THREE.Scene, _stateManager: IStateManager) {
         this.scene = scene;
         // this.stateManager = stateManager;
         this.highlightedNodes = new Set();

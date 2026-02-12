@@ -1,11 +1,11 @@
 import * as THREE from 'three';
-import { StateManager } from '../core/StateManager';
+import { IStateManager } from '../core/interfaces';
 
 export class SelectionManager {
     private scene: THREE.Scene;
     private camera: THREE.Camera;
     private renderer: THREE.WebGLRenderer;
-    private stateManager: StateManager;
+    private stateManager: IStateManager;
     private nodeManager: any; // Using any to avoid circular dependency issues if they exist
 
     private selectedObjects: Set<THREE.Object3D>;
@@ -35,7 +35,7 @@ export class SelectionManager {
     private isMouseDown: boolean = false;
     private mouseDownPosition: THREE.Vector2 = new THREE.Vector2();
 
-    constructor(scene: THREE.Scene, camera: THREE.Camera, renderer: THREE.WebGLRenderer, stateManager: StateManager, controls: any, nodeManager: any = null) {
+    constructor(scene: THREE.Scene, camera: THREE.Camera, renderer: THREE.WebGLRenderer, stateManager: IStateManager, controls: any, nodeManager: any = null) {
         this.scene = scene;
         this.camera = camera;
         this.renderer = renderer;
@@ -343,7 +343,7 @@ export class SelectionManager {
 
         this.isUpdatingFromState = true;
         try {
-            const stateSelectedObjects = state.selectedObjects as Set<THREE.Object3D>;
+            const stateSelectedObjects = this.stateManager.getSelectedObjects();
 
             // Synchronize our internal set with the state
             const toAdd: THREE.Object3D[] = [];

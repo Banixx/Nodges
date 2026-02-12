@@ -4,8 +4,7 @@
  * Arbeitet mit CentralEventManager und StateManager zusammen
  */
 import * as THREE from 'three';
-import { StateManager } from './StateManager';
-import { CentralEventManager } from './CentralEventManager';
+import { IStateManager, IEventManager } from './interfaces';
 import { HighlightManager } from '../effects/HighlightManager';
 import { ContextMenu } from '../utils/ContextMenu';
 import { DataEditor } from '../utils/DataEditor';
@@ -13,8 +12,8 @@ import { AxisPositionHelper } from '../utils/AxisPositionHelper';
 import { EntityData, RelationshipData } from '../types';
 
 export class InteractionManager {
-    private eventManager: CentralEventManager;
-    private stateManager: StateManager;
+    private eventManager: IEventManager;
+    private stateManager: IStateManager;
     private highlightManager: HighlightManager;
     private camera: THREE.Camera;
     private controls: any; // OrbitControls
@@ -57,8 +56,8 @@ export class InteractionManager {
     private raycaster: THREE.Raycaster = new THREE.Raycaster();
 
     constructor(
-        centralEventManager: CentralEventManager,
-        stateManager: StateManager,
+        centralEventManager: IEventManager,
+        stateManager: IStateManager,
         highlightManager: HighlightManager,
         camera: THREE.Camera,
         controls: any,
@@ -411,7 +410,7 @@ export class InteractionManager {
      */
     selectObject(object: THREE.Object3D, isAdditive: boolean = false) {
         if (isAdditive) {
-            const currentSelection = new Set(this.stateManager.state.selectedObjects);
+            const currentSelection = new Set(this.stateManager.getSelectedObjects());
             const equivalent = this.findEquivalentObject(currentSelection, object);
 
             if (equivalent) {
@@ -419,7 +418,7 @@ export class InteractionManager {
                 // Also update primary selectedObject if it was the one removed
                 if (this.stateManager.state.selectedObject === equivalent) {
                     const nextPrimary = currentSelection.size > 0 ? Array.from(currentSelection)[0] : null;
-                    this.stateManager.update({ selectedObject: nextPrimary });
+                    this.stateManager.setSelectedObject(nextPrimary);
                 }
             } else {
                 currentSelection.add(object);
@@ -494,7 +493,7 @@ export class InteractionManager {
      * Loescht selektierte Objekte
      */
     deleteSelected() {
-        const selectedObjects = Array.from(this.stateManager.state.selectedObjects);
+        const selectedObjects = Array.from(this.stateManager.getSelectedObjects());
         if (selectedObjects.length > 0) {
 
             this.stateManager.beginTransaction(`Delete ${selectedObjects.length} Objects`);
@@ -554,8 +553,8 @@ export class InteractionManager {
      * Zeigt Context Menu an
      */
     showContextMenu(object: THREE.Object3D | null, event: any) {
-        const hasSelection = this.stateManager.state.selectedObjects.size > 0;
-        const hasNodeSelection = Array.from(this.stateManager.state.selectedObjects)
+        const hasSelection = this.stateManager.getSelectedObjects().size > 0;
+        const hasNodeSelection = Array.from(this.stateManager.getSelectedObjects())
             .some(obj => obj.userData.type === 'node');
 
         const options: any[] = [
@@ -595,7 +594,7 @@ export class InteractionManager {
                             }
                         }
                         // Update selection state to trigger UI refresh if needed
-                        this.stateManager.update({ selectedObject: object });
+                        this.stateManager.setSelectedObject(object);
                     });
                 }
             });
@@ -635,7 +634,7 @@ export class InteractionManager {
      */
     private createNewNode(event: MouseEvent, callback?: (pos: THREE.Vector3) => void) {
         // Prüfe ob eine Edge selektiert ist (Snapping)
-        const selectedEdges = Array.from(this.stateManager.state.selectedObjects)
+        const selectedEdges = Array.from(this.stateManager.getSelectedObjects())
             .filter(obj => obj.userData.type === 'edge');
 
         if (selectedEdges.length > 0 && !callback) {
@@ -801,7 +800,7 @@ export class InteractionManager {
         document.body.style.cursor = 'crosshair';
 
         // Nutze den ersten selektierten Node als Source (falls vorhanden)
-        const selectedNodes = Array.from(this.stateManager.state.selectedObjects)
+        const selectedNodes = Array.from(this.stateManager.getSelectedObjects())
             .filter(obj => obj.userData.type === 'node');
 
         if (selectedNodes.length > 0) {
@@ -836,7 +835,7 @@ export class InteractionManager {
      * Dupliziert alle selektierten Objekte
      */
     private duplicateSelected() {
-        const selectedObjects = Array.from(this.stateManager.state.selectedObjects);
+        const selectedObjects = Array.from(this.stateManager.getSelectedObjects());
 
         if (selectedObjects.length === 0) return;
 
