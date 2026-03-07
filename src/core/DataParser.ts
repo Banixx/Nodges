@@ -14,34 +14,22 @@ export class DataParser {
      * Parse graph data
      */
     static parse(rawData: any): GraphData {
-        if (this.isFutureFormat(rawData)) {
-            console.log('Parsing graph data...');
-            return this.normalizeFutureFormat(rawData);
-        } else {
-            throw new Error('Invalid data format. Expected format with data.entities and data.relationships');
-        }
-    }
-
-    /**
-     * Check if data is in the correct format (has data.entities/relationships)
-     */
-    private static isFutureFormat(data: any): boolean {
-        return data.data !== undefined &&
-            (data.data.entities !== undefined || data.data.relationships !== undefined);
+        console.log('Parsing graph data in Semantic Graph format...');
+        return this.normalizeData(rawData);
     }
 
     /**
      * Normalize future format (ensure all required fields exist)
      * Now uses Zod for strict validation AND parses values based on DataModel
      */
-    private static normalizeFutureFormat(data: any): GraphData {
+    private static normalizeData(data: any): GraphData {
         // 1. Zod Validation
         const result = GraphDataSchema.safeParse(data);
 
         if (!result.success) {
             console.error("Zod Validation Error:", result.error);
             const errorMessages = result.error.errors.map(err => `${err.path.join('.')}: ${err.message}`).join(', ');
-            throw new Error(`Future Data Validation Failed: ${errorMessages}`);
+            throw new Error(`Data Validation Failed: ${errorMessages}`);
         }
 
         const validData = result.data;

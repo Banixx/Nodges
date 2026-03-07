@@ -3,6 +3,7 @@
  * Controls label visibility, color scheme selection, and other visual settings.
  */
 import { IStateManager } from '../core/interfaces';
+import type { State } from '../core/StateManager';
 
 interface ColorScheme {
     id: string;
@@ -223,7 +224,7 @@ export class ViewPanel {
         return '30, 30, 30';
     }
 
-    private updateUI(state: any): void {
+    private updateUI(state: State): void {
         // Sync checkboxes with state
         const alwaysCheck = document.getElementById('checkbox-showLabelsAlways') as HTMLInputElement;
         const hoverCheck = document.getElementById('checkbox-showLabelsOnHover') as HTMLInputElement;

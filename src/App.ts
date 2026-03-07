@@ -7,11 +7,13 @@ import { CentralEventManager } from './core/CentralEventManager';
 import { InteractionManager } from './core/InteractionManager';
 import { LayoutManager } from './core/LayoutManager';
 import { UIManager } from './core/UIManager';
+import { MinimapUI } from './ui/MinimapUI';
 import { SelectionManager } from './utils/SelectionManager';
 import { RaycastManager } from './utils/RaycastManager';
 import { NetworkAnalyzer } from './utils/NetworkAnalyzer';
 import { PathFinder } from './utils/PathFinder';
 import { PerformanceOptimizer } from './utils/PerformanceOptimizer';
+import { PerformanceMonitor } from './core/PerformanceMonitor';
 import { FileHandler } from './utils/FileHandler';
 import { ImportManager } from './utils/ImportManager';
 import { ExportManager } from './utils/ExportManager';
@@ -31,6 +33,7 @@ import { IStateManager, IEventManager } from './core/interfaces';
 import { GraphData, EntityData, RelationshipData, NodeObject } from './types';
 
 import { ServiceContainer } from './core/di/ServiceContainer';
+import { errorHandler } from './core/ErrorHandler';
 import './styles/main.css';
 import pkg from '../package.json'; // Direct import dependent on resolveJsonModule
 
@@ -58,6 +61,7 @@ export class App {
     public networkAnalyzer!: NetworkAnalyzer;
     public pathFinder!: PathFinder;
     public performanceOptimizer!: PerformanceOptimizer;
+    public performanceMonitor!: PerformanceMonitor;
     public fileHandler!: FileHandler;
     public importManager!: ImportManager;
     public exportManager!: ExportManager;
@@ -72,6 +76,8 @@ export class App {
     public glowEffect!: GlowEffect;
     public nodeManager: NodeManager;
     public edgeObjectsManager: EdgeObjectsManager;
+    public minimapUI!: MinimapUI;
+    public minimapCamera!: THREE.OrthographicCamera;
 
     private ambientLight!: THREE.AmbientLight;
     private directionalLight!: THREE.DirectionalLight;
@@ -158,6 +164,10 @@ export class App {
         const stateManager = new StateManager();
         this.container.register('IStateManager', stateManager);
 
+        const performanceMonitor = new PerformanceMonitor(stateManager);
+        this.container.register('PerformanceMonitor', performanceMonitor);
+        this.performanceMonitor = performanceMonitor;
+
         // Engines
         const visualMappingEngine = new VisualMappingEngine();
         this.container.register('VisualMappingEngine', visualMappingEngine);
@@ -175,7 +185,11 @@ export class App {
             console.log('Nodges initialized');
             this.animate();
         } catch (error) {
-            console.error('Initialization error:', error);
+            errorHandler.handle(error, {
+                category: 'initialization',
+                severity: 'fatal',
+                userMessage: 'Nodges konnte nicht vollstaendig initialisiert werden.'
+            });
         }
     }
 
@@ -390,6 +404,37 @@ export class App {
         const layoutContent = document.getElementById('layoutPanelContent');
         this.layoutGUI = new LayoutGUI(this, layoutContent || document.body);
         this.uiManager.init();
+
+        try {
+            this.minimapUI = new MinimapUI('minimapContainer');
+            // We'll initialize orthographic camera with arbitrary bounds, we will update it based on size
+            this.minimapCamera = new THREE.OrthographicCamera(-100, 100, 100, -100, 0.1, 2000);
+            this.minimapCamera.position.set(0, 500, 0); // High up
+            this.minimapCamera.lookAt(0, 0, 0); // Looking down
+
+            window.addEventListener('resize', this.updateMinimapCamera.bind(this));
+            // Trigger initial size
+            this.minimapUI.updateSize();
+            this.updateMinimapCamera();
+        } catch (e) {
+            console.warn("Failed to initialize minimap:", e);
+        }
+    }
+
+    private updateMinimapCamera() {
+        if (!this.minimapUI || !this.minimapCamera) return;
+        this.minimapUI.updateSize();
+        const canvas = this.minimapUI.getCanvas();
+        const aspect = canvas.width / canvas.height;
+        // The view size of the minimap (how large the area it shows).
+        // A larger D means it shows a larger area.
+        const d = 150;
+
+        this.minimapCamera.left = -d * aspect;
+        this.minimapCamera.right = d * aspect;
+        this.minimapCamera.top = d;
+        this.minimapCamera.bottom = -d;
+        this.minimapCamera.updateProjectionMatrix();
     }
 
     async loadDefaultData() {
@@ -467,7 +512,11 @@ export class App {
             this.fitCameraToScene();
 
         } catch (error) {
-            console.error('Failed to load graph data:', error);
+            errorHandler.handle(error, {
+                category: 'import',
+                severity: 'error',
+                userMessage: `Graphdaten von '${sourceName}' konnten nicht geladen werden.`
+            });
         }
     }
 
@@ -480,7 +529,11 @@ export class App {
             const graphData = DataParser.parse(rawData);
             await this.loadGraphData(graphData, url.split('/').pop());
         } catch (e) {
-            console.error('Failed to load data:', e);
+            errorHandler.handle(e, {
+                category: 'import',
+                severity: 'error',
+                userMessage: `Datei '${url}' konnte nicht geladen werden.`
+            });
         }
     }
 
@@ -492,7 +545,7 @@ export class App {
     /**
      * Calculate bounds from nodes
      */
-    private calculateBounds(nodes: any[]) {
+    public calculateBounds(nodes: any[]) {
         const bounds = {
             x: { min: Infinity, max: -Infinity },
             y: { min: Infinity, max: -Infinity },
@@ -515,6 +568,24 @@ export class App {
     }
 
     clearScene() {
+        // Layout-Worker stoppen (verhindert Race-Conditions)
+        if (this.layoutManager) {
+            this.layoutManager.stopAnimation();
+        }
+
+        // Highlights aufraemen
+        if (this.highlightManager) {
+            this.highlightManager.clearAllHighlights();
+        }
+
+        // Labels entfernen
+        if (this.nodeLabelManager) {
+            this.nodeLabelManager.removeAllLabels();
+        }
+        if (this.edgeLabelManager) {
+            this.edgeLabelManager.removeAllLabels();
+        }
+
         // Clear nodes
         if (this.nodeManager) {
             this.nodeManager.clear();
@@ -529,6 +600,42 @@ export class App {
 
         this.currentEntities = [];
         this.currentRelationships = [];
+    }
+
+    /**
+     * Vollstaendiges Cleanup: Gibt alle THREE.js-Ressourcen,
+     * Worker und Event-Listener frei.
+     * Wird bei App-Ende oder Hot-Reload aufgerufen.
+     */
+    destroy() {
+        // Scene leeren
+        this.clearScene();
+
+        // Manager-Ressourcen freigeben
+        if (this.nodeManager) {
+            this.nodeManager.dispose();
+        }
+
+        if (this.highlightManager) {
+            this.highlightManager.destroy();
+        }
+
+        if (this.interactionManager) {
+            this.interactionManager.destroy();
+        }
+
+        // Renderer freigeben
+        if (this.renderer && this.renderer.domElement) {
+            this.renderer.domElement.remove();
+            this.renderer.dispose();
+        }
+
+        // Controls freigeben
+        if (this.controls) {
+            this.controls.dispose();
+        }
+
+        console.log('[App] Destroy completed');
     }
 
     async createNodes() {
@@ -662,8 +769,63 @@ export class App {
             this.edgeLabelManager.update();
         }
 
+        if (this.performanceMonitor) {
+            this.performanceMonitor.tick();
+        }
+
         this.controls.update();
+
+        // Ensure renderer renders to the full screen normally
+        this.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+        this.renderer.setScissor(0, 0, window.innerWidth, window.innerHeight);
+        this.renderer.setScissorTest(false);
         this.renderer.render(this.scene, this.camera);
+
+        // Render Minimap Viewport if exists
+        if (this.minimapUI) {
+            const mmCanvas = this.minimapUI.getCanvas();
+            if (mmCanvas && this.renderer.domElement) {
+                // Determine minimap position on the main canvas
+                const rect = mmCanvas.parentElement!.getBoundingClientRect();
+
+                // Set explicit clear background for the minimap viewport
+                const oldClearColor = new THREE.Color();
+                this.renderer.getClearColor(oldClearColor);
+                const oldClearAlpha = this.renderer.getClearAlpha();
+
+                this.renderer.setScissorTest(true);
+                // Three.js coordinates start from bottom-left for viewport
+                const viewY = window.innerHeight - rect.bottom;
+                this.renderer.setViewport(rect.left, viewY, rect.width, rect.height);
+                this.renderer.setScissor(rect.left, viewY, rect.width, rect.height);
+
+                this.renderer.setClearColor(0x1a1e2b, 1.0); // Slightly different backdrop
+                this.renderer.clear();
+
+                // Make labels invisible in minimap (optional, to avoid clutter)
+                const labelsVisible = this.stateManager.state.showLabelsAlways;
+                if (this.nodeLabelManager) this.nodeLabelManager.setVisible(false);
+                if (this.edgeLabelManager) this.edgeLabelManager.updateConfig({ visible: false });
+
+                // Update minimap camera strictly based on the actual bounding box center
+                if (this.currentEntities && this.currentEntities.length > 0) {
+                    const bounds = this.calculateBounds(this.currentEntities);
+                    const cx = (bounds.x.min + bounds.x.max) / 2;
+                    const cz = (bounds.z.min + bounds.z.max) / 2;
+                    this.minimapCamera.position.set(cx, 500, cz);
+                    this.minimapCamera.lookAt(cx, 0, cz);
+                    this.minimapCamera.rotation.z = -Math.PI / 2; // Orient correctly
+                }
+
+                this.renderer.render(this.scene, this.minimapCamera);
+
+                // Restore
+                if (this.nodeLabelManager) this.nodeLabelManager.setVisible(labelsVisible);
+                if (this.edgeLabelManager) this.edgeLabelManager.updateConfig({ visible: labelsVisible });
+                this.renderer.setClearColor(oldClearColor, oldClearAlpha);
+                this.renderer.setScissorTest(false);
+            }
+        }
 
         // FPS Berechnung
         this.fpsFrameCount++;

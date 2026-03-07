@@ -6,7 +6,8 @@
         "lib": [
             "ESNext",
             "DOM",
-            "DOM.Iterable"
+            "DOM.Iterable",
+            "WebWorker"
         ],
         "skipLibCheck": true,
         /* Bundler mode */
@@ -35,5 +36,9 @@
         "src/**/*.tsx",
         "src/**/*.vue",
         "src/**/*.js"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
     ]
 }

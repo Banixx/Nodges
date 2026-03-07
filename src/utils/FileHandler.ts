@@ -6,6 +6,7 @@
 
 import { ImportManager, ImportedData } from './ImportManager';
 import { ExportManager } from './ExportManager';
+import { notify } from '../core/NotificationService';
 
 type LoadNetworkCallback = (data: any, filename: string) => Promise<void>;
 
@@ -277,94 +278,22 @@ export class FileHandler {
      * Show success message
      */
     showSuccess(title: string, message: string): void {
-        this.showNotification(title, message, 'success');
+        notify.success(title, message);
     }
 
     /**
      * Show error message
      */
     showError(title: string, message: string): void {
-        this.showNotification(title, message, 'error');
-        console.error(`${title}: ${message}`);
+        notify.error(title, message);
     }
 
     /**
-     * Show notification
+     * Show notification (delegiert an NotificationService)
      */
     showNotification(title: string, message: string, type: string = 'info'): void {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
-            color: white;
-            padding: 15px 20px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            z-index: 10001;
-            max-width: 400px;
-            font-family: Arial, sans-serif;
-            animation: slideIn 0.3s ease;
-        `;
-
-        const titleEl = document.createElement('div');
-        titleEl.textContent = title;
-        titleEl.style.cssText = `
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 5px;
-        `;
-
-        const messageEl = document.createElement('div');
-        messageEl.textContent = message;
-        messageEl.style.cssText = `
-            font-size: 14px;
-            line-height: 1.4;
-        `;
-
-        notification.appendChild(titleEl);
-        notification.appendChild(messageEl);
-
-        // Add animation styles (injected once per active session ideally, but okay for here)
-        // Check if style exists to avoid dupes?
-        if (!document.getElementById('notification-styles')) {
-            const style = document.createElement('style');
-            style.id = 'notification-styles';
-            style.textContent = `
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes slideOut {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        document.body.appendChild(notification);
-
-        // Auto-remove after 5 seconds
-        setTimeout(() => {
-            notification.style.animation = 'slideOut 0.3s ease';
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 300);
-        }, 5000);
-
-        // Click to dismiss
-        notification.addEventListener('click', () => {
-            notification.style.animation = 'slideOut 0.3s ease';
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 300);
-        });
+        const notifType = type as 'success' | 'error' | 'warning' | 'info';
+        notify.show(title, message, notifType);
     }
 
     /**

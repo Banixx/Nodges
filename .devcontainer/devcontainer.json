@@ -1,0 +1,24 @@
+{
+    "name": "Nodges",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "mounts": [
+        "source=C:/users/ich/desktop/code/ASSETS/,target=/app/assets,type=bind"
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.vscode-typescript-next",
+                "vitest.explorer",
+                "mrcedric.threejs-editor-vscode",
+                "don.github-markdown-preview"
+            ]
+        }
+    },
+    "forwardPorts": [
+        5173
+    ],
+    "postCreateCommand": "npm install",
+    "remoteUser": "node"
+}

@@ -1,57 +1,138 @@
 # 10 Entwicklungs-Guide und Deployment
 
-Dieses Kapitel ist das Handbuch für alle, die unter die Motorhaube von Nodges schauen, den Code erweitern oder die Anwendung für die Welt bereitstellen möchten.
+Dieses Handbuch richtet sich an Entwickler, die Nodges erweitern, warten oder deployen moechten. Es spiegelt den Architektur-Stand nach dem grossen Refactoring (Februar 2026) wider.
 
-## 10.1 Lokale Entwicklung: Einsteigen leicht gemacht
+## 10.1 Schnellstart
 
-Nodges ist so konfiguriert, dass der "Time-to-Code" (die Zeit vom Klonen bis zur ersten Änderung) weniger als 2 Minuten beträgt.
+### Voraussetzungen
 
-### Setup-Schritte
+- Node.js >= 18
+- npm >= 9
 
-1. **Repository beziehen**: `git clone [...]`
-2. **Abhängigkeiten laden**: `npm install`. Wir nutzen ein flaches Dependency-Modell, um Versionskonflikte zu vermeiden.
-3. **Dev-Server starten**: `npm run dev`. Dank **Vite** startet der Server in Millisekunden.
+### Setup
 
-### Der HMR-Vorteil (Hot Module Replacement)
+```bash
+# 1. Repository klonen
+git clone <repo-url>
+cd Nodges
 
-Wir haben die App so strukturiert, dass bei Code-Änderungen nur die geänderten Module im Browser ausgetauscht werden.
+# 2. Abhaengigkeiten installieren
+npm install
 
-* Ändere die Highlight-Farbe im Code -> Die 3D-Szene aktualisiert sich sofort, **ohne** dass die Seite neu lädt.
-* Die Kamera-Position und das aktuelle Layout bleiben erhalten. Das ermöglicht einen extrem schnellen Iterationszyklus ("Trial and Error").
+# 3. Development-Server starten
+npm run dev
+# -> http://localhost:5173
+```
 
-## 10.2 Debugging-Strategien
+### Build & Deploy
 
-3D-Code ist schwer zu debuggen. Nodges nutzt:
+```bash
+# Production-Build erstellen
+npm run build
+# -> Erstellt /dist Ordner (statische Dateien)
 
-* **Visual Helpers**: Wir nutzen Standard Three.js `AxesHelper` und `GridHelper` zur Orientierung.
-* **Console Tracing**: Wichtige Events (Data Load, Layout Start) werden mit strukturierten Logs ausgegeben.
-* **Stats**: (Optional) Performance-Metriken können bei Bedarf via `stats.js` (wenn aktiviert) eingeblendet werden.
+# Lokal testen (Preview)
+npm run preview
+```
 
-## 10.3 Die Build-Pipeline
+## 10.2 Architektur und Konzepte
 
-Wenn die Entwicklung abgeschlossen ist, transformiert Vite den TypeScript-Quellcode in ein hochoptimiertes Produkt.
+Nodges basiert auf **Vanilla TypeScript (OOP)** und **THREE.js**, ohne schwergewichtiges Frontend-Framework (wie React oder Vue). Die Architektur ist modular aufgebaut.
 
-`npm run build` führt folgende Schritte aus:
+### Wichtige Diagramme (in /_assets/Nodges/)
 
-1. **TypeScript Check**: Der Compiler prüft alle Typen. Bei Fehlern bricht der Build ab (Sicherheitsnetz).
-2. **Tree-Shaking**: Code, der nicht benutzt wird (z.B. ungenutzte Three.js Funktionen), wird radikal entfernt. Das reduziert die Dateigröße um bis zu 60%.
-3. **Minifizierung**: Der Code wird unlesbar gemacht und komprimiert, um Ladezeiten zu minimieren.
-4. **Content Hashing**: Dateien erhalten Namen wie `main-a6f2b.js`. Dies verhindert Cache-Probleme beim Deployment von Updates.
+- **Architektur-Uebersicht**: `N_arch_dependencies.mmd`
+- **Initialisierungs-Sequenz**: `N_init_sequence.mmd`
+- **Typisiertes Event-System**: `N_event_types.mmd`
+- **Fehlerbehandlung**: `N_fehlerbehandlung.mmd`
 
-## 10.4 Deployment-Optionen
+### Kern-Konzepte
 
-Nodges ist eine "Static Web App". Es gibt kein Backend (außer man will eines anbinden). Dies macht das Hosting extrem einfach und günstig.
+1. **Service Container (DI)**
+   - Alle Manager werden in `App.ts` initialisiert und im `ServiceContainer` registriert.
+   - Zugriff ueber `this.container.get<T>('Name')` moeglich (aber Dependency Injection im Constructor bevorzugt).
 
-### Empfohlene Plattformen
+2. **Event-Driven Architecture**
+   - `CentralEventManager` fungiert als Bus.
+   - Events sind streng typisiert (`EventTypes.ts`).
+   - Komponenten abonnieren Events statt direkt miteinander zu kommunizieren (lose Kopplung).
 
-* **Vercel / Netlify**: Ideal durch automatische "Deploy on Push" Integration.
-* **GitHub Pages**: Perfekt für Dokumentations-Demos oder Open-Source Präsentationen.
-* **Docker**: Nodges kann leicht in einen `nginx` Container verpackt werden. Ein entsprechendes Dockerfile kann bei Bedarf ergänzt werden.
+3. **State Management**
+   - `StateManager` haelt den gesamten Anwendungszustand.
+   - Unterstuetzt **Undo/Redo** durch Kapselung von Zustandsaenderungen.
+   - UI reagiert auf State-Changes, nicht umgekehrt.
 
-## 10.5 Versions-Workflow
+4. **Web Worker**
+   - Rechenintensive Layouts (Force-Directed) laufen im Hintergrund (`layout-worker.ts`).
+   - Kommunikation via typisierte Messages (`WorkerTypes.ts`).
+   - Automatischer Timeout nach 30s.
 
-Wir nutzen das **Semantic Versioning** (Major.Minor.Patch).
-Besonderheit: In unserem Repository gibt es einen Workflow `/versionierungworkflow`, der automatisch die Patch-Version erhöht und die Dokumentation synchronisiert. Dies stellt sicher, dass die "About"-Box in der App immer korrekt ist.
+## 10.3 Fehlerbehandlung und Debugging
+
+### Error Handling
+
+Statt `console.error` nutzen wir den zentralen `ErrorHandler`:
+
+```typescript
+import { errorHandler } from './core/ErrorHandler';
+
+try {
+    // ...
+} catch (e) {
+    errorHandler.handle(e, {
+        category: 'import',
+        severity: 'error',
+        userMessage: 'Datei konnte nicht geladen werden'
+    });
+}
+```
+
+Dies triggert automatisch eine **Toast-Notification** (via `NotificationService`) fuer den Benutzer.
+
+### DOM-Referenzen
+
+Vermeide harte DOM-Zugriffe. Wenn noetig, pruefe `/_assets/Nodges/N_dom_id_registry.md` fuer eine Liste aller gueltigen IDs.
+
+### Debugging-Tools
+
+- **Stats**: FPS und Node-Data oben links.
+- **Visual Helpers**: Grid und Axes (in `App.ts` aktivierbar).
+- **Log-Level**: Der NotificationService loggt Details in die Konsole, auch wenn nur eine kurze Toast-Nachricht erscheint.
+
+## 10.4 Tests
+
+Wir nutzen **Vitest** fuer Unit- und Integrationstests.
+
+```bash
+# Alle Tests ausfuehren
+npm test
+
+# Tests mit UI (Watch-Mode)
+npm run test:ui
+
+# Coverage Report
+npm run coverage
+```
+
+**Wichtig:** Neue Features muessen getestet werden. Mocking von THREE.js und DOM ist in der Test-Umgebung vorbereitet.
+
+## 10.5 Deployment
+
+Nodges ist eine **Static Web App**. Der Inhalt des `/dist` Ordners kann auf jedem statischen Webserver gehostet werden:
+
+- **Vercel / Netlify**: Einfach Repository verbinden (Build Command: `npm run build`, Output: `dist`).
+- **GitHub Pages**: Via Actions deploybar.
+- **Docker / Nginx**: Copy `/dist` to `/usr/share/nginx/html`.
+
+## 10.6 Coding Guidelines
+
+- **Kein `any`**: Nutze Interfaces und Typen (`src/types.ts` oder spezifische Dateien).
+- **Async/Await**: Bevorzuge async/await gegenueber `.then()`.
+- **Dateistruktur**:
+  - `src/core/`: Singleton-Manager und Kernlogik
+  - `src/utils/`: Hilfsklassen (Import, Export, Math)
+  - `src/ui/`: UI-Logik (kein HTML im Code, nur Manipulation)
+  - `src/effects/`: Visuelle Effekte (Shader, Post-Processing)
 
 ---
-*Ende Kapitel 10*
+*Stand: 13.02.2026 - Version 0.98.0*

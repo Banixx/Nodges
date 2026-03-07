@@ -25,6 +25,7 @@ interface EventConfig {
 }
 
 import { IEventManager, IStateManager } from './interfaces';
+import type { EventMap, EventType } from './events/EventTypes';
 
 export class CentralEventManager implements IEventManager {
     private renderer: THREE.WebGLRenderer;
@@ -34,7 +35,7 @@ export class CentralEventManager implements IEventManager {
     // private nodeManager: NodeManager; // Unused
     // private edgeObjectsManager: EdgeObjectsManager; // Unused
 
-    private eventHandlers: Map<string, EventHandlerData | Set<Function>>;
+    private eventHandlers: Map<string, EventHandlerData | Set<(...args: unknown[]) => void>>;
     private activeListeners: Set<string>;
 
     private currentHoveredObject: THREE.Object3D | null;
@@ -456,24 +457,28 @@ export class CentralEventManager implements IEventManager {
     }
 
     /**
-     * Event-Subscription System
+     * Event-Subscription System (typsicher mit EventMap)
      */
-    subscribe(eventType: string, callback: Function) {
+    subscribe<K extends EventType>(eventType: K, callback: (data: EventMap[K]) => void): () => void;
+    subscribe(eventType: string, callback: (...args: unknown[]) => void): () => void;
+    subscribe(eventType: string, callback: (...args: unknown[]) => void): () => void {
         if (!this.eventHandlers.has(`subscribers_${eventType}`)) {
             this.eventHandlers.set(`subscribers_${eventType}`, new Set());
         }
 
-        const subscribers = this.eventHandlers.get(`subscribers_${eventType}`) as Set<Function>;
+        const subscribers = this.eventHandlers.get(`subscribers_${eventType}`) as Set<(...args: unknown[]) => void>;
         subscribers.add(callback);
 
         return () => subscribers.delete(callback);
     }
 
     /**
-     * Benachrichtigt alle Subscriber eines Event-Types
+     * Benachrichtigt alle Subscriber eines Event-Types (typsicher)
      */
-    notifySubscribers(eventType: string, data: any) {
-        const subscribers = this.eventHandlers.get(`subscribers_${eventType}`) as Set<Function>;
+    notifySubscribers<K extends EventType>(eventType: K, data: EventMap[K]): void;
+    notifySubscribers(eventType: string, data: unknown): void;
+    notifySubscribers(eventType: string, data: unknown): void {
+        const subscribers = this.eventHandlers.get(`subscribers_${eventType}`) as Set<(...args: unknown[]) => void>;
         if (subscribers) {
             subscribers.forEach(callback => {
                 try {
@@ -486,9 +491,11 @@ export class CentralEventManager implements IEventManager {
     }
 
     /**
-     * Verffentlicht ein benutzerdefiniertes Event (Alias fr notifySubscribers)
+     * Veroeffentlicht ein benutzerdefiniertes Event (typsicher)
      */
-    publish(eventType: string, data: any) {
+    publish<K extends EventType>(eventType: K, data: EventMap[K]): void;
+    publish(eventType: string, data: unknown): void;
+    publish(eventType: string, data: unknown): void {
         this.notifySubscribers(eventType, data);
     }
 

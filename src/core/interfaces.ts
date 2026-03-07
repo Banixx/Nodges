@@ -1,16 +1,17 @@
 import { EntityData, RelationshipData } from '../types';
+import type { State } from './StateManager';
 import * as THREE from 'three';
 
-// Zentrale Interfaces für Core-Manager
+// Zentrale Interfaces fuer Core-Manager
 
 export interface IStateManager {
-    state: any;
+    state: State;
     getEntities(): EntityData[];
     getRelationships(): RelationshipData[];
     setGraphData(entities: EntityData[], relationships: RelationshipData[]): void;
-    subscribe(callback: (state: any) => void, category?: string): () => void;
-    update(partialState: any): void;
-    batchUpdate(updates: any): void;
+    subscribe(callback: (state: State) => void, category?: string): () => void;
+    update(partialState: Partial<State>): void;
+    batchUpdate(updates: Partial<State>): void;
     undo(): void;
     redo(): void;
 
@@ -42,6 +43,8 @@ export interface IStateManager {
     isObjectSelected(object: THREE.Object3D): boolean;
 }
 
+import type { EventMap, EventType } from './events/EventTypes';
+
 export interface IEventManager {
     // Event handling methods
     onMouseMove(event: MouseEvent): void;
@@ -50,9 +53,15 @@ export interface IEventManager {
     onClick(event: MouseEvent): void;
     setCameraMoving(isMoving: boolean): void;
 
-    // Subscription
-    subscribe(eventType: string, callback: Function): () => void;
-    publish(eventType: string, data: any): void;
+    // Typsichere Subscription (Phase 5)
+    subscribe<K extends EventType>(eventType: K, callback: (data: EventMap[K]) => void): () => void;
+    // Fallback fuer unbekannte Event-Typen (Abwaertskompatibilitaet)
+    subscribe(eventType: string, callback: (...args: unknown[]) => void): () => void;
+
+    // Typsicheres Publish (Phase 5)
+    publish<K extends EventType>(eventType: K, data: EventMap[K]): void;
+    // Fallback fuer unbekannte Event-Typen (Abwaertskompatibilitaet)
+    publish(eventType: string, data: unknown): void;
 }
 
 export interface INodeManager {

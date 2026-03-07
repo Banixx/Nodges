@@ -61,5 +61,5 @@ Ohne diese expliziten Aufrufe würde der Browser-Tap bei jedem neuen Laden eines
 | BufferGeometry | ~200.000 | Nur Punkte (PointClouds, geplant) |
 
 ---
-*Erstellt am: 30.12.2025*
-*Status: Finalisierte Dokumentation V1*
+*Dokumentations-Status: V2.0 (Deep Dive)*
+*Geprüft gegen Build: 0.98.0*

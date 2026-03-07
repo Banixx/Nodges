@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { IStateManager } from '../core/interfaces';
+import type { State } from '../core/StateManager';
 import { GlowEffect } from './GlowEffect';
 import { NodeManager } from '../core/NodeManager';
 import { EdgeObjectsManager } from '../core/EdgeObjectsManager';
@@ -66,7 +67,7 @@ export class HighlightManager {
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'highlight');
     }
 
-    handleStateChange(state: any) {
+    handleStateChange(state: State) {
         // Performance optimization: Only update if relevant state actually changed
         // This prevents expensive updates when only glowIntensity changes (every frame!)
         const hoveredChanged = state.hoveredObject !== this.previousHoveredObject;
@@ -85,7 +86,7 @@ export class HighlightManager {
         this.updateHighlights(state);
     }
 
-    updateHighlights(state: any) {
+    updateHighlights(state: State) {
         const { hoveredObject, selectedObject, selectedObjects } = state;
 
         // Cleanup unused highlights

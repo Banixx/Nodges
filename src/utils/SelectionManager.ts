@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { IStateManager } from '../core/interfaces';
+import type { State } from '../core/StateManager';
 
 export class SelectionManager {
     private scene: THREE.Scene;
@@ -335,7 +336,7 @@ export class SelectionManager {
     /**
      * Handle state changes from StateManager to synchronize visualization
      */
-    handleStateChange(state: any) {
+    handleStateChange(state: State) {
         // Prevent re-entry or circular updates
         if (this.isUpdatingFromState) return;
 

@@ -4,6 +4,7 @@
  */
 import type { App } from '../App';
 import { IStateManager } from './interfaces';
+import type { State } from './StateManager';
 import { VisualMappingPanel } from '../ui/VisualMappingPanel';
 import { EnvironmentPanel } from '../ui/EnvironmentPanel';
 import { ViewPanel } from '../ui/ViewPanel';
@@ -139,7 +140,7 @@ export class UIManager {
         this.loadAvailableFiles();
     }
 
-    handleStateChange(state: any) {
+    handleStateChange(state: State) {
         // Handle changes related to UI, e.g., showing/hiding panels based on selected objects.
         if (state.selectedObjects && state.selectedObjects.size > 1) {
             this.showMultiSelectionInfo(state.selectedObjects);
@@ -505,7 +506,7 @@ export class UIManager {
         const opacityValue = document.getElementById('edgeOpacityValue');
         const resetButton = document.getElementById('resetEdgeControls');
 
-        const updateStateAndRefresh = (key: string, value: any) => {
+        const updateStateAndRefresh = (key: string, value: State[keyof State]) => {
             this.stateManager.update({ [key]: value });
             if (this.app.edgeObjectsManager) {
                 if (this.app.currentEntities && this.app.currentRelationships) {

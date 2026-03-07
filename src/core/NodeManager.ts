@@ -11,6 +11,7 @@ export class NodeManager {
     private meshes: Map<string, THREE.InstancedMesh>;
     private geometryCache: Map<string, THREE.BufferGeometry>;
     private materialCache: Map<string, THREE.Material>;
+    private lastQualityMultiplier: number = 1.0;
 
     // Mapping from (GeometryType + InstanceId) to EntityData
     private entityDataMap: Map<string, EntityData[]>;
@@ -49,12 +50,19 @@ export class NodeManager {
         }, 'data_changed');
     }
 
-    private initializeGeometries() {
-        this.geometryCache.set('sphere', new THREE.SphereGeometry(1, 16, 16));
+    private initializeGeometries(multiplier: number = 1.0) {
+        // Dispose old ones if we are re-initializing
+        this.geometryCache.forEach(geo => geo.dispose());
+        this.geometryCache.clear();
+
+        const sSeg = Math.max(4, Math.floor(16 * multiplier));
+        const cSeg = Math.max(4, Math.floor(8 * multiplier));
+
+        this.geometryCache.set('sphere', new THREE.SphereGeometry(1, sSeg, sSeg));
         this.geometryCache.set('cube', new THREE.BoxGeometry(1, 1, 1));
-        this.geometryCache.set('cylinder', new THREE.CylinderGeometry(1, 1, 1, 8));
-        this.geometryCache.set('cone', new THREE.ConeGeometry(1, 1, 8));
-        this.geometryCache.set('torus', new THREE.TorusGeometry(1, 0.4, 8, 6));
+        this.geometryCache.set('cylinder', new THREE.CylinderGeometry(1, 1, 1, cSeg));
+        this.geometryCache.set('cone', new THREE.ConeGeometry(1, 1, cSeg));
+        this.geometryCache.set('torus', new THREE.TorusGeometry(1, 0.4, cSeg, Math.max(3, Math.floor(6 * multiplier))));
     }
 
     private initializeMaterials() {
@@ -71,6 +79,18 @@ export class NodeManager {
      */
     public updateNodes(entities?: EntityData[]) {
         const entitiesToRender = entities || this.stateManager.getEntities();
+
+        // Check if performance monitor suggests a quality change
+        let currentMultiplier = 1.0;
+        if (window.app && window.app.performanceMonitor) {
+            currentMultiplier = window.app.performanceMonitor.getNodeDetailMultiplier();
+        }
+
+        if (currentMultiplier !== this.lastQualityMultiplier) {
+            console.log(`[NodeManager] Adjusting geometry detail: ${this.lastQualityMultiplier.toFixed(2)} -> ${currentMultiplier.toFixed(2)}`);
+            this.lastQualityMultiplier = currentMultiplier;
+            this.initializeGeometries(currentMultiplier);
+        }
 
         // 1. Group entities by their Visual Geometry Type
         // We need to determine the geometry for each entity using VisualMappingEngine

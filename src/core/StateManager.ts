@@ -1,5 +1,10 @@
 import { EntityData, RelationshipData } from '../types';
 import * as THREE from 'three';
+import { STATE_KEY_TO_CATEGORIES, STATE_CATEGORIES, type StateCategory } from './state/StateTypes';
+
+// Re-Export der Sub-State-Typen fuer externe Nutzung
+export { STATE_CATEGORIES } from './state/StateTypes';
+export type { GraphState, SelectionState, UIState, VisualState, EdgeVisualState, EnvironmentState, SystemState, StateCategory } from './state/StateTypes';
 
 
 export type ActionType =
@@ -176,21 +181,38 @@ export class StateManager implements IStateManager {
         const oldState = { ...this.state };
         this.state = { ...this.state, ...partialState };
 
-        let hasChanged = false;
+        // Ermittle welche Keys sich tatsaechlich geaendert haben
+        const changedKeys: string[] = [];
         for (const key in partialState) {
             if (oldState[key] !== this.state[key]) {
-                hasChanged = true;
-                break;
+                changedKeys.push(key);
             }
         }
 
-        if (hasChanged) {
-            this.notifySubscribers();
+        if (changedKeys.length > 0) {
+            // Ermittle betroffene Subscriber-Kategorien
+            const affectedCategories = new Set<StateCategory>();
+            affectedCategories.add(STATE_CATEGORIES.DEFAULT); // Default wird immer benachrichtigt
+
+            for (const key of changedKeys) {
+                const categories = STATE_KEY_TO_CATEGORIES[key];
+                if (categories) {
+                    categories.forEach(cat => affectedCategories.add(cat));
+                }
+            }
+
+            this.notifySubscribers(null, affectedCategories);
         }
     }
 
-    notifySubscribers(category: string | null = null) {
+    /**
+     * Benachrichtigt Subscriber.
+     * @param category - Wenn gesetzt, wird nur diese eine Kategorie benachrichtigt (Abwaertskompatibilitaet)
+     * @param affectedCategories - Set betroffener Kategorien (gezielt aus update())
+     */
+    notifySubscribers(category: string | null = null, affectedCategories?: Set<StateCategory>) {
         if (category) {
+            // Direkte Kategorie-Benachrichtigung (z.B. von setGraphData 'data_changed')
             const categorySubscribers = this.subscribers.get(category);
             if (categorySubscribers) {
                 categorySubscribers.forEach(callback => {
@@ -201,7 +223,22 @@ export class StateManager implements IStateManager {
                     }
                 });
             }
+        } else if (affectedCategories) {
+            // Gezielte Benachrichtigung basierend auf geaenderten State-Keys
+            for (const cat of affectedCategories) {
+                const categorySubscribers = this.subscribers.get(cat);
+                if (categorySubscribers) {
+                    categorySubscribers.forEach(callback => {
+                        try {
+                            callback(this.state);
+                        } catch (error) {
+                            console.error(`[StateManager] Error in Subscriber (${cat}):`, error);
+                        }
+                    });
+                }
+            }
         } else {
+            // Fallback: Alle Subscriber benachrichtigen
             this.subscribers.forEach((categorySubscribers, categoryName) => {
                 categorySubscribers.forEach(callback => {
                     try {

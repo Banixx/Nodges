@@ -7,7 +7,7 @@ import { z } from 'zod';
 
 // Data Model Schema
 export const PropertySchemaSchema = z.object({
-    type: z.enum(['continuous', 'categorical', 'vector', 'spatial', 'temporal']),
+    type: z.enum(['continuous', 'categorical', 'vector', 'spatial', 'temporal', 'boolean']),
     range: z.tuple([z.number(), z.number()]).optional(),
     unit: z.string().optional(),
     dimensions: z.array(z.string()).optional(),

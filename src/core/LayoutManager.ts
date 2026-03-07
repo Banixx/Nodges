@@ -2,8 +2,10 @@
  * LayoutManager - Zentrale Verwaltung aller Layout-Algorithmen fuer Nodges
  */
 
-import LayoutWorker from '../workers/layout-worker.js?worker';
+import LayoutWorker from '../workers/layout-worker.ts?worker';
 import { EntityData, RelationshipData } from '../types';
+import type { LayoutWorkerRequest, LayoutWorkerResponse } from '../workers/WorkerTypes';
+import { errorHandler } from './ErrorHandler';
 
 interface LayoutOptions {
     [key: string]: any;
@@ -30,6 +32,12 @@ export class LayoutManager {
     private currentLayout: string | null;
     public isAnimating: boolean;
     public animationSpeed: number;
+    /** Referenz auf aktiven Worker (fuer Cleanup/Cancel) */
+    private activeWorker: Worker | null = null;
+    /** Timeout-ID fuer Worker-Timeout */
+    private workerTimeoutId: ReturnType<typeof setTimeout> | null = null;
+    /** Worker-Timeout in ms (30 Sekunden) */
+    private readonly WORKER_TIMEOUT = 30_000;
 
     constructor() {
         this.layouts = new Map();
@@ -41,8 +49,25 @@ export class LayoutManager {
         this.registerDefaultLayouts();
     }
 
+    /**
+     * Stoppt laufende Animationen und terminiert aktive Worker.
+     * Behebt Race-Conditions bei Layout-Wechseln waehrend laufender Berechnungen.
+     */
     public stopAnimation() {
         this.isAnimating = false;
+
+        // Laufenden Worker terminieren
+        if (this.activeWorker) {
+            this.activeWorker.terminate();
+            this.activeWorker = null;
+            console.log('[LayoutManager] Active worker terminated');
+        }
+
+        // Timeout aufraemen
+        if (this.workerTimeoutId) {
+            clearTimeout(this.workerTimeoutId);
+            this.workerTimeoutId = null;
+        }
     }
 
     public setAnimationDuration(duration: number) {
@@ -145,15 +170,24 @@ export class LayoutManager {
     async applyLayout(layoutId: string, nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions = {}): Promise<boolean> {
         const layout = this.layouts.get(layoutId);
         if (!layout) {
-            console.warn(`Layout ${layoutId} nicht gefunden`);
+            errorHandler.handle(
+                new Error(`Layout '${layoutId}' nicht gefunden`),
+                { category: 'layout', severity: 'warning' }
+            );
             return false;
         }
 
         this.currentLayout = layoutId;
         const mergedOptions = { ...layout.options, ...options };
 
+        // Positionen sichern fuer Graceful Degradation
+        const savedPositions = nodes.map(n => ({
+            id: n.id,
+            position: n.position ? { ...n.position } : undefined
+        }));
+
         try {
-            // Verwende Web Worker fr rechenintensive Layouts
+            // Verwende Web Worker fuer rechenintensive Layouts
             if (['force-directed', 'fruchterman-reingold', 'spring-embedder'].includes(layoutId)) {
                 return await this.applyLayoutWithWorker(layoutId, nodes, edges, mergedOptions) as boolean;
             } else {
@@ -161,14 +195,31 @@ export class LayoutManager {
                 return true;
             }
         } catch (error) {
-            console.error(`Fehler beim Anwenden des Layouts ${layout.name}:`, error);
+            // Graceful Degradation: Vorherige Positionen wiederherstellen
+            errorHandler.handle(error, {
+                category: 'layout',
+                severity: 'error',
+                userMessage: `Layout '${layout.name}' fehlgeschlagen. Positionen wurden wiederhergestellt.`,
+                recover: () => {
+                    savedPositions.forEach(saved => {
+                        const node = nodes.find(n => n.id === saved.id);
+                        if (node && saved.position) {
+                            node.position = { ...saved.position };
+                        }
+                    });
+                }
+            });
             return false;
         }
     }
 
     async applyLayoutWithWorker(layoutId: string, nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions): Promise<boolean> {
+        // Vorherigen Worker stoppen falls aktiv
+        this.stopAnimation();
+
         return new Promise((resolve, reject) => {
             const worker = new LayoutWorker();
+            this.activeWorker = worker;
 
             // Ensure all nodes have positions
             nodes.forEach(node => {
@@ -181,7 +232,12 @@ export class LayoutManager {
                 nodeIndexMap.set(node.id, index);
             });
 
-            worker.postMessage({
+            const requestId = `layout_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+
+            // Typisierte Anfrage senden
+            const request: LayoutWorkerRequest = {
+                requestId,
+                algorithm: layoutId,
                 nodes: nodes.map(node => ({
                     x: node.position?.x || 0,
                     y: node.position?.y || 0,
@@ -189,41 +245,96 @@ export class LayoutManager {
                     index: nodeIndexMap.get(node.id)!
                 })),
                 edges: edges.map(edge => {
-                    // Resolve source/target IDs to indices
                     const startIndex = nodeIndexMap.get(edge.source);
                     const endIndex = nodeIndexMap.get(edge.target);
-
                     return {
                         start: startIndex !== undefined ? startIndex : 0,
                         end: endIndex !== undefined ? endIndex : 0
                     };
                 }),
-                algorithm: layoutId,
-                options: options
-            });
+                options
+            };
 
-            worker.onmessage = (event: MessageEvent) => {
-                const positions = event.data.positions;
-                if (positions && Array.isArray(positions)) {
-                    positions.forEach((pos: any, index: number) => {
-                        if (pos && nodes[index]) {
-                            if (!nodes[index].position) nodes[index].position = { x: 0, y: 0, z: 0 };
-                            nodes[index].position!.x = pos.x || 0;
-                            nodes[index].position!.y = pos.y || 0;
-                            nodes[index].position!.z = pos.z || 0;
-                        }
-                    });
+            worker.postMessage(request);
+
+            // Worker-Timeout setzen
+            this.workerTimeoutId = setTimeout(() => {
+                console.warn(`[LayoutManager] Worker-Timeout (${this.WORKER_TIMEOUT}ms) fuer Request ${requestId}`);
+                worker.terminate();
+                this.activeWorker = null;
+                this.workerTimeoutId = null;
+                reject(new Error(`Worker-Timeout nach ${this.WORKER_TIMEOUT}ms`));
+            }, this.WORKER_TIMEOUT);
+
+            // Typisierte Antwort verarbeiten
+            worker.onmessage = (event: MessageEvent<LayoutWorkerResponse>) => {
+                const response = event.data;
+
+                // Request-ID pruefen
+                if (response.requestId !== requestId) {
+                    console.warn(`[LayoutManager] Stale response ignored (expected ${requestId}, got ${response.requestId})`);
+                    return;
                 }
 
-                this.normalizeNodePositions(nodes, 10);
-                worker.terminate();
-                resolve(true);
+                switch (response.type) {
+                    case 'progress':
+                        console.log(`[LayoutManager] Progress: ${response.progress}% (${response.currentIteration}/${response.maxIterations})`);
+                        break;
+
+                    case 'success': {
+                        const { positions, iterations, duration } = response;
+                        console.log(`[LayoutManager] Layout berechnet: ${iterations} Iterationen in ${duration.toFixed(1)}ms`);
+
+                        if (positions && Array.isArray(positions)) {
+                            positions.forEach((pos, index) => {
+                                if (pos && nodes[index]) {
+                                    if (!nodes[index].position) nodes[index].position = { x: 0, y: 0, z: 0 };
+                                    nodes[index].position!.x = pos.x || 0;
+                                    nodes[index].position!.y = pos.y || 0;
+                                    nodes[index].position!.z = pos.z || 0;
+                                }
+                            });
+                        }
+
+                        this.normalizeNodePositions(nodes, 10);
+
+                        // Cleanup
+                        if (this.workerTimeoutId) {
+                            clearTimeout(this.workerTimeoutId);
+                            this.workerTimeoutId = null;
+                        }
+                        worker.terminate();
+                        this.activeWorker = null;
+                        resolve(true);
+                        break;
+                    }
+
+                    case 'error':
+                        console.error(`[LayoutManager] Worker-Fehler: ${response.message}`);
+
+                        // Cleanup
+                        if (this.workerTimeoutId) {
+                            clearTimeout(this.workerTimeoutId);
+                            this.workerTimeoutId = null;
+                        }
+                        worker.terminate();
+                        this.activeWorker = null;
+                        reject(new Error(response.message));
+                        break;
+                }
             };
 
             worker.onerror = (error: ErrorEvent) => {
-                console.error('Worker-Fehler:', error);
+                console.error('[LayoutManager] Worker-Fehler:', error);
+
+                // Cleanup
+                if (this.workerTimeoutId) {
+                    clearTimeout(this.workerTimeoutId);
+                    this.workerTimeoutId = null;
+                }
                 worker.terminate();
-                reject(false);
+                this.activeWorker = null;
+                reject(new Error(error.message || 'Worker error'));
             };
         });
     }

@@ -339,10 +339,16 @@ export class EdgeObjectsManager {
             endPosition.clone()
         );
 
+
+        let tubularSegments = state.edgeTubularSegments;
+        if (window.app && window.app.performanceMonitor) {
+            tubularSegments = window.app.performanceMonitor.getRecommendedTubularSegments(tubularSegments);
+        }
+
         // TubeGeometry entlang der Kurve
         const tubeGeometry = new THREE.TubeGeometry(
             curve,
-            state.edgeTubularSegments,    // tubularSegments
+            tubularSegments,    // tubularSegments
             state.edgeThickness,          // radius der Röhre
             state.edgeRadialSegments,     // radialSegments
             false                         // geschlossen?
@@ -408,10 +414,15 @@ export class EdgeObjectsManager {
                 const newControlPoint = newMidPoint.clone().add(newPerpendicular.multiplyScalar(newCurveHeight));
 
                 const state = this.stateManager.state;
+                let tubularSegments = state.edgeTubularSegments;
+                if (window.app && window.app.performanceMonitor) {
+                    tubularSegments = window.app.performanceMonitor.getRecommendedTubularSegments(tubularSegments);
+                }
+
                 const newCurve = new THREE.QuadraticBezierCurve3(newStartPos.clone(), newControlPoint, newEndPos.clone());
                 const newGeometry = new THREE.TubeGeometry(
                     newCurve,
-                    state.edgeTubularSegments,
+                    tubularSegments,
                     state.edgeThickness,
                     state.edgeRadialSegments,
                     false
