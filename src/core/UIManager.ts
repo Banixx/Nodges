@@ -10,6 +10,7 @@ import { EnvironmentPanel } from '../ui/EnvironmentPanel';
 import { ViewPanel } from '../ui/ViewPanel';
 import { StatsUI } from '../ui/StatsUI';
 import { ToolsUI } from '../ui/ToolsUI';
+import { DevPanel } from '../ui/DevPanel';
 import { VisualMappings } from '../types';
 
 interface Bounds {
@@ -82,6 +83,9 @@ export class UIManager {
 
         // Initialize floating info panel close button
         this.initInfoPanelClose();
+
+        // Initialize DevPanel
+        new DevPanel('devPanelContent', this.stateManager);
 
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'ui');
     }

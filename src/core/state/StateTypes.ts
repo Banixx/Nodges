@@ -88,6 +88,16 @@ export interface SystemState {
     layoutEnabled: boolean;
 }
 
+/**
+ * Developer Settings: Performance Simulation / Testing
+ */
+export interface DevState {
+    devPowerPreference: 'high-performance' | 'low-power' | 'default';
+    devPixelRatio: number;
+    devFpsLimit: number;
+    _triggerRendererRebuild: number;
+}
+
 // ============================================================================
 // Subscriber-Kategorien und Mapping
 // ============================================================================
@@ -111,6 +121,8 @@ export const STATE_CATEGORIES = {
     EDGE_VISUAL: 'edge_visual',
     /** System: Tool, Layout, Interaktion */
     SYSTEM: 'system',
+    /** Dev Settings */
+    DEV: 'dev',
     /** Standard-Kategorie (wird bei jeder Aenderung benachrichtigt) */
     DEFAULT: 'default',
 } as const;
@@ -167,4 +179,10 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     isInteractionEnabled: [STATE_CATEGORIES.SYSTEM],
     currentTool: [STATE_CATEGORIES.SYSTEM, STATE_CATEGORIES.SELECTION],
     layoutEnabled: [STATE_CATEGORIES.SYSTEM],
+
+    // DevState
+    devPowerPreference: [STATE_CATEGORIES.DEV],
+    devPixelRatio: [STATE_CATEGORIES.DEV],
+    devFpsLimit: [STATE_CATEGORIES.DEV],
+    _triggerRendererRebuild: [STATE_CATEGORIES.DEV]
 };

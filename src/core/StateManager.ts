@@ -73,6 +73,12 @@ export interface State {
     showLabelsOnHover: boolean;
     activeColorScheme: string;
 
+    // Dev Settings (Performance Testing)
+    devPowerPreference: 'high-performance' | 'low-power' | 'default';
+    devPixelRatio: number;
+    devFpsLimit: number;
+    _triggerRendererRebuild: number;
+
     [key: string]: any; // Allow for dynamic properties during migration
 }
 
@@ -148,7 +154,13 @@ export class StateManager implements IStateManager {
             // View Settings (NEW)
             showLabelsAlways: false,
             showLabelsOnHover: true,
-            activeColorScheme: 'start-olive'
+            activeColorScheme: 'start-olive',
+
+            // Dev Settings
+            devPowerPreference: 'high-performance',
+            devPixelRatio: 1.0,
+            devFpsLimit: 0,
+            _triggerRendererRebuild: 0
         };
 
         this.subscribers = new Map();

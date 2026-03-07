@@ -6,6 +6,9 @@
     "mounts": [
         "source=C:/users/ich/desktop/code/ASSETS/,target=/app/assets,type=bind"
     ],
+    "runArgs": [
+        "--device=/dev/dri"
+    ],
     "customizations": {
         "vscode": {
             "extensions": [

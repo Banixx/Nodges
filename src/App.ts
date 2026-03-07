@@ -98,6 +98,8 @@ export class App {
     private frameCounter: number = 0;
     private lastFpsTime: number = 0;
     private fpsFrameCount: number = 0;
+    private lastRenderTime: number = 0;
+    private lastRebuildTimestamp: number = 0;
 
     public get isInitialized(): boolean {
         return this._isInitialized;
@@ -245,6 +247,53 @@ export class App {
             this.camera.updateProjectionMatrix();
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         });
+    }
+
+    public recreateRenderer() {
+        const state = this.stateManager.state;
+        const powerPref = state.devPowerPreference as any;
+
+        console.log(`[DevPanel] Recreating WebGLRenderer with powerPreference: ${powerPref}`);
+
+        const oldCanvas = this.renderer.domElement;
+
+        try {
+            const newRenderer = new THREE.WebGLRenderer({
+                antialias: powerPref !== 'low-power', // Disable AA on low power for better simulation of poor devices
+                powerPreference: powerPref
+            });
+
+            newRenderer.setSize(window.innerWidth, window.innerHeight);
+            newRenderer.setPixelRatio(window.devicePixelRatio * state.devPixelRatio);
+            newRenderer.shadowMap.enabled = true;
+            newRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+            // Replace DOM element
+            if (oldCanvas && oldCanvas.parentNode) {
+                oldCanvas.parentNode.replaceChild(newRenderer.domElement, oldCanvas);
+            } else {
+                document.body.appendChild(newRenderer.domElement);
+            }
+
+            // Dispose old renderer to free GPU context
+            this.renderer.dispose();
+
+            // Update references
+            this.renderer = newRenderer;
+
+            if (this.controls) {
+                this.controls.dispose();
+                this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+                this.controls.enableDamping = true;
+                this.controls.dampingFactor = 0.05;
+                this.controls.maxPolarAngle = Math.PI / 2 - 0.05;
+                this.controls.minDistance = 2;
+                this.controls.maxDistance = 500;
+            }
+        } catch (e) {
+            console.error('[DevPanel] Failed to recreate WebGLRenderer', e);
+            alert('Failed to recreate WebGL renderer with selected settings. See console.');
+        }
     }
 
     createGround() {
@@ -701,6 +750,17 @@ export class App {
                 });
             }
         }, 'label_visibility');
+
+        // Dev Panel settings subscription
+        this.stateManager.subscribe((state) => {
+            if (this.renderer) {
+                this.renderer.setPixelRatio(window.devicePixelRatio * state.devPixelRatio);
+            }
+            if (state._triggerRendererRebuild > 0 && this.lastRebuildTimestamp !== state._triggerRendererRebuild) {
+                this.lastRebuildTimestamp = state._triggerRendererRebuild;
+                this.recreateRenderer();
+            }
+        }, 'dev');
     }
 
     public updateVisualMappings(mappings: any) {
@@ -756,6 +816,18 @@ export class App {
 
     animate() {
         requestAnimationFrame(this.animate.bind(this));
+
+        const state = this.stateManager.state;
+        const now = performance.now();
+
+        // Apply Dev FPS Throttling
+        if (state.devFpsLimit > 0) {
+            const minFrameTime = 1000 / state.devFpsLimit;
+            if (now - this.lastRenderTime < minFrameTime) {
+                return; // Skip this frame
+            }
+        }
+        this.lastRenderTime = now;
 
         if (this.edgeObjectsManager) {
             this.edgeObjectsManager.animate();
