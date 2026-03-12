@@ -1,4 +1,4 @@
-// App.ts - Reload Trigger 2025-12-17 00:10
+// App.ts - Build: 0.98.1.4
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { StateManager } from './core/StateManager';
@@ -78,6 +78,9 @@ export class App {
     public edgeObjectsManager: EdgeObjectsManager;
     public minimapUI!: MinimapUI;
     public minimapCamera!: THREE.OrthographicCamera;
+    private minimapZoom: number = 100;
+    private minimapCenter: THREE.Vector2 = new THREE.Vector2(0, 0);
+    private cameraMarker!: THREE.Group;
 
     private ambientLight!: THREE.AmbientLight;
     private directionalLight!: THREE.DirectionalLight;
@@ -200,6 +203,8 @@ export class App {
         this.camera.position.set(10, 10, 10);
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(window.devicePixelRatio); // Fix for High-DPI screens
+        this.renderer.autoClear = false; // Important for multi-viewport rendering
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         document.body.appendChild(this.renderer.domElement);
@@ -226,6 +231,25 @@ export class App {
 
         this.ambientLight = new THREE.AmbientLight(0x404040, this.stateManager.state.ambientLightIntensity);
         this.scene.add(this.ambientLight);
+
+        // Add a secondary ambient light that specifically targets layer 1 (minimap camera etc)
+        // or just ensure the main ambient light covers all layers if we want it global.
+        // Actually, THREE.Light affects all layers unless specified otherwise, but OrthographicCamera 
+        // with layers needs the light to be visible to it.
+        // Core Minimap Lighting (Layer 1)
+        // These are visible only during the minimap render pass
+        const minimapAmbient = new THREE.AmbientLight(0xffffff, 10.0); // Extreme brightness for contrast
+        minimapAmbient.layers.set(1);
+        minimapAmbient.name = "minimap_ambient";
+        minimapAmbient.visible = false; // Off by default
+        this.scene.add(minimapAmbient);
+
+        const minimapDirLight = new THREE.DirectionalLight(0xffffff, 5.0);
+        minimapDirLight.position.set(0, 100, 0);
+        minimapDirLight.layers.set(1);
+        minimapDirLight.name = "minimap_directional";
+        minimapDirLight.visible = false; // Off by default
+        this.scene.add(minimapDirLight);
 
         this.directionalLight = new THREE.DirectionalLight(0xffffff, this.stateManager.state.directionalLightIntensity);
         this.directionalLight.position.set(10, 10, 5);
@@ -456,13 +480,36 @@ export class App {
 
         try {
             this.minimapUI = new MinimapUI('minimapContainer');
-            // We'll initialize orthographic camera with arbitrary bounds, we will update it based on size
+
+            // Interaction Callbacks
+            this.minimapUI.onZoom = (delta: number) => {
+                this.minimapZoom = Math.max(10, Math.min(500, this.minimapZoom + delta * 0.1));
+                this.updateMinimapCamera();
+            };
+
+            this.minimapUI.onPan = (dx: number, dy: number) => {
+                const canvas = this.minimapUI.getCanvas();
+                const aspect = canvas.width / canvas.height;
+                const worldWidth = this.minimapZoom * aspect * 2;
+                const worldHeight = this.minimapZoom * 2;
+
+                this.minimapCenter.x -= (dx / canvas.width) * worldWidth;
+                this.minimapCenter.y -= (dy / canvas.height) * worldHeight;
+                this.updateMinimapCamera();
+            };
+
+            // Minimap Camera Setup
             this.minimapCamera = new THREE.OrthographicCamera(-100, 100, 100, -100, 0.1, 2000);
-            this.minimapCamera.position.set(0, 500, 0); // High up
-            this.minimapCamera.lookAt(0, 0, 0); // Looking down
+            this.minimapCamera.position.set(0, 500, 0);
+            this.minimapCamera.lookAt(0, 0, 0);
+            this.minimapCamera.layers.disableAll();
+            this.minimapCamera.layers.enable(0); // Optional: View main scene? (Better keep it clean)
+            this.minimapCamera.layers.enable(1); // View Graph and Marker on Layer 1
+
+            // Create Camera Marker for Minimap
+            this.createCameraMarker();
 
             window.addEventListener('resize', this.updateMinimapCamera.bind(this));
-            // Trigger initial size
             this.minimapUI.updateSize();
             this.updateMinimapCamera();
         } catch (e) {
@@ -470,19 +517,43 @@ export class App {
         }
     }
 
+    private createCameraMarker() {
+        this.cameraMarker = new THREE.Group();
+
+        // A simple "V" shape or triangle to represent camera frustum
+        const geometry = new THREE.BufferGeometry();
+        const vertices = new Float32Array([
+            0, 0, 0,
+            -5, 0, -10,
+            5, 0, -10
+        ]);
+        geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+        const material = new THREE.MeshBasicMaterial({ color: 0x00ffff, side: THREE.DoubleSide });
+        const mesh = new THREE.Mesh(geometry, material);
+
+        this.cameraMarker.add(mesh);
+        this.cameraMarker.layers.set(1); // Visible on layer 1
+        mesh.layers.set(1);
+
+        this.scene.add(this.cameraMarker);
+    }
+
     private updateMinimapCamera() {
         if (!this.minimapUI || !this.minimapCamera) return;
         this.minimapUI.updateSize();
         const canvas = this.minimapUI.getCanvas();
         const aspect = canvas.width / canvas.height;
-        // The view size of the minimap (how large the area it shows).
-        // A larger D means it shows a larger area.
-        const d = 150;
+
+        const d = this.minimapZoom;
 
         this.minimapCamera.left = -d * aspect;
         this.minimapCamera.right = d * aspect;
         this.minimapCamera.top = d;
         this.minimapCamera.bottom = -d;
+
+        this.minimapCamera.position.set(this.minimapCenter.x, 500, this.minimapCenter.y);
+        this.minimapCamera.lookAt(this.minimapCenter.x, 0, this.minimapCenter.y);
+
         this.minimapCamera.updateProjectionMatrix();
     }
 
@@ -559,6 +630,16 @@ export class App {
             }
 
             this.fitCameraToScene();
+
+            // Auto-center minimap on data load
+            const bounds = this.calculateBounds(this.currentEntities);
+            this.minimapCenter.set(
+                (bounds.x.min + bounds.x.max) / 2,
+                (bounds.z.min + bounds.z.max) / 2
+            );
+            const maxDim = Math.max(bounds.x.max - bounds.x.min, bounds.z.max - bounds.z.min);
+            this.minimapZoom = (maxDim / 2) * 1.2; // 20% margin
+            this.updateMinimapCamera();
 
         } catch (error) {
             errorHandler.handle(error, {
@@ -847,10 +928,12 @@ export class App {
 
         this.controls.update();
 
-        // Ensure renderer renders to the full screen normally
+        // Manual clear because autoClear is false
         this.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
         this.renderer.setScissor(0, 0, window.innerWidth, window.innerHeight);
         this.renderer.setScissorTest(false);
+        this.renderer.clear();
+
         this.renderer.render(this.scene, this.camera);
 
         // Render Minimap Viewport if exists
@@ -866,34 +949,50 @@ export class App {
                 const oldClearAlpha = this.renderer.getClearAlpha();
 
                 this.renderer.setScissorTest(true);
-                // Three.js coordinates start from bottom-left for viewport
-                const viewY = window.innerHeight - rect.bottom;
-                this.renderer.setViewport(rect.left, viewY, rect.width, rect.height);
-                this.renderer.setScissor(rect.left, viewY, rect.width, rect.height);
+                
+                // DPR Handling for Viewport and Scissor
+                const dpr = window.devicePixelRatio;
+                const viewY = (window.innerHeight - rect.bottom) * dpr;
+                const viewX = rect.left * dpr;
+                const viewWidth = rect.width * dpr;
+                const viewHeight = rect.height * dpr;
 
-                this.renderer.setClearColor(0x1a1e2b, 1.0); // Slightly different backdrop
+                this.renderer.setViewport(viewX, viewY, viewWidth, viewHeight);
+                this.renderer.setScissor(viewX, viewY, viewWidth, viewHeight);
+                
+                // Renderer clear for minimap viewport
+                this.renderer.setClearColor(0x333333, 1.0); 
                 this.renderer.clear();
 
-                // Make labels invisible in minimap (optional, to avoid clutter)
-                const labelsVisible = this.stateManager.state.showLabelsAlways;
+                // Toggle Lights: Enable Minimap lights, disable Main lights
+                const mainLights = [this.ambientLight, this.directionalLight];
+                const mmLights = this.scene.children.filter(c => c.name && c.name.startsWith("minimap_")) as THREE.Light[];
+                
+                mainLights.forEach(l => { if (l) l.visible = false; });
+                mmLights.forEach(l => { if (l) l.visible = true; });
+
+                // Ensure labels are hidden in minimap
                 if (this.nodeLabelManager) this.nodeLabelManager.setVisible(false);
                 if (this.edgeLabelManager) this.edgeLabelManager.updateConfig({ visible: false });
 
-                // Update minimap camera strictly based on the actual bounding box center
-                if (this.currentEntities && this.currentEntities.length > 0) {
-                    const bounds = this.calculateBounds(this.currentEntities);
-                    const cx = (bounds.x.min + bounds.x.max) / 2;
-                    const cz = (bounds.z.min + bounds.z.max) / 2;
-                    this.minimapCamera.position.set(cx, 500, cz);
-                    this.minimapCamera.lookAt(cx, 0, cz);
-                    this.minimapCamera.rotation.z = -Math.PI / 2; // Orient correctly
+                // Update marker position (lifted above the graph)
+                if (this.cameraMarker) {
+                    this.cameraMarker.position.set(this.camera.position.x, 10, this.camera.position.z);
+                    const dir = new THREE.Vector3();
+                    this.camera.getWorldDirection(dir);
+                    this.cameraMarker.rotation.y = Math.atan2(dir.x, dir.z);
                 }
 
+                // Render with minimap camera
                 this.renderer.render(this.scene, this.minimapCamera);
 
-                // Restore
-                if (this.nodeLabelManager) this.nodeLabelManager.setVisible(labelsVisible);
-                if (this.edgeLabelManager) this.edgeLabelManager.updateConfig({ visible: labelsVisible });
+                // Restore Lights
+                mainLights.forEach(l => { if (l) l.visible = true; });
+                mmLights.forEach(l => { if (l) l.visible = false; });
+                // Restore labels to their previous state
+                const currentLabelsVisible = this.stateManager.state.showLabelsAlways || this.stateManager.state.showLabelsOnHover;
+                if (this.nodeLabelManager) this.nodeLabelManager.setVisible(currentLabelsVisible);
+                if (this.edgeLabelManager) this.edgeLabelManager.updateConfig({ visible: currentLabelsVisible });
                 this.renderer.setClearColor(oldClearColor, oldClearAlpha);
                 this.renderer.setScissorTest(false);
             }
@@ -901,16 +1000,16 @@ export class App {
 
         // FPS Berechnung
         this.fpsFrameCount++;
-        const now = performance.now();
+        const fpsNow = performance.now();
         if (this.lastFpsTime === 0) {
-            this.lastFpsTime = now;
-        } else if (now - this.lastFpsTime >= 1000) {
-            const fps = Math.round(this.fpsFrameCount * 1000 / (now - this.lastFpsTime));
+            this.lastFpsTime = fpsNow;
+        } else if (fpsNow - this.lastFpsTime >= 1000) {
+            const fps = Math.round(this.fpsFrameCount * 1000 / (fpsNow - this.lastFpsTime));
             if (this.uiManager) {
                 this.uiManager.updateFps(fps);
             }
             this.fpsFrameCount = 0;
-            this.lastFpsTime = now;
+            this.lastFpsTime = fpsNow;
         }
 
         // [TRACE] Log every 300 frames (approx 5 sec)
@@ -954,8 +1053,25 @@ export class App {
 }
 
 // Initialize App
+let currentAppInstance: App | null = null;
+
 try {
-    window.app = new App();
+    currentAppInstance = new App();
+    window.app = currentAppInstance;
 } catch (e) {
     console.error('Failed to initialize App:', e);
+}
+
+// Vanilla Vite HMR Support
+if (import.meta.hot) {
+    import.meta.hot.accept(() => {
+        // Destroy old instance to clean up listeners and DOM
+        if (currentAppInstance) {
+            console.log('[HMR] Destroying old Nodges instance...');
+            currentAppInstance.destroy();
+        }
+        
+        // Let Vite do a full soft-reload of the module graph
+        import.meta.hot!.invalidate();
+    });
 }

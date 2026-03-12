@@ -4,11 +4,15 @@
         "dockerfile": "Dockerfile"
     },
     "mounts": [
-        "source=C:/users/ich/desktop/code/ASSETS/,target=/app/assets,type=bind"
+        "source=C:/users/ich/desktop/code/ASSETS/,target=/app/assets,type=bind",
+        "source=${localWorkspaceFolder}/.gemini,target=/home/node/.gemini,type=bind"
     ],
     "runArgs": [
         "--device=/dev/dri"
     ],
+    "features": {
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
     "customizations": {
         "vscode": {
             "extensions": [
@@ -20,8 +24,15 @@
         }
     },
     "forwardPorts": [
-        5173
+        5173,
+        9222,
+        6080
     ],
+    "containerEnv": {
+        "CHROME_PATH": "/usr/bin/google-chrome",
+        "DISPLAY": ":99"
+    },
     "postCreateCommand": "npm install",
+    "postStartCommand": "bash .devcontainer/start-vnc.sh &",
     "remoteUser": "node"
 }

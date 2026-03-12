@@ -1,12 +1,13 @@
 {
     "name": "nodges",
-    "version": "0.98.1",
+    "version": "0.98.1.5",
     "description": "3D Network Visualization with Three.js",
     "type": "module",
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview",
+        "gen:data": "node scripts/generate-test-data.cjs",
         "test": "vitest",
         "test:ui": "vitest --ui",
         "test:coverage": "vitest --coverage"

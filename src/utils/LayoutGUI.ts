@@ -36,9 +36,12 @@ interface Preset {
 interface IApp {
     layoutManager: LayoutManager;
     uiManager: any; // UIManager
+    stateManager: any; // StateManager
     layoutEnabled: boolean;
     nodeObjects: any[];
     edgeObjects: any[];
+    currentEntities: any[];
+    currentRelationships: any[];
     scene: THREE.Scene;
     highlightManager: any;
 }
@@ -244,64 +247,21 @@ export class LayoutGUI {
 
         // Auto-Layout Toggle oben
         const toggleContainer = document.createElement('div');
-        toggleContainer.style.cssText = `
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            padding: 6px;
-            background-color: #f5f5f5;
-            border-radius: 4px;
-        `;
+        toggleContainer.className = 'control-group checkbox-row';
 
         const toggleLabel = document.createElement('label');
-        toggleLabel.textContent = 'Auto-Layout:';
-        toggleLabel.style.cssText = `
-            font-weight: bold;
-            color: #555;
-            font-size: 11px;
-        `;
+        toggleLabel.textContent = 'Layout-Engine';
+        toggleLabel.title = 'Aktiviert die Layout-Engine zur Anordnung der Knoten';
 
         // Toggle Switch
-        const toggleSwitch = document.createElement('div');
-        toggleSwitch.style.cssText = `
-            position: relative;
-            width: 44px;
-            height: 22px;
-            background-color: #ccc;
-            border-radius: 11px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        `;
+        const toggleSwitch = document.createElement('input');
+        toggleSwitch.type = 'checkbox';
+        toggleSwitch.id = 'layoutToggleInput';
         // this.layoutToggleSwitch = toggleSwitch; // Used internally or not needed? Remove reference if unused property.
 
 
-        const toggleButton = document.createElement('div');
-        toggleButton.style.cssText = `
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 18px;
-            height: 18px;
-            background-color: white;
-            border-radius: 50%;
-            transition: transform 0.3s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        `;
-
-        toggleSwitch.appendChild(toggleButton);
-
-        toggleSwitch.addEventListener('click', () => {
-            this.layoutEnabled = !this.layoutEnabled;
-
-            if (this.layoutEnabled) {
-                toggleSwitch.style.backgroundColor = '#4CAF50';
-                toggleButton.style.transform = 'translateX(22px)';
-            } else {
-                toggleSwitch.style.backgroundColor = '#ccc';
-                toggleButton.style.transform = 'translateX(0px)';
-            }
-
+        toggleSwitch.addEventListener('change', (e: Event) => {
+            this.layoutEnabled = (e.target as HTMLInputElement).checked;
             this.updateLayoutState();
 
             // Inform App.ts about the change
@@ -318,36 +278,14 @@ export class LayoutGUI {
 
         // Layout-Selector
         const selectorContainer = document.createElement('div');
-        selectorContainer.style.marginBottom = '8px';
+        selectorContainer.className = 'control-group';
 
         const label = document.createElement('label');
-        label.textContent = 'Layout-Algorithmus:';
-        label.style.cssText = `
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        `;
+        label.textContent = 'Layout-Algorithmus';
+        label.title = 'Wähle den Algorithmus zur Anordnung der Knoten';
 
         this.layoutSelect = document.createElement('select');
-        this.layoutSelect.style.cssText = `
-            width: 100%;
-            padding: 4px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: white;
-            font-size: 11px;
-            color: #444;
-            transition: color 0.2s;
-            cursor: pointer;
-        `;
-
-        this.layoutSelect.addEventListener('mouseenter', () => {
-            if (this.layoutSelect) this.layoutSelect.style.color = 'black';
-        });
-        this.layoutSelect.addEventListener('mouseleave', () => {
-            if (this.layoutSelect) this.layoutSelect.style.color = '#444';
-        });
+        this.layoutSelect.id = 'layoutSelectInput';
 
         // Layout-Optionen hinzufuegen
         const layouts = this.layoutManager.getAvailableLayouts();
@@ -383,28 +321,30 @@ export class LayoutGUI {
         if (!this.contentContainer) return;
 
         this.animationControls = document.createElement('div');
-        this.animationControls.style.marginBottom = '8px';
+        this.animationControls.className = 'panel-section';
 
         const title = document.createElement('h4');
-        title.textContent = 'Animation:';
-        title.style.cssText = `
-            margin: 0 0 5px 0;
-            color: #555;
-            font-size: 11px;
-        `;
+        title.className = 'section-header';
+        title.textContent = 'Animation';
 
         // Animation-Geschwindigkeit
         const speedContainer = document.createElement('div');
-        speedContainer.style.marginBottom = '5px';
+        speedContainer.className = 'control-group';
+
+        const labelRow = document.createElement('div');
+        labelRow.className = 'label-row';
 
         const speedLabel = document.createElement('label');
-        speedLabel.textContent = 'Geschwindigkeit (ms):';
-        speedLabel.style.cssText = `
-            display: block;
-            margin-bottom: 2px;
-            font-size: 10px;
-        `;
+        speedLabel.textContent = 'Geschwindigkeit (ms)';
 
+        const speedValue = document.createElement('span');
+        speedValue.className = 'value-display';
+        speedValue.textContent = '2000';
+
+        labelRow.appendChild(speedLabel);
+        labelRow.appendChild(speedValue);
+
+        const speedRow = document.createElement('div');
         const speedSlider = document.createElement('input');
         speedSlider.type = 'range';
         speedSlider.min = '500';
@@ -413,27 +353,15 @@ export class LayoutGUI {
         speedSlider.step = '250';
         speedSlider.style.width = '100%';
 
-        const speedValue = document.createElement('span');
-        speedValue.textContent = '2000ms';
-        speedValue.style.cssText = `
-            font-size: 12px;
-            color: #666;
-            margin-left: 10px;
-        `;
-
         speedSlider.addEventListener('input', (e: Event) => {
             const target = e.target as HTMLInputElement;
             const value = target.value;
-            speedValue.textContent = value + 'ms';
+            speedValue.textContent = value;
             this.layoutManager.setAnimationDuration(parseInt(value));
         });
 
-        speedContainer.appendChild(speedLabel);
-        const speedRow = document.createElement('div');
-        speedRow.style.display = 'flex';
-        speedRow.style.alignItems = 'center';
         speedRow.appendChild(speedSlider);
-        speedRow.appendChild(speedValue);
+        speedContainer.appendChild(labelRow);
         speedContainer.appendChild(speedRow);
 
         this.animationControls.appendChild(title);
@@ -445,26 +373,14 @@ export class LayoutGUI {
         if (!this.contentContainer) return;
 
         const presetContainer = document.createElement('div');
-        presetContainer.style.marginBottom = '8px';
+        presetContainer.className = 'panel-section';
 
         const title = document.createElement('h4');
-        title.textContent = 'Presets:';
-        title.style.cssText = `
-            margin: 0 0 5px 0;
-            color: #555;
-            font-size: 11px;
-        `;
+        title.className = 'section-header';
+        title.textContent = 'Presets';
 
         const presetSelect = document.createElement('select');
-        presetSelect.style.cssText = `
-            width: 100%;
-            padding: 4px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: white;
-            margin-bottom: 5px;
-            font-size: 11px;
-        `;
+        presetSelect.id = 'presetSelectInput';
 
         // Default-Option
         const defaultOption = document.createElement('option');
@@ -497,26 +413,15 @@ export class LayoutGUI {
         if (!this.contentContainer) return;
 
         const buttonContainer = document.createElement('div');
-        buttonContainer.style.cssText = `
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
-        `;
+        buttonContainer.style.display = 'flex';
+        buttonContainer.style.gap = '10px';
+        buttonContainer.style.marginTop = '15px';
 
         // Layout anwenden Button
         const applyButton = document.createElement('button');
+        applyButton.className = 'action-button';
         applyButton.textContent = 'Anwenden';
-        applyButton.style.cssText = `
-            flex: 1;
-            padding: 8px;
-            background-color: #808080;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 11px;
-        `;
+        applyButton.style.flex = '1';
 
         applyButton.addEventListener('click', () => {
             if (this.layoutEnabled) {
@@ -524,43 +429,15 @@ export class LayoutGUI {
             }
         });
 
-        applyButton.addEventListener('mouseenter', () => {
-            if (this.layoutEnabled) {
-                applyButton.style.backgroundColor = '#606060';
-            }
-        });
-
-        applyButton.addEventListener('mouseleave', () => {
-            applyButton.style.backgroundColor = this.layoutEnabled ? '#808080' : '#cccccc';
-        });
-
         // Stop Button
         const stopButton = document.createElement('button');
+        stopButton.className = 'action-button secondary';
         stopButton.textContent = 'Stop';
-        stopButton.style.cssText = `
-            padding: 8px 12px;
-            background-color: #999999;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 11px;
-        `;
 
         stopButton.addEventListener('click', () => {
             if (this.layoutEnabled) {
                 this.layoutManager.stopAnimation();
             }
-        });
-
-        stopButton.addEventListener('mouseenter', () => {
-            if (this.layoutEnabled) {
-                stopButton.style.backgroundColor = '#777777';
-            }
-        });
-
-        stopButton.addEventListener('mouseleave', () => {
-            stopButton.style.backgroundColor = this.layoutEnabled ? '#999999' : '#cccccc';
         });
 
         buttonContainer.appendChild(applyButton);
@@ -587,34 +464,28 @@ export class LayoutGUI {
         Object.keys(parameters).forEach(paramName => {
             const param = parameters[paramName];
             const container = document.createElement('div');
-            container.style.marginBottom = '5px';
-
-            const label = document.createElement('label');
-            label.textContent = this.getParameterDisplayName(paramName) + ':';
-            label.style.cssText = `
-                display: block;
-                margin-bottom: 1px;
-                font-size: 10px;
-                color: #666;
-            `;
+            container.className = 'control-group';
 
             if (param.type === 'range') {
+                const labelRow = document.createElement('div');
+                labelRow.className = 'label-row';
+
+                const label = document.createElement('label');
+                label.textContent = this.getParameterDisplayName(paramName);
+
+                const valueDisplay = document.createElement('span');
+                valueDisplay.className = 'value-display';
+                valueDisplay.textContent = param.default.toString();
+
+                labelRow.appendChild(label);
+                labelRow.appendChild(valueDisplay);
+
                 const slider = document.createElement('input');
                 slider.type = 'range';
                 slider.min = param.min.toString();
                 slider.max = param.max.toString();
                 slider.value = param.default.toString();
                 slider.step = param.step.toString();
-                slider.style.width = '70%';
-
-                const valueDisplay = document.createElement('span');
-                valueDisplay.textContent = param.default.toString();
-                valueDisplay.style.cssText = `
-                    margin-left: 10px;
-                    font-size: 12px;
-                    color: #333;
-                    font-weight: bold;
-                `;
 
                 slider.addEventListener('input', (e: Event) => {
                     const target = e.target as HTMLInputElement;
@@ -626,14 +497,8 @@ export class LayoutGUI {
                 // Initial value setzen
                 this.currentParameters[paramName] = param.default;
 
-                const controlRow = document.createElement('div');
-                controlRow.style.display = 'flex';
-                controlRow.style.alignItems = 'center';
-                controlRow.appendChild(slider);
-                controlRow.appendChild(valueDisplay);
-
-                container.appendChild(label);
-                container.appendChild(controlRow);
+                container.appendChild(labelRow);
+                container.appendChild(slider);
             }
 
             if (this.parameterContainer) this.parameterContainer.appendChild(container);
@@ -708,10 +573,32 @@ export class LayoutGUI {
             );
 
             if (success) {
-                // Knoten-Positionen in 3D-Objekten aktualisieren
+                // Update node and edge objects in the 3D scene
                 this.updateNodePositions(nodeObjects, nodes);
-                // Edges aktualisieren
                 this.updateEdgePositions(edgeObjects);
+
+                // Update the app's current entities (Source of Truth)
+                this.app.currentEntities.forEach((entity, idx) => {
+                    const node = nodes[idx] as any;
+                    if (node && node.position) {
+                        entity.position = {
+                            x: node.position.x,
+                            y: node.position.y,
+                            z: node.position.z
+                        };
+                    } else if (node) {
+                        entity.position = {
+                            x: node.x || 0,
+                            y: node.y || 0,
+                            z: node.z || 0
+                        };
+                    }
+                });
+
+                // Inform the state manager about the new graph data
+                if (this.app.stateManager) {
+                    this.app.stateManager.setGraphData(this.app.currentEntities, this.app.currentRelationships);
+                }
             }
         }
     }
@@ -719,9 +606,11 @@ export class LayoutGUI {
     updateNodePositions(nodeObjects: any[], nodes: any[]) {
         nodeObjects.forEach((nodeObj, index) => {
             if (nodes[index] && nodeObj.mesh) {
-                const newX = nodes[index].x || 0;
-                const newY = nodes[index].y || 0;
-                const newZ = nodes[index].z || 0;
+                // BUGFIX: Nodes returned from LayoutManager will have their coordinates inside a 'position'
+                // property if they were modified by the layout algorithm.
+                const newX = nodes[index].position ? nodes[index].position.x : (nodes[index].x || 0);
+                const newY = nodes[index].position ? nodes[index].position.y : (nodes[index].y || 0);
+                const newZ = nodes[index].position ? nodes[index].position.z : (nodes[index].z || 0);
 
                 nodeObj.mesh.position.set(newX, newY, newZ);
 
@@ -731,6 +620,11 @@ export class LayoutGUI {
                 nodeObj.position.z = newZ;
             }
         });
+        
+        // Ensure App also propagates the new positions to things like labels and highlights
+        if (this.app && typeof (this.app as any).updateNodePositions === 'function') {
+            (this.app as any).updateNodePositions();
+        }
     }
 
     updateEdgePositions(edgeObjects: any[]) {
@@ -872,33 +766,41 @@ export class LayoutGUI {
     updateLayoutState() {
         if (!this.contentContainer) return;
 
-        const applyButton = this.contentContainer.querySelector('button') as HTMLElement;
-        const buttons = this.contentContainer.querySelectorAll('button');
-        const stopButton = buttons.length > 1 ? buttons[1] as HTMLElement : null;
+        const applyButton = this.contentContainer.querySelectorAll('button')[0] as HTMLElement;
+        const stopButton = this.contentContainer.querySelectorAll('button')[1] as HTMLElement;
+        const toggleCheckbox = document.getElementById('layoutToggleInput') as HTMLInputElement;
+
+        if (toggleCheckbox) {
+            toggleCheckbox.checked = this.layoutEnabled;
+        }
 
         if (this.layoutEnabled) {
             // Layout aktiviert - Buttons aktivieren
             if (applyButton) {
-                applyButton.style.backgroundColor = '#808080';
-                applyButton.style.cursor = 'pointer';
+                (applyButton as HTMLButtonElement).disabled = false;
+                applyButton.classList.remove('disabled');
                 applyButton.style.opacity = '1';
+                applyButton.style.pointerEvents = 'auto';
             }
             if (stopButton) {
-                stopButton.style.backgroundColor = '#999999';
-                stopButton.style.cursor = 'pointer';
+                (stopButton as HTMLButtonElement).disabled = false;
+                stopButton.classList.remove('disabled');
                 stopButton.style.opacity = '1';
+                stopButton.style.pointerEvents = 'auto';
             }
         } else {
             // Layout deaktiviert - Buttons deaktivieren
             if (applyButton) {
-                applyButton.style.backgroundColor = '#cccccc';
-                applyButton.style.cursor = 'not-allowed';
-                applyButton.style.opacity = '0.6';
+                (applyButton as HTMLButtonElement).disabled = true;
+                applyButton.classList.add('disabled');
+                applyButton.style.opacity = '0.5';
+                applyButton.style.pointerEvents = 'none';
             }
             if (stopButton) {
-                stopButton.style.backgroundColor = '#cccccc';
-                stopButton.style.cursor = 'not-allowed';
-                stopButton.style.opacity = '0.6';
+                (stopButton as HTMLButtonElement).disabled = true;
+                stopButton.classList.add('disabled');
+                stopButton.style.opacity = '0.5';
+                stopButton.style.pointerEvents = 'none';
             }
         }
     }

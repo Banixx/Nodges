@@ -172,7 +172,7 @@ export class NodeManager {
             if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
 
             mesh.userData = { type: 'node_instanced', geometryType: type };
-
+            mesh.layers.enable(1); // Enable for minimap (Layer 1)
             this.scene.add(mesh);
             this.meshes.set(type, mesh);
             this.meshIdMap.set(mesh.id, type);

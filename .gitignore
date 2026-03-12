@@ -9,6 +9,7 @@ tmp_*
 # Backup files (keep structure but ignore content)
 backups/*
 !backups/.gitkeep
+.gemini/
 
 # System files
 .DS_Store

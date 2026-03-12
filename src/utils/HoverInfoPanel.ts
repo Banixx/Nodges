@@ -131,6 +131,11 @@ export class HoverInfoPanel {
                     continue; // Position außerhalb des Viewports
                 }
 
+                // Vermeide Minimap-Bereich (unten links, ca. 270x270 inkl. Margins)
+                if (pos.x < 280 && pos.y > windowHeight - 280) {
+                    continue;
+                }
+
                 // Berechne Score basierend auf Überlappung mit Objekten
                 const score = this.calculatePositionScore(pos.x, pos.y, panelWidth, panelHeight);
 
@@ -160,6 +165,7 @@ export class HoverInfoPanel {
 
         this.panel.style.left = `${x}px`;
         this.panel.style.top = `${y}px`;
+        this.panel.style.zIndex = '100001';
     }
 
     /**

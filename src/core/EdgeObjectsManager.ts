@@ -169,7 +169,7 @@ export class EdgeObjectsManager {
                         this.connectionToEdges.set(connectionKey, []);
                     }
                     this.connectionToEdges.get(connectionKey)!.push(edgeObj);
-
+                    edgeObj.tube.layers.enable(1); // Enable for minimap (Layer 1)
                     this.scene.add(edgeObj.tube);
                     this.edges.push(edgeObj);
                 }
@@ -464,6 +464,10 @@ export class EdgeObjectsManager {
         this.edges = [];
         this.animatedEdges = [];
         this.connectionToEdges.clear();
+    }
+
+    public getEdges(): EdgeObject[] {
+        return this.edges;
     }
 
     public getMeshes(): THREE.Object3D[] {
