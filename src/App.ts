@@ -238,18 +238,18 @@ export class App {
         // with layers needs the light to be visible to it.
         // Core Minimap Lighting (Layer 1)
         // These are visible only during the minimap render pass
-        const minimapAmbient = new THREE.AmbientLight(0xffffff, 10.0); // Extreme brightness for contrast
+        const minimapAmbient = new THREE.AmbientLight(0x2fffff, 0.01); // Extreme brightness for contrast
         minimapAmbient.layers.set(1);
         minimapAmbient.name = "minimap_ambient";
         minimapAmbient.visible = false; // Off by default
-        this.scene.add(minimapAmbient);
+        //this.scene.add(minimapAmbient);
 
-        const minimapDirLight = new THREE.DirectionalLight(0xffffff, 5.0);
+        const minimapDirLight = new THREE.DirectionalLight(0xffffff, 0.01);
         minimapDirLight.position.set(0, 100, 0);
         minimapDirLight.layers.set(1);
         minimapDirLight.name = "minimap_directional";
         minimapDirLight.visible = false; // Off by default
-        this.scene.add(minimapDirLight);
+        //this.scene.add(minimapDirLight);
 
         this.directionalLight = new THREE.DirectionalLight(0xffffff, this.stateManager.state.directionalLightIntensity);
         this.directionalLight.position.set(10, 10, 5);
@@ -961,7 +961,7 @@ export class App {
                 this.renderer.setScissor(viewX, viewY, viewWidth, viewHeight);
                 
                 // Renderer clear for minimap viewport
-                this.renderer.setClearColor(0x333333, 1.0); 
+                this.renderer.setClearColor(0xdddddd, 1.0); // Hellerer Hintergrund für Minimap
                 this.renderer.clear();
 
                 // Toggle Lights: Enable Minimap lights, disable Main lights
