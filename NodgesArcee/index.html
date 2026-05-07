@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NodgesArcee - Erweiterte 3D-System-Visualisierung</title>
+    <link rel="stylesheet" href="src/styles/main.css">
+</head>
+<body>
+    <div id="loading" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <p>Lade NodgesArcee...</p>
+    </div>
+
+    <div id="canvas-container">
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <div id="ui-overlay">
+        <div class="top-bar">
+            <div class="system-info">
+                <h1 id="system-name">Unbekanntes System</h1>
+                <p id="system-desc">Lade Daten...</p>
+            </div>
+            <div class="stats">
+                <span id="stat-nodes">0</span> Knoten | <span id="stat-edges">0</span> Kanten | <span id="stat-fps">0</span> FPS
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Entitäten</h2>
+                <button id="btn-reset-view" title="Ansicht zurücksetzen">↺</button>
+            </div>
+            <div id="entity-list" class="entity-list"></div>
+        </div>
+
+        <div class="bottom-bar">
+            <div class="controls">
+                <button id="btn-load" class="btn-dropdown">
+                    Daten laden ▾
+                    <div class="dropdown-content">
+                        <div class="dropdown-section">
+                            <h3>Beispiele</h3>
+                            <button data-file="sonnensystem">Sonnensystem</button>
+                            <button data-file="nervous_system_autonomic">Nervensystem</button>
+                            <button data-file="microservices">Microservices</button>
+                            <button data-file="blockchain">Blockchain</button>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Prozesse</h3>
+                            <button data-file="evolution">Evolution</button>
+                            <button data-file="social_network">Soziales Netzwerk</button>
+                            <button data-file="city_network">Stadt-Netzwerk</button>
+                        </div>
+                        <div class="dropdown-section">
+                            <input type="file" id="file-input" accept=".json">
+                            <label for="file-input" class="btn-file">Datei öffnen</label>
+                        </div>
+                    </div>
+                </button>
+
+                <button id="btn-animate" class="btn-animate">Animation</button>
+                <button id="btn-zoom-in" title="Hineinzoomen">+</button>
+                <button id="btn-zoom-out" title="Herauszoomen">-</button>
+            </div>
+
+            <div class="options">
+                <label class="toggle-label">
+                    <input type="checkbox" id="ctrl-auto-rotate">
+                    Autom. Rotation
+                </label>
+                <label class="toggle-label">
+                    <input type="checkbox" id="ctrl-show-edges">
+                    Kanten anzeigen
+                </label>
+                <label class="toggle-label">
+                    <input type="checkbox" id="ctrl-show-labels">
+                    Beschriftungen anzeigen
+                </label>
+            </div>
+        </div>
+
+        <div id="hover-info" class="hover-info">
+            <div class="hover-header">
+                <span id="hover-title">Kein Objekt ausgewählt</span>
+            </div>
+            <div id="hover-props" class="hover-props"></div>
+        </div>
+
+        <div id="process-panel" class="process-panel hidden">
+            <div class="panel-header">
+                <h3>Aktive Prozesse</h3>
+                <button id="btn-process-toggle" class="panel-toggle">▼</button>
+            </div>
+            <div id="process-list" class="process-list"></div>
+        </div>
+    </div>
+
+    <script type="module" src="src/App.ts"></script>
+</body>
+</html>

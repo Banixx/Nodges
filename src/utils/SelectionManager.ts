@@ -238,7 +238,15 @@ export class SelectionManager {
             // Handle regular objects (Edges etc)
             else if (object.userData && (object.userData.type === 'node' || object.userData.type === 'edge')) {
                 // Project position to screen space
-                const pos = object.position.clone();
+                let pos;
+                if (object.userData.type === 'edge' && object.userData.curve) {
+                    pos = object.userData.curve.getPoint(0.5);
+                } else if (object.userData.type === 'edge' && object.userData.start && object.userData.end) {
+                    pos = new THREE.Vector3(object.userData.start.x, object.userData.start.y, object.userData.start.z)
+                        .lerp(new THREE.Vector3(object.userData.end.x, object.userData.end.y, object.userData.end.z), 0.5);
+                } else {
+                    pos = object.position.clone();
+                }
                 pos.project(this.camera);
 
                 // Convert to screen coordinates

@@ -141,8 +141,33 @@ export class VisualMappingEngine {
             return mapping.range ? (mapping.range[0] + mapping.range[1]) / 2 : 1;
         }
 
+        // Handle categorical mapping directly (keeps string values)
+        if (mapping.function === 'categorical') {
+            return value;
+        }
+
         // Normalize value if it's a number
-        const numValue = typeof value === 'number' ? value : 0;
+        let numValue = typeof value === 'number' ? value : 0;
+
+        // Apply domain normalization if provided
+        if (mapping.domain) {
+            const [domainMin, domainMax] = mapping.domain;
+            if (domainMax > domainMin) {
+                if (mapping.function === 'logarithmic') {
+                    // True logarithmic data mapping
+                    // Avoid log(0)
+                    const minLog = Math.log10(Math.max(1, domainMin));
+                    const maxLog = Math.log10(Math.max(2, domainMax));
+                    const valLog = Math.log10(Math.max(1, numValue));
+                    numValue = (valLog - minLog) / (maxLog - minLog);
+                } else {
+                    // Linear normalization
+                    numValue = (numValue - domainMin) / (domainMax - domainMin);
+                }
+                // Clamp to 0-1
+                numValue = Math.max(0, Math.min(1, numValue));
+            }
+        }
 
         // Apply mapping function
         switch (mapping.function) {
@@ -200,9 +225,17 @@ export class VisualMappingEngine {
         if (!mapping.range) return value;
         const [outMin, outMax] = mapping.range;
 
-        // Apply logarithm (avoid log(0))
-        const normalized = Math.log(value + 1) / Math.log(2);
-        return outMin + normalized * (outMax - outMin);
+        // If domain was provided, value is already log-normalized [0-1] in applyMapping
+        if (mapping.domain) {
+            return outMin + value * (outMax - outMin);
+        }
+
+        // Fallback for missing domain (legacy logic, scaled down)
+        // Without domain, very large numbers cause massive output sizes.
+        // We use log10 to keep it manageable.
+        const normalized = Math.log10(value + 1) / 4; // Assume max value ~10000
+        const clamped = Math.max(0, Math.min(1, normalized));
+        return outMin + clamped * (outMax - outMin);
     }
 
     /**
@@ -236,7 +269,7 @@ export class VisualMappingEngine {
     /**
      * Map numeric value to color
      */
-    private mapToColor(value: number, mapping: VisualMapping): THREE.Color {
+    private mapToColor(value: any, mapping: VisualMapping): THREE.Color {
         // Direct color from params
         if (mapping.params?.color) {
             return new THREE.Color(mapping.params.color);
@@ -244,18 +277,42 @@ export class VisualMappingEngine {
 
         if (mapping.function === 'bipolar' && mapping.params?.positive && mapping.params?.negative) {
             // Bipolar color mapping
-            const normalized = this.bipolarMapping(value, mapping);
+            const normalized = this.bipolarMapping(Number(value), mapping);
             const positiveColor = new THREE.Color(mapping.params.positive);
             const negativeColor = new THREE.Color(mapping.params.negative);
 
             return new THREE.Color().lerpColors(negativeColor, positiveColor, normalized);
         } else if (mapping.function === 'heatmap') {
             // Heatmap color mapping (blue to red)
-            return this.getHeatmapColor(value, mapping.palette);
+            return this.getHeatmapColor(Number(value), mapping.palette);
+        } else if (mapping.function === 'categorical') {
+            // Categorical color mapping
+            return this.getCategoricalColor(String(value), mapping.palette);
         } else {
             // Default: grayscale
-            return new THREE.Color(value, value, value);
+            const numValue = Number(value) || 0;
+            return new THREE.Color(numValue, numValue, numValue);
         }
+    }
+
+    /**
+     * Get categorical color
+     */
+    private getCategoricalColor(value: string, palette?: string): THREE.Color {
+        // D3 schemeCategory10 as default fallback
+        const category10 = [
+            0x1f77b4, 0xff7f0e, 0x2ca02c, 0xd62728, 0x9467bd, 
+            0x8c564b, 0xe377c2, 0x7f7f7f, 0xbcbd22, 0x17becf
+        ];
+        
+        let hash = 0;
+        for (let i = 0; i < value.length; i++) {
+            hash = value.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        hash = Math.abs(hash);
+        
+        const colorHex = category10[hash % category10.length];
+        return new THREE.Color(colorHex);
     }
 
     /**

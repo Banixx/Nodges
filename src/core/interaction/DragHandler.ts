@@ -53,7 +53,8 @@ export class DragHandler {
 
         // Drag Init
         if (object && object.userData.type === 'node') {
-            this.isDragging = true;
+            // isDragging wird ERST in handleMouseMove auf true gesetzt, wenn dragThreshold überschritten wird!
+            // Ansonsten wird ein einfacher Klick fälschlicherweise als Drag interpretiert und abgebrochen.
             this.controls.enabled = false; // Disable OrbitControls
             this.dragObject = object;
 
@@ -83,17 +84,19 @@ export class DragHandler {
      */
     handleMouseUp(_data: MouseUpEventData) {
         if (this.dragObject) {
-            // Final Commit
-            const pos = this.dragObject.position;
-            const id = this.dragObject.userData.id;
-            const nodeId = id || (this.dragObject.userData.nodeData ? this.dragObject.userData.nodeData.id : null);
+            // Final Commit nur ausführen, wenn wir WIRKLICH gedraggt haben
+            if (this.isDragging) {
+                const pos = this.dragObject.position;
+                const id = this.dragObject.userData.id;
+                const nodeId = id || (this.dragObject.userData.nodeData ? this.dragObject.userData.nodeData.id : null);
 
-            if (nodeId) {
-                this.stateManager.updateNode(
-                    nodeId,
-                    { position: { x: pos.x, y: pos.y, z: pos.z } },
-                    false // History-Eintrag erstellen
-                );
+                if (nodeId) {
+                    this.stateManager.updateNode(
+                        nodeId,
+                        { position: { x: pos.x, y: pos.y, z: pos.z } },
+                        false // History-Eintrag erstellen
+                    );
+                }
             }
 
             this.dragObject = null;

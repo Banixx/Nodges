@@ -72,6 +72,8 @@ export interface State {
     showLabelsAlways: boolean;
     showLabelsOnHover: boolean;
     activeColorScheme: string;
+    visualScaleExponent: number;
+    visualScaleMultiplier: number;
 
     // Dev Settings (Performance Testing)
     devPowerPreference: 'high-performance' | 'low-power' | 'default';
@@ -155,6 +157,8 @@ export class StateManager implements IStateManager {
             showLabelsAlways: false,
             showLabelsOnHover: true,
             activeColorScheme: 'start-olive',
+            visualScaleExponent: 1.0,
+            visualScaleMultiplier: 1.0,
 
             // Dev Settings
             devPowerPreference: 'high-performance',

@@ -486,6 +486,13 @@ export class UIManager {
         `;
 
         this.infoPanelContent.innerHTML = content;
+
+        const titleEl = document.getElementById('infoPanelTitle');
+        if (titleEl) {
+            titleEl.textContent = 'Mehrfachauswahl';
+        }
+
+        this.panels.info.classList.remove('hidden');
         this.panels.info.classList.remove('collapsed');
         if (this.panelToggles.info) this.panelToggles.info.innerHTML = 'v';
     }
@@ -677,7 +684,13 @@ export class UIManager {
 
     collapseInfoPanel() {
         if (!this.panels.info) return;
-        // Do not auto-collapse the panel
-        if (this.infoPanelContent) this.infoPanelContent.innerHTML = '<p>Kein Objekt ausgewählt</p>';
+        this.panels.info.classList.add('hidden');
+        
+        const titleEl = document.getElementById('infoPanelTitle');
+        if (titleEl) {
+            titleEl.textContent = 'Info';
+        }
+
+        if (this.infoPanelContent) this.infoPanelContent.innerHTML = '';
     }
 }

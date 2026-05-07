@@ -20,10 +20,6 @@ export class EnvironmentPanel {
         section.className = 'environment-section';
         section.style.padding = '10px';
 
-        // Background Color Control
-        const bgRow = this.createColorRow('Background Color', 'backgroundColor');
-        section.appendChild(bgRow);
-
         // Ambient Light Intensity
         const ambientRow = this.createSliderRow('Ambient Light', 'ambientLightIntensity', 0, 2, 0.1);
         section.appendChild(ambientRow);
@@ -33,37 +29,6 @@ export class EnvironmentPanel {
         section.appendChild(directionalRow);
 
         this.container.appendChild(section);
-    }
-
-    private createColorRow(label: string, stateKey: string): HTMLElement {
-        const row = document.createElement('div');
-        row.style.marginBottom = '15px';
-        row.style.display = 'flex';
-        row.style.justifyContent = 'space-between';
-        row.style.alignItems = 'center';
-
-        const labelEl = document.createElement('label');
-        labelEl.textContent = label;
-        labelEl.style.fontSize = '12px';
-        labelEl.style.fontWeight = 'bold';
-        row.appendChild(labelEl);
-
-        const input = document.createElement('input');
-        input.type = 'color';
-        input.value = this.stateManager.state[stateKey];
-        input.style.width = '40px';
-        input.style.height = '24px';
-        input.style.border = 'none';
-        input.style.background = 'transparent';
-        input.style.cursor = 'pointer';
-
-        input.oninput = (e) => {
-            const val = (e.target as HTMLInputElement).value;
-            this.stateManager.update({ [stateKey]: val });
-        };
-
-        row.appendChild(input);
-        return row;
     }
 
     private createSliderRow(label: string, stateKey: string, min: number, max: number, step: number): HTMLElement {

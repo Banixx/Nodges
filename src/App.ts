@@ -1,4 +1,4 @@
-// App.ts - Build: 0.98.1.4
+// App.ts - Build: 0.98.1.6
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { StateManager } from './core/StateManager';
@@ -503,8 +503,9 @@ export class App {
             this.minimapCamera.position.set(0, 500, 0);
             this.minimapCamera.lookAt(0, 0, 0);
             this.minimapCamera.layers.disableAll();
-            this.minimapCamera.layers.enable(0); // Optional: View main scene? (Better keep it clean)
-            this.minimapCamera.layers.enable(1); // View Graph and Marker on Layer 1
+            this.minimapCamera.layers.enable(0); // View Ground on Layer 0
+            this.minimapCamera.layers.enable(1); // View Graph on Layer 1
+            this.minimapCamera.layers.enable(2); // View Marker on Layer 2
 
             // Create Camera Marker for Minimap
             this.createCameraMarker();
@@ -520,20 +521,30 @@ export class App {
     private createCameraMarker() {
         this.cameraMarker = new THREE.Group();
 
-        // A simple "V" shape or triangle to represent camera frustum
-        const geometry = new THREE.BufferGeometry();
-        const vertices = new Float32Array([
-            0, 0, 0,
-            -5, 0, -10,
-            5, 0, -10
-        ]);
-        geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ffff, side: THREE.DoubleSide });
-        const mesh = new THREE.Mesh(geometry, material);
+        // A classic camera icon with lines (black)
+        const points = [];
+        // Quadrat (body)
+        points.push(new THREE.Vector3(-1.5, 0, -3));
+        points.push(new THREE.Vector3(-1.5, 0, 0));
+        points.push(new THREE.Vector3(0, 0, 0)); // Base of triangle
+        
+        // Dreieck (lens)
+        points.push(new THREE.Vector3(-2, 0, 3));
+        points.push(new THREE.Vector3(2, 0, 3));
+        points.push(new THREE.Vector3(0, 0, 0));
+        
+        // Rest of Quadrat
+        points.push(new THREE.Vector3(1.5, 0, 0));
+        points.push(new THREE.Vector3(1.5, 0, -3));
+        points.push(new THREE.Vector3(-1.5, 0, -3));
+
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+        const material = new THREE.LineBasicMaterial({ color: 0x000000 });
+        const mesh = new THREE.Line(geometry, material);
 
         this.cameraMarker.add(mesh);
-        this.cameraMarker.layers.set(1); // Visible on layer 1
-        mesh.layers.set(1);
+        this.cameraMarker.layers.set(2); // Visible on layer 2
+        mesh.layers.set(2);
 
         this.scene.add(this.cameraMarker);
     }
@@ -961,15 +972,12 @@ export class App {
                 this.renderer.setScissor(viewX, viewY, viewWidth, viewHeight);
                 
                 // Renderer clear for minimap viewport
-                this.renderer.setClearColor(0xdddddd, 1.0); // Hellerer Hintergrund für Minimap
+                this.renderer.setClearColor(0x000000, 0.0); // Transparent background for minimap viewport
                 this.renderer.clear();
 
-                // Toggle Lights: Enable Minimap lights, disable Main lights
-                const mainLights = [this.ambientLight, this.directionalLight];
-                const mmLights = this.scene.children.filter(c => c.name && c.name.startsWith("minimap_")) as THREE.Light[];
-                
-                mainLights.forEach(l => { if (l) l.visible = false; });
-                mmLights.forEach(l => { if (l) l.visible = true; });
+                // Keep main lights enabled for minimap pass to ensure consistent colors
+                // (Previously we toggled them, which caused color differences)
+
 
                 // Ensure labels are hidden in minimap
                 if (this.nodeLabelManager) this.nodeLabelManager.setVisible(false);
@@ -984,15 +992,25 @@ export class App {
                 }
 
                 // Render with minimap camera
-                this.renderer.render(this.scene, this.minimapCamera);
+                const oldBackground = this.scene.background;
+                // Use a dark background to match the ground or theme, but keep it consistent
+                this.scene.background = null; // Transparent viewport to see main canvas or clear color
 
-                // Restore Lights
-                mainLights.forEach(l => { if (l) l.visible = true; });
-                mmLights.forEach(l => { if (l) l.visible = false; });
+                // Ensure all relevant layers are visible
+                this.minimapCamera.layers.enable(0);
+                this.minimapCamera.layers.enable(1);
+                this.minimapCamera.layers.enable(2);
+
+                // Render everything together with original materials
+                this.renderer.render(this.scene, this.minimapCamera);
+                
+                this.scene.background = oldBackground;
+
                 // Restore labels to their previous state
                 const currentLabelsVisible = this.stateManager.state.showLabelsAlways || this.stateManager.state.showLabelsOnHover;
                 if (this.nodeLabelManager) this.nodeLabelManager.setVisible(currentLabelsVisible);
                 if (this.edgeLabelManager) this.edgeLabelManager.updateConfig({ visible: currentLabelsVisible });
+                
                 this.renderer.setClearColor(oldClearColor, oldClearAlpha);
                 this.renderer.setScissorTest(false);
             }

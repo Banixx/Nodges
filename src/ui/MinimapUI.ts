@@ -36,8 +36,10 @@ export class MinimapUI {
 
         // Ensure styling matches the glassmorphism theme
         this.container.innerHTML = `
-            <div class="minimap-toggle" id="minimapToggle">◀</div>
-            <div class="minimap-header">Overview</div>
+            <div class="minimap-header">
+                <span>Minimap</span>
+                <div class="minimap-toggle" id="minimapToggle">▼</div>
+            </div>
             <div class="minimap-canvas-wrapper" id="minimapCanvasWrapper"></div>
         `;
 
@@ -51,7 +53,7 @@ export class MinimapUI {
         toggle.addEventListener('click', (e) => {
             e.stopPropagation();
             this.container.classList.toggle('collapsed');
-            toggle.textContent = this.container.classList.contains('collapsed') ? '▶' : '◀';
+            toggle.textContent = this.container.classList.contains('collapsed') ? '▲' : '▼';
 
             // Trigger resize after transition
             setTimeout(() => this.updateSize(), 350);

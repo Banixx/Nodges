@@ -49,11 +49,9 @@ export class HoverHandler {
         const { object } = data;
 
         if (object) {
-            // Highlight entfernen (nur wenn nicht selektiert)
-            if (!this.stateManager.isObjectSelected(object)) {
-                this.highlightManager.removeHighlight(object);
-            }
-
+            // Das Entfernen des Highlights wird nun vollständig vom HighlightManager
+            // über State-Updates (mit einer leichten Verzögerung) gesteuert.
+            
             // Tooltip verstecken
             this.hideTooltip();
         }

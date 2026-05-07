@@ -121,6 +121,35 @@ export class ViewPanel {
 
         this.container.appendChild(labelSection);
 
+        // --- VISUAL BALANCE SECTION ---
+        const balanceSection = document.createElement('section');
+        balanceSection.className = 'panel-section';
+
+        const balanceHeader = document.createElement('h4');
+        balanceHeader.className = 'section-header';
+        balanceHeader.textContent = 'Darstellungsgröße';
+        balanceSection.appendChild(balanceHeader);
+
+        // Slider: Visual Scale Exponent (Dämpfung)
+        const dampeningRow = this.createSliderRow(
+            'Werte-Dämpfung',
+            'visualScaleExponent',
+            this.stateManager.state.visualScaleExponent,
+            0.1, 1.0, 0.05
+        );
+        balanceSection.appendChild(dampeningRow);
+
+        // Slider: Visual Scale Multiplier (Globale Skalierung)
+        const scaleRow = this.createSliderRow(
+            'Globale Skalierung',
+            'visualScaleMultiplier',
+            this.stateManager.state.visualScaleMultiplier,
+            0.1, 5.0, 0.1
+        );
+        balanceSection.appendChild(scaleRow);
+
+        this.container.appendChild(balanceSection);
+
         // --- COLOR SCHEME SECTION ---
         const colorSection = document.createElement('section');
         colorSection.className = 'panel-section';
@@ -175,6 +204,50 @@ export class ViewPanel {
         });
 
         row.appendChild(checkbox);
+        return row;
+    }
+
+    private createSliderRow(label: string, stateKey: string, initialValue: number, min: number, max: number, step: number): HTMLElement {
+        const row = document.createElement('div');
+        row.className = 'slider-row';
+        row.style.marginBottom = '12px';
+        row.style.display = 'flex';
+        row.style.flexDirection = 'column';
+        row.style.gap = '4px';
+
+        const headerDiv = document.createElement('div');
+        headerDiv.style.display = 'flex';
+        headerDiv.style.justifyContent = 'space-between';
+        
+        const labelSpan = document.createElement('span');
+        labelSpan.textContent = label;
+        labelSpan.style.fontSize = '12px';
+
+        const valueSpan = document.createElement('span');
+        valueSpan.textContent = initialValue.toFixed(2);
+        valueSpan.style.fontSize = '12px';
+        valueSpan.style.color = 'var(--text-muted)';
+        
+        headerDiv.appendChild(labelSpan);
+        headerDiv.appendChild(valueSpan);
+        row.appendChild(headerDiv);
+
+        const slider = document.createElement('input');
+        slider.type = 'range';
+        slider.min = min.toString();
+        slider.max = max.toString();
+        slider.step = step.toString();
+        slider.value = initialValue.toString();
+        slider.id = `slider-${stateKey}`;
+        slider.style.width = '100%';
+
+        slider.addEventListener('input', () => {
+            const val = parseFloat(slider.value);
+            valueSpan.textContent = val.toFixed(2);
+            this.stateManager.update({ [stateKey]: val });
+        });
+
+        row.appendChild(slider);
         return row;
     }
 
@@ -234,6 +307,21 @@ export class ViewPanel {
         }
         if (hoverCheck && hoverCheck.checked !== state.showLabelsOnHover) {
             hoverCheck.checked = state.showLabelsOnHover;
+        }
+
+        // Sync sliders with state
+        const dampeningSlider = document.getElementById('slider-visualScaleExponent') as HTMLInputElement;
+        const scaleSlider = document.getElementById('slider-visualScaleMultiplier') as HTMLInputElement;
+
+        if (dampeningSlider && parseFloat(dampeningSlider.value) !== state.visualScaleExponent) {
+            dampeningSlider.value = state.visualScaleExponent.toString();
+            const valueSpan = dampeningSlider.previousElementSibling?.querySelector('span:last-child');
+            if (valueSpan) valueSpan.textContent = state.visualScaleExponent.toFixed(2);
+        }
+        if (scaleSlider && parseFloat(scaleSlider.value) !== state.visualScaleMultiplier) {
+            scaleSlider.value = state.visualScaleMultiplier.toString();
+            const valueSpan = scaleSlider.previousElementSibling?.querySelector('span:last-child');
+            if (valueSpan) valueSpan.textContent = state.visualScaleMultiplier.toFixed(2);
         }
     }
 }

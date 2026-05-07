@@ -1,0 +1,388 @@
+{
+    "system": "Autonomes Nervensystem",
+    "metadata": {
+        "created": "2025-12-22T16:35:00Z",
+        "version": "1.0",
+        "author": "AI",
+        "description": "Vergleich der Innervation durch Sympathikus (Kampf/Flucht) und Parasympathikus (Ruhe/Verdauung)."
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "ZNS (Cranial/Sacral)": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#74B9FF"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        5.0,
+                        5.0
+                    ]
+                }
+            },
+            "ZNS (Thorakal/Lumbal)": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FF7675"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        5.0,
+                        5.0
+                    ]
+                }
+            },
+            "Ganglion (Symp)": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#D63031"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.0,
+                        3.0
+                    ]
+                }
+            },
+            "Organ": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#55E6C1"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        8.0,
+                        8.0
+                    ]
+                }
+            },
+            "Nerv (Parasympathikus)": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#0984E3"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.2,
+                        0.2
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 1.0,
+                        "color": "#74B9FF",
+                        "speed": 1.0
+                    }
+                }
+            },
+            "Nerv (Sympathikus)": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FF7675"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.3,
+                        0.3
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 4.0,
+                        "color": "#FF0000",
+                        "speed": 3.0
+                    }
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "brainstem",
+                "type": "ZNS (Cranial/Sacral)",
+                "label": "Hirnstamm (N. Vagus)",
+                "position": {
+                    "x": 0,
+                    "y": 45,
+                    "z": 0
+                }
+            },
+            {
+                "id": "spine_cerv",
+                "type": "ZNS (Thorakal/Lumbal)",
+                "label": "Cervikal/Thorakal (Oben)",
+                "position": {
+                    "x": 0,
+                    "y": 30,
+                    "z": 0
+                }
+            },
+            {
+                "id": "spine_mid",
+                "type": "ZNS (Thorakal/Lumbal)",
+                "label": "Thorakal (Mitte)",
+                "position": {
+                    "x": 0,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "spine_low",
+                "type": "ZNS (Thorakal/Lumbal)",
+                "label": "Lumbal (Unten)",
+                "position": {
+                    "x": 0,
+                    "y": -10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "sacral",
+                "type": "ZNS (Cranial/Sacral)",
+                "label": "Sakralmark",
+                "position": {
+                    "x": 0,
+                    "y": -30,
+                    "z": 0
+                }
+            },
+            {
+                "id": "chain_top",
+                "type": "Ganglion (Symp)",
+                "label": "Grenzstrang (Oben)",
+                "position": {
+                    "x": 10,
+                    "y": 30,
+                    "z": 0
+                }
+            },
+            {
+                "id": "chain_mid",
+                "type": "Ganglion (Symp)",
+                "label": "Grenzstrang (Mitte)",
+                "position": {
+                    "x": 10,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "chain_low",
+                "type": "Ganglion (Symp)",
+                "label": "Grenzstrang (Unten)",
+                "position": {
+                    "x": 10,
+                    "y": -10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "eye",
+                "type": "Organ",
+                "label": "Auge (Pupille)",
+                "position": {
+                    "x": 30,
+                    "y": 50,
+                    "z": 0
+                }
+            },
+            {
+                "id": "heart",
+                "type": "Organ",
+                "label": "Herz",
+                "position": {
+                    "x": 35,
+                    "y": 30,
+                    "z": 10
+                }
+            },
+            {
+                "id": "lungs",
+                "type": "Organ",
+                "label": "Lunge",
+                "position": {
+                    "x": 35,
+                    "y": 20,
+                    "z": -10
+                }
+            },
+            {
+                "id": "stomach",
+                "type": "Organ",
+                "label": "Magen/Darm",
+                "position": {
+                    "x": 30,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "id": "bladder",
+                "type": "Organ",
+                "label": "Blase",
+                "position": {
+                    "x": 30,
+                    "y": -30,
+                    "z": 0
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "id": "para_eye",
+                "type": "Nerv (Parasympathikus)",
+                "source": "brainstem",
+                "target": "eye",
+                "label": "Miosis (Engstellung)"
+            },
+            {
+                "id": "symp_eye_pre",
+                "type": "Nerv (Sympathikus)",
+                "source": "spine_cerv",
+                "target": "chain_top",
+                "label": ""
+            },
+            {
+                "id": "symp_eye_post",
+                "type": "Nerv (Sympathikus)",
+                "source": "chain_top",
+                "target": "eye",
+                "label": "Mydriasis (Weitstellung)"
+            },
+            {
+                "id": "para_heart",
+                "type": "Nerv (Parasympathikus)",
+                "source": "brainstem",
+                "target": "heart",
+                "label": "Puls senken"
+            },
+            {
+                "id": "symp_heart_pre",
+                "type": "Nerv (Sympathikus)",
+                "source": "spine_cerv",
+                "target": "chain_top",
+                "label": ""
+            },
+            {
+                "id": "symp_heart_post",
+                "type": "Nerv (Sympathikus)",
+                "source": "chain_top",
+                "target": "heart",
+                "label": "Puls steigern"
+            },
+            {
+                "id": "para_lungs",
+                "type": "Nerv (Parasympathikus)",
+                "source": "brainstem",
+                "target": "lungs",
+                "label": "Bronchien verengen"
+            },
+            {
+                "id": "symp_lungs_pre",
+                "type": "Nerv (Sympathikus)",
+                "source": "spine_mid",
+                "target": "chain_mid",
+                "label": ""
+            },
+            {
+                "id": "symp_lungs_post",
+                "type": "Nerv (Sympathikus)",
+                "source": "chain_mid",
+                "target": "lungs",
+                "label": "Bronchien weiten"
+            },
+            {
+                "id": "para_gut",
+                "type": "Nerv (Parasympathikus)",
+                "source": "brainstem",
+                "target": "stomach",
+                "label": "Verdauung fördern"
+            },
+            {
+                "id": "symp_gut_pre",
+                "type": "Nerv (Sympathikus)",
+                "source": "spine_mid",
+                "target": "chain_mid",
+                "label": ""
+            },
+            {
+                "id": "symp_gut_post",
+                "type": "Nerv (Sympathikus)",
+                "source": "chain_mid",
+                "target": "stomach",
+                "label": "Verdauung hemmen"
+            },
+            {
+                "id": "para_bladder",
+                "type": "Nerv (Parasympathikus)",
+                "source": "sacral",
+                "target": "bladder",
+                "label": "Entleerung"
+            },
+            {
+                "id": "symp_bladder_pre",
+                "type": "Nerv (Sympathikus)",
+                "source": "spine_low",
+                "target": "chain_low",
+                "label": ""
+            },
+            {
+                "id": "symp_bladder_post",
+                "type": "Nerv (Sympathikus)",
+                "source": "chain_low",
+                "target": "bladder",
+                "label": "Harnhalten"
+            },
+            {
+                "id": "chain_1",
+                "type": "Nerv (Sympathikus)",
+                "source": "chain_top",
+                "target": "chain_mid",
+                "label": ""
+            },
+            {
+                "id": "chain_2",
+                "type": "Nerv (Sympathikus)",
+                "source": "chain_mid",
+                "target": "chain_low",
+                "label": ""
+            }
+        ]
+    }
+}

@@ -146,7 +146,8 @@ export class NodeManager {
                 // Scale / Size
                 const size = visual.size !== undefined ? visual.size : 1.0;
                 // Base geometric size is 1.0 (radius 1 or side 1), so we scale by 0.5 to keep visual size roughly 1 unit unless changed
-                const visualScale = size * 0.5;
+                const state = this.stateManager.state;
+                const visualScale = Math.pow(size, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5;
                 dummy.scale.set(visualScale, visualScale, visualScale);
 
                 dummy.updateMatrix();

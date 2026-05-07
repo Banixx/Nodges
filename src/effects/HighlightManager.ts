@@ -31,6 +31,7 @@ export class HighlightManager {
 
     private highlightRegistry: Map<THREE.Object3D, HighlightData>;
     private materialBackups: Map<THREE.Object3D, MaterialBackup>;
+    private cleanupTimers: Map<THREE.Object3D, any>;
 
     // Performance: Track previous state to avoid unnecessary updates
     private previousHoveredObject: THREE.Object3D | null = null;
@@ -62,6 +63,7 @@ export class HighlightManager {
         // Registry
         this.highlightRegistry = new Map();
         this.materialBackups = new Map();
+        this.cleanupTimers = new Map();
 
         // State subscription
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'highlight');
@@ -122,7 +124,32 @@ export class HighlightManager {
             );
 
             if (!shouldKeep) {
-                toRemove.push(object);
+                // Verzögere das Entfernen von Hover-Highlights (150ms).
+                // Das überbrückt die Lücke (clickDelay = 100ms) zwischen "Mausklick beginnt" (hover-Verlust)
+                // und der tatsächlichen Selektion. Verhindert ein kurzes Flackern auf die Originalfarbe.
+                if (highlightData.type === this.types.HOVER) {
+                    if (!this.cleanupTimers.has(object)) {
+                        const timer = setTimeout(() => {
+                            // Prüfe nach 150ms erneut, ob das Objekt gelöscht werden soll
+                            const isStillHovered = this.stateManager.state.hoveredObject === object;
+                            const isStillSelected = this.stateManager.state.selectedObject === object || (this.stateManager.state.selectedObjects && this.stateManager.state.selectedObjects.has(object));
+                            
+                            if (!isStillHovered && !isStillSelected) {
+                                this.clearHighlight(object);
+                            }
+                            this.cleanupTimers.delete(object);
+                        }, 150);
+                        this.cleanupTimers.set(object, timer);
+                    }
+                } else {
+                    toRemove.push(object);
+                }
+            } else {
+                // Wenn das Objekt behalten werden soll, evtl. laufende Cleanup-Timer abbrechen
+                if (this.cleanupTimers.has(object)) {
+                    clearTimeout(this.cleanupTimers.get(object));
+                    this.cleanupTimers.delete(object);
+                }
             }
         }
 
@@ -244,10 +271,12 @@ export class HighlightManager {
         let outlineColor = options.color || 0x00aaff;
 
         if (!options.color) {
-            if (edge.userData.color) {
+            // Standard-Hover-Farbe für Kanten (Hellblau statt Grau)
+            outlineColor = options.isSelection ? 0x00ffff : 0x5dade2;
+            
+            // Wenn das Objekt eine eigene Farbe hat und es KEIN Standard-Hover ist, nutzen wir diese
+            if (!options.isSelection && edge.userData.color && edge.userData.color !== 0x888888) {
                 outlineColor = edge.userData.color;
-            } else if (edge.userData.edge && edge.userData.edge.color) {
-                outlineColor = edge.userData.edge.color;
             }
         }
 
@@ -286,25 +315,36 @@ export class HighlightManager {
         delete edge.userData.outline;
     }
 
-    addNodeOutline(object: THREE.Object3D) {
+    addNodeOutline(object: THREE.Object3D, options: any = {}) {
         if (!object || !object.userData || !object.userData.nodeData) return;
-        if (object.userData.outline) return;
+        
+        // Wenn Outline existiert, aber Typ (Hover vs Selection) sich ändert, neu erstellen
+        if (object.userData.outline) {
+            const mat = (object.userData.outline as THREE.Mesh).material as THREE.Material;
+            // Wir nutzen die opacity als Indikator: Selection hat opacity > 0.6
+            const isCurrentlySelection = mat.opacity > 0.6;
+            if (isCurrentlySelection !== !!options.isSelection) {
+                this.removeNodeOutline(object);
+            } else {
+                return;
+            }
+        }
 
         const nodeData = object.userData.nodeData;
         const size = (nodeData.val || 1) * (nodeData.scale || 1);
         const visualScale = size * 0.5;
-        const outlineScale = visualScale * 1.4;
+        // Aura bei Selektion deutlich größer machen, damit sie erkennbar ist
+        const outlineScale = options.isSelection ? visualScale * 1.8 : visualScale * 1.4;
 
         const geometry = new THREE.SphereGeometry(1, 16, 16);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x00ffff,
+        // MeshBasicMaterial reagiert nicht auf Licht, was das "Grau-Werden" im Schatten verhindert
+        const material = new THREE.MeshBasicMaterial({
+            color: options.isSelection ? 0x00ffff : 0x2980b9, // Cyan bei Klick, kräftiges Blau bei Hover
             transparent: true,
-            opacity: 0.3,
-            depthWrite: false,
-            emissive: new THREE.Color(0x000000),
-            emissiveIntensity: 0
+            opacity: options.isSelection ? 0.7 : 0.4, // Weniger transparent für bessere Sichtbarkeit
+            depthWrite: false
         });
-
+        
         const outlineMesh = new THREE.Mesh(geometry, material);
         outlineMesh.position.copy(object.position);
         outlineMesh.scale.set(outlineScale, outlineScale, outlineScale);
@@ -370,6 +410,12 @@ export class HighlightManager {
         }
 
         this.highlightRegistry.delete(object);
+        
+        // Timer aufräumen, falls einer lief
+        if (this.cleanupTimers.has(object)) {
+            clearTimeout(this.cleanupTimers.get(object));
+            this.cleanupTimers.delete(object);
+        }
     }
 
     removeHighlight(object: THREE.Object3D) {
@@ -461,18 +507,18 @@ export class HighlightManager {
         }
     }
 
-    applyHoverEffect(object: THREE.Object3D, _options: any = {}) {
+    applyHoverEffect(object: THREE.Object3D, options: any = {}) {
         if (!object) return;
 
         if (object.userData.type === 'node') {
             if (this.nodeManager && object.userData.nodeData) {
                 const nodeId = object.userData.nodeData.id;
-                const color = new THREE.Color(0x5dade2); // Lighter blue
+                const color = new THREE.Color(0x5dade2); // Angenehmes Hellblau
                 this.nodeManager.setNodeColor(String(nodeId), color.getHex());
             }
-            this.addNodeOutline(object);
+            this.addNodeOutline(object, { ...options, isSelection: false });
         } else if (object.userData.type === 'edge') {
-            this.addEdgeOutline(object);
+            this.addEdgeOutline(object, { ...options, color: 0x5dade2, isSelection: false });
 
             if (this.edgeObjectsManager && object.userData.connectionKey) {
                 const relatedEdges = this.edgeObjectsManager.getRelatedEdges(object.userData.connectionKey);
@@ -480,7 +526,7 @@ export class HighlightManager {
                     if (edgeInfo.type === 'curved' && edgeInfo.edgeObj && edgeInfo.edgeObj.tube) {
                         const curvedEdgeProxy = edgeInfo.edgeObj.tube;
                         if (curvedEdgeProxy.userData && !curvedEdgeProxy.userData.outline) {
-                            this.addEdgeOutline(curvedEdgeProxy);
+                            this.addEdgeOutline(curvedEdgeProxy, { ...options, color: 0x5dade2, isSelection: false });
                         }
                     }
                 });
@@ -488,11 +534,16 @@ export class HighlightManager {
         }
     }
 
-    applySelectionEffect(object: THREE.Object3D, _options: any = {}) {
+    applySelectionEffect(object: THREE.Object3D, options: any = {}) {
         this.glowEffect.applySelectionGlow(object);
 
         if (object.userData.type === 'node') {
-            this.addNodeOutline(object);
+            if (this.nodeManager && object.userData.nodeData) {
+                const nodeId = object.userData.nodeData.id;
+                const color = new THREE.Color(0x00ffff); // Cyan
+                this.nodeManager.setNodeColor(String(nodeId), color.getHex());
+            }
+            this.addNodeOutline(object, { ...options, isSelection: true });
 
             // If the node object has no material (it's a proxy for an instanced node),
             // apply the selection glow directly to the outline mesh instead
@@ -500,7 +551,7 @@ export class HighlightManager {
                 this.glowEffect.applySelectionGlow(object.userData.outline);
             }
         } else if (object.userData.type === 'edge') {
-            this.addEdgeOutline(object, { color: 0x00ff00, isSelection: true });
+            this.addEdgeOutline(object, { ...options, color: 0x00ffff, isSelection: true });
         }
     }
 
@@ -549,5 +600,7 @@ export class HighlightManager {
     destroy() {
         this.clearAllHighlights();
         this.materialBackups.clear();
+        this.cleanupTimers.forEach(timer => clearTimeout(timer));
+        this.cleanupTimers.clear();
     }
 }

@@ -44,6 +44,7 @@ export type MappingFunction = z.infer<typeof MappingFunctionSchema>;
 export const VisualMappingSchema = z.object({
     source: z.string(),
     function: MappingFunctionSchema,
+    domain: z.tuple([z.number(), z.number()]).optional(),
     range: z.tuple([z.number(), z.number()]).optional(),
     palette: z.string().optional(),
     params: z.record(z.any()).optional(),

@@ -1,0 +1,12 @@
+{
+  "nodes": [
+    {"id": "A", "label": "Knoten A", "position": {"x": 0, "y": 0, "z": 0}},
+    {"id": "B", "label": "Knoten B", "position": {"x": 5, "y": 0, "z": 0}},
+    {"id": "C", "label": "Knoten C", "position": {"x": 2.5, "y": 4.33, "z": 0}}
+  ],
+  "edges": [
+    {"source": "A", "target": "B", "label": "Kante AB"},
+    {"source": "B", "target": "C", "label": "Kante BC"},
+    {"source": "C", "target": "A", "label": "Kante CA"}
+  ]
+}

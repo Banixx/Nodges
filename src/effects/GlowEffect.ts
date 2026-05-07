@@ -137,13 +137,13 @@ export class GlowEffect {
 
         if (object.userData.type === 'node') {
             this.applyNodeGlow(object, 0.8, {
-                color: new THREE.Color(0, 1, 0), // Green Selection-Glow
+                color: new THREE.Color(0, 0.8, 1), // Cyan-Blau Selection-Glow
                 baseIntensity: 0.4,
                 maxIntensity: 1.0
             });
         } else if (object.userData.type === 'edge') {
             this.applyEdgeGlow(object, 0.8, {
-                hue: 0.3, // Greenish Tone
+                hue: 0.55, // Cyan-Blau Tone
                 saturation: 1,
                 baseIntensity: 0.5,
                 maxIntensity: 0.9

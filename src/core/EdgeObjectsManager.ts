@@ -13,6 +13,7 @@ interface EdgeObject {
         color: number;
         start: string | number;
         end: string | number;
+        thickness?: number;
     };
     updatePositions: (startPos: THREE.Vector3, endPos: THREE.Vector3) => void;
     dispose: () => void;
@@ -108,6 +109,8 @@ export class EdgeObjectsManager {
                         colorHex = baseColor.getHex();
                     }
 
+                    const visualThickness = visual.thickness !== undefined ? visual.thickness : 1.0;
+
                     // Create curved edge mesh
                     const edgeObj = this.createEdgeMesh(
                         new THREE.Vector3(startPos.x, startPos.y, startPos.z),
@@ -117,7 +120,8 @@ export class EdgeObjectsManager {
                             totalEdges: group.length,
                             color: colorHex,
                             start: s,
-                            end: t
+                            end: t,
+                            thickness: visualThickness
                         }
                     );
 
@@ -299,6 +303,7 @@ export class EdgeObjectsManager {
             color: number;
             start: string | number;
             end: string | number;
+            thickness?: number;
         }
     ): EdgeObject {
         // Berechne die Mitte der Verbindung
@@ -345,11 +350,14 @@ export class EdgeObjectsManager {
             tubularSegments = window.app.performanceMonitor.getRecommendedTubularSegments(tubularSegments);
         }
 
+        const visualThickness = options.thickness !== undefined ? options.thickness : 1.0;
+        const finalThickness = Math.pow(state.edgeThickness * visualThickness, state.visualScaleExponent) * state.visualScaleMultiplier;
+
         // TubeGeometry entlang der Kurve
         const tubeGeometry = new THREE.TubeGeometry(
             curve,
             tubularSegments,    // tubularSegments
-            state.edgeThickness,          // radius der Röhre
+            finalThickness,               // radius der Röhre
             state.edgeRadialSegments,     // radialSegments
             false                         // geschlossen?
         );
@@ -390,7 +398,8 @@ export class EdgeObjectsManager {
                 totalEdges: options.totalEdges,
                 color: options.color,
                 start: options.start,
-                end: options.end
+                end: options.end,
+                thickness: options.thickness
             },
             updatePositions: (newStartPos: THREE.Vector3, newEndPos: THREE.Vector3) => {
                 // Berechne neue Kurve
@@ -419,11 +428,14 @@ export class EdgeObjectsManager {
                     tubularSegments = window.app.performanceMonitor.getRecommendedTubularSegments(tubularSegments);
                 }
 
+                const currentVisualThickness = options.thickness !== undefined ? options.thickness : 1.0;
+                const currentFinalThickness = Math.pow(state.edgeThickness * currentVisualThickness, state.visualScaleExponent) * state.visualScaleMultiplier;
+
                 const newCurve = new THREE.QuadraticBezierCurve3(newStartPos.clone(), newControlPoint, newEndPos.clone());
                 const newGeometry = new THREE.TubeGeometry(
                     newCurve,
                     tubularSegments,
-                    state.edgeThickness,
+                    currentFinalThickness,
                     state.edgeRadialSegments,
                     false
                 );

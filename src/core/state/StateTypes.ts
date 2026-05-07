@@ -43,6 +43,8 @@ export interface UIState {
     infoPanelCollapsed: boolean;
     showLabelsAlways: boolean;
     showLabelsOnHover: boolean;
+    visualScaleExponent: number;
+    visualScaleMultiplier: number;
 }
 
 /**
@@ -152,6 +154,8 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     infoPanelCollapsed: [STATE_CATEGORIES.UI],
     showLabelsAlways: [STATE_CATEGORIES.UI],
     showLabelsOnHover: [STATE_CATEGORIES.UI],
+    visualScaleExponent: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    visualScaleMultiplier: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
 
     // VisualState
     highlightedObjects: [STATE_CATEGORIES.HIGHLIGHT],
