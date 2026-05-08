@@ -1,0 +1,216 @@
+{
+    "system": "Schweizer Polit-System",
+    "metadata": {
+        "created": "2026-05-07T21:10:00Z",
+        "version": "1.0",
+        "author": "Antigravity",
+        "description": "Visualisierung des Schweizer Regierungssystems, der Parteien und des Bundesrates."
+    },
+    "dataModel": {
+        "entities": {
+            "organ": {
+                "properties": {
+                    "ebene": {
+                        "type": "categorical",
+                        "values": ["Bund", "Kanton", "Gemeinde"]
+                    },
+                    "sitze": {
+                        "type": "continuous"
+                    }
+                }
+            },
+            "partei": {
+                "properties": {
+                    "ausrichtung": {
+                        "type": "categorical",
+                        "values": ["Links", "Mitte-Links", "Mitte", "Mitte-Rechts", "Rechts"]
+                    },
+                    "waehleranteil": {
+                        "type": "continuous",
+                        "range": [0, 100],
+                        "unit": "%"
+                    }
+                }
+            },
+            "person": {
+                "properties": {
+                    "geschlecht": {
+                        "type": "categorical",
+                        "values": ["m", "w", "d"]
+                    },
+                    "amtsantritt": {
+                        "type": "temporal"
+                    }
+                }
+            }
+        },
+        "relationships": {
+            "waehlt": {
+                "properties": {
+                    "turnus": {
+                        "type": "categorical",
+                        "values": ["4 Jahre", "bei Vakanz"]
+                    }
+                }
+            },
+            "mitglied_von": {
+                "properties": {
+                    "funktion": {
+                        "type": "categorical",
+                        "values": ["Mitglied", "Präsident", "Vizepräsident"]
+                    }
+                }
+            },
+            "gehoert_zu": {
+                "properties": {}
+            }
+        }
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "organ": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": { "color": "#FFD700" }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [8.0, 8.0]
+                },
+                "glow": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": { "intensity": 2.0, "color": "#FFD700" }
+                }
+            },
+            "partei": {
+                "size": {
+                    "source": "waehleranteil",
+                    "function": "linear",
+                    "domain": [0, 30],
+                    "range": [4.0, 10.0]
+                },
+                "color": {
+                    "source": "label",
+                    "function": "categorical",
+                    "params": {
+                        "SVP": "#008B45",
+                        "SP": "#E3000F",
+                        "FDP": "#005BAA",
+                        "Die Mitte": "#FF8C00",
+                        "Grüne": "#84B414"
+                    }
+                }
+            },
+            "person": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": { "color": "#00FFFF" }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [2.5, 2.5]
+                },
+                "glow": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": { "intensity": 0.5, "color": "#00FFFF" }
+                }
+            },
+            "waehlt": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": { "color": "#FFFFFF" }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [0.2, 0.2]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": { "frequency": 2.0, "speed": 2.0 }
+                }
+            },
+            "mitglied_von": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": { "color": "#aaaaaa" }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [0.08, 0.08]
+                },
+                "opacity": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [0.6, 0.6]
+                }
+            },
+            "gehoert_zu": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": { "color": "#ffffff" }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [0.05, 0.05]
+                },
+                "curvature": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [0.5, 0.5]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            { "id": "bundesversammlung", "type": "organ", "label": "Vereinigte Bundesversammlung", "ebene": "Bund", "sitze": 246, "position": { "x": 0, "y": 80, "z": 0 } },
+            { "id": "bundesrat", "type": "organ", "label": "Bundesrat", "ebene": "Bund", "sitze": 7, "position": { "x": 0, "y": 0, "z": 0 } },
+            
+            { "id": "svp", "type": "partei", "label": "SVP", "waehleranteil": 27.9, "ausrichtung": "Rechts", "position": { "x": 60, "y": -40, "z": 30 } },
+            { "id": "sp", "type": "partei", "label": "SP", "waehleranteil": 18.3, "ausrichtung": "Links", "position": { "x": -60, "y": -40, "z": 30 } },
+            { "id": "fdp", "type": "partei", "label": "FDP", "waehleranteil": 14.3, "ausrichtung": "Mitte-Rechts", "position": { "x": 45, "y": -40, "z": -30 } },
+            { "id": "mitte", "type": "partei", "label": "Die Mitte", "waehleranteil": 14.1, "ausrichtung": "Mitte", "position": { "x": 0, "y": -40, "z": -50 } },
+            { "id": "gruene", "type": "partei", "label": "Grüne", "waehleranteil": 9.8, "ausrichtung": "Links", "position": { "x": -45, "y": -40, "z": -30 } },
+
+            { "id": "viola_amherd", "type": "person", "label": "Viola Amherd", "geschlecht": "w", "position": { "x": -15, "y": 20, "z": 10 } },
+            { "id": "guy_parmelin", "type": "person", "label": "Guy Parmelin", "geschlecht": "m", "position": { "x": 15, "y": 20, "z": 10 } },
+            { "id": "ignazio_cassis", "type": "person", "label": "Ignazio Cassis", "geschlecht": "m", "position": { "x": 20, "y": 20, "z": -10 } },
+            { "id": "karin_keller_sutter", "type": "person", "label": "Karin Keller-Sutter", "geschlecht": "w", "position": { "x": 10, "y": 20, "z": -20 } },
+            { "id": "albert_roesti", "type": "person", "label": "Albert Rösti", "geschlecht": "m", "position": { "x": 25, "y": 20, "z": 20 } },
+            { "id": "beat_jans", "type": "person", "label": "Beat Jans", "geschlecht": "m", "position": { "x": -25, "y": 20, "z": 0 } },
+            { "id": "elisabeth_baume_schneider", "type": "person", "label": "Elisabeth Baume-Schneider", "geschlecht": "w", "position": { "x": -20, "y": 20, "z": -20 } }
+        ],
+        "relationships": [
+            { "source": "bundesversammlung", "target": "bundesrat", "type": "waehlt", "label": "wählt" },
+            
+            { "source": "viola_amherd", "target": "bundesrat", "type": "mitglied_von" },
+            { "source": "guy_parmelin", "target": "bundesrat", "type": "mitglied_von" },
+            { "source": "ignazio_cassis", "target": "bundesrat", "type": "mitglied_von" },
+            { "source": "karin_keller_sutter", "target": "bundesrat", "type": "mitglied_von" },
+            { "source": "albert_roesti", "target": "bundesrat", "type": "mitglied_von" },
+            { "source": "beat_jans", "target": "bundesrat", "type": "mitglied_von" },
+            { "source": "elisabeth_baume_schneider", "target": "bundesrat", "type": "mitglied_von" },
+
+            { "source": "viola_amherd", "target": "mitte", "type": "gehoert_zu" },
+            { "source": "guy_parmelin", "target": "svp", "type": "gehoert_zu" },
+            { "source": "ignazio_cassis", "target": "fdp", "type": "gehoert_zu" },
+            { "source": "karin_keller_sutter", "target": "fdp", "type": "gehoert_zu" },
+            { "source": "albert_roesti", "target": "svp", "type": "gehoert_zu" },
+            { "source": "beat_jans", "target": "sp", "type": "gehoert_zu" },
+            { "source": "elisabeth_baume_schneider", "target": "sp", "type": "gehoert_zu" }
+        ]
+    }
+}

@@ -66,11 +66,10 @@ export class NodeManager {
     }
 
     private initializeMaterials() {
-        // One default material for everything (using vertex colors)
         this.materialCache.set('default', new THREE.MeshPhongMaterial({
             color: 0xffffff,
             shininess: 30,
-            vertexColors: true
+            vertexColors: false
         }));
     }
 

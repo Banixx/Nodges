@@ -202,4 +202,25 @@ export class DataParser {
             r => r.source === entityId || r.target === entityId
         );
     }
+
+    /**
+     * Prefix all IDs in the graph data to avoid collisions
+     */
+    static prefixIds(graphData: GraphData, prefix: string): GraphData {
+        if (!prefix) return graphData;
+
+        // Prefix Entity IDs
+        graphData.data.entities.forEach(entity => {
+            entity.id = `${prefix}_${entity.id}`;
+        });
+
+        // Prefix Relationship IDs and Source/Target references
+        graphData.data.relationships.forEach(rel => {
+            if (rel.id) rel.id = `${prefix}_${rel.id}`;
+            rel.source = `${prefix}_${rel.source}`;
+            rel.target = `${prefix}_${rel.target}`;
+        });
+
+        return graphData;
+    }
 }

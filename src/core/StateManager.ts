@@ -94,6 +94,7 @@ export class StateManager implements IStateManager {
     private subscribers: Map<string, Set<StateCallback>>;
     private batchSubscribers: Map<string, Set<BatchCallback>>;
     private eventQueue: any[];
+    private isUpdating: boolean = false;
     private lastTime: number;
 
     // History System
@@ -110,6 +111,7 @@ export class StateManager implements IStateManager {
                 entities: [],
                 relationships: []
             },
+            loadedFiles: [],
 
             // Interaction States
             hoveredObject: null,
@@ -159,6 +161,8 @@ export class StateManager implements IStateManager {
             activeColorScheme: 'start-olive',
             visualScaleExponent: 1.0,
             visualScaleMultiplier: 1.0,
+            autoBalanceEnabled: true,
+            normalizeCoordinatesEnabled: true,
 
             // Dev Settings
             devPowerPreference: 'high-performance',
@@ -194,30 +198,37 @@ export class StateManager implements IStateManager {
     }
 
     update(partialState: Partial<State>) {
+        if (this.isUpdating) return; // Prevent recursive updates
+
         const oldState = { ...this.state };
         this.state = { ...this.state, ...partialState };
 
-        // Ermittle welche Keys sich tatsaechlich geaendert haben
-        const changedKeys: string[] = [];
-        for (const key in partialState) {
-            if (oldState[key] !== this.state[key]) {
-                changedKeys.push(key);
-            }
-        }
-
-        if (changedKeys.length > 0) {
-            // Ermittle betroffene Subscriber-Kategorien
-            const affectedCategories = new Set<StateCategory>();
-            affectedCategories.add(STATE_CATEGORIES.DEFAULT); // Default wird immer benachrichtigt
-
-            for (const key of changedKeys) {
-                const categories = STATE_KEY_TO_CATEGORIES[key];
-                if (categories) {
-                    categories.forEach(cat => affectedCategories.add(cat));
+        this.isUpdating = true;
+        try {
+            // Ermittle welche Keys sich tatsaechlich geaendert haben
+            const changedKeys: string[] = [];
+            for (const key in partialState) {
+                if (oldState[key] !== this.state[key]) {
+                    changedKeys.push(key);
                 }
             }
 
-            this.notifySubscribers(null, affectedCategories);
+            if (changedKeys.length > 0) {
+                // Ermittle betroffene Subscriber-Kategorien
+                const affectedCategories = new Set<StateCategory>();
+                affectedCategories.add(STATE_CATEGORIES.DEFAULT); // Default wird immer benachrichtigt
+
+                for (const key of changedKeys) {
+                    const categories = STATE_KEY_TO_CATEGORIES[key];
+                    if (categories) {
+                        categories.forEach(cat => affectedCategories.add(cat));
+                    }
+                }
+
+                this.notifySubscribers(null, affectedCategories);
+            }
+        } finally {
+            this.isUpdating = false;
         }
     }
 
@@ -491,8 +502,10 @@ export class StateManager implements IStateManager {
                 relationships: [...relationships]
             }
         });
-        // Notify specialized subscribers
-        this.notifySubscribers('data_changed');
+    }
+
+    setLoadedFiles(files: { id: string, name: string }[]) {
+        this.update({ loadedFiles: [...files] });
     }
 
     getEntities(): EntityData[] {

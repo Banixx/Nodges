@@ -18,12 +18,9 @@ export default defineConfig({
     // Erzwingt Polling, falls Windows-Dateisystem-Events nicht durchgereicht werden
     watch: {
       usePolling: true,
-      interval: 100,
+      interval: 500,
     },
     // Stellt sicher, dass HMR über die korrekte Adresse verbunden wird
-    hmr: {
-      clientPort: 5173,
-    },
   },
   
   build: {

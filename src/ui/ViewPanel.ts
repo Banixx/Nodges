@@ -82,9 +82,9 @@ export class ViewPanel {
         // Subscribe to state changes to keep UI in sync
         this.stateManager.subscribe((state) => {
             this.updateUI(state);
-            // Highlight the active swatch if the scheme changed from elsewhere
             this.updateActiveSwatch(state.activeColorScheme);
-        }, 'view_panel');
+        }, 'ui');
+
 
         // Apply initial scheme based on state
         const initialScheme = COLOR_SCHEMES.find(s => s.id === this.stateManager.state.activeColorScheme) || COLOR_SCHEMES[0];
@@ -130,7 +130,7 @@ export class ViewPanel {
         balanceHeader.textContent = 'Darstellungsgröße';
         balanceSection.appendChild(balanceHeader);
 
-        // Slider: Visual Scale Exponent (Dämpfung)
+        // 1. Sliders first
         const dampeningRow = this.createSliderRow(
             'Werte-Dämpfung',
             'visualScaleExponent',
@@ -139,7 +139,6 @@ export class ViewPanel {
         );
         balanceSection.appendChild(dampeningRow);
 
-        // Slider: Visual Scale Multiplier (Globale Skalierung)
         const scaleRow = this.createSliderRow(
             'Globale Skalierung',
             'visualScaleMultiplier',
@@ -147,6 +146,54 @@ export class ViewPanel {
             0.1, 5.0, 0.1
         );
         balanceSection.appendChild(scaleRow);
+
+        // Separator
+        const separator = document.createElement('div');
+        separator.style.height = '1px';
+        separator.style.backgroundColor = 'rgba(255,255,255,0.1)';
+        separator.style.margin = '15px 0 10px 0';
+        balanceSection.appendChild(separator);
+
+        // 2. Toggles
+        const autoBalanceRow = this.createCheckboxRow(
+            'Auto-Balancing beim Laden',
+            'autoBalanceEnabled',
+            this.stateManager.state.autoBalanceEnabled
+        );
+        balanceSection.appendChild(autoBalanceRow);
+
+        const normalizeRow = this.createCheckboxRow(
+            'Koordinaten normalisieren',
+            'normalizeCoordinatesEnabled',
+            this.stateManager.state.normalizeCoordinatesEnabled
+        );
+        balanceSection.appendChild(normalizeRow);
+
+        // 3. Action Button
+        const autoBalanceBtn = document.createElement('button');
+        autoBalanceBtn.className = 'action-button primary'; // Use primary class if exists, or style it
+        autoBalanceBtn.style.marginTop = '15px';
+        autoBalanceBtn.style.width = '100%';
+        autoBalanceBtn.style.padding = '8px';
+        autoBalanceBtn.style.backgroundColor = 'var(--accent-color, #ac3838)';
+        autoBalanceBtn.style.color = 'white';
+        autoBalanceBtn.style.border = 'none';
+        autoBalanceBtn.style.borderRadius = '4px';
+        autoBalanceBtn.style.cursor = 'pointer';
+        autoBalanceBtn.style.fontWeight = '600';
+        autoBalanceBtn.style.transition = 'all 0.2s ease';
+        autoBalanceBtn.textContent = 'Balance jetzt optimieren';
+        
+        autoBalanceBtn.onmouseenter = () => autoBalanceBtn.style.filter = 'brightness(1.2)';
+        autoBalanceBtn.onmouseleave = () => autoBalanceBtn.style.filter = 'none';
+
+        autoBalanceBtn.onclick = () => {
+            if (window.app && window.app.applyVisualBalance) {
+                window.app.applyVisualBalance();
+            }
+        };
+        balanceSection.appendChild(autoBalanceBtn);
+
 
         this.container.appendChild(balanceSection);
 
@@ -323,5 +370,17 @@ export class ViewPanel {
             const valueSpan = scaleSlider.previousElementSibling?.querySelector('span:last-child');
             if (valueSpan) valueSpan.textContent = state.visualScaleMultiplier.toFixed(2);
         }
+
+        // Sync new checkboxes
+        const autoBalanceCheck = document.getElementById('checkbox-autoBalanceEnabled') as HTMLInputElement;
+        const normalizeCheck = document.getElementById('checkbox-normalizeCoordinatesEnabled') as HTMLInputElement;
+        
+        if (autoBalanceCheck && autoBalanceCheck.checked !== state.autoBalanceEnabled) {
+            autoBalanceCheck.checked = state.autoBalanceEnabled;
+        }
+        if (normalizeCheck && normalizeCheck.checked !== state.normalizeCoordinatesEnabled) {
+            normalizeCheck.checked = state.normalizeCoordinatesEnabled;
+        }
     }
+
 }

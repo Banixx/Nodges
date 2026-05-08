@@ -166,6 +166,49 @@ canvas {
   color: white;
 }
 
+.file-item-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.file-item-container .file-item {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.file-action-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  height: 33px;
+  width: 33px;
+}
+
+.file-action-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.file-action-btn.add:hover {
+  color: #2ecc71;
+  border-color: rgba(46, 204, 113, 0.4);
+}
+
+.file-action-btn.remove:hover {
+  color: #e74c3c;
+  border-color: rgba(231, 76, 60, 0.4);
+}
+
 /* Form Elements */
 label {
   display: block;
@@ -810,3 +853,23 @@ input[type="range"] {
   width: 100%;
   height: 100%;
 }
+
+/* Legend Panel Styles */
+.legend-type-group {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.2s;
+}
+
+.legend-type-group:hover {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.legend-color-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  border-radius: 2px;
+  vertical-align: middle;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}

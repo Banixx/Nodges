@@ -11,6 +11,7 @@ import { ViewPanel } from '../ui/ViewPanel';
 import { StatsUI } from '../ui/StatsUI';
 import { ToolsUI } from '../ui/ToolsUI';
 import { DevPanel } from '../ui/DevPanel';
+import { LegendPanel } from '../ui/LegendPanel';
 import { VisualMappings } from '../types';
 
 interface Bounds {
@@ -27,6 +28,9 @@ export class UIManager {
     private filePanelContent: HTMLElement | null;
     private infoPanelContent: HTMLElement | null;
     private visualMappingPanel: VisualMappingPanel;
+    private legendPanel: LegendPanel;
+    private availableFiles: string[] = [];
+    private isRenderFilePanelPending: boolean = false;
 
     // New Components
     private statsUI: StatsUI;
@@ -87,7 +91,19 @@ export class UIManager {
         // Initialize DevPanel
         new DevPanel('devPanelContent', this.stateManager);
 
+        // Initialize Legend Panel
+        this.legendPanel = new LegendPanel('legendContainer', this.stateManager);
+
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'ui');
+        this.stateManager.subscribe(() => {
+            if (!this.isRenderFilePanelPending) {
+                this.isRenderFilePanelPending = true;
+                requestAnimationFrame(() => {
+                    this.renderFilePanel();
+                    this.isRenderFilePanelPending = false;
+                });
+            }
+        }, 'data_changed');
     }
 
     private sliderToCurvature(val: number): number {
@@ -142,6 +158,35 @@ export class UIManager {
         this.initHighlightToggle();
         this.initEdgeControls();
         this.loadAvailableFiles();
+        this.initInfoPanelInteractions();
+    }
+
+    private initInfoPanelInteractions() {
+        if (!this.infoPanelContent) return;
+
+        this.infoPanelContent.addEventListener('click', (event) => {
+            const target = event.target as HTMLElement;
+            const row = target.closest('.selectable-row');
+            if (!row) return;
+
+            const targetId = row.getAttribute('data-id');
+            if (!targetId) return;
+
+            const currentSelection = this.stateManager.state.selectedObjects;
+            if (!currentSelection) return;
+
+            let foundObject: THREE.Object3D | null = null;
+            for (const obj of currentSelection) {
+                if (obj.uuid === targetId) {
+                    foundObject = obj;
+                    break;
+                }
+            }
+
+            if (foundObject) {
+                this.stateManager.setSelectedObject(foundObject);
+            }
+        });
     }
 
     handleStateChange(state: State) {
@@ -303,52 +348,119 @@ export class UIManager {
 
         this.filePanelContent.innerHTML = '<div id="fileLoadingIndicator">Loading files...</div>';
 
-        const files = await this.fetchDirectoryContents();
-        this.createFileButtons(files);
-        // Refresh button could be added here if desired
+        this.availableFiles = await this.fetchDirectoryContents();
+        this.renderFilePanel();
+    }
+
+    renderFilePanel() {
+        if (!this.filePanelContent) return;
+        this.filePanelContent.innerHTML = '';
+
+        const loadedFiles = this.stateManager.state.loadedFiles || [];
+
+        // --- GELADENE DATEIEN ---
+        if (loadedFiles.length > 0) {
+            const loadedHeader = document.createElement('h4');
+            loadedHeader.className = 'section-header';
+            loadedHeader.textContent = 'Geladene Dateien';
+            this.filePanelContent.appendChild(loadedHeader);
+
+            loadedFiles.forEach(file => {
+                const container = document.createElement('div');
+                container.className = 'file-item-container';
+
+                const item = document.createElement('div');
+                item.className = 'file-item active';
+                item.textContent = this.createDisplayName(file.name);
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'file-action-btn remove';
+                removeBtn.innerHTML = '×';
+                removeBtn.title = 'Entfernen';
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    this.app.removeData(file.id);
+                };
+
+                container.appendChild(item);
+                container.appendChild(removeBtn);
+                this.filePanelContent!.appendChild(container);
+            });
+        }
+
+        // --- VERFÜGBARE DATEIEN ---
+        const availableHeader = document.createElement('h4');
+        availableHeader.className = 'section-header';
+        availableHeader.style.marginTop = '15px';
+        availableHeader.innerHTML = `
+            <span>Verfügbare Dateien</span>
+            <button id="addFileBtn" class="file-action-btn add" style="width: 20px; height: 20px; padding: 0; font-size: 14px;" title="Datei hinzufügen">+</button>
+        `;
+        this.filePanelContent.appendChild(availableHeader);
+
+        if (this.availableFiles.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'loading-text';
+            empty.textContent = 'Keine Dateien gefunden';
+            this.filePanelContent.appendChild(empty);
+        } else {
+            this.availableFiles.forEach(filename => {
+                // Don't show in available if already loaded (optional)
+                const isLoaded = loadedFiles.some(f => f.id === `${filename}.json`);
+
+                const container = document.createElement('div');
+                container.className = 'file-item-container';
+
+                const button = document.createElement('div');
+                button.className = `file-item ${isLoaded ? 'active' : ''}`;
+                button.textContent = this.createDisplayName(filename);
+                button.onclick = () => {
+                    this.app.loadData(`data/${filename}.json`);
+                };
+
+                const addBtn = document.createElement('button');
+                addBtn.className = 'file-action-btn add';
+                addBtn.innerHTML = '+';
+                addBtn.title = 'Zur Szene hinzufügen';
+                addBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    this.app.addData(`data/${filename}.json`);
+                };
+
+                container.appendChild(button);
+                container.appendChild(addBtn);
+                this.filePanelContent!.appendChild(container);
+            });
+        }
+
+        // Global Add Button Logic
+        const mainAddBtn = document.getElementById('addFileBtn');
+        if (mainAddBtn) {
+            mainAddBtn.onclick = () => {
+                // For now, it just scrolls to available files or could open a dialog
+                console.log('Main add button clicked');
+            };
+        }
     }
 
     async fetchDirectoryContents(): Promise<string[]> {
         // Use Vite's import.meta.glob to dynamically discover all JSON files in public/data/
-        // This is evaluated at build time, so it automatically finds all files
+        // This is evaluated at build time
         const dataFiles = import.meta.glob('/public/data/*.json');
 
         // Extract filenames without path and extension
         const filenames = Object.keys(dataFiles).map(path => {
             // Extract filename from '/public/data/filename.json'
-            const match = path.match(/\/public\/data\/(.+)\.json$/);
-            return match ? match[1] : '';
-        }).filter(name => name !== ''); // Remove empty strings
+            const parts = path.split('/');
+            const lastPart = parts[parts.length - 1];
+            return lastPart.replace('.json', '');
+        }).filter(name => name !== '');
 
-        console.log('Discovered data files:', filenames);
         return filenames.sort(); // Sort alphabetically
     }
 
-    createFileButtons(filenames: string[]) {
-        if (!this.filePanelContent) return;
-
-        this.filePanelContent.innerHTML = '';
-        if (filenames.length === 0) {
-            this.filePanelContent.innerHTML = '<div style="padding: 10px; text-align: center; color: #999;">No files found</div>';
-            return;
-        }
-
-        filenames.forEach(filename => {
-            const button = document.createElement('div');
-            button.className = 'file-item';
-            button.textContent = this.createDisplayName(filename);
-
-            button.onclick = (event) => {
-                // Remove active class from all other buttons
-                document.querySelectorAll('.file-item.active').forEach(item => item.classList.remove('active'));
-                // Add active class to clicked button
-                (event.target as HTMLElement).classList.add('active');
-                // Load data
-                this.app.loadData(`data/${filename}.json`);
-            };
-
-            this.filePanelContent!.appendChild(button);
-        });
+    createFileButtons(_filenames: string[]) {
+        // Deprecated, using renderFilePanel instead
     }
 
     createDisplayName(filename: string): string {
@@ -389,6 +501,10 @@ export class UIManager {
                 console.warn('App does not implemented updateVisualMappings');
             }
         });
+
+        if (this.legendPanel) {
+            this.legendPanel.updateMappings(mappings);
+        }
 
         this.updateAllPanelPositions();
     }
@@ -460,7 +576,7 @@ export class UIManager {
             }
 
             rows += `
-                <tr>
+                <tr class="selectable-row" data-id="${obj.uuid}" style="cursor: pointer;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" onmouseout="this.style.backgroundColor=''">
                     <td>${name}</td>
                     <td><span class="type-tag ${type}">${type}</span></td>
                 </tr>

@@ -30,7 +30,9 @@ import { EdgeObjectsManager } from './core/EdgeObjectsManager';
 import { DataParser } from './core/DataParser';
 import { VisualMappingEngine } from './core/VisualMappingEngine';
 import { IStateManager, IEventManager } from './core/interfaces';
-import { GraphData, EntityData, RelationshipData, NodeObject } from './types';
+import { GraphData, EntityData, RelationshipData, NodeObject, VisualMappings } from './types';
+import { VisualOptimizer } from './utils/VisualOptimizer';
+
 
 import { ServiceContainer } from './core/di/ServiceContainer';
 import { errorHandler } from './core/ErrorHandler';
@@ -574,13 +576,27 @@ export class App {
         await this.loadData('data/small.json');
     }
 
-    async loadGraphData(graphData: GraphData, sourceName: string = 'Imported Data') {
+    async loadGraphData(graphData: GraphData, sourceName: string = 'Imported Data', append: boolean = false) {
         try {
-            console.log(`[App] Loading GraphData from ${sourceName}...`);
-            this.clearScene();
+            console.log(`[App] ${append ? 'Appending' : 'Loading'} GraphData from ${sourceName}...`);
+            
+            if (!append) {
+                this.clearScene();
+                this.stateManager.setLoadedFiles([{ id: sourceName, name: sourceName }]);
+            } else {
+                // Prefix IDs for the new data to avoid collisions
+                const prefix = sourceName.replace(/\.[^/.]+$/, "").replace(/[^a-z0-9]/gi, '_');
+                DataParser.prefixIds(graphData, prefix);
+                
+                const currentFiles = this.stateManager.state.loadedFiles || [];
+                if (!currentFiles.find(f => f.id === sourceName)) {
+                    this.stateManager.setLoadedFiles([...currentFiles, { id: sourceName, name: sourceName }]);
+                }
+            }
 
             this.stateManager.update({
                 selectedObject: null,
+                selectedObjects: new Set(),
                 hoveredObject: null,
                 highlightedObjects: new Set(),
                 infoPanelVisible: false,
@@ -602,8 +618,13 @@ export class App {
             }
 
             // Store data directly
-            this.currentEntities = this.currentGraphData.data.entities;
-            this.currentRelationships = this.currentGraphData.data.relationships;
+            if (append) {
+                this.currentEntities = [...this.currentEntities, ...graphData.data.entities];
+                this.currentRelationships = [...this.currentRelationships, ...graphData.data.relationships];
+            } else {
+                this.currentEntities = graphData.data.entities;
+                this.currentRelationships = graphData.data.relationships;
+            }
 
             // Update StateManager (Source of Truth)
             this.stateManager.setGraphData(this.currentEntities, this.currentRelationships);
@@ -640,7 +661,14 @@ export class App {
                 );
             }
 
+            // Apply Automatic Visual Balance if enabled
+            if (this.stateManager.state.autoBalanceEnabled) {
+                this.applyVisualBalance();
+            }
+
             this.fitCameraToScene();
+
+
 
             // Auto-center minimap on data load
             const bounds = this.calculateBounds(this.currentEntities);
@@ -661,19 +689,84 @@ export class App {
         }
     }
 
-    async loadData(url: string) {
+    async loadData(url: string, append: boolean = false) {
         try {
             const response = await fetch(url);
             const rawData = await response.json();
-            console.log(`[TRACE] Loaded Raw Data from ${url}`);
+            const filename = url.split('/').pop() || 'Unknown';
+            console.log(`[TRACE] ${append ? 'Adding' : 'Loading'} Raw Data from ${url}`);
 
             const graphData = DataParser.parse(rawData);
-            await this.loadGraphData(graphData, url.split('/').pop());
+            await this.loadGraphData(graphData, filename, append);
         } catch (e) {
             errorHandler.handle(e, {
                 category: 'import',
                 severity: 'error',
                 userMessage: `Datei '${url}' konnte nicht geladen werden.`
+            });
+        }
+    }
+
+    async addData(url: string) {
+        await this.loadData(url, true);
+    }
+
+    public updateVisualMappings(mappings: VisualMappings) {
+        console.log('[App] Updating visual mappings...');
+        this.visualMappingEngine.setVisualMappings(mappings);
+        this.stateManager.update({ visualMappings: mappings });
+        
+        // Re-create nodes and edges with new mappings
+        this.createNodes();
+        this.createEdges();
+    }
+
+    async removeData(sourceName: string) {
+        try {
+            console.log(`[App] Removing dataset: ${sourceName}`);
+            
+            // Filter out files from state
+            const currentFiles = this.stateManager.state.loadedFiles || [];
+            const updatedFiles = currentFiles.filter(f => f.id !== sourceName);
+            this.stateManager.setLoadedFiles(updatedFiles);
+
+            // If no files left, clear everything
+            if (updatedFiles.length === 0) {
+                this.clearScene();
+                this.stateManager.setGraphData([], []);
+                return;
+            }
+
+            // Identify entities to remove (those that have the prefix)
+            const prefix = sourceName.replace(/\.[^/.]+$/, "").replace(/[^a-z0-9]/gi, '_');
+            const prefixWithUnderscore = `${prefix}_`;
+
+            this.currentEntities = this.currentEntities.filter(e => !e.id.startsWith(prefixWithUnderscore));
+            this.currentRelationships = this.currentRelationships.filter(r => !r.id.startsWith(prefixWithUnderscore));
+
+            // Update StateManager
+            this.stateManager.setGraphData(this.currentEntities, this.currentRelationships);
+
+            // Refresh visuals
+            await this.createNodes();
+            await this.createEdges();
+            
+            // Re-apply layout if needed
+            if (this.layoutManager && this.stateManager.state.layoutEnabled) {
+                // ... layout logic
+            }
+
+            // Refresh labels
+            if (this.nodeLabelManager) {
+                this.nodeLabelManager.removeAllLabels();
+                this.nodeLabelManager.createLabelsForAllEntities(this.currentEntities);
+            }
+
+        } catch (error) {
+            errorHandler.handle(error, {
+                category: 'import',
+                severity: 'error',
+                userMessage: `Datensatz '${sourceName}' konnte nicht entfernt werden.`
             });
         }
     }
@@ -1046,7 +1139,39 @@ export class App {
         }
     }
 
+    public applyVisualBalance() {
+        if (this.currentEntities.length === 0) return;
+
+        console.log('[App] Calculating optimal visual balance...');
+        const result = VisualOptimizer.calculateOptimalBalance(
+            this.currentEntities,
+            this.currentRelationships,
+            this.stateManager.state,
+            this.visualMappingEngine
+        );
+
+        console.log('[App] Applying visual balance:', result);
+        
+        // Normalize coordinates if enabled
+        if (result.coordinateScaleFactor !== 1.0 && this.stateManager.state.normalizeCoordinatesEnabled) {
+            VisualOptimizer.normalizeCoordinates(this.currentEntities, result.coordinateScaleFactor);
+            // Need to update actual THREE.js objects positions
+            this.updateNodePositions();
+        }
+
+
+        this.stateManager.update({
+            visualScaleMultiplier: result.visualScaleMultiplier,
+            visualScaleExponent: result.visualScaleExponent,
+            edgeThickness: result.edgeThickness
+        });
+
+        // If we have an edgeObjectsManager, we might need to tell it to refresh
+        // but state update should trigger reactive update in managers.
+    }
+
     private showWebGLError() {
+
         const errorDiv = document.createElement('div');
         errorDiv.style.position = 'absolute';
         errorDiv.style.top = '50%';
@@ -1089,7 +1214,6 @@ if (import.meta.hot) {
             currentAppInstance.destroy();
         }
         
-        // Let Vite do a full soft-reload of the module graph
-        import.meta.hot!.invalidate();
+        // Let Vite handle the reload/update naturally
     });
 }

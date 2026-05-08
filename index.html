@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Nodges 0.98.1.6</title>
+    <title>Nodges 0.98.1.7</title>
     <link rel="icon" type="image/png" href="favicon-32x32.png">
     <!-- CSS is imported in App.ts -->
 </head>
@@ -16,7 +16,7 @@
         <!-- Sidebar Header -->
         <header class="sidebar-header">
             <span class="sidebar-title">Nodges</span>
-            <span id="sidebarVersion" class="sidebar-version">0.98.1.6</span>
+            <span id="sidebarVersion" class="sidebar-version">0.98.1.7</span>
             <span id="hmrTest" style="color: #00ff00; font-size: 0.7em; margin-left: 5px;">● LIVE-TEST</span>
         </header>
 
@@ -26,6 +26,7 @@
             <button class="sidebar-tab" data-tab="tab-files">Files</button>
             <button class="sidebar-tab" data-tab="tab-view">Ansicht</button>
             <button class="sidebar-tab" data-tab="tab-mappings">Mappings</button>
+            <button class="sidebar-tab" data-tab="tab-legend">Legende</button>
             <button class="sidebar-tab" data-tab="tab-layout">Layout</button>
             <button class="sidebar-tab" data-tab="tab-dev">Dev</button>
         </nav>
@@ -38,7 +39,7 @@
                 <section class="panel-section">
                     <h4 class="section-header">Info</h4>
                     <div class="info-row"><span class="info-label">Version:</span><span class="info-value"
-                            id="fileVersion">0.98.1.5</span></div>
+                            id="fileVersion">0.98.1.7</span></div>
                     <div class="info-row"><span class="info-label">Dateiname:</span><span class="info-value"
                             id="fileFilename">-</span></div>
                     <div class="info-row"><span class="info-label">Knoten:</span><span class="info-value"
@@ -173,6 +174,13 @@
             <div id="tab-mappings" class="tab-content">
                 <div id="visualMappingContainer">
                     <!-- Populated by VisualMappingPanel.ts -->
+                </div>
+            </div>
+            
+            <!-- ===== LEGEND TAB ===== -->
+            <div id="tab-legend" class="tab-content">
+                <div id="legendContainer">
+                    <!-- Populated by LegendPanel.ts -->
                 </div>
             </div>
 

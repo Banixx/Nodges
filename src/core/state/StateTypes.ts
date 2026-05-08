@@ -20,6 +20,7 @@ export interface GraphState {
         entities: EntityData[];
         relationships: RelationshipData[];
     };
+    loadedFiles: { id: string, name: string }[];
 }
 
 /**
@@ -45,7 +46,10 @@ export interface UIState {
     showLabelsOnHover: boolean;
     visualScaleExponent: number;
     visualScaleMultiplier: number;
+    autoBalanceEnabled: boolean;
+    normalizeCoordinatesEnabled: boolean;
 }
+
 
 /**
  * Visuelle Effekte: Glow, Highlights
@@ -139,6 +143,7 @@ export type StateCategory = typeof STATE_CATEGORIES[keyof typeof STATE_CATEGORIE
 export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     // GraphState
     graphData: [STATE_CATEGORIES.DATA],
+    loadedFiles: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
 
     // SelectionState
     hoveredObject: [STATE_CATEGORIES.SELECTION, STATE_CATEGORIES.HIGHLIGHT, STATE_CATEGORIES.UI],
@@ -156,6 +161,9 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     showLabelsOnHover: [STATE_CATEGORIES.UI],
     visualScaleExponent: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
     visualScaleMultiplier: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    autoBalanceEnabled: [STATE_CATEGORIES.UI],
+    normalizeCoordinatesEnabled: [STATE_CATEGORIES.UI],
+
 
     // VisualState
     highlightedObjects: [STATE_CATEGORIES.HIGHLIGHT],
