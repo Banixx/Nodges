@@ -26,7 +26,6 @@
             <button class="sidebar-tab" data-tab="tab-files">Files</button>
             <button class="sidebar-tab" data-tab="tab-view">Ansicht</button>
             <button class="sidebar-tab" data-tab="tab-mappings">Mappings</button>
-            <button class="sidebar-tab" data-tab="tab-legend">Legende</button>
             <button class="sidebar-tab" data-tab="tab-layout">Layout</button>
             <button class="sidebar-tab" data-tab="tab-dev">Dev</button>
         </nav>
@@ -50,6 +49,10 @@
                             id="fileFPS">0</span></div>
                 </section>
 
+                <div id="legendContainer">
+                    <!-- Populated by LegendPanel.ts -->
+                </div>
+
                 <section class="panel-section">
                     <h4 class="section-header">Achsenbereiche</h4>
                     <div class="info-row"><span class="info-label">X-Achse:</span><span class="info-value"
@@ -58,13 +61,6 @@
                             id="fileYAxis">-</span></div>
                     <div class="info-row"><span class="info-label">Z-Achse:</span><span class="info-value"
                             id="fileZAxis">-</span></div>
-                </section>
-
-                <section class="panel-section">
-                    <h4 class="section-header">Umgebung</h4>
-                    <div id="environmentContent">
-                        <!-- Populated by EnvironmentPanel.ts -->
-                    </div>
                 </section>
             </div>
 
@@ -79,6 +75,13 @@
 
             <!-- ===== VIEW (ANSICHT) TAB ===== -->
             <div id="tab-view" class="tab-content">
+                <section class="panel-section">
+                    <h4 class="section-header">Umgebung</h4>
+                    <div id="environmentContent">
+                        <!-- Populated by EnvironmentPanel.ts -->
+                    </div>
+                </section>
+
                 <div id="viewPanelContent">
                     <!-- Populated by ViewPanel.ts -->
                 </div>
@@ -174,13 +177,6 @@
             <div id="tab-mappings" class="tab-content">
                 <div id="visualMappingContainer">
                     <!-- Populated by VisualMappingPanel.ts -->
-                </div>
-            </div>
-            
-            <!-- ===== LEGEND TAB ===== -->
-            <div id="tab-legend" class="tab-content">
-                <div id="legendContainer">
-                    <!-- Populated by LegendPanel.ts -->
                 </div>
             </div>
 

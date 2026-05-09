@@ -48,10 +48,10 @@ export class LegendPanel {
 
         this.container.innerHTML = '';
         
-        const mainTitle = document.createElement('h3');
+        const mainTitle = document.createElement('h4');
         mainTitle.textContent = 'Legende';
         mainTitle.className = 'section-header';
-        mainTitle.style.marginBottom = '15px';
+        mainTitle.style.marginTop = '15px';
         this.container.appendChild(mainTitle);
 
         // Nodes Section
@@ -143,7 +143,7 @@ export class LegendPanel {
             // Render specific mappings
             Object.entries(preset).forEach(([prop, mapping]) => {
                 if (typeof mapping === 'object' && mapping !== null && 'source' in mapping) {
-                    const row = this.createLegendRow(prop, mapping as VisualMapping);
+                    const row = this.createLegendRow(prop, mapping as VisualMapping, type, baseType);
                     typeGroup.appendChild(row);
                 }
             });
@@ -152,7 +152,7 @@ export class LegendPanel {
         });
     }
 
-    private createLegendRow(prop: string, mapping: VisualMapping): HTMLElement {
+    private createLegendRow(prop: string, mapping: VisualMapping, type: string, baseType: 'node' | 'edge'): HTMLElement {
         const row = document.createElement('div');
         row.className = 'info-row';
         row.style.fontSize = '0.85em';
@@ -191,7 +191,40 @@ export class LegendPanel {
             grid.style.marginTop = '4px';
             grid.style.paddingLeft = '10px';
 
-            Object.entries(mapping.params).forEach(([cat, val]) => {
+            // Special handling for swiss politics or generic "enrichment"
+            let categories = Object.entries(mapping.params);
+            
+            // Enrichment logic: check if these categories have associated numeric values in the data
+            const enrichedCategories = categories.map(([cat, val]) => {
+                let numericValue: number | null = null;
+                let unit = '';
+                
+                // For swiss politics: find waehleranteil if mapping.source is label
+                if (mapping.source === 'label' || mapping.source === 'id') {
+                    const state = this.stateManager.state;
+                    const entities = baseType === 'node' ? state.graphData.entities : state.graphData.relationships;
+                    const entity = entities.find(e => e.type === type && (e.label === cat || e.id === cat));
+                    
+                    if (entity) {
+                        // Look for typical numeric properties
+                        if ('waehleranteil' in entity) {
+                            numericValue = entity.waehleranteil as number;
+                            unit = '%';
+                        } else if ('value' in entity) {
+                            numericValue = entity.value as number;
+                        }
+                    }
+                }
+                
+                return { cat, val, numericValue, unit };
+            });
+
+            // Sorting logic: if enriched with numeric values, sort descending
+            if (enrichedCategories.some(c => c.numericValue !== null)) {
+                enrichedCategories.sort((a, b) => (b.numericValue || 0) - (a.numericValue || 0));
+            }
+
+            enrichedCategories.forEach(({ cat, val, numericValue, unit }) => {
                 const item = document.createElement('div');
                 item.style.display = 'flex';
                 item.style.alignItems = 'center';
@@ -202,7 +235,11 @@ export class LegendPanel {
                 }
                 
                 const catLabel = document.createElement('span');
-                catLabel.textContent = cat;
+                if (numericValue !== null) {
+                    catLabel.innerHTML = `${cat}: <b>${numericValue}${unit}</b>`;
+                } else {
+                    catLabel.textContent = cat;
+                }
                 item.appendChild(catLabel);
                 grid.appendChild(item);
             });
