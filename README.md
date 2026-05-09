@@ -99,18 +99,9 @@ NodgesFree verwendet das gleiche JSON-Format wie Nodges:
 - OrbitControls für Kamerasteuerung
 - WebGL für hardwarebeschleunigte Grafik
 
-## Browser-Kompatibilität
 
-Getestet mit:
-- Firefox (empfohlen)
-- Chrome
-- Edge
-- Safari
 
 ## Lizenz
 
 Siehe LICENSE-Datei im Hauptverzeichnis.
-
-## Autor
-
-Basierend auf dem Nodges-Projekt von Antigravity
+
