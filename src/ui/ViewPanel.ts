@@ -1,5 +1,6 @@
 /**
  * ViewPanel - UI component for the "Ansicht" (View) tab
+ * test
  * Controls label visibility, color scheme selection, and other visual settings.
  */
 import { IStateManager } from '../core/interfaces';
@@ -183,7 +184,7 @@ export class ViewPanel {
         autoBalanceBtn.style.fontWeight = '600';
         autoBalanceBtn.style.transition = 'all 0.2s ease';
         autoBalanceBtn.textContent = 'Balance jetzt optimieren';
-        
+
         autoBalanceBtn.onmouseenter = () => autoBalanceBtn.style.filter = 'brightness(1.2)';
         autoBalanceBtn.onmouseleave = () => autoBalanceBtn.style.filter = 'none';
 
@@ -265,7 +266,7 @@ export class ViewPanel {
         const headerDiv = document.createElement('div');
         headerDiv.style.display = 'flex';
         headerDiv.style.justifyContent = 'space-between';
-        
+
         const labelSpan = document.createElement('span');
         labelSpan.textContent = label;
         labelSpan.style.fontSize = '12px';
@@ -274,7 +275,7 @@ export class ViewPanel {
         valueSpan.textContent = initialValue.toFixed(2);
         valueSpan.style.fontSize = '12px';
         valueSpan.style.color = 'var(--text-muted)';
-        
+
         headerDiv.appendChild(labelSpan);
         headerDiv.appendChild(valueSpan);
         row.appendChild(headerDiv);
@@ -374,7 +375,7 @@ export class ViewPanel {
         // Sync new checkboxes
         const autoBalanceCheck = document.getElementById('checkbox-autoBalanceEnabled') as HTMLInputElement;
         const normalizeCheck = document.getElementById('checkbox-normalizeCoordinatesEnabled') as HTMLInputElement;
-        
+
         if (autoBalanceCheck && autoBalanceCheck.checked !== state.autoBalanceEnabled) {
             autoBalanceCheck.checked = state.autoBalanceEnabled;
         }
