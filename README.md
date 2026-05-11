@@ -1,8 +1,8 @@
-# NodgesFree - 3D System Explorer
+# Nodges - 3D System Explorer
 
 ## Übersicht
 
-NodgesFree ist eine verbesserte Version des Nodges-Projekts, eine Spatial Analytics Engine für die browserbasierte 3D-Netzwerkanalyse. Die Anwendung ermöglicht es, beliebige Systeme in einem dreidimensionalen Raum darzustellen und interaktiv zu erkunden.
+Nodges ist eine eine Spatial Analytics Engine für die browserbasierte 3D-Netzwerkanalyse. Die Anwendung ermöglicht es, beliebige Systeme in einem dreidimensionalen Raum darzustellen und interaktiv zu erkunden.
 
 ## Features
 
@@ -99,18 +99,9 @@ NodgesFree verwendet das gleiche JSON-Format wie Nodges:
 - OrbitControls für Kamerasteuerung
 - WebGL für hardwarebeschleunigte Grafik
 
-## Browser-Kompatibilität
 
-Getestet mit:
-- Firefox (empfohlen)
-- Chrome
-- Edge
-- Safari
 
 ## Lizenz
 
 Siehe LICENSE-Datei im Hauptverzeichnis.
-
-## Autor
-
-Basierend auf dem Nodges-Projekt von Antigravity
+
