@@ -7,9 +7,9 @@
 import * as THREE from 'three';
 import { RaycastManager } from '../utils/RaycastManager';
 // import { StateManager } from './StateManager';
-import { NodeManager } from './NodeManager';
-import { EdgeObjectsManager } from './EdgeObjectsManager';
-import { HoverInfoPanel } from '../utils/HoverInfoPanel';
+
+import { HoverInfoPanel } from '../ui/HoverInfoPanel';
+import { ServiceContainer } from './di/ServiceContainer';
 
 interface EventHandlerData {
     eventType: string;
@@ -54,21 +54,19 @@ export class CentralEventManager implements IEventManager {
 
     private config: EventConfig;
 
-    constructor(
-        camera: THREE.Camera,
-        renderer: THREE.WebGLRenderer,
-        stateManager: IStateManager,
-        nodeManager: NodeManager,
-        edgeObjectsManager: EdgeObjectsManager,
-        scene?: THREE.Scene
-    ) {
+    constructor(container: ServiceContainer) {
+        const [camera, renderer, stateManager, scene] = 
+            container.resolve<THREE.Camera, THREE.WebGLRenderer, IStateManager, THREE.Scene>(
+                'Camera', 'Renderer', 'IStateManager', 'Scene'
+            );
+
         this.renderer = renderer;
         this.stateManager = stateManager;
         // this.nodeManager = nodeManager;
         // this.edgeObjectsManager = edgeObjectsManager;
 
         // Einziger RaycastManager
-        this.raycastManager = new RaycastManager(camera, nodeManager, edgeObjectsManager);
+        this.raycastManager = new RaycastManager(container);
 
         // Hover Info Panel mit Camera und Scene für intelligente Positionierung
         this.hoverInfoPanel = new HoverInfoPanel(camera, scene);

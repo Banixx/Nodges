@@ -3,12 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Nodges 0.98.1.7</title>
+    <title>Nodges 1.0.0.0</title>
     <link rel="icon" type="image/png" href="favicon-32x32.png">
     <!-- CSS is imported in App.ts -->
 </head>
 
 <body>
+
+
     <!-- ======================= -->
     <!-- MAIN SIDEBAR (Right)    -->
     <!-- ======================= -->
@@ -16,19 +18,26 @@
         <!-- Sidebar Header -->
         <header class="sidebar-header">
             <span class="sidebar-title">Nodges</span>
-            <span id="sidebarVersion" class="sidebar-version">0.98.1.7</span>
+            <span id="sidebarVersion" class="sidebar-version">1.0.0.0</span>
             <span id="hmrTest" style="color: #00ff00; font-size: 0.7em; margin-left: 5px;">● LIVE-TEST</span>
         </header>
 
-        <!-- Tab Navigation -->
-        <nav class="sidebar-tabs">
-            <button class="sidebar-tab active" data-tab="tab-system">System</button>
-            <button class="sidebar-tab" data-tab="tab-files">Files</button>
-            <button class="sidebar-tab" data-tab="tab-view">Ansicht</button>
-            <button class="sidebar-tab" data-tab="tab-mappings">Mappings</button>
-            <button class="sidebar-tab" data-tab="tab-layout">Layout</button>
-            <button class="sidebar-tab" data-tab="tab-dev">Dev</button>
-        </nav>
+        <!-- Tab Navigation Container -->
+        <div class="sidebar-tabs-container">
+            <nav class="sidebar-tabs">
+                <button class="sidebar-tab active" data-tab="tab-system" data-min-mode="simple">System</button>
+                <button class="sidebar-tab" data-tab="tab-layers" data-min-mode="expert">Ebenen</button>
+                <button class="sidebar-tab" data-tab="tab-files" data-min-mode="simple">Files</button>
+                <button class="sidebar-tab" data-tab="tab-view" data-min-mode="simple">Ansicht</button>
+                <button class="sidebar-tab" data-tab="tab-create" data-min-mode="dev">Create</button>
+                <button class="sidebar-tab" data-tab="tab-mappings" data-min-mode="expert">Mappings</button>
+                <button class="sidebar-tab" data-tab="tab-layout" data-min-mode="expert">Layout</button>
+                <button class="sidebar-tab" data-tab="tab-dev" data-min-mode="dev">Dev</button>
+            </nav>
+            <div id="sidebarTabsScrollbar" class="sidebar-tabs-scrollbar">
+                <div id="sidebarTabsScrollbarThumb" class="sidebar-tabs-scrollbar-thumb"></div>
+            </div>
+        </div>
 
         <!-- Tab Content Area -->
         <div class="sidebar-body">
@@ -36,9 +45,18 @@
             <!-- ===== SYSTEM TAB ===== -->
             <div id="tab-system" class="tab-content active">
                 <section class="panel-section">
+                    <h4 class="section-header">UI-Modus</h4>
+                    <div class="mode-switch-container">
+                        <button class="mode-btn" data-mode="simple">Simple</button>
+                        <button class="mode-btn" data-mode="expert">Expert</button>
+                        <button class="mode-btn" data-mode="dev">Dev</button>
+                    </div>
+                </section>
+
+                <section class="panel-section">
                     <h4 class="section-header">Info</h4>
                     <div class="info-row"><span class="info-label">Version:</span><span class="info-value"
-                            id="fileVersion">0.98.1.7</span></div>
+                            id="fileVersion">1.0.0.0</span></div>
                     <div class="info-row"><span class="info-label">Dateiname:</span><span class="info-value"
                             id="fileFilename">-</span></div>
                     <div class="info-row"><span class="info-label">Knoten:</span><span class="info-value"
@@ -53,7 +71,7 @@
                     <!-- Populated by LegendPanel.ts -->
                 </div>
 
-                <section class="panel-section">
+                <section class="panel-section" data-min-mode="expert">
                     <h4 class="section-header">Achsenbereiche</h4>
                     <div class="info-row"><span class="info-label">X-Achse:</span><span class="info-value"
                             id="fileXAxis">-</span></div>
@@ -62,6 +80,95 @@
                     <div class="info-row"><span class="info-label">Z-Achse:</span><span class="info-value"
                             id="fileZAxis">-</span></div>
                 </section>
+            </div>
+
+            <!-- ===== LAYERS TAB ===== -->
+            <div id="tab-layers" class="tab-content">
+                <section class="panel-section" style="padding: 15px 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div class="control-row">
+                        <label for="layeringAttributeSelect" style="display: block; font-size: 0.85em; margin-bottom: 6px; color: #8899a6; font-weight: 600;">Gruppierungs-Attribut:</label>
+                        <select id="layeringAttributeSelect" class="form-select" style="width: 100%; padding: 6px 10px; background: #1b2836; border: 1px solid #38444d; color: #fff; border-radius: 4px; font-size: 13px;">
+                            <option value="layer">layer</option>
+                            <option value="type">type</option>
+                        </select>
+                    </div>
+                </section>
+
+                <!-- Ebene 1 -->
+                <div class="layer-control">
+                    <div class="layer-header">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="toggle-switch-checkbox" id="layer1Toggle" checked>
+                            <span class="toggle-switch-label">
+                                <span class="toggle-switch-inner"></span>
+                                <span class="toggle-switch-switch"></span>
+                            </span>
+                        </label>
+                        <span class="layer-name">Ebene 1</span>
+                        <select id="layer1ValueSelect" class="layer-value-select" style="margin-left: auto; width: 50%; padding: 4px 8px; background: #1b2836; border: 1px solid #38444d; color: #fff; border-radius: 4px; font-size: 12px;"></select>
+                    </div>
+                    <div class="layer-slider-container">
+                        <label class="layer-slider-label">Transparenz:</label>
+                        <input type="range" id="layer1Opacity" min="0" max="1" step="0.05" value="1.0" class="layer-slider">
+                    </div>
+                </div>
+
+                <!-- Ebene 2 -->
+                <div class="layer-control">
+                    <div class="layer-header">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="toggle-switch-checkbox" id="layer2Toggle" checked>
+                            <span class="toggle-switch-label">
+                                <span class="toggle-switch-inner"></span>
+                                <span class="toggle-switch-switch"></span>
+                            </span>
+                        </label>
+                        <span class="layer-name">Ebene 2</span>
+                        <select id="layer2ValueSelect" class="layer-value-select" style="margin-left: auto; width: 50%; padding: 4px 8px; background: #1b2836; border: 1px solid #38444d; color: #fff; border-radius: 4px; font-size: 12px;"></select>
+                    </div>
+                    <div class="layer-slider-container">
+                        <label class="layer-slider-label">Transparenz:</label>
+                        <input type="range" id="layer2Opacity" min="0" max="1" step="0.05" value="1.0" class="layer-slider">
+                    </div>
+                </div>
+
+                <!-- Ebene 3 -->
+                <div class="layer-control">
+                    <div class="layer-header">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="toggle-switch-checkbox" id="layer3Toggle" checked>
+                            <span class="toggle-switch-label">
+                                <span class="toggle-switch-inner"></span>
+                                <span class="toggle-switch-switch"></span>
+                            </span>
+                        </label>
+                        <span class="layer-name">Ebene 3</span>
+                        <select id="layer3ValueSelect" class="layer-value-select" style="margin-left: auto; width: 50%; padding: 4px 8px; background: #1b2836; border: 1px solid #38444d; color: #fff; border-radius: 4px; font-size: 12px;"></select>
+                    </div>
+                    <div class="layer-slider-container">
+                        <label class="layer-slider-label">Transparenz:</label>
+                        <input type="range" id="layer3Opacity" min="0" max="1" step="0.05" value="1.0" class="layer-slider">
+                    </div>
+                </div>
+                
+                <!-- Ebene 4 -->
+                <div class="layer-control">
+                    <div class="layer-header">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="toggle-switch-checkbox" id="layer4Toggle" checked>
+                            <span class="toggle-switch-label">
+                                <span class="toggle-switch-inner"></span>
+                                <span class="toggle-switch-switch"></span>
+                            </span>
+                        </label>
+                        <span class="layer-name">Ebene 4</span>
+                        <select id="layer4ValueSelect" class="layer-value-select" style="margin-left: auto; width: 50%; padding: 4px 8px; background: #1b2836; border: 1px solid #38444d; color: #fff; border-radius: 4px; font-size: 12px;"></select>
+                    </div>
+                    <div class="layer-slider-container">
+                        <label class="layer-slider-label">Transparenz:</label>
+                        <input type="range" id="layer4Opacity" min="0" max="1" step="0.05" value="1.0" class="layer-slider">
+                    </div>
+                </div>
             </div>
 
             <!-- ===== FILES TAB ===== -->
@@ -75,7 +182,7 @@
 
             <!-- ===== VIEW (ANSICHT) TAB ===== -->
             <div id="tab-view" class="tab-content">
-                <section class="panel-section">
+                <section class="panel-section" data-min-mode="expert">
                     <h4 class="section-header">Umgebung</h4>
                     <div id="environmentContent">
                         <!-- Populated by EnvironmentPanel.ts -->
@@ -87,7 +194,7 @@
                 </div>
 
                 <!-- Edge / View Controls (formerly Dev Options) -->
-                <section class="panel-section">
+                <section class="panel-section" data-min-mode="dev">
                     <h4 class="section-header">Kanten & Darstellung</h4>
                     <!-- Edge Thickness Control -->
                     <div class="control-group">
@@ -173,6 +280,16 @@
                 </section>
             </div>
 
+            <!-- ===== CREATE TAB ===== -->
+            <div id="tab-create" class="tab-content">
+                <section class="panel-section">
+                    <h4 class="section-header">Create New</h4>
+                    <div id="createPanelContent">
+                        <p class="loading-text">Hier können neue Knoten und Kanten erstellt werden.</p>
+                    </div>
+                </section>
+            </div>
+
             <!-- ===== MAPPINGS TAB ===== -->
             <div id="tab-mappings" class="tab-content">
                 <div id="visualMappingContainer">
@@ -203,6 +320,11 @@
     <div id="minimapContainer" class="minimap-container"></div>
 
     <!-- ======================= -->
+    <!-- MAPPING PANEL           -->
+    <!-- ======================= -->
+    <div id="mappingPanelContainer" class="mapping-panel-container" data-min-mode="expert"></div>
+
+    <!-- ======================= -->
     <!-- FLOATING INFO PANEL     -->
     <!-- (Shows on object click) -->
     <!-- ======================= -->
@@ -221,6 +343,68 @@
         // Fetch version from package.json and display
         // Version is now handled in App.ts
 
+        const tabsContainer = document.querySelector('.sidebar-tabs');
+        const scrollbar = document.getElementById('sidebarTabsScrollbar');
+        const scrollbarThumb = document.getElementById('sidebarTabsScrollbarThumb');
+        let scrollTimeout;
+
+        // Custom scrollbar updating logic
+        function updateScrollbar() {
+            if (!tabsContainer || !scrollbar || !scrollbarThumb) return;
+            const clientWidth = tabsContainer.clientWidth;
+            const scrollWidth = tabsContainer.scrollWidth;
+            const scrollLeft = tabsContainer.scrollLeft;
+
+            if (scrollWidth <= clientWidth) {
+                scrollbar.style.display = 'none';
+                return;
+            }
+
+            scrollbar.style.display = 'block';
+            const ratio = clientWidth / scrollWidth;
+            const thumbWidth = clientWidth * ratio;
+            const maxScrollLeft = scrollWidth - clientWidth;
+            const maxThumbLeft = clientWidth - thumbWidth;
+            const thumbLeft = maxScrollLeft > 0 ? (scrollLeft / maxScrollLeft) * maxThumbLeft : 0;
+
+            scrollbarThumb.style.width = `${thumbWidth}px`;
+            scrollbarThumb.style.transform = `translateX(${thumbLeft}px)`;
+        }
+
+        // Convert vertical mouse wheel scroll to horizontal scrolling on tabs container
+        if (tabsContainer) {
+            tabsContainer.addEventListener('wheel', (e) => {
+                const scrollAmount = e.deltaY || e.deltaX;
+                if (scrollAmount !== 0) {
+                    e.preventDefault();
+                    tabsContainer.scrollLeft += scrollAmount;
+                }
+            }, { passive: false });
+
+            // Update scrollbar position and fade it in during scroll activity
+            tabsContainer.addEventListener('scroll', () => {
+                updateScrollbar();
+                
+                if (scrollbar) {
+                    scrollbar.classList.add('visible');
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(() => {
+                        scrollbar.classList.remove('visible');
+                    }, 800);
+                }
+            });
+
+            // Initialize scrollbar position
+            updateScrollbar();
+
+            // Responsive Resize Handling
+            if (window.ResizeObserver) {
+                new ResizeObserver(updateScrollbar).observe(tabsContainer);
+            } else {
+                window.addEventListener('resize', updateScrollbar);
+            }
+        }
+
         // Tab Switching Logic
         document.querySelectorAll('.sidebar-tab').forEach(tab => {
             tab.addEventListener('click', () => {
@@ -229,6 +413,10 @@
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                 // Activate clicked tab
                 tab.classList.add('active');
+                
+                // Scroll the tab into view (centered)
+                tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
                 const targetId = tab.getAttribute('data-tab');
                 const targetContent = document.getElementById(targetId);
                 if (targetContent) targetContent.classList.add('active');

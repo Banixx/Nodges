@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { EntityData, RelationshipData } from '../types';
 import { VisualMappingEngine } from './VisualMappingEngine';
 import { IStateManager } from './interfaces';
+import { ServiceContainer } from './di/ServiceContainer';
 
 // Interface für Edge Objekte
 interface EdgeObject {
@@ -33,10 +34,12 @@ export class EdgeObjectsManager {
     // Map connection key to all edge objects with that connection
     private connectionToEdges: Map<string, EdgeObject[]>;
 
-    constructor(scene: THREE.Scene, visualMappingEngine: VisualMappingEngine, stateManager: IStateManager) {
-        this.scene = scene;
-        this.visualMappingEngine = visualMappingEngine;
-        this.stateManager = stateManager;
+    constructor(container: ServiceContainer) {
+        [this.scene, this.visualMappingEngine, this.stateManager] = 
+            container.resolve<THREE.Scene, VisualMappingEngine, IStateManager>(
+                'Scene', 'VisualMappingEngine', 'IStateManager'
+            );
+            
         this.connectionToEdges = new Map();
 
         // Reactive Rendering
@@ -83,6 +86,47 @@ export class EdgeObjectsManager {
                 const endNode = nodeMap.get(t);
 
                 if (startNode && endNode) {
+                    // Layer Visibility Check
+                    const state = this.stateManager.state;
+                    const layeringAttr = state.layeringAttribute || 'layer';
+
+                    // Start node layer
+                    const startRawVal = startNode[layeringAttr];
+                    const startNodeVal = startRawVal !== undefined ? String(startRawVal) : '';
+                    let startLayer = 0;
+                    if (startNodeVal === state.layer1Value) startLayer = 1;
+                    else if (startNodeVal === state.layer2Value) startLayer = 2;
+                    else if (startNodeVal === state.layer3Value) startLayer = 3;
+                    else if (startNodeVal === state.layer4Value) startLayer = 4;
+
+                    // End node layer
+                    const endRawVal = endNode[layeringAttr];
+                    const endNodeVal = endRawVal !== undefined ? String(endRawVal) : '';
+                    let endLayer = 0;
+                    if (endNodeVal === state.layer1Value) endLayer = 1;
+                    else if (endNodeVal === state.layer2Value) endLayer = 2;
+                    else if (endNodeVal === state.layer3Value) endLayer = 3;
+                    else if (endNodeVal === state.layer4Value) endLayer = 4;
+
+                    const isStartLayerVisible = startLayer === 0 || state[`layer${startLayer}Visible`] !== false;
+                    const isEndLayerVisible = endLayer === 0 || state[`layer${endLayer}Visible`] !== false;
+
+                    if (!isStartLayerVisible || !isEndLayerVisible) {
+                        return; // Skip rendering this edge entirely
+                    }
+
+                    const startLayerOpacity = startLayer === 0 
+                        ? 1.0 
+                        : (state[`layer${startLayer}Opacity`] !== undefined ? Number(state[`layer${startLayer}Opacity`]) : 1.0);
+                    const endLayerOpacity = endLayer === 0 
+                        ? 1.0 
+                        : (state[`layer${endLayer}Opacity`] !== undefined ? Number(state[`layer${endLayer}Opacity`]) : 1.0);
+                    
+                    const edgeOpacity = Math.min(startLayerOpacity, endLayerOpacity);
+                    if (edgeOpacity === 0) {
+                        return; // Skip rendering if opacity is 0
+                    }
+
                     const startPos = this.getNodePosition(startNode);
                     const endPos = this.getNodePosition(endNode);
 
@@ -139,9 +183,10 @@ export class EdgeObjectsManager {
                     };
 
                     // Opacity
-                    if (typeof visual.opacity === 'number' && visual.opacity < 1) {
+                    const finalOpacity = (typeof visual.opacity === 'number' ? visual.opacity : 1.0) * edgeOpacity;
+                    if (finalOpacity < 1.0) {
                         (edgeObj.tube.material as THREE.MeshPhongMaterial).transparent = true;
-                        (edgeObj.tube.material as THREE.MeshPhongMaterial).opacity = visual.opacity;
+                        (edgeObj.tube.material as THREE.MeshPhongMaterial).opacity = finalOpacity;
                     }
 
                     // Animation Detection (Pulse)

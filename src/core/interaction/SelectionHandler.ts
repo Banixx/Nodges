@@ -3,22 +3,19 @@
  * Extrahiert aus InteractionManager (Phase 3)
  */
 import * as THREE from 'three';
-import { IStateManager, IEventManager } from '../interfaces';
+import { IStateManager } from '../interfaces';
 
 export class SelectionHandler {
     private stateManager: IStateManager;
-    private eventManager: IEventManager;
     private camera: THREE.Camera;
     private controls: any; // OrbitControls
 
     constructor(
         stateManager: IStateManager,
-        eventManager: IEventManager,
         camera: THREE.Camera,
         controls: any
     ) {
         this.stateManager = stateManager;
-        this.eventManager = eventManager;
         this.camera = camera;
         this.controls = controls;
     }
@@ -168,14 +165,22 @@ export class SelectionHandler {
 
         const nodeData = node.userData.nodeData || node.userData.entity || {};
 
-        this.eventManager.publish('node_created', {
-            position: position,
-            data: {
-                ...nodeData,
-                id: `node_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                name: `${nodeData.name || 'Node'} (Kopie)`
+        const newEntity: any = {
+            ...nodeData,
+            id: `node_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+            label: nodeData.label ? `${nodeData.label} (Kopie)` : (nodeData.name ? `${nodeData.name} (Kopie)` : 'Node Kopie'),
+            position: {
+                x: position.x,
+                y: position.y,
+                z: position.z
             }
-        });
+        };
+
+        if (newEntity.name) {
+            newEntity.name = `${newEntity.name} (Kopie)`;
+        }
+
+        this.stateManager.addNode(newEntity);
     }
 
     /**
@@ -184,14 +189,16 @@ export class SelectionHandler {
     private duplicateEdge(edge: THREE.Object3D) {
         const edgeData = edge.userData.edge || edge.userData.relationship || {};
 
-        this.eventManager.publish('edge_created', {
-            source: edgeData.source,
-            target: edgeData.target,
-            data: {
-                ...edgeData,
-                id: `edge_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                name: `${edgeData.name || 'Edge'} (Kopie)`
-            }
-        });
+        const newEdge: any = {
+            ...edgeData,
+            id: `edge_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+            label: edgeData.label ? `${edgeData.label} (Kopie)` : (edgeData.name ? `${edgeData.name} (Kopie)` : 'Verbindung Kopie')
+        };
+
+        if (newEdge.name) {
+            newEdge.name = `${newEdge.name} (Kopie)`;
+        }
+
+        this.stateManager.addEdge(newEdge);
     }
 }

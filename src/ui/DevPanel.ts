@@ -41,6 +41,8 @@ export class DevPanel {
             hardwareInfo = 'WebGL not supported';
         }
 
+        const renderMode = state.renderMode || 'auto';
+
         this.container.innerHTML = `
             <section class="panel-section">
                 <h4 class="section-header">Performance & Testing</h4>
@@ -61,6 +63,25 @@ export class DevPanel {
                         <option value="low-power" ${powerPref === 'low-power' ? 'selected' : ''}>Low Power (iGPU)</option>
                         <option value="default" ${powerPref === 'default' ? 'selected' : ''}>Default</option>
                     </select>
+                </div>
+
+                <div class="control-group">
+                    <label title="Render Mode. Auto switches from Mesh to Instance on low FPS.">
+                        Render Mode
+                    </label>
+                    <div class="tri-state-toggle" style="display: flex; background: #2a2a2a; border-radius: 20px; position: relative; overflow: hidden; margin-top: 5px; height: 30px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);">
+                        <input type="radio" name="devRenderMode" id="rm_mesh" value="mesh" ${renderMode === 'mesh' ? 'checked' : ''} style="display: none;">
+                        <input type="radio" name="devRenderMode" id="rm_auto" value="auto" ${renderMode === 'auto' ? 'checked' : ''} style="display: none;">
+                        <input type="radio" name="devRenderMode" id="rm_instance" value="instance" ${renderMode === 'instance' ? 'checked' : ''} style="display: none;">
+                        
+                        <label for="rm_mesh" style="flex: 1; text-align: center; line-height: 30px; cursor: pointer; z-index: 2; color: #fff; font-size: 11px; font-weight: bold; margin:0; padding:0; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Mesh</label>
+                        <label for="rm_auto" style="flex: 1; text-align: center; line-height: 30px; cursor: pointer; z-index: 2; color: #fff; font-size: 11px; font-weight: bold; margin:0; padding:0; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Auto</label>
+                        <label for="rm_instance" style="flex: 1; text-align: center; line-height: 30px; cursor: pointer; z-index: 2; color: #fff; font-size: 11px; font-weight: bold; margin:0; padding:0; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Instance</label>
+                        
+                        <div class="thumb" style="position: absolute; top: 2px; left: 2px; width: calc(33.33% - 4px); height: calc(100% - 4px); background: linear-gradient(180deg, #e6a822, #b8860b); border-radius: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.4); z-index: 1; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);">
+                            <div style="position: absolute; width: 22px; height: 22px; background: radial-gradient(circle, #e0e0e0 0%, #a0a0a0 100%); border-radius: 50%; top: 2px; left: 50%; transform: translateX(-50%); box-shadow: 0 1px 3px rgba(0,0,0,0.6), inset 0 -1px 2px rgba(0,0,0,0.3);"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="control-group">
@@ -126,6 +147,41 @@ export class DevPanel {
 
             // The App.ts subscriber will pick up the 'recreate_renderer' trigger
             this.stateManager.update({ _triggerRendererRebuild: Date.now() });
+        });
+
+        // Render Mode Toggle Logic
+        const radios = this.container.querySelectorAll('input[name="devRenderMode"]');
+        const thumb = this.container.querySelector('.tri-state-toggle .thumb') as HTMLElement;
+        const labels = this.container.querySelectorAll('.tri-state-toggle label');
+
+        const updateThumbPosition = (val: string) => {
+            if (!thumb) return;
+            if (val === 'mesh') thumb.style.transform = 'translateX(0%)';
+            else if (val === 'auto') thumb.style.transform = 'translateX(100%)';
+            else if (val === 'instance') thumb.style.transform = 'translateX(200%)';
+            
+            // Highlight active text slightly
+            labels.forEach((label) => {
+                const inputId = label.getAttribute('for');
+                const input = this.container.querySelector('#' + inputId) as HTMLInputElement;
+                if (input && input.value === val) {
+                    (label as HTMLElement).style.color = '#fff';
+                } else {
+                    (label as HTMLElement).style.color = '#aaa';
+                }
+            });
+        };
+
+        const currentState = this.stateManager.state.renderMode || 'auto';
+        updateThumbPosition(currentState);
+
+        radios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const val = (e.target as HTMLInputElement).value as 'auto' | 'mesh' | 'instance';
+                updateThumbPosition(val);
+                const activeRenderMode = val === 'auto' ? 'mesh' : val;
+                this.stateManager.update({ renderMode: val, activeRenderMode });
+            });
         });
     }
 }

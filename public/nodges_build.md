@@ -112,6 +112,13 @@ Definiert das visuelle Erscheinungsbild für jeden Entity- und Relationship-Typ.
 **Entity-Eigenschaften:** `color`, `size`, `geometry`, `glow`, `opacity`, `animation`
 **Relationship-Eigenschaften:** `color`, `thickness`, `curvature`, `glow`, `opacity`, `animation`
 
+**Best Practice: Visuelle Metaphern (Semantisches Mapping)**
+Wähle deine `visualMappings` so, dass sie intuitiv Sinn ergeben. Nutze visuelle Metaphern für abstrakte Daten:
+- Eine "schwache" oder "getrennte" Beziehung bekommt eine geringere `thickness` (Dünne Linie = schwaches Band).
+- Wichtigere Nodes bekommen eine größere `size` oder ein helleres `glow`.
+- Inaktive oder verstorbene Elemente bekommen eine geringere `opacity` (Verblassen).
+- Warnungen oder hohe Auslastung mappen auf Farben wie Rot (Heatmap).
+
 **Mapping-Funktionen:**
 
 | Funktion | Zweck |
@@ -132,6 +139,9 @@ Enthält die tatsächlichen Datenelemente.
 
 Jede Entity repräsentiert einen Knoten im Graph.
 
+**WICHTIGE REGEL: Maximaler Datenreichtum!** Generiere so viele semantisch sinnvolle Eigenschaften wie möglich für jeden Knoten. Das System filtert nicht vorab, sondern bietet dem User diese zur Laufzeit für sein Visual Mapping an.
+**WICHTIGE REGEL: Flache Struktur!** Alle diese Zusatz-Eigenschaften müssen direkt auf der Top-Level-Ebene des Entity-Objekts liegen (NICHT in einem verschachtelten `properties`-Objekt).
+
 ```json
 {
   "id": "server_01",
@@ -139,7 +149,10 @@ Jede Entity repräsentiert einen Knoten im Graph.
   "label": "Hauptserver",
   "position": { "x": 0, "y": 10, "z": -5 },
   "load": 75,
-  "status": "online"
+  "status": "online",
+  "region": "eu-central",
+  "maintenance_cost": 1500,
+  "uptime_days": 420
 }
 ```
 
@@ -157,13 +170,13 @@ Jede Entity repräsentiert einen Knoten im Graph.
 | `label` | String | Anzeigename (kann Leerzeichen enthalten) |
 | `position` | Object | 3D-Position `{ x, y, z }`, Wertebereich empfohlen: -100 bis +100 |
 
-**Beliebige Zusatzfelder** sind erlaubt und werden im dataModel definiert.
+**Beliebige Zusatzfelder** (wie `load`, `status`, `region`) sind erwünscht, müssen flach auf Top-Level liegen und sollten idealerweise im `dataModel` definiert sein.
 
 ---
 
 ## 4. Relationships (Edges)
 
-Jede Relationship verbindet zwei Entities.
+Jede Relationship verbindet zwei Entities. Auch hier gilt: Erzeuge so viele sinnvolle Kanten-Eigenschaften wie möglich als flache Felder!
 
 ```json
 {
@@ -172,7 +185,9 @@ Jede Relationship verbindet zwei Entities.
   "source": "server_01",
   "target": "server_02",
   "label": "Datenverbindung",
-  "bandwidth": 500
+  "bandwidth": 500,
+  "latency": 20,
+  "protocol": "TCP"
 }
 ```
 
@@ -208,6 +223,7 @@ Vor der Ausgabe prüfen:
 - [ ] Alle `source` und `target` IDs existieren in entities?
 - [ ] Für jeden verwendeten `type` gibt es einen Eintrag in `visualMappings.defaultPresets`?
 - [ ] Keine doppelten IDs bei Entities?
+- [ ] Alle Zusatz-Eigenschaften sind flach auf dem Objekt platziert (kein `properties`-Sub-Objekt)?
 
 ---
 

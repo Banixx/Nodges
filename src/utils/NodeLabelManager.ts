@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { EntityData } from '../types';
+import { ServiceContainer } from '../core/di/ServiceContainer';
 
 export interface NodeLabelConfig {
     fontSize: number;
@@ -25,7 +26,12 @@ export class NodeLabelManager {
     private labelGroup: THREE.Group;
     public config: NodeLabelConfig;
 
-    constructor(scene: THREE.Scene, camera: THREE.Camera) {
+    constructor(container: ServiceContainer) {
+        const [scene, camera] = 
+            container.resolve<THREE.Scene, THREE.Camera>(
+                'Scene', 'Camera'
+            );
+            
         this.scene = scene;
         this.camera = camera;
         this.labels = new Map();
@@ -198,14 +204,43 @@ export class NodeLabelManager {
 
         this.labelGroup.visible = true;
 
+        const state = (window as any).app?.stateManager?.state;
+
         // Update each label
         this.labels.forEach((label) => {
+            const layeringAttr = state?.layeringAttribute || 'layer';
+            const rawVal = label.entity[layeringAttr];
+            const nodeVal = rawVal !== undefined ? String(rawVal) : '';
+
+            let layerNum = 0;
+            if (state) {
+                if (nodeVal === state.layer1Value) layerNum = 1;
+                else if (nodeVal === state.layer2Value) layerNum = 2;
+                else if (nodeVal === state.layer3Value) layerNum = 3;
+                else if (nodeVal === state.layer4Value) layerNum = 4;
+            }
+
+            const isLayerVisible = layerNum === 0 || (state ? state[`layer${layerNum}Visible`] !== false : true);
+            const layerOpacity = layerNum === 0
+                ? 1.0
+                : (state ? (state[`layer${layerNum}Opacity`] !== undefined ? Number(state[`layer${layerNum}Opacity`]) : 1.0) : 1.0);
+
+            if (!isLayerVisible || layerOpacity === 0) {
+                label.sprite.visible = false;
+                return;
+            }
+
             // Check distance visibility
             if (!this.config.alwaysVisible) {
                 const distance = this.camera.position.distanceTo(label.sprite.position);
                 label.sprite.visible = distance < this.config.distanceThreshold;
             } else {
                 label.sprite.visible = true;
+            }
+
+            if (label.sprite.visible) {
+                label.sprite.material.opacity = layerOpacity;
+                label.sprite.material.transparent = layerOpacity < 1.0;
             }
 
             // Face camera

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { ServiceContainer } from '../core/di/ServiceContainer';
 
 interface OptimSettings {
     enableLOD: boolean;
@@ -38,7 +39,12 @@ export class PerformanceOptimizer {
     private cameraMatrix: THREE.Matrix4;
     private lodGroups: Map<string, THREE.Group>;
 
-    constructor(scene: THREE.Scene, camera: THREE.Camera, _renderer: THREE.WebGLRenderer) {
+    constructor(container: ServiceContainer) {
+        const [scene, camera, _renderer] = 
+            container.resolve<THREE.Scene, THREE.Camera, THREE.WebGLRenderer>(
+                'Scene', 'Camera', 'Renderer'
+            );
+            
         this.scene = scene;
         this.camera = camera;
         // this.renderer = renderer;

@@ -17,6 +17,21 @@
               "y",
               "z"
             ]
+          },
+          "groesse": {
+            "type": "continuous",
+            "range": [
+              10,
+              100
+            ]
+          },
+          "typ": {
+            "type": "categorical",
+            "values": [
+              "A",
+              "B",
+              "C"
+            ]
           }
         }
       }
@@ -31,6 +46,13 @@
               10
             ],
             "unit": "units"
+          },
+          "staerke": {
+            "type": "continuous",
+            "range": [
+              1,
+              10
+            ]
           }
         }
       }
@@ -40,25 +62,38 @@
     "defaultPresets": {
       "node": {
         "size": {
-          "source": "constant",
+          "source": "groesse",
           "function": "linear",
+          "domain": [
+            10,
+            100
+          ],
           "range": [
             1.0,
-            1.0
+            4.0
           ]
         },
         "color": {
-          "source": "constant",
-          "function": "linear"
+          "source": "groesse",
+          "function": "heatmap",
+          "domain": [
+            10,
+            100
+          ],
+          "palette": "blue-red"
         }
       },
       "connection": {
         "thickness": {
-          "source": "constant",
+          "source": "staerke",
           "function": "linear",
+          "domain": [
+            1,
+            10
+          ],
           "range": [
             0.1,
-            0.1
+            0.6
           ]
         }
       }
@@ -74,7 +109,9 @@
           "x": -3.5,
           "y": 1.2,
           "z": -2.8
-        }
+        },
+        "groesse": 20,
+        "typ": "A"
       },
       {
         "id": "node2",
@@ -84,7 +121,9 @@
           "x": 2.8,
           "y": 0.5,
           "z": 3.2
-        }
+        },
+        "groesse": 80,
+        "typ": "B"
       },
       {
         "id": "node3",
@@ -94,7 +133,9 @@
           "x": -3.2,
           "y": 2.8,
           "z": 4.7
-        }
+        },
+        "groesse": 50,
+        "typ": "C"
       }
     ],
     "relationships": [
@@ -104,7 +145,8 @@
         "source": "node3",
         "target": "node2",
         "label": "edge 1",
-        "offset": 3
+        "offset": 3,
+        "staerke": 2
       },
       {
         "id": "edge2",
@@ -112,7 +154,8 @@
         "source": "node3",
         "target": "node2",
         "label": "edge 2",
-        "offset": 1
+        "offset": 1,
+        "staerke": 8
       },
       {
         "id": "edge3",
@@ -120,7 +163,8 @@
         "source": "node2",
         "target": "node3",
         "label": "edge 3",
-        "offset": 0
+        "offset": 0,
+        "staerke": 5
       },
       {
         "id": "edge4",
@@ -128,7 +172,8 @@
         "source": "node3",
         "target": "node2",
         "label": "edge 4",
-        "offset": -4
+        "offset": -4,
+        "staerke": 10
       }
     ]
   }

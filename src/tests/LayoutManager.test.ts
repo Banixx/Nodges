@@ -1,6 +1,36 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { LayoutManager } from '../core/LayoutManager';
 import type { EntityData, RelationshipData } from '../types';
+
+vi.mock('../workers/layout-worker.ts?worker', () => {
+    return {
+        default: class MockWorker {
+            onmessage: any;
+            postMessage(request: any) {
+                // Simuliert erfolgreiche Antwort vom Worker
+                setTimeout(() => {
+                    if (this.onmessage) {
+                        this.onmessage({
+                            data: {
+                                type: 'success',
+                                requestId: request.requestId,
+                                positions: request.nodes.map((n: any) => ({
+                                    id: n.id,
+                                    x: n.x + 10,
+                                    y: n.y + 10,
+                                    z: n.z + 10
+                                })),
+                                iterations: 10,
+                                duration: 5
+                            }
+                        });
+                    }
+                }, 10);
+            }
+            terminate() {}
+        }
+    };
+});
 
 /**
  * Tests fuer LayoutManager - Deterministische Tests fuer jeden Layout-Algorithmus
@@ -544,6 +574,34 @@ describe('LayoutManager', () => {
         it('sollte animationSpeed setzen koennen', () => {
             layoutManager.setAnimationDuration(500);
             expect(layoutManager.animationSpeed).toBe(2); // 1000/500
+        });
+    });
+
+    describe('Web Worker ID-basierte Zuordnung', () => {
+        it('sollte Nodes via ID und nicht via Index aktualisieren, wenn sich die Array-Reihenfolge aendert', async () => {
+            const nodes: EntityData[] = [
+                { id: 'node_A', type: 'test', position: { x: 0, y: 0, z: 0 } },
+                { id: 'node_B', type: 'test', position: { x: 1, y: 1, z: 1 } }
+            ];
+
+            // Layout mit Worker starten (wirkt über unseren Mock)
+            const promise = layoutManager.applyLayout('force-directed', nodes, []);
+
+            // Waherend das Layout laeuft, vertauschen wir die Elemente im Array
+            const temp = nodes[0];
+            nodes[0] = nodes[1];
+            nodes[1] = temp;
+
+            const result = await promise;
+
+            expect(result).toBe(true);
+
+            const nodeA = nodes.find(n => n.id === 'node_A')!;
+            const nodeB = nodes.find(n => n.id === 'node_B')!;
+
+            // Da nodeB urspruenglich einen hoeheren X-Wert hatte (1) als nodeA (0),
+            // und der Mock +10 rechnet, muss nodeB.position.x auch nach Normalisierung groesser als nodeA.position.x sein.
+            expect(nodeB.position!.x).toBeGreaterThan(nodeA.position!.x);
         });
     });
 });

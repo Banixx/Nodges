@@ -58,7 +58,7 @@ export const EntityVisualPresetSchema = z.object({
     geometry: VisualMappingSchema.optional(),
     glow: VisualMappingSchema.optional(),
     animation: VisualMappingSchema.optional(),
-});
+}).strict();
 export type EntityVisualPreset = z.infer<typeof EntityVisualPresetSchema>;
 
 export const RelationshipVisualPresetSchema = z.object({
@@ -68,7 +68,7 @@ export const RelationshipVisualPresetSchema = z.object({
     glow: VisualMappingSchema.optional(),
     opacity: VisualMappingSchema.optional(),
     animation: VisualMappingSchema.optional(),
-});
+}).strict();
 export type RelationshipVisualPreset = z.infer<typeof RelationshipVisualPresetSchema>;
 
 export const VisualMappingsSchema = z.object({

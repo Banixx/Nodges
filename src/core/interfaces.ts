@@ -9,6 +9,7 @@ export interface IStateManager {
     getEntities(): EntityData[];
     getRelationships(): RelationshipData[];
     setGraphData(entities: EntityData[], relationships: RelationshipData[]): void;
+    setLoadedFiles(files: { id: string, name: string }[]): void;
     subscribe(callback: (state: State) => void, category?: string): () => void;
     update(partialState: Partial<State>): void;
     batchUpdate(updates: Partial<State>): void;

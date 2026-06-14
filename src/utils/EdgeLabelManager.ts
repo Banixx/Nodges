@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { ServiceContainer } from '../core/di/ServiceContainer';
 // import { NodeObject } from '../types';
 
 export interface LabelConfig {
@@ -36,7 +37,12 @@ export class EdgeLabelManager {
     private labelGroup: THREE.Group;
     public config: LabelConfig;
 
-    constructor(scene: THREE.Scene, camera: THREE.Camera) {
+    constructor(container: ServiceContainer) {
+        const [scene, camera] = 
+            container.resolve<THREE.Scene, THREE.Camera>(
+                'Scene', 'Camera'
+            );
+            
         this.scene = scene;
         this.camera = camera;
         this.labels = new Map();

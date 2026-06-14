@@ -3,12 +3,14 @@ import { EntityData } from '../types';
 import { VisualMappingEngine } from './VisualMappingEngine';
 
 import { IStateManager } from './interfaces';
+import { ServiceContainer } from './di/ServiceContainer';
 
 export class NodeManager {
     private scene: THREE.Scene;
     private visualMappingEngine: VisualMappingEngine;
     private stateManager: IStateManager;
     private meshes: Map<string, THREE.InstancedMesh>;
+    private individualMeshes: Map<string, THREE.Mesh>;
     private geometryCache: Map<string, THREE.BufferGeometry>;
     private materialCache: Map<string, THREE.Material>;
     private lastQualityMultiplier: number = 1.0;
@@ -22,11 +24,14 @@ export class NodeManager {
 
     private defaultColor = new THREE.Color(0x3498db);
 
-    constructor(scene: THREE.Scene, visualMappingEngine: VisualMappingEngine, stateManager: IStateManager) {
-        this.scene = scene;
-        this.visualMappingEngine = visualMappingEngine;
-        this.stateManager = stateManager;
+    constructor(container: ServiceContainer) {
+        [this.scene, this.visualMappingEngine, this.stateManager] = 
+            container.resolve<THREE.Scene, VisualMappingEngine, IStateManager>(
+                'Scene', 'VisualMappingEngine', 'IStateManager'
+            );
+            
         this.meshes = new Map();
+        this.individualMeshes = new Map();
         this.geometryCache = new Map();
         this.materialCache = new Map();
         this.entityDataMap = new Map();
@@ -108,126 +113,253 @@ export class NodeManager {
             entitiesByType.get(type)!.push({ entity, visual });
         });
 
-        // 2. Cleanup old meshes
         this.meshes.forEach(mesh => {
             this.scene.remove(mesh);
             mesh.dispose();
         });
         this.meshes.clear();
+
+        this.individualMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+            if (mesh.material) {
+                if (Array.isArray(mesh.material)) {
+                    mesh.material.forEach(m => m.dispose());
+                } else {
+                    mesh.material.dispose();
+                }
+            }
+        });
+        this.individualMeshes.clear();
+
         this.entityDataMap.clear();
         this.entityIdMap.clear();
         this.meshIdMap.clear();
 
-        // 3. Create new InstancedMeshes
-        entitiesByType.forEach((group, type) => {
-            const count = group.length;
-            const geometry = this.geometryCache.get(type)!;
-            const material = this.materialCache.get('default')!;
+        const activeRenderMode = this.stateManager.state.activeRenderMode || 'mesh';
 
-            const mesh = new THREE.InstancedMesh(geometry, material, count);
-            mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
+        if (activeRenderMode === 'instance') {
+            // 3a. Create new InstancedMeshes
+            entitiesByType.forEach((group, type) => {
+                const count = group.length;
+                const geometry = this.geometryCache.get(type)!;
+                const material = this.materialCache.get('default')!;
 
-            const dummy = new THREE.Object3D();
-            const color = new THREE.Color();
-            const entityList: EntityData[] = [];
+                const mesh = new THREE.InstancedMesh(geometry, material, count);
+                mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
 
-            group.forEach(({ entity, visual }, index) => {
-                entityList.push(entity);
+                const dummy = new THREE.Object3D();
+                const color = new THREE.Color();
+                const entityList: EntityData[] = [];
 
-                // Position
-                const x = entity.position?.x || 0;
-                const y = entity.position?.y || 0;
-                const z = entity.position?.z || 0;
-                dummy.position.set(x, y, z);
+                group.forEach(({ entity, visual }, index) => {
+                    entityList.push(entity);
 
-                // Scale / Size
-                const size = visual.size !== undefined ? visual.size : 1.0;
-                // Base geometric size is 1.0 (radius 1 or side 1), so we scale by 0.5 to keep visual size roughly 1 unit unless changed
-                const state = this.stateManager.state;
-                const visualScale = Math.pow(size, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5;
-                dummy.scale.set(visualScale, visualScale, visualScale);
+                    // Position
+                    const x = entity.position?.x || 0;
+                    const y = entity.position?.y || 0;
+                    const z = entity.position?.z || 0;
+                    dummy.position.set(x, y, z);
 
-                dummy.updateMatrix();
-                mesh.setMatrixAt(index, dummy.matrix);
+                    // Scale / Size
+                    const state = this.stateManager.state;
+                    const layeringAttr = state.layeringAttribute || 'layer';
+                    const rawVal = entity[layeringAttr];
+                    const nodeVal = rawVal !== undefined ? String(rawVal) : '';
 
-                // Color
-                if (visual.color) {
-                    if (visual.color instanceof THREE.Color) {
-                        color.copy(visual.color);
+                    let layerNum = 0;
+                    if (nodeVal === state.layer1Value) layerNum = 1;
+                    else if (nodeVal === state.layer2Value) layerNum = 2;
+                    else if (nodeVal === state.layer3Value) layerNum = 3;
+                    else if (nodeVal === state.layer4Value) layerNum = 4;
+
+                    const isLayerVisible = layerNum === 0 || state[`layer${layerNum}Visible`] !== false;
+                    const layerOpacity = layerNum === 0 
+                        ? 1.0 
+                        : (state[`layer${layerNum}Opacity`] !== undefined ? Number(state[`layer${layerNum}Opacity`]) : 1.0);
+
+                    const size = visual.size !== undefined ? visual.size : 1.0;
+                    // Base geometric size is 1.0 (radius 1 or side 1), so we scale by 0.5 to keep visual size roughly 1 unit unless changed
+                    const baseScale = isLayerVisible
+                        ? Math.pow(size, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5
+                        : 0; // scale to 0 if layer is hidden
+                    
+                    const finalScale = baseScale * layerOpacity;
+                    dummy.scale.set(finalScale, finalScale, finalScale);
+
+                    dummy.updateMatrix();
+                    mesh.setMatrixAt(index, dummy.matrix);
+
+                    // Color
+                    if (visual.color) {
+                        if (visual.color instanceof THREE.Color) {
+                            color.copy(visual.color);
+                        } else {
+                            color.set(visual.color);
+                        }
                     } else {
-                        color.set(visual.color);
+                        color.copy(this.defaultColor);
                     }
-                } else {
-                    color.copy(this.defaultColor);
-                }
-                mesh.setColorAt(index, color);
 
-                // ID Map
-                this.entityIdMap.set(String(entity.id), { type, index });
+                    // Apply opacity-based color darkening to simulate transparency in InstancedMesh
+                    if (layerOpacity < 1.0) {
+                        color.multiplyScalar(layerOpacity);
+                    }
+                    mesh.setColorAt(index, color);
+
+                    // ID Map
+                    this.entityIdMap.set(String(entity.id), { type, index });
+                });
+
+                mesh.instanceMatrix.needsUpdate = true;
+                if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+
+                mesh.userData = { type: 'node_instanced', geometryType: type };
+                mesh.layers.enable(1); // Enable for minimap (Layer 1)
+                this.scene.add(mesh);
+                this.meshes.set(type, mesh);
+                this.meshIdMap.set(mesh.id, type);
+                this.entityDataMap.set(type, entityList);
             });
+        } else {
+            // 3b. Create Individual Meshes
+            entitiesByType.forEach((group, type) => {
+                const geometry = this.geometryCache.get(type)!;
 
-            mesh.instanceMatrix.needsUpdate = true;
-            if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+                const entityList: EntityData[] = [];
+                
+                group.forEach(({ entity, visual }, index) => {
+                    entityList.push(entity);
+                    const material = this.materialCache.get('default')!.clone() as THREE.MeshPhongMaterial;
+                    const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.userData = { type: 'node_instanced', geometryType: type };
-            mesh.layers.enable(1); // Enable for minimap (Layer 1)
-            this.scene.add(mesh);
-            this.meshes.set(type, mesh);
-            this.meshIdMap.set(mesh.id, type);
-            this.entityDataMap.set(type, entityList);
-        });
+                    // Position
+                    const x = entity.position?.x || 0;
+                    const y = entity.position?.y || 0;
+                    const z = entity.position?.z || 0;
+                    mesh.position.set(x, y, z);
+
+                    // Scale / Size
+                    const state = this.stateManager.state;
+                    const layeringAttr = state.layeringAttribute || 'layer';
+                    const rawVal = entity[layeringAttr];
+                    const nodeVal = rawVal !== undefined ? String(rawVal) : '';
+
+                    let layerNum = 0;
+                    if (nodeVal === state.layer1Value) layerNum = 1;
+                    else if (nodeVal === state.layer2Value) layerNum = 2;
+                    else if (nodeVal === state.layer3Value) layerNum = 3;
+                    else if (nodeVal === state.layer4Value) layerNum = 4;
+
+                    const isLayerVisible = layerNum === 0 || state[`layer${layerNum}Visible`] !== false;
+                    const layerOpacity = layerNum === 0 
+                        ? 1.0 
+                        : (state[`layer${layerNum}Opacity`] !== undefined ? Number(state[`layer${layerNum}Opacity`]) : 1.0);
+
+                    const size = visual.size !== undefined ? visual.size : 1.0;
+                    const baseScale = isLayerVisible
+                        ? Math.pow(size, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5
+                        : 0; 
+                    
+                    const finalScale = baseScale * layerOpacity;
+                    mesh.scale.set(finalScale, finalScale, finalScale);
+
+                    // Color
+                    if (visual.color) {
+                        if (visual.color instanceof THREE.Color) {
+                            material.color.copy(visual.color);
+                        } else {
+                            material.color.set(visual.color);
+                        }
+                    } else {
+                        material.color.copy(this.defaultColor);
+                    }
+
+                    if (layerOpacity < 1.0) {
+                        material.transparent = true;
+                        material.opacity = layerOpacity;
+                    }
+
+                    mesh.userData = { type: 'node', nodeData: entity, geometryType: type, id: entity.id };
+                    mesh.castShadow = true;
+                    mesh.receiveShadow = true;
+                    mesh.layers.enable(1); // Enable for minimap (Layer 1)
+
+                    this.scene.add(mesh);
+                    this.individualMeshes.set(String(entity.id), mesh);
+                    this.entityIdMap.set(String(entity.id), { type, index });
+                });
+                
+                this.entityDataMap.set(type, entityList);
+            });
+        }
     }
 
     /**
      * Updates positions of existing nodes (e.g. during layout)
      */
     public updateNodePositions(entities: EntityData[]) {
-        const dummy = new THREE.Object3D();
+        if (this.stateManager.state.activeRenderMode === 'instance') {
+            const dummy = new THREE.Object3D();
 
-        entities.forEach(entity => {
-            const map = this.entityIdMap.get(String(entity.id));
-            if (!map) return;
+            entities.forEach(entity => {
+                const map = this.entityIdMap.get(String(entity.id));
+                if (!map) return;
 
-            const mesh = this.meshes.get(map.type);
-            if (!mesh) return;
+                const mesh = this.meshes.get(map.type);
+                if (!mesh) return;
 
-            // Retain scale. We can't easily get it back from matrix multiple without decomposing, 
-            // but we can re-calculate it if we knew the visual Mapping. 
-            // For now, let's assume standard scale factor or cached one.
-            // A more robust way is to read the matrix, decompose, set position, recompose.
-            mesh.getMatrixAt(map.index, dummy.matrix);
-            dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
+                mesh.getMatrixAt(map.index, dummy.matrix);
+                dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
 
-            dummy.position.set(
-                entity.position?.x || 0,
-                entity.position?.y || 0,
-                entity.position?.z || 0
-            );
+                dummy.position.set(
+                    entity.position?.x || 0,
+                    entity.position?.y || 0,
+                    entity.position?.z || 0
+                );
 
-            dummy.updateMatrix();
-            mesh.setMatrixAt(map.index, dummy.matrix);
-        });
+                dummy.updateMatrix();
+                mesh.setMatrixAt(map.index, dummy.matrix);
+            });
 
-        this.meshes.forEach(mesh => {
-            mesh.instanceMatrix.needsUpdate = true;
-        });
+            this.meshes.forEach(mesh => {
+                mesh.instanceMatrix.needsUpdate = true;
+            });
+        } else {
+            entities.forEach(entity => {
+                const mesh = this.individualMeshes.get(String(entity.id));
+                if (mesh) {
+                    mesh.position.set(
+                        entity.position?.x || 0,
+                        entity.position?.y || 0,
+                        entity.position?.z || 0
+                    );
+                }
+            });
+        }
     }
 
     /**
      * Set color highlight for a node
      */
     public setNodeColor(entityId: string, colorHex: number | string) {
-        const map = this.entityIdMap.get(entityId);
-        if (!map) return;
+        if (this.stateManager.state.activeRenderMode === 'instance') {
+            const map = this.entityIdMap.get(entityId);
+            if (!map) return;
 
-        const mesh = this.meshes.get(map.type);
-        if (!mesh) return;
+            const mesh = this.meshes.get(map.type);
+            if (!mesh) return;
 
-        const color = new THREE.Color(colorHex);
-        mesh.setColorAt(map.index, color);
-        if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+            const color = new THREE.Color(colorHex);
+            mesh.setColorAt(map.index, color);
+            if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+        } else {
+            const mesh = this.individualMeshes.get(entityId);
+            if (mesh && mesh.material && (mesh.material as THREE.MeshPhongMaterial).color) {
+                (mesh.material as THREE.MeshPhongMaterial).color.set(colorHex);
+            }
+        }
     }
 
     /**
@@ -241,16 +373,22 @@ export class NodeManager {
         if (!entities) return;
 
         const entity = entities[map.index];
-        // Re-calculate visual
         const visual = this.visualMappingEngine.applyToEntity(entity);
         const color = visual.color ?
             (visual.color instanceof THREE.Color ? visual.color : new THREE.Color(visual.color))
             : this.defaultColor;
 
-        const mesh = this.meshes.get(map.type);
-        if (mesh) {
-            mesh.setColorAt(map.index, color);
-            if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+        if (this.stateManager.state.activeRenderMode === 'instance') {
+            const mesh = this.meshes.get(map.type);
+            if (mesh) {
+                mesh.setColorAt(map.index, color);
+                if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+            }
+        } else {
+            const mesh = this.individualMeshes.get(entityId);
+            if (mesh && mesh.material && (mesh.material as THREE.MeshPhongMaterial).color) {
+                (mesh.material as THREE.MeshPhongMaterial).color.copy(color);
+            }
         }
     }
 
@@ -268,8 +406,12 @@ export class NodeManager {
         return this.getNodeAt(map.type, map.index) || undefined;
     }
 
-    public getMeshes(): THREE.InstancedMesh[] {
-        return Array.from(this.meshes.values());
+    public getMeshes(): (THREE.InstancedMesh | THREE.Mesh)[] {
+        if (this.stateManager.state.activeRenderMode === 'instance') {
+            return Array.from(this.meshes.values());
+        } else {
+            return Array.from(this.individualMeshes.values());
+        }
     }
 
     public clear() {
@@ -278,6 +420,19 @@ export class NodeManager {
             mesh.dispose();
         });
         this.meshes.clear();
+
+        this.individualMeshes.forEach(mesh => {
+            this.scene.remove(mesh);
+            if (mesh.material) {
+                if (Array.isArray(mesh.material)) {
+                    mesh.material.forEach(m => m.dispose());
+                } else {
+                    mesh.material.dispose();
+                }
+            }
+        });
+        this.individualMeshes.clear();
+
         this.entityDataMap.clear();
         this.entityIdMap.clear();
         this.meshIdMap.clear();

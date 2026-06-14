@@ -8,7 +8,8 @@ import type {
     LayoutWorkerRequest,
     LayoutWorkerResponse,
     WorkerVector3,
-    WorkerNode
+    WorkerNode,
+    WorkerNodeResult
 } from './WorkerTypes';
 
 declare const self: DedicatedWorkerGlobalScope;
@@ -30,7 +31,8 @@ self.onmessage = function (event: MessageEvent<LayoutWorkerRequest>): void {
             return;
         }
 
-        const positions: WorkerVector3[] = nodes.map((node: WorkerNode) => ({
+        const positions: WorkerNodeResult[] = nodes.map((node: WorkerNode) => ({
+            id: node.id,
             x: node.x || (Math.random() - 0.5) * 10,
             y: node.y || (Math.random() - 0.5) * 10,
             z: node.z || (Math.random() - 0.5) * 10

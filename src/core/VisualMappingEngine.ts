@@ -6,7 +6,8 @@ import {
     RelationshipData,
     VisualMappings,
     EntityVisualPreset,
-    RelationshipVisualPreset
+    RelationshipVisualPreset,
+    DataModel
 } from '../types';
 
 /**
@@ -15,9 +16,11 @@ import {
  */
 export class VisualMappingEngine {
     private visualMappings: VisualMappings | undefined;
+    private dataModel: DataModel | undefined;
 
-    constructor(visualMappings?: VisualMappings) {
+    constructor(visualMappings?: VisualMappings, dataModel?: DataModel) {
         this.visualMappings = visualMappings;
+        this.dataModel = dataModel;
     }
 
     /**
@@ -25,6 +28,13 @@ export class VisualMappingEngine {
      */
     setVisualMappings(visualMappings: VisualMappings) {
         this.visualMappings = visualMappings;
+    }
+
+    /**
+     * Set or update data model
+     */
+    setDataModel(dataModel: DataModel) {
+        this.dataModel = dataModel;
     }
 
     /**
@@ -149,9 +159,19 @@ export class VisualMappingEngine {
         // Normalize value if it's a number
         let numValue = typeof value === 'number' ? value : 0;
 
-        // Apply domain normalization if provided
-        if (mapping.domain) {
-            const [domainMin, domainMax] = mapping.domain;
+        // Apply domain normalization if provided or defined in dataModel
+        let domain = mapping.domain;
+        if (!domain && this.dataModel && data.type) {
+            const entityType = data.type;
+            const propSchema = this.dataModel.entities[entityType]?.properties?.[mapping.source]
+                || this.dataModel.relationships[entityType]?.properties?.[mapping.source];
+            if (propSchema && propSchema.range) {
+                domain = propSchema.range;
+            }
+        }
+
+        if (domain) {
+            const [domainMin, domainMax] = domain;
             if (domainMax > domainMin) {
                 if (mapping.function === 'logarithmic') {
                     // True logarithmic data mapping
@@ -298,7 +318,7 @@ export class VisualMappingEngine {
     /**
      * Get categorical color
      */
-    private getCategoricalColor(value: string, palette?: string): THREE.Color {
+    private getCategoricalColor(value: string, _palette?: string): THREE.Color {
         // D3 schemeCategory10 as default fallback
         const category10 = [
             0x1f77b4, 0xff7f0e, 0x2ca02c, 0xd62728, 0x9467bd, 

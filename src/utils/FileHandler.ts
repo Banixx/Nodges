@@ -7,6 +7,7 @@
 import { ImportManager, ImportedData } from './ImportManager';
 import { ExportManager } from './ExportManager';
 import { notify } from '../core/NotificationService';
+import { ServiceContainer } from '../core/di/ServiceContainer';
 
 type LoadNetworkCallback = (data: any, filename: string) => Promise<void>;
 
@@ -16,9 +17,14 @@ export class FileHandler {
     private loadNetworkCallback?: LoadNetworkCallback;
     private fileInput!: HTMLInputElement;
 
-    constructor(loadNetworkCallback?: LoadNetworkCallback) {
-        this.importManager = new ImportManager();
-        this.exportManager = new ExportManager();
+    constructor(container: ServiceContainer, loadNetworkCallback?: LoadNetworkCallback) {
+        const [importManager, exportManager] = 
+            container.resolve<ImportManager, ExportManager>(
+                'ImportManager', 'ExportManager'
+            );
+            
+        this.importManager = importManager;
+        this.exportManager = exportManager;
         this.loadNetworkCallback = loadNetworkCallback;
 
         this.setupFileInput();

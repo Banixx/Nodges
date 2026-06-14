@@ -4,6 +4,7 @@ import type { State } from '../core/StateManager';
 import { GlowEffect } from './GlowEffect';
 import { NodeManager } from '../core/NodeManager';
 import { EdgeObjectsManager } from '../core/EdgeObjectsManager';
+import { ServiceContainer } from '../core/di/ServiceContainer';
 
 interface MaterialBackup {
     color: THREE.Color;
@@ -47,18 +48,11 @@ export class HighlightManager {
         GROUP: 'group'
     };
 
-    constructor(
-        stateManager: IStateManager,
-        glowEffect: GlowEffect,
-        scene: THREE.Scene,
-        nodeManager: NodeManager | null = null,
-        edgeObjectsManager: EdgeObjectsManager | null = null
-    ) {
-        this.stateManager = stateManager;
-        this.glowEffect = glowEffect;
-        this.scene = scene;
-        this.nodeManager = nodeManager;
-        this.edgeObjectsManager = edgeObjectsManager;
+    constructor(container: ServiceContainer) {
+        [this.stateManager, this.glowEffect, this.scene, this.nodeManager, this.edgeObjectsManager] = 
+            container.resolve<IStateManager, GlowEffect, THREE.Scene, NodeManager, EdgeObjectsManager>(
+                'IStateManager', 'GlowEffect', 'Scene', 'NodeManager', 'EdgeObjectsManager'
+            );
 
         // Registry
         this.highlightRegistry = new Map();

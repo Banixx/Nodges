@@ -18,10 +18,19 @@ export interface WorkerVector3 {
 
 /** Node-Daten fuer den Worker (nur Position + Index, keine THREE.js-Objekte) */
 export interface WorkerNode {
+    id: string;
     x: number;
     y: number;
     z: number;
     index?: number;
+}
+
+/** Ergebnis-Position fuer einen Node aus dem Worker */
+export interface WorkerNodeResult {
+    id: string;
+    x: number;
+    y: number;
+    z: number;
 }
 
 /** Edge-Daten fuer den Worker (nur Indizes) */
@@ -65,7 +74,7 @@ export interface LayoutWorkerRequest {
 export interface LayoutWorkerSuccessResponse {
     type: 'success';
     requestId: string;
-    positions: WorkerVector3[];
+    positions: WorkerNodeResult[];
     /** Anzahl der benoetigten Iterationen */
     iterations: number;
     /** Berechnungsdauer in ms */

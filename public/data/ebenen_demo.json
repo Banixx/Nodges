@@ -1,0 +1,162 @@
+{
+  "system": "Microservice Architecture Demo",
+  "metadata": {
+    "created": "2026-06-10T19:00:00Z",
+    "version": "2.0",
+    "author": "Antigravity",
+    "description": "Eine mehrschichtige Microservice-Architektur zur Demonstration der Ebenen-Steuerung (Frontend, API-Gateway, Services, Datenbanken)."
+  },
+  "dataModel": {
+    "entities": {
+      "node": {
+        "properties": {
+          "position": {
+            "type": "spatial",
+            "coordinates": ["x", "y", "z"]
+          },
+          "layer": {
+            "type": "continuous",
+            "range": [1, 4]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "connection": {
+        "properties": {
+          "offset": {
+            "type": "continuous",
+            "range": [-10, 10]
+          }
+        }
+      }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "node": {
+        "size": {
+          "source": "constant",
+          "function": "linear",
+          "range": [1.2, 1.2]
+        },
+        "color": {
+          "source": "categorical",
+          "function": "categorical"
+        }
+      },
+      "connection": {
+        "thickness": {
+          "source": "constant",
+          "function": "linear",
+          "range": [0.08, 0.08]
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "web_app",
+        "type": "node",
+        "label": "Web Client",
+        "geometryType": "cube",
+        "layer": 1,
+        "position": { "x": -4.0, "y": 4.0, "z": 0.0 }
+      },
+      {
+        "id": "mobile_app",
+        "type": "node",
+        "label": "Mobile App",
+        "geometryType": "cube",
+        "layer": 1,
+        "position": { "x": 4.0, "y": 4.0, "z": 0.0 }
+      },
+      {
+        "id": "api_gateway",
+        "type": "node",
+        "label": "API Gateway",
+        "geometryType": "cone",
+        "layer": 2,
+        "position": { "x": 0.0, "y": 2.5, "z": 0.0 }
+      },
+      {
+        "id": "auth_service",
+        "type": "node",
+        "label": "Auth Service",
+        "geometryType": "sphere",
+        "layer": 3,
+        "position": { "x": -5.0, "y": 1.0, "z": -2.0 }
+      },
+      {
+        "id": "user_service",
+        "type": "node",
+        "label": "User Service",
+        "geometryType": "sphere",
+        "layer": 3,
+        "position": { "x": -2.0, "y": 1.0, "z": 2.0 }
+      },
+      {
+        "id": "order_service",
+        "type": "node",
+        "label": "Order Service",
+        "geometryType": "sphere",
+        "layer": 3,
+        "position": { "x": 2.0, "y": 1.0, "z": -2.0 }
+      },
+      {
+        "id": "payment_service",
+        "type": "node",
+        "label": "Payment Service",
+        "geometryType": "sphere",
+        "layer": 3,
+        "position": { "x": 5.0, "y": 1.0, "z": 2.0 }
+      },
+      {
+        "id": "auth_db",
+        "type": "node",
+        "label": "Auth DB (Redis)",
+        "geometryType": "cylinder",
+        "layer": 4,
+        "position": { "x": -5.0, "y": -0.5, "z": -4.0 }
+      },
+      {
+        "id": "user_db",
+        "type": "node",
+        "label": "User DB (Postgres)",
+        "geometryType": "cylinder",
+        "layer": 4,
+        "position": { "x": -2.0, "y": -0.5, "z": 4.0 }
+      },
+      {
+        "id": "order_db",
+        "type": "node",
+        "label": "Order DB (Mongo)",
+        "geometryType": "cylinder",
+        "layer": 4,
+        "position": { "x": 2.0, "y": -0.5, "z": -4.0 }
+      },
+      {
+        "id": "payment_gateway",
+        "type": "node",
+        "label": "External Stripe API",
+        "geometryType": "torus",
+        "layer": 4,
+        "position": { "x": 6.0, "y": -0.5, "z": 4.0 }
+      }
+    ],
+    "relationships": [
+      { "id": "e1", "type": "connection", "source": "web_app", "target": "api_gateway", "offset": 0 },
+      { "id": "e2", "type": "connection", "source": "mobile_app", "target": "api_gateway", "offset": 0 },
+      { "id": "e3", "type": "connection", "source": "api_gateway", "target": "auth_service", "offset": 0 },
+      { "id": "e4", "type": "connection", "source": "api_gateway", "target": "user_service", "offset": 0 },
+      { "id": "e5", "type": "connection", "source": "api_gateway", "target": "order_service", "offset": 0 },
+      { "id": "e6", "type": "connection", "source": "api_gateway", "target": "payment_service", "offset": 0 },
+      { "id": "e7", "type": "connection", "source": "auth_service", "target": "auth_db", "offset": 0 },
+      { "id": "e8", "type": "connection", "source": "user_service", "target": "user_db", "offset": 0 },
+      { "id": "e9", "type": "connection", "source": "order_service", "target": "order_db", "offset": 0 },
+      { "id": "e10", "type": "connection", "source": "payment_service", "target": "payment_gateway", "offset": 0 },
+      { "id": "e11", "type": "connection", "source": "order_service", "target": "payment_service", "offset": 1 }
+    ]
+  }
+}

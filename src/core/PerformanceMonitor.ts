@@ -37,6 +37,7 @@ export class PerformanceMonitor {
     private lastFrameTime: number = 0;
     private currentQuality: QualityLevel = 'high';
     private stateManager: IStateManager | null;
+    private lowFpsStartTime: number = 0;
 
     constructor(stateManager?: IStateManager, config: Partial<PerformanceMonitorConfig> = {}) {
         this.config = { ...DEFAULT_CONFIG, ...config };
@@ -95,6 +96,26 @@ export class PerformanceMonitor {
             // Optionally propagate to state so UI can react
             if (this.stateManager) {
                 (this.stateManager as any).update?.({ renderQuality: next });
+            }
+        }
+
+        // Auto Render Mode switch logic
+        if (this.stateManager) {
+            const state = this.stateManager.state;
+            if (state.renderMode === 'auto' && state.activeRenderMode === 'mesh') {
+                if (fps < 15) {
+                    if (this.lowFpsStartTime === 0) {
+                        this.lowFpsStartTime = performance.now();
+                    } else if (performance.now() - this.lowFpsStartTime > 2000) {
+                        console.log('[PerformanceMonitor] FPS < 15 for 2s. Switching to InstancedMesh.');
+                        this.stateManager.update({ activeRenderMode: 'instance' });
+                        this.lowFpsStartTime = 0;
+                    }
+                } else {
+                    this.lowFpsStartTime = 0;
+                }
+            } else {
+                this.lowFpsStartTime = 0;
             }
         }
     }

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { IStateManager } from '../core/interfaces';
+import { ServiceContainer } from '../core/di/ServiceContainer';
 
 interface PathNode {
     id: string | number;
@@ -50,7 +51,12 @@ export class PathFinder {
     private animationPhase: number;
     private animationMarker: THREE.Mesh | null;
 
-    constructor(scene: THREE.Scene, _stateManager: IStateManager) {
+    constructor(container: ServiceContainer) {
+        const [scene, _stateManager] = 
+            container.resolve<THREE.Scene, IStateManager>(
+                'Scene', 'IStateManager'
+            );
+            
         this.scene = scene;
         // this.stateManager = stateManager;
         this.nodes = [];

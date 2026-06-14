@@ -1,0 +1,108 @@
+---
+title: "Nodges System Explorer -- Gesamtuebersicht"
+---
+graph TB
+    subgraph Input["Daten-Eingang"]
+        JSONFile["JSON-Dateien"]
+        LLMGen["LLM-Generierung"]
+        ManualCreate["Manuelle Erstellung"]
+        Import["Import CSV/GraphML"]
+    end
+
+    subgraph Core["Kern-Engine"]
+        direction TB
+        StateManager["StateManager"]
+        VMEngine["VisualMappingEngine"]
+        LayoutMgr["LayoutManager"]
+        TimeEngine["TimeEngine -- GEPLANT"]
+    end
+
+    subgraph Darstellung["Darstellungsebenen"]
+        direction TB
+        subgraph Nodes_V["Node-Parameter"]
+            N1["Position"]
+            N2["Groesse"]
+            N3["Farbe"]
+            N4["Form"]
+            N5["Glow"]
+            N6["Opacity"]
+            N7["Label"]
+            N8["Animation -- GEPLANT"]
+        end
+        subgraph Edges_V["Edge-Parameter"]
+            E1["Dicke"]
+            E2["Farbe"]
+            E3["Kruemmung"]
+            E4["Pulse"]
+            E5["Wave"]
+            E6["Flow"]
+            E7["Segments"]
+            E8["Richtung -- GEPLANT"]
+        end
+    end
+
+    subgraph Filter["Filter und Sichtbarkeit"]
+        Ebenen["4 Ebenen"]
+        Gruppen["Gruppen"]
+        AttrFilter["Attribut-Filter -- GEPLANT"]
+        TypeFilter["Typ-Filter -- GEPLANT"]
+        GradFilter["Grad-Filter -- GEPLANT"]
+    end
+
+    subgraph Layouts["Layout-Algorithmen"]
+        ForceDir["Force-Directed"]
+        FruchRein["Fruchterman-Reingold"]
+        SpringEmb["Spring-Embedder"]
+        Hierarch["Hierarchical"]
+        TreeL["Tree"]
+        CircularL["Circular"]
+        GridL["Grid"]
+        RandomL["Random"]
+        SemanticL["Semantisch -- GEPLANT"]
+        TimelineL["Zeitachse -- GEPLANT"]
+    end
+
+    subgraph Interaktion_2["Interaktion"]
+        HoverSel["Hover und Selektion"]
+        Highlight["Highlighting"]
+        PathFind["Pfadfindung"]
+        NeighborH["Nachbarschaft"]
+        Search2["Suche"]
+        BoxSel["Box-Selektion"]
+        ContextMenu["Kontextmenu"]
+    end
+
+    subgraph Kamera["Kamera"]
+        Orbit["Orbit Controls"]
+        Minimap["Minimap"]
+        FocusOn["Focus on Selection"]
+        FollowCam["Follow-Cam -- GEPLANT"]
+        FlyThrough["Fly-Through -- GEPLANT"]
+    end
+
+    subgraph Zeit["Zeitdimension -- GEPLANT"]
+        PlayPause["Play / Pause / Stop"]
+        Timeline["Timeline-Scrubber"]
+        Snapshots["Snapshots"]
+        WhatIf2["What-If Szenarien"]
+        History2["State-History"]
+    end
+
+    subgraph Output["Ausgabe"]
+        Render["Three.js Rendering"]
+        Export["JSON Export"]
+        Screenshot["Screenshot"]
+    end
+
+    Input --> Core
+    Core --> Darstellung
+    Core --> Filter
+    Core --> Layouts
+    Core --> Zeit
+    Darstellung --> Render
+    Filter --> Darstellung
+    Layouts --> Darstellung
+    Zeit --> Darstellung
+    Interaktion_2 --> Core
+    Kamera --> Render
+    Core --> Output

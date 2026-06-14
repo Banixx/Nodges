@@ -59,4 +59,19 @@ export class ServiceContainer {
     reset(): void {
         this.services.clear();
     }
+
+    /**
+     * Helper to resolve multiple dependencies at once.
+     * Use this in manager constructors.
+     */
+    resolve<T1, T2>(k1: string, k2: string): [T1, T2];
+    resolve<T1, T2, T3>(k1: string, k2: string, k3: string): [T1, T2, T3];
+    resolve<T1, T2, T3, T4>(k1: string, k2: string, k3: string, k4: string): [T1, T2, T3, T4];
+    resolve<T1, T2, T3, T4, T5>(k1: string, k2: string, k3: string, k4: string, k5: string): [T1, T2, T3, T4, T5];
+    resolve<T1, T2, T3, T4, T5, T6>(k1: string, k2: string, k3: string, k4: string, k5: string, k6: string): [T1, T2, T3, T4, T5, T6];
+    resolve<T1, T2, T3, T4, T5, T6, T7>(k1: string, k2: string, k3: string, k4: string, k5: string, k6: string, k7: string): [T1, T2, T3, T4, T5, T6, T7];
+    resolve<T1, T2, T3, T4, T5, T6, T7, T8>(k1: string, k2: string, k3: string, k4: string, k5: string, k6: string, k7: string, k8: string): [T1, T2, T3, T4, T5, T6, T7, T8];
+    resolve(...keys: string[]): any[] {
+        return keys.map(key => this.get(key));
+    }
 }

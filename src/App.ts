@@ -1,4 +1,4 @@
-// App.ts - Build: 0.98.1.6
+// App.ts - Build: 1.0.0.0
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { StateManager } from './core/StateManager';
@@ -23,15 +23,16 @@ import { NeighborhoodHighlighter } from './utils/NeighborhoodHighlighter';
 import { KeyboardShortcuts } from './utils/KeyboardShortcuts';
 import { BatchOperations } from './utils/BatchOperations';
 import { NodeGroupManager } from './utils/NodeGroupManager';
-import { LayoutGUI } from './utils/LayoutGUI';
+import { LayoutGUI } from './ui/LayoutGUI';
 import { HighlightManager } from './effects/HighlightManager';
 import { GlowEffect } from './effects/GlowEffect';
 import { EdgeObjectsManager } from './core/EdgeObjectsManager';
 import { DataParser } from './core/DataParser';
 import { VisualMappingEngine } from './core/VisualMappingEngine';
 import { IStateManager, IEventManager } from './core/interfaces';
-import { GraphData, EntityData, RelationshipData, NodeObject, VisualMappings } from './types';
+import { GraphData, EntityData, RelationshipData, VisualMappings, DataModel } from './types';
 import { VisualOptimizer } from './utils/VisualOptimizer';
+import { notify } from './core/NotificationService';
 
 
 import { ServiceContainer } from './core/di/ServiceContainer';
@@ -90,14 +91,10 @@ export class App {
     // Data management
     public currentGraphData: GraphData | null = null;
     public visualMappingEngine: VisualMappingEngine;
-    public layoutEnabled: boolean = false; // Auto-layout disabled by default
+    private loadedSchemas = new Map<string, { dataModel?: DataModel, visualMappings?: VisualMappings }>();
 
-    // Future support
     public currentEntities: EntityData[] = [];
     public currentRelationships: RelationshipData[] = [];
-
-    public nodeObjects: NodeObject[] = [];
-    public edgeObjects: any[] = [];
 
     private _isInitialized: boolean = false;
     private frameCounter: number = 0;
@@ -155,13 +152,22 @@ export class App {
         // Register Core Services
         this.initCoreServices();
 
+        // Register Core 3D Objects
+        this.container.register('Scene', this.scene);
+        this.container.register('Camera', this.camera);
+        this.container.register('Renderer', this.renderer);
+        this.container.register('Controls', this.controls);
+
         // Retrieve instances for local usage (backward compatibility)
         this.stateManager = this.container.get<IStateManager>('IStateManager');
         this.visualMappingEngine = this.container.get<VisualMappingEngine>('VisualMappingEngine');
 
         // These still need manual instantiation until fully refactored, but using injected dependencies
-        this.nodeManager = new NodeManager(this.scene, this.visualMappingEngine, this.stateManager);
-        this.edgeObjectsManager = new EdgeObjectsManager(this.scene, this.visualMappingEngine, this.stateManager);
+        this.nodeManager = new NodeManager(this.container);
+        this.container.register('NodeManager', this.nodeManager);
+        
+        this.edgeObjectsManager = new EdgeObjectsManager(this.container);
+        this.container.register('EdgeObjectsManager', this.edgeObjectsManager);
 
         this.init();
     }
@@ -368,37 +374,29 @@ export class App {
         this.glowEffect = this.container.get<GlowEffect>('GlowEffect');
 
         // Init & Register HighlightManager
-        const highlightManager = new HighlightManager(this.stateManager, this.glowEffect, this.scene, this.nodeManager, this.edgeObjectsManager);
+        const highlightManager = new HighlightManager(this.container);
         this.container.register('HighlightManager', highlightManager);
         this.highlightManager = this.container.get<HighlightManager>('HighlightManager');
 
         this.uiManager = new UIManager(this);
 
         // Init & Register CentralEventManager
-        const centralEventManager = new CentralEventManager(this.camera, this.renderer, this.stateManager, this.nodeManager, this.edgeObjectsManager, this.scene);
+        const centralEventManager = new CentralEventManager(this.container);
         this.container.register('IEventManager', centralEventManager);
         this.centralEventManager = this.container.get<IEventManager>('IEventManager');
 
         // Init & Register InteractionManager
-        const interactionManager = new InteractionManager(
-            this.centralEventManager,
-            this.stateManager,
-            this.highlightManager,
-            this.camera,
-            this.controls,
-            this.scene,
-            this.renderer
-        );
+        const interactionManager = new InteractionManager(this.container);
         this.container.register('InteractionManager', interactionManager);
         this.interactionManager = this.container.get<InteractionManager>('InteractionManager');
 
         // Init & Register SelectionManager
-        const selectionManager = new SelectionManager(this.scene, this.camera, this.renderer, this.stateManager, this.controls, this.nodeManager);
+        const selectionManager = new SelectionManager(this.container);
         this.container.register('SelectionManager', selectionManager);
         this.selectionManager = this.container.get<SelectionManager>('SelectionManager');
 
         // Init & Register RaycastManager
-        const raycastManager = new RaycastManager(this.camera, this.nodeManager, this.edgeObjectsManager);
+        const raycastManager = new RaycastManager(this.container);
         this.container.register('RaycastManager', raycastManager);
         this.raycastManager = this.container.get<RaycastManager>('RaycastManager');
         // Init & Register NetworkAnalyzer
@@ -407,19 +405,14 @@ export class App {
         this.networkAnalyzer = this.container.get<NetworkAnalyzer>('NetworkAnalyzer');
 
         // Init & Register PathFinder
-        const pathFinder = new PathFinder(this.scene, this.stateManager);
+        const pathFinder = new PathFinder(this.container);
         this.container.register('PathFinder', pathFinder);
         this.pathFinder = this.container.get<PathFinder>('PathFinder');
 
         // Init & Register PerformanceOptimizer
-        const performanceOptimizer = new PerformanceOptimizer(this.scene, this.camera, this.renderer);
+        const performanceOptimizer = new PerformanceOptimizer(this.container);
         this.container.register('PerformanceOptimizer', performanceOptimizer);
         this.performanceOptimizer = this.container.get<PerformanceOptimizer>('PerformanceOptimizer');
-
-        // Init & Register FileHandler
-        const fileHandler = new FileHandler(this.loadGraphData.bind(this));
-        this.container.register('FileHandler', fileHandler);
-        this.fileHandler = this.container.get<FileHandler>('FileHandler');
 
         // Init & Register Import/Export Managers
         this.importManager = new ImportManager();
@@ -428,27 +421,32 @@ export class App {
         this.exportManager = new ExportManager();
         this.container.register('ExportManager', this.exportManager);
 
+        // Init & Register FileHandler
+        const fileHandler = new FileHandler(this.container, this.loadGraphData.bind(this));
+        this.container.register('FileHandler', fileHandler);
+        this.fileHandler = this.container.get<FileHandler>('FileHandler');
+
         // Init & Register EdgeLabelManager
-        const edgeLabelManager = new EdgeLabelManager(this.scene, this.camera);
+        const edgeLabelManager = new EdgeLabelManager(this.container);
         this.container.register('EdgeLabelManager', edgeLabelManager);
         this.edgeLabelManager = this.container.get<EdgeLabelManager>('EdgeLabelManager');
 
         // Init & Register NodeLabelManager
-        const nodeLabelManager = new NodeLabelManager(this.scene, this.camera);
+        const nodeLabelManager = new NodeLabelManager(this.container);
         this.container.register('NodeLabelManager', nodeLabelManager);
         this.nodeLabelManager = this.container.get<NodeLabelManager>('NodeLabelManager');
         // Init & Register NeighborhoodHighlighter
-        const neighborhoodHighlighter = new NeighborhoodHighlighter(this.scene, this.stateManager);
+        const neighborhoodHighlighter = new NeighborhoodHighlighter(this.container);
         this.container.register('NeighborhoodHighlighter', neighborhoodHighlighter);
         this.neighborhoodHighlighter = this.container.get<NeighborhoodHighlighter>('NeighborhoodHighlighter');
 
         // Init & Register NodeGroupManager
-        const nodeGroupManager = new NodeGroupManager(this.scene, this.stateManager);
+        const nodeGroupManager = new NodeGroupManager(this.container);
         this.container.register('NodeGroupManager', nodeGroupManager);
         this.nodeGroupManager = this.container.get<NodeGroupManager>('NodeGroupManager');
 
         // Init & Register BatchOperations
-        const batchOperations = new BatchOperations(this.selectionManager, this.nodeGroupManager);
+        const batchOperations = new BatchOperations(this.container);
         this.container.register('BatchOperations', batchOperations);
         this.batchOperations = this.container.get<BatchOperations>('BatchOperations');
 
@@ -576,6 +574,49 @@ export class App {
         await this.loadData('data/small.json');
     }
 
+    public newGraph() {
+        console.log('[App] Starting new graph...');
+        this.clearScene();
+        
+        // Reset StateManager graph data & loaded files
+        this.stateManager.setLoadedFiles([]);
+        this.stateManager.setGraphData([], []);
+        this.loadedSchemas.clear();
+        this.currentGraphData = null;
+
+        // Clear raycast cache
+        if (this.raycastManager && this.raycastManager.clearCache) {
+            this.raycastManager.clearCache();
+        }
+
+        // Reset UI file info
+        if (this.uiManager) {
+            this.uiManager.updateFileInfo(
+                '-',
+                0,
+                0,
+                {
+                    x: { min: 0, max: 0 },
+                    y: { min: 0, max: 0 },
+                    z: { min: 0, max: 0 }
+                }
+            );
+        }
+
+        // Reset minimap center & zoom
+        if (this.minimapCenter) {
+            this.minimapCenter.set(0, 0);
+            this.minimapZoom = 100;
+            this.updateMinimapCamera();
+        }
+
+        // Reset camera and controls
+        this.fitCameraToScene();
+
+        // Notify user via NotificationService
+        notify.info('Neues Projekt', 'Ein leeres Projekt wurde erstellt.');
+    }
+
     async loadGraphData(graphData: GraphData, sourceName: string = 'Imported Data', append: boolean = false) {
         try {
             console.log(`[App] ${append ? 'Appending' : 'Loading'} GraphData from ${sourceName}...`);
@@ -583,16 +624,23 @@ export class App {
             if (!append) {
                 this.clearScene();
                 this.stateManager.setLoadedFiles([{ id: sourceName, name: sourceName }]);
+                this.loadedSchemas.clear();
             } else {
                 // Prefix IDs for the new data to avoid collisions
                 const prefix = sourceName.replace(/\.[^/.]+$/, "").replace(/[^a-z0-9]/gi, '_');
                 DataParser.prefixIds(graphData, prefix);
                 
                 const currentFiles = this.stateManager.state.loadedFiles || [];
-                if (!currentFiles.find(f => f.id === sourceName)) {
+                if (!currentFiles.find((f: any) => f.id === sourceName)) {
                     this.stateManager.setLoadedFiles([...currentFiles, { id: sourceName, name: sourceName }]);
                 }
             }
+
+            // Save this file's schema
+            this.loadedSchemas.set(sourceName, {
+                dataModel: graphData.dataModel,
+                visualMappings: graphData.visualMappings
+            });
 
             this.stateManager.update({
                 selectedObject: null,
@@ -607,15 +655,26 @@ export class App {
                 this.raycastManager.clearCache();
             }
 
-            this.currentGraphData = graphData;
-
-            // Set visual mappings if available
-            if (this.currentGraphData.visualMappings) {
-                this.visualMappingEngine.setVisualMappings(this.currentGraphData.visualMappings);
-                if (this.uiManager) {
-                    this.uiManager.updateVisualMappings(this.currentGraphData.visualMappings);
-                }
+            if (this.stateManager.state.renderMode === 'auto') {
+                this.stateManager.update({ activeRenderMode: 'mesh' });
             }
+
+            // Set currentGraphData or merge data
+            if (append && this.currentGraphData) {
+                this.currentGraphData.data.entities = [
+                    ...this.currentGraphData.data.entities,
+                    ...graphData.data.entities
+                ];
+                this.currentGraphData.data.relationships = [
+                    ...this.currentGraphData.data.relationships,
+                    ...graphData.data.relationships
+                ];
+            } else {
+                this.currentGraphData = graphData;
+            }
+
+            // Rebuild and merge schemas from all loaded files
+            this.rebuildMergedSchema();
 
             // Store data directly
             if (append) {
@@ -713,12 +772,58 @@ export class App {
 
     public updateVisualMappings(mappings: VisualMappings) {
         console.log('[App] Updating visual mappings...');
+        if (this.currentGraphData) {
+            this.currentGraphData.visualMappings = mappings; // Persist in data
+        }
         this.visualMappingEngine.setVisualMappings(mappings);
         this.stateManager.update({ visualMappings: mappings });
         
-        // Re-create nodes and edges with new mappings
-        this.createNodes();
-        this.createEdges();
+        // Re-apply to nodes
+        if (this.nodeManager) {
+            this.nodeManager.updateNodes(this.currentEntities);
+        }
+
+        // Re-apply to edges
+        if (this.edgeObjectsManager) {
+            this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
+        }
+    }
+
+
+    private rebuildMergedSchema() {
+        if (!this.currentGraphData) return;
+
+        // Initialize empty containers
+        const mergedDataModel: DataModel = { entities: {}, relationships: {} };
+        const mergedVisualMappings: VisualMappings = { defaultPresets: {} };
+
+        // Merge all schemas
+        this.loadedSchemas.forEach((schema) => {
+            if (schema.dataModel) {
+                if (schema.dataModel.entities) {
+                    Object.assign(mergedDataModel.entities, schema.dataModel.entities);
+                }
+                if (schema.dataModel.relationships) {
+                    Object.assign(mergedDataModel.relationships, schema.dataModel.relationships);
+                }
+            }
+            if (schema.visualMappings && schema.visualMappings.defaultPresets) {
+                Object.assign(mergedVisualMappings.defaultPresets, schema.visualMappings.defaultPresets);
+            }
+        });
+
+        // Set on currentGraphData
+        this.currentGraphData.dataModel = mergedDataModel;
+        this.currentGraphData.visualMappings = mergedVisualMappings;
+
+        // Propagate to engine
+        this.visualMappingEngine.setDataModel(mergedDataModel);
+        this.visualMappingEngine.setVisualMappings(mergedVisualMappings);
+
+        // Propagate to UI
+        if (this.uiManager) {
+            this.uiManager.updateVisualMappings(mergedVisualMappings);
+        }
     }
 
     async removeData(sourceName: string) {
@@ -727,13 +832,18 @@ export class App {
             
             // Filter out files from state
             const currentFiles = this.stateManager.state.loadedFiles || [];
-            const updatedFiles = currentFiles.filter(f => f.id !== sourceName);
+            const updatedFiles = currentFiles.filter((f: any) => f.id !== sourceName);
             this.stateManager.setLoadedFiles(updatedFiles);
+
+            // Remove schema from loaded schemas
+            this.loadedSchemas.delete(sourceName);
 
             // If no files left, clear everything
             if (updatedFiles.length === 0) {
                 this.clearScene();
                 this.stateManager.setGraphData([], []);
+                this.loadedSchemas.clear();
+                this.currentGraphData = null;
                 return;
             }
 
@@ -742,7 +852,20 @@ export class App {
             const prefixWithUnderscore = `${prefix}_`;
 
             this.currentEntities = this.currentEntities.filter(e => !e.id.startsWith(prefixWithUnderscore));
-            this.currentRelationships = this.currentRelationships.filter(r => !r.id.startsWith(prefixWithUnderscore));
+            this.currentRelationships = this.currentRelationships.filter(r => !r.id?.startsWith(prefixWithUnderscore));
+
+            // Also clean up entities/relationships from currentGraphData.data
+            if (this.currentGraphData && this.currentGraphData.data) {
+                this.currentGraphData.data.entities = this.currentGraphData.data.entities.filter(
+                    e => !e.id.startsWith(prefixWithUnderscore)
+                );
+                this.currentGraphData.data.relationships = this.currentGraphData.data.relationships.filter(
+                    r => !r.id?.startsWith(prefixWithUnderscore)
+                );
+            }
+
+            // Rebuild merged schema from remaining datasets
+            this.rebuildMergedSchema();
 
             // Update StateManager
             this.stateManager.setGraphData(this.currentEntities, this.currentRelationships);
@@ -824,13 +947,11 @@ export class App {
         if (this.nodeManager) {
             this.nodeManager.clear();
         }
-        this.nodeObjects = [];
 
         // Remove edges
         if (this.edgeObjectsManager) {
             this.edgeObjectsManager.dispose();
         }
-        this.edgeObjects = [];
 
         this.currentEntities = [];
         this.currentRelationships = [];
@@ -948,23 +1069,6 @@ export class App {
         }, 'dev');
     }
 
-    public updateVisualMappings(mappings: any) {
-        if (!this.currentGraphData) return;
-        this.currentGraphData.visualMappings = mappings; // Persist in data
-        this.visualMappingEngine.setVisualMappings(mappings);
-
-        // Re-apply to nodes
-        if (this.nodeManager) {
-            this.nodeManager.updateNodes(this.currentEntities);
-        }
-
-        // Re-apply to edges
-        if (this.edgeObjectsManager) {
-            this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
-        }
-
-        // Re-render scene (implicit in animate loop, but ensuring robust update)
-    }
 
     fitCameraToScene() {
         if (this.currentEntities.length === 0) return;

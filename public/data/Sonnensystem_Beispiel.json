@@ -1,0 +1,71 @@
+{
+  "system": "Unser Sonnensystem",
+  "metadata": {
+    "created": "2026-06-14T23:00:00Z",
+    "version": "1.0",
+    "author": "Antigravity",
+    "description": "Ein Himmelskörper-Modell des Sonnensystems zur Demonstration von logarithmischer Größenskalierung (Masse) und Heatmap-Farbskalierung (Temperatur)."
+  },
+  "dataModel": {
+    "entities": {
+      "Himmelskoerper": {
+        "properties": {
+          "masse": { "type": "continuous", "range": [0.008, 333000.0] },
+          "temperatur": { "type": "continuous", "range": [-200.0, 5500.0] },
+          "bewohnbar": { "type": "boolean" },
+          "typ": { "type": "categorical", "values": ["Stern", "Gesteinsplanet", "Gasriese", "Mond"] }
+        }
+      }
+    },
+    "relationships": {
+      "Umlaufbahn": {
+        "properties": {
+          "geschwindigkeit": { "type": "continuous", "range": [1.0, 48.0] }
+        }
+      }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Himmelskoerper": {
+        "size": { "source": "masse", "function": "logarithmic", "domain": [0.008, 333000.0], "range": [0.4, 4.0] },
+        "color": { "source": "temperatur", "function": "heatmap", "domain": [-200.0, 5500.0], "palette": "blue-red" },
+        "glow": { "source": "bewohnbar", "function": "categorical", "params": { "mapping": { "true": 1.0, "false": 0.0 } } }
+      },
+      "Umlaufbahn": {
+        "color": { "source": "constant", "function": "linear", "params": { "color": "#5dade2" } },
+        "thickness": { "source": "geschwindigkeit", "function": "linear", "domain": [1.0, 48.0], "range": [0.03, 0.15] },
+        "curvature": { "source": "constant", "function": "linear", "range": [0.4, 0.4] }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      { "id": "n1", "type": "Himmelskoerper", "label": "Sonne", "masse": 333000.0, "temperatur": 5500.0, "bewohnbar": false, "typ": "Stern", "position": { "x": 0.0, "y": 0.0, "z": 0.0 } },
+      { "id": "n2", "type": "Himmelskoerper", "label": "Merkur", "masse": 0.055, "temperatur": 167.0, "bewohnbar": false, "typ": "Gesteinsplanet", "position": { "x": 12.0, "y": 0.0, "z": 0.0 } },
+      { "id": "n3", "type": "Himmelskoerper", "label": "Venus", "masse": 0.815, "temperatur": 464.0, "bewohnbar": false, "typ": "Gesteinsplanet", "position": { "x": 20.0, "y": 0.0, "z": 0.0 } },
+      { "id": "n4", "type": "Himmelskoerper", "label": "Erde", "masse": 1.0, "temperatur": 15.0, "bewohnbar": true, "typ": "Gesteinsplanet", "position": { "x": 28.0, "y": 0.0, "z": 0.0 } },
+      { "id": "n5", "type": "Himmelskoerper", "label": "Mond", "masse": 0.012, "temperatur": -20.0, "bewohnbar": false, "typ": "Mond", "position": { "x": 28.0, "y": 4.0, "z": 0.0 } },
+      { "id": "n6", "type": "Himmelskoerper", "label": "Mars", "masse": 0.107, "temperatur": -63.0, "bewohnbar": false, "typ": "Gesteinsplanet", "position": { "x": 38.0, "y": 0.0, "z": 0.0 } },
+      { "id": "n7", "type": "Himmelskoerper", "label": "Jupiter", "masse": 317.8, "temperatur": -108.0, "bewohnbar": false, "typ": "Gasriese", "position": { "x": 54.0, "y": 0.0, "z": 0.0 } },
+      { "id": "n8", "type": "Himmelskoerper", "label": "Europa", "masse": 0.008, "temperatur": -160.0, "bewohnbar": false, "typ": "Mond", "position": { "x": 54.0, "y": -4.0, "z": 0.0 } },
+      { "id": "n9", "type": "Himmelskoerper", "label": "Saturn", "masse": 95.2, "temperatur": -139.0, "bewohnbar": false, "typ": "Gasriese", "position": { "x": 74.0, "y": 0.0, "z": 0.0 } },
+      { "id": "n10", "type": "Himmelskoerper", "label": "Titan", "masse": 0.022, "temperatur": -179.0, "bewohnbar": false, "typ": "Mond", "position": { "x": 74.0, "y": 5.0, "z": 0.0 } },
+      { "id": "n11", "type": "Himmelskoerper", "label": "Uranus", "masse": 14.5, "temperatur": -197.0, "bewohnbar": false, "typ": "Gasriese", "position": { "x": 94.0, "y": 0.0, "z": 0.0 } },
+      { "id": "n12", "type": "Himmelskoerper", "label": "Neptun", "masse": 17.1, "temperatur": -200.0, "bewohnbar": false, "typ": "Gasriese", "position": { "x": 112.0, "y": 0.0, "z": 0.0 } }
+    ],
+    "relationships": [
+      { "id": "r1", "type": "Umlaufbahn", "source": "n2", "target": "n1", "label": "Orbit Merkur", "geschwindigkeit": 47.4 },
+      { "id": "r2", "type": "Umlaufbahn", "source": "n3", "target": "n1", "label": "Orbit Venus", "geschwindigkeit": 35.0 },
+      { "id": "r3", "type": "Umlaufbahn", "source": "n4", "target": "n1", "label": "Orbit Erde", "geschwindigkeit": 29.8 },
+      { "id": "r4", "type": "Umlaufbahn", "source": "n5", "target": "n4", "label": "Orbit Mond", "geschwindigkeit": 1.02 },
+      { "id": "r5", "type": "Umlaufbahn", "source": "n6", "target": "n1", "label": "Orbit Mars", "geschwindigkeit": 24.1 },
+      { "id": "r6", "type": "Umlaufbahn", "source": "n7", "target": "n1", "label": "Orbit Jupiter", "geschwindigkeit": 13.1 },
+      { "id": "r7", "type": "Umlaufbahn", "source": "n8", "target": "n7", "label": "Orbit Europa", "geschwindigkeit": 13.74 },
+      { "id": "r8", "type": "Umlaufbahn", "source": "n9", "target": "n1", "label": "Orbit Saturn", "geschwindigkeit": 9.7 },
+      { "id": "r9", "type": "Umlaufbahn", "source": "n10", "target": "n9", "label": "Orbit Titan", "geschwindigkeit": 5.57 },
+      { "id": "r10", "type": "Umlaufbahn", "source": "n11", "target": "n1", "label": "Orbit Uranus", "geschwindigkeit": 6.8 },
+      { "id": "r11", "type": "Umlaufbahn", "source": "n12", "target": "n1", "label": "Orbit Neptun", "geschwindigkeit": 5.4 }
+    ]
+  }
+}

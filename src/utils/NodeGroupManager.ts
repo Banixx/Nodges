@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { IStateManager } from '../core/interfaces';
 import { NodeObject } from '../types';
+import { ServiceContainer } from '../core/di/ServiceContainer';
 
 interface GroupOutline {
     enabled: boolean;
@@ -38,7 +39,12 @@ export class NodeGroupManager {
     private outlineObjects: Map<string | number, THREE.Mesh>;
     private defaultColors: number[];
 
-    constructor(scene: THREE.Scene, stateManager: IStateManager) {
+    constructor(container: ServiceContainer) {
+        const [scene, stateManager] = 
+            container.resolve<THREE.Scene, IStateManager>(
+                'Scene', 'IStateManager'
+            );
+            
         this.scene = scene;
         this.stateManager = stateManager;
         this.groups = new Map(); // Map of group ID to group data

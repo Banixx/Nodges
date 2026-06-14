@@ -22,6 +22,7 @@ import { DragHandler } from './DragHandler';
 import { KeyboardHandler } from './KeyboardHandler';
 import { ContextMenuHandler } from './ContextMenuHandler';
 import { NodeCreationHandler } from './NodeCreationHandler';
+import { ServiceContainer } from '../di/ServiceContainer';
 
 export class InteractionManager {
     private eventManager: IEventManager;
@@ -52,15 +53,12 @@ export class InteractionManager {
     private lastInteractionTime: number;
     private interactionCooldown: number; // ms
 
-    constructor(
-        centralEventManager: IEventManager,
-        stateManager: IStateManager,
-        highlightManager: HighlightManager,
-        camera: THREE.Camera,
-        controls: any,
-        scene: THREE.Scene,
-        renderer: THREE.WebGLRenderer
-    ) {
+    constructor(container: ServiceContainer) {
+        const [centralEventManager, stateManager, highlightManager, camera, controls, scene, renderer] = 
+            container.resolve<IEventManager, IStateManager, HighlightManager, THREE.Camera, any, THREE.Scene, THREE.WebGLRenderer>(
+                'IEventManager', 'IStateManager', 'HighlightManager', 'Camera', 'Controls', 'Scene', 'Renderer'
+            );
+
         this.eventManager = centralEventManager;
         this.stateManager = stateManager;
         this.controls = controls;
@@ -72,9 +70,9 @@ export class InteractionManager {
 
         // Handler instanziieren
         this.hoverHandler = new HoverHandler(stateManager, highlightManager);
-        this.selectionHandler = new SelectionHandler(stateManager, centralEventManager, camera, controls);
+        this.selectionHandler = new SelectionHandler(stateManager, camera, controls);
         this.dragHandler = new DragHandler(stateManager, camera, controls);
-        this.nodeCreationHandler = new NodeCreationHandler(stateManager, camera, scene, renderer);
+        this.nodeCreationHandler = new NodeCreationHandler(stateManager, camera, scene, renderer, highlightManager);
         this.keyboardHandler = new KeyboardHandler(stateManager, this.selectionHandler, this.nodeCreationHandler);
         this.contextMenuHandler = new ContextMenuHandler(stateManager, this.selectionHandler, this.nodeCreationHandler);
 

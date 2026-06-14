@@ -239,6 +239,7 @@ export class LayoutManager {
                 requestId,
                 algorithm: layoutId,
                 nodes: nodes.map(node => ({
+                    id: node.id,
                     x: node.position?.x || 0,
                     y: node.position?.y || 0,
                     z: node.position?.z || 0,
@@ -286,12 +287,19 @@ export class LayoutManager {
                         console.log(`[LayoutManager] Layout berechnet: ${iterations} Iterationen in ${duration.toFixed(1)}ms`);
 
                         if (positions && Array.isArray(positions)) {
-                            positions.forEach((pos, index) => {
-                                if (pos && nodes[index]) {
-                                    if (!nodes[index].position) nodes[index].position = { x: 0, y: 0, z: 0 };
-                                    nodes[index].position!.x = pos.x || 0;
-                                    nodes[index].position!.y = pos.y || 0;
-                                    nodes[index].position!.z = pos.z || 0;
+                            // Map fuer performante ID-basierte Zuweisung erstellen
+                            const nodeMap = new Map<string, EntityData>();
+                            nodes.forEach(node => {
+                                nodeMap.set(node.id, node);
+                            });
+
+                            positions.forEach(pos => {
+                                const node = nodeMap.get(pos.id);
+                                if (node) {
+                                    if (!node.position) node.position = { x: 0, y: 0, z: 0 };
+                                    node.position.x = pos.x || 0;
+                                    node.position.y = pos.y || 0;
+                                    node.position.z = pos.z || 0;
                                 }
                             });
                         }

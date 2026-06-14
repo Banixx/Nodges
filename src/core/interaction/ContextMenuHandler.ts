@@ -4,8 +4,8 @@
  */
 import * as THREE from 'three';
 import { IStateManager } from '../interfaces';
-import { ContextMenu } from '../../utils/ContextMenu';
-import { DataEditor } from '../../utils/DataEditor';
+import { ContextMenu } from '../../ui/ContextMenu';
+import { DataEditor } from '../../ui/DataEditor';
 import { SelectionHandler } from './SelectionHandler';
 import { NodeCreationHandler } from './NodeCreationHandler';
 
@@ -41,50 +41,89 @@ export class ContextMenuHandler {
      * Zeigt Context Menu an
      */
     showContextMenu(object: THREE.Object3D | null, event: any) {
-        const hasSelection = this.stateManager.getSelectedObjects().size > 0;
-        const hasNodeSelection = Array.from(this.stateManager.getSelectedObjects())
-            .some(obj => obj.userData.type === 'node');
+        const options: any[] = [];
 
-        const options: any[] = [
-            {
-                label: 'Neuer Node',
-                action: () => this.nodeCreationHandler.createNewNode(event)
-            },
-            {
-                label: 'Neue Edge',
-                action: () => this.nodeCreationHandler.startEdgeCreationMode(),
-                disabled: !hasNodeSelection
-            },
-            {
-                label: 'Duplizieren',
-                action: () => this.selectionHandler.duplicateSelected(),
-                disabled: !hasSelection
-            }
-        ];
-
-        // Wenn ein Objekt angeklickt wurde, fuege objektspezifische Optionen hinzu
-        if (object) {
-            options.unshift({
+        if (object && object.userData.type === 'node') {
+            options.push({
                 label: 'Data',
                 action: () => {
-                    const data = object.userData.nodeData || object.userData.edge || object.userData.entity || {};
+                    const data = object.userData.nodeData || object.userData.entity || {};
                     this.dataEditor.show(data, (updatedData: any) => {
-                        if (object.userData.type === 'node') {
-                            const id = object.userData.id || object.userData.nodeData?.id;
-                            if (id) {
-                                this.stateManager.updateNode(id, updatedData);
-                            }
-                        } else if (object.userData.type === 'edge') {
-                            const edgeData = object.userData.edge || object.userData.relationship;
-                            const id = edgeData?.id;
-                            if (id) {
-                                this.stateManager.updateEdge(id, updatedData);
-                            }
+                        const id = object.userData.id || object.userData.nodeData?.id;
+                        if (id) {
+                            this.stateManager.updateNode(id, updatedData);
                         }
-                        // Update selection state to trigger UI refresh if needed
                         this.stateManager.setSelectedObject(object);
                     });
                 }
+            });
+            options.push({
+                label: 'Move',
+                action: () => {
+                    this.nodeCreationHandler.moveExistingNode(object);
+                }
+            });
+            options.push({
+                label: 'Delete',
+                action: () => {
+                    this.stateManager.setSelectedObject(object);
+                    this.selectionHandler.deleteSelected();
+                }
+            });
+            options.push({
+                label: 'Duplicate',
+                action: () => {
+                    this.stateManager.setSelectedObject(object);
+                    this.selectionHandler.duplicateSelected();
+                }
+            });
+        } else if (object && object.userData.type === 'edge') {
+            options.push({
+                label: 'Data',
+                action: () => {
+                    const data = object.userData.edge || object.userData.relationship || {};
+                    this.dataEditor.show(data, (updatedData: any) => {
+                        const edgeData = object.userData.edge || object.userData.relationship;
+                        const id = edgeData?.id;
+                        if (id) {
+                            this.stateManager.updateEdge(id, updatedData);
+                        }
+                        this.stateManager.setSelectedObject(object);
+                    });
+                }
+            });
+            options.push({
+                label: 'Delete',
+                action: () => {
+                    this.stateManager.setSelectedObject(object);
+                    this.selectionHandler.deleteSelected();
+                }
+            });
+            options.push({
+                label: 'Duplicate',
+                action: () => {
+                    this.stateManager.setSelectedObject(object);
+                    this.selectionHandler.duplicateSelected();
+                }
+            });
+        } else {
+            const hasSelection = this.stateManager.getSelectedObjects().size > 0;
+            const hasNodeSelection = Array.from(this.stateManager.getSelectedObjects())
+                .some(obj => obj.userData.type === 'node');
+
+            options.push({
+                label: 'Neuer Node',
+                action: () => this.nodeCreationHandler.createNewNode(event)
+            });
+            options.push({
+                label: 'Neue Edge',
+                action: () => this.nodeCreationHandler.startEdgeCreationMode(),
+                disabled: !hasNodeSelection
+            });
+            options.push({
+                label: 'Duplizieren',
+                action: () => this.selectionHandler.duplicateSelected(),
+                disabled: !hasSelection
             });
         }
 

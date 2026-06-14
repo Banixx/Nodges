@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { IStateManager } from '../core/interfaces';
 import type { State } from '../core/StateManager';
+import { ServiceContainer } from '../core/di/ServiceContainer';
 
 export class SelectionManager {
     private scene: THREE.Scene;
@@ -36,7 +37,12 @@ export class SelectionManager {
     private isMouseDown: boolean = false;
     private mouseDownPosition: THREE.Vector2 = new THREE.Vector2();
 
-    constructor(scene: THREE.Scene, camera: THREE.Camera, renderer: THREE.WebGLRenderer, stateManager: IStateManager, controls: any, nodeManager: any = null) {
+    constructor(container: ServiceContainer) {
+        const [scene, camera, renderer, stateManager, controls, nodeManager] = 
+            container.resolve<THREE.Scene, THREE.Camera, THREE.WebGLRenderer, IStateManager, any, any>(
+                'Scene', 'Camera', 'Renderer', 'IStateManager', 'Controls', 'NodeManager'
+            );
+
         this.scene = scene;
         this.camera = camera;
         this.renderer = renderer;

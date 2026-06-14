@@ -44,10 +44,7 @@ export class VisualOptimizer {
         const avgEdgeLength = this.calculateAverageEdgeLength(entities, relationships);
         const avgNodeSize = this.calculateAverageNodeSize(entities, mappingEngine);
         
-        // 3. Determine Density
-        const volume = Math.max(1, sizeX * sizeY * sizeZ);
-        const density = entities.length / volume;
-
+        // 3. Determine Density (not strictly used but logged if needed)
         console.log(`[VisualOptimizer] Extent: ${maxExtent.toFixed(2)}, AvgEdge: ${avgEdgeLength.toFixed(2)}, AvgSize: ${avgNodeSize.toFixed(2)}`);
 
         // 4. Coordinate Normalization (Optional / Suggested)
@@ -197,10 +194,6 @@ export class VisualOptimizer {
 
         if (values.length < 2) return 0;
 
-        const avg = values.reduce((a, b) => a + b, 0) / values.length;
-        const squareDiffs = values.map(v => Math.pow(v - avg, 2));
-        const variance = squareDiffs.reduce((a, b) => a + b, 0) / values.length;
-        
         // Ratio of max to min might be more useful for "damping" decision
         const min = Math.min(...values.filter(v => v > 0));
         const max = Math.max(...values);

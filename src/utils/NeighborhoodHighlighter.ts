@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { IStateManager } from '../core/interfaces';
+import { ServiceContainer } from '../core/di/ServiceContainer';
 
 interface Neighborhood {
     nodes: Set<THREE.Mesh>;
@@ -28,7 +29,12 @@ export class NeighborhoodHighlighter {
     private dimMaterial: THREE.MeshPhongMaterial;
     private edgeDimMaterial: THREE.MeshPhongMaterial;
 
-    constructor(scene: THREE.Scene, _stateManager: IStateManager) {
+    constructor(container: ServiceContainer) {
+        const [scene, _stateManager] = 
+            container.resolve<THREE.Scene, IStateManager>(
+                'Scene', 'IStateManager'
+            );
+            
         this.scene = scene;
         // this.stateManager = stateManager;
         this.highlightedNodes = new Set();

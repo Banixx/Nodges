@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { INodeManager, IEdgeManager } from '../core/interfaces';
+import { ServiceContainer } from '../core/di/ServiceContainer';
 
 export class RaycastManager {
     private camera: THREE.Camera;
@@ -10,7 +11,12 @@ export class RaycastManager {
     private nodeManager: INodeManager | null;
     private edgeObjectsManager: IEdgeManager | null;
 
-    constructor(camera: THREE.Camera, nodeManager: INodeManager | null = null, edgeObjectsManager: IEdgeManager | null = null) {
+    constructor(container: ServiceContainer) {
+        const [camera, nodeManager, edgeObjectsManager] = 
+            container.resolve<THREE.Camera, INodeManager, IEdgeManager>(
+                'Camera', 'NodeManager', 'EdgeObjectsManager'
+            );
+            
         this.camera = camera;
         this.nodeManager = nodeManager;
         this.edgeObjectsManager = edgeObjectsManager;
@@ -83,6 +89,11 @@ export class RaycastManager {
 
                     return dummyNode;
                 }
+            }
+
+            // 3. Check for Nodes (Regular Mesh)
+            if (userData && userData.type === 'node') {
+                return object;
             }
         }
 

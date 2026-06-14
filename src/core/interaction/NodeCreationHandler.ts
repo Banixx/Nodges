@@ -5,6 +5,7 @@
 import * as THREE from 'three';
 import { IStateManager } from '../interfaces';
 import { AxisPositionHelper } from '../../utils/AxisPositionHelper';
+import { HighlightManager } from '../../effects/HighlightManager';
 import { EntityData, RelationshipData } from '../../types';
 
 export class NodeCreationHandler {
@@ -22,13 +23,14 @@ export class NodeCreationHandler {
         stateManager: IStateManager,
         camera: THREE.Camera,
         scene: THREE.Scene,
-        renderer: THREE.WebGLRenderer
+        renderer: THREE.WebGLRenderer,
+        highlightManager?: HighlightManager
     ) {
         this.stateManager = stateManager;
         this.camera = camera;
         this.scene = scene;
         this.renderer = renderer;
-        this.axisPositionHelper = new AxisPositionHelper(scene, camera, renderer);
+        this.axisPositionHelper = new AxisPositionHelper(scene, camera, renderer, stateManager, highlightManager);
     }
 
     /**
@@ -71,12 +73,17 @@ export class NodeCreationHandler {
         if (intersectionPoint) {
             this.axisPositionHelper.start(intersectionPoint);
 
+            const startTime = performance.now();
             const mouseMoveHandler = (e: MouseEvent) => {
                 this.axisPositionHelper.update(e);
             };
 
             const clickHandler = (e: MouseEvent) => {
+                if (performance.now() - startTime < 100) {
+                    return;
+                }
                 e.preventDefault();
+                e.stopPropagation();
                 const isFinished = this.axisPositionHelper.confirmAxis();
 
                 if (isFinished) {
@@ -241,6 +248,66 @@ export class NodeCreationHandler {
         this.edgeSourceNode = null;
         this.isCreatingEdge = false;
         document.body.style.cursor = 'default';
+    }
+
+    /**
+     * Verschiebt einen existierenden Node mit Achsen-Positionierung
+     */
+    moveExistingNode(node: THREE.Object3D) {
+        const nodeId = node.userData.id || node.userData.nodeData?.id;
+        if (!nodeId) return;
+
+        const initialPos = new THREE.Vector3();
+        node.getWorldPosition(initialPos);
+
+        this.axisPositionHelper.start(initialPos);
+
+        const startTime = performance.now();
+        const mouseMoveHandler = (e: MouseEvent) => {
+            this.axisPositionHelper.update(e);
+        };
+
+        const clickHandler = (e: MouseEvent) => {
+            if (performance.now() - startTime < 100) {
+                return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            const isFinished = this.axisPositionHelper.confirmAxis();
+
+            if (isFinished) {
+                const finalPosition = this.axisPositionHelper.finish();
+
+                this.stateManager.updateNode(nodeId, {
+                    position: {
+                        x: finalPosition.x,
+                        y: finalPosition.y,
+                        z: finalPosition.z
+                    }
+                });
+
+                this.removeNodeCreationListeners(mouseMoveHandler, clickHandler, cancelHandler, escapeHandler);
+            }
+        };
+
+        const cancelHandler = (e: MouseEvent) => {
+            e.preventDefault();
+            this.axisPositionHelper.cancel();
+            this.removeNodeCreationListeners(mouseMoveHandler, clickHandler, cancelHandler, escapeHandler);
+        };
+
+        const escapeHandler = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                this.axisPositionHelper.cancel();
+                this.removeNodeCreationListeners(mouseMoveHandler, clickHandler, cancelHandler, escapeHandler);
+            }
+        };
+
+        window.addEventListener('mousemove', mouseMoveHandler);
+        window.addEventListener('click', clickHandler, true); // Capture phase
+        window.addEventListener('contextmenu', cancelHandler);
+        window.addEventListener('keydown', escapeHandler);
     }
 
     /**

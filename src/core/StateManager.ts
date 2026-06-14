@@ -51,6 +51,10 @@ export interface State {
     isInteractionEnabled: boolean;
     currentTool: string;
 
+    // Render Mode
+    renderMode: 'auto' | 'mesh' | 'instance';
+    activeRenderMode: 'mesh' | 'instance';
+
     // Edge Parameters
     edgeThickness: number;
     edgeTubularSegments: number;
@@ -138,6 +142,10 @@ export class StateManager implements IStateManager {
             isInteractionEnabled: true,
             currentTool: 'select',
 
+            // Render Mode
+            renderMode: 'auto',
+            activeRenderMode: 'mesh',
+
             // Edge Parameters
             edgeThickness: 0.1,
             edgeTubularSegments: 20,
@@ -148,7 +156,7 @@ export class StateManager implements IStateManager {
             highlightThickness: 10, // 10% larger than original (corresponds to multiplier 1.1)
             selectionThickness: 20, // 20% larger than highlight
 
-            layoutEnabled: true,
+            layoutEnabled: false,
 
             // Environment Defaults
             backgroundColor: '#8fa649',
@@ -163,6 +171,22 @@ export class StateManager implements IStateManager {
             visualScaleMultiplier: 1.0,
             autoBalanceEnabled: true,
             normalizeCoordinatesEnabled: true,
+
+            // Ebenen / Layers
+            layer1Visible: true,
+            layer2Visible: true,
+            layer3Visible: true,
+            layer4Visible: true,
+            layer1Opacity: 1.0,
+            layer2Opacity: 1.0,
+            layer3Opacity: 1.0,
+            layer4Opacity: 1.0,
+            layeringAttribute: 'layer',
+            layer1Value: '1',
+            layer2Value: '2',
+            layer3Value: '3',
+            layer4Value: '4',
+            complexityMode: (typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_complexity_mode') : null) as any || 'simple',
 
             // Dev Settings
             devPowerPreference: 'high-performance',
@@ -202,6 +226,10 @@ export class StateManager implements IStateManager {
 
         const oldState = { ...this.state };
         this.state = { ...this.state, ...partialState };
+
+        if (partialState.complexityMode && typeof localStorage !== 'undefined') {
+            localStorage.setItem('nodges_complexity_mode', partialState.complexityMode);
+        }
 
         this.isUpdating = true;
         try {
@@ -540,7 +568,17 @@ export class StateManager implements IStateManager {
         if (index !== -1) {
             const oldNode = { ...this.state.graphData.entities[index] };
             const newEntities = [...this.state.graphData.entities];
-            newEntities[index] = { ...newEntities[index], ...updates };
+            
+            // Erst das Objekt zusammenfuehren
+            const updatedNode = { ...newEntities[index], ...updates };
+            // Custom-Eigenschaften loeschen, die in updates nicht mehr existieren (und nicht mit _ beginnen)
+            for (const key in updatedNode) {
+                if (Object.prototype.hasOwnProperty.call(updatedNode, key) && !key.startsWith('_') && !(key in updates)) {
+                    delete updatedNode[key];
+                }
+            }
+            
+            newEntities[index] = updatedNode;
             this.update({
                 graphData: {
                     ...this.state.graphData,
@@ -619,7 +657,17 @@ export class StateManager implements IStateManager {
         if (index !== -1) {
             const oldEdge = { ...this.state.graphData.relationships[index] };
             const newRelationships = [...this.state.graphData.relationships];
-            newRelationships[index] = { ...newRelationships[index], ...updates };
+            
+            // Erst das Objekt zusammenfuehren
+            const updatedEdge = { ...newRelationships[index], ...updates };
+            // Custom-Eigenschaften loeschen, die in updates nicht mehr existieren (und nicht mit _ beginnen)
+            for (const key in updatedEdge) {
+                if (Object.prototype.hasOwnProperty.call(updatedEdge, key) && !key.startsWith('_') && !(key in updates)) {
+                    delete updatedEdge[key];
+                }
+            }
+            
+            newRelationships[index] = updatedEdge;
             this.update({
                 graphData: {
                     ...this.state.graphData,

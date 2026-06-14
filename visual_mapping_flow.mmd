@@ -1,0 +1,12 @@
+graph TD
+    VisualMappingPanel --> UIManager
+    UIManager --> App
+    App --> VisualMappingEngine
+    App --> StateManager
+    App --> NodeManager
+    App --> EdgeObjectsManager
+    NodeManager --> VisualMappingEngine
+    EdgeObjectsManager --> VisualMappingEngine
+    VisualMappingEngine --> Normalisierung
+    Normalisierung --> VisuelleEigenschaften
+    VisuelleEigenschaften --> ThreeJSMeshes

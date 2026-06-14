@@ -1,0 +1,4 @@
+- [x] Tab-Leiste in `main.css` auf horizontales Scrollen umstellen
+- [x] Fade-Effekt (Mask-Image) in `main.css` hinzufügen
+- [x] Tab-Click-Handler in `index.html` um `scrollIntoView` erweitern
+- [x] Verifikation der Funktionalität

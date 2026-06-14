@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { SelectionManager } from './SelectionManager';
 import { NodeGroupManager } from './NodeGroupManager';
+import { ServiceContainer } from '../core/di/ServiceContainer';
 // import { NodeObject } from '../types';
 
 interface Operation {
@@ -30,7 +31,12 @@ export class BatchOperations {
     private operationHistory: Operation[];
     private maxHistorySize: number;
 
-    constructor(selectionManager: SelectionManager, nodeGroupManager: NodeGroupManager) {
+    constructor(container: ServiceContainer) {
+        const [selectionManager, nodeGroupManager] = 
+            container.resolve<SelectionManager, NodeGroupManager>(
+                'SelectionManager', 'NodeGroupManager'
+            );
+            
         this.selectionManager = selectionManager;
         this.nodeGroupManager = nodeGroupManager;
 

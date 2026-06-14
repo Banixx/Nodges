@@ -8,6 +8,7 @@ export class VisualMappingPanel {
     private container: HTMLElement;
     private mappings: VisualMappings | null = null;
     private onUpdate: ((mappings: VisualMappings) => void) | null = null;
+    private availableAttributes: Record<string, string[]> = {};
 
     constructor(elementId: string) {
         const el = document.getElementById(elementId);
@@ -15,8 +16,13 @@ export class VisualMappingPanel {
         this.container = el;
     }
 
-    public bind(mappings: VisualMappings, onUpdate: (newMappings: VisualMappings) => void) {
+    public bind(
+        mappings: VisualMappings,
+        availableAttributes: Record<string, string[]>,
+        onUpdate: (newMappings: VisualMappings) => void
+    ) {
         this.mappings = mappings;
+        this.availableAttributes = availableAttributes;
         this.onUpdate = onUpdate;
         this.render();
     }
@@ -84,27 +90,40 @@ export class VisualMappingPanel {
         inputs.style.gridTemplateColumns = '1fr 1fr';
         inputs.style.gap = '8px';
 
-        // Source Input
+        // Source Dropdown Select
         const sourceGroup = document.createElement('div');
         const sourceLabel = document.createElement('label');
         sourceLabel.textContent = 'Source Field';
         sourceLabel.style.fontSize = '0.8em';
         sourceLabel.style.color = '#aaa';
-        const sourceInput = document.createElement('input');
-        sourceInput.type = 'text';
-        sourceInput.value = mapping.source;
-        sourceInput.style.width = '100%';
-        sourceInput.style.backgroundColor = '#222';
-        sourceInput.style.border = '1px solid #444';
-        sourceInput.style.color = '#eee';
-        sourceInput.style.padding = '4px';
+        
+        const sourceSelect = document.createElement('select');
+        sourceSelect.style.width = '100%';
+        sourceSelect.style.backgroundColor = '#222';
+        sourceSelect.style.border = '1px solid #444';
+        sourceSelect.style.color = '#eee';
+        sourceSelect.style.padding = '4px';
 
-        sourceInput.onchange = (e) => {
-            const val = (e.target as HTMLInputElement).value;
+        // Get available options list
+        const options = [...(this.availableAttributes[type] || ['constant'])];
+        if (!options.includes(mapping.source)) {
+            options.push(mapping.source);
+        }
+
+        options.forEach(optVal => {
+            const opt = document.createElement('option');
+            opt.value = optVal;
+            opt.textContent = optVal;
+            opt.selected = mapping.source === optVal;
+            sourceSelect.appendChild(opt);
+        });
+
+        sourceSelect.onchange = (e) => {
+            const val = (e.target as HTMLSelectElement).value;
             this.updateMapping(type, prop, { source: val });
         };
         sourceGroup.appendChild(sourceLabel);
-        sourceGroup.appendChild(sourceInput);
+        sourceGroup.appendChild(sourceSelect);
         inputs.appendChild(sourceGroup);
 
         // Function Select

@@ -48,6 +48,20 @@ export interface UIState {
     visualScaleMultiplier: number;
     autoBalanceEnabled: boolean;
     normalizeCoordinatesEnabled: boolean;
+    layer1Visible: boolean;
+    layer2Visible: boolean;
+    layer3Visible: boolean;
+    layer4Visible: boolean;
+    layer1Opacity: number;
+    layer2Opacity: number;
+    layer3Opacity: number;
+    layer4Opacity: number;
+    layeringAttribute: string;
+    layer1Value: string;
+    layer2Value: string;
+    layer3Value: string;
+    layer4Value: string;
+    complexityMode: 'simple' | 'expert' | 'dev';
 }
 
 
@@ -92,6 +106,8 @@ export interface SystemState {
     isInteractionEnabled: boolean;
     currentTool: string;
     layoutEnabled: boolean;
+    renderMode: 'auto' | 'mesh' | 'instance';
+    activeRenderMode: 'mesh' | 'instance';
 }
 
 /**
@@ -163,6 +179,20 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     visualScaleMultiplier: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
     autoBalanceEnabled: [STATE_CATEGORIES.UI],
     normalizeCoordinatesEnabled: [STATE_CATEGORIES.UI],
+    layer1Visible: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    layer2Visible: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    layer3Visible: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    layer4Visible: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    layer1Opacity: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    layer2Opacity: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    layer3Opacity: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    layer4Opacity: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    layeringAttribute: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    layer1Value: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    layer2Value: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    layer3Value: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    layer4Value: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
+    complexityMode: [STATE_CATEGORIES.UI],
 
 
     // VisualState
@@ -191,6 +221,8 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     isInteractionEnabled: [STATE_CATEGORIES.SYSTEM],
     currentTool: [STATE_CATEGORIES.SYSTEM, STATE_CATEGORIES.SELECTION],
     layoutEnabled: [STATE_CATEGORIES.SYSTEM],
+    renderMode: [STATE_CATEGORIES.SYSTEM],
+    activeRenderMode: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.SYSTEM],
 
     // DevState
     devPowerPreference: [STATE_CATEGORIES.DEV],
