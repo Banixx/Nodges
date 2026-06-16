@@ -1,0 +1,100 @@
+{
+  "system": "Ergotherapie & Arbeitsagogik im Vergleich",
+  "metadata": {
+    "created": "2026-06-16T11:00:00Z",
+    "version": "1.0",
+    "author": "Antigravity",
+    "description": "Systemische Gegenueberstellung, Gemeinsamkeiten, Schnittmengen und praxisspezifische Ausprägungen von Ergotherapie und Arbeitsagogik."
+  },
+  "dataModel": {
+    "entities": {
+      "Konzept": {
+        "properties": {
+          "disziplin_fokus": { "type": "continuous", "range": [-1.0, 1.0] },
+          "typ": { "type": "categorical", "values": ["Profession", "System", "Medium", "Prinzip", "Ziel", "Grundlage"] },
+          "ist_kern": { "type": "boolean" }
+        }
+      }
+    },
+    "relationships": {
+      "Verbindung": {
+        "properties": {
+          "staerke": { "type": "continuous", "range": [0.1, 1.0] },
+          "aktivitaet": { "type": "continuous", "range": [0.0, 1.0] }
+        }
+      }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Konzept": {
+        "size": { "source": "ist_kern", "function": "categorical", "params": { "mapping": { "true": 2.5, "false": 1.2 } } },
+        "color": { "source": "disziplin_fokus", "function": "bipolar", "params": { "positive": "#e67e22", "negative": "#2980b9" } },
+        "glow": { "source": "ist_kern", "function": "categorical", "params": { "mapping": { "true": 1.0, "false": 0.0 } } }
+      },
+      "Verbindung": {
+        "color": { "source": "constant", "function": "linear", "params": { "color": "#7f8c8d" } },
+        "thickness": { "source": "staerke", "function": "linear", "domain": [0.1, 1.0], "range": [0.03, 0.22] },
+        "curvature": { "source": "constant", "function": "linear", "params": { "value": 0.15 } },
+        "animation": { "source": "aktivitaet", "function": "pulse", "params": { "frequency": 2.0 } }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      { "id": "n_mensch_umwelt", "type": "Konzept", "label": "Mensch-Umwelt-System", "disziplin_fokus": 0.0, "typ": "System", "ist_kern": true, "beschreibung": "Philosophische Basis: Der Mensch steht in staendiger Interaktion mit seiner Umwelt und wird nicht isoliert betrachtet.", "position": { "x": 0.0, "y": 25.0, "z": 0.0 } },
+      
+      { "id": "n_et", "type": "Konzept", "label": "Ergotherapie", "disziplin_fokus": -1.0, "typ": "Profession", "ist_kern": true, "beschreibung": "Betrachtet den Menschen im bio-psycho-sozialen System und foerdert Handlungsfaehigkeit im Alltag durch sinnhafte Betaetigung.", "position": { "x": -25.0, "y": 10.0, "z": 0.0 } },
+      { "id": "n_aa", "type": "Konzept", "label": "Arbeitsagogik", "disziplin_fokus": 1.0, "typ": "Profession", "ist_kern": true, "beschreibung": "Betrachtet den Menschen im sozio-oekonomischen System und foerdert Integration und Handlungsfaehigkeit im Beruf durch das Medium Arbeit.", "position": { "x": 25.0, "y": 10.0, "z": 0.0 } },
+      
+      { "id": "n_bps", "type": "Konzept", "label": "Bio-psycho-soziales System", "disziplin_fokus": -0.7, "typ": "System", "ist_kern": false, "beschreibung": "Der systemische Fokus der Ergotherapie. Gesundheit, Psyche und soziales Umfeld stehen im komplexen Wechselspiel.", "position": { "x": -15.0, "y": 12.0, "z": -12.0 } },
+      { "id": "n_soe", "type": "Konzept", "label": "Sozio-oekonomisches System", "disziplin_fokus": 0.7, "typ": "System", "ist_kern": false, "beschreibung": "Der systemische Fokus der Arbeitsagogik. Der Arbeitsmarkt und die Produktionsprozesse stehen im Vordergrund.", "position": { "x": 15.0, "y": 12.0, "z": -12.0 } },
+      
+      { "id": "n_betaetigung", "type": "Konzept", "label": "Betaetigung (Occupation)", "disziplin_fokus": -0.8, "typ": "Medium", "ist_kern": true, "beschreibung": "Das zentrale therapeutische Medium der Ergotherapie. Umfasst Selbstversorgung, Freizeit und Produktivitaet.", "position": { "x": -20.0, "y": 0.0, "z": -10.0 } },
+      { "id": "n_arbeit", "type": "Konzept", "label": "Arbeit (produktive Taetigkeit)", "disziplin_fokus": 0.8, "typ": "Medium", "ist_kern": true, "beschreibung": "Das zentrale agogische Medium und Ziel der Arbeitsagogik. Strukturierte, wertschoepfende und gesellschaftlich relevante Taetigkeit.", "position": { "x": 20.0, "y": 0.0, "z": -10.0 } },
+      
+      { "id": "n_umwelt", "type": "Konzept", "label": "Umweltanpassung", "disziplin_fokus": 0.0, "typ": "Prinzip", "ist_kern": false, "beschreibung": "Gemeinsames Prinzip: Anpassung der materiellen und sozialen Umwelt (z.B. Arbeitsplatzgestaltung, Hilfsmittel), um Teilhabe zu ermoeglichen.", "position": { "x": 0.0, "y": 2.0, "z": 15.0 } },
+      { "id": "n_ressourcen", "type": "Konzept", "label": "Ressourcenorientierung", "disziplin_fokus": 0.0, "typ": "Prinzip", "ist_kern": false, "beschreibung": "Gemeinsames Prinzip: Anknuepfen an vorhandene Staerken und Faehigkeiten des Individuums, statt Defizite zu fokussieren.", "position": { "x": -5.0, "y": -2.0, "z": 15.0 } },
+      { "id": "n_sinnhaftigkeit", "type": "Konzept", "label": "Sinnhaftigkeit & Selbstwirksamkeit", "disziplin_fokus": 0.0, "typ": "Prinzip", "ist_kern": false, "beschreibung": "Gemeinsames Prinzip: Eine Betaetigung oder Arbeit muss fuer das Individuum Sinn ergeben, um als Motor fuer Heilung und Wachstum zu wirken.", "position": { "x": 5.0, "y": -2.0, "z": 15.0 } },
+      
+      { "id": "n_grundlagen", "type": "Konzept", "label": "Gesundheitliche & kognitive Grundlagen", "disziplin_fokus": -0.4, "typ": "Grundlage", "ist_kern": false, "beschreibung": "Ergotherapie schafft die Basis (z. B. Belastbarkeit, Motorik, Kognition) fuer die Handlungsfaehigkeit im Beruf.", "position": { "x": -10.0, "y": -8.0, "z": -5.0 } },
+      
+      { "id": "n_handalltag", "type": "Konzept", "label": "Handlungsfaehigkeit im Alltag", "disziplin_fokus": -0.8, "typ": "Ziel", "ist_kern": false, "beschreibung": "Ergotherapeutisches Ziel: Maximale Autonomie in allen Lebensbereichen (Selbstversorgung, Freizeit, Produktivitaet).", "position": { "x": -22.0, "y": -12.0, "z": -5.0 } },
+      { "id": "n_handberuf", "type": "Konzept", "label": "Handlungsfaehigkeit im Beruf", "disziplin_fokus": 0.8, "typ": "Ziel", "ist_kern": false, "beschreibung": "Arbeitsagogisches Ziel: Leistungsfaehigkeit und angepasstes Verhalten im Arbeits- und Produktionskontext.", "position": { "x": 15.0, "y": -12.0, "z": -5.0 } },
+      { "id": "n_integration_arbeit", "type": "Konzept", "label": "Berufliche Integration", "disziplin_fokus": 0.9, "typ": "Ziel", "ist_kern": false, "beschreibung": "Ziel der Arbeitsagogik: Erfolgreiche Eingliederung in den ersten oder zweiten Arbeitsmarkt.", "position": { "x": 25.0, "y": -12.0, "z": -5.0 } },
+      
+      { "id": "n_teilhabe", "type": "Konzept", "label": "Gesellschaftliche Teilhabe & Integration", "disziplin_fokus": 0.0, "typ": "Ziel", "ist_kern": true, "beschreibung": "Das uebergeordnete Ziel beider Disziplinen: Die gleichberechtigte Teilhabe am gesellschaftlichen und sozialen Leben.", "position": { "x": 0.0, "y": -22.0, "z": 0.0 } }
+    ],
+    "relationships": [
+      { "id": "r_et_bps", "type": "Verbindung", "source": "n_et", "target": "n_bps", "label": "fokussiert Subsystem", "staerke": 0.8, "aktivitaet": 0.4 },
+      { "id": "r_aa_soe", "type": "Verbindung", "source": "n_aa", "target": "n_soe", "label": "fokussiert Subsystem", "staerke": 0.8, "aktivitaet": 0.4 },
+      
+      { "id": "r_et_betaetigung", "type": "Verbindung", "source": "n_et", "target": "n_betaetigung", "label": "nutzt als therapeutisches Medium", "staerke": 1.0, "aktivitaet": 0.8 },
+      { "id": "r_aa_arbeit", "type": "Verbindung", "source": "n_aa", "target": "n_arbeit", "label": "nutzt als agogisches Medium", "staerke": 1.0, "aktivitaet": 0.8 },
+      { "id": "r_betaetigung_arbeit", "type": "Verbindung", "source": "n_betaetigung", "target": "n_arbeit", "label": "umfasst (als Produktivitaet)", "staerke": 0.6, "aktivitaet": 0.2 },
+      
+      { "id": "r_et_mensch", "type": "Verbindung", "source": "n_et", "target": "n_mensch_umwelt", "label": "basiert auf", "staerke": 0.8, "aktivitaet": 0.3 },
+      { "id": "r_aa_mensch", "type": "Verbindung", "source": "n_aa", "target": "n_mensch_umwelt", "label": "basiert auf", "staerke": 0.8, "aktivitaet": 0.3 },
+      
+      { "id": "r_et_umwelt", "type": "Verbindung", "source": "n_et", "target": "n_umwelt", "label": "passt an", "staerke": 0.7, "aktivitaet": 0.5 },
+      { "id": "r_aa_umwelt", "type": "Verbindung", "source": "n_aa", "target": "n_umwelt", "label": "passt an", "staerke": 0.7, "aktivitaet": 0.5 },
+      
+      { "id": "r_et_ressourcen", "type": "Verbindung", "source": "n_et", "target": "n_ressourcen", "label": "arbeitet", "staerke": 0.9, "aktivitaet": 0.6 },
+      { "id": "r_aa_ressourcen", "type": "Verbindung", "source": "n_aa", "target": "n_ressourcen", "label": "arbeitet", "staerke": 0.9, "aktivitaet": 0.6 },
+      
+      { "id": "r_et_sinn", "type": "Verbindung", "source": "n_et", "target": "n_sinnhaftigkeit", "label": "nutzt als Motivation", "staerke": 0.8, "aktivitaet": 0.5 },
+      { "id": "r_aa_sinn", "type": "Verbindung", "source": "n_aa", "target": "n_sinnhaftigkeit", "label": "nutzt als Motivation", "staerke": 0.8, "aktivitaet": 0.5 },
+      
+      { "id": "r_et_handalltag", "type": "Verbindung", "source": "n_et", "target": "n_handalltag", "label": "zielt auf", "staerke": 0.9, "aktivitaet": 0.7 },
+      { "id": "r_aa_handberuf", "type": "Verbindung", "source": "n_aa", "target": "n_handberuf", "label": "zielt auf", "staerke": 0.9, "aktivitaet": 0.7 },
+      { "id": "r_aa_integration", "type": "Verbindung", "source": "n_aa", "target": "n_integration_arbeit", "label": "zielt auf", "staerke": 0.9, "aktivitaet": 0.7 },
+      
+      { "id": "r_handalltag_teilhabe", "type": "Verbindung", "source": "n_handalltag", "target": "n_teilhabe", "label": "ermoeglicht", "staerke": 0.9, "aktivitaet": 0.6 },
+      { "id": "r_handberuf_teilhabe", "type": "Verbindung", "source": "n_handberuf", "target": "n_teilhabe", "label": "ermoeglicht", "staerke": 0.9, "aktivitaet": 0.6 },
+      { "id": "r_integration_teilhabe", "type": "Verbindung", "source": "n_integration_arbeit", "target": "n_teilhabe", "label": "integriert in", "staerke": 0.9, "aktivitaet": 0.6 },
+      
+      { "id": "r_et_grundlagen", "type": "Verbindung", "source": "n_et", "target": "n_grundlagen", "label": "schafft therapeutisch", "staerke": 0.8, "aktivitaet": 0.5 },
+      { "id": "r_grundlagen_handberuf", "type": "Verbindung", "source": "n_grundlagen", "target": "n_handberuf", "label": "befaehigt fuer", "staerke": 0.7, "aktivitaet": 0.4 }
+    ]
+  }
+}

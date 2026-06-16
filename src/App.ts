@@ -787,6 +787,11 @@ export class App {
         if (this.edgeObjectsManager) {
             this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
         }
+
+        // Notify UI components of the update
+        if (this.uiManager) {
+            this.uiManager.updateVisualMappings(mappings);
+        }
     }
 
 

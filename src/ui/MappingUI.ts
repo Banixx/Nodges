@@ -1,6 +1,7 @@
 import {
     VisualMappings,
-    VisualMapping
+    VisualMapping,
+    DataModel
 } from '../types';
 
 export class MappingUI {
@@ -13,8 +14,10 @@ export class MappingUI {
 
     private mappings: VisualMappings | null = null;
     private availableAttributes: Record<string, string[]> = {};
+    private dataModel: DataModel | null = null;
     private onUpdate: ((mappings: VisualMappings) => void) | null = null;
     private currentType: string = '';
+    private expandedProps = new Set<string>();
 
     // Drag-and-Drop state
     private activeDrag: {
@@ -87,10 +90,12 @@ export class MappingUI {
     public bind(
         mappings: VisualMappings,
         availableAttributes: Record<string, string[]>,
+        dataModel: DataModel | null,
         onUpdate: (newMappings: VisualMappings) => void
     ) {
         this.mappings = mappings;
         this.availableAttributes = availableAttributes;
+        this.dataModel = dataModel;
         this.onUpdate = onUpdate;
 
         // Populate type selector if not yet populated or if types changed
@@ -164,10 +169,297 @@ export class MappingUI {
                 item.className = 'mapping-item right';
                 item.dataset.prop = prop;
 
+                const mapping = (preset as any)[prop] as VisualMapping;
+                const isConnected = mapping && mapping.source && mapping.source !== 'constant';
+
+                if (isConnected && this.expandedProps.has(prop)) {
+                    item.classList.add('expanded');
+                }
+
+                // Create Header
+                const header = document.createElement('div');
+                header.className = 'mapping-item-header';
+
                 const label = document.createElement('span');
                 label.textContent = prop.charAt(0).toUpperCase() + prop.slice(1);
-                item.appendChild(label);
+                header.appendChild(label);
 
+                if (isConnected) {
+                    const gear = document.createElement('span');
+                    gear.className = 'mapping-item-gear';
+                    gear.textContent = '⚙️';
+                    header.appendChild(gear);
+
+                    // Toggle expansion
+                    header.onclick = (e) => {
+                        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.target instanceof HTMLOptionElement) {
+                            return;
+                        }
+                        if (item.classList.contains('expanded')) {
+                            item.classList.remove('expanded');
+                            this.expandedProps.delete(prop);
+                        } else {
+                            item.classList.add('expanded');
+                            this.expandedProps.add(prop);
+                        }
+                        this.drawCurves();
+                    };
+                }
+
+                item.appendChild(header);
+
+                // If connected, render detailed controls
+                if (isConnected) {
+                    const details = document.createElement('div');
+                    details.className = 'mapping-item-details';
+
+                    // 1. Function Selector
+                    const funcGroup = document.createElement('div');
+                    funcGroup.className = 'mapping-control-group';
+                    const funcLabel = document.createElement('label');
+                    funcLabel.textContent = 'Funktion';
+                    funcGroup.appendChild(funcLabel);
+
+                    const funcSelect = document.createElement('select');
+                    funcSelect.className = 'mapping-control-select';
+                    const functions = ['linear', 'exponential', 'logarithmic', 'heatmap', 'bipolar', 'pulse', 'sphereComplexity', 'categorical'];
+                    functions.forEach(f => {
+                        const opt = document.createElement('option');
+                        opt.value = f;
+                        opt.textContent = f;
+                        opt.selected = mapping.function === f;
+                        funcSelect.appendChild(opt);
+                    });
+                    funcSelect.onchange = () => {
+                        this.updatePropertyMapping(prop, { function: funcSelect.value as any });
+                    };
+                    funcGroup.appendChild(funcSelect);
+                    details.appendChild(funcGroup);
+
+                    // 2. Domain Min/Max
+                    let defaultDomain: [number, number] = [0, 1];
+                    if (this.dataModel && this.dataModel.entities && this.dataModel.entities[this.currentType]) {
+                        const propSchema = this.dataModel.entities[this.currentType].properties?.[mapping.source];
+                        if (propSchema && propSchema.range) {
+                            defaultDomain = propSchema.range;
+                        }
+                    } else if (this.dataModel && this.dataModel.relationships && this.dataModel.relationships[this.currentType]) {
+                        const propSchema = this.dataModel.relationships[this.currentType].properties?.[mapping.source];
+                        if (propSchema && propSchema.range) {
+                            defaultDomain = propSchema.range;
+                        }
+                    }
+
+                    const domainMinVal = mapping.domain ? mapping.domain[0] : defaultDomain[0];
+                    const domainMaxVal = mapping.domain ? mapping.domain[1] : defaultDomain[1];
+
+                    const domainGroup = document.createElement('div');
+                    domainGroup.className = 'mapping-control-group';
+                    const domainLabel = document.createElement('label');
+                    domainLabel.textContent = `Domain (${mapping.source})`;
+                    domainGroup.appendChild(domainLabel);
+
+                    const domainRow = document.createElement('div');
+                    domainRow.className = 'mapping-control-row';
+
+                    const domainMinInput = document.createElement('input');
+                    domainMinInput.className = 'mapping-control-input';
+                    domainMinInput.type = 'number';
+                    domainMinInput.placeholder = 'Min';
+                    domainMinInput.value = String(domainMinVal);
+                    domainMinInput.onchange = () => {
+                        const min = parseFloat(domainMinInput.value);
+                        const max = parseFloat(domainMaxInput.value);
+                        if (!isNaN(min) && !isNaN(max)) {
+                            this.updatePropertyMapping(prop, { domain: [min, max] });
+                        }
+                    };
+
+                    const domainMaxInput = document.createElement('input');
+                    domainMaxInput.className = 'mapping-control-input';
+                    domainMaxInput.type = 'number';
+                    domainMaxInput.placeholder = 'Max';
+                    domainMaxInput.value = String(domainMaxVal);
+                    domainMaxInput.onchange = () => {
+                        const min = parseFloat(domainMinInput.value);
+                        const max = parseFloat(domainMaxInput.value);
+                        if (!isNaN(min) && !isNaN(max)) {
+                            this.updatePropertyMapping(prop, { domain: [min, max] });
+                        }
+                    };
+
+                    domainRow.appendChild(domainMinInput);
+                    domainRow.appendChild(domainMaxInput);
+                    domainGroup.appendChild(domainRow);
+                    details.appendChild(domainGroup);
+
+                    // 3. Range or Palette / Color params depending on function
+                    if (['heatmap', 'categorical'].includes(mapping.function)) {
+                        // Palette Selector
+                        const palGroup = document.createElement('div');
+                        palGroup.className = 'mapping-control-group';
+                        const palLabel = document.createElement('label');
+                        palLabel.textContent = 'Farbpalette';
+                        palGroup.appendChild(palLabel);
+
+                        const palSelect = document.createElement('select');
+                        palSelect.className = 'mapping-control-select';
+                        const palettes = ['blue-red', 'grayscale'];
+                        palettes.forEach(p => {
+                            const opt = document.createElement('option');
+                            opt.value = p;
+                            opt.textContent = p;
+                            opt.selected = mapping.palette === p;
+                            palSelect.appendChild(opt);
+                        });
+                        palSelect.onchange = () => {
+                            this.updatePropertyMapping(prop, { palette: palSelect.value });
+                        };
+                        palGroup.appendChild(palSelect);
+                        details.appendChild(palGroup);
+                    } else if (mapping.function === 'bipolar') {
+                        // Color Pickers
+                        const bipGroup = document.createElement('div');
+                        bipGroup.className = 'mapping-control-group';
+                        const bipLabel = document.createElement('label');
+                        bipLabel.textContent = 'Farben (- / +)';
+                        bipGroup.appendChild(bipLabel);
+
+                        const bipRow = document.createElement('div');
+                        bipRow.className = 'mapping-control-row';
+
+                        const posColor = mapping.params?.positive || '#00ff00';
+                        const negColor = mapping.params?.negative || '#ff0000';
+
+                        const negInput = document.createElement('input');
+                        negInput.className = 'mapping-control-input';
+                        negInput.type = 'color';
+                        negInput.value = negColor;
+                        negInput.style.padding = '0';
+                        negInput.style.height = '18px';
+                        negInput.style.cursor = 'pointer';
+                        negInput.onchange = () => {
+                            const params = { ...(mapping.params || {}), negative: negInput.value };
+                            this.updatePropertyMapping(prop, { params });
+                        };
+
+                        const posInput = document.createElement('input');
+                        posInput.className = 'mapping-control-input';
+                        posInput.type = 'color';
+                        posInput.value = posColor;
+                        posInput.style.padding = '0';
+                        posInput.style.height = '18px';
+                        posInput.style.cursor = 'pointer';
+                        posInput.onchange = () => {
+                            const params = { ...(mapping.params || {}), positive: posInput.value };
+                            this.updatePropertyMapping(prop, { params });
+                        };
+
+                        bipRow.appendChild(negInput);
+                        bipRow.appendChild(posInput);
+                        bipGroup.appendChild(bipRow);
+                        details.appendChild(bipGroup);
+                    } else if (['linear', 'exponential', 'logarithmic'].includes(mapping.function) || mapping.range) {
+                        // Range input (Min/Max)
+                        const rangeMinVal = mapping.range ? mapping.range[0] : 0.1;
+                        const rangeMaxVal = mapping.range ? mapping.range[1] : 3.0;
+
+                        const rangeGroup = document.createElement('div');
+                        rangeGroup.className = 'mapping-control-group';
+                        const rangeLabel = document.createElement('label');
+                        rangeLabel.textContent = 'Visual Range (Min/Max)';
+                        rangeGroup.appendChild(rangeLabel);
+
+                        const rangeRow = document.createElement('div');
+                        rangeRow.className = 'mapping-control-row';
+
+                        const rangeMinInput = document.createElement('input');
+                        rangeMinInput.className = 'mapping-control-input';
+                        rangeMinInput.type = 'number';
+                        rangeMinInput.step = '0.05';
+                        rangeMinInput.value = String(rangeMinVal);
+                        rangeMinInput.onchange = () => {
+                            const min = parseFloat(rangeMinInput.value);
+                            const max = parseFloat(rangeMaxInput.value);
+                            if (!isNaN(min) && !isNaN(max)) {
+                                this.updatePropertyMapping(prop, { range: [min, max] });
+                            }
+                        };
+
+                        const rangeMaxInput = document.createElement('input');
+                        rangeMaxInput.className = 'mapping-control-input';
+                        rangeMaxInput.type = 'number';
+                        rangeMaxInput.step = '0.05';
+                        rangeMaxInput.value = String(rangeMaxVal);
+                        rangeMaxInput.onchange = () => {
+                            const min = parseFloat(rangeMinInput.value);
+                            const max = parseFloat(rangeMaxInput.value);
+                            if (!isNaN(min) && !isNaN(max)) {
+                                this.updatePropertyMapping(prop, { range: [min, max] });
+                            }
+                        };
+
+                        rangeRow.appendChild(rangeMinInput);
+                        rangeRow.appendChild(rangeMaxInput);
+                        rangeGroup.appendChild(rangeRow);
+                        details.appendChild(rangeGroup);
+
+                        // Exponent Base Slider if exponential
+                        if (mapping.function === 'exponential') {
+                            const baseGroup = document.createElement('div');
+                            baseGroup.className = 'mapping-control-group';
+                            const baseLabel = document.createElement('label');
+                            const baseVal = mapping.params?.base || 2;
+                            baseLabel.textContent = `Exponent Base: ${baseVal}`;
+                            baseGroup.appendChild(baseLabel);
+
+                            const baseInput = document.createElement('input');
+                            baseInput.className = 'mapping-control-input';
+                            baseInput.type = 'range';
+                            baseInput.min = '1';
+                            baseInput.max = '5';
+                            baseInput.step = '0.1';
+                            baseInput.value = String(baseVal);
+                            baseInput.oninput = () => {
+                                baseLabel.textContent = `Exponent Base: ${baseInput.value}`;
+                            };
+                            baseInput.onchange = () => {
+                                const params = { ...(mapping.params || {}), base: parseFloat(baseInput.value) };
+                                this.updatePropertyMapping(prop, { params });
+                            };
+                            baseGroup.appendChild(baseInput);
+                            details.appendChild(baseGroup);
+                        }
+                    } else if (mapping.function === 'pulse') {
+                        // Pulse Frequency Selector
+                        const freqGroup = document.createElement('div');
+                        freqGroup.className = 'mapping-control-group';
+                        const freqLabel = document.createElement('label');
+                        freqLabel.textContent = 'Frequenz';
+                        freqGroup.appendChild(freqLabel);
+
+                        const freqSelect = document.createElement('select');
+                        freqSelect.className = 'mapping-control-select';
+                        const frequencies = ['slow', 'heartbeat', 'fast'];
+                        frequencies.forEach(f => {
+                            const opt = document.createElement('option');
+                            opt.value = f;
+                            opt.textContent = f;
+                            opt.selected = (mapping.params?.frequency || 'heartbeat') === f;
+                            freqSelect.appendChild(opt);
+                        });
+                        freqSelect.onchange = () => {
+                            const params = { ...(mapping.params || {}), frequency: freqSelect.value };
+                            this.updatePropertyMapping(prop, { params });
+                        };
+                        freqGroup.appendChild(freqSelect);
+                        details.appendChild(freqGroup);
+                    }
+
+                    item.appendChild(details);
+                }
+
+                // Snapdot for dragging
                 const dot = document.createElement('div');
                 dot.className = 'snapdot right-dot';
                 dot.dataset.prop = prop;
@@ -181,6 +473,21 @@ export class MappingUI {
         }
 
         // Draw active curves after browser layout pass
+        requestAnimationFrame(() => this.drawCurves());
+    }
+
+    private updatePropertyMapping(propName: string, updates: Partial<VisualMapping>) {
+        if (!this.mappings || !this.currentType || !this.onUpdate) return;
+
+        const preset = this.mappings.defaultPresets[this.currentType] as any;
+        if (!preset || !preset[propName]) return;
+
+        preset[propName] = {
+            ...preset[propName],
+            ...updates
+        };
+
+        this.onUpdate(this.mappings);
         requestAnimationFrame(() => this.drawCurves());
     }
 
@@ -333,6 +640,9 @@ export class MappingUI {
             function: sourceAttr === 'constant' ? 'constant' : 'linear'
         };
 
+        // Auto-expand connected mapping property
+        this.expandedProps.add(propName);
+
         this.onUpdate(this.mappings);
     }
 
@@ -348,6 +658,9 @@ export class MappingUI {
             source: 'constant',
             function: 'constant'
         };
+
+        // Auto-collapse disconnected property
+        this.expandedProps.delete(propName);
 
         this.onUpdate(this.mappings);
     }

@@ -1082,6 +1082,7 @@ input[type="range"] {
   font-size: 11px;
   width: calc(100% - 20px);
   min-height: 20px;
+  flex-shrink: 0;
   position: relative;
   box-sizing: border-box;
 }
@@ -1096,8 +1097,89 @@ input[type="range"] {
 }
 
 .mapping-item.right {
-  justify-content: flex-start;
-  flex-direction: row-reverse;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  cursor: default;
+}
+
+.mapping-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+}
+
+.mapping-item-gear {
+  font-size: 11px;
+  opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+
+.mapping-item-gear:hover {
+  opacity: 1;
+  transform: rotate(30deg);
+}
+
+.mapping-item.expanded .mapping-item-gear {
+  opacity: 1;
+  transform: rotate(90deg);
+}
+
+.mapping-item-details {
+  display: none;
+  margin-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 8px;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mapping-item.expanded .mapping-item-details {
+  display: flex;
+}
+
+.mapping-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+.mapping-control-group label {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.mapping-control-row {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.mapping-control-input, .mapping-control-select {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-color);
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.mapping-control-input:focus, .mapping-control-select:focus {
+  border-color: var(--accent-color);
+  outline: none;
 }
 
 .snapdot {
@@ -1119,7 +1201,7 @@ input[type="range"] {
 
 .snapdot.left-dot {
   right: -6px;
-  top: 50%;
+  top: 14px;
   transform: translateY(-50%);
 }
 
@@ -1129,7 +1211,7 @@ input[type="range"] {
 
 .snapdot.right-dot {
   left: -6px;
-  top: 50%;
+  top: 14px;
   transform: translateY(-50%);
 }
 
