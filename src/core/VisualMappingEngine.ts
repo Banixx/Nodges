@@ -133,18 +133,29 @@ export class VisualMappingEngine {
         return visual;
     }
 
-    /**
-     * Apply a single mapping to data
-     */
     private applyMapping(mapping: VisualMapping, data: EntityData | RelationshipData): any {
         // Special case: constant source
-        let value: any;
         if (mapping.source === 'constant') {
-            value = 1.0;
-        } else {
-            // Get source value (supports nested properties like "personality.extraversion")
-            value = this.getNestedProperty(data, mapping.source);
+            if (mapping.function === 'pulse') {
+                return this.pulseMapping(1.0, mapping);
+            }
+            if (mapping.range && mapping.range.length > 0) {
+                return mapping.range[0];
+            }
+            if (mapping.params?.color) {
+                return mapping.params.color;
+            }
+            if (mapping.params?.geometry) {
+                return mapping.params.geometry;
+            }
+            if ((mapping as any).value) {
+                return (mapping as any).value;
+            }
+            return 1.0;
         }
+
+        // Get source value (supports nested properties like "personality.extraversion")
+        let value = this.getNestedProperty(data, mapping.source);
 
         if (value === undefined || value === null) {
             // Return middle of range or default
@@ -200,7 +211,7 @@ export class VisualMappingEngine {
             case 'heatmap':
                 return this.heatmapMapping(numValue, mapping);
             case 'bipolar':
-                return this.bipolarMapping(numValue, mapping);
+                return domain ? numValue : this.bipolarMapping(numValue, mapping);
             case 'pulse':
                 return this.pulseMapping(numValue, mapping);
             default:
@@ -297,7 +308,8 @@ export class VisualMappingEngine {
 
         if (mapping.function === 'bipolar' && mapping.params?.positive && mapping.params?.negative) {
             // Bipolar color mapping
-            const normalized = this.bipolarMapping(Number(value), mapping);
+            // Value is already normalized to [0, 1] by applyMapping
+            const normalized = Math.max(0, Math.min(1, Number(value)));
             const positiveColor = new THREE.Color(mapping.params.positive);
             const negativeColor = new THREE.Color(mapping.params.negative);
 
@@ -355,12 +367,34 @@ export class VisualMappingEngine {
     /**
      * Map to geometry type
      */
-    private mapToGeometry(mapping: VisualMapping, _data: EntityData): string {
-        if (mapping.function === 'sphereComplexity') {
-            // For now, just return 'sphere' - logic would be here
-            return 'sphere';
+    private mapToGeometry(mapping: VisualMapping, data: EntityData): string {
+        let geom = 'sphere';
+
+        if (mapping.source === 'constant') {
+            geom = (mapping as any).value || mapping.params?.geometry || 'sphere';
+        } else if (mapping.function === 'categorical') {
+            const val = this.getNestedProperty(data, mapping.source);
+            if (val !== undefined) {
+                if (mapping.params?.categories) {
+                    geom = mapping.params.categories[String(val)] || 'sphere';
+                } else {
+                    geom = String(val).toLowerCase();
+                }
+            }
+        } else if (mapping.function === 'sphereComplexity') {
+            geom = 'sphere';
+        } else {
+            const val = this.getNestedProperty(data, mapping.source);
+            if (val !== undefined) {
+                geom = String(val).toLowerCase();
+            }
         }
-        return 'sphere'; // Default
+
+        if (geom === 'box') {
+            geom = 'cube';
+        }
+
+        return geom;
     }
 
     /**

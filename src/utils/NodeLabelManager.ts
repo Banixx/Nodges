@@ -11,6 +11,8 @@ export interface NodeLabelConfig {
     visible: boolean;
     alwaysVisible: boolean;
     distanceThreshold: number;
+    constantScreenSize: boolean;
+    screenSizeScale: number;
 }
 
 interface LabelData {
@@ -48,7 +50,9 @@ export class NodeLabelManager {
             padding: 0.1,
             visible: true,
             alwaysVisible: false,
-            distanceThreshold: 50
+            distanceThreshold: 50,
+            constantScreenSize: true,
+            screenSizeScale: 0.005
         };
 
         // Bind update method to use in animation loop
@@ -58,7 +62,7 @@ export class NodeLabelManager {
     /**
      * Create or update a label for a node
      */
-    createOrUpdateLabel(entity: EntityData, position: THREE.Vector3): THREE.Sprite | undefined {
+    createOrUpdateLabel(entity: EntityData, position: THREE.Vector3, nodeRadius?: number): THREE.Sprite | undefined {
         if (!entity || !entity.id) return;
 
         const entityId = String(entity.id);
@@ -117,9 +121,16 @@ export class NodeLabelManager {
         const scale = this.config.fontSize;
         sprite.scale.set(scale * canvas.width / fontSize, scale, 1);
 
-        // Position sprite above the node
+        // Position sprite above the node -- dynamischer Offset basierend auf Node-Groesse
+        const effectiveRadius = nodeRadius !== undefined ? nodeRadius : 0.5;
+        const labelOffset = effectiveRadius + 0.4;
         sprite.position.copy(position);
-        sprite.position.y += 1.5; // Offset above node
+        sprite.position.y += labelOffset;
+
+        // Speichere Canvas-Dimensionen und Offset fuer spaetere Updates
+        sprite.userData.canvasWidth = canvas.width;
+        sprite.userData.canvasFontSize = fontSize;
+        sprite.userData.labelOffset = labelOffset;
 
         // Add sprite to group
         this.labelGroup.add(sprite);
@@ -137,12 +148,13 @@ export class NodeLabelManager {
     /**
      * Update label position for an entity
      */
-    updateLabelPosition(entityId: string, position: THREE.Vector3) {
+    updateLabelPosition(entityId: string, position: THREE.Vector3, nodeRadius?: number) {
         const label = this.labels.get(String(entityId));
         if (!label) return;
 
+        const labelOffset = nodeRadius !== undefined ? (nodeRadius + 0.4) : (label.sprite.userData.labelOffset || 1.5);
         label.sprite.position.copy(position);
-        label.sprite.position.y += 1.5; // Offset above node
+        label.sprite.position.y += labelOffset;
     }
 
     /**
@@ -241,6 +253,15 @@ export class NodeLabelManager {
             if (label.sprite.visible) {
                 label.sprite.material.opacity = layerOpacity;
                 label.sprite.material.transparent = layerOpacity < 1.0;
+
+                // Konstante Bildschirmgroesse: Skalierung proportional zur Kamera-Distanz
+                if (this.config.constantScreenSize) {
+                    const distance = this.camera.position.distanceTo(label.sprite.position);
+                    const cw = label.sprite.userData.canvasWidth || 100;
+                    const cf = label.sprite.userData.canvasFontSize || 32;
+                    const s = this.config.screenSizeScale * distance;
+                    label.sprite.scale.set(s * cw / cf, s, 1);
+                }
             }
 
             // Face camera

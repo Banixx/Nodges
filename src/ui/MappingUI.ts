@@ -15,9 +15,17 @@ export class MappingUI {
     private mappings: VisualMappings | null = null;
     private availableAttributes: Record<string, string[]> = {};
     private dataModel: DataModel | null = null;
+    private entities: any[] = [];
+    private relationships: any[] = [];
     private onUpdate: ((mappings: VisualMappings) => void) | null = null;
     private currentType: string = '';
     private expandedProps = new Set<string>();
+    private selectedDesignOption: Record<string, string> = {};
+    private isDraggingSlider = false;
+
+    private getNestedValue(obj: any, path: string): any {
+        return path.split('.').reduce((current, key) => current?.[key], obj);
+    }
 
     // Drag-and-Drop state
     private activeDrag: {
@@ -91,11 +99,19 @@ export class MappingUI {
         mappings: VisualMappings,
         availableAttributes: Record<string, string[]>,
         dataModel: DataModel | null,
+        entities: any[],
+        relationships: any[],
         onUpdate: (newMappings: VisualMappings) => void
     ) {
+        if (this.isDraggingSlider) {
+            return;
+        }
+
         this.mappings = mappings;
         this.availableAttributes = availableAttributes;
         this.dataModel = dataModel;
+        this.entities = entities;
+        this.relationships = relationships;
         this.onUpdate = onUpdate;
 
         // Populate type selector if not yet populated or if types changed
@@ -141,14 +157,50 @@ export class MappingUI {
 
         // 1. Render Left Column: Attributes
         const attributes = this.availableAttributes[this.currentType] || [];
+        const isEntityType = this.dataModel?.entities?.[this.currentType] !== undefined;
+        const currentDataItems = isEntityType ? this.entities : this.relationships;
+
         attributes.forEach(attr => {
             const item = document.createElement('div');
             item.className = 'mapping-item left';
             item.dataset.attr = attr;
 
+            const labelContainer = document.createElement('div');
+            labelContainer.className = 'mapping-item-label-container';
+            labelContainer.style.display = 'flex';
+            labelContainer.style.flexDirection = 'column';
+            labelContainer.style.gap = '2px';
+
             const label = document.createElement('span');
             label.textContent = attr;
-            item.appendChild(label);
+            label.style.fontWeight = '500';
+            labelContainer.appendChild(label);
+
+            // Calculate presence count and unique values count
+            if (attr !== 'constant') {
+                let presenceCount = 0;
+                const uniqueValues = new Set<any>();
+
+                currentDataItems.forEach(dItem => {
+                    if (dItem.type === this.currentType) {
+                        const val = this.getNestedValue(dItem, attr);
+                        if (val !== undefined && val !== null) {
+                            presenceCount++;
+                            uniqueValues.add(val);
+                        }
+                    }
+                });
+
+                const stats = document.createElement('span');
+                stats.className = 'mapping-item-stats';
+                stats.style.fontSize = '9px';
+                stats.style.color = 'var(--text-muted)';
+                const labelNoun = isEntityType ? (presenceCount === 1 ? 'Node' : 'Nodes') : (presenceCount === 1 ? 'Kante' : 'Kanten');
+                stats.textContent = `${presenceCount} ${labelNoun} • ${uniqueValues.size} verschiedene Werte`;
+                labelContainer.appendChild(stats);
+            }
+
+            item.appendChild(labelContainer);
 
             const dot = document.createElement('div');
             dot.className = 'snapdot left-dot';
@@ -164,15 +216,38 @@ export class MappingUI {
         // 2. Render Right Column: Visual Properties
         const preset = this.mappings.defaultPresets[this.currentType];
         if (preset) {
-            Object.keys(preset).forEach(prop => {
+            const isEntity = this.dataModel?.entities?.[this.currentType] !== undefined;
+            const visualProps = isEntity
+                ? ['size', 'color', 'geometry', 'glow', 'animation']
+                : ['thickness', 'color', 'curvature', 'glow', 'opacity', 'animation'];
+
+            const propTranslations: Record<string, string> = {
+                size: 'Größe',
+                color: 'Farbe',
+                geometry: 'Geometrie',
+                glow: 'Leuchten',
+                animation: 'Animation',
+                thickness: 'Linienstärke',
+                curvature: 'Krümmung',
+                opacity: 'Deckkraft'
+            };
+
+            visualProps.forEach(prop => {
                 const item = document.createElement('div');
                 item.className = 'mapping-item right';
                 item.dataset.prop = prop;
 
-                const mapping = (preset as any)[prop] as VisualMapping;
+                let mapping = (preset as any)[prop] as VisualMapping;
+                if (!mapping) {
+                    mapping = {
+                        source: 'constant',
+                        function: 'constant'
+                    };
+                }
                 const isConnected = mapping && mapping.source && mapping.source !== 'constant';
+                const isExpanded = this.expandedProps.has(prop);
 
-                if (isConnected && this.expandedProps.has(prop)) {
+                if (isExpanded) {
                     item.classList.add('expanded');
                 }
 
@@ -181,38 +256,37 @@ export class MappingUI {
                 header.className = 'mapping-item-header';
 
                 const label = document.createElement('span');
-                label.textContent = prop.charAt(0).toUpperCase() + prop.slice(1);
+                label.textContent = propTranslations[prop] || prop.charAt(0).toUpperCase() + prop.slice(1);
                 header.appendChild(label);
 
-                if (isConnected) {
-                    const gear = document.createElement('span');
-                    gear.className = 'mapping-item-gear';
-                    gear.textContent = '⚙️';
-                    header.appendChild(gear);
+                // Show the gear icon on all mapping items so users can expand constant values too!
+                const gear = document.createElement('span');
+                gear.className = 'mapping-item-gear';
+                gear.textContent = '⚙️';
+                header.appendChild(gear);
 
-                    // Toggle expansion
-                    header.onclick = (e) => {
-                        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.target instanceof HTMLOptionElement) {
-                            return;
-                        }
-                        if (item.classList.contains('expanded')) {
-                            item.classList.remove('expanded');
-                            this.expandedProps.delete(prop);
-                        } else {
-                            item.classList.add('expanded');
-                            this.expandedProps.add(prop);
-                        }
-                        this.drawCurves();
-                    };
-                }
+                // Toggle expansion
+                header.onclick = (e) => {
+                    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.target instanceof HTMLOptionElement) {
+                        return;
+                    }
+                    if (item.classList.contains('expanded')) {
+                        item.classList.remove('expanded');
+                        this.expandedProps.delete(prop);
+                    } else {
+                        item.classList.add('expanded');
+                        this.expandedProps.add(prop);
+                    }
+                    this.drawCurves();
+                };
 
                 item.appendChild(header);
 
-                // If connected, render detailed controls
-                if (isConnected) {
-                    const details = document.createElement('div');
-                    details.className = 'mapping-item-details';
+                // Detailed controls
+                const details = document.createElement('div');
+                details.className = 'mapping-item-details';
 
+                if (isConnected) {
                     // 1. Function Selector
                     const funcGroup = document.createElement('div');
                     funcGroup.className = 'mapping-control-group';
@@ -222,7 +296,24 @@ export class MappingUI {
 
                     const funcSelect = document.createElement('select');
                     funcSelect.className = 'mapping-control-select';
-                    const functions = ['linear', 'exponential', 'logarithmic', 'heatmap', 'bipolar', 'pulse', 'sphereComplexity', 'categorical'];
+
+                    let functions: string[] = [];
+                    if (prop === 'color') {
+                        functions = ['heatmap', 'bipolar', 'categorical'];
+                    } else if (prop === 'geometry') {
+                        functions = ['categorical', 'sphereComplexity'];
+                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity'].includes(prop)) {
+                        functions = ['linear', 'exponential', 'logarithmic'];
+                    } else if (prop === 'animation') {
+                        functions = ['pulse'];
+                    } else {
+                        functions = ['linear', 'exponential', 'logarithmic', 'heatmap', 'bipolar', 'pulse', 'sphereComplexity', 'categorical'];
+                    }
+
+                    if (mapping.function && !functions.includes(mapping.function) && mapping.function !== 'constant') {
+                        functions.push(mapping.function);
+                    }
+
                     functions.forEach(f => {
                         const opt = document.createElement('option');
                         opt.value = f;
@@ -295,7 +386,6 @@ export class MappingUI {
 
                     // 3. Range or Palette / Color params depending on function
                     if (['heatmap', 'categorical'].includes(mapping.function)) {
-                        // Palette Selector
                         const palGroup = document.createElement('div');
                         palGroup.className = 'mapping-control-group';
                         const palLabel = document.createElement('label');
@@ -318,7 +408,6 @@ export class MappingUI {
                         palGroup.appendChild(palSelect);
                         details.appendChild(palGroup);
                     } else if (mapping.function === 'bipolar') {
-                        // Color Pickers
                         const bipGroup = document.createElement('div');
                         bipGroup.className = 'mapping-control-group';
                         const bipLabel = document.createElement('label');
@@ -360,7 +449,6 @@ export class MappingUI {
                         bipGroup.appendChild(bipRow);
                         details.appendChild(bipGroup);
                     } else if (['linear', 'exponential', 'logarithmic'].includes(mapping.function) || mapping.range) {
-                        // Range input (Min/Max)
                         const rangeMinVal = mapping.range ? mapping.range[0] : 0.1;
                         const rangeMaxVal = mapping.range ? mapping.range[1] : 3.0;
 
@@ -404,7 +492,38 @@ export class MappingUI {
                         rangeGroup.appendChild(rangeRow);
                         details.appendChild(rangeGroup);
 
-                        // Exponent Base Slider if exponential
+                        // Premium Horizontal Slider Widget Selector
+                        const designModeSelectorGroup = document.createElement('div');
+                        designModeSelectorGroup.className = 'mapping-control-group';
+                        designModeSelectorGroup.style.marginTop = '6px';
+                        const designLabel = document.createElement('label');
+                        designLabel.textContent = 'Mapping-Visualisierer Modus';
+                        designModeSelectorGroup.appendChild(designLabel);
+
+                        const designSelect = document.createElement('select');
+                        designSelect.className = 'mapping-control-select';
+                        const designOptions = [
+                            { val: 'OptionA', text: 'Lösung A: Dual-Schienen (Parallel)' },
+                            { val: 'OptionB', text: 'Lösung B: Vereint (4 Regler)' },
+                            { val: 'OptionC', text: 'Lösung C: Histogramm-Overlay' }
+                        ];
+                        designOptions.forEach(optData => {
+                            const opt = document.createElement('option');
+                            opt.value = optData.val;
+                            opt.textContent = optData.text;
+                            opt.selected = (this.selectedDesignOption[prop] || 'OptionA') === optData.val;
+                            designSelect.appendChild(opt);
+                        });
+                        designSelect.onchange = () => {
+                            this.selectedDesignOption[prop] = designSelect.value;
+                            this.renderColumns();
+                        };
+                        designModeSelectorGroup.appendChild(designSelect);
+                        details.appendChild(designModeSelectorGroup);
+
+                        // Render the selected interactive horizontal widget
+                        this.renderHorizontalWidget(details, prop, mapping);
+
                         if (mapping.function === 'exponential') {
                             const baseGroup = document.createElement('div');
                             baseGroup.className = 'mapping-control-group';
@@ -431,7 +550,6 @@ export class MappingUI {
                             details.appendChild(baseGroup);
                         }
                     } else if (mapping.function === 'pulse') {
-                        // Pulse Frequency Selector
                         const freqGroup = document.createElement('div');
                         freqGroup.className = 'mapping-control-group';
                         const freqLabel = document.createElement('label');
@@ -455,9 +573,95 @@ export class MappingUI {
                         freqGroup.appendChild(freqSelect);
                         details.appendChild(freqGroup);
                     }
+                } else {
+                    // Constant value setting
+                    const constGroup = document.createElement('div');
+                    constGroup.className = 'mapping-control-group';
+                    const constLabel = document.createElement('label');
+                    constLabel.textContent = 'Konstanter Wert';
+                    constGroup.appendChild(constLabel);
 
-                    item.appendChild(details);
+                    if (prop === 'color') {
+                        const colorInput = document.createElement('input');
+                        colorInput.className = 'mapping-control-input';
+                        colorInput.type = 'color';
+                        const constColor = mapping.params?.color || '#00aaff';
+                        colorInput.value = constColor;
+                        colorInput.style.padding = '0';
+                        colorInput.style.height = '24px';
+                        colorInput.style.cursor = 'pointer';
+                        colorInput.onchange = () => {
+                            const params = { ...(mapping.params || {}), color: colorInput.value };
+                            this.updatePropertyMapping(prop, { params });
+                        };
+                        constGroup.appendChild(colorInput);
+                    } else if (prop === 'geometry') {
+                        const shapeSelect = document.createElement('select');
+                        shapeSelect.className = 'mapping-control-select';
+                        const shapes = ['sphere', 'cube', 'cylinder', 'cone', 'torus'];
+                        const currentShape = (mapping as any).value || mapping.params?.geometry || 'sphere';
+                        shapes.forEach(s => {
+                            const opt = document.createElement('option');
+                            opt.value = s;
+                            opt.textContent = s.charAt(0).toUpperCase() + s.slice(1);
+                            opt.selected = currentShape === s;
+                            shapeSelect.appendChild(opt);
+                        });
+                        shapeSelect.onchange = () => {
+                            const params = { ...(mapping.params || {}), geometry: shapeSelect.value };
+                            this.updatePropertyMapping(prop, { 
+                                params,
+                                value: shapeSelect.value
+                            } as any);
+                        };
+                        constGroup.appendChild(shapeSelect);
+                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity'].includes(prop)) {
+                        const numInput = document.createElement('input');
+                        numInput.className = 'mapping-control-input';
+                        numInput.type = 'number';
+                        numInput.step = '0.05';
+                        const constVal = mapping.range ? mapping.range[0] : 1.0;
+                        numInput.value = String(constVal);
+                        numInput.onchange = () => {
+                            const val = parseFloat(numInput.value);
+                            if (!isNaN(val)) {
+                                this.updatePropertyMapping(prop, { range: [val, val] });
+                            }
+                        };
+                        constGroup.appendChild(numInput);
+                    } else if (prop === 'animation') {
+                        const animSelect = document.createElement('select');
+                        animSelect.className = 'mapping-control-select';
+                        const animOptions = ['none', 'pulse'];
+                        const currentAnim = mapping.function === 'pulse' ? 'pulse' : 'none';
+                        animOptions.forEach(optVal => {
+                            const opt = document.createElement('option');
+                            opt.value = optVal;
+                            opt.textContent = optVal.charAt(0).toUpperCase() + optVal.slice(1);
+                            opt.selected = currentAnim === optVal;
+                            animSelect.appendChild(opt);
+                        });
+                        animSelect.onchange = () => {
+                            if (animSelect.value === 'pulse') {
+                                this.updatePropertyMapping(prop, { 
+                                    source: 'constant',
+                                    function: 'pulse',
+                                    params: { frequency: 'heartbeat' }
+                                });
+                            } else {
+                                this.updatePropertyMapping(prop, { 
+                                    source: 'constant',
+                                    function: 'constant',
+                                    params: {}
+                                });
+                            }
+                        };
+                        constGroup.appendChild(animSelect);
+                    }
+                    details.appendChild(constGroup);
                 }
+
+                item.appendChild(details);
 
                 // Snapdot for dragging
                 const dot = document.createElement('div');
@@ -480,10 +684,10 @@ export class MappingUI {
         if (!this.mappings || !this.currentType || !this.onUpdate) return;
 
         const preset = this.mappings.defaultPresets[this.currentType] as any;
-        if (!preset || !preset[propName]) return;
+        if (!preset) return;
 
         preset[propName] = {
-            ...preset[propName],
+            ...(preset[propName] || { source: 'constant', function: 'constant' }),
             ...updates
         };
 
@@ -631,13 +835,22 @@ export class MappingUI {
         if (!this.mappings || !this.currentType || !this.onUpdate) return;
 
         const preset = this.mappings.defaultPresets[this.currentType] as any;
-        if (!preset || !preset[propName]) return;
+        if (!preset) return;
+
+        let defaultFunc: any = 'linear';
+        if (propName === 'color') {
+            defaultFunc = 'heatmap';
+        } else if (propName === 'geometry') {
+            defaultFunc = 'categorical';
+        } else if (propName === 'animation') {
+            defaultFunc = 'pulse';
+        }
 
         // Update mapping source and function
         preset[propName] = {
-            ...preset[propName],
+            ...(preset[propName] || { source: 'constant', function: 'constant' }),
             source: sourceAttr,
-            function: sourceAttr === 'constant' ? 'constant' : 'linear'
+            function: sourceAttr === 'constant' ? 'constant' : defaultFunc
         };
 
         // Auto-expand connected mapping property
@@ -646,15 +859,484 @@ export class MappingUI {
         this.onUpdate(this.mappings);
     }
 
+    private getAttributeDataBounds(source: string): [number, number] {
+        const isEntityType = this.dataModel?.entities?.[this.currentType] !== undefined;
+        const currentDataItems = isEntityType ? this.entities : this.relationships;
+        const values: number[] = [];
+
+        currentDataItems.forEach(item => {
+            if (item.type === this.currentType) {
+                const val = parseFloat(this.getNestedValue(item, source));
+                if (!isNaN(val)) {
+                    values.push(val);
+                }
+            }
+        });
+
+        if (values.length === 0) return [0, 100];
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+        if (min === max) return [min - 10, min + 10];
+        return [min, max];
+    }
+
+    private setupSliderDrag(
+        handle: HTMLElement,
+        track: HTMLElement,
+        _getValue: () => number,
+        setValue: (val: number) => void,
+        pctToVal: (pct: number) => number,
+        _valToPct: (val: number) => number,
+        updateUI: () => void
+    ) {
+        handle.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.isDraggingSlider = true;
+
+            const onPointerMove = (moveEvent: PointerEvent) => {
+                const rect = track.getBoundingClientRect();
+                let pct = (moveEvent.clientX - rect.left) / rect.width;
+                pct = Math.max(0, Math.min(1, pct));
+                const newVal = pctToVal(pct);
+                setValue(newVal);
+                updateUI();
+            };
+
+            const onPointerUp = () => {
+                window.removeEventListener('pointermove', onPointerMove);
+                window.removeEventListener('pointerup', onPointerUp);
+                this.isDraggingSlider = false;
+            };
+
+            window.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('pointerup', onPointerUp);
+        });
+    }
+
+    private renderHorizontalWidget(details: HTMLElement, prop: string, mapping: VisualMapping) {
+        if (!this.mappings || !this.onUpdate) return;
+        const mode = this.selectedDesignOption[prop] || 'OptionA';
+        
+        const container = document.createElement('div');
+        container.className = 'horizontal-widget-container';
+        container.style.marginTop = '10px';
+        container.style.padding = '8px';
+        container.style.background = 'rgba(0,0,0,0.2)';
+        container.style.borderRadius = '6px';
+        container.style.border = '1px solid rgba(255,255,255,0.05)';
+        
+        const [absMin, absMax] = this.getAttributeDataBounds(mapping.source);
+        let domMin = mapping.domain ? mapping.domain[0] : absMin;
+        let domMax = mapping.domain ? mapping.domain[1] : absMax;
+        let rngMin = mapping.range ? mapping.range[0] : 0.1;
+        let rngMax = mapping.range ? mapping.range[1] : 3.0;
+        
+        const visualMin = 0.0;
+        const visualMax = 5.0;
+
+        if (mode === 'OptionA') {
+            // Option A: Dual tracks
+            container.innerHTML = `
+                <div class="widget-track-label" style="font-size: 9px; color: var(--text-muted); text-transform: uppercase;">Domain (${absMin.toFixed(1)} bis ${absMax.toFixed(1)})</div>
+                <div class="slider-track-wrapper" id="domainTrackA" style="position: relative; height: 16px; margin: 8px 0; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer;">
+                    <div class="slider-fill" id="domainFillA" style="position: absolute; height: 100%; background: rgba(255, 165, 0, 0.3); border-radius: 4px; width: 0%;"></div>
+                    <div class="slider-handle" id="domMinHandleA" style="position: absolute; width: 12px; height: 20px; top: -2px; background: orange; border-radius: 3px; cursor: ew-resize; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.5);"></div>
+                    <div class="slider-handle" id="domMaxHandleA" style="position: absolute; width: 12px; height: 20px; top: -2px; background: orange; border-radius: 3px; cursor: ew-resize; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.5);"></div>
+                </div>
+                <div class="widget-values" style="display: flex; justify-content: space-between; font-size: 9px; color: orange; margin-bottom: 8px;">
+                    <span id="domMinValA">Min: ${domMin.toFixed(1)}</span>
+                    <span id="domMaxValA">Max: ${domMax.toFixed(1)}</span>
+                </div>
+                
+                <div class="widget-track-label" style="font-size: 9px; color: var(--text-muted); text-transform: uppercase;">Mapping Range (${visualMin} bis ${visualMax})</div>
+                <div class="slider-track-wrapper" id="rangeTrackA" style="position: relative; height: 16px; margin: 8px 0; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer;">
+                    <div class="slider-fill" id="rangeFillA" style="position: absolute; height: 100%; background: rgba(0, 170, 255, 0.3); border-radius: 4px; width: 0%;"></div>
+                    <div class="slider-handle" id="rngMinHandleA" style="position: absolute; width: 12px; height: 20px; top: -2px; background: #00aaff; border-radius: 3px; cursor: ew-resize; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.5);"></div>
+                    <div class="slider-handle" id="rngMaxHandleA" style="position: absolute; width: 12px; height: 20px; top: -2px; background: #00aaff; border-radius: 3px; cursor: ew-resize; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.5);"></div>
+                </div>
+                <div class="widget-values" style="display: flex; justify-content: space-between; font-size: 9px; color: #00aaff;">
+                    <span id="rngMinValA">Min: ${rngMin.toFixed(2)}</span>
+                    <span id="rngMaxValA">Max: ${rngMax.toFixed(2)}</span>
+                </div>
+            `;
+
+            // Setup interactions
+            const domTrack = container.querySelector('#domainTrackA') as HTMLElement;
+            const domFill = container.querySelector('#domainFillA') as HTMLElement;
+            const domMinHandle = container.querySelector('#domMinHandleA') as HTMLElement;
+            const domMaxHandle = container.querySelector('#domMaxHandleA') as HTMLElement;
+            const domMinValText = container.querySelector('#domMinValA') as HTMLElement;
+            const domMaxValText = container.querySelector('#domMaxValA') as HTMLElement;
+
+            const updateDomUI = () => {
+                const minPct = Math.max(0, Math.min(1, (domMin - absMin) / (absMax - absMin)));
+                const maxPct = Math.max(0, Math.min(1, (domMax - absMin) / (absMax - absMin)));
+                domMinHandle.style.left = `calc(${minPct * 100}% - 6px)`;
+                domMaxHandle.style.left = `calc(${maxPct * 100}% - 6px)`;
+                domFill.style.left = `${minPct * 100}%`;
+                domFill.style.width = `${(maxPct - minPct) * 100}%`;
+                domMinValText.textContent = `Min: ${domMin.toFixed(1)}`;
+                domMaxValText.textContent = `Max: ${domMax.toFixed(1)}`;
+            };
+            updateDomUI();
+
+            this.setupSliderDrag(
+                domMinHandle,
+                domTrack,
+                () => domMin,
+                (val) => {
+                    domMin = Math.min(val, domMax);
+                    this.updatePropertyMapping(prop, { domain: [domMin, domMax] });
+                },
+                (pct) => absMin + pct * (absMax - absMin),
+                (val) => (val - absMin) / (absMax - absMin),
+                updateDomUI
+            );
+
+            this.setupSliderDrag(
+                domMaxHandle,
+                domTrack,
+                () => domMax,
+                (val) => {
+                    domMax = Math.max(val, domMin);
+                    this.updatePropertyMapping(prop, { domain: [domMin, domMax] });
+                },
+                (pct) => absMin + pct * (absMax - absMin),
+                (val) => (val - absMin) / (absMax - absMin),
+                updateDomUI
+            );
+
+            // Range
+            const rngTrack = container.querySelector('#rangeTrackA') as HTMLElement;
+            const rngFill = container.querySelector('#rangeFillA') as HTMLElement;
+            const rngMinHandle = container.querySelector('#rngMinHandleA') as HTMLElement;
+            const rngMaxHandle = container.querySelector('#rngMaxHandleA') as HTMLElement;
+            const rngMinValText = container.querySelector('#rngMinValA') as HTMLElement;
+            const rngMaxValText = container.querySelector('#rngMaxValA') as HTMLElement;
+
+            const updateRngUI = () => {
+                const minPct = Math.max(0, Math.min(1, (rngMin - visualMin) / (visualMax - visualMin)));
+                const maxPct = Math.max(0, Math.min(1, (rngMax - visualMin) / (visualMax - visualMin)));
+                rngMinHandle.style.left = `calc(${minPct * 100}% - 6px)`;
+                rngMaxHandle.style.left = `calc(${maxPct * 100}% - 6px)`;
+                rngFill.style.left = `${minPct * 100}%`;
+                rngFill.style.width = `${(maxPct - minPct) * 100}%`;
+                rngMinValText.textContent = `Min: ${rngMin.toFixed(2)}`;
+                rngMaxValText.textContent = `Max: ${rngMax.toFixed(2)}`;
+            };
+            updateRngUI();
+
+            this.setupSliderDrag(
+                rngMinHandle,
+                rngTrack,
+                () => rngMin,
+                (val) => {
+                    rngMin = Math.min(val, rngMax);
+                    this.updatePropertyMapping(prop, { range: [rngMin, rngMax] });
+                },
+                (pct) => visualMin + pct * (visualMax - visualMin),
+                (val) => (val - visualMin) / (visualMax - visualMin),
+                updateRngUI
+            );
+
+            this.setupSliderDrag(
+                rngMaxHandle,
+                rngTrack,
+                () => rngMax,
+                (val) => {
+                    rngMax = Math.max(val, rngMin);
+                    this.updatePropertyMapping(prop, { range: [rngMin, rngMax] });
+                },
+                (pct) => visualMin + pct * (visualMax - visualMin),
+                (val) => (val - visualMin) / (visualMax - visualMin),
+                updateRngUI
+            );
+        } else if (mode === 'OptionB') {
+            // Option B: Unified Quad Handles on a Single Track
+            container.innerHTML = `
+                <div class="widget-track-label" style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Vereinte Schiene (Orange=Domain, Blau=Mapping)</div>
+                <div class="slider-track-wrapper" id="unifiedTrackB" style="position: relative; height: 24px; margin: 8px 0; background: rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; border: 1px solid rgba(255,255,255,0.05);">
+                    <!-- Domain Fill (top half) -->
+                    <div id="domainFillB" style="position: absolute; height: 50%; top: 0; background: rgba(255, 165, 0, 0.25); border-top-left-radius: 4px; border-top-right-radius: 4px; width: 0%;"></div>
+                    <!-- Range Fill (bottom half) -->
+                    <div id="rangeFillB" style="position: absolute; height: 50%; bottom: 0; background: rgba(0, 170, 255, 0.25); border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; width: 0%;"></div>
+                    
+                    <!-- Middle divider line -->
+                    <div style="position: absolute; width: 100%; height: 1px; top: 12px; background: rgba(255,255,255,0.15);"></div>
+
+                    <!-- Domain Handles -->
+                    <div class="slider-handle" id="domMinHandleB" style="position: absolute; width: 10px; height: 12px; top: 0px; background: orange; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 12;"></div>
+                    <div class="slider-handle" id="domMaxHandleB" style="position: absolute; width: 10px; height: 12px; top: 0px; background: orange; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 12;"></div>
+                    
+                    <!-- Range Handles -->
+                    <div class="slider-handle" id="rngMinHandleB" style="position: absolute; width: 10px; height: 12px; bottom: 0px; background: #00aaff; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 11;"></div>
+                    <div class="slider-handle" id="rngMaxHandleB" style="position: absolute; width: 10px; height: 12px; bottom: 0px; background: #00aaff; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 11;"></div>
+                </div>
+                <div class="widget-values" style="display: flex; flex-direction: column; gap: 2px; font-size: 9px; line-height: 1.1;">
+                    <div style="display: flex; justify-content: space-between; color: orange;">
+                        <span id="domMinValB">Domain Min: ${domMin.toFixed(1)}</span>
+                        <span id="domMaxValB">Domain Max: ${domMax.toFixed(1)}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: #00aaff;">
+                        <span id="rngMinValB">Mapping Min: ${rngMin.toFixed(2)}</span>
+                        <span id="rngMaxValB">Mapping Max: ${rngMax.toFixed(2)}</span>
+                    </div>
+                </div>
+            `;
+
+            const track = container.querySelector('#unifiedTrackB') as HTMLElement;
+            const domFill = container.querySelector('#domainFillB') as HTMLElement;
+            const rngFill = container.querySelector('#rangeFillB') as HTMLElement;
+            const domMinHandle = container.querySelector('#domMinHandleB') as HTMLElement;
+            const domMaxHandle = container.querySelector('#domMaxHandleB') as HTMLElement;
+            const rngMinHandle = container.querySelector('#rngMinHandleB') as HTMLElement;
+            const rngMaxHandle = container.querySelector('#rngMaxHandleB') as HTMLElement;
+            
+            const domMinValText = container.querySelector('#domMinValB') as HTMLElement;
+            const domMaxValText = container.querySelector('#domMaxValB') as HTMLElement;
+            const rngMinValText = container.querySelector('#rngMinValB') as HTMLElement;
+            const rngMaxValText = container.querySelector('#rngMaxValB') as HTMLElement;
+
+            const updateUI = () => {
+                const dMinPct = Math.max(0, Math.min(1, (domMin - absMin) / (absMax - absMin)));
+                const dMaxPct = Math.max(0, Math.min(1, (domMax - absMin) / (absMax - absMin)));
+                domMinHandle.style.left = `calc(${dMinPct * 100}% - 5px)`;
+                domMaxHandle.style.left = `calc(${dMaxPct * 100}% - 5px)`;
+                domFill.style.left = `${dMinPct * 100}%`;
+                domFill.style.width = `${(dMaxPct - dMinPct) * 100}%`;
+
+                const rMinPct = Math.max(0, Math.min(1, (rngMin - visualMin) / (visualMax - visualMin)));
+                const rMaxPct = Math.max(0, Math.min(1, (rngMax - visualMin) / (visualMax - visualMin)));
+                rngMinHandle.style.left = `calc(${rMinPct * 100}% - 5px)`;
+                rngMaxHandle.style.left = `calc(${rMaxPct * 100}% - 5px)`;
+                rngFill.style.left = `${rMinPct * 100}%`;
+                rngFill.style.width = `${(rMaxPct - rMinPct) * 100}%`;
+
+                domMinValText.textContent = `Domain Min: ${domMin.toFixed(1)}`;
+                domMaxValText.textContent = `Domain Max: ${domMax.toFixed(1)}`;
+                rngMinValText.textContent = `Mapping Min: ${rngMin.toFixed(2)}`;
+                rngMaxValText.textContent = `Mapping Max: ${rngMax.toFixed(2)}`;
+            };
+            updateUI();
+
+            this.setupSliderDrag(
+                domMinHandle,
+                track,
+                () => domMin,
+                (val) => {
+                    domMin = Math.min(val, domMax);
+                    this.updatePropertyMapping(prop, { domain: [domMin, domMax] });
+                },
+                (pct) => absMin + pct * (absMax - absMin),
+                (val) => (val - absMin) / (absMax - absMin),
+                updateUI
+            );
+
+            this.setupSliderDrag(
+                domMaxHandle,
+                track,
+                () => domMax,
+                (val) => {
+                    domMax = Math.max(val, domMin);
+                    this.updatePropertyMapping(prop, { domain: [domMin, domMax] });
+                },
+                (pct) => absMin + pct * (absMax - absMin),
+                (val) => (val - absMin) / (absMax - absMin),
+                updateUI
+            );
+
+            this.setupSliderDrag(
+                rngMinHandle,
+                track,
+                () => rngMin,
+                (val) => {
+                    rngMin = Math.min(val, rngMax);
+                    this.updatePropertyMapping(prop, { range: [rngMin, rngMax] });
+                },
+                (pct) => visualMin + pct * (visualMax - visualMin),
+                (val) => (val - visualMin) / (visualMax - visualMin),
+                updateUI
+            );
+
+            this.setupSliderDrag(
+                rngMaxHandle,
+                track,
+                () => rngMax,
+                (val) => {
+                    rngMax = Math.max(val, rngMin);
+                    this.updatePropertyMapping(prop, { range: [rngMin, rngMax] });
+                },
+                (pct) => visualMin + pct * (visualMax - visualMin),
+                (val) => (val - visualMin) / (visualMax - visualMin),
+                updateUI
+            );
+        } else if (mode === 'OptionC') {
+            // Option C: Density Histogram / Sparkline Overlay
+            const isEntityType = this.dataModel?.entities?.[this.currentType] !== undefined;
+            const currentDataItems = isEntityType ? this.entities : this.relationships;
+            const bins = new Array(10).fill(0);
+            let maxBinCount = 1;
+
+            currentDataItems.forEach(item => {
+                if (item.type === this.currentType) {
+                    const val = parseFloat(this.getNestedValue(item, mapping.source));
+                    if (!isNaN(val)) {
+                        const pct = (absMax > absMin) ? (val - absMin) / (absMax - absMin) : 0.5;
+                        const binIdx = Math.max(0, Math.min(9, Math.floor(pct * 10)));
+                        bins[binIdx]++;
+                    }
+                }
+            });
+            maxBinCount = Math.max(1, ...bins);
+
+            // Generate sparkline path points
+            let pointsStr = '';
+            const width = 460; // Approximate visualizer width
+            const height = 30; // Sparkline height
+            bins.forEach((count, idx) => {
+                const x = (idx / 9) * width;
+                const y = height - (count / maxBinCount) * height * 0.9;
+                pointsStr += `${idx === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)} `;
+            });
+            const fillPointsStr = `${pointsStr} L ${width} ${height} L 0 ${height} Z`;
+
+            container.innerHTML = `
+                <div class="widget-track-label" style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Dichteverteilung & Bereichsauswahl</div>
+                <div style="position: relative; width: 100%; height: 50px; background: rgba(0,0,0,0.3); border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05);">
+                    <!-- Sparkline SVG -->
+                    <svg viewBox="0 0 460 30" preserveAspectRatio="none" style="position: absolute; top: 0; left: 0; width: 100%; height: 30px; pointer-events: none;">
+                        <path d="${fillPointsStr}" fill="rgba(255, 165, 0, 0.08)" stroke="rgba(255, 165, 0, 0.4)" stroke-width="1.5" />
+                    </svg>
+
+                    <!-- Domain Track (over sparkline, vertically centered) -->
+                    <div id="domainTrackC" style="position: absolute; top: 22px; left: 0; width: 100%; height: 8px; background: rgba(255,255,255,0.08); cursor: pointer;">
+                        <div id="domainFillC" style="position: absolute; height: 100%; background: rgba(255, 165, 0, 0.25); width: 0%;"></div>
+                        <div class="slider-handle" id="domMinHandleC" style="position: absolute; width: 10px; height: 14px; top: -3px; background: orange; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 12;"></div>
+                        <div class="slider-handle" id="domMaxHandleC" style="position: absolute; width: 10px; height: 14px; top: -3px; background: orange; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 12;"></div>
+                    </div>
+
+                    <!-- Range Track (below sparkline) -->
+                    <div id="rangeTrackC" style="position: absolute; bottom: 4px; left: 0; width: 100%; height: 8px; background: rgba(255,255,255,0.08); cursor: pointer;">
+                        <div id="rangeFillC" style="position: absolute; height: 100%; background: rgba(0, 170, 255, 0.25); width: 0%;"></div>
+                        <div class="slider-handle" id="rngMinHandleC" style="position: absolute; width: 10px; height: 14px; top: -3px; background: #00aaff; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 11;"></div>
+                        <div class="slider-handle" id="rngMaxHandleC" style="position: absolute; width: 10px; height: 14px; top: -3px; background: #00aaff; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 11;"></div>
+                    </div>
+                </div>
+                <div class="widget-values" style="display: flex; flex-direction: column; gap: 2px; font-size: 9px; line-height: 1.1; margin-top: 6px;">
+                    <div style="display: flex; justify-content: space-between; color: orange;">
+                        <span id="domMinValC">Domain Min: ${domMin.toFixed(1)}</span>
+                        <span id="domMaxValC">Domain Max: ${domMax.toFixed(1)}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: #00aaff;">
+                        <span id="rngMinValC">Mapping Min: ${rngMin.toFixed(2)}</span>
+                        <span id="rngMaxValC">Mapping Max: ${rngMax.toFixed(2)}</span>
+                    </div>
+                </div>
+            `;
+
+            const domTrack = container.querySelector('#domainTrackC') as HTMLElement;
+            const domFill = container.querySelector('#domainFillC') as HTMLElement;
+            const domMinHandle = container.querySelector('#domMinHandleC') as HTMLElement;
+            const domMaxHandle = container.querySelector('#domMaxHandleC') as HTMLElement;
+
+            const rngTrack = container.querySelector('#rangeTrackC') as HTMLElement;
+            const rngFill = container.querySelector('#rangeFillC') as HTMLElement;
+            const rngMinHandle = container.querySelector('#rngMinHandleC') as HTMLElement;
+            const rngMaxHandle = container.querySelector('#rngMaxHandleC') as HTMLElement;
+
+            const domMinValText = container.querySelector('#domMinValC') as HTMLElement;
+            const domMaxValText = container.querySelector('#domMaxValC') as HTMLElement;
+            const rngMinValText = container.querySelector('#rngMinValC') as HTMLElement;
+            const rngMaxValText = container.querySelector('#rngMaxValC') as HTMLElement;
+
+            const updateUI = () => {
+                const dMinPct = Math.max(0, Math.min(1, (domMin - absMin) / (absMax - absMin)));
+                const dMaxPct = Math.max(0, Math.min(1, (domMax - absMin) / (absMax - absMin)));
+                domMinHandle.style.left = `calc(${dMinPct * 100}% - 5px)`;
+                domMaxHandle.style.left = `calc(${dMaxPct * 100}% - 5px)`;
+                domFill.style.left = `${dMinPct * 100}%`;
+                domFill.style.width = `${(dMaxPct - dMinPct) * 100}%`;
+
+                const rMinPct = Math.max(0, Math.min(1, (rngMin - visualMin) / (visualMax - visualMin)));
+                const rMaxPct = Math.max(0, Math.min(1, (rngMax - visualMin) / (visualMax - visualMin)));
+                rngMinHandle.style.left = `calc(${rMinPct * 100}% - 5px)`;
+                rngMaxHandle.style.left = `calc(${rMaxPct * 100}% - 5px)`;
+                rngFill.style.left = `${rMinPct * 100}%`;
+                rngFill.style.width = `${(rMaxPct - rMinPct) * 100}%`;
+
+                domMinValText.textContent = `Domain Min: ${domMin.toFixed(1)}`;
+                domMaxValText.textContent = `Domain Max: ${domMax.toFixed(1)}`;
+                rngMinValText.textContent = `Mapping Min: ${rngMin.toFixed(2)}`;
+                rngMaxValText.textContent = `Mapping Max: ${rngMax.toFixed(2)}`;
+            };
+            updateUI();
+
+            this.setupSliderDrag(
+                domMinHandle,
+                domTrack,
+                () => domMin,
+                (val) => {
+                    domMin = Math.min(val, domMax);
+                    this.updatePropertyMapping(prop, { domain: [domMin, domMax] });
+                },
+                (pct) => absMin + pct * (absMax - absMin),
+                (val) => (val - absMin) / (absMax - absMin),
+                updateUI
+            );
+
+            this.setupSliderDrag(
+                domMaxHandle,
+                domTrack,
+                () => domMax,
+                (val) => {
+                    domMax = Math.max(val, domMin);
+                    this.updatePropertyMapping(prop, { domain: [domMin, domMax] });
+                },
+                (pct) => absMin + pct * (absMax - absMin),
+                (val) => (val - absMin) / (absMax - absMin),
+                updateUI
+            );
+
+            this.setupSliderDrag(
+                rngMinHandle,
+                rngTrack,
+                () => rngMin,
+                (val) => {
+                    rngMin = Math.min(val, rngMax);
+                    this.updatePropertyMapping(prop, { range: [rngMin, rngMax] });
+                },
+                (pct) => visualMin + pct * (visualMax - visualMin),
+                (val) => (val - visualMin) / (visualMax - visualMin),
+                updateUI
+            );
+
+            this.setupSliderDrag(
+                rngMaxHandle,
+                rngTrack,
+                () => rngMax,
+                (val) => {
+                    rngMax = Math.max(val, rngMin);
+                    this.updatePropertyMapping(prop, { range: [rngMin, rngMax] });
+                },
+                (pct) => visualMin + pct * (visualMax - visualMin),
+                (val) => (val - visualMin) / (visualMax - visualMin),
+                updateUI
+            );
+        }
+
+        details.appendChild(container);
+    }
+
     private disconnectMapping(propName: string) {
         if (!this.mappings || !this.currentType || !this.onUpdate) return;
 
         const preset = this.mappings.defaultPresets[this.currentType] as any;
-        if (!preset || !preset[propName]) return;
+        if (!preset) return;
 
         // Reset to constant source
         preset[propName] = {
-            ...preset[propName],
+            ...(preset[propName] || { source: 'constant', function: 'constant' }),
             source: 'constant',
             function: 'constant'
         };

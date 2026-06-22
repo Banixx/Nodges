@@ -1,0 +1,3170 @@
+{
+  "metadata": {
+    "type": "nodges_export",
+    "source": "Nodges 0.88",
+    "exportedAt": "2026-06-21T14:21:16.233Z",
+    "nodeCount": 53,
+    "edgeCount": 135,
+    "exportedBy": "Nodges 0.88",
+    "format": "nodges-json"
+  },
+  "nodes": [
+    {
+      "id": "node1",
+      "name": "node 1",
+      "position": {
+        "x": -3.5042446225661057,
+        "y": -2.4010765973190664,
+        "z": 1.0759251619675703
+      },
+      "metadata": {
+        "id": "node1",
+        "type": "node",
+        "label": "node 1",
+        "position": {
+          "x": -3.5042446225661057,
+          "y": -2.4010765973190664,
+          "z": 1.0759251619675703
+        },
+        "groesse": 20,
+        "typ": "A"
+      }
+    },
+    {
+      "id": "node2",
+      "name": "node 2",
+      "position": {
+        "x": -3.751382424762654,
+        "y": -2.5704131754066046,
+        "z": 1.1518050757567837
+      },
+      "metadata": {
+        "id": "node2",
+        "type": "node",
+        "label": "node 2",
+        "position": {
+          "x": -3.751382424762654,
+          "y": -2.5704131754066046,
+          "z": 1.1518050757567837
+        },
+        "groesse": 80,
+        "typ": "B"
+      }
+    },
+    {
+      "id": "node3",
+      "name": "node 3",
+      "position": {
+        "x": -3.751382424762654,
+        "y": -2.5704131754066046,
+        "z": 1.1518050757567837
+      },
+      "metadata": {
+        "id": "node3",
+        "type": "node",
+        "label": "node 3",
+        "position": {
+          "x": -3.751382424762654,
+          "y": -2.5704131754066046,
+          "z": 1.1518050757567837
+        },
+        "groesse": 50,
+        "typ": "C"
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_zeus",
+      "name": "Zeus",
+      "position": {
+        "x": 5,
+        "y": 3.4259546006819495,
+        "z": -1.535174164267799
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_zeus",
+        "type": "Gott",
+        "label": "Zeus",
+        "position": {
+          "x": 5,
+          "y": 3.4259546006819495,
+          "z": -1.535174164267799
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_hera",
+      "name": "Hera",
+      "position": {
+        "x": -5,
+        "y": -3.4259546006819495,
+        "z": 1.5351741642677992
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_hera",
+        "type": "Göttin",
+        "label": "Hera",
+        "position": {
+          "x": -5,
+          "y": -3.4259546006819495,
+          "z": 1.5351741642677992
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_poseidon",
+      "name": "Poseidon",
+      "position": {
+        "x": -4.087549528925716,
+        "y": -2.8007518228276784,
+        "z": 1.2550200863943546
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_poseidon",
+        "type": "Gott",
+        "label": "Poseidon",
+        "position": {
+          "x": -4.087549528925716,
+          "y": -2.8007518228276784,
+          "z": 1.2550200863943546
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_demeter",
+      "name": "Demeter",
+      "position": {
+        "x": -4.065846030676418,
+        "y": -2.785880782892064,
+        "z": 1.2483563564370441
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_demeter",
+        "type": "Göttin",
+        "label": "Demeter",
+        "position": {
+          "x": -4.065846030676418,
+          "y": -2.785880782892064,
+          "z": 1.2483563564370441
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_hades",
+      "name": "Hades",
+      "position": {
+        "x": -4.153916923569382,
+        "y": -2.846226159030627,
+        "z": 1.2753971883156987
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_hades",
+        "type": "Gott",
+        "label": "Hades",
+        "position": {
+          "x": -4.153916923569382,
+          "y": -2.846226159030627,
+          "z": 1.2753971883156987
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_hestia",
+      "name": "Hestia",
+      "position": {
+        "x": -3.6112079717208014,
+        "y": -2.4743669129472425,
+        "z": 1.1087666359967394
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_hestia",
+        "type": "Göttin",
+        "label": "Hestia",
+        "position": {
+          "x": -3.6112079717208014,
+          "y": -2.4743669129472425,
+          "z": 1.1087666359967394
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_athena",
+      "name": "Athena",
+      "position": {
+        "x": -4.619578277112941,
+        "y": -3.1652930903370953,
+        "z": 1.4183714441673079
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_athena",
+        "type": "Göttin",
+        "label": "Athena",
+        "position": {
+          "x": -4.619578277112941,
+          "y": -3.1652930903370953,
+          "z": 1.4183714441673079
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_apollo",
+      "name": "Apollo",
+      "position": {
+        "x": -4.13033127464242,
+        "y": -2.8300654865403483,
+        "z": 1.2681555725396663
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_apollo",
+        "type": "Gott",
+        "label": "Apollo",
+        "position": {
+          "x": -4.13033127464242,
+          "y": -2.8300654865403483,
+          "z": 1.2681555725396663
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_artemis",
+      "name": "Artemis",
+      "position": {
+        "x": -4.155816118427756,
+        "y": -2.847527470103155,
+        "z": 1.275980307291596
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_artemis",
+        "type": "Göttin",
+        "label": "Artemis",
+        "position": {
+          "x": -4.155816118427756,
+          "y": -2.847527470103155,
+          "z": 1.275980307291596
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_ares",
+      "name": "Ares",
+      "position": {
+        "x": -4.650502363997092,
+        "y": -3.1864819938836244,
+        "z": 1.4278662160149322
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_ares",
+        "type": "Gott",
+        "label": "Ares",
+        "position": {
+          "x": -4.650502363997092,
+          "y": -3.1864819938836244,
+          "z": 1.4278662160149322
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_aphrodite",
+      "name": "Aphrodite",
+      "position": {
+        "x": -4.141465275005154,
+        "y": -2.8376944024936885,
+        "z": 1.27157409848003
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_aphrodite",
+        "type": "Göttin",
+        "label": "Aphrodite",
+        "position": {
+          "x": -4.141465275005154,
+          "y": -2.8376944024936885,
+          "z": 1.27157409848003
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_hephaistos",
+      "name": "Hephaistos",
+      "position": {
+        "x": -4.111753492392587,
+        "y": -2.817336158826492,
+        "z": 1.2624515462717991
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_hephaistos",
+        "type": "Gott",
+        "label": "Hephaistos",
+        "position": {
+          "x": -4.111753492392587,
+          "y": -2.817336158826492,
+          "z": 1.2624515462717991
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_hermes",
+      "name": "Hermes",
+      "position": {
+        "x": -4.618977497101476,
+        "y": -3.1648814413282396,
+        "z": 1.4181869837769057
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_hermes",
+        "type": "Gott",
+        "label": "Hermes",
+        "position": {
+          "x": -4.618977497101476,
+          "y": -3.1648814413282396,
+          "z": 1.4181869837769057
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_dionysos",
+      "name": "Dionysos",
+      "position": {
+        "x": -4.650698796501666,
+        "y": -3.1866165876521775,
+        "z": 1.427926527636141
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_dionysos",
+        "type": "Gott",
+        "label": "Dionysos",
+        "position": {
+          "x": -4.650698796501666,
+          "y": -3.1866165876521775,
+          "z": 1.427926527636141
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_persephone",
+      "name": "Persephone",
+      "position": {
+        "x": -4.158452451997772,
+        "y": -2.849333861927781,
+        "z": 1.2767897535286123
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_persephone",
+        "type": "Göttin",
+        "label": "Persephone",
+        "position": {
+          "x": -4.158452451997772,
+          "y": -2.849333861927781,
+          "z": 1.2767897535286123
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_kronos",
+      "name": "Kronos",
+      "position": {
+        "x": -4.875680472148777,
+        "y": -3.3407719890026493,
+        "z": 1.4970037388135657
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_kronos",
+        "type": "Titan",
+        "label": "Kronos",
+        "position": {
+          "x": -4.875680472148777,
+          "y": -3.3407719890026493,
+          "z": 1.4970037388135657
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_rhea",
+      "name": "Rhea",
+      "position": {
+        "x": -4.145104855152736,
+        "y": -2.840188209763921,
+        "z": 1.2726915763623
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_rhea",
+        "type": "Titanin",
+        "label": "Rhea",
+        "position": {
+          "x": -4.145104855152736,
+          "y": -2.840188209763921,
+          "z": 1.2726915763623
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_gaia",
+      "name": "Gaia",
+      "position": {
+        "x": -3.6996598982261224,
+        "y": -2.53497336985726,
+        "z": 1.1359244584668762
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_gaia",
+        "type": "Urmutter",
+        "label": "Gaia",
+        "position": {
+          "x": -3.6996598982261224,
+          "y": -2.53497336985726,
+          "z": 1.1359244584668762
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_uranos",
+      "name": "Uranos",
+      "position": {
+        "x": -3.6996598982261224,
+        "y": -2.53497336985726,
+        "z": 1.1359244584668762
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_uranos",
+        "type": "Urvater",
+        "label": "Uranos",
+        "position": {
+          "x": -3.6996598982261224,
+          "y": -2.53497336985726,
+          "z": 1.1359244584668762
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782050517592_eros",
+      "name": "Eros",
+      "position": {
+        "x": -3.698585171624685,
+        "y": -2.5342369769483257,
+        "z": 1.1355944799644402
+      },
+      "metadata": {
+        "id": "AI_Generation_1782050517592_eros",
+        "type": "Gott",
+        "label": "Eros",
+        "position": {
+          "x": -3.698585171624685,
+          "y": -2.5342369769483257,
+          "z": 1.1355944799644402
+        }
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Chaos",
+      "name": "Chaos",
+      "position": {
+        "x": 0,
+        "y": 30,
+        "z": 0
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Chaos",
+        "type": "Urgottheit",
+        "label": "Chaos",
+        "generation": 1,
+        "position": {
+          "x": 0,
+          "y": 30,
+          "z": 0
+        },
+        "machtlevel": 100,
+        "pantheon": "Urgötter",
+        "status": "Potentiell"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Gaia",
+      "name": "Gaia",
+      "position": {
+        "x": 10,
+        "y": 30,
+        "z": 10
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Gaia",
+        "type": "Urgottheit",
+        "label": "Gaia",
+        "generation": 1,
+        "position": {
+          "x": 10,
+          "y": 30,
+          "z": 10
+        },
+        "machtlevel": 98,
+        "pantheon": "Urgötter",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Uranos",
+      "name": "Uranos",
+      "position": {
+        "x": -10,
+        "y": 30,
+        "z": 10
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Uranos",
+        "type": "Urgottheit",
+        "label": "Uranos",
+        "generation": 1,
+        "position": {
+          "x": -10,
+          "y": 30,
+          "z": 10
+        },
+        "machtlevel": 95,
+        "pantheon": "Urgötter",
+        "status": "Verbannt"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Tartaros",
+      "name": "Tartaros",
+      "position": {
+        "x": 10,
+        "y": 30,
+        "z": -10
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Tartaros",
+        "type": "Urgottheit",
+        "label": "Tartaros",
+        "generation": 1,
+        "position": {
+          "x": 10,
+          "y": 30,
+          "z": -10
+        },
+        "machtlevel": 90,
+        "pantheon": "Urgötter",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Nyx",
+      "name": "Nyx",
+      "position": {
+        "x": -10,
+        "y": 30,
+        "z": -10
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Nyx",
+        "type": "Urgottheit",
+        "label": "Nyx",
+        "generation": 1,
+        "position": {
+          "x": -10,
+          "y": 30,
+          "z": -10
+        },
+        "machtlevel": 85,
+        "pantheon": "Urgötter",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Kronos",
+      "name": "Kronos",
+      "position": {
+        "x": 0,
+        "y": 15,
+        "z": 0
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Kronos",
+        "type": "Titan",
+        "label": "Kronos",
+        "generation": 2,
+        "position": {
+          "x": 0,
+          "y": 15,
+          "z": 0
+        },
+        "machtlevel": 95,
+        "pantheon": "Titanen",
+        "status": "Verbannt"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Rhea",
+      "name": "Rhea",
+      "position": {
+        "x": 5,
+        "y": 15,
+        "z": 5
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Rhea",
+        "type": "Titan",
+        "label": "Rhea",
+        "generation": 2,
+        "position": {
+          "x": 5,
+          "y": 15,
+          "z": 5
+        },
+        "machtlevel": 80,
+        "pantheon": "Titanen",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Okeanos",
+      "name": "Okeanos",
+      "position": {
+        "x": 15,
+        "y": 15,
+        "z": 0
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Okeanos",
+        "type": "Titan",
+        "label": "Okeanos",
+        "generation": 2,
+        "position": {
+          "x": 15,
+          "y": 15,
+          "z": 0
+        },
+        "machtlevel": 75,
+        "pantheon": "Titanen",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Tethys",
+      "name": "Tethys",
+      "position": {
+        "x": 15,
+        "y": 15,
+        "z": 5
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Tethys",
+        "type": "Titan",
+        "label": "Tethys",
+        "generation": 2,
+        "position": {
+          "x": 15,
+          "y": 15,
+          "z": 5
+        },
+        "machtlevel": 70,
+        "pantheon": "Titanen",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Prometheus",
+      "name": "Prometheus",
+      "position": {
+        "x": -15,
+        "y": 15,
+        "z": 0
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Prometheus",
+        "type": "Titan",
+        "label": "Prometheus",
+        "generation": 2,
+        "position": {
+          "x": -15,
+          "y": 15,
+          "z": 0
+        },
+        "machtlevel": 60,
+        "pantheon": "Titanen",
+        "status": "Gefesselt"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Atlas",
+      "name": "Atlas",
+      "position": {
+        "x": -15,
+        "y": 15,
+        "z": 5
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Atlas",
+        "type": "Titan",
+        "label": "Atlas",
+        "generation": 2,
+        "position": {
+          "x": -15,
+          "y": 15,
+          "z": 5
+        },
+        "machtlevel": 65,
+        "pantheon": "Titanen",
+        "status": "Gefesselt"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Zeus",
+      "name": "Zeus",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Zeus",
+        "type": "Olympier",
+        "label": "Zeus",
+        "generation": 3,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "machtlevel": 100,
+        "pantheon": "Olymp",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Hera",
+      "name": "Hera",
+      "position": {
+        "x": 5,
+        "y": 0,
+        "z": 5
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Hera",
+        "type": "Olympier",
+        "label": "Hera",
+        "generation": 3,
+        "position": {
+          "x": 5,
+          "y": 0,
+          "z": 5
+        },
+        "machtlevel": 90,
+        "pantheon": "Olymp",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Poseidon",
+      "name": "Poseidon",
+      "position": {
+        "x": -10,
+        "y": 0,
+        "z": 10
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Poseidon",
+        "type": "Olympier",
+        "label": "Poseidon",
+        "generation": 3,
+        "position": {
+          "x": -10,
+          "y": 0,
+          "z": 10
+        },
+        "machtlevel": 85,
+        "pantheon": "Olymp",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Hades",
+      "name": "Hades",
+      "position": {
+        "x": -15,
+        "y": 0,
+        "z": 0
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Hades",
+        "type": "Olympier",
+        "label": "Hades",
+        "generation": 3,
+        "position": {
+          "x": -15,
+          "y": 0,
+          "z": 0
+        },
+        "machtlevel": 85,
+        "pantheon": "Unterwelt",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Demeter",
+      "name": "Demeter",
+      "position": {
+        "x": 10,
+        "y": 0,
+        "z": 10
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Demeter",
+        "type": "Olympier",
+        "label": "Demeter",
+        "generation": 3,
+        "position": {
+          "x": 10,
+          "y": 0,
+          "z": 10
+        },
+        "machtlevel": 75,
+        "pantheon": "Olymp",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Hestia",
+      "name": "Hestia",
+      "position": {
+        "x": 10,
+        "y": 0,
+        "z": 0
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Hestia",
+        "type": "Olympier",
+        "label": "Hestia",
+        "generation": 3,
+        "position": {
+          "x": 10,
+          "y": 0,
+          "z": 0
+        },
+        "machtlevel": 60,
+        "pantheon": "Olymp",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Athena",
+      "name": "Athena",
+      "position": {
+        "x": 0,
+        "y": -15,
+        "z": -5
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Athena",
+        "type": "Olympier",
+        "label": "Athena",
+        "generation": 4,
+        "position": {
+          "x": 0,
+          "y": -15,
+          "z": -5
+        },
+        "machtlevel": 88,
+        "pantheon": "Olymp",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Ares",
+      "name": "Ares",
+      "position": {
+        "x": 5,
+        "y": -15,
+        "z": -5
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Ares",
+        "type": "Olympier",
+        "label": "Ares",
+        "generation": 4,
+        "position": {
+          "x": 5,
+          "y": -15,
+          "z": -5
+        },
+        "machtlevel": 80,
+        "pantheon": "Olymp",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Apollo",
+      "name": "Apollo",
+      "position": {
+        "x": -5,
+        "y": -15,
+        "z": 5
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Apollo",
+        "type": "Olympier",
+        "label": "Apollo",
+        "generation": 4,
+        "position": {
+          "x": -5,
+          "y": -15,
+          "z": 5
+        },
+        "machtlevel": 82,
+        "pantheon": "Olymp",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Artemis",
+      "name": "Artemis",
+      "position": {
+        "x": -10,
+        "y": -15,
+        "z": 5
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Artemis",
+        "type": "Olympier",
+        "label": "Artemis",
+        "generation": 4,
+        "position": {
+          "x": -10,
+          "y": -15,
+          "z": 5
+        },
+        "machtlevel": 80,
+        "pantheon": "Olymp",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Aphrodite",
+      "name": "Aphrodite",
+      "position": {
+        "x": 15,
+        "y": -15,
+        "z": -5
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Aphrodite",
+        "type": "Olympier",
+        "label": "Aphrodite",
+        "generation": 4,
+        "position": {
+          "x": 15,
+          "y": -15,
+          "z": -5
+        },
+        "machtlevel": 85,
+        "pantheon": "Olymp",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Hephaestus",
+      "name": "Hephaestus",
+      "position": {
+        "x": 10,
+        "y": -15,
+        "z": -5
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Hephaestus",
+        "type": "Olympier",
+        "label": "Hephaestus",
+        "generation": 4,
+        "position": {
+          "x": 10,
+          "y": -15,
+          "z": -5
+        },
+        "machtlevel": 70,
+        "pantheon": "Olymp",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Hermes",
+      "name": "Hermes",
+      "position": {
+        "x": -10,
+        "y": -15,
+        "z": -5
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Hermes",
+        "type": "Olympier",
+        "label": "Hermes",
+        "generation": 4,
+        "position": {
+          "x": -10,
+          "y": -15,
+          "z": -5
+        },
+        "machtlevel": 75,
+        "pantheon": "Olymp",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Dionysus",
+      "name": "Dionysus",
+      "position": {
+        "x": -15,
+        "y": -15,
+        "z": -5
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Dionysus",
+        "type": "Olympier",
+        "label": "Dionysus",
+        "generation": 4,
+        "position": {
+          "x": -15,
+          "y": -15,
+          "z": -5
+        },
+        "machtlevel": 70,
+        "pantheon": "Olymp",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Herakles",
+      "name": "Herakles",
+      "position": {
+        "x": 15,
+        "y": -15,
+        "z": 5
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Herakles",
+        "type": "Halbgott",
+        "label": "Herakles",
+        "generation": 4,
+        "position": {
+          "x": 15,
+          "y": -15,
+          "z": 5
+        },
+        "machtlevel": 70,
+        "pantheon": "Helden",
+        "status": "Vergöttlicht"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Perseus",
+      "name": "Perseus",
+      "position": {
+        "x": 15,
+        "y": -15,
+        "z": 10
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Perseus",
+        "type": "Halbgott",
+        "label": "Perseus",
+        "generation": 4,
+        "position": {
+          "x": 15,
+          "y": -15,
+          "z": 10
+        },
+        "machtlevel": 65,
+        "pantheon": "Helden",
+        "status": "Vergöttlicht"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Helena",
+      "name": "Helena",
+      "position": {
+        "x": 20,
+        "y": -15,
+        "z": 10
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Helena",
+        "type": "Sterbliche",
+        "label": "Helena",
+        "generation": 4,
+        "position": {
+          "x": 20,
+          "y": -15,
+          "z": 10
+        },
+        "machtlevel": 50,
+        "pantheon": "Helden",
+        "status": "Mythisch"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Persephone",
+      "name": "Persephone",
+      "position": {
+        "x": -20,
+        "y": -15,
+        "z": 0
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Persephone",
+        "type": "Olympier",
+        "label": "Persephone",
+        "generation": 4,
+        "position": {
+          "x": -20,
+          "y": -15,
+          "z": 0
+        },
+        "machtlevel": 75,
+        "pantheon": "Unterwelt",
+        "status": "Aktiv"
+      }
+    },
+    {
+      "id": "AI_Generation_1782051615081_Medusa",
+      "name": "Medusa",
+      "position": {
+        "x": 20,
+        "y": -15,
+        "z": -10
+      },
+      "metadata": {
+        "id": "AI_Generation_1782051615081_Medusa",
+        "type": "Monster",
+        "label": "Medusa",
+        "generation": 4,
+        "position": {
+          "x": 20,
+          "y": -15,
+          "z": -10
+        },
+        "machtlevel": 40,
+        "pantheon": "Monster",
+        "status": "Verstorben"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_0",
+      "source": "node3",
+      "target": "node2",
+      "name": "connection",
+      "weight": 1,
+      "metadata": {
+        "id": "edge1",
+        "type": "connection",
+        "source": "node3",
+        "target": "node2",
+        "label": "edge 1",
+        "offset": 3,
+        "staerke": 2
+      }
+    },
+    {
+      "id": "edge_1",
+      "source": "node3",
+      "target": "node2",
+      "name": "connection",
+      "weight": 1,
+      "metadata": {
+        "id": "edge2",
+        "type": "connection",
+        "source": "node3",
+        "target": "node2",
+        "label": "edge 2",
+        "offset": 1,
+        "staerke": 8
+      }
+    },
+    {
+      "id": "edge_2",
+      "source": "node2",
+      "target": "node3",
+      "name": "connection",
+      "weight": 1,
+      "metadata": {
+        "id": "edge3",
+        "type": "connection",
+        "source": "node2",
+        "target": "node3",
+        "label": "edge 3",
+        "offset": 0,
+        "staerke": 5
+      }
+    },
+    {
+      "id": "edge_3",
+      "source": "node3",
+      "target": "node2",
+      "name": "connection",
+      "weight": 1,
+      "metadata": {
+        "id": "edge4",
+        "type": "connection",
+        "source": "node3",
+        "target": "node2",
+        "label": "edge 4",
+        "offset": -4,
+        "staerke": 10
+      }
+    },
+    {
+      "id": "edge_4",
+      "source": "AI_Generation_1782050517592_kronos",
+      "target": "AI_Generation_1782050517592_zeus",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r1",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_kronos",
+        "target": "AI_Generation_1782050517592_zeus",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_5",
+      "source": "AI_Generation_1782050517592_rhea",
+      "target": "AI_Generation_1782050517592_zeus",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r2",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_rhea",
+        "target": "AI_Generation_1782050517592_zeus",
+        "label": "Mutter von"
+      }
+    },
+    {
+      "id": "edge_6",
+      "source": "AI_Generation_1782050517592_kronos",
+      "target": "AI_Generation_1782050517592_poseidon",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r3",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_kronos",
+        "target": "AI_Generation_1782050517592_poseidon",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_7",
+      "source": "AI_Generation_1782050517592_rhea",
+      "target": "AI_Generation_1782050517592_poseidon",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r4",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_rhea",
+        "target": "AI_Generation_1782050517592_poseidon",
+        "label": "Mutter von"
+      }
+    },
+    {
+      "id": "edge_8",
+      "source": "AI_Generation_1782050517592_kronos",
+      "target": "AI_Generation_1782050517592_hera",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r5",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_kronos",
+        "target": "AI_Generation_1782050517592_hera",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_9",
+      "source": "AI_Generation_1782050517592_rhea",
+      "target": "AI_Generation_1782050517592_hera",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r6",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_rhea",
+        "target": "AI_Generation_1782050517592_hera",
+        "label": "Mutter von"
+      }
+    },
+    {
+      "id": "edge_10",
+      "source": "AI_Generation_1782050517592_kronos",
+      "target": "AI_Generation_1782050517592_demeter",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r7",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_kronos",
+        "target": "AI_Generation_1782050517592_demeter",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_11",
+      "source": "AI_Generation_1782050517592_rhea",
+      "target": "AI_Generation_1782050517592_demeter",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r8",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_rhea",
+        "target": "AI_Generation_1782050517592_demeter",
+        "label": "Mutter von"
+      }
+    },
+    {
+      "id": "edge_12",
+      "source": "AI_Generation_1782050517592_kronos",
+      "target": "AI_Generation_1782050517592_hades",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r9",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_kronos",
+        "target": "AI_Generation_1782050517592_hades",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_13",
+      "source": "AI_Generation_1782050517592_rhea",
+      "target": "AI_Generation_1782050517592_hades",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r10",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_rhea",
+        "target": "AI_Generation_1782050517592_hades",
+        "label": "Mutter von"
+      }
+    },
+    {
+      "id": "edge_14",
+      "source": "AI_Generation_1782050517592_kronos",
+      "target": "AI_Generation_1782050517592_hestia",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r11",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_kronos",
+        "target": "AI_Generation_1782050517592_hestia",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_15",
+      "source": "AI_Generation_1782050517592_rhea",
+      "target": "AI_Generation_1782050517592_hestia",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r12",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_rhea",
+        "target": "AI_Generation_1782050517592_hestia",
+        "label": "Mutter von"
+      }
+    },
+    {
+      "id": "edge_16",
+      "source": "AI_Generation_1782050517592_gaia",
+      "target": "AI_Generation_1782050517592_kronos",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r13",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_gaia",
+        "target": "AI_Generation_1782050517592_kronos",
+        "label": "Mutter von"
+      }
+    },
+    {
+      "id": "edge_17",
+      "source": "AI_Generation_1782050517592_uranos",
+      "target": "AI_Generation_1782050517592_kronos",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r14",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_uranos",
+        "target": "AI_Generation_1782050517592_kronos",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_18",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_hera",
+      "name": "Ehepartner",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r15",
+        "type": "Ehepartner",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_hera",
+        "label": "Ehefrau"
+      }
+    },
+    {
+      "id": "edge_19",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_athena",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r16",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_athena",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_20",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_apollo",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r17",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_apollo",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_21",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_artemis",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r18",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_artemis",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_22",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_ares",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r19",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_ares",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_23",
+      "source": "AI_Generation_1782050517592_hera",
+      "target": "AI_Generation_1782050517592_ares",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r20",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_hera",
+        "target": "AI_Generation_1782050517592_ares",
+        "label": "Mutter von"
+      }
+    },
+    {
+      "id": "edge_24",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_hermes",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r21",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_hermes",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_25",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_dionysos",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r22",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_dionysos",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_26",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_persephone",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r23",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_persephone",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_27",
+      "source": "AI_Generation_1782050517592_demeter",
+      "target": "AI_Generation_1782050517592_persephone",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r24",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_demeter",
+        "target": "AI_Generation_1782050517592_persephone",
+        "label": "Mutter von"
+      }
+    },
+    {
+      "id": "edge_28",
+      "source": "AI_Generation_1782050517592_aphrodite",
+      "target": "AI_Generation_1782050517592_eros",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r25",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_aphrodite",
+        "target": "AI_Generation_1782050517592_eros",
+        "label": "Mutter von"
+      }
+    },
+    {
+      "id": "edge_29",
+      "source": "AI_Generation_1782050517592_ares",
+      "target": "AI_Generation_1782050517592_eros",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r26",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_ares",
+        "target": "AI_Generation_1782050517592_eros",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_30",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_poseidon",
+      "name": "Geschwister",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r27",
+        "type": "Geschwister",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_poseidon",
+        "label": "Brüder"
+      }
+    },
+    {
+      "id": "edge_31",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_hades",
+      "name": "Geschwister",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r28",
+        "type": "Geschwister",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_hades",
+        "label": "Brüder"
+      }
+    },
+    {
+      "id": "edge_32",
+      "source": "AI_Generation_1782050517592_poseidon",
+      "target": "AI_Generation_1782050517592_hades",
+      "name": "Geschwister",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r29",
+        "type": "Geschwister",
+        "source": "AI_Generation_1782050517592_poseidon",
+        "target": "AI_Generation_1782050517592_hades",
+        "label": "Brüder"
+      }
+    },
+    {
+      "id": "edge_33",
+      "source": "AI_Generation_1782050517592_hera",
+      "target": "AI_Generation_1782050517592_demeter",
+      "name": "Geschwister",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r30",
+        "type": "Geschwister",
+        "source": "AI_Generation_1782050517592_hera",
+        "target": "AI_Generation_1782050517592_demeter",
+        "label": "Schwestern"
+      }
+    },
+    {
+      "id": "edge_34",
+      "source": "AI_Generation_1782050517592_hera",
+      "target": "AI_Generation_1782050517592_hestia",
+      "name": "Geschwister",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r31",
+        "type": "Geschwister",
+        "source": "AI_Generation_1782050517592_hera",
+        "target": "AI_Generation_1782050517592_hestia",
+        "label": "Schwestern"
+      }
+    },
+    {
+      "id": "edge_35",
+      "source": "AI_Generation_1782050517592_apollo",
+      "target": "AI_Generation_1782050517592_artemis",
+      "name": "Geschwister",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r32",
+        "type": "Geschwister",
+        "source": "AI_Generation_1782050517592_apollo",
+        "target": "AI_Generation_1782050517592_artemis",
+        "label": "Geschwister"
+      }
+    },
+    {
+      "id": "edge_36",
+      "source": "AI_Generation_1782050517592_hades",
+      "target": "AI_Generation_1782050517592_persephone",
+      "name": "Ehepartner",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r33",
+        "type": "Ehepartner",
+        "source": "AI_Generation_1782050517592_hades",
+        "target": "AI_Generation_1782050517592_persephone",
+        "label": "Ehefrau"
+      }
+    },
+    {
+      "id": "edge_37",
+      "source": "AI_Generation_1782050517592_aphrodite",
+      "target": "AI_Generation_1782050517592_hephaistos",
+      "name": "Ehepartner",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r34",
+        "type": "Ehepartner",
+        "source": "AI_Generation_1782050517592_aphrodite",
+        "target": "AI_Generation_1782050517592_hephaistos",
+        "label": "Ehemann"
+      }
+    },
+    {
+      "id": "edge_38",
+      "source": "AI_Generation_1782050517592_aphrodite",
+      "target": "AI_Generation_1782050517592_ares",
+      "name": "Liebschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r35",
+        "type": "Liebschaft",
+        "source": "AI_Generation_1782050517592_aphrodite",
+        "target": "AI_Generation_1782050517592_ares",
+        "label": "Liebhaber"
+      }
+    },
+    {
+      "id": "edge_39",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_aphrodite",
+      "name": "Gefühl",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r36",
+        "type": "Gefühl",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_aphrodite",
+        "label": "Begehrt"
+      }
+    },
+    {
+      "id": "edge_40",
+      "source": "AI_Generation_1782050517592_hera",
+      "target": "AI_Generation_1782050517592_zeus",
+      "name": "Gefühl",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r37",
+        "type": "Gefühl",
+        "source": "AI_Generation_1782050517592_hera",
+        "target": "AI_Generation_1782050517592_zeus",
+        "label": "Eifersüchtig auf"
+      }
+    },
+    {
+      "id": "edge_41",
+      "source": "AI_Generation_1782050517592_hera",
+      "target": "AI_Generation_1782050517592_aphrodite",
+      "name": "Verhalten",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r38",
+        "type": "Verhalten",
+        "source": "AI_Generation_1782050517592_hera",
+        "target": "AI_Generation_1782050517592_aphrodite",
+        "label": "Rivalin"
+      }
+    },
+    {
+      "id": "edge_42",
+      "source": "AI_Generation_1782050517592_hera",
+      "target": "AI_Generation_1782050517592_herakles",
+      "name": "Verhalten",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r39",
+        "type": "Verhalten",
+        "source": "AI_Generation_1782050517592_hera",
+        "target": "AI_Generation_1782050517592_herakles",
+        "label": "Hasst"
+      }
+    },
+    {
+      "id": "edge_43",
+      "source": "AI_Generation_1782050517592_athena",
+      "target": "AI_Generation_1782050517592_ares",
+      "name": "Verhalten",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r40",
+        "type": "Verhalten",
+        "source": "AI_Generation_1782050517592_athena",
+        "target": "AI_Generation_1782050517592_ares",
+        "label": "Rivalin im Krieg"
+      }
+    },
+    {
+      "id": "edge_44",
+      "source": "AI_Generation_1782050517592_poseidon",
+      "target": "AI_Generation_1782050517592_athena",
+      "name": "Verhalten",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r41",
+        "type": "Verhalten",
+        "source": "AI_Generation_1782050517592_poseidon",
+        "target": "AI_Generation_1782050517592_athena",
+        "label": "Rivale um Athen"
+      }
+    },
+    {
+      "id": "edge_45",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_kronos",
+      "name": "Verhalten",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r42",
+        "type": "Verhalten",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_kronos",
+        "label": "Stürzte"
+      }
+    },
+    {
+      "id": "edge_46",
+      "source": "AI_Generation_1782050517592_hephaistos",
+      "target": "AI_Generation_1782050517592_zeus",
+      "name": "Verhalten",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r43",
+        "type": "Verhalten",
+        "source": "AI_Generation_1782050517592_hephaistos",
+        "target": "AI_Generation_1782050517592_zeus",
+        "label": "Verriet Hera an"
+      }
+    },
+    {
+      "id": "edge_47",
+      "source": "AI_Generation_1782050517592_hera",
+      "target": "AI_Generation_1782050517592_hephaistos",
+      "name": "Verhalten",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r44",
+        "type": "Verhalten",
+        "source": "AI_Generation_1782050517592_hera",
+        "target": "AI_Generation_1782050517592_hephaistos",
+        "label": "Verstieß ihn"
+      }
+    },
+    {
+      "id": "edge_48",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_demeter",
+      "name": "Liebschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r45",
+        "type": "Liebschaft",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_demeter",
+        "label": "Verführte"
+      }
+    },
+    {
+      "id": "edge_49",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_hermes",
+      "name": "Verhalten",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r46",
+        "type": "Verhalten",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_hermes",
+        "label": "Vertrauter"
+      }
+    },
+    {
+      "id": "edge_50",
+      "source": "AI_Generation_1782050517592_apollo",
+      "target": "AI_Generation_1782050517592_hermes",
+      "name": "Verhalten",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r47",
+        "type": "Verhalten",
+        "source": "AI_Generation_1782050517592_apollo",
+        "target": "AI_Generation_1782050517592_hermes",
+        "label": "Bestrafte wegen Diebstahl"
+      }
+    },
+    {
+      "id": "edge_51",
+      "source": "AI_Generation_1782050517592_artemis",
+      "target": "AI_Generation_1782050517592_aphrodite",
+      "name": "Gefühl",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r48",
+        "type": "Gefühl",
+        "source": "AI_Generation_1782050517592_artemis",
+        "target": "AI_Generation_1782050517592_aphrodite",
+        "label": "Verachtet"
+      }
+    },
+    {
+      "id": "edge_52",
+      "source": "AI_Generation_1782050517592_dionysos",
+      "target": "AI_Generation_1782050517592_undefined",
+      "name": "Gott",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r49",
+        "type": "Gott",
+        "source": "AI_Generation_1782050517592_dionysos",
+        "target": "AI_Generation_1782050517592_undefined",
+        "label": "Dionysos"
+      }
+    },
+    {
+      "id": "edge_53",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_dionysos",
+      "name": "Eltern-Kind",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r50",
+        "type": "Eltern-Kind",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_dionysos",
+        "label": "Vater von"
+      }
+    },
+    {
+      "id": "edge_54",
+      "source": "AI_Generation_1782050517592_hera",
+      "target": "AI_Generation_1782050517592_herakles",
+      "name": "Verhalten",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r51",
+        "type": "Verhalten",
+        "source": "AI_Generation_1782050517592_hera",
+        "target": "AI_Generation_1782050517592_herakles",
+        "label": "Verfolgte"
+      }
+    },
+    {
+      "id": "edge_55",
+      "source": "AI_Generation_1782050517592_aphrodite",
+      "target": "AI_Generation_1782050517592_psyche",
+      "name": "Verhalten",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r52",
+        "type": "Verhalten",
+        "source": "AI_Generation_1782050517592_aphrodite",
+        "target": "AI_Generation_1782050517592_psyche",
+        "label": "Eifersüchtig auf"
+      }
+    },
+    {
+      "id": "edge_56",
+      "source": "AI_Generation_1782050517592_eros",
+      "target": "AI_Generation_1782050517592_psyche",
+      "name": "Liebschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r53",
+        "type": "Liebschaft",
+        "source": "AI_Generation_1782050517592_eros",
+        "target": "AI_Generation_1782050517592_psyche",
+        "label": "Liebte"
+      }
+    },
+    {
+      "id": "edge_57",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_athena",
+      "name": "Verhalten",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r54",
+        "type": "Verhalten",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_athena",
+        "label": "Bevorzugt"
+      }
+    },
+    {
+      "id": "edge_58",
+      "source": "AI_Generation_1782050517592_zeus",
+      "target": "AI_Generation_1782050517592_ares",
+      "name": "Gefühl",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r55",
+        "type": "Gefühl",
+        "source": "AI_Generation_1782050517592_zeus",
+        "target": "AI_Generation_1782050517592_ares",
+        "label": "Enttäuscht von"
+      }
+    },
+    {
+      "id": "edge_59",
+      "source": "AI_Generation_1782050517592_hades",
+      "target": "AI_Generation_1782050517592_undefined",
+      "name": "Gott",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782050517592_r56",
+        "type": "Gott",
+        "source": "AI_Generation_1782050517592_hades",
+        "target": "AI_Generation_1782050517592_undefined",
+        "label": "Hades"
+      }
+    },
+    {
+      "id": "edge_60",
+      "source": "AI_Generation_1782051615081_Chaos",
+      "target": "AI_Generation_1782051615081_Nyx",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_1",
+        "source": "AI_Generation_1782051615081_Chaos",
+        "target": "AI_Generation_1782051615081_Nyx",
+        "type": "Abstammung",
+        "label": "Entstehung",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_61",
+      "source": "AI_Generation_1782051615081_Gaia",
+      "target": "AI_Generation_1782051615081_Uranos",
+      "name": "Partnerschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_2",
+        "source": "AI_Generation_1782051615081_Gaia",
+        "target": "AI_Generation_1782051615081_Uranos",
+        "type": "Partnerschaft",
+        "label": "Paarung",
+        "curvature": 0.25
+      }
+    },
+    {
+      "id": "edge_62",
+      "source": "AI_Generation_1782051615081_Gaia",
+      "target": "AI_Generation_1782051615081_Kronos",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_3",
+        "source": "AI_Generation_1782051615081_Gaia",
+        "target": "AI_Generation_1782051615081_Kronos",
+        "type": "Abstammung",
+        "label": "Mutter von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_63",
+      "source": "AI_Generation_1782051615081_Uranos",
+      "target": "AI_Generation_1782051615081_Kronos",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_4",
+        "source": "AI_Generation_1782051615081_Uranos",
+        "target": "AI_Generation_1782051615081_Kronos",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_64",
+      "source": "AI_Generation_1782051615081_Gaia",
+      "target": "AI_Generation_1782051615081_Okeanos",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_5",
+        "source": "AI_Generation_1782051615081_Gaia",
+        "target": "AI_Generation_1782051615081_Okeanos",
+        "type": "Abstammung",
+        "label": "Mutter von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_65",
+      "source": "AI_Generation_1782051615081_Uranos",
+      "target": "AI_Generation_1782051615081_Okeanos",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_6",
+        "source": "AI_Generation_1782051615081_Uranos",
+        "target": "AI_Generation_1782051615081_Okeanos",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_66",
+      "source": "AI_Generation_1782051615081_Gaia",
+      "target": "AI_Generation_1782051615081_Tethys",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_7",
+        "source": "AI_Generation_1782051615081_Gaia",
+        "target": "AI_Generation_1782051615081_Tethys",
+        "type": "Abstammung",
+        "label": "Mutter von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_67",
+      "source": "AI_Generation_1782051615081_Uranos",
+      "target": "AI_Generation_1782051615081_Tethys",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_8",
+        "source": "AI_Generation_1782051615081_Uranos",
+        "target": "AI_Generation_1782051615081_Tethys",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_68",
+      "source": "AI_Generation_1782051615081_Uranos",
+      "target": "AI_Generation_1782051615081_Kronos",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_9",
+        "source": "AI_Generation_1782051615081_Uranos",
+        "target": "AI_Generation_1782051615081_Kronos",
+        "type": "Ereignis",
+        "label": "Kastration",
+        "curvature": 0.65,
+        "intensitaet": 95
+      }
+    },
+    {
+      "id": "edge_69",
+      "source": "AI_Generation_1782051615081_Gaia",
+      "target": "AI_Generation_1782051615081_Uranos",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_10",
+        "source": "AI_Generation_1782051615081_Gaia",
+        "target": "AI_Generation_1782051615081_Uranos",
+        "type": "Ereignis",
+        "label": "Verschwörung",
+        "curvature": 0.65,
+        "intensitaet": 80
+      }
+    },
+    {
+      "id": "edge_70",
+      "source": "AI_Generation_1782051615081_Tartaros",
+      "target": "AI_Generation_1782051615081_Uranos",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_11",
+        "source": "AI_Generation_1782051615081_Tartaros",
+        "target": "AI_Generation_1782051615081_Uranos",
+        "type": "Einfluss",
+        "label": "Gefängnis",
+        "curvature": 0.45,
+        "staerke": 90
+      }
+    },
+    {
+      "id": "edge_71",
+      "source": "AI_Generation_1782051615081_Kronos",
+      "target": "AI_Generation_1782051615081_Rhea",
+      "name": "Partnerschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_12",
+        "source": "AI_Generation_1782051615081_Kronos",
+        "target": "AI_Generation_1782051615081_Rhea",
+        "type": "Partnerschaft",
+        "label": "Ehe",
+        "curvature": 0.25
+      }
+    },
+    {
+      "id": "edge_72",
+      "source": "AI_Generation_1782051615081_Kronos",
+      "target": "AI_Generation_1782051615081_Zeus",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_13",
+        "source": "AI_Generation_1782051615081_Kronos",
+        "target": "AI_Generation_1782051615081_Zeus",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_73",
+      "source": "AI_Generation_1782051615081_Rhea",
+      "target": "AI_Generation_1782051615081_Zeus",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_14",
+        "source": "AI_Generation_1782051615081_Rhea",
+        "target": "AI_Generation_1782051615081_Zeus",
+        "type": "Abstammung",
+        "label": "Mutter von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_74",
+      "source": "AI_Generation_1782051615081_Kronos",
+      "target": "AI_Generation_1782051615081_Hera",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_15",
+        "source": "AI_Generation_1782051615081_Kronos",
+        "target": "AI_Generation_1782051615081_Hera",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_75",
+      "source": "AI_Generation_1782051615081_Rhea",
+      "target": "AI_Generation_1782051615081_Hera",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_16",
+        "source": "AI_Generation_1782051615081_Rhea",
+        "target": "AI_Generation_1782051615081_Hera",
+        "type": "Abstammung",
+        "label": "Mutter von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_76",
+      "source": "AI_Generation_1782051615081_Kronos",
+      "target": "AI_Generation_1782051615081_Poseidon",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_17",
+        "source": "AI_Generation_1782051615081_Kronos",
+        "target": "AI_Generation_1782051615081_Poseidon",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_77",
+      "source": "AI_Generation_1782051615081_Rhea",
+      "target": "AI_Generation_1782051615081_Poseidon",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_18",
+        "source": "AI_Generation_1782051615081_Rhea",
+        "target": "AI_Generation_1782051615081_Poseidon",
+        "type": "Abstammung",
+        "label": "Mutter von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_78",
+      "source": "AI_Generation_1782051615081_Kronos",
+      "target": "AI_Generation_1782051615081_Hades",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_19",
+        "source": "AI_Generation_1782051615081_Kronos",
+        "target": "AI_Generation_1782051615081_Hades",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_79",
+      "source": "AI_Generation_1782051615081_Rhea",
+      "target": "AI_Generation_1782051615081_Hades",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_20",
+        "source": "AI_Generation_1782051615081_Rhea",
+        "target": "AI_Generation_1782051615081_Hades",
+        "type": "Abstammung",
+        "label": "Mutter von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_80",
+      "source": "AI_Generation_1782051615081_Kronos",
+      "target": "AI_Generation_1782051615081_Demeter",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_21",
+        "source": "AI_Generation_1782051615081_Kronos",
+        "target": "AI_Generation_1782051615081_Demeter",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_81",
+      "source": "AI_Generation_1782051615081_Rhea",
+      "target": "AI_Generation_1782051615081_Demeter",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_22",
+        "source": "AI_Generation_1782051615081_Rhea",
+        "target": "AI_Generation_1782051615081_Demeter",
+        "type": "Abstammung",
+        "label": "Mutter von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_82",
+      "source": "AI_Generation_1782051615081_Kronos",
+      "target": "AI_Generation_1782051615081_Hestia",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_23",
+        "source": "AI_Generation_1782051615081_Kronos",
+        "target": "AI_Generation_1782051615081_Hestia",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_83",
+      "source": "AI_Generation_1782051615081_Rhea",
+      "target": "AI_Generation_1782051615081_Hestia",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_24",
+        "source": "AI_Generation_1782051615081_Rhea",
+        "target": "AI_Generation_1782051615081_Hestia",
+        "type": "Abstammung",
+        "label": "Mutter von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_84",
+      "source": "AI_Generation_1782051615081_Kronos",
+      "target": "AI_Generation_1782051615081_Zeus",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_25",
+        "source": "AI_Generation_1782051615081_Kronos",
+        "target": "AI_Generation_1782051615081_Zeus",
+        "type": "Ereignis",
+        "label": "Verschlucken",
+        "curvature": 0.65,
+        "intensitaet": 90
+      }
+    },
+    {
+      "id": "edge_85",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Kronos",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_26",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Kronos",
+        "type": "Ereignis",
+        "label": "Titanomachie",
+        "curvature": 0.65,
+        "intensitaet": 100
+      }
+    },
+    {
+      "id": "edge_86",
+      "source": "AI_Generation_1782051615081_Okeanos",
+      "target": "AI_Generation_1782051615081_Tethys",
+      "name": "Partnerschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_27",
+        "source": "AI_Generation_1782051615081_Okeanos",
+        "target": "AI_Generation_1782051615081_Tethys",
+        "type": "Partnerschaft",
+        "label": "Ehe",
+        "curvature": 0.25
+      }
+    },
+    {
+      "id": "edge_87",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Hera",
+      "name": "Partnerschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_28",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Hera",
+        "type": "Partnerschaft",
+        "label": "Ehe",
+        "curvature": 0.25
+      }
+    },
+    {
+      "id": "edge_88",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Athena",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_29",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Athena",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_89",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Ares",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_30",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Ares",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_90",
+      "source": "AI_Generation_1782051615081_Hera",
+      "target": "AI_Generation_1782051615081_Ares",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_31",
+        "source": "AI_Generation_1782051615081_Hera",
+        "target": "AI_Generation_1782051615081_Ares",
+        "type": "Abstammung",
+        "label": "Mutter von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_91",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Apollo",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_32",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Apollo",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_92",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Artemis",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_33",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Artemis",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_93",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Hermes",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_34",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Hermes",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_94",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Dionysus",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_35",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Dionysus",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_95",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Herakles",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_36",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Herakles",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_96",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Perseus",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_37",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Perseus",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_97",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Helena",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_38",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Helena",
+        "type": "Abstammung",
+        "label": "Vater von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_98",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Demeter",
+      "name": "Partnerschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_39",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Demeter",
+        "type": "Partnerschaft",
+        "label": "Affäre",
+        "curvature": 0.25
+      }
+    },
+    {
+      "id": "edge_99",
+      "source": "AI_Generation_1782051615081_Demeter",
+      "target": "AI_Generation_1782051615081_Persephone",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_40",
+        "source": "AI_Generation_1782051615081_Demeter",
+        "target": "AI_Generation_1782051615081_Persephone",
+        "type": "Abstammung",
+        "label": "Mutter von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_100",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Hera",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_41",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Hera",
+        "type": "Einfluss",
+        "label": "Oberhoheit",
+        "curvature": 0.45,
+        "staerke": 95
+      }
+    },
+    {
+      "id": "edge_101",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Poseidon",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_42",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Poseidon",
+        "type": "Einfluss",
+        "label": "Oberhoheit",
+        "curvature": 0.45,
+        "staerke": 85
+      }
+    },
+    {
+      "id": "edge_102",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Hades",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_43",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Hades",
+        "type": "Einfluss",
+        "label": "Grenzziehung",
+        "curvature": 0.45,
+        "staerke": 70
+      }
+    },
+    {
+      "id": "edge_103",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Prometheus",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_44",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Prometheus",
+        "type": "Ereignis",
+        "label": "Bestrafung",
+        "curvature": 0.65,
+        "intensitaet": 85
+      }
+    },
+    {
+      "id": "edge_104",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Atlas",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_45",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Atlas",
+        "type": "Ereignis",
+        "label": "Bestrafung",
+        "curvature": 0.65,
+        "intensitaet": 80
+      }
+    },
+    {
+      "id": "edge_105",
+      "source": "AI_Generation_1782051615081_Hera",
+      "target": "AI_Generation_1782051615081_Herakles",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_46",
+        "source": "AI_Generation_1782051615081_Hera",
+        "target": "AI_Generation_1782051615081_Herakles",
+        "type": "Ereignis",
+        "label": "Verfolgung",
+        "curvature": 0.65,
+        "intensitaet": 75
+      }
+    },
+    {
+      "id": "edge_106",
+      "source": "AI_Generation_1782051615081_Hera",
+      "target": "AI_Generation_1782051615081_Zeus",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_47",
+        "source": "AI_Generation_1782051615081_Hera",
+        "target": "AI_Generation_1782051615081_Zeus",
+        "type": "Ereignis",
+        "label": "Eifersucht",
+        "curvature": 0.65,
+        "intensitaet": 70
+      }
+    },
+    {
+      "id": "edge_107",
+      "source": "AI_Generation_1782051615081_Hera",
+      "target": "AI_Generation_1782051615081_Hephaestus",
+      "name": "Abstammung",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_48",
+        "source": "AI_Generation_1782051615081_Hera",
+        "target": "AI_Generation_1782051615081_Hephaestus",
+        "type": "Abstammung",
+        "label": "Mutter von",
+        "curvature": 0
+      }
+    },
+    {
+      "id": "edge_108",
+      "source": "AI_Generation_1782051615081_Hephaestus",
+      "target": "AI_Generation_1782051615081_Aphrodite",
+      "name": "Partnerschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_49",
+        "source": "AI_Generation_1782051615081_Hephaestus",
+        "target": "AI_Generation_1782051615081_Aphrodite",
+        "type": "Partnerschaft",
+        "label": "Ehe",
+        "curvature": 0.25
+      }
+    },
+    {
+      "id": "edge_109",
+      "source": "AI_Generation_1782051615081_Ares",
+      "target": "AI_Generation_1782051615081_Aphrodite",
+      "name": "Partnerschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_50",
+        "source": "AI_Generation_1782051615081_Ares",
+        "target": "AI_Generation_1782051615081_Aphrodite",
+        "type": "Partnerschaft",
+        "label": "Affäre",
+        "curvature": 0.25
+      }
+    },
+    {
+      "id": "edge_110",
+      "source": "AI_Generation_1782051615081_Hephaestus",
+      "target": "AI_Generation_1782051615081_Ares",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_51",
+        "source": "AI_Generation_1782051615081_Hephaestus",
+        "target": "AI_Generation_1782051615081_Ares",
+        "type": "Ereignis",
+        "label": "Netz-Falle",
+        "curvature": 0.65,
+        "intensitaet": 50
+      }
+    },
+    {
+      "id": "edge_111",
+      "source": "AI_Generation_1782051615081_Hades",
+      "target": "AI_Generation_1782051615081_Persephone",
+      "name": "Partnerschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_52",
+        "source": "AI_Generation_1782051615081_Hades",
+        "target": "AI_Generation_1782051615081_Persephone",
+        "type": "Partnerschaft",
+        "label": "Ehe",
+        "curvature": 0.25
+      }
+    },
+    {
+      "id": "edge_112",
+      "source": "AI_Generation_1782051615081_Hades",
+      "target": "AI_Generation_1782051615081_Persephone",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_53",
+        "source": "AI_Generation_1782051615081_Hades",
+        "target": "AI_Generation_1782051615081_Persephone",
+        "type": "Ereignis",
+        "label": "Entführung",
+        "curvature": 0.65,
+        "intensitaet": 85
+      }
+    },
+    {
+      "id": "edge_113",
+      "source": "AI_Generation_1782051615081_Demeter",
+      "target": "AI_Generation_1782051615081_Hades",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_54",
+        "source": "AI_Generation_1782051615081_Demeter",
+        "target": "AI_Generation_1782051615081_Hades",
+        "type": "Ereignis",
+        "label": "Konflikt",
+        "curvature": 0.65,
+        "intensitaet": 60
+      }
+    },
+    {
+      "id": "edge_114",
+      "source": "AI_Generation_1782051615081_Hades",
+      "target": "AI_Generation_1782051615081_Tartaros",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_55",
+        "source": "AI_Generation_1782051615081_Hades",
+        "target": "AI_Generation_1782051615081_Tartaros",
+        "type": "Einfluss",
+        "label": "Herrscher über",
+        "curvature": 0.45,
+        "staerke": 90
+      }
+    },
+    {
+      "id": "edge_115",
+      "source": "AI_Generation_1782051615081_Hades",
+      "target": "AI_Generation_1782051615081_Medusa",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_56",
+        "source": "AI_Generation_1782051615081_Hades",
+        "target": "AI_Generation_1782051615081_Medusa",
+        "type": "Einfluss",
+        "label": "Unterwelt",
+        "curvature": 0.45,
+        "staerke": 30
+      }
+    },
+    {
+      "id": "edge_116",
+      "source": "AI_Generation_1782051615081_Poseidon",
+      "target": "AI_Generation_1782051615081_Athena",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_57",
+        "source": "AI_Generation_1782051615081_Poseidon",
+        "target": "AI_Generation_1782051615081_Athena",
+        "type": "Ereignis",
+        "label": "Wettstreit Athen",
+        "curvature": 0.65,
+        "intensitaet": 65
+      }
+    },
+    {
+      "id": "edge_117",
+      "source": "AI_Generation_1782051615081_Athena",
+      "target": "AI_Generation_1782051615081_Poseidon",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_58",
+        "source": "AI_Generation_1782051615081_Athena",
+        "target": "AI_Generation_1782051615081_Poseidon",
+        "type": "Einfluss",
+        "label": "Beschützerin",
+        "curvature": 0.45,
+        "staerke": 60
+      }
+    },
+    {
+      "id": "edge_118",
+      "source": "AI_Generation_1782051615081_Athena",
+      "target": "AI_Generation_1782051615081_Ares",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_59",
+        "source": "AI_Generation_1782051615081_Athena",
+        "target": "AI_Generation_1782051615081_Ares",
+        "type": "Einfluss",
+        "label": "Strategie dominiert",
+        "curvature": 0.45,
+        "staerke": 70
+      }
+    },
+    {
+      "id": "edge_119",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Aphrodite",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_60",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Aphrodite",
+        "type": "Einfluss",
+        "label": "Erzwungene Ehe",
+        "curvature": 0.45,
+        "staerke": 85
+      }
+    },
+    {
+      "id": "edge_120",
+      "source": "AI_Generation_1782051615081_Nyx",
+      "target": "AI_Generation_1782051615081_Hades",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_61",
+        "source": "AI_Generation_1782051615081_Nyx",
+        "target": "AI_Generation_1782051615081_Hades",
+        "type": "Einfluss",
+        "label": "Nähe zum Tod",
+        "curvature": 0.45,
+        "staerke": 50
+      }
+    },
+    {
+      "id": "edge_121",
+      "source": "AI_Generation_1782051615081_Aphrodite",
+      "target": "AI_Generation_1782051615081_Helena",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_62",
+        "source": "AI_Generation_1782051615081_Aphrodite",
+        "target": "AI_Generation_1782051615081_Helena",
+        "type": "Einfluss",
+        "label": "Verfluchung/Verliebtheit",
+        "curvature": 0.45,
+        "staerke": 90
+      }
+    },
+    {
+      "id": "edge_122",
+      "source": "AI_Generation_1782051615081_Helena",
+      "target": "AI_Generation_1782051615081_Aphrodite",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_63",
+        "source": "AI_Generation_1782051615081_Helena",
+        "target": "AI_Generation_1782051615081_Aphrodite",
+        "type": "Ereignis",
+        "label": "Urteil von Paris",
+        "curvature": 0.65,
+        "intensitaet": 70
+      }
+    },
+    {
+      "id": "edge_123",
+      "source": "AI_Generation_1782051615081_Hera",
+      "target": "AI_Generation_1782051615081_Aphrodite",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_64",
+        "source": "AI_Generation_1782051615081_Hera",
+        "target": "AI_Generation_1782051615081_Aphrodite",
+        "type": "Einfluss",
+        "label": "Rivalität",
+        "curvature": 0.45,
+        "staerke": 40
+      }
+    },
+    {
+      "id": "edge_124",
+      "source": "AI_Generation_1782051615081_Athena",
+      "target": "AI_Generation_1782051615081_Hera",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_65",
+        "source": "AI_Generation_1782051615081_Athena",
+        "target": "AI_Generation_1782051615081_Hera",
+        "type": "Einfluss",
+        "label": "Rivalität",
+        "curvature": 0.45,
+        "staerke": 40
+      }
+    },
+    {
+      "id": "edge_125",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Artemis",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_66",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Artemis",
+        "type": "Einfluss",
+        "label": "Gunst",
+        "curvature": 0.45,
+        "staerke": 80
+      }
+    },
+    {
+      "id": "edge_126",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Apollo",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_67",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Apollo",
+        "type": "Einfluss",
+        "label": "Gunst",
+        "curvature": 0.45,
+        "staerke": 80
+      }
+    },
+    {
+      "id": "edge_127",
+      "source": "AI_Generation_1782051615081_Perseus",
+      "target": "AI_Generation_1782051615081_Medusa",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_68",
+        "source": "AI_Generation_1782051615081_Perseus",
+        "target": "AI_Generation_1782051615081_Medusa",
+        "type": "Ereignis",
+        "label": "Köpfung",
+        "curvature": 0.65,
+        "intensitaet": 90
+      }
+    },
+    {
+      "id": "edge_128",
+      "source": "AI_Generation_1782051615081_Athena",
+      "target": "AI_Generation_1782051615081_Perseus",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_69",
+        "source": "AI_Generation_1782051615081_Athena",
+        "target": "AI_Generation_1782051615081_Perseus",
+        "type": "Einfluss",
+        "label": "Hilfe",
+        "curvature": 0.45,
+        "staerke": 85
+      }
+    },
+    {
+      "id": "edge_129",
+      "source": "AI_Generation_1782051615081_Hermes",
+      "target": "AI_Generation_1782051615081_Perseus",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_70",
+        "source": "AI_Generation_1782051615081_Hermes",
+        "target": "AI_Generation_1782051615081_Perseus",
+        "type": "Einfluss",
+        "label": "Hilfe",
+        "curvature": 0.45,
+        "staerke": 70
+      }
+    },
+    {
+      "id": "edge_130",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Semele",
+      "name": "Partnerschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_71",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Semele",
+        "type": "Partnerschaft",
+        "label": "Affäre",
+        "curvature": 0.25
+      }
+    },
+    {
+      "id": "edge_131",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Leto",
+      "name": "Partnerschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_72",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Leto",
+        "type": "Partnerschaft",
+        "label": "Affäre",
+        "curvature": 0.25
+      }
+    },
+    {
+      "id": "edge_132",
+      "source": "AI_Generation_1782051615081_Zeus",
+      "target": "AI_Generation_1782051615081_Maia",
+      "name": "Partnerschaft",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_73",
+        "source": "AI_Generation_1782051615081_Zeus",
+        "target": "AI_Generation_1782051615081_Maia",
+        "type": "Partnerschaft",
+        "label": "Affäre",
+        "curvature": 0.25
+      }
+    },
+    {
+      "id": "edge_133",
+      "source": "AI_Generation_1782051615081_Hera",
+      "target": "AI_Generation_1782051615081_Hera",
+      "name": "Einfluss",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_74",
+        "source": "AI_Generation_1782051615081_Hera",
+        "target": "AI_Generation_1782051615081_Hera",
+        "type": "Einfluss",
+        "label": "Königin",
+        "curvature": 0.45,
+        "staerke": 90
+      }
+    },
+    {
+      "id": "edge_134",
+      "source": "AI_Generation_1782051615081_Prometheus",
+      "target": "AI_Generation_1782051615081_Zeus",
+      "name": "Ereignis",
+      "weight": 1,
+      "metadata": {
+        "id": "AI_Generation_1782051615081_rel_75",
+        "source": "AI_Generation_1782051615081_Prometheus",
+        "target": "AI_Generation_1782051615081_Zeus",
+        "type": "Ereignis",
+        "label": "Feuerdiebstahl",
+        "curvature": 0.65,
+        "intensitaet": 80
+      }
+    }
+  ],
+  "visualizationState": {
+    "camera": {
+      "position": {
+        "x": 15,
+        "y": 15,
+        "z": 15
+      },
+      "target": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "settings": {},
+    "timestamp": "2026-06-21T14:21:16.233Z"
+  }
+}

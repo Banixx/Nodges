@@ -54,7 +54,7 @@ Hässliche Tools machen müde. Ein unruhiges Interface erhöht die kognitive Las
 
 Nodges basiert auf einem "Bleeding Edge" Stack, der auf Langlebigkeit und Typsicherheit ausgelegt ist.
 
-### Der Core-Stack (Stand v0.98.0)
+### Der Core-Stack (Stand v0.101.0)
 
 * **TypeScript (v5.3.3)**: Unsere Versicherung gegen Laufzeitfehler. Strenge Typisierung verhindert "undefined is not a function" Crashes und ermöglicht den massiven Einsatz von Intellisense.
 * **Three.js (v0.161.0)**: Die mächtigste WebGL-Library der Welt. Wir nutzen nicht nur den Standard-Renderer, sondern greifen tief in die Shader-Pipeline ein.
@@ -66,7 +66,7 @@ Nodges basiert auf einem "Bleeding Edge" Stack, der auf Langlebigkeit und Typsic
 Wir verfolgen einen strikten **Manager-Orchestrator-Ansatz**:
 
 1. **`App.ts`**: Der Dirigent. Initialisiert die Engine und hält die Instanzen.
-2. **`StateManager.ts`**: Die "Single Source of Truth". Alle Änderungen (Selektion, Farben, Layout-Modus) fließen hier zusammen. Komponenten abonnieren Änderungen (Observer Pattern).
+2. **`StateManager.ts`**: Die "Single Source of Truth". Alle Änderungen (Selektion, Farben, Layout-Modus, UI-Komplexitätsmodus) fließen hier zusammen. Komponenten abonnieren Änderungen (Observer Pattern).
 3. **`CentralEventManager.ts`**: Ein Event-Bus, der Input-Signale (Mausklicks, Tasten) in semantische Aktionen übersetzt ("Node Selected" statt "Click at 500,300").
 4. **`Worker Threads`**: Rechenintensive Aufgaben, wie die $O(n^2)$ Berechnungen des Force-Directed Layouts, werden in Web Worker ausgelagert, damit das UI im Main-Thread responsive bleibt.
 
@@ -79,10 +79,16 @@ Wir verfolgen einen strikten **Manager-Orchestrator-Ansatz**:
 * **Cinematic Camera**: "Fly-to" Animationen interpolieren sanft zwischen Positionen (Spherical Linear Interpolation), um Übelkeit (Motion Sickness) zu vermeiden und die räumliche Orientierung zu bewahren.
 * **Tastatur-Shortcuts**: Power-User können die App komplett ohne Maus steuern (z.B. `Space` für Pause, `R` für Reset).
 
-### Visualisierung
+### Visualisierung & Visual Mapping Engine
 
 * **Tube-Edges**: Kanten sind keine einfachen Linien (`gl.LINES`), sondern volumetrische Röhren (`TubeGeometry`). Das sieht nicht nur besser aus, sondern erlaubt auch korrekte Beleuchtung und Schattenwurf.
 * **Smart Halos**: Selektierte Objekte erhalten einen "Heiligenschein" (Halo), der mittels eines invertierten, transparenten Shell-Meshes erzeugt wird. Dieser ist immer "hinter" dem Objekt sichtbar, egal wie die Kamera steht.
+* **Dynamisches Visual Mapping**: Die `VisualMappingEngine` ordnet Datenattributen (z.B. `age`, `region`, `type`) dynamisch Farben (Heatmaps, Kategorien), Größen oder visuelle Presets zu.
+
+### Benutzeroberfläche & Dateimanagement
+
+* **Drei-Stufen-Modus (UI Complexity Mode)**: Das Interface kann zwischen "Simple", "Expert" und "Dev" umgeschaltet werden. Die Sichtbarkeit von Tabs und Controls wird dynamisch über CSS-Regeln (`data-min-mode`) gesteuert.
+* **Dateiverwaltung**: Direktes Erstellen ("New"), Laden ("Open") und Exportieren ("Save As") von Graphen über ein benutzerdefiniertes Modal in diversen Formaten wie JSON und Markdown.
 
 ### Layout Engine
 
@@ -109,5 +115,5 @@ Web-Native ist die Zukunft. Nodges erfordert **keine Installation**, keine 5GB D
 * **AI-Support**: "Zeige mir Anomalien": LLMs, die Graphen semantisch verstehen und Filter steuern.
 
 ---
-*Dokumentations-Status: V2.0 (Expanded)*
-*Geprüft gegen Build: 0.98.0*
+*Dokumentations-Status: V2.1 (Updated)*
+*Geprüft gegen Build: 0.101.0*

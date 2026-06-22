@@ -13,13 +13,13 @@ Dieses Dokument sammelt typische Probleme und Fragestellungen auf Entwicklungs- 
 ### Symptom: Starke Frame-Drops nach längerem Laufen der Anwendung oder wiederholtem Neu-Laden (Memory Leak).
 *   **Ursache**: WebGL/Three.js Ressourcen (Geometrien, Materialien, Texturen) werden im VRAM nicht korrekt aufgeräumt.
 *   **Diagnose**: Chrome DevTools befragen: "Memory" -> "Allocation instrumentation on timeline". Alternativ in Three.js die `renderer.info.memory` Konstanten ausgeben. 
-*   **Lösung**: Stelle sicher, dass an jedem `NodeManager`, `EdgeObjectsManager` oder in Hilfssystemen (`GlowEffect`) beim Wechseln der Szene explizit `dispose()` auf allen Materials und Geometries aufgerufen wird, und dass Mesh-Referenzen auf `null` gesetzt werden, damit der Garbage Collector greifen kann.
+*   **Lösung**: Stelle sicher, dass an jedem `NodeManager`, `EdgeObjectsManager` oder in Hilfssystemen (`GlowEffect`) beim Wechseln der Szene (wie durch die "New" oder "Open" Aktionen) explizit `dispose()` auf allen Materials und Geometries aufgerufen wird, und dass Mesh-Referenzen auf `null` gesetzt werden, damit der Garbage Collector greifen kann.
 
 ## B. Visuelles Rendering
 
 ### Symptom: "Z-Fighting" oder extremes Flackern an Kanten und überlappenden Knotenrändern.
 *   **Ursache**: Identische Tiefenwerte im Z-Buffer bei sich streng überlappenden Meshes.
-*   **Lösung**: Bei Highlights oder Halos, deren Geometry oft exakt skaliert über den Basis-Nodes liegt: Verwende `depthWrite = false` oder `depthTest = false` auf dem Material des Halos, oder verschiebe Render-Reihenfolgen durch Manipulation des `renderOrder`-Eigenschäfts (z.B. Hintergrund = 0, BasisNodes = 1, Halos = 2, UI = 3).
+*   **Lösung**: Bei Highlights oder Halos, deren Geometry oft exakt skaliert über den Basis-Nodes liegt: Verwende `depthWrite = false` oder `depthTest = false` auf dem Material des Halos, oder verschiebe Render-Reihenfolgen durch Manipulation des `renderOrder`-Eigenschafts (z.B. Hintergrund = 0, BasisNodes = 1, Halos = 2, UI = 3).
 *   **Alternativ**: Sicherstellen, dass instanzierte Sphären eine mikroskopisch vergrößerte Hitbox / Halo-Größe haben (`scale * 1.05`), um den Puffer zu trennen.
 
 ### Symptom: Knoten sind unsichtbar, obwohl laut Konsole Daten im `StateManager` geladen sind.
@@ -44,6 +44,16 @@ Dieses Dokument sammelt typische Probleme und Fragestellungen auf Entwicklungs- 
     }
     ```
 
+## D. Benutzeroberfläche & UI-Komplexitätsmodus
+
+### Symptom: Bestimmte Tabs (wie Mappings, Layout, Ebenen) oder erweiterte Info-Zeilen (wie Achsenbereiche) fehlen in der Sidebar.
+*   **Ursache**: Der aktive UI-Modus steht auf "Simple".
+*   **Lösung**: Im "System"-Tab oben unter "UI-Modus" auf "Expert" oder "Dev" umschalten, um alle erweiterten Steuerungen und Tabs freizuschalten.
+
+### Symptom: Das Save As Modal lädt den Export nicht herunter oder schließt sich nicht.
+*   **Ursache**: Scripting-Blockade im Browser oder Validierungsfehler.
+*   **Lösung**: Fehlerkonsole (F12) auf Zod-Validierungsfehler prüfen. Falls der Graph ungültige Referenzen aufweist, kann der Export-Parser blockieren. Überprüfe auch Pop-up-Blocker im Browser, da Downloads dynamisch über `Blob` URLs ausgelöst werden.
+
 ---
-*Dokumentations-Status: V2.0 (FAQ)*
-*Geprüft gegen Build: 0.98.0*
+*Dokumentations-Status: V2.1 (FAQ Updated)*
+*Geprüft gegen Build: 0.101.0*

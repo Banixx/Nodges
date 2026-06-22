@@ -14,6 +14,7 @@ export class AxisPositionHelper {
     private currentAxis: Axis = 'y';
     private helperLine: THREE.Line | null = null;
     private helperGrid: THREE.GridHelper | null = null;
+    private groundIntersectionLine: THREE.Mesh | null = null;
     private previewNode: THREE.Mesh | null = null;
     private currentPosition: THREE.Vector3;
     private initialPosition: THREE.Vector3;
@@ -110,6 +111,10 @@ export class AxisPositionHelper {
         if (this.helperGrid) {
             this.scene.remove(this.helperGrid);
         }
+        if (this.groundIntersectionLine) {
+            this.scene.remove(this.groundIntersectionLine);
+            this.groundIntersectionLine = null;
+        }
 
         const points = [];
         const length = 100;
@@ -166,6 +171,32 @@ export class AxisPositionHelper {
 
         this.helperGrid.position.copy(this.currentPosition);
         this.scene.add(this.helperGrid);
+
+        // Schnittlinie am Boden (Y = 0) anzeigen, wenn das Gitter vertikal steht (X- oder Z-Achse)
+        if (this.currentAxis === 'x' || this.currentAxis === 'z') {
+            let intersectionGeom;
+            if (this.currentAxis === 'x') {
+                // Y-Z Ebene: Schnittlinie verläuft entlang Z-Achse (Dicke 0.15, Länge 100)
+                intersectionGeom = new THREE.BoxGeometry(0.15, 0.15, 100);
+            } else {
+                // X-Y Ebene: Schnittlinie verläuft entlang X-Achse (Länge 100, Dicke 0.15)
+                intersectionGeom = new THREE.BoxGeometry(100, 0.15, 0.15);
+            }
+            const intersectionMat = new THREE.MeshBasicMaterial({
+                color: gridColor,
+                transparent: true,
+                opacity: 0.6,
+                depthWrite: false
+            });
+            this.groundIntersectionLine = new THREE.Mesh(intersectionGeom, intersectionMat);
+            this.groundIntersectionLine.position.set(
+                this.currentPosition.x,
+                0,
+                this.currentPosition.z
+            );
+            this.groundIntersectionLine.visible = Math.abs(this.currentPosition.y) <= 50;
+            this.scene.add(this.groundIntersectionLine);
+        }
     }
 
     /**
@@ -378,6 +409,18 @@ export class AxisPositionHelper {
             if (this.helperGrid) {
                 this.helperGrid.position.copy(this.currentPosition);
             }
+            if (this.groundIntersectionLine) {
+                if (Math.abs(this.currentPosition.y) <= 50) {
+                    this.groundIntersectionLine.position.set(
+                        this.currentPosition.x,
+                        0,
+                        this.currentPosition.z
+                    );
+                    this.groundIntersectionLine.visible = true;
+                } else {
+                    this.groundIntersectionLine.visible = false;
+                }
+            }
 
             // --- 5. Highlighting verwalten ---
             if (this.highlightManager) {
@@ -469,6 +512,11 @@ export class AxisPositionHelper {
         if (this.helperGrid) {
             this.scene.remove(this.helperGrid);
             this.helperGrid = null;
+        }
+
+        if (this.groundIntersectionLine) {
+            this.scene.remove(this.groundIntersectionLine);
+            this.groundIntersectionLine = null;
         }
 
         if (this.previewNode) {

@@ -36,12 +36,12 @@ Aktuell setzt Nodges einheitlich auf **TubeGeometry** für alle Verbindungen (au
 * **Ablauf**:
   * Ein **Bezier-Pfad** wird definiert (bei geraden Kanten ist der "Control Point" linear interpoliert).
   * Ein **Mesh-Generator** lässt einen "Schlauch" entlang dieses Pfades wachsen.
-  * **Optimierung**: Die Anzahl der Segmente (`tubularSegments`) wird dynamisch angepasst. Kurze Kanten haben weniger Segmente.
+  * **Optimierung & Live Tuning**: Parameter wie Dicke (`Edge Thickness`), Kurvensegmente (`Curve Segments`), Rohr-Facetten (`Tube Facets`) und Animationen (Pulse, sequential, flow) können im UI-Komplexitätsmodus "Dev" live angepasst werden. Die Engine aktualisiert die Geometrien im laufenden Betrieb.
 * *(Veraltet: Die Optimierung mittels einfacher Zylinder für gerade Kanten ist im Code vorhanden, aber zugunsten der "organischen" Optik deaktiviert.)*
 
 ## 11.3 Speicher-Management und Lifecycle
 
-Ein großes Problem bei Single-Page-Apps mit 3D sind **CPU/GPU Memory Leaks**. Wenn man einen neuen Graphen lädt, müssen die alten Daten rückstandslos verschwinden.
+Ein großes Problem bei Single-Page-Apps mit 3D sind **CPU/GPU Memory Leaks**. Wenn man einen neuen Graphen lädt (z.B. beim Auslösen der "New" oder "Open" Aktion im Dateimanager), müssen die alten Daten rückstandslos verschwinden.
 
 Nodges implementiert eine strikte `dispose()` Kette:
 
@@ -49,7 +49,7 @@ Nodges implementiert eine strikte `dispose()` Kette:
 2. **Materialien**: `material.dispose()` löscht die Shader-Programm-Instanzen.
 3. **Textures**: Falls Bilder genutzt wurden, werden diese aus dem Grafikkartenspeicher entfernt.
 
-Ohne diese expliziten Aufrufe würde der Browser-Tap bei jedem neuen Laden eines Graphen ca. 200-500 MB RAM mehr verbrauchen, bis er schließlich abstürzt.
+Ohne diese expliziten Aufrufe würde der Browser-Tab bei jedem neuen Laden eines Graphen ca. 200-500 MB RAM mehr verbrauchen, bis er schließlich abstürzt.
 
 ## 11.4 Zusammenfassung der Performance-Daten
 
@@ -61,5 +61,5 @@ Ohne diese expliziten Aufrufe würde der Browser-Tap bei jedem neuen Laden eines
 | BufferGeometry | ~200.000 | Nur Punkte (PointClouds, geplant) |
 
 ---
-*Dokumentations-Status: V2.0 (Deep Dive)*
-*Geprüft gegen Build: 0.98.0*
+*Dokumentations-Status: V2.1 (Updated)*
+*Geprüft gegen Build: 0.101.0*

@@ -20,12 +20,12 @@ Jeder funktionale Aspekt der Anwendung wird in eine spezialisierte Manager-Klass
 
 | Manager | Verzeichnis | Verantwortlichkeit |
 | :--- | :--- | :--- |
-| `StateManager` | core/ | Single Source of Truth, Observer-Pattern, State-Subscriptions. |
+| `StateManager` | core/ | Single Source of Truth, Observer-Pattern, State-Subscriptions. Verwaltet auch UI Complexity Mode und File-State. |
 | `CentralEventManager` | core/ | Event-Bus, Abstraktion von Browser-Events, semantische Aktionen. |
 | `NodeManager` | core/ | Erstellung, Update und Rendering der Knoten (InstancedMeshes). |
 | `EdgeObjectsManager` | core/ | Verwaltung der Kanten (Tubes), Handling von Kurvengeometrien. |
 | `LayoutManager` | core/ | Berechnung von Positionen ($x, y, z$), Steuerung von Physik-Simulationen. |
-| `UIManager` | core/ | Steuerung des HTML-Overlays (Panels, Ladebalken), Brücke zum DOM. |
+| `UIManager` | core/ | Steuerung des HTML-Overlays (Panels, Tabs, Ladebalken), Modus-Umschaltung, Brücke zum DOM. |
 | `InteractionManager` | core/ | Interpretation von User-Inputs (Klick, Drag) in Aktionen. |
 | `DataParser` | core/ | Format-Erkennung, Zod-Validierung, Normalisierung. |
 | `VisualMappingEngine` | core/ | Übersetzung von Datenwerten in visuelle Eigenschaften. |
@@ -53,6 +53,7 @@ Der `StateManager` ist das Herzstück der Reaktivität in Nodges ("Single Source
 * `hoveredObject`: Wo ist die Maus?
 * `graphData`: Die aktuellen Rohdaten.
 * `config`: Visuelle Einstellungen (Farben, Größen).
+* `uiMode`: Aktueller UI-Komplexitätsmodus ("simple", "expert", "dev").
 
 ### Observer-Pattern
 

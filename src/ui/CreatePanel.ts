@@ -3,16 +3,16 @@
  * Allows users to generate new nodes and edges using an LLM.
  */
 import { IStateManager } from '../core/interfaces';
-
 import type { App } from '../App';
-import { LLMService } from '../utils/LLMService';
+import { LLMService, LLMProvider, LLMModel } from '../utils/LLMService';
 
 export class CreatePanel {
     private container: HTMLElement;
-
     private app: App;
 
+    private providerSelect!: HTMLSelectElement;
     private keyInput!: HTMLInputElement;
+    private modelSelect!: HTMLSelectElement;
     private promptTextarea!: HTMLTextAreaElement;
     private generateBtn!: HTMLButtonElement;
     private statusText!: HTMLElement;
@@ -27,14 +27,13 @@ export class CreatePanel {
         }
 
         this.app = app;
-
         this.render();
-
-
     }
 
     private render(): void {
         this.container.innerHTML = '';
+
+        const activeProvider = LLMService.getActiveProvider();
 
         // --- API KEY SECTION ---
         const keySection = document.createElement('section');
@@ -47,7 +46,7 @@ export class CreatePanel {
         keyHeader.style.cursor = 'pointer';
         
         const keyTitle = document.createElement('span');
-        keyTitle.textContent = 'OpenRouter API Key (BYOK)';
+        keyTitle.textContent = 'LLM API Key & Anbieter (BYOK)';
         
         const keyToggle = document.createElement('span');
         keyToggle.textContent = '▾';
@@ -57,7 +56,14 @@ export class CreatePanel {
 
         const keyContent = document.createElement('div');
         keyContent.style.marginTop = '10px';
-        keyContent.style.display = 'none'; // Collapsed by default if key exists
+        
+        const savedKey = LLMService.getApiKey(activeProvider);
+        if (savedKey) {
+            keyContent.style.display = 'none';
+        } else {
+            keyContent.style.display = 'block';
+            keyToggle.textContent = '▴';
+        }
 
         const keyDesc = document.createElement('p');
         keyDesc.style.fontSize = '11px';
@@ -66,37 +72,70 @@ export class CreatePanel {
         keyDesc.textContent = 'Dein Key wird sicher im LocalStorage des Browsers gespeichert und nie an unsere Server gesendet.';
         keyContent.appendChild(keyDesc);
 
+        // Provider Select
+        const providerLabel = document.createElement('label');
+        providerLabel.textContent = 'Anbieter / Key-Herkunft:';
+        providerLabel.style.display = 'block';
+        providerLabel.style.fontSize = '11px';
+        providerLabel.style.color = 'var(--text-muted)';
+        providerLabel.style.marginBottom = '4px';
+        keyContent.appendChild(providerLabel);
+
+        this.providerSelect = document.createElement('select');
+        this.providerSelect.className = 'form-control';
+        this.providerSelect.style.width = '100%';
+        this.providerSelect.style.marginBottom = '8px';
+        this.providerSelect.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+        this.providerSelect.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+        this.providerSelect.style.color = 'var(--text-color)';
+        this.providerSelect.style.padding = '6px';
+        this.providerSelect.style.borderRadius = '4px';
+        this.providerSelect.style.fontFamily = 'inherit';
+
+        LLMService.PROVIDERS.forEach(provider => {
+            const opt = document.createElement('option');
+            opt.value = provider.id;
+            opt.textContent = provider.name;
+            if (provider.id === activeProvider) {
+                opt.selected = true;
+            }
+            this.providerSelect.appendChild(opt);
+        });
+        keyContent.appendChild(this.providerSelect);
+
+        // Key Input
+        const keyInputLabel = document.createElement('label');
+        keyInputLabel.textContent = 'API Key:';
+        keyInputLabel.style.display = 'block';
+        keyInputLabel.style.fontSize = '11px';
+        keyInputLabel.style.color = 'var(--text-muted)';
+        keyInputLabel.style.marginBottom = '4px';
+        keyContent.appendChild(keyInputLabel);
+
         this.keyInput = document.createElement('input');
         this.keyInput.type = 'password';
-        this.keyInput.placeholder = 'sk-or-v1-...';
-        this.keyInput.className = 'form-control'; // Use app styles
+        this.keyInput.placeholder = 'Schlüssel hier einfügen...';
+        this.keyInput.className = 'form-control';
         this.keyInput.style.width = '100%';
         this.keyInput.style.marginBottom = '8px';
-        
-        const savedKey = LLMService.getApiKey();
-        if (savedKey) {
-            this.keyInput.value = savedKey;
-        } else {
-            keyContent.style.display = 'block';
-            keyToggle.textContent = '▴';
-        }
+        this.keyInput.value = savedKey || '';
+        keyContent.appendChild(this.keyInput);
 
         const saveKeyBtn = document.createElement('button');
         saveKeyBtn.className = 'action-button secondary';
         saveKeyBtn.textContent = 'Key Speichern';
         saveKeyBtn.onclick = () => {
+            const provider = this.providerSelect.value as LLMProvider;
             if (this.keyInput.value.trim()) {
-                LLMService.setApiKey(this.keyInput.value);
+                LLMService.setApiKey(provider, this.keyInput.value);
                 keyContent.style.display = 'none';
                 keyToggle.textContent = '▾';
-                this.setStatus('API-Key lokal gespeichert.', 'success');
+                this.setStatus(`API-Key für ${provider} lokal gespeichert.`, 'success');
             } else {
-                LLMService.clearApiKey();
-                this.setStatus('API-Key entfernt.', 'info');
+                LLMService.clearApiKey(provider);
+                this.setStatus(`API-Key für ${provider} entfernt.`, 'info');
             }
         };
-
-        keyContent.appendChild(this.keyInput);
         keyContent.appendChild(saveKeyBtn);
         
         keyHeader.onclick = () => {
@@ -117,6 +156,43 @@ export class CreatePanel {
         genHeader.className = 'section-header';
         genHeader.textContent = 'Netzwerk per KI generieren';
         genSection.appendChild(genHeader);
+
+        // Model Select
+        const modelLabel = document.createElement('label');
+        modelLabel.textContent = 'Modell:';
+        modelLabel.style.display = 'block';
+        modelLabel.style.marginBottom = '5px';
+        modelLabel.style.color = 'var(--text-muted)';
+        genSection.appendChild(modelLabel);
+
+        this.modelSelect = document.createElement('select');
+        this.modelSelect.className = 'form-control';
+        this.modelSelect.style.width = '100%';
+        this.modelSelect.style.marginBottom = '15px';
+        this.modelSelect.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+        this.modelSelect.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+        this.modelSelect.style.color = 'var(--text-color)';
+        this.modelSelect.style.padding = '6px';
+        this.modelSelect.style.borderRadius = '4px';
+        this.modelSelect.style.fontFamily = 'inherit';
+        genSection.appendChild(this.modelSelect);
+
+        // Populate models initially
+        this.updateModelOptions(activeProvider);
+
+        // Event listeners
+        this.providerSelect.onchange = () => {
+            const provider = this.providerSelect.value as LLMProvider;
+            LLMService.setActiveProvider(provider);
+            const key = LLMService.getApiKey(provider);
+            this.keyInput.value = key || '';
+            this.updateModelOptions(provider);
+        };
+
+        this.modelSelect.onchange = () => {
+            const provider = this.providerSelect.value as LLMProvider;
+            LLMService.setActiveModel(provider, this.modelSelect.value);
+        };
 
         const promptLabel = document.createElement('label');
         promptLabel.textContent = 'Dein Prompt:';
@@ -155,6 +231,90 @@ export class CreatePanel {
         this.container.appendChild(genSection);
     }
 
+    private async updateModelOptions(provider: LLMProvider): Promise<void> {
+        this.modelSelect.innerHTML = '';
+        this.modelSelect.disabled = true;
+
+        const loadingOpt = document.createElement('option');
+        loadingOpt.textContent = 'Lade Modelle...';
+        loadingOpt.disabled = true;
+        loadingOpt.selected = true;
+        this.modelSelect.appendChild(loadingOpt);
+
+        let models: LLMModel[] = [];
+        let recommendedModels: LLMModel[] = [];
+        const activeModel = LLMService.getActiveModel(provider);
+
+        if (provider === 'openrouter') {
+            // Fetch models from OpenRouter dynamically
+            models = await LLMService.fetchOpenRouterModels();
+            recommendedModels = LLMService.PROVIDER_MODELS.openrouter;
+        } else {
+            // Use static lists for OpenAI/Anthropic
+            models = LLMService.PROVIDER_MODELS[provider] || [];
+            recommendedModels = [];
+        }
+
+        // Guard: If provider changed while fetching, ignore the result
+        if (this.providerSelect.value !== provider) {
+            return;
+        }
+
+        this.modelSelect.innerHTML = '';
+        this.modelSelect.disabled = false;
+
+        if (recommendedModels.length > 0) {
+            // Group recommended models
+            const recGroup = document.createElement('optgroup');
+            recGroup.label = 'Empfohlen';
+            recommendedModels.forEach(model => {
+                const opt = document.createElement('option');
+                opt.value = model.id;
+                opt.textContent = model.name;
+                if (model.id === activeModel) {
+                    opt.selected = true;
+                }
+                recGroup.appendChild(opt);
+            });
+            this.modelSelect.appendChild(recGroup);
+
+            // Group all other models
+            const allGroup = document.createElement('optgroup');
+            allGroup.label = 'Alle OpenRouter Modelle';
+            models.forEach(model => {
+                // Skip if already in recommended
+                if (recommendedModels.some(r => r.id === model.id)) {
+                    return;
+                }
+                const opt = document.createElement('option');
+                opt.value = model.id;
+                opt.textContent = model.name;
+                if (model.id === activeModel) {
+                    opt.selected = true;
+                }
+                allGroup.appendChild(opt);
+            });
+            this.modelSelect.appendChild(allGroup);
+        } else {
+            // Just populate list directly
+            models.forEach(model => {
+                const opt = document.createElement('option');
+                opt.value = model.id;
+                opt.textContent = model.name;
+                if (model.id === activeModel) {
+                    opt.selected = true;
+                }
+                this.modelSelect.appendChild(opt);
+            });
+        }
+
+        // Ensure active model is selected, or fallback to first option
+        if (this.modelSelect.value === '' && this.modelSelect.options.length > 0) {
+            this.modelSelect.selectedIndex = 0;
+            LLMService.setActiveModel(provider, this.modelSelect.value);
+        }
+    }
+
     private async handleGenerate(): Promise<void> {
         const prompt = this.promptTextarea.value.trim();
         if (!prompt) {
@@ -162,8 +322,11 @@ export class CreatePanel {
             return;
         }
 
-        if (!LLMService.getApiKey()) {
-            this.setStatus('Bitte hinterlege zuerst deinen OpenRouter API-Key.', 'error');
+        const provider = this.providerSelect.value as LLMProvider;
+        const model = this.modelSelect.value;
+
+        if (!LLMService.getApiKey(provider)) {
+            this.setStatus(`Bitte hinterlege zuerst deinen API-Key für ${provider}.`, 'error');
             return;
         }
 
@@ -171,10 +334,9 @@ export class CreatePanel {
         this.setStatus('Generiere Graph-Daten... (Das kann einige Sekunden dauern)', 'info');
 
         try {
-            const graphData = await LLMService.generateGraphData(prompt);
+            const graphData = await LLMService.generateGraphData(prompt, provider, model);
             
             // Append data to existing graph
-            // We prefix it with a timestamp to avoid ID collisions if needed, but DataParser handles prefixing inside loadGraphData
             const sourceName = 'AI_Generation_' + Date.now();
             await this.app.loadGraphData(graphData, sourceName, true);
             
@@ -182,9 +344,6 @@ export class CreatePanel {
             const edgeCount = graphData.data.relationships?.length || 0;
             
             this.setStatus(`Erfolgreich hinzugefügt: ${nodeCount} Knoten, ${edgeCount} Kanten.`, 'success');
-            
-            // Optionally clear the prompt
-            // this.promptTextarea.value = '';
             
         } catch (error: any) {
             this.setStatus(error.message || 'Ein unbekannter Fehler ist aufgetreten.', 'error');
@@ -213,6 +372,4 @@ export class CreatePanel {
                 break;
         }
     }
-
-
 }

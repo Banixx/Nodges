@@ -94,6 +94,8 @@ Neben der Physik bietet Nodges mathematisch exakte Layouts für strukturierte Da
 * **Helix**: Anordnung in einer Spirale (z.B. für Zeitreihen geeignet).
 * **Hierarchical (Tree)**: Klassischer Baum, aber in 3D (Kegel-Baum). Wichtig für Org-Charts oder Verzeichnis-Strukturen.
 
+*(Hinweis: Im UI-Komplexitätsmodus "Simple" ist die Layout-Steuerung ausgeblendet. Volle Kontrolle über Layout-Typen und Parameter ist ab dem Modus "Expert" im Layout-Tab verfügbar.)*
+
 ---
-*Dokumentations-Status: V2.0 (Deep Dive)*
-*Geprüft gegen Build: 0.98.0*
+*Dokumentations-Status: V2.1 (Updated)*
+*Geprüft gegen Build: 0.101.0*

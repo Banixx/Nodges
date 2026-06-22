@@ -963,7 +963,7 @@ input[type="range"] {
   bottom: 20px !important;
   left: 270px !important;
   width: 500px !important;
-  height: 320px !important;
+  height: 380px !important;
   background: var(--panel-bg) !important;
   backdrop-filter: var(--glass-blur) !important;
   -webkit-backdrop-filter: var(--glass-blur) !important;

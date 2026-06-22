@@ -23,7 +23,10 @@ Dieses Glossar definiert die wichtigsten Konzepte, Technologien und wiederkehren
 *   **Observer Pattern**: Ein Software-Entwurfsmuster. Der `StateManager` (Subject) hält den Zustand. Andere Komponenten (Observer) wie die UI oder die Render-Engine "abonnieren" diesen Zustand (`subscribe`) und werden benachrichtigt, sobald sich etwas ändert.
 *   **Web Worker**: Eine JavaScript-Technologie, mit der Skripte in Hintergrund-Threads ausgeführt werden können (abseits des Main-UI-Threads). Nodges nutzt Worker, um rechenintensive Array-Sortierungen oder Layout-Simulationen ($O(n^2)$ Komplexität) auszuführen, ohne dass die Nutzeroberfläche "einfriert".
 *   **Single Source of Truth (SSOT)**: Ein Architekturprinzip, bei dem jeder Datenpunkt nur an einem zentralen Ort gespeichert wird. In Nodges ist der `StateManager` die SSOT. Visuelle Komponenten fragen diesen ab, statt eigene Kopien der Datenstruktur ('state') zu halten.
+*   **UI-Komplexitätsmodus**: Ein dreistufiges Steuerungssystem ("Simple", "Expert", "Dev") zur bedarfsgerechten Ein- und Ausblendung von Sidebar-Tabs und Info-Elementen im DOM.
+*   **Visual Mapping**: Die dynamische Übersetzung von Datenattributen (wie `age` oder `region`) in grafische Eigenschaften (wie Farb-Heatmaps von Blau nach Rot oder Knotengrößen).
+*   **Save As Modal**: Ein interaktives, im Glassmorphism-Design gestaltetes Overlay zum Exportieren der Graph-Daten in JSON- oder Markdown-Dateien.
 
 ---
-*Dokumentations-Status: V2.0 (Glossar)*
-*Geprüft gegen Build: 0.98.0*
+*Dokumentations-Status: V2.1 (Glossar Updated)*
+*Geprüft gegen Build: 0.101.0*

@@ -13,34 +13,50 @@ Nodges nutzt zwei Welten gleichzeitig:
 
 ## 08.2 Das "Glassmorphism" Design-Konzept
 
-Um den futuristischen und luftigen Charakter einer 3D-Anwendung zu unterstreichen, nutzt Nodges ein modernes **Glassmorphism-Design**:
+Um den futuristischen und leitenden Charakter einer 3D-Anwendung zu unterstreichen, nutzt Nodges ein modernes **Glassmorphism-Design**:
 
 * **Transparenz**: Panels sind leicht durchsichtig (`backdrop-filter: blur(10px)`). Man sieht den Graphen "hinter" dem Menü noch leicht durchschimmern.
 * **Kontrast**: Dunkle Hintergründe mit neonfarbenen Akzenten sorgen für maximale Lesbarkeit in dunklen Arbeitsumgebungen.
 
+---
+
 ## 08.3 Kern-Komponenten des Interfaces
 
-### 1. Das Explorer-Panel (Links)
+### 1. Main-Sidebar (Rechts) und Tab-System
 
-Dient der Datei-Verwaltung und dem schnellen Wechsel zwischen Datensätzen.
+Die Sidebar ist die Steuerungszentrale der Applikation. Sie beherbergt die verschiedenen Einstellungen, unterteilt in thematische Tabs:
 
-* **File-Browser**: Schneller Zugriff auf mitgelieferte Beispiele.
-* **Drop-Zone**: Benutzer können eigene JSON-Dateien einfach in das Fenster ziehen (Drag & Drop), um sie lokal zu visualisieren.
+* **Tab-Navigation**: Ein horizontales Tab-Menü mit Custom-Scrollbar und horizontalem Scroll-Support (z.B. per Mausrad).
+* **Tab-Inhalte**:
+    * **System**: Zeigt den UI-Modus-Umschalter sowie allgemeine Datei-Informationen (Knoten, Kanten, FPS) und die Farblegende.
+    * **Ebenen (Expert)**: Steuerung der Transparenz und Sichtbarkeit einzelner Ebenen/Gruppen basierend auf Attributen.
+    * **Files (Simple)**: Der Dateimanager mit direktem Zugriff auf Beispieldateien sowie Aktionen zur Erstellung neuer Graphen ("New"), dem Öffnen von Dateien ("Open") und dem Exportieren ("Save As").
+    * **Ansicht (Simple)**: Steuerung der 3D-Umgebung und Rendering-Optionen (Kanten-Dicke, Highlight-Effekte).
+    * **Create (Dev)**: Werkzeuge zum manuellen Hinzufügen von Knoten und Kanten.
+    * **Mappings (Expert)**: Konfiguration des dynamischen Visual Mappings (Kanal-Mapping für Farbe, Größe und Presets).
+    * **Layout (Expert)**: Auswahl des Layout-Verfahrens (Force-Directed, Grid, Sphere, Helix) und Tuning der Physik-Simulation.
+    * **Dev (Dev)**: Spezifische Debugging-Optionen für Entwickler.
 
-### 2. Das Info-Inspector-Panel (Rechts)
+### 2. Drei-Stufen-Modus (UI Complexity Mode)
 
-Das wichtigste Werkzeug für Analysten. Sobald ein Objekt (Node/Edge) selektiert wird, öffnet sich dieser Inspektor.
+Um den Benutzer nicht mit Optionen zu überladen, implementiert Nodges drei Komplexitätsstufen, die über den `StateManager` gesteuert werden:
 
-* **Attribut-Tabelle**: Listet alle Felder aus dem JSON-Datensatz auf.
-* **Key-Value Pairs**: Auch unbekannte Attribute werden dynamisch ausgelesen und dargestellt.
-* **Action-Buttons**: Erlaubt Aktionen wie "Fokussiere Nachbarn" oder "Bestimme kürzesten Pfad".
+* **Simple**: Standardmodus für Betrachter. Zeigt nur die Tabs "System", "Files" und "Ansicht" sowie grundlegende Info-Zeilen.
+* **Expert**: Für fortgeschrittene Analysten. Schaltet zusätzlich "Ebenen", "Mappings" und "Layout" sowie erweiterte Info-Zeilen (z.B. Achsenbereiche) frei.
+* **Dev**: Für Entwickler. Schaltet alle Steuerungselemente und die Tabs "Create" und "Dev" frei.
+* **Implementierung**: Elemente im HTML werden mit `data-min-mode` annotiert (z.B. `data-min-mode="expert"`). Die Sichtbarkeit wird über CSS-Regeln gesteuert.
 
-### 3. Der Quick-Settings Controller (Custom Floating Panels)
+### 3. Dateimanager & Custom Save As Modal
 
-Ein schwebendes Menü für Skalierung, Kanten-Dicke und Layout-Parameter.
+* **New / Open**: Löscht das aktuelle System oder öffnet einen systemeigenen Datei-Dialog zum Laden valider JSON-Daten.
+* **Save As**: Öffnet ein maßgeschneidertes, im Glassmorphism-Stil gehaltenes Modal, das den Export des aktuellen Graphen in den Formaten JSON (Future-Format) und Markdown ermöglicht.
 
-* **Echtzeit-Feedback**: Während man Slider bewegt (z.B. "Node-Size" oder "Gravity"), ändert sich die 3D-Welt sofort. Das erlaubt ein spielerisches "Tuning" der Visualisierung.
-* **Implementierung**: Custom HTML/CSS Overlays, die sich nahtlos in das Glassmorphism-Design einfügen (kein externes `lil-gui` mehr).
+### 4. Floating Panels (Legend, Info)
+
+* **Legend Panel**: Zeigt dynamisch die Farbkodierung und Größen-Mappings an.
+* **Info Inspector Panel**: Sobald ein Objekt im 3D-Raum angeklickt wird, öffnet sich dieses schwebende Panel und stellt alle Attribute als Key-Value-Paare dar. Ein automatischer Textumbruch (Word-Wrap) verhindert Clipping bei langen Werten oder tief verschachtelten JSON-Objekten.
+
+---
 
 ## 08.4 UX-Leitsätze in Nodges
 
@@ -48,8 +64,8 @@ Ein schwebendes Menü für Skalierung, Kanten-Dicke und Layout-Parameter.
 
 In 3D verliert man schnell die Orientierung. Unser UI hilft:
 
-* **Minimap**: (Geplant) Eine kleine Übersichtskarte des gesamten Graphen.
-* **Breadcrumbs**: Zeigt den Pfad im Graphen an (z.B. "Cluster A > Server B").
+* **Minimap**: Eine Echtzeit-Übersichtskarte des Graphen zur Orientierung in der 3D-Szene.
+* **Fokus-Zoom**: Doppelklick auf ein Objekt zoomt die Kamera sanft auf das Ziel (Cinematic Camera Fly-to).
 
 ### "Meaningful Motion"
 
@@ -60,4 +76,5 @@ Animationen sind nicht nur Zierde. Wenn sich ein Panel öffnet, schiebt es sich 
 Wenn eine Datei fehlerhaft ist, erscheint kein "Error 500", sondern ein informatives Overlay: "Fehler in Zeile 45: Koordinate 'z' fehlt". Wir führen den User zur Lösung.
 
 ---
-*Ende Kapitel 08*
+*Dokumentations-Status: V2.1 (Updated)*
+*Geprüft gegen Build: 0.101.0*

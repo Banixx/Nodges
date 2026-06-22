@@ -1,6 +1,6 @@
 # 10 Entwicklungs-Guide und Deployment
 
-Dieses Handbuch richtet sich an Entwickler, die Nodges erweitern, warten oder deployen moechten. Es spiegelt den Architektur-Stand nach dem grossen Refactoring (Februar 2026) wider.
+Dieses Handbuch richtet sich an Entwickler, die Nodges erweitern, warten oder deployen moechten. Es spiegelt den Architektur-Stand nach dem grossen Refactoring (Juni 2026) wider.
 
 ## 10.1 Schnellstart
 
@@ -58,7 +58,7 @@ Nodges basiert auf **Vanilla TypeScript (OOP)** und **THREE.js**, ohne schwergew
    - Komponenten abonnieren Events statt direkt miteinander zu kommunizieren (lose Kopplung).
 
 3. **State Management**
-   - `StateManager` haelt den gesamten Anwendungszustand.
+   - `StateManager` haelt den gesamten Anwendungszustand (einschließlich `uiMode` für Simple, Expert, Dev).
    - Unterstuetzt **Undo/Redo** durch Kapselung von Zustandsaenderungen.
    - UI reagiert auf State-Changes, nicht umgekehrt.
 
@@ -92,10 +92,11 @@ Dies triggert automatisch eine **Toast-Notification** (via `NotificationService`
 ### DOM-Referenzen
 
 Vermeide harte DOM-Zugriffe. Wenn noetig, pruefe `/_assets/Nodges/N_dom_id_registry.md` fuer eine Liste aller gueltigen IDs.
+Zur Einbindung neuer Controls sollte das `data-min-mode` Attribut verwendet werden, um die korrekte Modus-Filterung ("Simple", "Expert", "Dev") sicherzustellen.
 
 ### Debugging-Tools
 
-- **Stats**: FPS und Node-Data oben links.
+- **Stats**: FPS und Node-Data in der System-Spalte.
 - **Visual Helpers**: Grid und Axes (in `App.ts` aktivierbar).
 - **Log-Level**: Der NotificationService loggt Details in die Konsole, auch wenn nur eine kurze Toast-Nachricht erscheint.
 
@@ -129,10 +130,10 @@ Nodges ist eine **Static Web App**. Der Inhalt des `/dist` Ordners kann auf jede
 - **Kein `any`**: Nutze Interfaces und Typen (`src/types.ts` oder spezifische Dateien).
 - **Async/Await**: Bevorzuge async/await gegenueber `.then()`.
 - **Dateistruktur**:
-  - `src/core/`: Singleton-Manager und Kernlogik
-  - `src/utils/`: Hilfsklassen (Import, Export, Math)
-  - `src/ui/`: UI-Logik (kein HTML im Code, nur Manipulation)
+  - `src/core/`: Singleton-Manager und Kernlogik (z.B. `VisualMappingEngine.ts`, `StateManager.ts`)
+  - `src/utils/`: Hilfsklassen (Import, Export, Math, `FileHandler.ts`)
+  - `src/ui/`: UI-Logik und Manager (z.B. `UIManager.ts`, Modals)
   - `src/effects/`: Visuelle Effekte (Shader, Post-Processing)
 
 ---
-*Stand: 13.02.2026 - Version 0.98.0*
+*Stand: 19.06.2026 - Version 0.101.0*

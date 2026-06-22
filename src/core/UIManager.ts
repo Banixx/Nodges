@@ -263,7 +263,9 @@ export class UIManager {
 
         if (this.mappingUI) {
             const dataModel = (this.app as any).currentGraphData?.dataModel || null;
-            this.mappingUI.bind(mappings, availableAttributes, dataModel, (newMappings) => {
+            const entities = (this.app as any).currentGraphData?.data?.entities || [];
+            const relationships = (this.app as any).currentGraphData?.data?.relationships || [];
+            this.mappingUI.bind(mappings, availableAttributes, dataModel, entities, relationships, (newMappings) => {
                 if (this.app.updateVisualMappings) {
                     this.app.updateVisualMappings(newMappings);
                 } else {

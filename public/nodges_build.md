@@ -86,12 +86,12 @@ Definiert das visuelle Erscheinungsbild für jeden Entity- und Relationship-Typ.
 "visualMappings": {
   "defaultPresets": {
     "server": {
-      "color": { "source": "constant", "function": "linear", "params": { "color": "#ff4d4d" } },
-      "size": { "source": "constant", "function": "linear", "range": [3.0, 3.0] }
+      "color": { "source": "status", "function": "categorical" },
+      "size": { "source": "load", "function": "linear", "range": [0.5, 1.5] }
     },
     "connection": {
-      "color": { "source": "constant", "function": "linear", "params": { "color": "#00ff00" } },
-      "thickness": { "source": "constant", "function": "linear", "range": [0.1, 0.1] },
+      "color": { "source": "constant", "function": "constant", "params": { "color": "#00ff00" } },
+      "thickness": { "source": "constant", "function": "constant", "range": [0.08, 0.08] },
       "animation": { "source": "constant", "function": "pulse", "params": { "frequency": 2.0, "speed": 1.0 } }
     }
   }
@@ -295,3 +295,41 @@ Nutze reale Relationen für x/y/z.
 | Trailing Commas | Entferne Komma nach letztem Array/Object-Element |
 | Nodes überlappen | Mindestabstand von 5-10 Einheiten einhalten |
 | Nodes unter dem Boden | Y-Koordinate sollte > 0 sein |
+| Size-Range zu gross | `range` für `size` sollte maximal `[0.5, 1.5]` sein |
+
+---
+
+## 9. Best Practices für visuell ansprechende Systeme
+
+### Farbvielfalt durch kategorisches Mapping
+
+Verwende **immer** `"function": "categorical"` für Entity-Farben, gemappt auf ein semantisches Attribut:
+```json
+"color": { "source": "kategorie", "function": "categorical" }
+```
+Das System generiert automatisch unterscheidbare Farben pro Kategorie-Wert. Voraussetzung: Das gemappte Attribut hat mindestens 3 verschiedene Werte.
+
+### Grössendifferenzierung
+
+Mappe `size` auf ein numerisches Attribut mit dem **empfohlenen Range [0.5, 1.5]**:
+```json
+"size": { "source": "wichtigkeit", "function": "linear", "range": [0.5, 1.5] }
+```
+Das System begrenzt Node-Radien intern auf maximal 1.5 Einheiten. Werte ausserhalb werden automatisch geclampt.
+
+### Edge-Typen visuell entflechten
+
+Bei mehreren Beziehungstypen zwischen denselben Nodes:
+- Verwende **unterschiedliche Farben** pro Typ
+- Verwende **unterschiedliche curvature-Werte** (z.B. 0.0, 0.25, 0.5), damit Linien nicht übereinander liegen
+- Verwende **unterschiedliche thickness-Werte** für Hierarchie
+
+### Datenreichtum
+
+Jeder Knoten sollte **3-5 semantische Attribute** als flache Felder besitzen. Das ermöglicht dem Benutzer, zur Laufzeit verschiedene Mappings auszuprobieren. Beispiel:
+```json
+{ "id": "s1", "type": "server", "label": "Hauptserver",
+  "status": "online", "region": "eu-central", "load": 75,
+  "uptime_days": 420, "maintenance_cost": 1500,
+  "position": { "x": 0, "y": 10, "z": -5 } }
+```

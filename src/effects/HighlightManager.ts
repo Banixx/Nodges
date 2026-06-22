@@ -441,7 +441,7 @@ export class HighlightManager {
         }
 
         const backup: MaterialBackup = {
-            color: material.color.clone(),
+            color: material.color ? material.color.clone() : new THREE.Color(),
             emissive: material.emissive ? material.emissive.clone() : null,
             emissiveIntensity: material.emissiveIntensity || 0,
             opacity: material.opacity || 1,

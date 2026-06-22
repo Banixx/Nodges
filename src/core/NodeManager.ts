@@ -24,6 +24,10 @@ export class NodeManager {
 
     private defaultColor = new THREE.Color(0x3498db);
 
+    // Node-Groessen-Grenzen in Three.js-Einheiten (Radius)
+    private static readonly MIN_NODE_RADIUS = 0.3;
+    private static readonly MAX_NODE_RADIUS = 1.5;
+
     constructor(container: ServiceContainer) {
         [this.scene, this.visualMappingEngine, this.stateManager] = 
             container.resolve<THREE.Scene, VisualMappingEngine, IStateManager>(
@@ -63,11 +67,18 @@ export class NodeManager {
         const sSeg = Math.max(4, Math.floor(16 * multiplier));
         const cSeg = Math.max(4, Math.floor(8 * multiplier));
 
-        this.geometryCache.set('sphere', new THREE.SphereGeometry(1, sSeg, sSeg));
-        this.geometryCache.set('cube', new THREE.BoxGeometry(1, 1, 1));
-        this.geometryCache.set('cylinder', new THREE.CylinderGeometry(1, 1, 1, cSeg));
-        this.geometryCache.set('cone', new THREE.ConeGeometry(1, 1, cSeg));
-        this.geometryCache.set('torus', new THREE.TorusGeometry(1, 0.4, cSeg, Math.max(3, Math.floor(6 * multiplier))));
+        const sphereGeo = new THREE.SphereGeometry(1, sSeg, sSeg);
+        const cubeGeo = new THREE.BoxGeometry(1, 1, 1);
+        const cylinderGeo = new THREE.CylinderGeometry(1, 1, 1, cSeg);
+        const coneGeo = new THREE.ConeGeometry(1, 1, cSeg);
+        const torusGeo = new THREE.TorusGeometry(1, 0.4, cSeg, Math.max(3, Math.floor(6 * multiplier)));
+
+        this.geometryCache.set('sphere', sphereGeo);
+        this.geometryCache.set('cube', cubeGeo);
+        this.geometryCache.set('box', cubeGeo);
+        this.geometryCache.set('cylinder', cylinderGeo);
+        this.geometryCache.set('cone', coneGeo);
+        this.geometryCache.set('torus', torusGeo);
     }
 
     private initializeMaterials() {
@@ -105,6 +116,7 @@ export class NodeManager {
             const visual = this.visualMappingEngine.applyToEntity(entity);
             // Default to sphere if unknown
             let type: string = (visual.geometry as string) || (entity.geometryType as string) || 'sphere';
+            if (type === 'box') type = 'cube';
             if (!this.geometryCache.has(type)) type = 'sphere';
 
             if (!entitiesByType.has(type)) {
@@ -180,10 +192,10 @@ export class NodeManager {
                         : (state[`layer${layerNum}Opacity`] !== undefined ? Number(state[`layer${layerNum}Opacity`]) : 1.0);
 
                     const size = visual.size !== undefined ? visual.size : 1.0;
-                    // Base geometric size is 1.0 (radius 1 or side 1), so we scale by 0.5 to keep visual size roughly 1 unit unless changed
-                    const baseScale = isLayerVisible
-                        ? Math.pow(size, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5
-                        : 0; // scale to 0 if layer is hidden
+                    const rawScale = Math.pow(size, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5;
+                    // Begrenze auf erlaubten Radius-Bereich
+                    const clampedScale = Math.max(NodeManager.MIN_NODE_RADIUS, Math.min(NodeManager.MAX_NODE_RADIUS, rawScale));
+                    const baseScale = isLayerVisible ? clampedScale : 0;
                     
                     const finalScale = baseScale * layerOpacity;
                     dummy.scale.set(finalScale, finalScale, finalScale);
@@ -231,7 +243,13 @@ export class NodeManager {
                 
                 group.forEach(({ entity, visual }, index) => {
                     entityList.push(entity);
-                    const material = this.materialCache.get('default')!.clone() as THREE.MeshPhongMaterial;
+                    let baseMaterial = this.materialCache.get('default');
+                    if (!baseMaterial) {
+                        console.warn('[NodeManager] Default material missing, re-initializing.');
+                        this.initializeMaterials();
+                        baseMaterial = this.materialCache.get('default')!;
+                    }
+                    const material = baseMaterial.clone() as THREE.MeshPhongMaterial;
                     const mesh = new THREE.Mesh(geometry, material);
 
                     // Position
@@ -258,9 +276,9 @@ export class NodeManager {
                         : (state[`layer${layerNum}Opacity`] !== undefined ? Number(state[`layer${layerNum}Opacity`]) : 1.0);
 
                     const size = visual.size !== undefined ? visual.size : 1.0;
-                    const baseScale = isLayerVisible
-                        ? Math.pow(size, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5
-                        : 0; 
+                    const rawScale = Math.pow(size, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5;
+                    const clampedScale = Math.max(NodeManager.MIN_NODE_RADIUS, Math.min(NodeManager.MAX_NODE_RADIUS, rawScale));
+                    const baseScale = isLayerVisible ? clampedScale : 0; 
                     
                     const finalScale = baseScale * layerOpacity;
                     mesh.scale.set(finalScale, finalScale, finalScale);
