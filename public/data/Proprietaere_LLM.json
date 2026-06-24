@@ -1,0 +1,219 @@
+{
+  "system": "Proprietäre LLM Landschaft",
+  "metadata": {
+    "created": "2026-06-23T21:30:00Z",
+    "version": "1.0",
+    "author": "Antigravity",
+    "description": "Visualisierung properietärer Large Language Models und ihrer Herausgeber"
+  },
+  "dataModel": {
+    "entities": {
+      "llm": {
+        "properties": {
+          "erscheinungsdatum": { "type": "categorical" },
+          "parameter": { "type": "continuous", "range": [100, 2500] },
+          "benchmark": { "type": "continuous", "range": [60, 100] },
+          "preis_input": { "type": "continuous", "range": [0, 20] },
+          "preis_output": { "type": "continuous", "range": [0, 80] },
+          "token_sekunde": { "type": "continuous", "range": [10, 150] },
+          "herausgeber": { "type": "categorical" },
+          "beschreibung": { "type": "categorical" }
+        }
+      },
+      "herausgeber": {
+        "properties": {
+          "typ": { "type": "categorical" }
+        }
+      }
+    },
+    "relationships": {
+      "entwickelt_von": {
+        "properties": {
+          "art": { "type": "categorical" }
+        }
+      }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "llm": {
+        "color": { "source": "herausgeber", "function": "categorical" },
+        "size": { "source": "benchmark", "function": "linear", "range": [0.6, 1.5] }
+      },
+      "herausgeber": {
+        "color": { "source": "typ", "function": "categorical" },
+        "size": { "source": "constant", "function": "linear", "range": [1.5, 1.5] }
+      },
+      "entwickelt_von": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#aaaaaa" } },
+        "thickness": { "source": "constant", "function": "linear", "range": [0.1, 0.1] }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "openai",
+        "type": "herausgeber",
+        "label": "OpenAI",
+        "position": { "x": -15, "y": 15, "z": -15 },
+        "typ": "Herausgeber"
+      },
+      {
+        "id": "anthropic",
+        "type": "herausgeber",
+        "label": "Anthropic",
+        "position": { "x": 15, "y": 15, "z": -15 },
+        "typ": "Herausgeber"
+      },
+      {
+        "id": "google",
+        "type": "herausgeber",
+        "label": "Google",
+        "position": { "x": -15, "y": 15, "z": 15 },
+        "typ": "Herausgeber"
+      },
+      {
+        "id": "cohere",
+        "type": "herausgeber",
+        "label": "Cohere",
+        "position": { "x": 15, "y": 15, "z": 15 },
+        "typ": "Herausgeber"
+      },
+      {
+        "id": "gpt4o",
+        "type": "llm",
+        "label": "GPT-4o",
+        "position": { "x": -20, "y": 5, "z": -18 },
+        "erscheinungsdatum": "2024-05-13",
+        "parameter": 1800,
+        "benchmark": 88.7,
+        "preis_input": 5.0,
+        "preis_output": 15.0,
+        "token_sekunde": 109,
+        "herausgeber": "OpenAI",
+        "beschreibung": "Multimodales Flaggschiffmodell mit Echtzeit-Fähigkeiten, sehr schnell und effizient."
+      },
+      {
+        "id": "gpt4turbo",
+        "type": "llm",
+        "label": "GPT-4 Turbo",
+        "position": { "x": -10, "y": 5, "z": -12 },
+        "erscheinungsdatum": "2023-11-06",
+        "parameter": 1800,
+        "benchmark": 86.5,
+        "preis_input": 10.0,
+        "preis_output": 30.0,
+        "token_sekunde": 40,
+        "herausgeber": "OpenAI",
+        "beschreibung": "Leistungsstarkes Vorgängermodell mit 128k Kontextfenster."
+      },
+      {
+        "id": "claude35sonnet",
+        "type": "llm",
+        "label": "Claude 3.5 Sonnet",
+        "position": { "x": 18, "y": 5, "z": -18 },
+        "erscheinungsdatum": "2024-06-20",
+        "parameter": 500,
+        "benchmark": 88.3,
+        "preis_input": 3.0,
+        "preis_output": 15.0,
+        "token_sekunde": 75,
+        "herausgeber": "Anthropic",
+        "beschreibung": "Überragend in Code und komplexer Analyse, übertrifft Opus in vielen Benchmarks bei tieferem Preis."
+      },
+      {
+        "id": "claude3opus",
+        "type": "llm",
+        "label": "Claude 3 Opus",
+        "position": { "x": 12, "y": 5, "z": -12 },
+        "erscheinungsdatum": "2024-03-04",
+        "parameter": 2000,
+        "benchmark": 86.8,
+        "preis_input": 15.0,
+        "preis_output": 75.0,
+        "token_sekunde": 30,
+        "herausgeber": "Anthropic",
+        "beschreibung": "Das größte und stärkste Modell der Claude 3 Familie."
+      },
+      {
+        "id": "gemini15pro",
+        "type": "llm",
+        "label": "Gemini 1.5 Pro",
+        "position": { "x": -15, "y": 5, "z": 20 },
+        "erscheinungsdatum": "2024-02-15",
+        "parameter": 1500,
+        "benchmark": 81.9,
+        "preis_input": 3.5,
+        "preis_output": 10.5,
+        "token_sekunde": 50,
+        "herausgeber": "Google",
+        "beschreibung": "Zeichnet sich durch ein extremes Kontextfenster von bis zu 2 Millionen Tokens aus."
+      },
+      {
+        "id": "command_r_plus",
+        "type": "llm",
+        "label": "Command R+",
+        "position": { "x": 15, "y": 5, "z": 20 },
+        "erscheinungsdatum": "2024-04-04",
+        "parameter": 104,
+        "benchmark": 75.0,
+        "preis_input": 3.0,
+        "preis_output": 15.0,
+        "token_sekunde": 60,
+        "herausgeber": "Cohere",
+        "beschreibung": "Fokus auf RAG (Retrieval-Augmented Generation) und Enterprise-Anwendungen."
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel1",
+        "type": "entwickelt_von",
+        "source": "gpt4o",
+        "target": "openai",
+        "label": "Entwickelt von",
+        "art": "Entwicklung"
+      },
+      {
+        "id": "rel2",
+        "type": "entwickelt_von",
+        "source": "gpt4turbo",
+        "target": "openai",
+        "label": "Entwickelt von",
+        "art": "Entwicklung"
+      },
+      {
+        "id": "rel3",
+        "type": "entwickelt_von",
+        "source": "claude35sonnet",
+        "target": "anthropic",
+        "label": "Entwickelt von",
+        "art": "Entwicklung"
+      },
+      {
+        "id": "rel4",
+        "type": "entwickelt_von",
+        "source": "claude3opus",
+        "target": "anthropic",
+        "label": "Entwickelt von",
+        "art": "Entwicklung"
+      },
+      {
+        "id": "rel5",
+        "type": "entwickelt_von",
+        "source": "gemini15pro",
+        "target": "google",
+        "label": "Entwickelt von",
+        "art": "Entwicklung"
+      },
+      {
+        "id": "rel6",
+        "type": "entwickelt_von",
+        "source": "command_r_plus",
+        "target": "cohere",
+        "label": "Entwickelt von",
+        "art": "Entwicklung"
+      }
+    ]
+  }
+}

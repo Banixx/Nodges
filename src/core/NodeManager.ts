@@ -26,7 +26,7 @@ export class NodeManager {
 
     // Node-Groessen-Grenzen in Three.js-Einheiten (Radius)
     private static readonly MIN_NODE_RADIUS = 0.3;
-    private static readonly MAX_NODE_RADIUS = 1.5;
+    private static readonly MAX_NODE_RADIUS = 15.0;
 
     constructor(container: ServiceContainer) {
         [this.scene, this.visualMappingEngine, this.stateManager] = 
@@ -168,7 +168,20 @@ export class NodeManager {
                 group.forEach(({ entity, visual }, index) => {
                     entityList.push(entity);
 
-                    // Position
+                    // Position mapped override
+                    if (visual.positionX !== undefined) {
+                        if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
+                        entity.position.x = visual.positionX;
+                    }
+                    if (visual.positionY !== undefined) {
+                        if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
+                        entity.position.y = visual.positionY;
+                    }
+                    if (visual.positionZ !== undefined) {
+                        if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
+                        entity.position.z = visual.positionZ;
+                    }
+
                     const x = entity.position?.x || 0;
                     const y = entity.position?.y || 0;
                     const z = entity.position?.z || 0;
@@ -192,7 +205,8 @@ export class NodeManager {
                         : (state[`layer${layerNum}Opacity`] !== undefined ? Number(state[`layer${layerNum}Opacity`]) : 1.0);
 
                     const size = visual.size !== undefined ? visual.size : 1.0;
-                    const rawScale = Math.pow(size, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5;
+                    const validSize = typeof size === 'number' && !isNaN(size) ? size : 1.0;
+                    const rawScale = Math.pow(validSize, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5;
                     // Begrenze auf erlaubten Radius-Bereich
                     const clampedScale = Math.max(NodeManager.MIN_NODE_RADIUS, Math.min(NodeManager.MAX_NODE_RADIUS, rawScale));
                     const baseScale = isLayerVisible ? clampedScale : 0;
@@ -252,7 +266,20 @@ export class NodeManager {
                     const material = baseMaterial.clone() as THREE.MeshPhongMaterial;
                     const mesh = new THREE.Mesh(geometry, material);
 
-                    // Position
+                    // Position mapped override
+                    if (visual.positionX !== undefined) {
+                        if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
+                        entity.position.x = visual.positionX;
+                    }
+                    if (visual.positionY !== undefined) {
+                        if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
+                        entity.position.y = visual.positionY;
+                    }
+                    if (visual.positionZ !== undefined) {
+                        if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
+                        entity.position.z = visual.positionZ;
+                    }
+
                     const x = entity.position?.x || 0;
                     const y = entity.position?.y || 0;
                     const z = entity.position?.z || 0;
@@ -276,7 +303,8 @@ export class NodeManager {
                         : (state[`layer${layerNum}Opacity`] !== undefined ? Number(state[`layer${layerNum}Opacity`]) : 1.0);
 
                     const size = visual.size !== undefined ? visual.size : 1.0;
-                    const rawScale = Math.pow(size, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5;
+                    const validSize = typeof size === 'number' && !isNaN(size) ? size : 1.0;
+                    const rawScale = Math.pow(validSize, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5;
                     const clampedScale = Math.max(NodeManager.MIN_NODE_RADIUS, Math.min(NodeManager.MAX_NODE_RADIUS, rawScale));
                     const baseScale = isLayerVisible ? clampedScale : 0; 
                     

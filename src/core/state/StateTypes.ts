@@ -44,6 +44,12 @@ export interface UIState {
     infoPanelCollapsed: boolean;
     showLabelsAlways: boolean;
     showLabelsOnHover: boolean;
+    labelLines: number;
+    labelFilterAttribute: string;
+    labelFilterMode: string;
+    labelFilterThreshold: number;
+    visibleLabelsCount: number;
+    totalLabelsCount: number;
     visualScaleExponent: number;
     visualScaleMultiplier: number;
     autoBalanceEnabled: boolean;
@@ -175,6 +181,12 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     infoPanelCollapsed: [STATE_CATEGORIES.UI],
     showLabelsAlways: [STATE_CATEGORIES.UI],
     showLabelsOnHover: [STATE_CATEGORIES.UI],
+    labelLines: [STATE_CATEGORIES.UI],
+    labelFilterAttribute: [STATE_CATEGORIES.UI],
+    labelFilterMode: [STATE_CATEGORIES.UI],
+    labelFilterThreshold: [STATE_CATEGORIES.UI],
+    visibleLabelsCount: [STATE_CATEGORIES.UI],
+    totalLabelsCount: [STATE_CATEGORIES.UI],
     visualScaleExponent: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
     visualScaleMultiplier: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
     autoBalanceEnabled: [STATE_CATEGORIES.UI],

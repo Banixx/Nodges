@@ -423,7 +423,10 @@ export class EdgeObjectsManager {
             color: 0xffffff, // Basis-Multiplikator Weiß
             vertexColors: true,
             shininess: 30,
-            side: THREE.DoubleSide
+            side: THREE.DoubleSide,
+            polygonOffset: true,
+            polygonOffsetFactor: 1,
+            polygonOffsetUnits: 1
         });
 
         material.userData = {

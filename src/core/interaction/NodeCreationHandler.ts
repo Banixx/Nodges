@@ -78,13 +78,16 @@ export class NodeCreationHandler {
                 this.axisPositionHelper.update(e);
             };
 
-            const clickHandler = (e: MouseEvent) => {
+            const clickHandler = async (e: MouseEvent) => {
                 if (performance.now() - startTime < 100) {
                     return;
                 }
+                if (this.axisPositionHelper.isTransitioning) return;
+                
                 e.preventDefault();
                 e.stopPropagation();
-                const isFinished = this.axisPositionHelper.confirmAxis();
+                
+                const isFinished = await this.axisPositionHelper.confirmAxisAsync();
 
                 if (isFinished) {
                     const finalPosition = this.axisPositionHelper.finish();
@@ -267,13 +270,16 @@ export class NodeCreationHandler {
             this.axisPositionHelper.update(e);
         };
 
-        const clickHandler = (e: MouseEvent) => {
+        const clickHandler = async (e: MouseEvent) => {
             if (performance.now() - startTime < 100) {
                 return;
             }
+            if (this.axisPositionHelper.isTransitioning) return;
+            
             e.preventDefault();
             e.stopPropagation();
-            const isFinished = this.axisPositionHelper.confirmAxis();
+            
+            const isFinished = await this.axisPositionHelper.confirmAxisAsync();
 
             if (isFinished) {
                 const finalPosition = this.axisPositionHelper.finish();

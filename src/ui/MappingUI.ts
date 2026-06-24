@@ -3,6 +3,7 @@ import {
     VisualMapping,
     DataModel
 } from '../types';
+import { PanelUtils } from '../utils/PanelUtils';
 
 export class MappingUI {
     private container: HTMLElement;
@@ -10,6 +11,7 @@ export class MappingUI {
     private leftColumn: HTMLElement;
     private rightColumn: HTMLElement;
     private svgOverlay: SVGSVGElement;
+    private categoryTabs: HTMLElement;
     private typeSelect: HTMLSelectElement;
 
     private mappings: VisualMappings | null = null;
@@ -18,6 +20,7 @@ export class MappingUI {
     private entities: any[] = [];
     private relationships: any[] = [];
     private onUpdate: ((mappings: VisualMappings) => void) | null = null;
+    private currentCategory: 'entities' | 'relationships' = 'entities';
     private currentType: string = '';
     private expandedProps = new Set<string>();
     private selectedDesignOption: Record<string, string> = {};
@@ -45,10 +48,14 @@ export class MappingUI {
         this.container.innerHTML = `
             <div class="mapping-header">
                 <span>Mapping</span>
-                <div class="mapping-header-controls">
-                    <select class="mapping-type-select" id="mappingTypeSelect"></select>
-                    <div class="mapping-toggle" id="mappingToggle">▼</div>
+                <div class="mapping-toggle" id="mappingToggle">▼</div>
+            </div>
+            <div class="mapping-selection-area" id="mappingSelectionArea" style="display: flex; gap: 10px; align-items: center; padding: 10px;">
+                <div class="mapping-tabs" id="categoryTabs" style="flex: 1; display: flex;">
+                    <button class="mapping-tab active" data-val="entities" style="flex: 1;">Nodes</button>
+                    <button class="mapping-tab" data-val="relationships" style="flex: 1;">Edges</button>
                 </div>
+                <select id="mappingTypeSelect" class="mapping-control-select" style="display: none;"></select>
             </div>
             <div class="mapping-body" id="mappingBody">
                 <div class="mapping-column left" id="mappingLeftCol">
@@ -65,6 +72,7 @@ export class MappingUI {
         this.leftColumn = this.container.querySelector('#mappingLeftCol') as HTMLElement;
         this.rightColumn = this.container.querySelector('#mappingRightCol') as HTMLElement;
         this.svgOverlay = this.container.querySelector('#mappingSvg') as SVGSVGElement;
+        this.categoryTabs = this.container.querySelector('#categoryTabs') as HTMLElement;
         this.typeSelect = this.container.querySelector('#mappingTypeSelect') as HTMLSelectElement;
 
         // Toggle logic (Expand/Collapse)
@@ -79,10 +87,26 @@ export class MappingUI {
             }
         });
 
-        // Type select listener
+        // Type Select listener
         this.typeSelect.addEventListener('change', () => {
             this.currentType = this.typeSelect.value;
             this.renderColumns();
+        });
+
+        // Category tabs listener
+        this.categoryTabs.querySelectorAll('.mapping-tab').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const target = e.target as HTMLElement;
+                if (!target.dataset.val) return;
+                this.currentCategory = target.dataset.val as 'entities' | 'relationships';
+                
+                this.categoryTabs.querySelectorAll('.mapping-tab').forEach(b => b.classList.remove('active'));
+                target.classList.add('active');
+                
+                this.currentType = this.currentCategory === 'entities' ? 'global_node' : 'global_edge';
+                this.updateTypeSelect();
+                this.renderColumns();
+            });
         });
 
         // Handle global window resize and scroll events to keep curves aligned
@@ -90,9 +114,29 @@ export class MappingUI {
         this.leftColumn.addEventListener('scroll', () => this.drawCurves());
         this.rightColumn.addEventListener('scroll', () => this.drawCurves());
 
+        // Observe panel resize to update curves when resized via drag handle
+        const resizeObserver = new ResizeObserver(() => {
+            if (!this.container.classList.contains('collapsed')) {
+                this.drawCurves();
+            }
+        });
+        resizeObserver.observe(this.container);
+
         // Global mouse/pointer move and up handlers for dragging curves
         window.addEventListener('pointermove', (e) => this.handlePointerMove(e));
         window.addEventListener('pointerup', (e) => this.handlePointerUp(e));
+
+        // Make panel draggable and resizable
+        const header = this.container.querySelector('.mapping-header') as HTMLElement;
+        if (header) {
+            header.style.cursor = 'grab';
+            PanelUtils.makeDraggableAndResizable(this.container, header, { minWidth: 350, minHeight: 250 });
+            
+            // Allow clicking header to bring to front
+            header.addEventListener('mousedown', () => {
+                this.container.dispatchEvent(new MouseEvent('mousedown'));
+            });
+        }
     }
 
     public bind(
@@ -114,32 +158,47 @@ export class MappingUI {
         this.relationships = relationships;
         this.onUpdate = onUpdate;
 
-        // Populate type selector if not yet populated or if types changed
-        const types = Object.keys(availableAttributes);
-        const currentSelection = this.typeSelect.value;
-        this.typeSelect.innerHTML = '';
-        
-        types.forEach(t => {
-            const opt = document.createElement('option');
-            opt.value = t;
-            opt.textContent = t;
-            if (t === currentSelection) opt.selected = true;
-            this.typeSelect.appendChild(opt);
-        });
-
-        if (types.length > 0) {
-            if (!types.includes(this.currentType)) {
-                this.currentType = types[0];
+        // Sync category if we already have a type selected
+        if (!this.currentType) {
+            this.currentType = this.currentCategory === 'entities' ? 'global_node' : 'global_edge';
+        } else if (this.currentType === 'global_node') {
+            this.currentCategory = 'entities';
+        } else if (this.currentType === 'global_edge') {
+            this.currentCategory = 'relationships';
+        } else if (this.dataModel) {
+            if (this.dataModel.relationships && this.dataModel.relationships[this.currentType]) {
+                this.currentCategory = 'relationships';
+            } else {
+                this.currentCategory = 'entities';
             }
-            this.typeSelect.value = this.currentType;
         }
+        
+        this.categoryTabs.querySelectorAll('.mapping-tab').forEach(b => {
+            if ((b as HTMLElement).dataset.val === this.currentCategory) {
+                b.classList.add('active');
+            } else {
+                b.classList.remove('active');
+            }
+        });
 
         // Inform user when loaded: Auto-expand mapping panel
         this.container.classList.remove('collapsed');
         const toggleBtn = this.container.querySelector('#mappingToggle') as HTMLElement;
         if (toggleBtn) toggleBtn.textContent = '▼';
 
+        this.updateTypeSelect();
         this.renderColumns();
+    }
+
+    private updateTypeSelect() {
+        this.typeSelect.innerHTML = '';
+        const globalOpt = document.createElement('option');
+        globalOpt.value = this.currentCategory === 'entities' ? 'global_node' : 'global_edge';
+        this.typeSelect.appendChild(globalOpt);
+        
+        // Force currentType to global
+        this.currentType = globalOpt.value;
+        this.typeSelect.value = this.currentType;
     }
 
     private renderColumns() {
@@ -157,10 +216,12 @@ export class MappingUI {
 
         // 1. Render Left Column: Attributes
         const attributes = this.availableAttributes[this.currentType] || [];
-        const isEntityType = this.dataModel?.entities?.[this.currentType] !== undefined;
+        const isEntityType = this.currentCategory === 'entities';
         const currentDataItems = isEntityType ? this.entities : this.relationships;
 
         attributes.forEach(attr => {
+            if (attr === 'constant') return; // Hide 'constant' from the attribute list
+
             const item = document.createElement('div');
             item.className = 'mapping-item left';
             item.dataset.attr = attr;
@@ -180,13 +241,21 @@ export class MappingUI {
             if (attr !== 'constant') {
                 let presenceCount = 0;
                 const uniqueValues = new Set<any>();
+                let minVal = Infinity;
+                let maxVal = -Infinity;
+                let hasNumeric = false;
 
                 currentDataItems.forEach(dItem => {
-                    if (dItem.type === this.currentType) {
+                    if (this.currentType === 'global_node' || this.currentType === 'global_edge' || dItem.type === this.currentType) {
                         const val = this.getNestedValue(dItem, attr);
                         if (val !== undefined && val !== null) {
                             presenceCount++;
                             uniqueValues.add(val);
+                            if (typeof val === 'number') {
+                                hasNumeric = true;
+                                if (val < minVal) minVal = val;
+                                if (val > maxVal) maxVal = val;
+                            }
                         }
                     }
                 });
@@ -196,8 +265,76 @@ export class MappingUI {
                 stats.style.fontSize = '9px';
                 stats.style.color = 'var(--text-muted)';
                 const labelNoun = isEntityType ? (presenceCount === 1 ? 'Node' : 'Nodes') : (presenceCount === 1 ? 'Kante' : 'Kanten');
-                stats.textContent = `${presenceCount} ${labelNoun} • ${uniqueValues.size} verschiedene Werte`;
+                
+                let statsText = `${presenceCount} ${labelNoun} • ${uniqueValues.size} versch. Werte`;
+                if (hasNumeric && minVal !== Infinity && maxVal !== -Infinity) {
+                    const formatNum = (num: number) => Number.isInteger(num) ? num.toString() : num.toFixed(2);
+                    statsText += ` • [${formatNum(minVal)} ... ${formatNum(maxVal)}]`;
+                } else if (uniqueValues.size > 0 && !hasNumeric) {
+                    statsText += ` (Text/Kategorie)`;
+                }
+
+                stats.textContent = statsText;
                 labelContainer.appendChild(stats);
+
+                // Values Container (collapsible)
+                if (uniqueValues.size > 0) {
+                    const valuesContainer = document.createElement('div');
+                    valuesContainer.className = 'mapping-item-values';
+                    valuesContainer.style.display = 'none';
+                    valuesContainer.style.marginTop = '6px';
+                    valuesContainer.style.fontSize = '10px';
+                    valuesContainer.style.color = '#ccc';
+                    valuesContainer.style.maxHeight = '150px';
+                    valuesContainer.style.overflowY = 'auto';
+
+                    const valsArray = Array.from(uniqueValues).sort();
+                    const valsList = document.createElement('div');
+                    valsList.style.display = 'flex';
+                    valsList.style.flexWrap = 'wrap';
+                    valsList.style.gap = '4px';
+
+                    valsArray.slice(0, 50).forEach(val => {
+                        const tag = document.createElement('span');
+                        tag.style.background = 'rgba(255,255,255,0.1)';
+                        tag.style.padding = '2px 4px';
+                        tag.style.borderRadius = '3px';
+                        // Convert objects/arrays to string for display
+                        const displayVal = typeof val === 'object' ? JSON.stringify(val) : String(val);
+                        tag.textContent = displayVal.length > 30 ? displayVal.substring(0, 27) + '...' : displayVal;
+                        valsList.appendChild(tag);
+                    });
+
+                    if (valsArray.length > 50) {
+                        const moreTag = document.createElement('span');
+                        moreTag.style.background = 'rgba(255,255,255,0.05)';
+                        moreTag.style.padding = '2px 4px';
+                        moreTag.style.borderRadius = '3px';
+                        moreTag.style.fontStyle = 'italic';
+                        moreTag.textContent = `+ ${valsArray.length - 50} weitere...`;
+                        valsList.appendChild(moreTag);
+                    }
+
+                    valuesContainer.appendChild(valsList);
+                    labelContainer.appendChild(valuesContainer);
+
+                    // Add click event to toggle
+                    item.style.cursor = 'pointer';
+                    item.addEventListener('click', (e) => {
+                        // Prevent toggle if clicking on the drag dot
+                        if ((e.target as HTMLElement).classList.contains('snapdot')) return;
+                        
+                        if (valuesContainer.style.display === 'none') {
+                            valuesContainer.style.display = 'block';
+                            item.style.backgroundColor = 'rgba(255,255,255,0.1)';
+                        } else {
+                            valuesContainer.style.display = 'none';
+                            item.style.backgroundColor = '';
+                        }
+                        // Need to redraw curves when panel height changes
+                        requestAnimationFrame(() => this.drawCurves());
+                    });
+                }
             }
 
             item.appendChild(labelContainer);
@@ -214,14 +351,17 @@ export class MappingUI {
         });
 
         // 2. Render Right Column: Visual Properties
-        const preset = this.mappings.defaultPresets[this.currentType];
-        if (preset) {
-            const isEntity = this.dataModel?.entities?.[this.currentType] !== undefined;
-            const visualProps = isEntity
-                ? ['size', 'color', 'geometry', 'glow', 'animation']
-                : ['thickness', 'color', 'curvature', 'glow', 'opacity', 'animation'];
+        let preset = this.mappings.defaultPresets[this.currentType] || {};
+        
+        const isEntity = this.currentCategory === 'entities';
+        const visualProps = isEntity
+            ? ['positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation']
+            : ['thickness', 'color', 'curvature', 'glow', 'opacity', 'animation'];
 
             const propTranslations: Record<string, string> = {
+                positionX: 'Position X',
+                positionY: 'Position Y',
+                positionZ: 'Position Z',
                 size: 'Größe',
                 color: 'Farbe',
                 geometry: 'Geometrie',
@@ -259,11 +399,34 @@ export class MappingUI {
                 label.textContent = propTranslations[prop] || prop.charAt(0).toUpperCase() + prop.slice(1);
                 header.appendChild(label);
 
+                const actions = document.createElement('div');
+                actions.style.display = 'flex';
+                actions.style.gap = '6px';
+                actions.style.alignItems = 'center';
+
+                // Disconnect button
+                if (isConnected) {
+                    const disconnectBtn = document.createElement('span');
+                    disconnectBtn.textContent = '×';
+                    disconnectBtn.style.color = '#ff4444';
+                    disconnectBtn.style.cursor = 'pointer';
+                    disconnectBtn.style.fontSize = '14px';
+                    disconnectBtn.style.fontWeight = 'bold';
+                    disconnectBtn.title = 'Verbindung lösen';
+                    disconnectBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        this.disconnectMapping(prop);
+                    };
+                    actions.appendChild(disconnectBtn);
+                }
+
                 // Show the gear icon on all mapping items so users can expand constant values too!
                 const gear = document.createElement('span');
                 gear.className = 'mapping-item-gear';
                 gear.textContent = '⚙️';
-                header.appendChild(gear);
+                actions.appendChild(gear);
+                
+                header.appendChild(actions);
 
                 // Toggle expansion
                 header.onclick = (e) => {
@@ -302,7 +465,7 @@ export class MappingUI {
                         functions = ['heatmap', 'bipolar', 'categorical'];
                     } else if (prop === 'geometry') {
                         functions = ['categorical', 'sphereComplexity'];
-                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity'].includes(prop)) {
+                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ'].includes(prop)) {
                         functions = ['linear', 'exponential', 'logarithmic'];
                     } else if (prop === 'animation') {
                         functions = ['pulse'];
@@ -449,8 +612,9 @@ export class MappingUI {
                         bipGroup.appendChild(bipRow);
                         details.appendChild(bipGroup);
                     } else if (['linear', 'exponential', 'logarithmic'].includes(mapping.function) || mapping.range) {
-                        const rangeMinVal = mapping.range ? mapping.range[0] : 0.1;
-                        const rangeMaxVal = mapping.range ? mapping.range[1] : 3.0;
+                        const isPosition = ['positionX', 'positionY', 'positionZ'].includes(prop);
+                        const rangeMinVal = mapping.range ? mapping.range[0] : (isPosition ? -100 : 0.1);
+                        const rangeMaxVal = mapping.range ? mapping.range[1] : (isPosition ? 100 : 3.0);
 
                         const rangeGroup = document.createElement('div');
                         rangeGroup.className = 'mapping-control-group';
@@ -615,7 +779,7 @@ export class MappingUI {
                             } as any);
                         };
                         constGroup.appendChild(shapeSelect);
-                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity'].includes(prop)) {
+                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ'].includes(prop)) {
                         const numInput = document.createElement('input');
                         numInput.className = 'mapping-control-input';
                         numInput.type = 'number';
@@ -674,8 +838,6 @@ export class MappingUI {
 
                 this.rightColumn.appendChild(item);
             });
-        }
-
         // Draw active curves after browser layout pass
         requestAnimationFrame(() => this.drawCurves());
     }
@@ -683,8 +845,14 @@ export class MappingUI {
     private updatePropertyMapping(propName: string, updates: Partial<VisualMapping>) {
         if (!this.mappings || !this.currentType || !this.onUpdate) return;
 
+        if (!this.mappings.defaultPresets) {
+            this.mappings.defaultPresets = {};
+        }
+        if (!this.mappings.defaultPresets[this.currentType]) {
+            this.mappings.defaultPresets[this.currentType] = {};
+        }
+        
         const preset = this.mappings.defaultPresets[this.currentType] as any;
-        if (!preset) return;
 
         preset[propName] = {
             ...(preset[propName] || { source: 'constant', function: 'constant' }),
@@ -759,6 +927,7 @@ export class MappingUI {
         // Create temporary SVG path
         const tempPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         tempPath.setAttribute('class', 'mapping-curve active-drag');
+        tempPath.style.pointerEvents = 'none';
         this.svgOverlay.appendChild(tempPath);
 
         this.activeDrag = {
@@ -834,12 +1003,22 @@ export class MappingUI {
     private connectMapping(sourceAttr: string, propName: string) {
         if (!this.mappings || !this.currentType || !this.onUpdate) return;
 
+        if (!this.mappings.defaultPresets) {
+            this.mappings.defaultPresets = {};
+        }
+        if (!this.mappings.defaultPresets[this.currentType]) {
+            this.mappings.defaultPresets[this.currentType] = {};
+        }
+
         const preset = this.mappings.defaultPresets[this.currentType] as any;
-        if (!preset) return;
 
         let defaultFunc: any = 'linear';
         if (propName === 'color') {
-            defaultFunc = 'heatmap';
+            if (['type', 'id', 'category', 'label', 'domain'].includes(sourceAttr)) {
+                defaultFunc = 'categorical';
+            } else {
+                defaultFunc = 'heatmap';
+            }
         } else if (propName === 'geometry') {
             defaultFunc = 'categorical';
         } else if (propName === 'animation') {
@@ -860,12 +1039,12 @@ export class MappingUI {
     }
 
     private getAttributeDataBounds(source: string): [number, number] {
-        const isEntityType = this.dataModel?.entities?.[this.currentType] !== undefined;
+        const isEntityType = this.currentCategory === 'entities';
         const currentDataItems = isEntityType ? this.entities : this.relationships;
         const values: number[] = [];
 
         currentDataItems.forEach(item => {
-            if (item.type === this.currentType) {
+            if (this.currentType === 'global_node' || this.currentType === 'global_edge' || item.type === this.currentType) {
                 const val = parseFloat(this.getNestedValue(item, source));
                 if (!isNaN(val)) {
                     values.push(val);

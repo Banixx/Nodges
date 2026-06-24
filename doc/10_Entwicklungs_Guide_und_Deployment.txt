@@ -136,4 +136,4 @@ Nodges ist eine **Static Web App**. Der Inhalt des `/dist` Ordners kann auf jede
   - `src/effects/`: Visuelle Effekte (Shader, Post-Processing)
 
 ---
-*Stand: 19.06.2026 - Version 0.101.0*
+*Stand: 19.06.2026 - Version 0.101.1*

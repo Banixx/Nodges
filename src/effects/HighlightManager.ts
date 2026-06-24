@@ -39,6 +39,10 @@ export class HighlightManager {
     private previousSelectedObject: THREE.Object3D | null = null;
     private previousSelectedObjectsSize: number = 0;
 
+    private dimmedNodes: Set<string> = new Set();
+    private dimmedEdges: Set<THREE.Object3D> = new Set();
+    public currentNeighborhoodNodes: Set<string> = new Set();
+
     // Highlight Types
     public readonly types = {
         HOVER: 'hover',
@@ -88,6 +92,46 @@ export class HighlightManager {
         // Cleanup unused highlights
         this.cleanupUnusedHighlights(hoveredObject, selectedObject, selectedObjects);
 
+        // Clear previous dimming
+        this.clearDimming();
+        this.currentNeighborhoodNodes.clear();
+
+        // Calculate neighborhood if a single object is selected
+        if (selectedObjects && selectedObjects.size === 1) {
+            const selected = Array.from(selectedObjects)[0];
+            if (selected.userData.type === 'node' && selected.userData.nodeData) {
+                const nodeId = String(selected.userData.nodeData.id);
+                const neighborhood = this.findNeighborhood(nodeId);
+                
+                this.currentNeighborhoodNodes = neighborhood.nodes;
+
+                // Apply hover effect to connected edges so they get an aura
+                neighborhood.edges.forEach(edgeObj => {
+                    this.applyHighlight(edgeObj.tube, this.types.HOVER);
+                });
+
+                // Dim others
+                this.dimNonNeighborhood(neighborhood.nodes, neighborhood.edges);
+            } else if (selected.userData.type === 'edge' && selected.userData.edgeData) {
+                // If an edge is selected, just keep its start/end nodes in neighborhood
+                const s = selected.userData.edgeData.source !== undefined ? selected.userData.edgeData.source : selected.userData.edgeData.start;
+                const t = selected.userData.edgeData.target !== undefined ? selected.userData.edgeData.target : selected.userData.edgeData.end;
+                
+                const neighborhoodNodes = new Set<string>();
+                neighborhoodNodes.add(String(s));
+                neighborhoodNodes.add(String(t));
+                this.currentNeighborhoodNodes = neighborhoodNodes;
+                
+                let edgeObjFromManager = null;
+                if (this.edgeObjectsManager) {
+                    const allEdges = this.edgeObjectsManager.getEdges();
+                    edgeObjFromManager = allEdges.find(e => e.tube === selected);
+                }
+                const neighborhoodEdges = edgeObjFromManager ? [edgeObjFromManager] : [];
+                this.dimNonNeighborhood(neighborhoodNodes, neighborhoodEdges);
+            }
+        }
+
         // Apply selection highlights
         if (selectedObjects && selectedObjects.size > 0) {
             selectedObjects.forEach((obj: THREE.Object3D) => {
@@ -101,6 +145,79 @@ export class HighlightManager {
         if (hoveredObject && !state.selectedObjects?.has(hoveredObject) && hoveredObject !== selectedObject) {
             this.applyHighlight(hoveredObject, this.types.HOVER);
         }
+    }
+
+    findNeighborhood(centerNodeId: string): { nodes: Set<string>, edges: any[] } {
+        const nodes = new Set<string>();
+        const edges: any[] = [];
+        
+        nodes.add(centerNodeId);
+        
+        const graphEdges = this.stateManager.state.graphData?.relationships || [];
+        
+        const connectedEdgeIds = new Set<string | number>();
+        graphEdges.forEach(e => {
+            const s = e.source !== undefined ? e.source : e.start;
+            const t = e.target !== undefined ? e.target : e.end;
+            if (String(s) === centerNodeId || String(t) === centerNodeId) {
+                connectedEdgeIds.add(e.id);
+                nodes.add(String(s));
+                nodes.add(String(t));
+            }
+        });
+
+        if (this.edgeObjectsManager) {
+            const allEdges = this.edgeObjectsManager.getEdges();
+            allEdges.forEach(edgeObj => {
+                if (edgeObj.tube.userData.edgeData && connectedEdgeIds.has(edgeObj.tube.userData.edgeData.id)) {
+                    edges.push(edgeObj);
+                }
+            });
+        }
+        
+        return { nodes, edges };
+    }
+
+    dimNonNeighborhood(neighborhoodNodes: Set<string>, neighborhoodEdges: any[]) {
+        const edgeTubes = new Set(neighborhoodEdges.map(e => e.tube));
+        
+        if (this.nodeManager) {
+            const allNodes = this.stateManager.state.graphData?.entities || [];
+            allNodes.forEach(node => {
+                const id = String(node.id);
+                if (!neighborhoodNodes.has(id)) {
+                    this.nodeManager!.setNodeColor(id, 0x444444);
+                    this.dimmedNodes.add(id);
+                }
+            });
+        }
+        
+        if (this.edgeObjectsManager) {
+            this.edgeObjectsManager.getEdges().forEach(edgeObj => {
+                if (!edgeTubes.has(edgeObj.tube)) {
+                    if ((edgeObj.tube as any).material) {
+                        ((edgeObj.tube as any).material as THREE.MeshPhongMaterial).color.setHex(0x333333);
+                        this.dimmedEdges.add(edgeObj.tube);
+                    }
+                }
+            });
+        }
+    }
+
+    clearDimming() {
+        if (this.nodeManager) {
+            this.dimmedNodes.forEach(id => {
+                this.nodeManager!.resetNodeColor(id);
+            });
+        }
+        this.dimmedNodes.clear();
+        
+        this.dimmedEdges.forEach(tube => {
+            if ((tube as any).material) {
+                ((tube as any).material as THREE.MeshPhongMaterial).color.setHex(0xffffff);
+            }
+        });
+        this.dimmedEdges.clear();
     }
 
     cleanupUnusedHighlights(hoveredObject: THREE.Object3D | null, selectedObject: THREE.Object3D | null, selectedObjects: Set<THREE.Object3D> | null = null) {
@@ -593,6 +710,7 @@ export class HighlightManager {
 
     destroy() {
         this.clearAllHighlights();
+        this.clearDimming();
         this.materialBackups.clear();
         this.cleanupTimers.forEach(timer => clearTimeout(timer));
         this.cleanupTimers.clear();

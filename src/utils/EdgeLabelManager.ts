@@ -160,8 +160,16 @@ export class EdgeLabelManager {
             const offsetDirection = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
             midPoint.addScaledVector(offsetDirection, edge.options.offset);
 
-            // Add some height
-            midPoint.y += 0.5;
+            // Add some height dynamically based on camera distance
+            const distance = this.camera.position.distanceTo(midPoint);
+            const zoomFactor = Math.min(1.0, Math.max(0.1, distance / 30.0));
+            midPoint.y += 0.5 * zoomFactor;
+        } else {
+            // Add a small height even for single edges so they don't clip into the tube,
+            // scaling down when zooming in.
+            const distance = this.camera.position.distanceTo(midPoint);
+            const zoomFactor = Math.min(1.0, Math.max(0.1, distance / 30.0));
+            midPoint.y += 0.3 * zoomFactor;
         }
 
         sprite.position.copy(midPoint);
@@ -270,15 +278,26 @@ export class EdgeLabelManager {
                 let labelText = edge.name;
 
                 if (!labelText && edge.metadata) {
-                    if (edge.metadata.type) {
+                    if (edge.metadata.label) {
+                        labelText = edge.metadata.label;
+                    } else if (edge.metadata.type) {
                         labelText = edge.metadata.type;
                     } else if (edge.metadata.name) {
                         labelText = edge.metadata.name;
                     }
                 }
 
+                // Hole den aktuellen State für den Complexity Mode
+                const state = (window as any).app?.stateManager?.state;
+                const isSimpleMode = !state || state.complexityMode === 'simple';
+
+                // Im Simple-Modus generische Edge-Labels verstecken
                 if (!labelText) {
-                    labelText = `Edge ${edge.line.id}`;
+                    if (!isSimpleMode) {
+                        labelText = `Edge ${edge.line.id}`;
+                    } else {
+                        return; // Im Simple Mode keine unbenannten Edges labeln
+                    }
                 }
 
                 this.createOrUpdateLabel(edge, labelText);

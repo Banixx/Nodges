@@ -457,56 +457,21 @@ export class SelectionManager {
      * Update visual feedback for selections
      */
     updateVisualFeedback() {
-        // Remove old selection boxes
-        this.selectionBoxes.forEach((box, obj) => {
-            if (!this.selectedObjects.has(obj)) {
-                this.scene.remove(box);
-                this.selectionBoxes.delete(obj);
-            }
-        });
-
-        // Add selection boxes for new selections
-        this.selectedObjects.forEach(obj => {
-            if (!this.selectionBoxes.has(obj)) {
-                this.createSelectionBox(obj);
-            }
-        });
+        // Selection is now completely handled by HighlightManager.ts
     }
 
     /**
      * Create selection box for object
      */
     createSelectionBox(object: THREE.Object3D) {
-        // Nur fuer Nodes - Edges verwenden das HighlightManager-System
-        if (object.userData.type === 'node') {
-            let scale = 1.1;
-            const boundingBox = new THREE.Box3().setFromObject(object);
-            const size = boundingBox.getSize(new THREE.Vector3());
-            const geometry = new THREE.BoxGeometry(size.x * scale, size.y * scale, size.z * scale);
-
-            const selectionBox = new THREE.Mesh(geometry, this.selectionBoxMaterial);
-            selectionBox.position.copy(object.position);
-
-            this.selectionBoxes.set(object, selectionBox);
-            this.scene.add(selectionBox);
-        } else if (object.userData.type === 'edge') {
-            // Edges werden nun ausschließlich vom HighlightManager gehandhabt
-            // um redundante und fehlerhafte Geometrien zu vermeiden.
-        }
+        // Obsolete - Selection visual feedback is handled by HighlightManager (aura instead of box)
     }
 
     /**
      * Remove selection box for object
      */
     removeSelectionBox(object: THREE.Object3D) {
-        const box = this.selectionBoxes.get(object);
-        if (box) {
-            this.scene.remove(box);
-            // Dispose geometry and material for proper cleanup
-            if (box.geometry) box.geometry.dispose();
-            if (box.material) (box.material as THREE.Material).dispose();
-            this.selectionBoxes.delete(object);
-        }
+        // Obsolete
     }
 
     /**

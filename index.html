@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Nodges 0.101.0</title>
+    <title>Nodges 0.101.1</title>
     <link rel="icon" type="image/png" href="favicon-32x32.png">
     <!-- CSS is imported in App.ts -->
 </head>
@@ -18,7 +18,7 @@
         <!-- Sidebar Header -->
         <header class="sidebar-header">
             <span class="sidebar-title">Nodges</span>
-            <span id="sidebarVersion" class="sidebar-version">0.101.0</span>
+            <span id="sidebarVersion" class="sidebar-version">0.101.1</span>
             <span id="hmrTest" style="color: #00ff00; font-size: 0.7em; margin-left: 5px;">● LIVE-TEST</span>
         </header>
 
@@ -33,10 +33,8 @@
                 <button class="sidebar-tab" data-tab="tab-mappings" data-min-mode="expert">Mappings</button>
                 <button class="sidebar-tab" data-tab="tab-layout" data-min-mode="expert">Layout</button>
                 <button class="sidebar-tab" data-tab="tab-dev" data-min-mode="dev">Dev</button>
+                <div id="tabIndicator" class="tab-indicator"></div>
             </nav>
-            <div id="sidebarTabsScrollbar" class="sidebar-tabs-scrollbar">
-                <div id="sidebarTabsScrollbarThumb" class="sidebar-tabs-scrollbar-thumb"></div>
-            </div>
         </div>
 
         <!-- Tab Content Area -->
@@ -56,7 +54,7 @@
                 <section class="panel-section">
                     <h4 class="section-header">Info</h4>
                     <div class="info-row"><span class="info-label">Version:</span><span class="info-value"
-                            id="fileVersion">0.101.0</span></div>
+                            id="fileVersion">0.101.1</span></div>
                     <div class="info-row"><span class="info-label">Dateiname:</span><span class="info-value"
                             id="fileFilename">-</span></div>
                     <div class="info-row"><span class="info-label">Knoten:</span><span class="info-value"
@@ -344,65 +342,54 @@
         // Version is now handled in App.ts
 
         const tabsContainer = document.querySelector('.sidebar-tabs');
-        const scrollbar = document.getElementById('sidebarTabsScrollbar');
-        const scrollbarThumb = document.getElementById('sidebarTabsScrollbarThumb');
-        let scrollTimeout;
+        const tabIndicator = document.getElementById('tabIndicator');
 
-        // Custom scrollbar updating logic
-        function updateScrollbar() {
-            if (!tabsContainer || !scrollbar || !scrollbarThumb) return;
-            const clientWidth = tabsContainer.clientWidth;
-            const scrollWidth = tabsContainer.scrollWidth;
-            const scrollLeft = tabsContainer.scrollLeft;
-
-            if (scrollWidth <= clientWidth) {
-                scrollbar.style.display = 'none';
-                return;
-            }
-
-            scrollbar.style.display = 'block';
-            const ratio = clientWidth / scrollWidth;
-            const thumbWidth = clientWidth * ratio;
-            const maxScrollLeft = scrollWidth - clientWidth;
-            const maxThumbLeft = clientWidth - thumbWidth;
-            const thumbLeft = maxScrollLeft > 0 ? (scrollLeft / maxScrollLeft) * maxThumbLeft : 0;
-
-            scrollbarThumb.style.width = `${thumbWidth}px`;
-            scrollbarThumb.style.transform = `translateX(${thumbLeft}px)`;
+        // Update the position and width of the tab indicator
+        function updateTabIndicator(activeTab) {
+            if (!activeTab || !tabIndicator || !tabsContainer) return;
+            const tabRect = activeTab.getBoundingClientRect();
+            const containerRect = tabsContainer.getBoundingClientRect();
+            
+            // Calculate relative to the container scroll
+            const left = activeTab.offsetLeft;
+            const width = activeTab.offsetWidth;
+            
+            tabIndicator.style.left = `${left}px`;
+            tabIndicator.style.width = `${width}px`;
         }
 
-        // Convert vertical mouse wheel scroll to horizontal scrolling on tabs container
+        // Convert mouse wheel scroll to tab switching
         if (tabsContainer) {
+            let lastScrollTime = 0;
             tabsContainer.addEventListener('wheel', (e) => {
+                e.preventDefault(); // Prevent default horizontal/vertical scroll
+                
+                const now = Date.now();
+                // Throttle to 200ms to ensure one tick = one tab change
+                if (now - lastScrollTime < 200) return;
+
                 const scrollAmount = e.deltaY || e.deltaX;
-                if (scrollAmount !== 0) {
-                    e.preventDefault();
-                    tabsContainer.scrollLeft += scrollAmount;
+                if (scrollAmount === 0) return;
+
+                const tabs = Array.from(document.querySelectorAll('.sidebar-tab'));
+                const activeIndex = tabs.findIndex(tab => tab.classList.contains('active'));
+                
+                if (activeIndex === -1) return;
+
+                let nextIndex = activeIndex;
+                if (scrollAmount > 0) {
+                    // Scroll down/right -> next tab
+                    nextIndex = Math.min(tabs.length - 1, activeIndex + 1);
+                } else {
+                    // Scroll up/left -> previous tab
+                    nextIndex = Math.max(0, activeIndex - 1);
+                }
+
+                if (nextIndex !== activeIndex) {
+                    lastScrollTime = now;
+                    tabs[nextIndex].click();
                 }
             }, { passive: false });
-
-            // Update scrollbar position and fade it in during scroll activity
-            tabsContainer.addEventListener('scroll', () => {
-                updateScrollbar();
-                
-                if (scrollbar) {
-                    scrollbar.classList.add('visible');
-                    clearTimeout(scrollTimeout);
-                    scrollTimeout = setTimeout(() => {
-                        scrollbar.classList.remove('visible');
-                    }, 800);
-                }
-            });
-
-            // Initialize scrollbar position
-            updateScrollbar();
-
-            // Responsive Resize Handling
-            if (window.ResizeObserver) {
-                new ResizeObserver(updateScrollbar).observe(tabsContainer);
-            } else {
-                window.addEventListener('resize', updateScrollbar);
-            }
         }
 
         // Tab Switching Logic
@@ -414,6 +401,9 @@
                 // Activate clicked tab
                 tab.classList.add('active');
                 
+                // Update indicator
+                updateTabIndicator(tab);
+                
                 // Scroll the tab into view (centered)
                 tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 
@@ -421,6 +411,21 @@
                 const targetContent = document.getElementById(targetId);
                 if (targetContent) targetContent.classList.add('active');
             });
+        });
+
+        // Initialize indicator position
+        window.addEventListener('load', () => {
+            const activeTab = document.querySelector('.sidebar-tab.active');
+            if (activeTab) {
+                // Small delay to ensure layout is complete
+                setTimeout(() => updateTabIndicator(activeTab), 50);
+            }
+        });
+        
+        // Update indicator on window resize
+        window.addEventListener('resize', () => {
+            const activeTab = document.querySelector('.sidebar-tab.active');
+            if (activeTab) updateTabIndicator(activeTab);
         });
 
         // Collapsible Sections

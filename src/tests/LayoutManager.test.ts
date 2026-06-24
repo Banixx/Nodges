@@ -492,6 +492,23 @@ describe('LayoutManager', () => {
             expect(centerY).toBeCloseTo(0, 5);
             expect(centerZ).toBeCloseTo(0, 5);
         });
+
+        it('sollte mit independentAxes = true jede Achse auf maxExtent skalieren', () => {
+            const nodes: EntityData[] = [
+                { id: '1', type: 't', position: { x: -10, y: -5, z: 0 } },
+                { id: '2', type: 't', position: { x: 10, y: 5, z: 0 } },
+            ];
+
+            // Vorher: extentX = 20, extentY = 10
+            layoutManager.normalizeNodePositions(nodes, 10, true);
+
+            // Nachher sollte extentX = 10 und extentY = 10 sein
+            const extentX = Math.abs(nodes[0].position!.x - nodes[1].position!.x);
+            const extentY = Math.abs(nodes[0].position!.y - nodes[1].position!.y);
+            
+            expect(extentX).toBeCloseTo(10, 0);
+            expect(extentY).toBeCloseTo(10, 0);
+        });
     });
 
     describe('applyLayout()', () => {

@@ -1,3 +1,5 @@
+import { PanelUtils } from '../utils/PanelUtils';
+
 export class MinimapUI {
     private container: HTMLElement;
     private canvas: HTMLCanvasElement;
@@ -59,6 +61,18 @@ export class MinimapUI {
             setTimeout(() => this.updateSize(), 350);
         });
 
+        // Make minimap draggable and resizable
+        const header = this.container.querySelector('.minimap-header') as HTMLElement;
+        if (header) {
+            header.style.cursor = 'grab';
+            PanelUtils.makeDraggableAndResizable(this.container, header, { minWidth: 100, minHeight: 100, keepSquare: true });
+            
+            // Allow clicking header to bring to front
+            header.addEventListener('mousedown', () => {
+                this.container.dispatchEvent(new MouseEvent('mousedown'));
+            });
+        }
+
         // Zoom logic (Mouse wheel)
         wrapper.addEventListener('wheel', (e) => {
             e.preventDefault();
@@ -91,6 +105,15 @@ export class MinimapUI {
 
         // Initialize size and listen for window changes to maintain sharpness
         window.addEventListener('resize', () => this.updateSize());
+        
+        // Observe panel resize to update canvas when resized via drag handle
+        const resizeObserver = new ResizeObserver(() => {
+            if (!this.container.classList.contains('collapsed')) {
+                this.updateSize();
+            }
+        });
+        resizeObserver.observe(this.container);
+
         setTimeout(() => this.updateSize(), 150); // Slight delay to ensure DOM is settled
     }
 

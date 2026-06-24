@@ -25,6 +25,7 @@ export class AxisPositionHelper {
 
     private lastHighlightedObject: THREE.Object3D | null = null;
     private tooltipElement: HTMLDivElement | null = null;
+    public isTransitioning: boolean = false;
 
     // Achsen-Farben
     private axisColors = {
@@ -203,7 +204,7 @@ export class AxisPositionHelper {
      * Aktualisiert die Position basierend auf Mausbewegung
      */
     update(event: MouseEvent) {
-        if (!this.isActive || !this.previewNode) return;
+        if (!this.isActive || !this.previewNode || this.isTransitioning) return;
 
         // Mausposition normalisieren
         const rect = this.renderer.domElement.getBoundingClientRect();
@@ -229,6 +230,33 @@ export class AxisPositionHelper {
             let snappedValue: number | null = null;
             let isSnappedToGrid = false;
 
+            // --- 0. Direct Hit Raycast ---
+            const interactables = this.scene.children.filter(child => 
+                (child.userData.type === 'node' || child.userData.type === 'edge') &&
+                child.userData.id !== (this.previewNode?.userData?.id || '')
+            );
+            const intersects = this.raycaster.intersectObjects(interactables, true);
+            let directHitFound = false;
+
+            if (intersects.length > 0) {
+                let hitObj = intersects[0].object;
+                while (hitObj && hitObj.userData.type !== 'node' && hitObj.userData.type !== 'edge' && hitObj.parent) {
+                    hitObj = hitObj.parent;
+                }
+                if (hitObj && (hitObj.userData.type === 'node' || hitObj.userData.type === 'edge')) {
+                    targetHighlightedObject = hitObj;
+                    directHitFound = true;
+                    if (hitObj.userData.type === 'node') {
+                        const pos = new THREE.Vector3();
+                        hitObj.getWorldPosition(pos);
+                        snappedValue = this.currentAxis === 'y' ? pos.y : (this.currentAxis === 'x' ? pos.x : pos.z);
+                    } else {
+                        // Bei Kanten nehmen wir den Raycast-Trefferpunkt
+                        snappedValue = this.currentAxis === 'y' ? intersects[0].point.y : (this.currentAxis === 'x' ? intersects[0].point.x : intersects[0].point.z);
+                    }
+                }
+            }
+
             const lineThreshold = 1.2; // Toleranz für Abstand der Achsenlinie zum Objekt
             const snapThreshold = 0.8; // Toleranz für das Einrasten der Kugel
 
@@ -241,15 +269,15 @@ export class AxisPositionHelper {
             }
 
             // --- 1. Snap auf Grundfläche (Y = 0) ---
-            if (this.currentAxis === 'y') {
+            if (!directHitFound && this.currentAxis === 'y') {
                 if (Math.abs(intersectionPoint.y) < snapThreshold) {
                     snappedValue = 0;
                     isSnappedToGrid = true;
                 }
             }
 
-            // --- 2. Snap & Highlight für Nodes ---
-            if (!isSnappedToGrid) {
+            // --- 2. Snap & Highlight für Nodes (3D Distanz) ---
+            if (!directHitFound && !isSnappedToGrid) {
                 const nodes = this.stateManager.getEntities().filter(entity => 
                     entity.id !== (this.previewNode?.userData?.id || '')
                 );
@@ -323,8 +351,8 @@ export class AxisPositionHelper {
                 }
             }
 
-            // --- 3. Snap & Highlight für Edges (wenn kein Node aktiv ist) ---
-            if (!targetHighlightedObject && !isSnappedToGrid) {
+            // --- 3. Snap & Highlight für Edges (wenn kein Node aktiv ist) (3D Distanz) ---
+            if (!directHitFound && !targetHighlightedObject && !isSnappedToGrid) {
                 const edges = this.scene.children.filter(child => child.userData.type === 'edge');
                 for (const edge of edges) {
                     const edgeData = edge.userData.edge || edge.userData.relationship;
@@ -466,7 +494,55 @@ export class AxisPositionHelper {
     }
 
     /**
-     * Bestätigt die aktuelle Achse und wechselt zur nächsten
+     * Bestätigt die aktuelle Achse und wechselt zur nächsten (Async Version für 300ms Delay)
+     */
+    async confirmAxisAsync(): Promise<boolean> {
+        this.isTransitioning = true;
+
+        // Visuelles Feedback
+        if (this.helperLine) {
+            const mat = this.helperLine.material as THREE.LineBasicMaterial;
+            mat.color.setHex(0xffffff);
+            mat.linewidth = 3;
+            mat.needsUpdate = true;
+        }
+        if (this.helperGrid) {
+            const mat = this.helperGrid.material as THREE.Material;
+            mat.opacity = 0.5;
+            mat.needsUpdate = true;
+        }
+        if (this.tooltipElement) {
+            this.tooltipElement.style.border = '2px solid #fff';
+            this.tooltipElement.style.boxShadow = '0 0 15px rgba(255,255,255,0.8)';
+            this.tooltipElement.innerHTML = `<span style="color:#fff; font-weight:bold;">POS SET</span>`;
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 300));
+        this.isTransitioning = false;
+
+        // Tooltip Styles zurücksetzen
+        if (this.tooltipElement) {
+            this.tooltipElement.style.border = '1px solid rgba(255, 255, 255, 0.15)';
+            this.tooltipElement.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.5)';
+        }
+
+        switch (this.currentAxis) {
+            case 'y':
+                this.currentAxis = 'x';
+                this.createAxisHelper();
+                return false;
+            case 'x':
+                this.currentAxis = 'z';
+                this.createAxisHelper();
+                return false;
+            case 'z':
+                return true;
+        }
+        return true;
+    }
+
+    /**
+     * Bestätigt die aktuelle Achse und wechselt zur nächsten (Legacy synchron)
      */
     confirmAxis(): boolean {
         switch (this.currentAxis) {

@@ -90,6 +90,11 @@ export class ViewPanel {
         // Apply initial scheme based on state
         const initialScheme = COLOR_SCHEMES.find(s => s.id === this.stateManager.state.activeColorScheme) || COLOR_SCHEMES[0];
         this.applyColorScheme(initialScheme);
+
+        // Update attribute list when data changes
+        this.stateManager.subscribe((state) => {
+            this.updateAvailableAttributes(state.graphData.entities);
+        }, 'data_changed');
     }
 
     private render(): void {
@@ -106,11 +111,19 @@ export class ViewPanel {
 
         // Checkbox: Show Labels Always
         const alwaysRow = this.createCheckboxRow(
-            'Namen immer anzeigen',
+            'Label',
             'showLabelsAlways',
             this.stateManager.state.showLabelsAlways
         );
         labelSection.appendChild(alwaysRow);
+
+        const linesRow = this.createSliderRow(
+            'Detailgrad',
+            'labelLines',
+            this.stateManager.state.labelLines,
+            1, 5, 1, 0
+        );
+        labelSection.appendChild(linesRow);
 
         // Checkbox: Show Labels on Hover
         const hoverRow = this.createCheckboxRow(
@@ -119,6 +132,57 @@ export class ViewPanel {
             this.stateManager.state.showLabelsOnHover
         );
         labelSection.appendChild(hoverRow);
+
+        // --- LABEL FILTER ---
+        const filterHeader = document.createElement('h5');
+        filterHeader.textContent = 'Label Filter (Datenbasiert)';
+        filterHeader.style.fontSize = '12px';
+        filterHeader.style.marginTop = '15px';
+        filterHeader.style.marginBottom = '5px';
+        filterHeader.style.color = 'var(--accent-color, #ac3838)';
+        labelSection.appendChild(filterHeader);
+        
+        // Select for Attribute
+        const attrSelectRow = this.createSelectRow(
+            'Attribut',
+            'labelFilterAttribute',
+            this.stateManager.state.labelFilterAttribute,
+            [{ value: '', label: '-- Keines --' }] // Populated by data_changed
+        );
+        labelSection.appendChild(attrSelectRow);
+
+        // Select for Mode
+        const modeSelectRow = this.createSelectRow(
+            'Modus',
+            'labelFilterMode',
+            this.stateManager.state.labelFilterMode,
+            [
+                { value: 'visibility', label: 'Sichtbarkeit (Schwelle)' },
+                { value: 'fade', label: 'Ausblenden (Fade)' },
+                { value: 'size', label: 'Größe (Skalierung)' },
+                { value: 'glow', label: 'Leuchten (Glow)' }
+            ]
+        );
+        labelSection.appendChild(modeSelectRow);
+
+        // Slider for Threshold
+        const thresholdRow = this.createSliderRow(
+            'Filter / Stärke',
+            'labelFilterThreshold',
+            this.stateManager.state.labelFilterThreshold,
+            0, 1, 0.01, 2
+        );
+        labelSection.appendChild(thresholdRow);
+
+        // Label Info Text (count)
+        const labelCountInfo = document.createElement('div');
+        labelCountInfo.id = 'labelCountInfo';
+        labelCountInfo.style.fontSize = '11px';
+        labelCountInfo.style.color = 'var(--text-muted)';
+        labelCountInfo.style.marginTop = '5px';
+        labelCountInfo.style.textAlign = 'right';
+        labelCountInfo.textContent = `Sichtbar: ${this.stateManager.state.visibleLabelsCount} / ${this.stateManager.state.totalLabelsCount}`;
+        labelSection.appendChild(labelCountInfo);
 
         this.container.appendChild(labelSection);
 
@@ -256,7 +320,49 @@ export class ViewPanel {
         return row;
     }
 
-    private createSliderRow(label: string, stateKey: string, initialValue: number, min: number, max: number, step: number): HTMLElement {
+    private createSelectRow(label: string, stateKey: string, initialValue: string, options: { value: string, label: string }[]): HTMLElement {
+        const row = document.createElement('label');
+        row.className = 'select-row';
+        row.style.cursor = 'pointer';
+        row.style.marginBottom = '8px';
+        row.style.display = 'flex';
+        row.style.justifyContent = 'space-between';
+        row.style.alignItems = 'center';
+
+        const labelSpan = document.createElement('span');
+        labelSpan.textContent = label;
+        labelSpan.style.fontSize = '12px';
+        row.appendChild(labelSpan);
+
+        const select = document.createElement('select');
+        select.id = `select-${stateKey}`;
+        select.style.fontSize = '12px';
+        select.style.padding = '2px 4px';
+        select.style.backgroundColor = 'var(--panel-bg-solid, #333)';
+        select.style.color = 'inherit';
+        select.style.border = '1px solid rgba(255,255,255,0.2)';
+        select.style.borderRadius = '4px';
+        select.style.maxWidth = '120px';
+
+        options.forEach(opt => {
+            const option = document.createElement('option');
+            option.value = opt.value;
+            option.textContent = opt.label;
+            if (opt.value === initialValue) {
+                option.selected = true;
+            }
+            select.appendChild(option);
+        });
+
+        select.addEventListener('change', () => {
+            this.stateManager.update({ [stateKey]: select.value });
+        });
+
+        row.appendChild(select);
+        return row;
+    }
+
+    private createSliderRow(label: string, stateKey: string, initialValue: number, min: number, max: number, step: number, decimals: number = 2): HTMLElement {
         const row = document.createElement('div');
         row.className = 'slider-row';
         row.style.marginBottom = '12px';
@@ -273,7 +379,7 @@ export class ViewPanel {
         labelSpan.style.fontSize = '12px';
 
         const valueSpan = document.createElement('span');
-        valueSpan.textContent = initialValue.toFixed(2);
+        valueSpan.textContent = initialValue.toFixed(decimals);
         valueSpan.style.fontSize = '12px';
         valueSpan.style.color = 'var(--text-muted)';
 
@@ -292,7 +398,7 @@ export class ViewPanel {
 
         slider.addEventListener('input', () => {
             const val = parseFloat(slider.value);
-            valueSpan.textContent = val.toFixed(2);
+            valueSpan.textContent = val.toFixed(decimals);
             this.stateManager.update({ [stateKey]: val });
         });
 
@@ -361,6 +467,8 @@ export class ViewPanel {
         // Sync sliders with state
         const dampeningSlider = document.getElementById('slider-visualScaleExponent') as HTMLInputElement;
         const scaleSlider = document.getElementById('slider-visualScaleMultiplier') as HTMLInputElement;
+        const linesSlider = document.getElementById('slider-labelLines') as HTMLInputElement;
+        const thresholdSlider = document.getElementById('slider-labelFilterThreshold') as HTMLInputElement;
 
         if (dampeningSlider && parseFloat(dampeningSlider.value) !== state.visualScaleExponent) {
             dampeningSlider.value = state.visualScaleExponent.toString();
@@ -371,6 +479,35 @@ export class ViewPanel {
             scaleSlider.value = state.visualScaleMultiplier.toString();
             const valueSpan = scaleSlider.previousElementSibling?.querySelector('span:last-child');
             if (valueSpan) valueSpan.textContent = state.visualScaleMultiplier.toFixed(2);
+        }
+        if (linesSlider && parseFloat(linesSlider.value) !== state.labelLines) {
+            linesSlider.value = state.labelLines.toString();
+            const valueSpan = linesSlider.previousElementSibling?.querySelector('span:last-child');
+            if (valueSpan) valueSpan.textContent = state.labelLines.toFixed(0);
+        }
+        if (thresholdSlider && parseFloat(thresholdSlider.value) !== state.labelFilterThreshold) {
+            thresholdSlider.value = state.labelFilterThreshold.toString();
+            const valueSpan = thresholdSlider.previousElementSibling?.querySelector('span:last-child');
+            if (valueSpan) valueSpan.textContent = state.labelFilterThreshold.toFixed(2);
+        }
+
+        // Sync selects
+        const attrSelect = document.getElementById('select-labelFilterAttribute') as HTMLSelectElement;
+        const modeSelect = document.getElementById('select-labelFilterMode') as HTMLSelectElement;
+
+        if (attrSelect && attrSelect.value !== state.labelFilterAttribute) {
+            // Check if option exists before setting
+            const exists = Array.from(attrSelect.options).some(o => o.value === state.labelFilterAttribute);
+            if (exists) attrSelect.value = state.labelFilterAttribute;
+        }
+        if (modeSelect && modeSelect.value !== state.labelFilterMode) {
+            modeSelect.value = state.labelFilterMode;
+        }
+
+        // Sync count info
+        const labelCountInfo = document.getElementById('labelCountInfo');
+        if (labelCountInfo) {
+            labelCountInfo.textContent = `Sichtbar: ${state.visibleLabelsCount} / ${state.totalLabelsCount}`;
         }
 
         // Sync new checkboxes
@@ -383,6 +520,45 @@ export class ViewPanel {
         if (normalizeCheck && normalizeCheck.checked !== state.normalizeCoordinatesEnabled) {
             normalizeCheck.checked = state.normalizeCoordinatesEnabled;
         }
+    }
+
+    private updateAvailableAttributes(entities: any[]): void {
+        const select = document.getElementById('select-labelFilterAttribute') as HTMLSelectElement;
+        if (!select) return;
+
+        const currentVal = this.stateManager.state.labelFilterAttribute;
+        const attrs = new Set<string>();
+
+        // Sammle alle numerischen Attribute (die sich als Label-Filter eignen)
+        let sampleSize = Math.min(entities.length, 100);
+        for (let i = 0; i < sampleSize; i++) {
+            const e = entities[i];
+            for (const key in e) {
+                if (typeof e[key] === 'number') {
+                    // Ignoriere interne Attribute
+                    if (!['id', 'x', 'y', 'z', 'fx', 'fy', 'fz', 'vx', 'vy', 'vz', 'index'].includes(key)) {
+                        attrs.add(key);
+                    }
+                }
+            }
+        }
+
+        const sortedAttrs = Array.from(attrs).sort();
+
+        // Nur updaten, wenn sich die Liste geaendert hat
+        const currentOptions = Array.from(select.options).map(o => o.value).filter(v => v !== '');
+        if (currentOptions.join(',') === sortedAttrs.join(',')) {
+            return;
+        }
+
+        select.innerHTML = '<option value="">-- Keines --</option>';
+        sortedAttrs.forEach(attr => {
+            const opt = document.createElement('option');
+            opt.value = attr;
+            opt.textContent = attr;
+            if (attr === currentVal) opt.selected = true;
+            select.appendChild(opt);
+        });
     }
 
 }

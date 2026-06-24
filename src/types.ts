@@ -52,7 +52,9 @@ export const VisualMappingSchema = z.object({
 export type VisualMapping = z.infer<typeof VisualMappingSchema>;
 
 export const EntityVisualPresetSchema = z.object({
-    position: VisualMappingSchema.optional(),
+    positionX: VisualMappingSchema.optional(),
+    positionY: VisualMappingSchema.optional(),
+    positionZ: VisualMappingSchema.optional(),
     size: VisualMappingSchema.optional(),
     color: VisualMappingSchema.optional(),
     geometry: VisualMappingSchema.optional(),
@@ -156,6 +158,9 @@ export interface EdgeObject {
 // ============================================================================
 
 export interface VisualProperties {
+    positionX?: number | any;
+    positionY?: number | any;
+    positionZ?: number | any;
     size?: number | any;
     color?: THREE.Color | string | any;
     geometry?: string | any;

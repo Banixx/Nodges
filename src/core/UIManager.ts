@@ -200,9 +200,43 @@ export class UIManager {
         const dataModel = graphData.dataModel;
         const presets = graphData.visualMappings?.defaultPresets || {};
 
-        Object.keys(presets).forEach(type => {
+        const allNodeAttrs = new Set<string>(['constant', 'type', 'id']);
+        const allEdgeAttrs = new Set<string>(['constant', 'type', 'id', 'source', 'target']);
+
+        const allTypes = new Set<string>();
+        Object.keys(presets).forEach(t => allTypes.add(t));
+        
+        if (dataModel) {
+            if (dataModel.entities) Object.keys(dataModel.entities).forEach(t => allTypes.add(t));
+            if (dataModel.relationships) Object.keys(dataModel.relationships).forEach(t => allTypes.add(t));
+        }
+
+        const entities = graphData.data?.entities || [];
+        entities.forEach((e: any) => {
+            if (e.type) allTypes.add(e.type);
+            Object.keys(e).forEach(k => {
+                if (k !== 'position') allNodeAttrs.add(k);
+            });
+        });
+
+        const relationships = graphData.data?.relationships || [];
+        relationships.forEach((r: any) => {
+            if (r.type) allTypes.add(r.type);
+            Object.keys(r).forEach(k => {
+                if (k !== 'offset') allEdgeAttrs.add(k);
+            });
+        });
+
+        // Add global types
+        result['global_node'] = Array.from(allNodeAttrs);
+        result['global_edge'] = Array.from(allEdgeAttrs);
+
+        allTypes.forEach(type => {
+            if (type === 'global_node' || type === 'global_edge') return;
+            
             const keys = new Set<string>();
             keys.add('constant'); // Always include constant
+            keys.add('type'); // Always include type
 
             // 1. Check dataModel
             if (dataModel) {
@@ -219,11 +253,10 @@ export class UIManager {
             }
 
             // 2. Scan actual entities of this type
-            const entities = graphData.data?.entities || [];
             entities.forEach((e: any) => {
                 if (e.type === type) {
                     Object.keys(e).forEach(k => {
-                        if (!['id', 'type', 'label', 'position'].includes(k)) {
+                        if (!['id', 'label', 'position'].includes(k)) {
                             keys.add(k);
                         }
                     });
@@ -231,11 +264,10 @@ export class UIManager {
             });
 
             // 3. Scan actual relationships of this type
-            const relationships = graphData.data?.relationships || [];
             relationships.forEach((r: any) => {
                 if (r.type === type) {
                     Object.keys(r).forEach(k => {
-                        if (!['id', 'type', 'label', 'source', 'target', 'offset'].includes(k)) {
+                        if (!['id', 'label', 'source', 'target', 'offset'].includes(k)) {
                             keys.add(k);
                         }
                     });

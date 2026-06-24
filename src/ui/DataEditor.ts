@@ -1,8 +1,9 @@
+import { PanelUtils } from '../utils/PanelUtils';
+
 /**
- * DataEditor - A modal editor for node and edge properties
+ * DataEditor - A floating editor for node and edge properties
  */
 export class DataEditor {
-    private overlay: HTMLElement;
     private modal: HTMLElement;
     private content: HTMLElement;
     private currentData: any = null;
@@ -10,16 +11,21 @@ export class DataEditor {
     private onSave: (data: any) => void = () => { };
 
     constructor() {
-        this.overlay = document.createElement('div');
-        this.overlay.className = 'modal-overlay';
-        this.overlay.style.display = 'none';
-
         this.modal = document.createElement('div');
-        this.modal.className = 'modal-content';
+        this.modal.className = 'modal-content data-editor-panel';
+        this.modal.style.position = 'fixed';
+        this.modal.style.top = '100px';
+        this.modal.style.left = '100px';
+        this.modal.style.width = '350px';
+        this.modal.style.maxHeight = '600px';
+        this.modal.style.display = 'none';
+        this.modal.style.flexDirection = 'column';
+        this.modal.style.zIndex = '10001';
 
         const header = document.createElement('div');
         header.className = 'modal-header';
-        header.innerHTML = '<h3>Eigenschaften bearbeiten</h3>';
+        header.style.cursor = 'grab';
+        header.innerHTML = '<h3 style="margin: 0; font-size: 14px;">Eigenschaften bearbeiten</h3>';
 
         const closeBtn = document.createElement('button');
         closeBtn.className = 'modal-close';
@@ -29,6 +35,8 @@ export class DataEditor {
 
         this.content = document.createElement('div');
         this.content.className = 'modal-body';
+        this.content.style.flex = '1';
+        this.content.style.overflowY = 'auto';
 
         const footer = document.createElement('div');
         footer.className = 'modal-footer';
@@ -53,13 +61,10 @@ export class DataEditor {
         this.modal.appendChild(header);
         this.modal.appendChild(this.content);
         this.modal.appendChild(footer);
-        this.overlay.appendChild(this.modal);
-        document.body.appendChild(this.overlay);
+        document.body.appendChild(this.modal);
 
-        // Close on overlay click
-        this.overlay.onclick = (e) => {
-            if (e.target === this.overlay) this.hide();
-        };
+        // Make draggable and resizable
+        PanelUtils.makeDraggableAndResizable(this.modal, header, { minWidth: 250, minHeight: 200 });
     }
 
     show(data: any, onSave: (updatedData: any) => void) {
@@ -67,11 +72,13 @@ export class DataEditor {
         this.flatData = this.flattenObject(this.currentData);
         this.onSave = onSave;
         this.renderFields();
-        this.overlay.style.display = 'flex';
+        this.modal.style.display = 'flex';
+        // Put in front
+        this.modal.dispatchEvent(new MouseEvent('mousedown'));
     }
 
     hide() {
-        this.overlay.style.display = 'none';
+        this.modal.style.display = 'none';
         this.currentData = null;
         this.flatData = {};
     }

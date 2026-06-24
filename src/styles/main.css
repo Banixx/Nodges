@@ -10,7 +10,7 @@
   --accent-hover: #8a6a50;
   --font-family: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  --sidebar-width: 280px;
+  --sidebar-width: 320px;
   --panel-spacing: 10px;
 
   /* Legacy support */
@@ -450,6 +450,8 @@ input[type="range"] {
 
 .modal-content {
   background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: var(--panel-border);
   border-radius: 12px;
   width: 400px;
@@ -457,6 +459,10 @@ input[type="range"] {
   display: flex;
   flex-direction: column;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.data-editor-panel {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
 }
 
 .modal-header {
@@ -583,6 +589,7 @@ input[type="range"] {
 
 .sidebar-tabs {
   display: flex;
+  position: relative;
   overflow-x: auto;
   overflow-y: hidden;
   background: rgba(0, 0, 0, 0.15);
@@ -597,32 +604,16 @@ input[type="range"] {
   display: none; /* Chrome/Safari */
 }
 
-/* Custom Horizontal Scrollbar for Tabs */
-.sidebar-tabs-scrollbar {
+/* Tab Indicator (Wandering Underline) */
+.tab-indicator {
   position: absolute;
   bottom: 0;
   left: 0;
-  right: 0;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.05);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
+  height: 2px;
+  background-color: var(--accent-color);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 10;
-}
-
-.sidebar-tabs-scrollbar.visible {
-  opacity: 1;
-}
-
-.sidebar-tabs-scrollbar-thumb {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background: var(--accent-color);
-  border-radius: 1.5px;
-  width: 0;
+  border-radius: 2px 2px 0 0;
 }
 
 .sidebar-tab {
@@ -632,7 +623,6 @@ input[type="range"] {
   text-align: center;
   background: transparent;
   border: none;
-  border-bottom: 2px solid transparent;
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s;
@@ -646,7 +636,6 @@ input[type="range"] {
 
 .sidebar-tab.active {
   color: var(--accent-color);
-  border-bottom-color: var(--accent-color);
   font-weight: 600;
 }
 
@@ -929,6 +918,9 @@ input[type="range"] {
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .minimap-canvas-wrapper canvas {
@@ -1035,6 +1027,8 @@ input[type="range"] {
   overflow: hidden;
   padding: 10px;
   box-sizing: border-box;
+  min-height: 0;
+  min-width: 0;
 }
 
 .mapping-column {
@@ -1299,4 +1293,73 @@ body.ui-mode-simple [data-min-mode="dev"] {
 
 body.ui-mode-expert [data-min-mode="dev"] {
   display: none !important;
+}
+
+/* Mapping Panel Selection Tabs */
+.mapping-selection-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px 0 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mapping-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  padding: 2px;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.mapping-tabs.type-tabs {
+  background: transparent;
+  padding: 0;
+  padding-bottom: 8px;
+}
+
+.mapping-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all 0.2s;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.mapping-tab.type-tab {
+  flex: 0 0 auto;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid transparent;
+  margin-bottom: 2px;
+}
+
+.mapping-tab:hover {
+  color: var(--text-color);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mapping-tab.type-tab:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.mapping-tab.active {
+  background: var(--accent-color);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.mapping-tab.type-tab.active {
+  background: rgba(160, 128, 96, 0.2);
+  color: var(--accent-color);
+  border: 1px solid var(--accent-color);
+  box-shadow: none;
 }

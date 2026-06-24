@@ -77,4 +77,4 @@ Wenn eine Datei fehlerhaft ist, erscheint kein "Error 500", sondern ein informat
 
 ---
 *Dokumentations-Status: V2.1 (Updated)*
-*Geprüft gegen Build: 0.101.0*
+*Geprüft gegen Build: 0.101.1*

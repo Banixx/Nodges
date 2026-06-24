@@ -75,6 +75,12 @@ export interface State {
     // View Settings (NEW)
     showLabelsAlways: boolean;
     showLabelsOnHover: boolean;
+    labelLines: number;
+    labelFilterAttribute: string;
+    labelFilterMode: string;
+    labelFilterThreshold: number;
+    visibleLabelsCount: number;
+    totalLabelsCount: number;
     activeColorScheme: string;
     visualScaleExponent: number;
     visualScaleMultiplier: number;
@@ -143,8 +149,8 @@ export class StateManager implements IStateManager {
             currentTool: 'select',
 
             // Render Mode
-            renderMode: 'auto',
-            activeRenderMode: 'mesh',
+            renderMode: (typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_render_mode') : null) as any || 'auto',
+            activeRenderMode: ((typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_render_mode') : null) === 'instance' ? 'instance' : 'mesh') as 'mesh' | 'instance',
 
             // Edge Parameters
             edgeThickness: 0.1,
@@ -164,8 +170,14 @@ export class StateManager implements IStateManager {
             directionalLightIntensity: 0.8,
 
             // View Settings (NEW)
-            showLabelsAlways: false,
+            showLabelsAlways: true,
             showLabelsOnHover: true,
+            labelLines: 1,
+            labelFilterAttribute: '',
+            labelFilterMode: 'visibility',
+            labelFilterThreshold: 0,
+            visibleLabelsCount: 0,
+            totalLabelsCount: 0,
             activeColorScheme: 'start-olive',
             visualScaleExponent: 1.0,
             visualScaleMultiplier: 1.0,
@@ -189,9 +201,9 @@ export class StateManager implements IStateManager {
             complexityMode: (typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_complexity_mode') : null) as any || 'simple',
 
             // Dev Settings
-            devPowerPreference: 'high-performance',
-            devPixelRatio: 1.0,
-            devFpsLimit: 0,
+            devPowerPreference: (typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_dev_power_pref') : null) as any || 'high-performance',
+            devPixelRatio: parseFloat((typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_dev_pixel_ratio') : null) || '1.0'),
+            devFpsLimit: parseInt((typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_dev_fps_limit') : null) || '0', 10),
             _triggerRendererRebuild: 0
         };
 
@@ -229,6 +241,18 @@ export class StateManager implements IStateManager {
 
         if (partialState.complexityMode && typeof localStorage !== 'undefined') {
             localStorage.setItem('nodges_complexity_mode', partialState.complexityMode);
+        }
+        if (partialState.devPowerPreference && typeof localStorage !== 'undefined') {
+            localStorage.setItem('nodges_dev_power_pref', partialState.devPowerPreference);
+        }
+        if (partialState.devPixelRatio !== undefined && typeof localStorage !== 'undefined') {
+            localStorage.setItem('nodges_dev_pixel_ratio', partialState.devPixelRatio.toString());
+        }
+        if (partialState.devFpsLimit !== undefined && typeof localStorage !== 'undefined') {
+            localStorage.setItem('nodges_dev_fps_limit', partialState.devFpsLimit.toString());
+        }
+        if (partialState.renderMode && typeof localStorage !== 'undefined') {
+            localStorage.setItem('nodges_render_mode', partialState.renderMode);
         }
 
         this.isUpdating = true;

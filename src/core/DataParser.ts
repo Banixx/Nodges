@@ -23,6 +23,32 @@ export class DataParser {
      * Now uses Zod for strict validation AND parses values based on DataModel
      */
     private static normalizeData(data: any): GraphData {
+        // Fallback for older export format
+        if (!data.system && data.nodes && data.edges) {
+            console.log('Converting legacy data format to Semantic Graph format...');
+            data = {
+                system: data.metadata?.source || "Nodges Legacy",
+                metadata: data.metadata || {},
+                data: {
+                    entities: (data.nodes || []).map((n: any) => ({
+                        id: String(n.id),
+                        type: n.metadata?.type || 'node',
+                        label: String(n.name || n.metadata?.label || n.label || ''),
+                        position: n.position || n.metadata?.position || { x: 0, y: 0, z: 0 },
+                        ...n.metadata
+                    })),
+                    relationships: (data.edges || []).map((e: any) => ({
+                        id: String(e.id || e.metadata?.id || ''),
+                        type: e.metadata?.type || e.name || e.type || 'connection',
+                        source: String(e.source || e.metadata?.source),
+                        target: String(e.target || e.metadata?.target),
+                        label: String(e.label || e.metadata?.label || ''),
+                        ...e.metadata
+                    }))
+                }
+            };
+        }
+
         // 1. Zod Validation
         const result = GraphDataSchema.safeParse(data);
 

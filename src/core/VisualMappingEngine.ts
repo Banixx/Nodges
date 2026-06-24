@@ -45,12 +45,32 @@ export class VisualMappingEngine {
             return this.getDefaultVisualProperties();
         }
 
-        const preset = this.visualMappings.defaultPresets[entity.type] as EntityVisualPreset;
-        if (!preset) {
+        let specificPreset = this.visualMappings.defaultPresets[entity.type] as EntityVisualPreset;
+        let globalPreset = this.visualMappings.defaultPresets['global_node'] as EntityVisualPreset;
+        
+        let preset: EntityVisualPreset;
+        if (globalPreset && specificPreset) {
+            preset = { ...specificPreset, ...globalPreset };
+        } else if (globalPreset) {
+            preset = globalPreset;
+        } else if (specificPreset) {
+            preset = specificPreset;
+        } else {
             return this.getDefaultVisualProperties();
         }
 
         const visual: VisualProperties = {};
+
+        // Apply position mappings
+        if (preset.positionX && preset.positionX.source !== 'constant') {
+            visual.positionX = this.applyMapping(preset.positionX, entity);
+        }
+        if (preset.positionY && preset.positionY.source !== 'constant') {
+            visual.positionY = this.applyMapping(preset.positionY, entity);
+        }
+        if (preset.positionZ && preset.positionZ.source !== 'constant') {
+            visual.positionZ = this.applyMapping(preset.positionZ, entity);
+        }
 
         // Apply size mapping
         if (preset.size) {
@@ -89,10 +109,17 @@ export class VisualMappingEngine {
             return this.getDefaultVisualProperties();
         }
 
-        const preset = this.visualMappings.defaultPresets[relationship.type] as RelationshipVisualPreset;
+        let specificPreset = this.visualMappings.defaultPresets[relationship.type] as RelationshipVisualPreset;
+        let globalPreset = this.visualMappings.defaultPresets['global_edge'] as RelationshipVisualPreset;
 
-        if (!preset) {
-            console.warn(`[VisualMappingEngine] No preset found for relationship type: "${relationship.type}". Available:`, Object.keys(this.visualMappings.defaultPresets));
+        let preset: RelationshipVisualPreset;
+        if (globalPreset && specificPreset) {
+            preset = { ...specificPreset, ...globalPreset };
+        } else if (globalPreset) {
+            preset = globalPreset;
+        } else if (specificPreset) {
+            preset = specificPreset;
+        } else {
             return this.getDefaultVisualProperties();
         }
 
@@ -167,8 +194,24 @@ export class VisualMappingEngine {
             return value;
         }
 
-        // Normalize value if it's a number
-        let numValue = typeof value === 'number' ? value : 0;
+        // If the value is a non-numeric string, return it directly so color/geometry can handle it categorically
+        let numValue = 0;
+        if (typeof value === 'string' && isNaN(Number(value))) {
+            if (mapping.function === 'heatmap') {
+                return value;
+            }
+            // For continuous functions, calculate a numeric value from the text (0.0 to 1.0)
+            // Alphabetical mapping (A=0.0, Z=1.0) or fallback to word length
+            const charCode = value.toUpperCase().charCodeAt(0);
+            if (charCode >= 65 && charCode <= 90) {
+                numValue = (charCode - 65) / 25;
+            } else {
+                numValue = Math.min(1.0, value.length / 20);
+            }
+        } else {
+            // Normalize value if it's a number
+            numValue = Number(value) || 0;
+        }
 
         // Apply domain normalization if provided or defined in dataModel
         let domain = mapping.domain;
@@ -316,12 +359,18 @@ export class VisualMappingEngine {
             return new THREE.Color().lerpColors(negativeColor, positiveColor, normalized);
         } else if (mapping.function === 'heatmap') {
             // Heatmap color mapping (blue to red)
+            if (typeof value === 'string' && isNaN(Number(value))) {
+                return this.getCategoricalColor(value, mapping.palette);
+            }
             return this.getHeatmapColor(Number(value), mapping.palette);
         } else if (mapping.function === 'categorical') {
             // Categorical color mapping
             return this.getCategoricalColor(String(value), mapping.palette);
         } else {
             // Default: grayscale
+            if (typeof value === 'string' && isNaN(Number(value))) {
+                return this.getCategoricalColor(value, mapping.palette);
+            }
             const numValue = Number(value) || 0;
             return new THREE.Color(numValue, numValue, numValue);
         }

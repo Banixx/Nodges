@@ -304,7 +304,9 @@ export class LayoutManager {
                             });
                         }
 
-                        this.normalizeNodePositions(nodes, 10);
+                        const state = (window as any).app?.stateManager?.state;
+                        const independentAxes = state ? state.independentAxesNormalization : true; // default true for better space usage
+                        this.normalizeNodePositions(nodes, 10, independentAxes);
 
                         // Cleanup
                         if (this.workerTimeoutId) {
@@ -412,7 +414,9 @@ export class LayoutManager {
             });
         }
 
-        this.normalizeNodePositions(nodes, 10);
+        const state = (window as any).app?.stateManager?.state;
+        const independentAxes = state ? state.independentAxesNormalization : true;
+        this.normalizeNodePositions(nodes, 10, independentAxes);
     }
 
     applyCircularLayout(nodes: EntityData[], _edges: RelationshipData[], options: LayoutOptions) {
@@ -535,7 +539,9 @@ export class LayoutManager {
             temp *= 0.95; // Cool down
         }
 
-        this.normalizeNodePositions(nodes, 10);
+        const state = (window as any).app?.stateManager?.state;
+        const independentAxes = state ? state.independentAxesNormalization : true;
+        this.normalizeNodePositions(nodes, 10, independentAxes);
     }
 
     applySpringEmbedderLayout(nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions) {
@@ -704,7 +710,7 @@ export class LayoutManager {
         return this.currentLayout;
     }
 
-    normalizeNodePositions(nodes: EntityData[], maxExtent = 10) {
+    normalizeNodePositions(nodes: EntityData[], maxExtent = 10, independentAxes = false) {
         if (nodes.length === 0) return;
 
         if (!nodes[0].position) nodes[0].position = { x: 0, y: 0, z: 0 };
@@ -726,21 +732,36 @@ export class LayoutManager {
         const extentX = maxX - minX;
         const extentY = maxY - minY;
         const extentZ = maxZ - minZ;
-        const maxCurrentExtent = Math.max(extentX, extentY, extentZ);
-
-        const scale = maxCurrentExtent > 0 ? maxExtent / maxCurrentExtent : 1;
 
         const centerX = (minX + maxX) / 2;
         const centerY = (minY + maxY) / 2;
         const centerZ = (minZ + maxZ) / 2;
 
-        nodes.forEach(node => {
-            if (node.position) {
-                node.position.x = (node.position.x - centerX) * scale;
-                node.position.y = (node.position.y - centerY) * scale;
-                node.position.z = (node.position.z - centerZ) * scale;
-            }
-        });
+        if (independentAxes) {
+            // Achsen-unabhaengige Skalierung (fuellt die Bounding-Box maximal aus)
+            const scaleX = extentX > 0 ? maxExtent / extentX : 1;
+            const scaleY = extentY > 0 ? maxExtent / extentY : 1;
+            const scaleZ = extentZ > 0 ? maxExtent / extentZ : 1;
 
+            nodes.forEach(node => {
+                if (node.position) {
+                    node.position.x = (node.position.x - centerX) * scaleX;
+                    node.position.y = (node.position.y - centerY) * scaleY;
+                    node.position.z = (node.position.z - centerZ) * scaleZ;
+                }
+            });
+        } else {
+            // Uniforme Skalierung (erhaelt die originalen Proportionen)
+            const maxCurrentExtent = Math.max(extentX, extentY, extentZ);
+            const scale = maxCurrentExtent > 0 ? maxExtent / maxCurrentExtent : 1;
+
+            nodes.forEach(node => {
+                if (node.position) {
+                    node.position.x = (node.position.x - centerX) * scale;
+                    node.position.y = (node.position.y - centerY) * scale;
+                    node.position.z = (node.position.z - centerZ) * scale;
+                }
+            });
+        }
     }
 }

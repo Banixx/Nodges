@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import type { App } from '../App';
 import { IStateManager } from '../core/interfaces';
+import { PanelUtils } from '../utils/PanelUtils';
 
 export class InfoPanelUI {
     private app: App;
@@ -17,6 +18,13 @@ export class InfoPanelUI {
         this.infoPanelContent = document.getElementById('infoPanelContent');
 
         this.init();
+
+        if (this.infoPanel) {
+            const header = this.infoPanel.querySelector('.floating-panel-header') as HTMLElement;
+            if (header) {
+                PanelUtils.makeDraggableAndResizable(this.infoPanel, header, { minWidth: 200, minHeight: 150 });
+            }
+        }
 
         this.stateManager.subscribe((state) => {
             if (state.selectedObjects && state.selectedObjects.size > 1) {

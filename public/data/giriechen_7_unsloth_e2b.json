@@ -1,0 +1,199 @@
+{
+    "system": "Griechisches Pantheon",
+    "metadata": {
+        "created": "2026-06-23T12:00:00Z",
+        "version": "1.0",
+        "author": "AI",
+        "description": "Ein graphisches Modell der hierarchischen und thematischen Beziehungen des griechischen Pantheons."
+    },
+    "visualMappings": {
+        "defaultPresets": {
+            "Olympian": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FFD700"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        4.0,
+                        4.0
+                    ]
+                },
+                "animation": {
+                    "source": "constant",
+                    "function": "pulse",
+                    "params": {
+                        "frequency": 1.5
+                    }
+                }
+            },
+            "Titan": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#8B4513"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        3.0,
+                        3.0
+                    ]
+                }
+            },
+            "Domain": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#00FFFF"
+                    }
+                },
+                "size": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        2.0,
+                        2.0
+                    ]
+                }
+            },
+            "Conflict": {
+                "color": {
+                    "source": "constant",
+                    "function": "linear",
+                    "params": {
+                        "color": "#FF0000"
+                    }
+                },
+                "thickness": {
+                    "source": "constant",
+                    "function": "linear",
+                    "range": [
+                        0.15,
+                        0.15
+                    ]
+                }
+            }
+        }
+    },
+    "data": {
+        "entities": [
+            {
+                "id": "zeus",
+                "type": "Olympian",
+                "label": "Zeus",
+                "position": {
+                    "x": 0,
+                    "y": 50,
+                    "z": 0
+                }
+            },
+            {
+                "id": "hera",
+                "type": "Olympian",
+                "label": "Hera",
+                "position": {
+                    "x": 10,
+                    "y": 50,
+                    "z": 20
+                }
+            },
+            {
+                "id": "poseidon",
+                "type": "Olympian",
+                "label": "Poseidon",
+                "position": {
+                    "x": -10,
+                    "y": 50,
+                    "z": -10
+                }
+            },
+            {
+                "id": "hades",
+                "type": "Olympian",
+                "label": "Hades",
+                "position": {
+                    "x": 10,
+                    "y": 10,
+                    "z": 0
+                }
+            },
+            {
+                "id": "titan_cronus",
+                "type": "Titan",
+                "label": "Cronus",
+                "position": {
+                    "x": -30,
+                    "y": -30,
+                    "z": 0
+                }
+            },
+            {
+                "id": "domain_thunder",
+                "type": "Domain",
+                "label": "Donner & Himmel",
+                "position": {
+                    "x": 0,
+                    "y": 80,
+                    "z": 0
+                }
+            },
+            {
+                "id": "domain_sea",
+                "type": "Domain",
+                "label": "Meer & Erdbeben",
+                "position": {
+                    "x": 20,
+                    "y": 0,
+                    "z": 0
+                }
+            }
+        ],
+        "relationships": [
+            {
+                "id": "r1",
+                "type": "Conflict",
+                "source": "zeus",
+                "target": "poseidon",
+                "label": "Rivalität"
+            },
+            {
+                "id": "r2",
+                "type": "Domain",
+                "source": "zeus",
+                "target": "domain_thunder",
+                "label": "Herrschaft"
+            },
+            {
+                "id": "r3",
+                "type": "Domain",
+                "source": "poseidon",
+                "target": "domain_sea",
+                "label": "Herrschaft"
+            },
+            {
+                "id": "r4",
+                "type": "Titan",
+                "source": "titan_cronus",
+                "target": "zeus",
+                "label": "Abstammung"
+            },
+            {
+                "id": "r5",
+                "type": "Conflict",
+                "source": "hades",
+                "target": "zeus",
+                "label": "Machtkampf"
+            }
+        ]
+    }
+}

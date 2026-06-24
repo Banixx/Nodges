@@ -88,13 +88,13 @@ export class App {
     private ambientLight!: THREE.AmbientLight;
     private directionalLight!: THREE.DirectionalLight;
 
-    // Data management
     public currentGraphData: GraphData | null = null;
     public visualMappingEngine: VisualMappingEngine;
     private loadedSchemas = new Map<string, { dataModel?: DataModel, visualMappings?: VisualMappings }>();
 
     public currentEntities: EntityData[] = [];
     public currentRelationships: RelationshipData[] = [];
+    public hasExplicitPositions: boolean = false;
 
     private _isInitialized: boolean = false;
     private frameCounter: number = 0;
@@ -583,6 +583,7 @@ export class App {
         this.stateManager.setGraphData([], []);
         this.loadedSchemas.clear();
         this.currentGraphData = null;
+        this.hasExplicitPositions = false;
 
         // Clear raycast cache
         if (this.raycastManager && this.raycastManager.clearCache) {
@@ -685,6 +686,9 @@ export class App {
                 this.currentRelationships = graphData.data.relationships;
             }
 
+            // Compute structural metrics
+            this.computeGraphMetrics(this.currentEntities, this.currentRelationships);
+
             // Update StateManager (Source of Truth)
             this.stateManager.setGraphData(this.currentEntities, this.currentRelationships);
 
@@ -698,6 +702,15 @@ export class App {
             const hasPositions = this.currentEntities.every(e =>
                 e.position && e.position.x !== undefined && e.position.y !== undefined && e.position.z !== undefined
             );
+
+            // Store flag to prevent overwriting these explicit positions later
+            if (!append) {
+                this.hasExplicitPositions = hasPositions;
+            } else if (hasPositions) {
+                // If appending and new data has positions, keep it true if it was already true? 
+                // Let's just say if ANY load has explicit positions, we might want to respect them.
+                this.hasExplicitPositions = this.hasExplicitPositions || hasPositions;
+            }
 
             if (this.layoutManager && !hasPositions) {
                 await this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships);
@@ -788,6 +801,18 @@ export class App {
             this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
         }
 
+        // Re-apply label positions (since positionX/Y/Z mapping could have moved them)
+        if (this.nodeLabelManager) {
+            this.currentEntities.forEach(entity => {
+                const pos = new THREE.Vector3(
+                    entity.position?.x || 0,
+                    entity.position?.y || 0,
+                    entity.position?.z || 0
+                );
+                this.nodeLabelManager!.updateLabelPosition(String(entity.id), pos);
+            });
+        }
+
         // Notify UI components of the update
         if (this.uiManager) {
             this.uiManager.updateVisualMappings(mappings);
@@ -849,6 +874,7 @@ export class App {
                 this.stateManager.setGraphData([], []);
                 this.loadedSchemas.clear();
                 this.currentGraphData = null;
+                this.hasExplicitPositions = false;
                 return;
             }
 
@@ -897,6 +923,35 @@ export class App {
                 userMessage: `Datensatz '${sourceName}' konnte nicht entfernt werden.`
             });
         }
+    }
+
+    /**
+     * Computes generic graph metrics (like degree) for all entities.
+     * This ensures that every dataset has at least some numeric attributes
+     * that can be used for label filtering or mapping.
+     */
+    private computeGraphMetrics(entities: EntityData[], relationships: RelationshipData[]) {
+        const outDegreeMap = new Map<string, number>();
+        const inDegreeMap = new Map<string, number>();
+        const degreeMap = new Map<string, number>();
+
+        relationships.forEach(rel => {
+            const src = String(rel.source);
+            const tgt = String(rel.target);
+            
+            outDegreeMap.set(src, (outDegreeMap.get(src) || 0) + 1);
+            inDegreeMap.set(tgt, (inDegreeMap.get(tgt) || 0) + 1);
+            
+            degreeMap.set(src, (degreeMap.get(src) || 0) + 1);
+            degreeMap.set(tgt, (degreeMap.get(tgt) || 0) + 1);
+        });
+
+        entities.forEach(entity => {
+            const id = String(entity.id);
+            entity.degree = degreeMap.get(id) || 0;
+            entity.inDegree = inDegreeMap.get(id) || 0;
+            entity.outDegree = outDegreeMap.get(id) || 0;
+        });
     }
 
     /**
@@ -1053,14 +1108,27 @@ export class App {
             if (this.nodeLabelManager) {
                 this.nodeLabelManager.setAlwaysVisible(state.showLabelsAlways);
                 this.nodeLabelManager.setVisible(state.showLabelsAlways || state.showLabelsOnHover);
+
+                // Wenn sich der complexityMode oder labelLines aendert, Labels neu rendern
+                if ((this.nodeLabelManager as any)._lastComplexityMode !== state.complexityMode ||
+                    (this.nodeLabelManager as any)._lastLabelLines !== state.labelLines) {
+                    (this.nodeLabelManager as any)._lastComplexityMode = state.complexityMode;
+                    (this.nodeLabelManager as any)._lastLabelLines = state.labelLines;
+                    this.nodeLabelManager.refreshAllLabels();
+                }
             }
             if (this.edgeLabelManager) {
                 this.edgeLabelManager.updateConfig({
                     alwaysVisible: state.showLabelsAlways,
                     visible: state.showLabelsAlways || state.showLabelsOnHover
                 });
+
+                if ((this.edgeLabelManager as any)._lastComplexityMode !== state.complexityMode) {
+                    (this.edgeLabelManager as any)._lastComplexityMode = state.complexityMode;
+                    this.edgeLabelManager.refreshAllLabels();
+                }
             }
-        }, 'label_visibility');
+        }, 'ui');
 
         // Dev Panel settings subscription
         this.stateManager.subscribe((state) => {
@@ -1261,8 +1329,8 @@ export class App {
 
         console.log('[App] Applying visual balance:', result);
         
-        // Normalize coordinates if enabled
-        if (result.coordinateScaleFactor !== 1.0 && this.stateManager.state.normalizeCoordinatesEnabled) {
+        // Normalize coordinates if enabled, and ONLY if the data didn't come with explicit positions that we want to preserve
+        if (result.coordinateScaleFactor !== 1.0 && this.stateManager.state.normalizeCoordinatesEnabled && !this.hasExplicitPositions) {
             VisualOptimizer.normalizeCoordinates(this.currentEntities, result.coordinateScaleFactor);
             // Need to update actual THREE.js objects positions
             this.updateNodePositions();
