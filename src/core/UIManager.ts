@@ -176,9 +176,16 @@ export class UIManager {
 
     // --- Public API for main.js ---
 
-    public updateFileInfo(filename: string, nodeCount: number, edgeCount: number, bounds: Bounds) {
+    public updateFileInfo(filename: string, nodeCount: number, edgeCount: number, bounds: Bounds, schemaVersion?: string) {
         const elFilename = document.getElementById('fileFilename');
         if (elFilename) elFilename.textContent = `Dateiname: ${filename}`;
+
+        const elSchema = document.getElementById('fileSchemaVersion');
+        if (elSchema) elSchema.textContent = schemaVersion || '1';
+
+        if (this.mappingUI) {
+            this.mappingUI.updateSchema(schemaVersion || '1');
+        }
 
         if (this.statsUI) {
             this.statsUI.updateGraphStats(nodeCount, edgeCount);
@@ -297,7 +304,8 @@ export class UIManager {
             const dataModel = (this.app as any).currentGraphData?.dataModel || null;
             const entities = (this.app as any).currentGraphData?.data?.entities || [];
             const relationships = (this.app as any).currentGraphData?.data?.relationships || [];
-            this.mappingUI.bind(mappings, availableAttributes, dataModel, entities, relationships, (newMappings) => {
+            const originalMappings = (this.app as any).originalVisualMappings || null;
+            this.mappingUI.bind(mappings, availableAttributes, dataModel, entities, relationships, originalMappings, (newMappings) => {
                 if (this.app.updateVisualMappings) {
                     this.app.updateVisualMappings(newMappings);
                 } else {

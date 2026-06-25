@@ -91,6 +91,7 @@ export class App {
     public currentGraphData: GraphData | null = null;
     public visualMappingEngine: VisualMappingEngine;
     private loadedSchemas = new Map<string, { dataModel?: DataModel, visualMappings?: VisualMappings }>();
+    public originalVisualMappings: VisualMappings | null = null;
 
     public currentEntities: EntityData[] = [];
     public currentRelationships: RelationshipData[] = [];
@@ -570,8 +571,8 @@ export class App {
 
     async loadDefaultData() {
         // Temporary: just log, we need to implement data loading properly
-        console.log('Loading default data...');
-        await this.loadData('data/small.json');
+        console.log('No default data loaded.');
+        // await this.loadData('data/small.json');
     }
 
     public newGraph() {
@@ -642,6 +643,9 @@ export class App {
                 dataModel: graphData.dataModel,
                 visualMappings: graphData.visualMappings
             });
+
+            // Prevent JSON mappings from automatically becoming active mappings
+            graphData.visualMappings = { defaultPresets: {} };
 
             this.stateManager.update({
                 selectedObject: null,
@@ -729,7 +733,8 @@ export class App {
                     sourceName,
                     this.currentEntities.length,
                     this.currentRelationships.length,
-                    bounds
+                    bounds,
+                    graphData.metadata?.schemaVersion as string
                 );
             }
 
@@ -793,12 +798,12 @@ export class App {
         
         // Re-apply to nodes
         if (this.nodeManager) {
-            this.nodeManager.updateNodes(this.currentEntities);
+            this.nodeManager.updateNodes();
         }
 
         // Re-apply to edges
         if (this.edgeObjectsManager) {
-            this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
+            this.edgeObjectsManager.updateEdges();
         }
 
         // Re-apply label positions (since positionX/Y/Z mapping could have moved them)
@@ -818,14 +823,12 @@ export class App {
             this.uiManager.updateVisualMappings(mappings);
         }
     }
-
-
-    private rebuildMergedSchema() {
+private rebuildMergedSchema() {
         if (!this.currentGraphData) return;
 
         // Initialize empty containers
         const mergedDataModel: DataModel = { entities: {}, relationships: {} };
-        const mergedVisualMappings: VisualMappings = { defaultPresets: {} };
+        const originalVisualMappings: VisualMappings = { defaultPresets: {} };
 
         // Merge all schemas
         this.loadedSchemas.forEach((schema) => {
@@ -838,21 +841,29 @@ export class App {
                 }
             }
             if (schema.visualMappings && schema.visualMappings.defaultPresets) {
-                Object.assign(mergedVisualMappings.defaultPresets, schema.visualMappings.defaultPresets);
+                Object.assign(originalVisualMappings.defaultPresets, schema.visualMappings.defaultPresets);
             }
         });
 
         // Set on currentGraphData
-        this.currentGraphData.dataModel = mergedDataModel;
-        this.currentGraphData.visualMappings = mergedVisualMappings;
+        if (this.currentGraphData) {
+            this.currentGraphData.dataModel = mergedDataModel;
+            // Only keep active mappings, or empty if none exist yet. DO NOT apply original mappings automatically.
+            if (!this.currentGraphData.visualMappings) {
+                this.currentGraphData.visualMappings = { defaultPresets: {} };
+            }
+            
+            // Store original mappings so UIManager can provide them to MappingUI
+            this.originalVisualMappings = originalVisualMappings;
 
-        // Propagate to engine
-        this.visualMappingEngine.setDataModel(mergedDataModel);
-        this.visualMappingEngine.setVisualMappings(mergedVisualMappings);
+            // Propagate to engine
+            this.visualMappingEngine.setDataModel(mergedDataModel);
+            this.visualMappingEngine.setVisualMappings(this.currentGraphData.visualMappings);
 
-        // Propagate to UI
-        if (this.uiManager) {
-            this.uiManager.updateVisualMappings(mergedVisualMappings);
+            // Propagate to UI
+            if (this.uiManager) {
+                this.uiManager.updateVisualMappings(this.currentGraphData.visualMappings);
+            }
         }
     }
 

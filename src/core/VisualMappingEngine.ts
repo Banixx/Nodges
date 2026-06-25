@@ -365,6 +365,9 @@ export class VisualMappingEngine {
             return this.getHeatmapColor(Number(value), mapping.palette);
         } else if (mapping.function === 'categorical') {
             // Categorical color mapping
+            if (mapping.params && mapping.params.categories && mapping.params.categories[String(value)]) {
+                return new THREE.Color(mapping.params.categories[String(value)]);
+            }
             return this.getCategoricalColor(String(value), mapping.palette);
         } else {
             // Default: grayscale
@@ -379,12 +382,24 @@ export class VisualMappingEngine {
     /**
      * Get categorical color
      */
-    private getCategoricalColor(value: string, _palette?: string): THREE.Color {
-        // D3 schemeCategory10 as default fallback
-        const category10 = [
-            0x1f77b4, 0xff7f0e, 0x2ca02c, 0xd62728, 0x9467bd, 
-            0x8c564b, 0xe377c2, 0x7f7f7f, 0xbcbd22, 0x17becf
-        ];
+    private getCategoricalColor(value: string, palette: string = 'category10'): THREE.Color {
+        const palettes: Record<string, number[]> = {
+            'category10': [
+                0x1f77b4, 0xff7f0e, 0x2ca02c, 0xd62728, 0x9467bd, 
+                0x8c564b, 0xe377c2, 0x7f7f7f, 0xbcbd22, 0x17becf
+            ],
+            'category20': [
+                0x1f77b4, 0xaec7e8, 0xff7f0e, 0xffbb78, 0x2ca02c, 0x98df8a, 0xd62728, 0xff9896,
+                0x9467bd, 0xc5b0d5, 0x8c564b, 0xc49c94, 0xe377c2, 0xf7b6d2, 0x7f7f7f, 0xc7c7c7,
+                0xbcbd22, 0xdbdb8d, 0x17becf, 0x9edae5
+            ],
+            'pastel': [
+                0xfbb4ae, 0xb3cde3, 0xccebc5, 0xdecbe4, 0xfed9a6,
+                0xffffcc, 0xe5d8bd, 0xfddaec, 0xf2f2f2
+            ]
+        };
+
+        const colors = palettes[palette] || palettes['category10'];
         
         let hash = 0;
         for (let i = 0; i < value.length; i++) {
@@ -392,14 +407,14 @@ export class VisualMappingEngine {
         }
         hash = Math.abs(hash);
         
-        const colorHex = category10[hash % category10.length];
+        const colorHex = colors[hash % colors.length];
         return new THREE.Color(colorHex);
     }
 
     /**
      * Get heatmap color based on palette
      */
-    private getHeatmapColor(value: number, palette?: string): THREE.Color {
+    private getHeatmapColor(value: number, palette: string = 'blue-red'): THREE.Color {
         // Clamp value to [0, 1]
         const v = Math.max(0, Math.min(1, value));
 
@@ -407,6 +422,13 @@ export class VisualMappingEngine {
             const blue = new THREE.Color(0x0000ff);
             const red = new THREE.Color(0xff0000);
             return new THREE.Color().lerpColors(blue, red, v);
+        } else if (palette === 'grayscale') {
+            return new THREE.Color(v, v, v);
+        } else if (palette === 'viridis') {
+            // Simplified viridis approximation
+            const color = new THREE.Color();
+            color.setHSL((1.0 - v) * 0.6, 1.0, 0.5);
+            return color;
         } else {
             // Default: black to white
             return new THREE.Color(v, v, v);

@@ -1,0 +1,140 @@
+{
+  "system": "Greek_Mythology_Pantheon",
+  "metadata": {
+    "version": "5.0",
+    "schemaVersion": "3.0",
+    "engine": "Nodges_Thermodynamic_Simulation",
+    "timestamp": "2026-06-25T12:00:00Z"
+  },
+  "dataModel": {
+    "properties": {
+      "realm": {
+        "type": "categorical",
+        "values": ["olympus", "sea", "underworld"]
+      },
+      "power_level": {
+        "type": "continuous",
+        "range": [0, 100]
+      },
+      "influence": {
+        "type": "vector",
+        "dimensions": ["authority", "fear", "worship"]
+      }
+    }
+  },
+  "fields": [
+    {
+      "id": "olympus_attractor",
+      "type": "attractor_field",
+      "center": { "x": 0, "y": 100, "z": 0 },
+      "strength": 10.0,
+      "influenceRadius": 150.0,
+      "behavior": "attractive_to_olympians"
+    },
+    {
+      "id": "underworld_attractor",
+      "type": "gravitational_field",
+      "center": { "x": 0, "y": -100, "z": 0 },
+      "strength": 8.0,
+      "influenceRadius": 100.0,
+      "behavior": "attractive_to_chthonic"
+    }
+  ],
+  "visualMappings": {
+    "defaultPresets": {
+      "deity": {
+        "geometry": "vector_spline",
+        "trailLength": 24,
+        "color": {
+          "function": "categorical",
+          "field": "stateVector.realm"
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "zeus_01",
+        "type": "deity",
+        "label": "Zeus",
+        "stateVector": {
+          "realm": "olympus",
+          "power_level": 100.0,
+          "influence": {
+            "authority": 95.0,
+            "fear": 80.0,
+            "worship": 90.0
+          }
+        },
+        "behavior": "attracted_to_olympus"
+      },
+      {
+        "id": "hera_01",
+        "type": "deity",
+        "label": "Hera",
+        "stateVector": {
+          "realm": "olympus",
+          "power_level": 90.0,
+          "influence": {
+            "authority": 90.0,
+            "fear": 60.0,
+            "worship": 85.0
+          }
+        },
+        "behavior": "attracted_to_olympus"
+      },
+      {
+        "id": "poseidon_01",
+        "type": "deity",
+        "label": "Poseidon",
+        "stateVector": {
+          "realm": "sea",
+          "power_level": 95.0,
+          "influence": {
+            "authority": 70.0,
+            "fear": 85.0,
+            "worship": 75.0
+          }
+        },
+        "behavior": "dynamic_orbit"
+      },
+      {
+        "id": "hades_01",
+        "type": "deity",
+        "label": "Hades",
+        "stateVector": {
+          "realm": "underworld",
+          "power_level": 95.0,
+          "influence": {
+            "authority": 85.0,
+            "fear": 95.0,
+            "worship": 30.0
+          }
+        },
+        "behavior": "attracted_to_underworld"
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel_zeus_hera",
+        "type": "marriage",
+        "source": "zeus_01",
+        "target": "hera_01",
+        "thickness": 2.0,
+        "curvature": 0.1
+      },
+      {
+        "id": "hyper_brothers",
+        "type": "hyper_dependency",
+        "nodes": [
+          "zeus_01",
+          "poseidon_01",
+          "hades_01"
+        ],
+        "entanglement_factor": 0.9,
+        "label": "The Big Three"
+      }
+    ]
+  }
+}

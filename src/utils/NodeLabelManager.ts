@@ -498,7 +498,7 @@ export class NodeLabelManager {
         this.labels.forEach((label) => {
             labelsToRefresh.push({
                 entity: label.entity,
-                position: label.sprite.position.clone()
+                position: label.sprite.userData.basePosition ? label.sprite.userData.basePosition.clone() : label.sprite.position.clone()
             });
         });
 

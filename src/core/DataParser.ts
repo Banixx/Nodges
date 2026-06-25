@@ -65,6 +65,9 @@ export class DataParser {
             this.parseValues(validData);
         }
 
+        // 3. Calculate Network Metrics (inbound, outbound, degree)
+        this.calculateNetworkMetrics(validData);
+
         return validData;
     }
 
@@ -101,6 +104,56 @@ export class DataParser {
                         rel[propName] = this.parseValue(rel[propName], propSchema);
                     }
                 });
+            }
+        });
+    }
+
+    /**
+     * Calculates basic network metrics like inbound, outbound, and degree for all entities
+     */
+    private static calculateNetworkMetrics(graphData: GraphData) {
+        const metricsMap = new Map<string, { inbound: number, outbound: number, degree: number }>();
+        
+        // Initialize metrics for all entities
+        graphData.data.entities.forEach(entity => {
+            metricsMap.set(entity.id, { inbound: 0, outbound: 0, degree: 0 });
+        });
+
+        // Calculate based on relationships
+        graphData.data.relationships.forEach(rel => {
+            if (rel.source) {
+                const sourceMetrics = metricsMap.get(rel.source);
+                if (sourceMetrics) {
+                    sourceMetrics.outbound += 1;
+                    sourceMetrics.degree += 1;
+                }
+            }
+            
+            if (rel.target) {
+                const targetMetrics = metricsMap.get(rel.target);
+                if (targetMetrics) {
+                    targetMetrics.inbound += 1;
+                    targetMetrics.degree += 1;
+                }
+            }
+
+            if (rel.nodes) {
+                rel.nodes.forEach(nodeId => {
+                    const nodeMetrics = metricsMap.get(nodeId);
+                    if (nodeMetrics) {
+                        nodeMetrics.degree += 1;
+                    }
+                });
+            }
+        });
+
+        // Apply metrics back to entities
+        graphData.data.entities.forEach(entity => {
+            const metrics = metricsMap.get(entity.id);
+            if (metrics) {
+                entity.inbound = metrics.inbound;
+                entity.outbound = metrics.outbound;
+                entity.degree = metrics.degree;
             }
         });
     }
@@ -225,7 +278,7 @@ export class DataParser {
      */
     static findRelationshipsForEntity(graphData: GraphData, entityId: string): RelationshipData[] {
         return graphData.data.relationships.filter(
-            r => r.source === entityId || r.target === entityId
+            r => r.source === entityId || r.target === entityId || (r.nodes && r.nodes.includes(entityId))
         );
     }
 
@@ -243,8 +296,11 @@ export class DataParser {
         // Prefix Relationship IDs and Source/Target references
         graphData.data.relationships.forEach(rel => {
             if (rel.id) rel.id = `${prefix}_${rel.id}`;
-            rel.source = `${prefix}_${rel.source}`;
-            rel.target = `${prefix}_${rel.target}`;
+            if (rel.source) rel.source = `${prefix}_${rel.source}`;
+            if (rel.target) rel.target = `${prefix}_${rel.target}`;
+            if (rel.nodes) {
+                rel.nodes = rel.nodes.map((n: string) => `${prefix}_${n}`);
+            }
         });
 
         return graphData;

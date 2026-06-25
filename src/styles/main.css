@@ -862,8 +862,8 @@ input[type="range"] {
   position: fixed !important;
   bottom: 20px !important;
   left: 10px !important;
-  width: 250px !important;
-  height: 250px !important;
+  width: 250px;
+  height: 250px;
   background: transparent !important; /* Transparenz notwendig für WebGL-Rendering */
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -875,11 +875,20 @@ input[type="range"] {
   flex-direction: column !important;
   overflow: visible !important;
   /* Allow toggle to stick out */
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 #minimapContainer.collapsed {
-  transform: translateY(calc(100% - 30px)) !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  width: 100px !important;
+  min-width: 100px !important;
+  overflow: hidden !important;
+  transform: none !important;
+}
+
+#minimapContainer.collapsed .panel-resize-handle {
+  display: none !important;
 }
 
 .minimap-toggle {
@@ -911,6 +920,11 @@ input[type="range"] {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  white-space: nowrap;
+}
+
+.minimap-header span {
+  transform: translateY(-1.5px);
 }
 
 .minimap-canvas-wrapper {
@@ -954,8 +968,8 @@ input[type="range"] {
   position: fixed !important;
   bottom: 20px !important;
   left: 270px !important;
-  width: 500px !important;
-  height: 380px !important;
+  width: 700px;
+  height: 380px;
   background: var(--panel-bg) !important;
   backdrop-filter: var(--glass-blur) !important;
   -webkit-backdrop-filter: var(--glass-blur) !important;
@@ -966,11 +980,20 @@ input[type="range"] {
   display: flex !important;
   flex-direction: column !important;
   overflow: visible !important;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .mapping-panel-container.collapsed {
-  transform: translateY(calc(100% - 30px)) !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  width: 120px !important;
+  min-width: 120px !important;
+  overflow: hidden !important;
+  transform: none !important;
+}
+
+.mapping-panel-container.collapsed .panel-resize-handle {
+  display: none !important;
 }
 
 .mapping-header {
@@ -987,6 +1010,11 @@ input[type="range"] {
   align-items: center;
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
+  white-space: nowrap;
+}
+
+.mapping-header span {
+  transform: translateY(-1.5px);
 }
 
 .mapping-header-controls {
@@ -1247,6 +1275,13 @@ input[type="range"] {
   stroke-width: 2;
   stroke-dasharray: 4, 4;
   pointer-events: none;
+}
+
+.mapping-curve.original-curve {
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 2.5;
+  stroke-dasharray: 4, 4;
+  pointer-events: auto;
 }
 
 /* UI Modus Schalter & Sichtbarkeitsregeln */

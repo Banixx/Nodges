@@ -636,6 +636,10 @@ export class ImportManager {
             edges: data.edges || []
         };
 
+        if (!normalized.metadata.schemaVersion) {
+            normalized.metadata.schemaVersion = '1';
+        }
+
         // Validate nodes
         normalized.nodes = normalized.nodes.map((node, index) => {
             if (!node.id) {

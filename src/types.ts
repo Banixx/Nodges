@@ -60,7 +60,7 @@ export const EntityVisualPresetSchema = z.object({
     geometry: VisualMappingSchema.optional(),
     glow: VisualMappingSchema.optional(),
     animation: VisualMappingSchema.optional(),
-}).strict();
+}).passthrough();
 export type EntityVisualPreset = z.infer<typeof EntityVisualPresetSchema>;
 
 export const RelationshipVisualPresetSchema = z.object({
@@ -70,7 +70,7 @@ export const RelationshipVisualPresetSchema = z.object({
     glow: VisualMappingSchema.optional(),
     opacity: VisualMappingSchema.optional(),
     animation: VisualMappingSchema.optional(),
-}).strict();
+}).passthrough();
 export type RelationshipVisualPreset = z.infer<typeof RelationshipVisualPresetSchema>;
 
 export const VisualMappingsSchema = z.object({
@@ -91,14 +91,17 @@ export const EntityDataSchema = z.object({
         y: z.number(),
         z: z.number()
     }).optional(),
+    stateVector: z.record(z.any()).optional(),
+    behavior: z.string().optional(),
 }).passthrough();
 export type EntityData = z.infer<typeof EntityDataSchema> & Record<string, unknown>;
 
 export const RelationshipDataSchema = z.object({
     id: z.string().optional(),
     type: z.string(),
-    source: z.string(),
-    target: z.string(),
+    source: z.string().optional(),
+    target: z.string().optional(),
+    nodes: z.array(z.string()).optional(),
     label: z.string().optional(),
 }).passthrough();
 export type RelationshipData = z.infer<typeof RelationshipDataSchema> & Record<string, unknown>;
@@ -109,10 +112,19 @@ export const GraphDataSchema = z.object({
     metadata: z.object({
         created: z.string().optional(),
         version: z.string().optional(),
+        schemaVersion: z.string().optional(),
         author: z.string().optional(),
         description: z.string().optional(),
     }).passthrough(),
     dataModel: DataModelSchema.optional(),
+    fields: z.array(z.object({
+        id: z.string(),
+        type: z.string().optional(),
+        center: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional(),
+        strength: z.number().optional(),
+        influenceRadius: z.number().optional(),
+        behavior: z.string().optional(),
+    }).passthrough()).optional(),
     visualMappings: VisualMappingsSchema.optional(),
     data: z.object({
         entities: z.array(EntityDataSchema),

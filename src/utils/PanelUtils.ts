@@ -23,7 +23,7 @@ export class PanelUtils {
         const onDragStart = (e: MouseEvent | PointerEvent) => {
             // Ignore if clicking on buttons, inputs or toggles in the header
             const target = e.target as HTMLElement;
-            if (target.closest && target.closest('button, select, input, .mapping-toggle, .panel-toggle, .close-btn, [data-nodrag]')) {
+            if (target.closest && target.closest('button, select, input, .mapping-toggle, .minimap-toggle, .panel-toggle, .close-btn, [data-nodrag]')) {
                 return;
             }
             
@@ -32,14 +32,21 @@ export class PanelUtils {
             dragStartY = e.clientY;
             
             const rect = panel.getBoundingClientRect();
-            panelStartX = rect.left;
-            panelStartY = rect.top;
+            const style = window.getComputedStyle(panel);
+            let tx = 0, ty = 0;
+            if (style.transform && style.transform !== 'none') {
+                const matrix = new DOMMatrix(style.transform);
+                tx = matrix.m41;
+                ty = matrix.m42;
+            }
+            panelStartX = rect.left - tx;
+            panelStartY = rect.top - ty;
 
             header.style.cursor = 'grabbing';
             panel.style.zIndex = (++this.zIndexCounter).toString();
             
             // Disable transitions during drag for immediate follow
-            panel.style.transition = 'none';
+            panel.style.setProperty('transition', 'none', 'important');
 
             e.preventDefault();
         };
@@ -55,13 +62,13 @@ export class PanelUtils {
             panel.style.setProperty('right', 'auto', 'important');
             panel.style.setProperty('left', `${panelStartX + dx}px`, 'important');
             panel.style.setProperty('top', `${panelStartY + dy}px`, 'important');
-            panel.style.setProperty('transform', 'none', 'important');
         };
 
         const onDragEnd = () => {
             if (!isDragging) return;
             isDragging = false;
             header.style.cursor = 'grab';
+            panel.style.removeProperty('transition');
         };
 
         header.addEventListener('pointerdown', onDragStart as any);
@@ -99,16 +106,25 @@ export class PanelUtils {
             resizeStartY = e.clientY;
             
             const rect = panel.getBoundingClientRect();
+            const style = window.getComputedStyle(panel);
+            let tx = 0, ty = 0;
+            if (style.transform && style.transform !== 'none') {
+                const matrix = new DOMMatrix(style.transform);
+                tx = matrix.m41;
+                ty = matrix.m42;
+            }
+            const startLeft = rect.left - tx;
+            const startTop = rect.top - ty;
+            
             panelStartWidth = rect.width;
             panelStartHeight = rect.height;
 
             // Make sure the panel uses left/top positioning, not bottom/right
             panel.style.setProperty('bottom', 'auto', 'important');
             panel.style.setProperty('right', 'auto', 'important');
-            panel.style.setProperty('left', `${rect.left}px`, 'important');
-            panel.style.setProperty('top', `${rect.top}px`, 'important');
-            panel.style.setProperty('transform', 'none', 'important');
-            panel.style.transition = 'none';
+            panel.style.setProperty('left', `${startLeft}px`, 'important');
+            panel.style.setProperty('top', `${startTop}px`, 'important');
+            panel.style.setProperty('transition', 'none', 'important');
 
             e.preventDefault();
             e.stopPropagation(); // Don't trigger panel click
@@ -129,13 +145,14 @@ export class PanelUtils {
                 newHeight = size;
             }
 
-            panel.style.setProperty('width', `${newWidth}px`, 'important');
-            panel.style.setProperty('height', `${newHeight}px`, 'important');
+            panel.style.setProperty('width', `${newWidth}px`);
+            panel.style.setProperty('height', `${newHeight}px`);
         };
 
         const onResizeEnd = () => {
             if (!isResizing) return;
             isResizing = false;
+            panel.style.removeProperty('transition');
         };
 
         resizeHandle.addEventListener('pointerdown', onResizeStart as any);

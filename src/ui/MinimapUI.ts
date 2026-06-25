@@ -27,8 +27,8 @@ export class MinimapUI {
         this.container.style.setProperty('right', 'auto', 'important');
         this.container.style.setProperty('z-index', '99999', 'important');
         this.container.style.setProperty('display', 'flex', 'important');
-        this.container.style.setProperty('width', '250px', 'important');
-        this.container.style.setProperty('height', '250px', 'important');
+        this.container.style.setProperty('width', '250px');
+        this.container.style.setProperty('height', '250px');
         this.container.style.setProperty('touch-action', 'none', 'important');
         
         // Disable ANY blur filters hart via JS

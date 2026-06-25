@@ -160,7 +160,9 @@ export class HighlightManager {
             const s = e.source !== undefined ? e.source : e.start;
             const t = e.target !== undefined ? e.target : e.end;
             if (String(s) === centerNodeId || String(t) === centerNodeId) {
-                connectedEdgeIds.add(e.id);
+                if (e.id !== undefined) {
+                    connectedEdgeIds.add(e.id);
+                }
                 nodes.add(String(s));
                 nodes.add(String(t));
             }

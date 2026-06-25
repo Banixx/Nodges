@@ -5,7 +5,7 @@ Dieses Dokument erfasst die wichtigsten architektonischen Entscheidungen (Archit
 ## Meilensteine
 
 * **v1.0 (Geplant)**: Produktionsreife, saubere Trennung des `InteractionManager` und `StateManager`.
-* **v0.101.1**: Einführung des Drei-Stufen-Modus für die UI-Komplexität (Simple, Expert, Dev), des Sidebar File Managements (New, Open, Save As mit Custom Modal) und Optimierungen der Visual Mapping Engine (Heatmaps für kontinuierliche Werte).
+* **v0.101.2**: Einführung des Drei-Stufen-Modus für die UI-Komplexität (Simple, Expert, Dev), des Sidebar File Managements (New, Open, Save As mit Custom Modal) und Optimierungen der Visual Mapping Engine (Heatmaps für kontinuierliche Werte).
 * **v0.98.x**: Einführung von Web Workern für Layout-Berechnungen, Refactoring der Monolithen (`App.ts`).
 * **v0.97.0**: Grundlagen der Hardware-Instanzierung (InstancedMesh) für massives Rendering implementiert.
 
@@ -48,4 +48,4 @@ Dieses Dokument erfasst die wichtigsten architektonischen Entscheidungen (Archit
 
 ---
 *Dokumentations-Status: V2.1 (ADRs Updated)*
-*Geprüft gegen Build: 0.101.1*
+*Geprüft gegen Build: 0.101.2*

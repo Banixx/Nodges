@@ -170,7 +170,10 @@ export class FileHandler {
 
         return {
             system: 'Nodges',
-            metadata: networkData.metadata,
+            metadata: {
+                ...networkData.metadata,
+                schemaVersion: networkData.metadata?.schemaVersion || '1'
+            },
             data: {
                 entities: entities,
                 relationships: relationships
@@ -182,6 +185,16 @@ export class FileHandler {
      * Get current visualization state
      */
     getVisualizationState(): any {
+        const app = (window as any).app;
+        
+        let visualMappings = null;
+        let dataModel = null;
+        
+        if (app && app.currentGraphData) {
+            visualMappings = app.currentGraphData.visualMappings;
+            dataModel = app.currentGraphData.dataModel;
+        }
+
         // This would capture current camera position, settings, etc.
         // For now, return basic state
         return {
@@ -192,6 +205,8 @@ export class FileHandler {
             settings: {
                 // Add current GUI settings here
             },
+            visualMappings: visualMappings,
+            dataModel: dataModel,
             timestamp: new Date().toISOString()
         };
     }

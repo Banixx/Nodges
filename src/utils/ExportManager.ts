@@ -63,8 +63,9 @@ export class ExportManager {
         const exportData: any = {
             metadata: {
                 ...networkData.metadata,
+                schemaVersion: networkData.metadata?.schemaVersion || '1',
                 exportedAt: new Date().toISOString(),
-                exportedBy: 'Nodges 0.88',
+                exportedBy: 'Nodges 0.101.1',
                 format: 'nodges-json'
             },
             nodes: networkData.nodes || [],
@@ -73,6 +74,14 @@ export class ExportManager {
 
         if (options.includeVisualizationState && options.visualizationState) {
             exportData.visualizationState = options.visualizationState;
+            
+            // Bring specific visualization states to the root where DataParser expects them
+            if (options.visualizationState.visualMappings) {
+                exportData.visualMappings = options.visualizationState.visualMappings;
+            }
+            if (options.visualizationState.dataModel) {
+                exportData.dataModel = options.visualizationState.dataModel;
+            }
         }
 
         return JSON.stringify(exportData, null, options.minify ? 0 : 2);

@@ -69,7 +69,7 @@ export class EdgeControlsUI {
             this.stateManager.update({ [key]: value });
             if (this.app.edgeObjectsManager) {
                 if (this.app.currentEntities && this.app.currentRelationships) {
-                    this.app.edgeObjectsManager.updateEdges(this.app.currentRelationships, this.app.currentEntities);
+                    this.app.edgeObjectsManager.updateEdges();
                 }
             }
         };
@@ -203,7 +203,7 @@ export class EdgeControlsUI {
                 // Update State and refresh
                 this.stateManager.update(defaults);
                 if (this.app.edgeObjectsManager && this.app.currentEntities && this.app.currentRelationships) {
-                    this.app.edgeObjectsManager.updateEdges(this.app.currentRelationships, this.app.currentEntities);
+                    this.app.edgeObjectsManager.updateEdges();
                 }
                 this.updateEdgeOpacity(defaults.edgeOpacity);
             });

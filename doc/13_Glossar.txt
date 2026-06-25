@@ -29,4 +29,4 @@ Dieses Glossar definiert die wichtigsten Konzepte, Technologien und wiederkehren
 
 ---
 *Dokumentations-Status: V2.1 (Glossar Updated)*
-*Geprüft gegen Build: 0.101.1*
+*Geprüft gegen Build: 0.101.2*

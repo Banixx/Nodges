@@ -54,7 +54,7 @@ Hässliche Tools machen müde. Ein unruhiges Interface erhöht die kognitive Las
 
 Nodges basiert auf einem "Bleeding Edge" Stack, der auf Langlebigkeit und Typsicherheit ausgelegt ist.
 
-### Der Core-Stack (Stand v0.101.1)
+### Der Core-Stack (Stand v0.101.2)
 
 * **TypeScript (v5.3.3)**: Unsere Versicherung gegen Laufzeitfehler. Strenge Typisierung verhindert "undefined is not a function" Crashes und ermöglicht den massiven Einsatz von Intellisense.
 * **Three.js (v0.161.0)**: Die mächtigste WebGL-Library der Welt. Wir nutzen nicht nur den Standard-Renderer, sondern greifen tief in die Shader-Pipeline ein.
@@ -116,4 +116,4 @@ Web-Native ist die Zukunft. Nodges erfordert **keine Installation**, keine 5GB D
 
 ---
 *Dokumentations-Status: V2.1 (Updated)*
-*Geprüft gegen Build: 0.101.1*
+*Geprüft gegen Build: 0.101.2*

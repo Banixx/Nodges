@@ -14,8 +14,7 @@ export class SelectionManager {
     private selectionMode: 'single' | 'multi' | 'box';
     private isBoxSelecting: boolean;
 
-    private selectionBoxes: Map<THREE.Object3D, THREE.Mesh>;
-    private selectionBoxMaterial: THREE.MeshBasicMaterial;
+    // Visual feedback (obsolete, handled by HighlightManager)
 
     private boxSelectStart: THREE.Vector2;
     private boxSelectEnd: THREE.Vector2;
@@ -56,13 +55,7 @@ export class SelectionManager {
         this.isBoxSelecting = false;
 
         // Visual feedback
-        this.selectionBoxes = new Map();
-        this.selectionBoxMaterial = new THREE.MeshBasicMaterial({
-            color: 0x00ff00,
-            transparent: true,
-            opacity: 0.3,
-            side: THREE.DoubleSide
-        });
+        // Visual feedback variables removed
 
         // Box selection
         this.boxSelectStart = new THREE.Vector2();
@@ -463,14 +456,14 @@ export class SelectionManager {
     /**
      * Create selection box for object
      */
-    createSelectionBox(object: THREE.Object3D) {
+    createSelectionBox(_object: THREE.Object3D) {
         // Obsolete - Selection visual feedback is handled by HighlightManager (aura instead of box)
     }
 
     /**
      * Remove selection box for object
      */
-    removeSelectionBox(object: THREE.Object3D) {
+    removeSelectionBox(_object: THREE.Object3D) {
         // Obsolete
     }
 
