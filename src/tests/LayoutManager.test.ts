@@ -306,7 +306,7 @@ describe('LayoutManager', () => {
             // Positionen vorher merken
             const beforeX = nodes.map(n => n.position!.x);
 
-            layoutManager.applyForceLayout(nodes, edges, {
+            layoutManager.applyForceLayout(nodes, edges, [], {
                 maxIterations: 50,
                 repulsionStrength: 50,
                 attractionStrength: 0.5,
@@ -322,7 +322,7 @@ describe('LayoutManager', () => {
             const nodes = createNodes(1);
 
             expect(() => {
-                layoutManager.applyForceLayout(nodes, [], {
+                layoutManager.applyForceLayout(nodes, [], [], {
                     maxIterations: 10,
                     repulsionStrength: 50,
                     attractionStrength: 0.5,
@@ -343,7 +343,7 @@ describe('LayoutManager', () => {
                 { id: 'e1', type: 'x', source: 'a', target: 'b' },
             ];
 
-            layoutManager.applyForceLayout(nodes, edges, {
+            layoutManager.applyForceLayout(nodes, edges, [], {
                 maxIterations: 100,
                 repulsionStrength: 50,
                 attractionStrength: 0.5,
@@ -520,7 +520,7 @@ describe('LayoutManager', () => {
         it('sollte currentLayout setzen bei erfolgreichem Layout', async () => {
             const nodes = createNodes(4);
 
-            await layoutManager.applyLayout('circular', nodes, [], { radius: 5 });
+            await layoutManager.applyLayout('circular', nodes, [], [], { radius: 5 });
 
             expect(layoutManager.getCurrentLayout()).toBe('circular');
         });
@@ -528,7 +528,7 @@ describe('LayoutManager', () => {
         it('sollte true zurueckgeben bei erfolgreichem synchronen Layout', async () => {
             const nodes = createNodes(4);
 
-            const result = await layoutManager.applyLayout('grid', nodes, [], { spacing: 2 });
+            const result = await layoutManager.applyLayout('grid', nodes, [], [], { spacing: 2 });
 
             expect(result).toBe(true);
         });
@@ -602,7 +602,7 @@ describe('LayoutManager', () => {
             ];
 
             // Layout mit Worker starten (wirkt über unseren Mock)
-            const promise = layoutManager.applyLayout('force-directed', nodes, []);
+            const promise = layoutManager.applyLayout('force-directed', nodes, [], []);
 
             // Waherend das Layout laeuft, vertauschen wir die Elemente im Array
             const temp = nodes[0];

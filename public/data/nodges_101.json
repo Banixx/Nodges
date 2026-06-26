@@ -1,0 +1,98 @@
+{
+  "theme": "nodges",
+  "name": "Nodges Architecture 101",
+  "groups": [
+    {
+      "id": "group_runtime",
+      "label": "Runtime",
+      "nodes": ["node_app"]
+    },
+    {
+      "id": "group_data",
+      "label": "Data/Input",
+      "nodes": ["node_public_data"]
+    },
+    {
+      "id": "group_core",
+      "label": "Core Services",
+      "nodes": [
+        "node_service_container", "node_data_parser", "node_state_manager", 
+        "node_event_bus", "node_mapping_engine", "node_layout_manager", 
+        "node_interaction_manager", "node_ui_manager"
+      ]
+    },
+    {
+      "id": "group_viz",
+      "label": "Visualization",
+      "nodes": ["node_node_manager", "node_edge_manager", "node_layout_worker"]
+    },
+    {
+      "id": "group_ui",
+      "label": "UI/Tools",
+      "nodes": [
+        "node_file_panel", "node_mapping_panel", "node_view_panel", 
+        "node_info_panel", "node_data_editor", "node_import_manager", 
+        "node_export_manager", "node_llm_service"
+      ]
+    }
+  ],
+  "nodes": [
+    { "id": "node_app", "label": "App\nfrontend entry\n[App.ts]", "file": "src/App.ts" },
+    { "id": "node_public_data", "label": "Sample Data\nseed datasets", "file": "public/data" },
+    { "id": "node_service_container", "label": "Service Container\ncomposition root", "file": "src/core/di/ServiceContainer.ts" },
+    { "id": "node_data_parser", "label": "Data Parser\ningestion\n[DataParser.ts]", "file": "src/core/DataParser.ts" },
+    { "id": "node_state_manager", "label": "State Manager\napp state\n[StateManager.ts]", "file": "src/core/StateManager.ts" },
+    { "id": "node_event_bus", "label": "Event Bus\nevent distribution", "file": "src/core/CentralEventManager.ts" },
+    { "id": "node_mapping_engine", "label": "Mapping Engine\nvisual mapping", "file": "src/core/VisualMappingEngine.ts" },
+    { "id": "node_layout_manager", "label": "Layout Manager\ngraph layout\n[LayoutManager.ts]", "file": "src/core/LayoutManager.ts" },
+    { "id": "node_interaction_manager", "label": "Interaction Manager\ninput orchestration", "file": "src/core/InteractionManager.ts" },
+    { "id": "node_ui_manager", "label": "UI Manager\npanel coordination\n[UIManager.ts]", "file": "src/core/UIManager.ts" },
+    { "id": "node_node_manager", "label": "Node Manager\nscene nodes\n[NodeManager.ts]", "file": "src/core/NodeManager.ts" },
+    { "id": "node_edge_manager", "label": "Edge Manager\nscene edges", "file": "src/core/EdgeObjectsManager.ts" },
+    { "id": "node_layout_worker", "label": "Layout Worker\noff-thread compute\n[layout-worker.ts]", "file": "src/workers/layout-worker.ts" },
+    { "id": "node_file_panel", "label": "File Panel\nimport/export UI\n[FilePanelUI.ts]", "file": "src/ui/FilePanelUI.ts" },
+    { "id": "node_mapping_panel", "label": "Mapping Panel\nmapping UI\n[MappingUI.ts]", "file": "src/ui/MappingUI.ts" },
+    { "id": "node_view_panel", "label": "View Panel\nview controls\n[ViewPanel.ts]", "file": "src/ui/ViewPanel.ts" },
+    { "id": "node_info_panel", "label": "Info Panel\ninspection UI\n[InfoPanelUI.ts]", "file": "src/ui/InfoPanelUI.ts" },
+    { "id": "node_data_editor", "label": "Data Editor\ndataset editing\n[DataEditor.ts]", "file": "src/ui/DataEditor.ts" },
+    { "id": "node_import_manager", "label": "Import Manager\nfile import\n[ImportManager.ts]", "file": "src/utils/ImportManager.ts" },
+    { "id": "node_export_manager", "label": "Export Manager\nfile export\n[ExportManager.ts]", "file": "src/utils/ExportManager.ts" },
+    { "id": "node_llm_service", "label": "LLM Service\noptional AI\n[LLMService.ts]", "file": "src/utils/LLMService.ts" }
+  ],
+  "edges": [
+    { "source": "node_app", "target": "node_service_container", "label": "bootstraps" },
+    { "source": "node_service_container", "target": "node_data_parser", "label": "wires" },
+    { "source": "node_service_container", "target": "node_state_manager", "label": "wires" },
+    { "source": "node_service_container", "target": "node_event_bus", "label": "wires" },
+    { "source": "node_service_container", "target": "node_mapping_engine", "label": "wires" },
+    { "source": "node_service_container", "target": "node_layout_manager", "label": "wires" },
+    { "source": "node_service_container", "target": "node_node_manager", "label": "wires" },
+    { "source": "node_service_container", "target": "node_edge_manager", "label": "wires" },
+    { "source": "node_service_container", "target": "node_interaction_manager", "label": "wires" },
+    { "source": "node_service_container", "target": "node_ui_manager", "label": "wires" },
+    { "source": "node_public_data", "target": "node_import_manager", "label": "loads" },
+    { "source": "node_import_manager", "target": "node_data_parser", "label": "parses" },
+    { "source": "node_file_panel", "target": "node_import_manager", "label": "triggers" },
+    { "source": "node_file_panel", "target": "node_export_manager", "label": "triggers" },
+    { "source": "node_data_editor", "target": "node_state_manager", "label": "edits" },
+    { "source": "node_state_manager", "target": "node_event_bus", "label": "publishes" },
+    { "source": "node_event_bus", "target": "node_mapping_engine", "label": "updates" },
+    { "source": "node_event_bus", "target": "node_layout_manager", "label": "updates" },
+    { "source": "node_layout_manager", "target": "node_layout_worker", "label": "offloads" },
+    { "source": "node_layout_manager", "target": "node_node_manager", "label": "positions" },
+    { "source": "node_layout_manager", "target": "node_edge_manager", "label": "positions" },
+    { "source": "node_mapping_engine", "target": "node_node_manager", "label": "styles" },
+    { "source": "node_mapping_engine", "target": "node_edge_manager", "label": "styles" },
+    { "source": "node_interaction_manager", "target": "node_event_bus", "label": "emits" },
+    { "source": "node_interaction_manager", "target": "node_state_manager", "label": "mutates" },
+    { "source": "node_ui_manager", "target": "node_view_panel", "label": "hosts" },
+    { "source": "node_ui_manager", "target": "node_mapping_panel", "label": "hosts" },
+    { "source": "node_ui_manager", "target": "node_info_panel", "label": "hosts" },
+    { "source": "node_ui_manager", "target": "node_file_panel", "label": "hosts" },
+    { "source": "node_ui_manager", "target": "node_data_editor", "label": "hosts" },
+    { "source": "node_ui_manager", "target": "node_llm_service", "label": "optionally uses", "style": "dashed" },
+    { "source": "node_ui_manager", "target": "node_interaction_manager", "label": "configures" },
+    { "source": "node_interaction_manager", "target": "node_node_manager", "label": "targets" },
+    { "source": "node_interaction_manager", "target": "node_edge_manager", "label": "targets" }
+  ]
+}

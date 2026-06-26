@@ -1,0 +1,51 @@
+{
+  "system": "Test Build 3 - Attractor Field",
+  "metadata": {
+    "version": "1.0",
+    "schemaVersion": "3.0",
+    "author": "Antigravity",
+    "description": "Testet ein einfaches Attraktor-Feld (Zieht Knoten ins Zentrum)."
+  },
+  "fields": [
+    {
+      "id": "attractor_1",
+      "type": "attractor_field",
+      "center": { "x": 0, "y": 0, "z": 0 },
+      "strength": 20,
+      "influenceRadius": 50,
+      "behavior": "attracts_all"
+    }
+  ],
+  "dataModel": {
+    "properties": {
+      "stateVector.mass": { "type": "continuous", "range": [1, 10] }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "particle": {
+        "size": {
+          "field": "stateVector.mass",
+          "function": "linear",
+          "domain": [1, 10],
+          "range": [0.5, 3]
+        },
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "value": "#00aaff"
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      { "id": "n1", "type": "particle", "label": "P1", "stateVector": { "mass": 2 } },
+      { "id": "n2", "type": "particle", "label": "P2", "stateVector": { "mass": 5 } },
+      { "id": "n3", "type": "particle", "label": "P3", "stateVector": { "mass": 8 } },
+      { "id": "n4", "type": "particle", "label": "P4", "stateVector": { "mass": 1 } },
+      { "id": "n5", "type": "particle", "label": "P5", "stateVector": { "mass": 10 } }
+    ],
+    "relationships": []
+  }
+}

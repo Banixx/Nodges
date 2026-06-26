@@ -3,7 +3,7 @@
  */
 
 import LayoutWorker from '../workers/layout-worker.ts?worker';
-import { EntityData, RelationshipData } from '../types';
+import { EntityData, RelationshipData, FieldData } from '../types';
 import type { LayoutWorkerRequest, LayoutWorkerResponse } from '../workers/WorkerTypes';
 import { errorHandler } from './ErrorHandler';
 
@@ -13,7 +13,7 @@ interface LayoutOptions {
 
 interface LayoutDefinition {
     name: string;
-    apply: (nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions) => void | Promise<boolean>;
+    apply: (nodes: EntityData[], edges: RelationshipData[], fields: FieldData[] | undefined, options: LayoutOptions) => void | Promise<boolean>;
     options: LayoutOptions;
 }
 
@@ -27,11 +27,14 @@ type LayoutEntity = EntityData & {
     index?: number; // Worker index
 };
 
+import { VisualMappingEngine } from './VisualMappingEngine';
+
 export class LayoutManager {
     private layouts: Map<string, LayoutDefinition>;
     private currentLayout: string | null;
     public isAnimating: boolean;
     public animationSpeed: number;
+    private visualMappingEngine?: VisualMappingEngine;
     /** Referenz auf aktiven Worker (fuer Cleanup/Cancel) */
     private activeWorker: Worker | null = null;
     /** Timeout-ID fuer Worker-Timeout */
@@ -47,6 +50,10 @@ export class LayoutManager {
 
         // Registriere Standard-Layouts
         this.registerDefaultLayouts();
+    }
+
+    public setVisualMappingEngine(engine: VisualMappingEngine) {
+        this.visualMappingEngine = engine;
     }
 
     /**
@@ -80,7 +87,7 @@ export class LayoutManager {
         // Force-Directed Layout
         this.registerLayout('force-directed', {
             name: 'Force-Directed',
-            apply: (nodes, edges, options) => this.applyForceLayout(nodes, edges, options),
+            apply: (nodes, edges, fields, options) => this.applyForceLayout(nodes, edges, fields, options),
             options: {
                 maxIterations: 100,
                 repulsionStrength: 50,
@@ -92,7 +99,7 @@ export class LayoutManager {
         // Fruchterman-Reingold Layout
         this.registerLayout('fruchterman-reingold', {
             name: 'Fruchterman-Reingold',
-            apply: (nodes, edges, options) => this.applyFruchtermanReingoldLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applyFruchtermanReingoldLayout(nodes, edges, options),
             options: {
                 maxIterations: 500,
                 area: 400,
@@ -103,7 +110,7 @@ export class LayoutManager {
         // Spring-Embedder Layout
         this.registerLayout('spring-embedder', {
             name: 'Spring-Embedder',
-            apply: (nodes, edges, options) => this.applySpringEmbedderLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applySpringEmbedderLayout(nodes, edges, options),
             options: {
                 maxIterations: 1000,
                 springConstant: 0.1,
@@ -116,7 +123,7 @@ export class LayoutManager {
         // Hierarchical Layout
         this.registerLayout('hierarchical', {
             name: 'Hierarchical',
-            apply: (nodes, edges, options) => this.applyHierarchicalLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applyHierarchicalLayout(nodes, edges, options),
             options: {
                 levelHeight: 3,
                 nodeSpacing: 2
@@ -126,7 +133,7 @@ export class LayoutManager {
         // Tree Layout
         this.registerLayout('tree', {
             name: 'Tree',
-            apply: (nodes, edges, options) => this.applyTreeLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applyTreeLayout(nodes, edges, options),
             options: {
                 levelHeight: 3,
                 nodeSpacing: 2
@@ -136,7 +143,7 @@ export class LayoutManager {
         // Circular Layout
         this.registerLayout('circular', {
             name: 'Circular',
-            apply: (nodes, edges, options) => this.applyCircularLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applyCircularLayout(nodes, edges, options),
             options: {
                 radius: 10,
                 height: 0
@@ -146,7 +153,7 @@ export class LayoutManager {
         // Grid Layout
         this.registerLayout('grid', {
             name: 'Grid',
-            apply: (nodes, edges, options) => this.applyGridLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applyGridLayout(nodes, edges, options),
             options: {
                 spacing: 2
             }
@@ -155,7 +162,7 @@ export class LayoutManager {
         // Random Layout
         this.registerLayout('random', {
             name: 'Random',
-            apply: (nodes, edges, options) => this.applyRandomLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applyRandomLayout(nodes, edges, options),
             options: {
                 minBound: -10,
                 maxBound: 10
@@ -167,7 +174,7 @@ export class LayoutManager {
         this.layouts.set(id, layout);
     }
 
-    async applyLayout(layoutId: string, nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions = {}): Promise<boolean> {
+    async applyLayout(layoutId: string, nodes: EntityData[], edges: RelationshipData[], fields: FieldData[] = [], options: LayoutOptions = {}): Promise<boolean> {
         const layout = this.layouts.get(layoutId);
         if (!layout) {
             errorHandler.handle(
@@ -189,9 +196,9 @@ export class LayoutManager {
         try {
             // Verwende Web Worker fuer rechenintensive Layouts
             if (['force-directed', 'fruchterman-reingold', 'spring-embedder'].includes(layoutId)) {
-                return await this.applyLayoutWithWorker(layoutId, nodes, edges, mergedOptions) as boolean;
+                return await this.applyLayoutWithWorker(layoutId, nodes, edges, fields, mergedOptions) as boolean;
             } else {
-                layout.apply(nodes, edges, mergedOptions);
+                layout.apply(nodes, edges, fields, mergedOptions);
                 return true;
             }
         } catch (error) {
@@ -213,7 +220,7 @@ export class LayoutManager {
         }
     }
 
-    async applyLayoutWithWorker(layoutId: string, nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions): Promise<boolean> {
+    async applyLayoutWithWorker(layoutId: string, nodes: EntityData[], edges: RelationshipData[], fields: FieldData[], options: LayoutOptions): Promise<boolean> {
         // Vorherigen Worker stoppen falls aktiv
         this.stopAnimation();
 
@@ -238,21 +245,28 @@ export class LayoutManager {
             const request: LayoutWorkerRequest = {
                 requestId,
                 algorithm: layoutId,
-                nodes: nodes.map(node => ({
-                    id: node.id,
-                    x: node.position?.x || 0,
-                    y: node.position?.y || 0,
-                    z: node.position?.z || 0,
-                    index: nodeIndexMap.get(node.id)!
-                })),
-                edges: edges.map(edge => {
-                    const startIndex = nodeIndexMap.get(edge.source);
-                    const endIndex = nodeIndexMap.get(edge.target);
+                nodes: nodes.map(node => {
+                    const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(node) : {};
+                    return {
+                        id: node.id,
+                        x: node.position?.x || 0,
+                        y: node.position?.y || 0,
+                        z: node.position?.z || 0,
+                        index: nodeIndexMap.get(node.id)!,
+                        attraction: visual.attraction !== undefined ? Number(visual.attraction) : 0,
+                        repulsion: visual.repulsion !== undefined ? Number(visual.repulsion) : 50,
+                        inertia: visual.inertia !== undefined ? Number(visual.inertia) : 1.0
+                    };
+                }),
+                edges: edges.filter(e => e.source && e.target).map(edge => {
+                    const startIndex = nodeIndexMap.get(edge.source!);
+                    const endIndex = nodeIndexMap.get(edge.target!);
                     return {
                         start: startIndex !== undefined ? startIndex : 0,
                         end: endIndex !== undefined ? endIndex : 0
                     };
                 }),
+                fields,
                 options
             };
 
@@ -279,7 +293,29 @@ export class LayoutManager {
 
                 switch (response.type) {
                     case 'progress':
-                        console.log(`[LayoutManager] Progress: ${response.progress}% (${response.currentIteration}/${response.maxIterations})`);
+                        if (response.positions && Array.isArray(response.positions)) {
+                            const nodeMap = new Map<string, EntityData>();
+                            nodes.forEach(node => nodeMap.set(node.id, node));
+
+                            response.positions.forEach(pos => {
+                                const node = nodeMap.get(pos.id);
+                                if (node) {
+                                    if (!node.position) node.position = { x: 0, y: 0, z: 0 };
+                                    node.position.x = pos.x || 0;
+                                    node.position.y = pos.y || 0;
+                                    node.position.z = pos.z || 0;
+                                }
+                            });
+                            
+                            // Normalisiere auch waehrend der Animation, damit es sichtbar im Bildbereich bleibt
+                            const state = (window as any).app?.stateManager?.state;
+                            const independentAxes = state ? state.independentAxesNormalization : true;
+                            this.normalizeNodePositions(nodes, 10, independentAxes);
+
+                            if ((window as any).app && typeof (window as any).app.updateNodePositions === 'function') {
+                                (window as any).app.updateNodePositions();
+                            }
+                        }
                         break;
 
                     case 'success': {
@@ -349,7 +385,7 @@ export class LayoutManager {
         });
     }
 
-    applyForceLayout(nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions = {}) {
+    applyForceLayout(nodes: EntityData[], edges: RelationshipData[], fields: FieldData[] = [], options: LayoutOptions = {}) {
         const {
             maxIterations = 100,
             repulsionStrength = 50,
@@ -392,6 +428,7 @@ export class LayoutManager {
 
             // Attraction along edges
             edges.forEach(edge => {
+                if (!edge.source || !edge.target) return;
                 const node1 = nodeMap.get(edge.source);
                 const node2 = nodeMap.get(edge.target);
 
@@ -412,6 +449,56 @@ export class LayoutManager {
                     node2.position.z -= fz;
                 }
             });
+
+            // 3. Fields (Raumkrümmung)
+            if (fields && fields.length > 0) {
+                fields.forEach(field => {
+                    if (!field.center) return;
+                    const cx = field.center.x || 0;
+                    const cy = field.center.y || 0;
+                    const cz = field.center.z || 0;
+                    const influenceR = field.influenceRadius || 100;
+                    const strength = field.strength || 1;
+
+                    nodes.forEach(node => {
+                        // Very simple behavior matching: if field behavior includes "leaves" and node type is "leaf", etc.
+                        // Or if no behavior is specified, apply to all.
+                        if (field.behavior) {
+                            if (!node.behavior || !field.behavior.includes(node.behavior)) {
+                                if (node.type && !field.behavior.includes(node.type)) {
+                                    return; // skip if behavior doesn't match
+                                }
+                            }
+                        }
+
+                        if (!node.position) return;
+                        const dx = cx - node.position.x;
+                        const dy = cy - node.position.y;
+                        const dz = cz - node.position.z;
+                        const distance = Math.sqrt(dx*dx + dy*dy + dz*dz) + 0.01;
+
+                        if (distance <= influenceR) {
+                            // Calculate force. Attractor field pulls (+). Gravitational can push/pull.
+                            let force = 0;
+                            if (field.type === 'attractor_field') {
+                                force = strength * (distance / influenceR); // pull towards center
+                            } else if (field.type === 'gravitational_field') {
+                                force = (strength * 100) / (distance * distance); // inverse square
+                            } else {
+                                force = strength;
+                            }
+
+                            const fx = (dx / distance) * force;
+                            const fy = (dy / distance) * force;
+                            const fz = (dz / distance) * force;
+
+                            node.position.x += fx * damping;
+                            node.position.y += fy * damping;
+                            node.position.z += fz * damping;
+                        }
+                    });
+                });
+            }
         }
 
         const state = (window as any).app?.stateManager?.state;
@@ -499,6 +586,7 @@ export class LayoutManager {
 
             // Calculate attractive forces
             edges.forEach(edge => {
+                if (!edge.source || !edge.target) return;
                 const v = nodeMap.get(edge.source);
                 const u = nodeMap.get(edge.target);
 
@@ -563,6 +651,7 @@ export class LayoutManager {
 
             // Spring forces
             edges.forEach(edge => {
+                if (!edge.source || !edge.target) return;
                 const v1 = nodeMap.get(edge.source);
                 const v2 = nodeMap.get(edge.target);
 
@@ -665,7 +754,7 @@ export class LayoutManager {
         });
 
         edges.forEach(edge => {
-            if (adjacencyList[edge.source]) {
+            if (edge.source && edge.target && adjacencyList[edge.source]) {
                 adjacencyList[edge.source].push(edge.target);
             }
         });
@@ -674,7 +763,7 @@ export class LayoutManager {
         nodes.forEach(node => incomingCount[node.id] = 0);
         edges.forEach(edge => {
             // Safe increment
-            if (incomingCount[edge.target] !== undefined) {
+            if (edge.target && incomingCount[edge.target] !== undefined) {
                 incomingCount[edge.target]++;
             }
         });

@@ -153,7 +153,7 @@ export class StateManager implements IStateManager {
             activeRenderMode: ((typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_render_mode') : null) === 'instance' ? 'instance' : 'mesh') as 'mesh' | 'instance',
 
             // Edge Parameters
-            edgeThickness: 0.1,
+            edgeThickness: 2.0,
             edgeTubularSegments: 20,
             edgeRadialSegments: 8,
             edgeCurveFactor: 0.4,

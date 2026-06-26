@@ -4,6 +4,7 @@
  *
  * Phase 6: Worker und Performance
  */
+import { FieldData } from '../types';
 
 // ============================================================================
 // Gemeinsame Datenstrukturen
@@ -23,6 +24,9 @@ export interface WorkerNode {
     y: number;
     z: number;
     index?: number;
+    attraction?: number;
+    repulsion?: number;
+    inertia?: number;
 }
 
 /** Ergebnis-Position fuer einen Node aus dem Worker */
@@ -62,6 +66,8 @@ export interface LayoutWorkerRequest {
     nodes: WorkerNode[];
     /** Kanten-Daten */
     edges: WorkerEdge[];
+    /** Topodynamische Felder (Build 3) */
+    fields?: FieldData[];
     /** Algorithmus-Optionen */
     options: ForceDirectedOptions;
 }
@@ -85,12 +91,10 @@ export interface LayoutWorkerSuccessResponse {
 export interface LayoutWorkerProgressResponse {
     type: 'progress';
     requestId: string;
-    /** Fortschritt 0-100 */
     progress: number;
-    /** Aktuelle Iteration */
     currentIteration: number;
-    /** Maximale Iterationen */
     maxIterations: number;
+    positions?: WorkerNodeResult[];
 }
 
 /** Fehler-Antwort des Workers */

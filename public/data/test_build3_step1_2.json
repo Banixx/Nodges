@@ -1,0 +1,43 @@
+{
+  "system": "Test Build 3 - Gravitational Field",
+  "metadata": {
+    "version": "1.0",
+    "schemaVersion": "3.0",
+    "author": "Antigravity",
+    "description": "Testet ein Gravitations-Feld (Drueckt Knoten nach aussen/Abstossung)."
+  },
+  "fields": [
+    {
+      "id": "gravity_1",
+      "type": "gravitational_field",
+      "center": { "x": 0, "y": 0, "z": 0 },
+      "strength": -50,
+      "influenceRadius": 100
+    }
+  ],
+  "visualMappings": {
+    "defaultPresets": {
+      "asteroid": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "value": "#ff5500"
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      { "id": "a1", "type": "asteroid", "label": "A1" },
+      { "id": "a2", "type": "asteroid", "label": "A2" },
+      { "id": "a3", "type": "asteroid", "label": "A3" },
+      { "id": "a4", "type": "asteroid", "label": "A4" },
+      { "id": "a5", "type": "asteroid", "label": "A5" }
+    ],
+    "relationships": [
+      { "id": "e1", "type": "bond", "source": "a1", "target": "a2" },
+      { "id": "e2", "type": "bond", "source": "a2", "target": "a3" },
+      { "id": "e3", "type": "bond", "source": "a3", "target": "a4" }
+    ]
+  }
+}

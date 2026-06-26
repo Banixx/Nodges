@@ -19,6 +19,7 @@ import { InfoPanelUI } from '../ui/InfoPanelUI';
 import { EdgeControlsUI } from '../ui/EdgeControlsUI';
 import { VisualMappings } from '../types';
 import { MappingUI } from '../ui/MappingUI';
+import { getAvailableProperties } from './BuildFormatUtils';
 
 interface Bounds {
     x: { min: number, max: number };
@@ -214,14 +215,14 @@ export class UIManager {
         Object.keys(presets).forEach(t => allTypes.add(t));
         
         if (dataModel) {
-            if (dataModel.entities) Object.keys(dataModel.entities).forEach(t => allTypes.add(t));
-            if (dataModel.relationships) Object.keys(dataModel.relationships).forEach(t => allTypes.add(t));
+            if ('entities' in dataModel && dataModel.entities) Object.keys(dataModel.entities).forEach(t => allTypes.add(t));
+            if ('relationships' in dataModel && dataModel.relationships) Object.keys(dataModel.relationships).forEach(t => allTypes.add(t));
         }
 
         const entities = graphData.data?.entities || [];
         entities.forEach((e: any) => {
             if (e.type) allTypes.add(e.type);
-            Object.keys(e).forEach(k => {
+            getAvailableProperties(dataModel, e.type, e).forEach(k => {
                 if (k !== 'position') allNodeAttrs.add(k);
             });
         });
@@ -229,7 +230,7 @@ export class UIManager {
         const relationships = graphData.data?.relationships || [];
         relationships.forEach((r: any) => {
             if (r.type) allTypes.add(r.type);
-            Object.keys(r).forEach(k => {
+            getAvailableProperties(dataModel, r.type, r).forEach(k => {
                 if (k !== 'offset') allEdgeAttrs.add(k);
             });
         });
@@ -245,41 +246,17 @@ export class UIManager {
             keys.add('constant'); // Always include constant
             keys.add('type'); // Always include type
 
-            // 1. Check dataModel
-            if (dataModel) {
-                if (dataModel.entities?.[type]?.properties) {
-                    Object.keys(dataModel.entities[type].properties).forEach(k => {
-                        if (k !== 'position') keys.add(k);
-                    });
-                }
-                if (dataModel.relationships?.[type]?.properties) {
-                    Object.keys(dataModel.relationships[type].properties).forEach(k => {
-                        if (k !== 'offset') keys.add(k);
-                    });
+            const entityOfThisType = entities.find((e: any) => e.type === type);
+            if (entityOfThisType) {
+                getAvailableProperties(dataModel, type, entityOfThisType).forEach(k => keys.add(k));
+            } else {
+                const relOfThisType = relationships.find((r: any) => r.type === type);
+                if (relOfThisType) {
+                    getAvailableProperties(dataModel, type, relOfThisType).forEach(k => keys.add(k));
+                } else {
+                    getAvailableProperties(dataModel, type).forEach(k => keys.add(k));
                 }
             }
-
-            // 2. Scan actual entities of this type
-            entities.forEach((e: any) => {
-                if (e.type === type) {
-                    Object.keys(e).forEach(k => {
-                        if (!['id', 'label', 'position'].includes(k)) {
-                            keys.add(k);
-                        }
-                    });
-                }
-            });
-
-            // 3. Scan actual relationships of this type
-            relationships.forEach((r: any) => {
-                if (r.type === type) {
-                    Object.keys(r).forEach(k => {
-                        if (!['id', 'label', 'source', 'target', 'offset'].includes(k)) {
-                            keys.add(k);
-                        }
-                    });
-                }
-            });
 
             result[type] = Array.from(keys);
         });

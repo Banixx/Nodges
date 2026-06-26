@@ -41,6 +41,7 @@ interface IApp {
     scene: THREE.Scene;
     highlightManager: any;
     updateNodePositions: () => void;
+    currentGraphData?: any;
 }
 
 export class LayoutGUI {
@@ -458,6 +459,7 @@ export class LayoutGUI {
                 layoutName,
                 this.app.currentEntities,
                 this.app.currentRelationships,
+                this.app.currentGraphData?.fields || [],
                 this.currentParameters
             );
 
@@ -466,6 +468,9 @@ export class LayoutGUI {
                 // This triggers 'data_changed' which handles updating Nodes and Edges automatically
                 if (this.app.stateManager) {
                     this.app.stateManager.setGraphData(this.app.currentEntities, this.app.currentRelationships);
+                }
+                if (this.app.updateNodePositions) {
+                    this.app.updateNodePositions();
                 }
             }
         }

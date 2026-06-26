@@ -1,0 +1,49 @@
+# Nodges: Projektvision, Ideen und gesammelte Konzepte
+
+Dieses Dokument fasst die zentralen Visionen, theoretischen Grundlagen, UI/UX-Konzepte und Architekturpläne zusammen, die in verschiedenen Dokumentationen (wie `Nodges_Idee.md`, `01_Einfuehrung_und_Projektvision.md`, `nodges_ideen_mapping.md` und anderen) festgehalten wurden.
+
+## 1. Die Kernvision: Spatial Analytics im Web
+Nodges (aus **NO**des und e**DGES**) ist nicht nur ein Graph-Viewer, sondern eine hochspezialisierte **Spatial Analytics Engine** für den Browser. Die Grundidee basiert auf "Spatial Literacy": Der Mensch denkt räumlich. Nodges übersetzt abstrakte Netzwerke in greifbare 3D-Umgebungen und löst das 2D-"Hairball-Problem" (undurchdringbare Knotenknäuel) durch eine Entzerrung in der Z-Achse. Der Nutzer blickt nicht *auf* die Daten, sondern bewegt sich *inmitten* der Daten.
+
+### "Executable Storytelling" und der Bruch des Monologs
+Ein zentraler Gedanke ist der holistische Ansatz zwischen Autor und Nutzer:
+- **Die kuratierte Basis:** Der Autor eines Datensatzes definiert im JSON-File bereits eine intentionale Darstellung (ein "Cold Start"-Setup). Er führt den Nutzer durch das System.
+- **Interaktiver Diskurs:** Nodges bricht den passiven Medienkonsum auf. Der Nutzer kann die "Show" jederzeit pausieren, das Mapping ändern und das System durch "Inquiry-based Learning" eigenständig explorieren. Hypothesen können direkt im 3D-Raum visuell getestet werden.
+
+## 2. Visuelles Mapping und Semantik
+Das visuelle System in Nodges ist darauf ausgelegt, maximale kognitive Entlastung ("Cognitive Offloading") zu bieten. Das Gehirn soll keine Text-Panels lesen müssen, um Zusammenhänge zu verstehen.
+
+- **Visuelle Metaphern & Semantisches Mapping:** Abstrakte Daten (z.B. Einfluss, Netzwerkstatus, Ausfälle) werden direkt auf physikalische Eigenschaften (Knotengröße, Liniendicke, Leuchteffekte/Glow, Animationspulse) gemappt. Eine hauchdünne Linie steht intuitiv für eine schwache oder abbrechende Verbindung.
+- **Gestaltgesetze in 3D:** Durch das physikbasierte Layout (Force-Directed) und farbliches Mapping gruppiert das System Daten automatisch. Knoten mit ähnlichen Eigenschaften bilden räumlich und farblich erkennbare Wolken (Gesetz der Nähe und Ähnlichkeit).
+- **Signal-Rausch-Verhältnis:** Unwichtige oder inaktive Knoten werden nicht hart gelöscht, sondern per `opacity`-Mapping fast unsichtbar (z.B. 10 % Deckkraft) gemacht. Der Gesamtkontext bleibt erhalten, während das relevante "Signal" kristallklar hervortritt.
+
+## 3. Architektur und Technologie
+Nodges ist "Web-Native" und erfordert keine Installation, was den Einsatz in restriktiven IT-Umgebungen ermöglicht.
+
+- **Tech-Stack:** TypeScript, Three.js, Vite, Zod (für strikte Laufzeitvalidierung von JSON-Daten).
+- **Manager-Orchestrator-Muster:** Eine saubere Trennung von State und Rendering. 
+  - Der `StateManager` fungiert als "Single Source of Truth" inklusive Undo/Redo.
+  - Der `CentralEventManager` übersetzt rohe Browser-Eingaben in semantische Aktionen.
+  - Rechenintensive Layouts laufen parallel in **Web Workern**, um die UI performant zu halten.
+- **Kompromisslose Performance:** Nutzung von Hardware-Instancing (`THREE.InstancedMesh`), um 50.000+ Knoten in einem einzigen Draw-Call auf der GPU zu rendern.
+
+## 4. Konkrete Pläne und UI-Konzepte
+
+### Hybrides Rendermodell (Auto-FPS-Fallback)
+Ein konkreter Plan für das Rendering ist die parallele Unterstützung von `THREE.Mesh` und `THREE.InstancedMesh` (`plan_rendermode.md`).
+- **Mesh-Modus:** Bietet maximale Flexibilität und wird standardmäßig genutzt.
+- **Auto-Modus:** Ein Performance-Monitor überwacht die Framerate. Fällt diese für mehr als 2 Sekunden unter 15 FPS, wechselt Nodges automatisch und nahtlos auf `InstancedMesh`, um massiv Performance zu sparen, bis ein neuer Graph geladen wird.
+
+### Gestufte UI-Komplexität
+Um unterschiedlichen Nutzergruppen gerecht zu werden, bietet die Oberfläche drei Modi:
+1. **Simple:** Für reine Betrachter.
+2. **Expert:** Für Analysten, die tief ins visuelle Mapping eingreifen wollen.
+3. **Dev:** Bietet vollständigen Zugriff auf Systemvariablen, FPS-Monitore und Debug-Tools.
+
+### Mapping-Panel Interaktion (Drill-Down / Filter-Idee)
+Die Kacheln im Mapping-Panel (linke Seitenleiste) listen die Attribute des Systems auf. Klickt man auf eine Kachel (z.B. `type`), entfalten sich die spezifischen Untergruppen bzw. Werte (z.B. "Mensch", "Tier", "Pflanze").
+**Zukünftige Idee:** Mit einem weiteren Klick auf einen spezifischen Wert (z.B. "Mensch") könnte eine exklusive Visualisierung/Filterung angestoßen werden, sodass nur noch Nodes dieses Typs hervorgehoben oder isoliert dargestellt werden.
+**Herausforderung:** Diese direkte Filterung aus dem Mapping-Panel heraus kann schnell zu Verwirrung führen (z.B. wenn Nutzer den Graphen als unvollständig wahrnehmen, weil sie den aktiven Filter vergessen). Eine sehr klare UI-Rückmeldung (z.B. ein auffälliges "Filter aktiv"-Badge) wäre hier zwingend erforderlich.
+
+---
+*Dieses Dokument bündelt die verstreuten konzeptionellen Pläne und dient als Nordstern für zukünftige Architektur- und Design-Entscheidungen.*

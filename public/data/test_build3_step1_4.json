@@ -1,0 +1,42 @@
+{
+  "system": "Test Build 3 - Multi-Sensory Mapping",
+  "metadata": {
+    "version": "1.0",
+    "schemaVersion": "3.0",
+    "author": "Antigravity",
+    "description": "Nutzt 'field' als Alias fuer 'source' im Visual Mapping"
+  },
+  "dataModel": {
+    "properties": {
+      "stateVector.health_status": { "type": "continuous", "range": [0, 100] }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "player": {
+        "color": {
+          "field": "stateVector.health_status",
+          "function": "heatmap",
+          "domain": [0, 100],
+          "palette": "viridis"
+        },
+        "size": {
+          "field": "stateVector.health_status",
+          "function": "linear",
+          "domain": [0, 100],
+          "range": [1, 5]
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      { "id": "p1", "type": "player", "label": "Dead", "stateVector": { "health_status": 0 } },
+      { "id": "p2", "type": "player", "label": "Low Health", "stateVector": { "health_status": 25 } },
+      { "id": "p3", "type": "player", "label": "Half Health", "stateVector": { "health_status": 50 } },
+      { "id": "p4", "type": "player", "label": "High Health", "stateVector": { "health_status": 75 } },
+      { "id": "p5", "type": "player", "label": "Full Health", "stateVector": { "health_status": 100 } }
+    ],
+    "relationships": []
+  }
+}

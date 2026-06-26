@@ -81,11 +81,12 @@ export class VisualOptimizer {
         }
 
         // 7. Optimal Edge Thickness
-        let optimalEdgeThickness = 0.1;
-        if (optimalMultiplier < 0.5) {
-            optimalEdgeThickness = 0.05;
-        } else if (optimalMultiplier > 2.0) {
-            optimalEdgeThickness = 0.15;
+        const numNodes = entities.length;
+        let optimalEdgeThickness = 2.0;
+        if (numNodes > 100) {
+            optimalEdgeThickness = 1.0;
+        } else if (numNodes < 20) {
+            optimalEdgeThickness = 3.0;
         }
 
         return {
@@ -164,6 +165,7 @@ export class VisualOptimizer {
         let count = 0;
 
         relationships.forEach(r => {
+            if (!r.source || !r.target) return;
             const s = entityMap.get(r.source);
             const t = entityMap.get(r.target);
             if (s && t) {

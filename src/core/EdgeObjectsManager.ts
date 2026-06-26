@@ -62,10 +62,8 @@ export class EdgeObjectsManager {
         // 3. Group edges by connection (start-end) to identify duplicates
         const connectionMap = new Map<string, RelationshipData[]>();
 
-        edgesToRender.forEach((edge: any) => {
-            const s = edge.source !== undefined ? edge.source : edge.start;
-            const t = edge.target !== undefined ? edge.target : edge.end;
-
+        const processEdge = (s: any, t: any, edgeData: any) => {
+            if (s === undefined || t === undefined) return;
             const start = s < t ? s : t;
             const end = s < t ? t : s;
             const key = `${start}-${end}`;
@@ -73,7 +71,21 @@ export class EdgeObjectsManager {
             if (!connectionMap.has(key)) {
                 connectionMap.set(key, []);
             }
-            connectionMap.get(key)!.push(edge);
+            connectionMap.get(key)!.push({ ...edgeData, source: s, target: t });
+        };
+
+        edgesToRender.forEach((edge: any) => {
+            if (edge.nodes && Array.isArray(edge.nodes)) {
+                for (let i = 0; i < edge.nodes.length; i++) {
+                    for (let j = i + 1; j < edge.nodes.length; j++) {
+                        processEdge(edge.nodes[i], edge.nodes[j], edge);
+                    }
+                }
+            } else {
+                const s = edge.source !== undefined ? edge.source : edge.start;
+                const t = edge.target !== undefined ? edge.target : edge.end;
+                processEdge(s, t, edge);
+            }
         });
 
         // 4. Render all edges as curved

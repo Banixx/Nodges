@@ -9,6 +9,7 @@ import {
     RelationshipVisualPreset,
     DataModel
 } from '../types';
+import { getPropertySchema, getEntityAttributeValue } from './BuildFormatUtils';
 
 /**
  * VisualMappingEngine - Applies visual mappings to entities and relationships
@@ -98,6 +99,17 @@ export class VisualMappingEngine {
             visual.animation = this.mapToAnimation(preset.animation, entity);
         }
 
+        // Apply physics mapping
+        if (preset.attraction) {
+            visual.attraction = this.applyMapping(preset.attraction, entity);
+        }
+        if (preset.repulsion) {
+            visual.repulsion = this.applyMapping(preset.repulsion, entity);
+        }
+        if (preset.inertia) {
+            visual.inertia = this.applyMapping(preset.inertia, entity);
+        }
+
         return visual;
     }
 
@@ -161,8 +173,10 @@ export class VisualMappingEngine {
     }
 
     private applyMapping(mapping: VisualMapping, data: EntityData | RelationshipData): any {
+        const sourceKey = mapping.field || mapping.source || '';
+        
         // Special case: constant source
-        if (mapping.source === 'constant') {
+        if (sourceKey === 'constant') {
             if (mapping.function === 'pulse') {
                 return this.pulseMapping(1.0, mapping);
             }
@@ -182,7 +196,7 @@ export class VisualMappingEngine {
         }
 
         // Get source value (supports nested properties like "personality.extraversion")
-        let value = this.getNestedProperty(data, mapping.source);
+        let value = this.getNestedProperty(data, sourceKey);
 
         if (value === undefined || value === null) {
             // Return middle of range or default
@@ -217,8 +231,7 @@ export class VisualMappingEngine {
         let domain = mapping.domain;
         if (!domain && this.dataModel && data.type) {
             const entityType = data.type;
-            const propSchema = this.dataModel.entities[entityType]?.properties?.[mapping.source]
-                || this.dataModel.relationships[entityType]?.properties?.[mapping.source];
+            const propSchema = getPropertySchema(this.dataModel, entityType, sourceKey);
             if (propSchema && propSchema.range) {
                 domain = propSchema.range;
             }
@@ -266,6 +279,9 @@ export class VisualMappingEngine {
      * Get nested property from object (e.g., "personality.extraversion")
      */
     private getNestedProperty(obj: any, path: string): any {
+        const formatVal = getEntityAttributeValue(obj as any, path);
+        if (formatVal !== undefined) return formatVal;
+
         return path.split('.').reduce((current, key) => current?.[key], obj);
     }
 
@@ -441,10 +457,12 @@ export class VisualMappingEngine {
     private mapToGeometry(mapping: VisualMapping, data: EntityData): string {
         let geom = 'sphere';
 
-        if (mapping.source === 'constant') {
+        const sourceKey = mapping.field || mapping.source || '';
+
+        if (sourceKey === 'constant') {
             geom = (mapping as any).value || mapping.params?.geometry || 'sphere';
         } else if (mapping.function === 'categorical') {
-            const val = this.getNestedProperty(data, mapping.source);
+            const val = this.getNestedProperty(data, sourceKey);
             if (val !== undefined) {
                 if (mapping.params?.categories) {
                     geom = mapping.params.categories[String(val)] || 'sphere';
@@ -455,7 +473,7 @@ export class VisualMappingEngine {
         } else if (mapping.function === 'sphereComplexity') {
             geom = 'sphere';
         } else {
-            const val = this.getNestedProperty(data, mapping.source);
+            const val = this.getNestedProperty(data, sourceKey);
             if (val !== undefined) {
                 geom = String(val).toLowerCase();
             }
@@ -487,7 +505,10 @@ export class VisualMappingEngine {
             opacity: 1.0,
             thickness: 0.1,
             curvature: 0,
-            animation: undefined
+            animation: undefined,
+            attraction: 0,
+            repulsion: 50, // Default repulsion to avoid overlap
+            inertia: 1.0
         };
     }
 
@@ -503,7 +524,10 @@ export class VisualMappingEngine {
             opacity: 1.0,
             thickness: 0.1,
             curvature: 0,
-            animation: undefined
+            animation: undefined,
+            attraction: 0,
+            repulsion: 50,
+            inertia: 1.0
         };
     }
 }

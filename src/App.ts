@@ -14,6 +14,7 @@ import { NetworkAnalyzer } from './utils/NetworkAnalyzer';
 import { PathFinder } from './utils/PathFinder';
 import { PerformanceOptimizer } from './utils/PerformanceOptimizer';
 import { PerformanceMonitor } from './core/PerformanceMonitor';
+import { TrailManager } from './core/TrailManager';
 import { FileHandler } from './utils/FileHandler';
 import { ImportManager } from './utils/ImportManager';
 import { ExportManager } from './utils/ExportManager';
@@ -79,6 +80,7 @@ export class App {
     public glowEffect!: GlowEffect;
     public nodeManager: NodeManager;
     public edgeObjectsManager: EdgeObjectsManager;
+    public trailManager!: TrailManager;
     public minimapUI!: MinimapUI;
     public minimapCamera!: THREE.OrthographicCamera;
     private minimapZoom: number = 100;
@@ -169,6 +171,9 @@ export class App {
         
         this.edgeObjectsManager = new EdgeObjectsManager(this.container);
         this.container.register('EdgeObjectsManager', this.edgeObjectsManager);
+
+        this.trailManager = new TrailManager(this.container);
+        this.container.register('TrailManager', this.trailManager);
 
         this.init();
     }
@@ -368,6 +373,7 @@ export class App {
         const layoutManager = new LayoutManager();
         this.container.register('LayoutManager', layoutManager);
         this.layoutManager = this.container.get<LayoutManager>('LayoutManager');
+        this.layoutManager.setVisualMappingEngine(this.container.get<VisualMappingEngine>('VisualMappingEngine'));
 
         // Init & Register GlowEffect
         const glowEffect = new GlowEffect();
@@ -717,7 +723,7 @@ export class App {
             }
 
             if (this.layoutManager && !hasPositions) {
-                await this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships);
+                await this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships, this.currentGraphData?.fields || []);
                 this.updateNodePositions();
             }
 
@@ -729,12 +735,14 @@ export class App {
             // Update UI
             if (this.uiManager) {
                 const bounds = this.calculateBounds(this.currentEntities);
+                const buildStr = graphData.metadata?._buildVersion ? `Build ${graphData.metadata._buildVersion} | ` : '';
+                const schemaStr = graphData.metadata?.schemaVersion || '1';
                 this.uiManager.updateFileInfo(
                     sourceName,
                     this.currentEntities.length,
                     this.currentRelationships.length,
                     bounds,
-                    graphData.metadata?.schemaVersion as string
+                    `${buildStr}Schema: ${schemaStr}`
                 );
             }
 
@@ -833,11 +841,15 @@ private rebuildMergedSchema() {
         // Merge all schemas
         this.loadedSchemas.forEach((schema) => {
             if (schema.dataModel) {
-                if (schema.dataModel.entities) {
-                    Object.assign(mergedDataModel.entities, schema.dataModel.entities);
+                if ('entities' in schema.dataModel && schema.dataModel.entities) {
+                    Object.assign((mergedDataModel as any).entities, schema.dataModel.entities);
                 }
-                if (schema.dataModel.relationships) {
-                    Object.assign(mergedDataModel.relationships, schema.dataModel.relationships);
+                if ('relationships' in schema.dataModel && schema.dataModel.relationships) {
+                    Object.assign((mergedDataModel as any).relationships, schema.dataModel.relationships);
+                }
+                if ('properties' in schema.dataModel && schema.dataModel.properties) {
+                    if (!(mergedDataModel as any).properties) (mergedDataModel as any).properties = {};
+                    Object.assign((mergedDataModel as any).properties, schema.dataModel.properties);
                 }
             }
             if (schema.visualMappings && schema.visualMappings.defaultPresets) {
@@ -1080,6 +1092,9 @@ private rebuildMergedSchema() {
         }
         if (this.edgeObjectsManager) {
             this.edgeObjectsManager.updateEdgePositions(this.currentEntities);
+        }
+        if (this.trailManager) {
+            this.trailManager.updateTrails();
         }
         // Update label positions
         if (this.nodeLabelManager) {

@@ -5,6 +5,7 @@ import {
 } from '../types';
 import * as THREE from 'three';
 import { PanelUtils } from '../utils/PanelUtils';
+import { getPropertySchema, getEntityAttributeValue } from '../core/BuildFormatUtils';
 
 export class MappingUI {
     private container: HTMLElement;
@@ -13,7 +14,7 @@ export class MappingUI {
     private rightColumn: HTMLElement;
     private svgOverlay: SVGSVGElement;
     private categoryTabs: HTMLElement;
-    private typeSelect: HTMLSelectElement;
+    private typeTabs: HTMLElement;
 
     private mappings: VisualMappings | null = null;
     private availableAttributes: Record<string, string[]> = {};
@@ -28,6 +29,8 @@ export class MappingUI {
     private isDraggingSlider = false;
 
     private getNestedValue(obj: any, path: string): any {
+        const formatVal = getEntityAttributeValue(obj, path);
+        if (formatVal !== undefined) return formatVal;
         return path.split('.').reduce((current, key) => current?.[key], obj);
     }
 
@@ -59,17 +62,17 @@ export class MappingUI {
                     <button class="mapping-tab active" data-val="entities" style="flex: 1;">Nodes</button>
                     <button class="mapping-tab" data-val="relationships" style="flex: 1;">Edges</button>
                 </div>
-                <select id="mappingTypeSelect" class="mapping-control-select" style="display: none;"></select>
+                <div class="mapping-type-tabs" id="mappingTypeTabs" style="display: flex; gap: 4px; overflow-x: auto; padding-bottom: 2px;"></div>
                 <button id="btnTakeoverMapping" style="display: none; margin-left: auto; font-size: 11px; padding: 4px 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #e0e0e0; cursor: pointer; border-radius: 4px; transition: all 0.2s ease;" title="Übernimmt die mitgelieferten Mappings dieser Datei in deine aktive Konfiguration" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.3)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.1)'">Datei-Mappings übernehmen</button>
             </div>
-            <div class="mapping-body" id="mappingBody" style="gap: 150px;">
-                <div class="mapping-column left" id="mappingLeftCol">
+            <div class="mapping-body" id="mappingBody" style="position: relative; flex: 1; display: flex; gap: 100px; transition: gap 0.4s ease;">
+                <div class="mapping-column left" id="mappingLeftCol" style="flex: 1; transition: flex 0.4s ease; position: relative; z-index: 2;">
                     <div class="mapping-column-title">Attribute (Daten)</div>
                 </div>
-                <div class="mapping-column right" id="mappingRightCol">
+                <div class="mapping-column right" id="mappingRightCol" style="flex: 1; transition: flex 0.4s ease; position: relative; z-index: 2;">
                     <div class="mapping-column-title">Visualisierung</div>
                 </div>
-                <svg class="mapping-svg-overlay" id="mappingSvg"></svg>
+                <svg class="mapping-svg-overlay" id="mappingSvg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></svg>
             </div>
         `;
 
@@ -78,7 +81,7 @@ export class MappingUI {
         this.rightColumn = this.container.querySelector('#mappingRightCol') as HTMLElement;
         this.svgOverlay = this.container.querySelector('#mappingSvg') as SVGSVGElement;
         this.categoryTabs = this.container.querySelector('#categoryTabs') as HTMLElement;
-        this.typeSelect = this.container.querySelector('#mappingTypeSelect') as HTMLSelectElement;
+        this.typeTabs = this.container.querySelector('#mappingTypeTabs') as HTMLElement;
 
         // Toggle logic (Expand/Collapse)
         const toggle = this.container.querySelector('#mappingToggle') as HTMLElement;
@@ -92,11 +95,7 @@ export class MappingUI {
             }
         });
 
-        // Type Select listener
-        this.typeSelect.addEventListener('change', () => {
-            this.currentType = this.typeSelect.value;
-            this.renderColumns();
-        });
+        // The Type Tabs have their own click listeners attached during render
 
         // Takeover Button listener
         const btnTakeover = this.container.querySelector('#btnTakeoverMapping') as HTMLButtonElement;
@@ -175,6 +174,17 @@ export class MappingUI {
         this.relationships = relationships;
         this.onUpdate = onUpdate;
 
+        // Removed Auto-Takeover as requested by the user
+
+        const btnTakeover = this.container.querySelector('#btnTakeoverMapping') as HTMLButtonElement;
+        if (btnTakeover) {
+            if (this.hasOriginalMappingsToTakeover()) {
+                btnTakeover.style.display = 'block';
+            } else {
+                btnTakeover.style.display = 'none';
+            }
+        }
+
         // Sync category if we already have a type selected
         if (!this.currentType) {
             this.currentType = this.currentCategory === 'entities' ? 'global_node' : 'global_edge';
@@ -183,7 +193,7 @@ export class MappingUI {
         } else if (this.currentType === 'global_edge') {
             this.currentCategory = 'relationships';
         } else if (this.dataModel) {
-            if (this.dataModel.relationships && this.dataModel.relationships[this.currentType]) {
+            if ('relationships' in this.dataModel && this.dataModel.relationships && this.dataModel.relationships[this.currentType]) {
                 this.currentCategory = 'relationships';
             } else {
                 this.currentCategory = 'entities';
@@ -200,30 +210,148 @@ export class MappingUI {
 
         // Inform user when loaded: Auto-expand mapping panel
         this.container.classList.remove('collapsed');
+        this.container.style.height = 'auto'; // Reset to auto height for new files
         const toggleBtn = this.container.querySelector('#mappingToggle') as HTMLElement;
         if (toggleBtn) toggleBtn.textContent = '▼';
 
         this.updateTypeSelect();
         this.renderColumns();
+        
+        requestAnimationFrame(() => this.adjustHeightAndMinimap());
+    }
+
+    private activeColumn: 'left' | 'right' | null = null;
+    private activeTileId: string | null = null;
+
+    private animateCurves() {
+        let start = performance.now();
+        const animate = (time: number) => {
+            this.drawCurves();
+            if (time - start < 450) { // 400ms transition + 50ms buffer
+                requestAnimationFrame(animate);
+            }
+        };
+        requestAnimationFrame(animate);
+    }
+
+    private adjustHeightAndMinimap() {
+        if (!this.container || this.container.classList.contains('collapsed')) return;
+        
+        // Give the DOM a moment to reflow if needed
+        setTimeout(() => {
+            const rect = this.container.getBoundingClientRect();
+            // Assuming top: 10px. Minimap is at bottom: 20px, left: 10px. Minimap height ~280px with header.
+            // Screen height minus bottom 300px is where overlap starts.
+            if (rect.bottom > window.innerHeight - 300) {
+                const minimap = document.getElementById('minimapContainer');
+                if (minimap && !minimap.classList.contains('collapsed')) {
+                    minimap.classList.add('collapsed');
+                    const toggle = minimap.querySelector('#minimapToggle');
+                    if (toggle) toggle.textContent = '▲';
+                }
+            }
+        }, 50);
+    }
+
+    private updateColumnWidths() {
+        if (!this.leftColumn || !this.rightColumn || !this.bodyContainer) return;
+        
+        if (this.activeColumn === 'left') {
+            this.leftColumn.style.flex = '4';
+            this.rightColumn.style.flex = '1';
+            this.bodyContainer.style.gap = '20px';
+        } else if (this.activeColumn === 'right') {
+            this.leftColumn.style.flex = '1';
+            this.rightColumn.style.flex = '4';
+            this.bodyContainer.style.gap = '20px';
+        } else {
+            this.leftColumn.style.flex = '1';
+            this.rightColumn.style.flex = '1';
+            this.bodyContainer.style.gap = '100px';
+        }
+        this.animateCurves();
     }
 
     public updateSchema(schemaVersion: string) {
         const badge = this.container.querySelector('#mappingSchemaVersionBadge') as HTMLElement;
         if (badge) {
-            badge.textContent = `Schema: ${schemaVersion}`;
+            badge.textContent = schemaVersion.includes('Build') ? schemaVersion : `Schema: ${schemaVersion}`;
             badge.style.display = 'inline-block';
         }
     }
 
     private updateTypeSelect() {
-        this.typeSelect.innerHTML = '';
-        const globalOpt = document.createElement('option');
-        globalOpt.value = this.currentCategory === 'entities' ? 'global_node' : 'global_edge';
-        this.typeSelect.appendChild(globalOpt);
+        this.typeTabs.innerHTML = '';
         
-        // Force currentType to global
-        this.currentType = globalOpt.value;
-        this.typeSelect.value = this.currentType;
+        const typesList: { value: string, text: string }[] = [];
+        
+        // Add global fallback type first
+        typesList.push({
+            value: this.currentCategory === 'entities' ? 'global_node' : 'global_edge',
+            text: this.currentCategory === 'entities' ? 'Alle Knoten' : 'Alle Kanten'
+        });
+        
+        const uniqueTypes = new Set<string>();
+        const items = this.currentCategory === 'entities' ? this.entities : this.relationships;
+        items.forEach(item => {
+            if (item.type) {
+                uniqueTypes.add(item.type);
+            }
+        });
+
+        // Also add types from dataModel just in case they have no entities yet
+        if (this.dataModel) {
+            const types = this.currentCategory === 'entities' 
+                ? ('entities' in this.dataModel ? this.dataModel.entities : null)
+                : ('relationships' in this.dataModel ? this.dataModel.relationships : null);
+            if (types) {
+                Object.keys(types).forEach(type => uniqueTypes.add(type));
+            }
+        }
+
+        uniqueTypes.forEach(type => {
+            typesList.push({ value: type, text: type });
+        });
+
+        // Keep currentType if it exists in the new options, otherwise default to global
+        let typeExists = typesList.some(t => t.value === this.currentType);
+        
+        if (!typeExists) {
+            // Auto-select the first specific type if available, otherwise fallback to global
+            const firstSpecificType = Array.from(uniqueTypes)[0];
+            if (firstSpecificType && firstSpecificType !== typesList[0].value) {
+                this.currentType = firstSpecificType;
+            } else {
+                this.currentType = typesList[0].value;
+            }
+        }
+
+        // Render tabs
+        typesList.forEach(t => {
+            const btn = document.createElement('button');
+            btn.className = `mapping-type-tab ${this.currentType === t.value ? 'active' : ''}`;
+            btn.style.cssText = `
+                flex: 0 0 auto;
+                font-size: 11px;
+                padding: 4px 8px;
+                background: ${this.currentType === t.value ? 'rgba(255, 165, 0, 0.2)' : 'rgba(255, 255, 255, 0.05)'};
+                color: ${this.currentType === t.value ? '#ffa500' : '#e0e0e0'};
+                border: 1px solid ${this.currentType === t.value ? 'rgba(255, 165, 0, 0.5)' : 'rgba(255, 255, 255, 0.1)'};
+                border-radius: 4px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            `;
+            btn.textContent = t.text;
+            btn.onclick = () => {
+                this.currentType = t.value;
+                this.updateTypeSelect(); // Re-render tabs to update active state
+                this.renderColumns();
+            };
+            this.typeTabs.appendChild(btn);
+        });
+
+        // Hide typeTabs permanently as requested by the user
+        this.typeTabs.style.display = 'none';
     }
 
     private renderColumns() {
@@ -314,14 +442,13 @@ export class MappingUI {
                 stats.className = 'mapping-item-stats';
                 stats.style.fontSize = '9px';
                 stats.style.color = 'var(--text-muted)';
-                const labelNoun = isEntityType ? (presenceCount === 1 ? 'Node' : 'Nodes') : (presenceCount === 1 ? 'Kante' : 'Kanten');
                 
-                let statsText = `${presenceCount} ${labelNoun} • ${uniqueValues.size} versch. Werte`;
+                let statsText = `${presenceCount} • ${uniqueValues.size} Werte`;
                 if (hasNumeric && minVal !== Infinity && maxVal !== -Infinity) {
                     const formatNum = (num: number) => Number.isInteger(num) ? num.toString() : num.toFixed(2);
                     statsText += ` • [${formatNum(minVal)} ... ${formatNum(maxVal)}]`;
                 } else if (uniqueValues.size > 0 && !hasNumeric) {
-                    statsText += ` (Text/Kategorie)`;
+                    statsText += ` (Text)`;
                 }
 
                 stats.textContent = statsText;
@@ -370,19 +497,48 @@ export class MappingUI {
 
                     // Add click event to toggle
                     item.style.cursor = 'pointer';
-                    item.addEventListener('click', (e) => {
-                        // Prevent toggle if clicking on the drag dot
-                        if ((e.target as HTMLElement).classList.contains('snapdot')) return;
-                        
+                    
+                    const expandItem = () => {
                         if (valuesContainer.style.display === 'none') {
                             valuesContainer.style.display = 'block';
                             item.style.backgroundColor = 'rgba(255,255,255,0.1)';
-                        } else {
+                            requestAnimationFrame(() => {
+                                this.drawCurves();
+                                this.adjustHeightAndMinimap();
+                            });
+                        }
+                    };
+                    
+                    const collapseItem = () => {
+                        if (valuesContainer.style.display !== 'none') {
                             valuesContainer.style.display = 'none';
                             item.style.backgroundColor = '';
+                            requestAnimationFrame(() => {
+                                this.drawCurves();
+                                this.adjustHeightAndMinimap();
+                            });
                         }
-                        // Need to redraw curves when panel height changes
-                        requestAnimationFrame(() => this.drawCurves());
+                    };
+
+                    item.addEventListener('mouseenter', expandItem);
+                    item.addEventListener('mouseleave', () => {
+                        if (this.activeTileId !== 'left_' + attr) {
+                            collapseItem();
+                        }
+                    });
+
+                    item.addEventListener('click', (e) => {
+                        if ((e.target as HTMLElement).classList.contains('snapdot')) return;
+                        
+                        if (this.activeTileId === 'left_' + attr) {
+                            this.activeTileId = null;
+                            this.activeColumn = null;
+                        } else {
+                            this.activeTileId = 'left_' + attr;
+                            this.activeColumn = 'left';
+                            expandItem();
+                        }
+                        this.updateColumnWidths();
                     });
                 }
             }
@@ -404,7 +560,7 @@ export class MappingUI {
         
         const isEntity = this.currentCategory === 'entities';
         const visualProps = isEntity
-            ? ['positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation']
+            ? ['positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation', 'attraction', 'repulsion', 'inertia']
             : ['thickness', 'color', 'curvature', 'glow', 'opacity', 'animation'];
 
             const propTranslations: Record<string, string> = {
@@ -418,7 +574,10 @@ export class MappingUI {
                 animation: 'Animation',
                 thickness: 'Linienstärke',
                 curvature: 'Krümmung',
-                opacity: 'Deckkraft'
+                opacity: 'Deckkraft',
+                attraction: 'Anziehungskraft (Pull)',
+                repulsion: 'Abstoßungskraft (Push)',
+                inertia: 'Trägheit (Mass)'
             };
 
             visualProps.forEach(prop => {
@@ -450,27 +609,59 @@ export class MappingUI {
                 // The disconnect button (red X) was removed per request
 
 
-                // Show the gear icon on all mapping items so users can expand constant values too!
+                // Show the 3 dots icon
                 const gear = document.createElement('span');
                 gear.className = 'mapping-item-gear';
-                gear.textContent = '⚙️';
+                gear.textContent = '⋮';
+                gear.style.fontSize = '14px';
+                gear.style.marginLeft = '4px';
                 actions.appendChild(gear);
                 
                 header.appendChild(actions);
 
-                // Toggle expansion
+                const expandRightItem = () => {
+                    if (!item.classList.contains('expanded')) {
+                        item.classList.add('expanded');
+                        this.expandedProps.add(prop);
+                        requestAnimationFrame(() => {
+                            this.drawCurves();
+                            this.adjustHeightAndMinimap();
+                        });
+                    }
+                };
+
+                const collapseRightItem = () => {
+                    if (item.classList.contains('expanded')) {
+                        item.classList.remove('expanded');
+                        this.expandedProps.delete(prop);
+                        requestAnimationFrame(() => {
+                            this.drawCurves();
+                            this.adjustHeightAndMinimap();
+                        });
+                    }
+                };
+
+                item.addEventListener('mouseenter', expandRightItem);
+                item.addEventListener('mouseleave', () => {
+                    if (this.activeTileId !== 'right_' + prop) {
+                        collapseRightItem();
+                    }
+                });
+
+                // Toggle expansion and column focus
                 header.onclick = (e) => {
                     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.target instanceof HTMLOptionElement) {
                         return;
                     }
-                    if (item.classList.contains('expanded')) {
-                        item.classList.remove('expanded');
-                        this.expandedProps.delete(prop);
+                    if (this.activeTileId === 'right_' + prop) {
+                        this.activeTileId = null;
+                        this.activeColumn = null;
                     } else {
-                        item.classList.add('expanded');
-                        this.expandedProps.add(prop);
+                        this.activeTileId = 'right_' + prop;
+                        this.activeColumn = 'right';
+                        expandRightItem();
                     }
-                    this.drawCurves();
+                    this.updateColumnWidths();
                 };
 
                 item.appendChild(header);
@@ -523,13 +714,8 @@ export class MappingUI {
                     if (mapping.function !== 'categorical') {
                         // 2. Domain Min/Max
                         let defaultDomain: [number, number] = [0, 1];
-                        if (this.dataModel && this.dataModel.entities && this.dataModel.entities[this.currentType]) {
-                            const propSchema = this.dataModel.entities[this.currentType].properties?.[mapping.source];
-                            if (propSchema && propSchema.range) {
-                                defaultDomain = propSchema.range;
-                            }
-                        } else if (this.dataModel && this.dataModel.relationships && this.dataModel.relationships[this.currentType]) {
-                            const propSchema = this.dataModel.relationships[this.currentType].properties?.[mapping.source];
+                        if (this.dataModel) {
+                            const propSchema = getPropertySchema(this.dataModel, this.currentType, mapping.source || mapping.field || '');
                             if (propSchema && propSchema.range) {
                                 defaultDomain = propSchema.range;
                             }
@@ -604,7 +790,7 @@ export class MappingUI {
                         palSelect.onchange = () => {
                             let updates: any = { palette: palSelect.value };
                             if (mapping.function === 'categorical' && prop === 'color') {
-                                const uniqueValues = this.getAttributeUniqueValues(mapping.source);
+                                const uniqueValues = this.getAttributeUniqueValues(mapping.source || mapping.field || '');
                                 updates.params = { ...(mapping.params || {}), categories: this.generateCategoricalColors(uniqueValues, palSelect.value) };
                             }
                             this.updatePropertyMapping(prop, updates);
@@ -940,8 +1126,8 @@ export class MappingUI {
                 const preset = this.mappings!.defaultPresets[t];
                 if (preset) {
                     Object.entries(preset).forEach(([prop, mapping]) => {
-                        if (typeof mapping === 'object' && mapping !== null && 'source' in mapping) {
-                            const sourceAttr = (mapping as VisualMapping).source;
+                        if (typeof mapping === 'object' && mapping !== null && ('source' in mapping || 'field' in mapping)) {
+                            const sourceAttr = (mapping as VisualMapping).source || (mapping as VisualMapping).field;
                             if (sourceAttr && sourceAttr !== 'constant') {
                                 activeLines.add(`${sourceAttr}|${prop}`);
                                 activeProps.add(prop);
@@ -958,8 +1144,8 @@ export class MappingUI {
                 const preset = this.originalMappings!.defaultPresets[t];
                 if (preset) {
                     Object.entries(preset).forEach(([prop, mapping]) => {
-                        if (typeof mapping === 'object' && mapping !== null && 'source' in mapping) {
-                            const sourceAttr = (mapping as VisualMapping).source;
+                        if (typeof mapping === 'object' && mapping !== null && ('source' in mapping || 'field' in mapping)) {
+                            const sourceAttr = (mapping as VisualMapping).source || (mapping as VisualMapping).field;
                             // Only add if not overridden by any active mapping for this property
                             if (sourceAttr && sourceAttr !== 'constant' && !activeProps.has(prop)) {
                                 originalLines.add(`${sourceAttr}|${prop}`);
@@ -996,7 +1182,7 @@ export class MappingUI {
             const hasMappings = this.hasOriginalMappingsToTakeover();
             btnTakeover.style.display = hasMappings ? 'block' : 'none';
             if (hasMappings) {
-                btnTakeover.textContent = `Übernehmen (T:${typesToCheck.length} E:${this.entities.length} O:${originalLines.size})`;
+                btnTakeover.textContent = `Datei-Mappings übernehmen`;
             }
         }
     }
@@ -1008,10 +1194,14 @@ export class MappingUI {
             const preset = this.originalMappings.defaultPresets[type] as any;
             for (const prop in preset) {
                 const map = preset[prop] as VisualMapping;
-                if (map && map.source && map.source !== 'constant') {
+                let sourceAttr = map?.source || map?.field;
+                if (map && sourceAttr && sourceAttr !== 'constant') {
+                    sourceAttr = sourceAttr.replace(/^stateVector\./, '');
                     // Check if already in active mappings
                     const activePreset = this.mappings?.defaultPresets?.[type] as any;
-                    if (!activePreset || !activePreset[prop] || (activePreset[prop] as VisualMapping).source !== map.source) {
+                    let activeSource = activePreset && activePreset[prop] ? ((activePreset[prop] as VisualMapping).source || (activePreset[prop] as VisualMapping).field) : null;
+                    if (activeSource) activeSource = activeSource.replace(/^stateVector\./, '');
+                    if (!activePreset || !activePreset[prop] || activeSource !== sourceAttr) {
                         return true;
                     }
                 }
@@ -1034,8 +1224,12 @@ export class MappingUI {
             const preset = this.originalMappings!.defaultPresets[type] as any;
             Object.keys(preset).forEach(prop => {
                 const map = preset[prop] as VisualMapping;
-                if (map && map.source && map.source !== 'constant') {
-                    (this.mappings!.defaultPresets[type] as any)[prop] = JSON.parse(JSON.stringify(map));
+                let sourceAttr = map?.source || map?.field;
+                if (map && sourceAttr && sourceAttr !== 'constant') {
+                    const mapCopy = JSON.parse(JSON.stringify(map));
+                    if (mapCopy.source) mapCopy.source = mapCopy.source.replace(/^stateVector\./, '');
+                    if (mapCopy.field) mapCopy.field = mapCopy.field.replace(/^stateVector\./, '');
+                    (this.mappings!.defaultPresets[type] as any)[prop] = mapCopy;
                 }
             });
         });
@@ -1048,7 +1242,9 @@ export class MappingUI {
     }
 
     private drawCurve(sourceAttr: string, prop: string, className: string, isInteractive: boolean, isOriginal: boolean = false) {
-        const leftDot = this.leftColumn.querySelector(`.snapdot[data-attr="${sourceAttr}"]`) as HTMLElement;
+        // Build 2/3 imported mappings might have "stateVector.group", but UI displays "group"
+        const normalizedAttr = sourceAttr.replace(/^stateVector\./, '');
+        const leftDot = this.leftColumn.querySelector(`.snapdot[data-attr="${normalizedAttr}"]`) as HTMLElement;
         const rightDot = this.rightColumn.querySelector(`.snapdot[data-prop="${prop}"]`) as HTMLElement;
 
         if (leftDot && rightDot) {
@@ -1075,6 +1271,11 @@ export class MappingUI {
             const visiblePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             visiblePath.setAttribute('class', className);
             visiblePath.setAttribute('d', dStr);
+            if (isOriginal) {
+                visiblePath.setAttribute('stroke-dasharray', '5,5');
+                visiblePath.style.stroke = 'rgba(255, 255, 255, 0.4)'; // Ensure it's visibly a dashed line, regardless of external CSS
+                visiblePath.style.strokeWidth = '2px';
+            }
             
             const hitAreaPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             hitAreaPath.setAttribute('class', 'mapping-curve-hitarea');
@@ -1394,7 +1595,7 @@ export class MappingUI {
         container.style.borderRadius = '6px';
         container.style.border = '1px solid rgba(255,255,255,0.05)';
         
-        const [absMin, absMax] = this.getAttributeDataBounds(mapping.source);
+        const [absMin, absMax] = this.getAttributeDataBounds(mapping.source || mapping.field || '');
         let domMin = mapping.domain ? mapping.domain[0] : absMin;
         let domMax = mapping.domain ? mapping.domain[1] : absMax;
         let rngMin = mapping.range ? mapping.range[0] : 0.1;
@@ -1641,14 +1842,14 @@ export class MappingUI {
             );
         } else if (mode === 'OptionC') {
             // Option C: Density Histogram / Sparkline Overlay
-            const isEntityType = this.dataModel?.entities?.[this.currentType] !== undefined;
+            const isEntityType = this.currentCategory === 'entities';
             const currentDataItems = isEntityType ? this.entities : this.relationships;
             const bins = new Array(10).fill(0);
             let maxBinCount = 1;
 
             currentDataItems.forEach(item => {
                 if (item.type === this.currentType) {
-                    const val = parseFloat(this.getNestedValue(item, mapping.source));
+                    const val = parseFloat(this.getNestedValue(item, mapping.source || mapping.field || ''));
                     if (!isNaN(val)) {
                         const pct = (absMax > absMin) ? (val - absMin) / (absMax - absMin) : 0.5;
                         const binIdx = Math.max(0, Math.min(9, Math.floor(pct * 10)));
