@@ -624,6 +624,10 @@ export class ImportManager {
             throw new Error('Invalid data format: expected object');
         }
 
+        // Extract nodes and edges supporting multiple schema versions
+        const rawNodes = data.nodes || (data.dataModel && data.dataModel.entities) || (data.data && data.data.entities) || data.entities || [];
+        const rawEdges = data.edges || (data.dataModel && data.dataModel.relationships) || (data.data && data.data.relationships) || data.relationships || [];
+
         // Ensure required structure
         const normalized: ImportedData = {
             metadata: data.metadata || {
@@ -632,8 +636,8 @@ export class ImportManager {
                 nodeCount: 0,
                 edgeCount: 0
             },
-            nodes: data.nodes || [],
-            edges: data.edges || []
+            nodes: rawNodes,
+            edges: rawEdges
         };
 
         if (!normalized.metadata.schemaVersion) {

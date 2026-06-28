@@ -54,6 +54,8 @@ export interface UIState {
     visualScaleMultiplier: number;
     autoBalanceEnabled: boolean;
     normalizeCoordinatesEnabled: boolean;
+    cameraFitMargin: number;
+    cameraTransitionDuration: number;
     layer1Visible: boolean;
     layer2Visible: boolean;
     layer3Visible: boolean;
@@ -191,6 +193,8 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     visualScaleMultiplier: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
     autoBalanceEnabled: [STATE_CATEGORIES.UI],
     normalizeCoordinatesEnabled: [STATE_CATEGORIES.UI],
+    cameraFitMargin: [STATE_CATEGORIES.UI],
+    cameraTransitionDuration: [STATE_CATEGORIES.UI],
     layer1Visible: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
     layer2Visible: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
     layer3Visible: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],

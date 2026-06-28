@@ -56,8 +56,8 @@ export class EdgeObjectsManager {
         this.dispose();
 
         // 2. Map nodes for fast lookup
-        const nodeMap = new Map<string | number, EntityData>();
-        nodesToUse.forEach(node => nodeMap.set(node.id, node));
+        const nodeMap = new Map<string, EntityData>();
+        nodesToUse.forEach(node => nodeMap.set(String(node.id), node));
 
         // 3. Group edges by connection (start-end) to identify duplicates
         const connectionMap = new Map<string, RelationshipData[]>();
@@ -91,8 +91,8 @@ export class EdgeObjectsManager {
         // 4. Render all edges as curved
         connectionMap.forEach((group, connectionKey) => {
             group.forEach((edgeData: any, index) => {
-                const s = edgeData.source !== undefined ? edgeData.source : edgeData.start;
-                const t = edgeData.target !== undefined ? edgeData.target : edgeData.end;
+                const s = String(edgeData.source !== undefined ? edgeData.source : edgeData.start);
+                const t = String(edgeData.target !== undefined ? edgeData.target : edgeData.end);
 
                 const startNode = nodeMap.get(s);
                 const endNode = nodeMap.get(t);
@@ -239,12 +239,12 @@ export class EdgeObjectsManager {
     }
 
     public updateEdgePositions(nodes: EntityData[]) {
-        const nodeMap = new Map<string | number, EntityData>();
-        nodes.forEach(node => nodeMap.set(node.id, node));
+        const nodeMap = new Map<string, EntityData>();
+        nodes.forEach(node => nodeMap.set(String(node.id), node));
 
         this.edges.forEach(edgeObj => {
-            const startNode = nodeMap.get(edgeObj.options.start);
-            const endNode = nodeMap.get(edgeObj.options.end);
+            const startNode = nodeMap.get(String(edgeObj.options.start));
+            const endNode = nodeMap.get(String(edgeObj.options.end));
 
             if (startNode && endNode) {
                 const startPos = this.getNodePosition(startNode);

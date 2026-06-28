@@ -8,6 +8,7 @@ import { InteractionManager } from './core/InteractionManager';
 import { LayoutManager } from './core/LayoutManager';
 import { UIManager } from './core/UIManager';
 import { MinimapUI } from './ui/MinimapUI';
+import { SuggestionUI } from './ui/SuggestionUI';
 import { SelectionManager } from './utils/SelectionManager';
 import { RaycastManager } from './utils/RaycastManager';
 import { NetworkAnalyzer } from './utils/NetworkAnalyzer';
@@ -28,6 +29,7 @@ import { LayoutGUI } from './ui/LayoutGUI';
 import { HighlightManager } from './effects/HighlightManager';
 import { GlowEffect } from './effects/GlowEffect';
 import { EdgeObjectsManager } from './core/EdgeObjectsManager';
+import { CameraManager } from './core/CameraManager';
 import { DataParser } from './core/DataParser';
 import { VisualMappingEngine } from './core/VisualMappingEngine';
 import { IStateManager, IEventManager } from './core/interfaces';
@@ -80,8 +82,10 @@ export class App {
     public glowEffect!: GlowEffect;
     public nodeManager: NodeManager;
     public edgeObjectsManager: EdgeObjectsManager;
+    public cameraManager!: CameraManager;
     public trailManager!: TrailManager;
     public minimapUI!: MinimapUI;
+    public suggestionUI!: SuggestionUI;
     public minimapCamera!: THREE.OrthographicCamera;
     private minimapZoom: number = 100;
     private minimapCenter: THREE.Vector2 = new THREE.Vector2(0, 0);
@@ -171,6 +175,9 @@ export class App {
         
         this.edgeObjectsManager = new EdgeObjectsManager(this.container);
         this.container.register('EdgeObjectsManager', this.edgeObjectsManager);
+
+        this.cameraManager = new CameraManager(this.container);
+        this.container.register('CameraManager', this.cameraManager);
 
         this.trailManager = new TrailManager(this.container);
         this.container.register('TrailManager', this.trailManager);
@@ -487,6 +494,7 @@ export class App {
 
         try {
             this.minimapUI = new MinimapUI('minimapContainer');
+            this.suggestionUI = new SuggestionUI('suggestionContainer');
 
             // Interaction Callbacks
             this.minimapUI.onZoom = (delta: number) => {
@@ -508,6 +516,7 @@ export class App {
             // Minimap Camera Setup
             this.minimapCamera = new THREE.OrthographicCamera(-100, 100, 100, -100, 0.1, 2000);
             this.minimapCamera.position.set(0, 500, 0);
+            this.minimapCamera.up.set(0, 0, -1);
             this.minimapCamera.lookAt(0, 0, 0);
             this.minimapCamera.layers.disableAll();
             this.minimapCamera.layers.enable(0); // View Ground on Layer 0
@@ -570,6 +579,7 @@ export class App {
         this.minimapCamera.bottom = -d;
 
         this.minimapCamera.position.set(this.minimapCenter.x, 500, this.minimapCenter.y);
+        this.minimapCamera.up.set(0, 0, -1);
         this.minimapCamera.lookAt(this.minimapCenter.x, 0, this.minimapCenter.y);
 
         this.minimapCamera.updateProjectionMatrix();
@@ -650,8 +660,13 @@ export class App {
                 visualMappings: graphData.visualMappings
             });
 
-            // Prevent JSON mappings from automatically becoming active mappings
-            graphData.visualMappings = { defaultPresets: {} };
+            // Save original mappings for suggestions/preview
+            const originalMappings = graphData.visualMappings ? JSON.parse(JSON.stringify(graphData.visualMappings)) : null;
+            
+            // If appending, don't automatically apply the new file's mappings to the entire graph
+            if (append) {
+                graphData.visualMappings = { defaultPresets: {} };
+            }
 
             this.stateManager.update({
                 selectedObject: null,
@@ -684,9 +699,6 @@ export class App {
                 this.currentGraphData = graphData;
             }
 
-            // Rebuild and merge schemas from all loaded files
-            this.rebuildMergedSchema();
-
             // Store data directly
             if (append) {
                 this.currentEntities = [...this.currentEntities, ...graphData.data.entities];
@@ -695,6 +707,12 @@ export class App {
                 this.currentEntities = graphData.data.entities;
                 this.currentRelationships = graphData.data.relationships;
             }
+
+            // Calculate Derived Data (Physics / Metrics)
+            this.calculateDerivedData();
+
+            // Rebuild and merge schemas from all loaded files (updates UI)
+            this.rebuildMergedSchema();
 
             // Compute structural metrics
             this.computeGraphMetrics(this.currentEntities, this.currentRelationships);
@@ -708,9 +726,11 @@ export class App {
             console.log(`[App] Creating edges... (${this.currentRelationships.length})`);
             await this.createEdges();
 
-            // Only apply layout if entities don't have positions
-            const hasPositions = this.currentEntities.every(e =>
-                e.position && e.position.x !== undefined && e.position.y !== undefined && e.position.z !== undefined
+            // Only apply layout if entities don't have valid positions
+            // Wir prüfen ob wenigstens ein Knoten eine valide Position ungleich 0,0,0 hat,
+            // um zu verhindern, dass mitgelieferte Positionen überschrieben werden.
+            const hasPositions = this.currentEntities.some(e =>
+                e.position && (Math.abs(e.position.x) > 0.001 || Math.abs(e.position.y) > 0.001 || Math.abs(e.position.z) > 0.001)
             );
 
             // Store flag to prevent overwriting these explicit positions later
@@ -743,6 +763,45 @@ export class App {
                     this.currentRelationships.length,
                     bounds,
                     `${buildStr}Schema: ${schemaStr}`
+                );
+            }
+
+            // Bind SuggestionUI
+            if (this.suggestionUI) {
+                this.suggestionUI.bind(
+                    graphData.dataModel || null,
+                    originalMappings || null,
+                    (mapping) => {
+                        // Apply permanent mapping (Takeover)
+                        this.updateVisualMappings(mapping);
+                        if (this.uiManager && this.uiManager.mappingUI) {
+                            // Update MappingUI to reflect the newly taken over mappings
+                            this.uiManager.mappingUI.bind(
+                                mapping,
+                                this.uiManager.getAvailableAttributes(),
+                                this.currentGraphData?.dataModel || null,
+                                this.currentEntities,
+                                this.currentRelationships,
+                                originalMappings || null,
+                                (newMappings) => {
+                                    this.updateVisualMappings(newMappings);
+                                }
+                            );
+                        }
+                    },
+                    (mapping) => {
+                        // Preview temporary mapping
+                        if (mapping) {
+                            this.visualMappingEngine.setVisualMappings(mapping);
+                        } else {
+                            // Revert to active mappings from state
+                            this.visualMappingEngine.setVisualMappings(this.stateManager.state.visualMappings || { defaultPresets: {} });
+                        }
+                        this.updateNodePositions();
+                        if (this.edgeObjectsManager) {
+                            this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
+                        }
+                    }
                 );
             }
 
@@ -796,6 +855,39 @@ export class App {
         await this.loadData(url, true);
     }
 
+    private calculateDerivedData() {
+        console.log('[App] Calculating derived data (degree, inbound, outbound)...');
+        const nodeMap = new Map<string, EntityData>();
+        
+        this.currentEntities.forEach(node => {
+            nodeMap.set(String(node.id), node);
+            if (!node.stateVector) node.stateVector = {};
+            // Initialize
+            node.stateVector.degree = 0;
+            node.stateVector.inbound = 0;
+            node.stateVector.outbound = 0;
+        });
+
+        this.currentRelationships.forEach(edge => {
+            const s = String(edge.source !== undefined ? edge.source : edge.start);
+            const t = String(edge.target !== undefined ? edge.target : edge.end);
+
+            const sourceNode = nodeMap.get(s);
+            const targetNode = nodeMap.get(t);
+
+            if (sourceNode) {
+                if (!sourceNode.stateVector) sourceNode.stateVector = {};
+                sourceNode.stateVector.outbound = (sourceNode.stateVector.outbound || 0) + 1;
+                sourceNode.stateVector.degree = (sourceNode.stateVector.degree || 0) + 1;
+            }
+            if (targetNode) {
+                if (!targetNode.stateVector) targetNode.stateVector = {};
+                targetNode.stateVector.inbound = (targetNode.stateVector.inbound || 0) + 1;
+                targetNode.stateVector.degree = (targetNode.stateVector.degree || 0) + 1;
+            }
+        });
+    }
+
     public updateVisualMappings(mappings: VisualMappings) {
         console.log('[App] Updating visual mappings...');
         if (this.currentGraphData) {
@@ -804,14 +896,38 @@ export class App {
         this.visualMappingEngine.setVisualMappings(mappings);
         this.stateManager.update({ visualMappings: mappings });
         
+        // Update graphics
+        this.updateNodePositions();
+        if (this.edgeObjectsManager) {
+            this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
+        }
+
+        // Auto-Trigger Layout if physics are mapped
+        let hasPhysicsMappings = false;
+        const presets = mappings.defaultPresets || {};
+        Object.values(presets).forEach((preset: any) => {
+            if (preset.attraction || preset.repulsion || preset.inertia) {
+                hasPhysicsMappings = true;
+            }
+        });
+
+        if (hasPhysicsMappings && this.layoutManager) {
+            console.log('[App] Physics mappings detected. Auto-triggering layout...');
+            this.layoutManager.stopAnimation();
+            this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships, this.currentGraphData?.fields || [])
+                .then(() => {
+                    this.fitCameraToScene();
+                });
+        } else {
+            // Wenn keine Physik aktiv ist, wurden die Knoten evtl. direkt positioniert. Kamera anpassen!
+            setTimeout(() => {
+                this.fitCameraToScene();
+            }, 50);
+        }
+
         // Re-apply to nodes
         if (this.nodeManager) {
             this.nodeManager.updateNodes();
-        }
-
-        // Re-apply to edges
-        if (this.edgeObjectsManager) {
-            this.edgeObjectsManager.updateEdges();
         }
 
         // Re-apply label positions (since positionX/Y/Z mapping could have moved them)
@@ -1154,6 +1270,14 @@ private rebuildMergedSchema() {
                     this.edgeLabelManager.refreshAllLabels();
                 }
             }
+
+            // Immediately apply camera fit margin when slider changes
+            if ((this as any)._lastCameraFitMargin !== state.cameraFitMargin) {
+                (this as any)._lastCameraFitMargin = state.cameraFitMargin;
+                if (this.currentEntities && this.currentEntities.length > 0) {
+                    this.fitCameraToScene();
+                }
+            }
         }, 'ui');
 
         // Dev Panel settings subscription
@@ -1172,34 +1296,11 @@ private rebuildMergedSchema() {
     fitCameraToScene() {
         if (this.currentEntities.length === 0) return;
         const bounds = this.calculateBounds(this.currentEntities);
-
-        const center = new THREE.Vector3(
-            (bounds.x.min + bounds.x.max) / 2,
-            (bounds.y.min + bounds.y.max) / 2,
-            (bounds.z.min + bounds.z.max) / 2
+        this.cameraManager.fitToBoundingBox(
+            bounds,
+            this.stateManager.state.cameraFitMargin,
+            this.stateManager.state.cameraTransitionDuration
         );
-
-        const maxDimension = Math.max(
-            bounds.x.max - bounds.x.min,
-            bounds.y.max - bounds.y.min,
-            bounds.z.max - bounds.z.min
-        );
-
-        // Calculate optimal camera distance based on network size and FOV
-        const fov = this.camera.fov * (Math.PI / 180);
-        const distance = Math.max(5, Math.abs(maxDimension / Math.sin(fov / 2)));
-
-        // Position camera
-        const cameraPos = new THREE.Vector3(
-            center.x + distance,
-            center.y + distance,
-            center.z + distance
-        );
-        this.camera.position.copy(cameraPos);
-
-        this.camera.lookAt(center);
-        this.controls.target.copy(center);
-        this.controls.update();
     }
 
     animate() {
@@ -1219,6 +1320,10 @@ private rebuildMergedSchema() {
 
         if (this.edgeObjectsManager) {
             this.edgeObjectsManager.animate();
+        }
+
+        if (this.cameraManager) {
+            this.cameraManager.update();
         }
 
         // Update label managers

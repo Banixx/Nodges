@@ -47,3 +47,7 @@ Die Kacheln im Mapping-Panel (linke Seitenleiste) listen die Attribute des Syste
 
 ---
 *Dieses Dokument bündelt die verstreuten konzeptionellen Pläne und dient als Nordstern für zukünftige Architektur- und Design-Entscheidungen.*
+
+## 5. Externe Physik-Bibliothek zur Skalierung (d3-force-3d)
+**Problem:** Der N-Body-Algorithmus (Force-Directed Layout) im Worker berechnet Kräfte aktuell in einer $O(N^2)$ Schleife, was bei großen Graphen (z.B. > 1000 Knoten) zu Ruckeln und Performance-Einbrüchen führt.
+**Lösungsansatz:** Sobald Skalierungsprobleme auftreten, soll die Vektormathematik im Web-Worker durch eine graphenspezifische Physik-Bibliothek wie `d3-force-3d` ersetzt werden. Diese nutzt den Barnes-Hut-Algorithmus (Octree), um die Komplexität auf $O(N \log N)$ zu reduzieren, wodurch selbst zehntausende Knoten in Echtzeit flüssig simuliert werden können. Auf echte Rigid-Body Engines (wie Cannon.js) soll explizit verzichtet werden, da deren Verhalten (Schwerkraft, Rotation, "Umfallen" von Objekten) ungeeignet für Netzwerk-Topologien ist.

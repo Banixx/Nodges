@@ -8,6 +8,7 @@ import { ImportManager, ImportedData } from './ImportManager';
 import { ExportManager } from './ExportManager';
 import { notify } from '../core/NotificationService';
 import { ServiceContainer } from '../core/di/ServiceContainer';
+import { DataParser } from '../core/DataParser';
 
 type LoadNetworkCallback = (data: any, filename: string) => Promise<void>;
 
@@ -75,7 +76,30 @@ export class FileHandler {
         this.showProgress('Importing file...', 0);
 
         try {
-            // Parse the file
+            // Check if it's a native JSON file first
+            const extension = file.name.split('.').pop()?.toLowerCase() || '';
+            if (extension === 'json') {
+                const content = await this.importManager.readFileContent(file);
+                const rawData = JSON.parse(content);
+                // Heuristic for native format
+                if (rawData.system || rawData.dataModel || rawData.entities || rawData.data) {
+                     this.showProgress('Parsing native Nodges format...', 50);
+                     const graphData = DataParser.parse(rawData);
+                     
+                     if (this.loadNetworkCallback) {
+                         await this.loadNetworkCallback(graphData, file.name);
+                     } else {
+                         console.warn('FileHandler: No loadNetworkCallback provided.');
+                     }
+                     
+                     this.showProgress('Import completed!', 100);
+                     this.showSuccess('Import Successful', `Successfully loaded native project: ${file.name}`);
+                     setTimeout(() => this.hideProgress(), 1000);
+                     return;
+                }
+            }
+
+            // Parse the file (legacy/third-party formats)
             this.showProgress('Parsing file...', 25);
             const networkData = await this.importManager.importFile(file);
 

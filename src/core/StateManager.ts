@@ -84,6 +84,8 @@ export interface State {
     activeColorScheme: string;
     visualScaleExponent: number;
     visualScaleMultiplier: number;
+    cameraFitMargin: number;
+    cameraTransitionDuration: number;
 
     // Dev Settings (Performance Testing)
     devPowerPreference: 'high-performance' | 'low-power' | 'default';
@@ -183,6 +185,8 @@ export class StateManager implements IStateManager {
             visualScaleMultiplier: 1.0,
             autoBalanceEnabled: true,
             normalizeCoordinatesEnabled: true,
+            cameraFitMargin: 1.05,
+            cameraTransitionDuration: 1500,
 
             // Ebenen / Layers
             layer1Visible: true,

@@ -199,6 +199,10 @@ export class LayoutManager {
                 return await this.applyLayoutWithWorker(layoutId, nodes, edges, fields, mergedOptions) as boolean;
             } else {
                 layout.apply(nodes, edges, fields, mergedOptions);
+                const app = (window as any).app;
+                if (app && typeof app.fitCameraToScene === 'function') {
+                    app.fitCameraToScene();
+                }
                 return true;
             }
         } catch (error) {
@@ -293,29 +297,8 @@ export class LayoutManager {
 
                 switch (response.type) {
                     case 'progress':
-                        if (response.positions && Array.isArray(response.positions)) {
-                            const nodeMap = new Map<string, EntityData>();
-                            nodes.forEach(node => nodeMap.set(node.id, node));
-
-                            response.positions.forEach(pos => {
-                                const node = nodeMap.get(pos.id);
-                                if (node) {
-                                    if (!node.position) node.position = { x: 0, y: 0, z: 0 };
-                                    node.position.x = pos.x || 0;
-                                    node.position.y = pos.y || 0;
-                                    node.position.z = pos.z || 0;
-                                }
-                            });
-                            
-                            // Normalisiere auch waehrend der Animation, damit es sichtbar im Bildbereich bleibt
-                            const state = (window as any).app?.stateManager?.state;
-                            const independentAxes = state ? state.independentAxesNormalization : true;
-                            this.normalizeNodePositions(nodes, 10, independentAxes);
-
-                            if ((window as any).app && typeof (window as any).app.updateNodePositions === 'function') {
-                                (window as any).app.updateNodePositions();
-                            }
-                        }
+                        // Just a progress update, do not modify positions to avoid flashing/jumping.
+                        // (Optional: update a UI progress bar here)
                         break;
 
                     case 'success': {
@@ -323,10 +306,15 @@ export class LayoutManager {
                         console.log(`[LayoutManager] Layout berechnet: ${iterations} Iterationen in ${duration.toFixed(1)}ms`);
 
                         if (positions && Array.isArray(positions)) {
-                            // Map fuer performante ID-basierte Zuweisung erstellen
                             const nodeMap = new Map<string, EntityData>();
+                            const startPositions = new Map<string, {x:number, y:number, z:number}>();
                             nodes.forEach(node => {
                                 nodeMap.set(node.id, node);
+                                startPositions.set(node.id, { 
+                                    x: node.position?.x || 0, 
+                                    y: node.position?.y || 0, 
+                                    z: node.position?.z || 0 
+                                });
                             });
 
                             positions.forEach(pos => {
@@ -338,20 +326,72 @@ export class LayoutManager {
                                     node.position.z = pos.z || 0;
                                 }
                             });
+
+                            const state = (window as any).app?.stateManager?.state;
+                            const independentAxes = state ? state.independentAxesNormalization : true; // default true for better space usage
+                            this.normalizeNodePositions(nodes, 10, independentAxes);
+
+                            // Now node.position holds the final targets. Start the tweening!
+                            const targetPositions = new Map<string, {x:number, y:number, z:number}>();
+                            nodes.forEach(node => {
+                                targetPositions.set(node.id, { ...node.position! });
+                                // Restore start position for the animation loop
+                                const start = startPositions.get(node.id)!;
+                                node.position!.x = start.x;
+                                node.position!.y = start.y;
+                                node.position!.z = start.z;
+                            });
+
+                            this.isAnimating = true;
+                            const duration = 1200; // 1.2s smooth animation
+                            const startTime = performance.now();
+                            const app = (window as any).app;
+
+                            const animateLoop = (time: number) => {
+                                if (!this.isAnimating) return; // allows stopping
+                                const elapsed = time - startTime;
+                                const progress = Math.min(elapsed / duration, 1.0);
+                                
+                                // Easing function (easeOutCubic)
+                                const ease = 1 - Math.pow(1 - progress, 3);
+
+                                nodes.forEach(node => {
+                                    const start = startPositions.get(node.id)!;
+                                    const target = targetPositions.get(node.id)!;
+                                    if (node.position) {
+                                        node.position.x = start.x + (target.x - start.x) * ease;
+                                        node.position.y = start.y + (target.y - start.y) * ease;
+                                        node.position.z = start.z + (target.z - start.z) * ease;
+                                    }
+                                });
+
+                                if (app && typeof app.updateNodePositions === 'function') {
+                                    app.updateNodePositions();
+                                }
+                                if (app && app.edgeObjectsManager && typeof app.edgeObjectsManager.updateEdgePositions === 'function') {
+                                    app.edgeObjectsManager.updateEdgePositions(nodes);
+                                }
+
+                                if (progress < 1.0) {
+                                    requestAnimationFrame(animateLoop);
+                                } else {
+                                    this.isAnimating = false;
+                                    resolve(true); // <--- Resolve ONLY after animation!
+                                }
+                            };
+                            
+                            requestAnimationFrame(animateLoop);
+                        } else {
+                            resolve(true);
                         }
 
-                        const state = (window as any).app?.stateManager?.state;
-                        const independentAxes = state ? state.independentAxesNormalization : true; // default true for better space usage
-                        this.normalizeNodePositions(nodes, 10, independentAxes);
-
-                        // Cleanup
+                        // Cleanup timeout and worker
                         if (this.workerTimeoutId) {
                             clearTimeout(this.workerTimeoutId);
                             this.workerTimeoutId = null;
                         }
                         worker.terminate();
                         this.activeWorker = null;
-                        resolve(true);
                         break;
                     }
 
@@ -799,8 +839,10 @@ export class LayoutManager {
         return this.currentLayout;
     }
 
-    normalizeNodePositions(nodes: EntityData[], maxExtent = 10, independentAxes = false) {
-        if (nodes.length === 0) return;
+    normalizeNodePositions(nodes: EntityData[], maxExtent?: number, independentAxes = false) {
+        if (!nodes || nodes.length === 0) return;
+
+        const effectiveMaxExtent = maxExtent !== undefined ? maxExtent : Math.max(100, Math.sqrt(nodes.length) * 15);
 
         if (!nodes[0].position) nodes[0].position = { x: 0, y: 0, z: 0 };
 
@@ -828,9 +870,9 @@ export class LayoutManager {
 
         if (independentAxes) {
             // Achsen-unabhaengige Skalierung (fuellt die Bounding-Box maximal aus)
-            const scaleX = extentX > 0 ? maxExtent / extentX : 1;
-            const scaleY = extentY > 0 ? maxExtent / extentY : 1;
-            const scaleZ = extentZ > 0 ? maxExtent / extentZ : 1;
+            const scaleX = extentX > 0 ? effectiveMaxExtent / extentX : 1;
+            const scaleY = extentY > 0 ? effectiveMaxExtent / extentY : 1;
+            const scaleZ = extentZ > 0 ? effectiveMaxExtent / extentZ : 1;
 
             nodes.forEach(node => {
                 if (node.position) {
@@ -842,7 +884,7 @@ export class LayoutManager {
         } else {
             // Uniforme Skalierung (erhaelt die originalen Proportionen)
             const maxCurrentExtent = Math.max(extentX, extentY, extentZ);
-            const scale = maxCurrentExtent > 0 ? maxExtent / maxCurrentExtent : 1;
+            const scale = maxCurrentExtent > 0 ? effectiveMaxExtent / maxCurrentExtent : 1;
 
             nodes.forEach(node => {
                 if (node.position) {

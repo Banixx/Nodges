@@ -31,7 +31,7 @@ export class UIManager {
     private app: App;
     private stateManager: IStateManager;
     private visualMappingPanel: VisualMappingPanel;
-    private mappingUI!: MappingUI;
+    public mappingUI!: MappingUI;
     private legendPanel: LegendPanel;
 
     // New Components
@@ -200,7 +200,7 @@ export class UIManager {
         }
     }
 
-    private getAvailableAttributes(): Record<string, string[]> {
+    public getAvailableAttributes(): Record<string, string[]> {
         const result: Record<string, string[]> = {};
         const graphData = (this.app as any).currentGraphData;
         if (!graphData) return result;
