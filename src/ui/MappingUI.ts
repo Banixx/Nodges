@@ -686,8 +686,8 @@ export class MappingUI {
                         functions = ['heatmap', 'bipolar', 'categorical'];
                     } else if (prop === 'geometry') {
                         functions = ['categorical', 'sphereComplexity'];
-                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ'].includes(prop)) {
-                        functions = ['linear', 'exponential', 'logarithmic'];
+                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ', 'attraction', 'repulsion', 'inertia'].includes(prop)) {
+                        functions = ['linear', 'exponential', 'logarithmic', 'categorical'];
                     } else if (prop === 'animation') {
                         functions = ['pulse'];
                     } else {
@@ -706,7 +706,49 @@ export class MappingUI {
                         funcSelect.appendChild(opt);
                     });
                     funcSelect.onchange = () => {
-                        this.updatePropertyMapping(prop, { function: funcSelect.value as any });
+                        const newFunc = funcSelect.value;
+                        const updates: Partial<VisualMapping> = { function: newFunc as any };
+                        
+                        if (newFunc === 'categorical') {
+                            const source = mapping.source || mapping.field || '';
+                            const uniqueValues = this.getAttributeUniqueValues(source);
+                            const currentCategories = mapping.params?.categories || {};
+                            
+                            if (prop === 'color') {
+                                const palette = mapping.palette || 'all';
+                                updates.palette = palette;
+                                updates.params = { 
+                                    ...(mapping.params || {}), 
+                                    categories: this.generateCategoricalColors(uniqueValues, palette) 
+                                };
+                            } else if (prop === 'geometry') {
+                                const categories: Record<string, string> = {};
+                                const shapes = ['sphere', 'cube', 'cylinder', 'cone', 'torus'];
+                                uniqueValues.forEach((val, idx) => {
+                                    categories[val] = currentCategories[val] || shapes[idx % shapes.length];
+                                });
+                                updates.params = { ...(mapping.params || {}), categories };
+                            } else {
+                                // Numeric property
+                                const categories: Record<string, number> = {};
+                                const isPosition = ['positionX', 'positionY', 'positionZ'].includes(prop);
+                                const defaultRange = isPosition ? [-50, 50] : [0.1, 3.0];
+                                const rangeMin = mapping.range ? mapping.range[0] : defaultRange[0];
+                                const rangeMax = mapping.range ? mapping.range[1] : defaultRange[1];
+                                
+                                const count = uniqueValues.length;
+                                uniqueValues.forEach((val, idx) => {
+                                    if (currentCategories[val] !== undefined) {
+                                        categories[val] = Number(currentCategories[val]);
+                                    } else {
+                                        const pct = count > 1 ? idx / (count - 1) : 0.5;
+                                        categories[val] = Number((rangeMin + pct * (rangeMax - rangeMin)).toFixed(2));
+                                    }
+                                });
+                                updates.params = { ...(mapping.params || {}), categories };
+                            }
+                        }
+                        this.updatePropertyMapping(prop, updates);
                     };
                     funcGroup.appendChild(funcSelect);
                     details.appendChild(funcGroup);
@@ -766,7 +808,7 @@ export class MappingUI {
                     }
 
                     // 3. Range or Palette / Color params depending on function
-                    if (['heatmap', 'categorical'].includes(mapping.function)) {
+                    if (mapping.function === 'heatmap') {
                         const palGroup = document.createElement('div');
                         palGroup.className = 'mapping-control-group';
                         const palLabel = document.createElement('label');
@@ -776,9 +818,7 @@ export class MappingUI {
                         const palSelect = document.createElement('select');
                         palSelect.className = 'mapping-control-select';
                         
-                        const palettes = mapping.function === 'categorical' 
-                            ? ['all', 'heatmap', 'grayscale', 'viridis', 'category10', 'category20', 'pastel'] 
-                            : ['blue-red', 'grayscale', 'viridis'];
+                        const palettes = ['blue-red', 'grayscale', 'viridis'];
                             
                         palettes.forEach(p => {
                             const opt = document.createElement('option');
@@ -789,10 +829,6 @@ export class MappingUI {
                         });
                         palSelect.onchange = () => {
                             let updates: any = { palette: palSelect.value };
-                            if (mapping.function === 'categorical' && prop === 'color') {
-                                const uniqueValues = this.getAttributeUniqueValues(mapping.source || mapping.field || '');
-                                updates.params = { ...(mapping.params || {}), categories: this.generateCategoricalColors(uniqueValues, palSelect.value) };
-                            }
                             this.updatePropertyMapping(prop, updates);
                         };
                         palGroup.appendChild(palSelect);
@@ -816,6 +852,7 @@ export class MappingUI {
                         negInput.value = negColor;
                         negInput.style.padding = '0';
                         negInput.style.height = '18px';
+                        negInput.style.width = '40px';
                         negInput.style.cursor = 'pointer';
                         negInput.onchange = () => {
                             const params = { ...(mapping.params || {}), negative: negInput.value };
@@ -828,6 +865,7 @@ export class MappingUI {
                         posInput.value = posColor;
                         posInput.style.padding = '0';
                         posInput.style.height = '18px';
+                        posInput.style.width = '40px';
                         posInput.style.cursor = 'pointer';
                         posInput.onchange = () => {
                             const params = { ...(mapping.params || {}), positive: posInput.value };
@@ -963,13 +1001,149 @@ export class MappingUI {
                         };
                         freqGroup.appendChild(freqSelect);
                         details.appendChild(freqGroup);
+                    } else if (mapping.function === 'categorical') {
+                        const catGroup = document.createElement('div');
+                        catGroup.className = 'mapping-control-group';
+                        catGroup.style.marginTop = '8px';
+                        catGroup.style.borderTop = '1px solid rgba(255, 255, 255, 0.05)';
+                        catGroup.style.paddingTop = '8px';
+                        
+                        const catLabel = document.createElement('label');
+                        catLabel.textContent = 'Kategoriewerte zuweisen';
+                        catLabel.style.fontWeight = 'bold';
+                        catLabel.style.marginBottom = '6px';
+                        catGroup.appendChild(catLabel);
+                        
+                        const source = mapping.source || mapping.field || '';
+                        const uniqueValues = this.getAttributeUniqueValues(source);
+                        const categories = mapping.params?.categories || {};
+                        
+                        if (prop === 'color') {
+                            const palGroup = document.createElement('div');
+                            palGroup.className = 'mapping-control-group';
+                            palGroup.style.marginBottom = '8px';
+                            const palLabel = document.createElement('label');
+                            palLabel.textContent = 'Farbpalette';
+                            palGroup.appendChild(palLabel);
+
+                            const palSelect = document.createElement('select');
+                            palSelect.className = 'mapping-control-select';
+                            
+                            const palettes = ['all', 'heatmap', 'grayscale', 'viridis', 'category10', 'category20', 'pastel'];
+                            palettes.forEach(p => {
+                                const opt = document.createElement('option');
+                                opt.value = p;
+                                opt.textContent = p;
+                                opt.selected = mapping.palette === p || (p === 'all' && !mapping.palette);
+                                palSelect.appendChild(opt);
+                            });
+                            palSelect.onchange = () => {
+                                let updates: any = { palette: palSelect.value };
+                                updates.params = { ...(mapping.params || {}), categories: this.generateCategoricalColors(uniqueValues, palSelect.value) };
+                                this.updatePropertyMapping(prop, updates);
+                            };
+                            palGroup.appendChild(palSelect);
+                            catGroup.appendChild(palGroup);
+                        }
+                        
+                        uniqueValues.forEach(val => {
+                            const row = document.createElement('div');
+                            row.className = 'mapping-control-row';
+                            row.style.display = 'flex';
+                            row.style.alignItems = 'center';
+                            row.style.justifyContent = 'space-between';
+                            row.style.marginBottom = '4px';
+                            
+                            const nameSpan = document.createElement('span');
+                            nameSpan.textContent = val;
+                            nameSpan.style.fontSize = '11px';
+                            nameSpan.style.color = 'var(--text-muted)';
+                            nameSpan.style.maxWidth = '150px';
+                            nameSpan.style.overflow = 'hidden';
+                            nameSpan.style.textOverflow = 'ellipsis';
+                            nameSpan.style.whiteSpace = 'nowrap';
+                            row.appendChild(nameSpan);
+                            
+                            if (prop === 'color') {
+                                const input = document.createElement('input');
+                                input.className = 'mapping-control-input';
+                                input.type = 'color';
+                                input.value = categories[val] || '#00aaff';
+                                input.style.padding = '0';
+                                input.style.height = '18px';
+                                input.style.width = '40px';
+                                input.style.cursor = 'pointer';
+                                input.onchange = () => {
+                                    const params = {
+                                        ...(mapping.params || {}),
+                                        categories: {
+                                            ...(mapping.params?.categories || {}),
+                                            [val]: input.value
+                                        }
+                                    };
+                                    this.updatePropertyMapping(prop, { params });
+                                };
+                                row.appendChild(input);
+                            } else if (prop === 'geometry') {
+                                const select = document.createElement('select');
+                                select.className = 'mapping-control-select';
+                                select.style.width = '100px';
+                                const shapes = ['sphere', 'cube', 'cylinder', 'cone', 'torus'];
+                                const currentShape = categories[val] || 'sphere';
+                                shapes.forEach(s => {
+                                    const opt = document.createElement('option');
+                                    opt.value = s;
+                                    opt.textContent = s.charAt(0).toUpperCase() + s.slice(1);
+                                    opt.selected = currentShape === s;
+                                    select.appendChild(opt);
+                                });
+                                select.onchange = () => {
+                                    const params = {
+                                        ...(mapping.params || {}),
+                                        categories: {
+                                            ...(mapping.params?.categories || {}),
+                                            [val]: select.value
+                                        }
+                                    };
+                                    this.updatePropertyMapping(prop, { params });
+                                };
+                                row.appendChild(select);
+                            } else {
+                                // Numeric property
+                                const input = document.createElement('input');
+                                input.className = 'mapping-control-input';
+                                input.type = 'number';
+                                input.step = '0.1';
+                                input.style.width = '80px';
+                                const currentVal = categories[val] !== undefined ? categories[val] : 1.0;
+                                input.value = String(currentVal);
+                                input.onchange = () => {
+                                    const parsed = parseFloat(input.value);
+                                    if (!isNaN(parsed)) {
+                                        const params = {
+                                            ...(mapping.params || {}),
+                                            categories: {
+                                                ...(mapping.params?.categories || {}),
+                                                [val]: parsed
+                                            }
+                                        };
+                                        this.updatePropertyMapping(prop, { params });
+                                    }
+                                };
+                                row.appendChild(input);
+                            }
+                            
+                            catGroup.appendChild(row);
+                        });
+                        
+                        details.appendChild(catGroup);
                     }
                 } else {
                     // Constant value setting
                     const constGroup = document.createElement('div');
                     constGroup.className = 'mapping-control-group';
                     const constLabel = document.createElement('label');
-                    constLabel.textContent = 'Konstanter Wert';
+                    constLabel.textContent = 'Fester Wert';
                     constGroup.appendChild(constLabel);
 
                     if (prop === 'color') {
@@ -1006,17 +1180,20 @@ export class MappingUI {
                             } as any);
                         };
                         constGroup.appendChild(shapeSelect);
-                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ'].includes(prop)) {
+                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ', 'attraction', 'repulsion', 'inertia'].includes(prop)) {
                         const numInput = document.createElement('input');
                         numInput.className = 'mapping-control-input';
                         numInput.type = 'number';
                         numInput.step = '0.05';
-                        const constVal = mapping.range ? mapping.range[0] : 1.0;
+                        const constVal = mapping.params?.value !== undefined ? mapping.params.value : (mapping.range ? mapping.range[0] : 1.0);
                         numInput.value = String(constVal);
                         numInput.onchange = () => {
                             const val = parseFloat(numInput.value);
                             if (!isNaN(val)) {
-                                this.updatePropertyMapping(prop, { range: [val, val] });
+                                this.updatePropertyMapping(prop, { 
+                                    range: [val, val],
+                                    params: { ...(mapping.params || {}), value: val }
+                                });
                             }
                         };
                         constGroup.appendChild(numInput);
@@ -1410,8 +1587,9 @@ export class MappingUI {
         const preset = this.mappings.defaultPresets[this.currentType] as any;
 
         let defaultFunc: any = 'linear';
+        const isCategoricalSource = ['type', 'id', 'category', 'label', 'domain'].includes(sourceAttr);
         if (propName === 'color') {
-            if (['type', 'id', 'category', 'label', 'domain'].includes(sourceAttr)) {
+            if (isCategoricalSource) {
                 defaultFunc = 'categorical';
             } else {
                 defaultFunc = 'heatmap';
@@ -1420,6 +1598,12 @@ export class MappingUI {
             defaultFunc = 'categorical';
         } else if (propName === 'animation') {
             defaultFunc = 'pulse';
+        } else if (['positionX', 'positionY', 'positionZ', 'size', 'thickness', 'curvature', 'glow', 'opacity', 'attraction', 'repulsion', 'inertia'].includes(propName)) {
+            if (isCategoricalSource) {
+                defaultFunc = 'categorical';
+            } else {
+                defaultFunc = 'linear';
+            }
         }
 
         let newDomain: [number, number] | undefined = undefined;
@@ -1441,11 +1625,43 @@ export class MappingUI {
             range: existingMapping.range || defaultRange
         };
 
-        if (defaultFunc === 'categorical' && propName === 'color') {
+        if (defaultFunc === 'categorical') {
             const uniqueValues = this.getAttributeUniqueValues(sourceAttr);
-            const palette = existingMapping.palette || 'all';
-            updates.palette = palette;
-            updates.params = { ...(existingMapping.params || {}), categories: this.generateCategoricalColors(uniqueValues, palette) };
+            const currentCategories = existingMapping.params?.categories || {};
+            
+            if (propName === 'color') {
+                const palette = existingMapping.palette || 'all';
+                updates.palette = palette;
+                updates.params = { 
+                    ...(existingMapping.params || {}), 
+                    categories: this.generateCategoricalColors(uniqueValues, palette) 
+                };
+            } else if (propName === 'geometry') {
+                const categories: Record<string, string> = {};
+                const shapes = ['sphere', 'cube', 'cylinder', 'cone', 'torus'];
+                uniqueValues.forEach((val, idx) => {
+                    categories[val] = currentCategories[val] || shapes[idx % shapes.length];
+                });
+                updates.params = { ...(existingMapping.params || {}), categories };
+            } else {
+                // Numeric property
+                const categories: Record<string, number> = {};
+                const isPosition = ['positionX', 'positionY', 'positionZ'].includes(propName);
+                const defaultRange = isPosition ? [-50, 50] : [0.1, 3.0];
+                const rangeMin = existingMapping.range ? existingMapping.range[0] : defaultRange[0];
+                const rangeMax = existingMapping.range ? existingMapping.range[1] : defaultRange[1];
+                
+                const count = uniqueValues.length;
+                uniqueValues.forEach((val, idx) => {
+                    if (currentCategories[val] !== undefined) {
+                        categories[val] = Number(currentCategories[val]);
+                    } else {
+                        const pct = count > 1 ? idx / (count - 1) : 0.5;
+                        categories[val] = Number((rangeMin + pct * (rangeMax - rangeMin)).toFixed(2));
+                    }
+                });
+                updates.params = { ...(existingMapping.params || {}), categories };
+            }
         }
 
         preset[propName] = updates;

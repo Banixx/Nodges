@@ -189,7 +189,6 @@ export class ViewPanel {
         // --- VISUAL BALANCE SECTION ---
         const balanceSection = document.createElement('section');
         balanceSection.className = 'panel-section';
-        balanceSection.dataset.minMode = 'expert';
 
         const balanceHeader = document.createElement('h4');
         balanceHeader.className = 'section-header';

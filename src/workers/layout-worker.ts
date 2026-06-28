@@ -144,13 +144,28 @@ self.onmessage = function (event: MessageEvent<LayoutWorkerRequest>): void {
 
                 // Positionen und Geschwindigkeiten aktualisieren
                 for (let i = 0; i < positions.length; i++) {
-                    velocities[i].x = (velocities[i].x + forces[i].x) * damping;
-                    velocities[i].y = (velocities[i].y + forces[i].y) * damping;
-                    velocities[i].z = (velocities[i].z + forces[i].z) * damping;
+                    const nodeI = nodes[i];
+                    
+                    if (!nodeI.fixedX) {
+                        velocities[i].x = (velocities[i].x + forces[i].x) * damping;
+                        positions[i].x += velocities[i].x;
+                    } else {
+                        velocities[i].x = 0;
+                    }
 
-                    positions[i].x += velocities[i].x;
-                    positions[i].y += velocities[i].y;
-                    positions[i].z += velocities[i].z;
+                    if (!nodeI.fixedY) {
+                        velocities[i].y = (velocities[i].y + forces[i].y) * damping;
+                        positions[i].y += velocities[i].y;
+                    } else {
+                        velocities[i].y = 0;
+                    }
+
+                    if (!nodeI.fixedZ) {
+                        velocities[i].z = (velocities[i].z + forces[i].z) * damping;
+                        positions[i].z += velocities[i].z;
+                    } else {
+                        velocities[i].z = 0;
+                    }
                 }
 
                 completedIterations = iter + 1;

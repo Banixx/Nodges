@@ -259,7 +259,10 @@ export class LayoutManager {
                         index: nodeIndexMap.get(node.id)!,
                         attraction: visual.attraction !== undefined ? Number(visual.attraction) : 0,
                         repulsion: visual.repulsion !== undefined ? Number(visual.repulsion) : 50,
-                        inertia: visual.inertia !== undefined ? Number(visual.inertia) : 1.0
+                        inertia: visual.inertia !== undefined ? Number(visual.inertia) : 1.0,
+                        fixedX: visual.positionX !== undefined,
+                        fixedY: visual.positionY !== undefined,
+                        fixedZ: visual.positionZ !== undefined
                     };
                 }),
                 edges: edges.filter(e => e.source && e.target).map(edge => {
@@ -320,16 +323,21 @@ export class LayoutManager {
                             positions.forEach(pos => {
                                 const node = nodeMap.get(pos.id);
                                 if (node) {
+                                    const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(node) : {};
                                     if (!node.position) node.position = { x: 0, y: 0, z: 0 };
-                                    node.position.x = pos.x || 0;
-                                    node.position.y = pos.y || 0;
-                                    node.position.z = pos.z || 0;
+                                    if (visual.positionX === undefined) node.position.x = pos.x || 0;
+                                    if (visual.positionY === undefined) node.position.y = pos.y || 0;
+                                    if (visual.positionZ === undefined) node.position.z = pos.z || 0;
                                 }
                             });
 
                             const state = (window as any).app?.stateManager?.state;
                             const independentAxes = state ? state.independentAxesNormalization : true; // default true for better space usage
                             this.normalizeNodePositions(nodes, 10, independentAxes);
+
+                            if ((window as any).app && state?.autoBalanceEnabled) {
+                                (window as any).app.applyVisualBalance();
+                            }
 
                             // Now node.position holds the final targets. Start the tweening!
                             const targetPositions = new Map<string, {x:number, y:number, z:number}>();
@@ -876,9 +884,10 @@ export class LayoutManager {
 
             nodes.forEach(node => {
                 if (node.position) {
-                    node.position.x = (node.position.x - centerX) * scaleX;
-                    node.position.y = (node.position.y - centerY) * scaleY;
-                    node.position.z = (node.position.z - centerZ) * scaleZ;
+                    const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(node) : {};
+                    if (visual.positionX === undefined) node.position.x = (node.position.x - centerX) * scaleX;
+                    if (visual.positionY === undefined) node.position.y = (node.position.y - centerY) * scaleY;
+                    if (visual.positionZ === undefined) node.position.z = (node.position.z - centerZ) * scaleZ;
                 }
             });
         } else {
@@ -888,9 +897,10 @@ export class LayoutManager {
 
             nodes.forEach(node => {
                 if (node.position) {
-                    node.position.x = (node.position.x - centerX) * scale;
-                    node.position.y = (node.position.y - centerY) * scale;
-                    node.position.z = (node.position.z - centerZ) * scale;
+                    const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(node) : {};
+                    if (visual.positionX === undefined) node.position.x = (node.position.x - centerX) * scale;
+                    if (visual.positionY === undefined) node.position.y = (node.position.y - centerY) * scale;
+                    if (visual.positionZ === undefined) node.position.z = (node.position.z - centerZ) * scale;
                 }
             });
         }

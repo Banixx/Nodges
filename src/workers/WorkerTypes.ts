@@ -27,6 +27,9 @@ export interface WorkerNode {
     attraction?: number;
     repulsion?: number;
     inertia?: number;
+    fixedX?: boolean;
+    fixedY?: boolean;
+    fixedZ?: boolean;
 }
 
 /** Ergebnis-Position fuer einen Node aus dem Worker */

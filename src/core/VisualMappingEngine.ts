@@ -64,23 +64,23 @@ export class VisualMappingEngine {
 
         // Apply position mappings
         if (preset.positionX && preset.positionX.source !== 'constant') {
-            visual.positionX = this.applyMapping(preset.positionX, entity);
+            visual.positionX = this.applyMapping(preset.positionX, entity, 'positionX');
         }
         if (preset.positionY && preset.positionY.source !== 'constant') {
-            visual.positionY = this.applyMapping(preset.positionY, entity);
+            visual.positionY = this.applyMapping(preset.positionY, entity, 'positionY');
         }
         if (preset.positionZ && preset.positionZ.source !== 'constant') {
-            visual.positionZ = this.applyMapping(preset.positionZ, entity);
+            visual.positionZ = this.applyMapping(preset.positionZ, entity, 'positionZ');
         }
 
         // Apply size mapping
         if (preset.size) {
-            visual.size = this.applyMapping(preset.size, entity);
+            visual.size = this.applyMapping(preset.size, entity, 'size');
         }
 
         // Apply color mapping
         if (preset.color) {
-            const colorValue = this.applyMapping(preset.color, entity);
+            const colorValue = this.applyMapping(preset.color, entity, 'color');
             visual.color = this.mapToColor(colorValue, preset.color);
         }
 
@@ -91,7 +91,7 @@ export class VisualMappingEngine {
 
         // Apply glow mapping
         if (preset.glow) {
-            visual.glow = this.applyMapping(preset.glow, entity);
+            visual.glow = this.applyMapping(preset.glow, entity, 'glow');
         }
 
         // Apply animation mapping
@@ -101,13 +101,13 @@ export class VisualMappingEngine {
 
         // Apply physics mapping
         if (preset.attraction) {
-            visual.attraction = this.applyMapping(preset.attraction, entity);
+            visual.attraction = this.applyMapping(preset.attraction, entity, 'attraction');
         }
         if (preset.repulsion) {
-            visual.repulsion = this.applyMapping(preset.repulsion, entity);
+            visual.repulsion = this.applyMapping(preset.repulsion, entity, 'repulsion');
         }
         if (preset.inertia) {
-            visual.inertia = this.applyMapping(preset.inertia, entity);
+            visual.inertia = this.applyMapping(preset.inertia, entity, 'inertia');
         }
 
         return visual;
@@ -139,28 +139,28 @@ export class VisualMappingEngine {
 
         // Apply thickness mapping
         if (preset.thickness) {
-            visual.thickness = this.applyMapping(preset.thickness, relationship);
+            visual.thickness = this.applyMapping(preset.thickness, relationship, 'thickness');
         }
 
         // Apply color mapping
         if (preset.color) {
-            const colorValue = this.applyMapping(preset.color, relationship);
+            const colorValue = this.applyMapping(preset.color, relationship, 'color');
             visual.color = this.mapToColor(colorValue, preset.color);
         }
 
         // Apply curvature mapping
         if (preset.curvature) {
-            visual.curvature = this.applyMapping(preset.curvature, relationship);
+            visual.curvature = this.applyMapping(preset.curvature, relationship, 'curvature');
         }
 
         // Apply glow mapping
         if (preset.glow) {
-            visual.glow = this.applyMapping(preset.glow, relationship);
+            visual.glow = this.applyMapping(preset.glow, relationship, 'glow');
         }
 
         // Apply opacity mapping
         if (preset.opacity) {
-            visual.opacity = this.applyMapping(preset.opacity, relationship);
+            visual.opacity = this.applyMapping(preset.opacity, relationship, 'opacity');
         }
 
         // Apply animation mapping
@@ -172,7 +172,7 @@ export class VisualMappingEngine {
         return visual;
     }
 
-    private applyMapping(mapping: VisualMapping, data: EntityData | RelationshipData): any {
+    private applyMapping(mapping: VisualMapping, data: EntityData | RelationshipData, propName?: string): any {
         const sourceKey = mapping.field || mapping.source || '';
         
         // Special case: constant source
@@ -192,6 +192,9 @@ export class VisualMappingEngine {
             if ((mapping as any).value) {
                 return (mapping as any).value;
             }
+            if (mapping.params?.value !== undefined) {
+                return mapping.params.value;
+            }
             return 1.0;
         }
 
@@ -205,6 +208,18 @@ export class VisualMappingEngine {
 
         // Handle categorical mapping directly (keeps string values)
         if (mapping.function === 'categorical') {
+            if (propName && propName !== 'color' && propName !== 'geometry') {
+                if (mapping.params && mapping.params.categories && mapping.params.categories[String(value)] !== undefined) {
+                    const mappedValue = mapping.params.categories[String(value)];
+                    if (typeof mappedValue === 'number') {
+                        return mappedValue;
+                    }
+                    if (typeof mappedValue === 'string' && !isNaN(Number(mappedValue)) && mappedValue.trim() !== '') {
+                        return Number(mappedValue);
+                    }
+                    return mappedValue;
+                }
+            }
             return value;
         }
 
