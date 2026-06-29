@@ -976,10 +976,9 @@ private rebuildMergedSchema() {
         // Set on currentGraphData
         if (this.currentGraphData) {
             this.currentGraphData.dataModel = mergedDataModel;
-            // Only keep active mappings, or empty if none exist yet. DO NOT apply original mappings automatically.
-            if (!this.currentGraphData.visualMappings) {
-                this.currentGraphData.visualMappings = { defaultPresets: {} };
-            }
+            // Always reset to empty active mappings. File mappings are only shown as dashed originals.
+            // The user must explicitly click "Datei-Mappings übernehmen" to apply them.
+            this.currentGraphData.visualMappings = { defaultPresets: {} };
             
             // Store original mappings so UIManager can provide them to MappingUI
             this.originalVisualMappings = originalVisualMappings;
@@ -1290,6 +1289,12 @@ private rebuildMergedSchema() {
                 this.recreateRenderer();
             }
         }, 'dev');
+
+        // Data sync subscription to keep local references updated
+        this.stateManager.subscribe((state) => {
+            this.currentEntities = state.graphData.entities;
+            this.currentRelationships = state.graphData.relationships;
+        }, 'data_changed');
     }
 
 

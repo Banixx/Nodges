@@ -199,7 +199,7 @@ export class LayoutManager {
                 return await this.applyLayoutWithWorker(layoutId, nodes, edges, fields, mergedOptions) as boolean;
             } else {
                 layout.apply(nodes, edges, fields, mergedOptions);
-                const app = (window as any).app;
+                const app = typeof window !== 'undefined' ? (window as any).app : null;
                 if (app && typeof app.fitCameraToScene === 'function') {
                     app.fitCameraToScene();
                 }
@@ -251,15 +251,16 @@ export class LayoutManager {
                 algorithm: layoutId,
                 nodes: nodes.map(node => {
                     const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(node) : {};
+                    const physics = this.getNodePhysics(node);
                     return {
                         id: node.id,
                         x: node.position?.x || 0,
                         y: node.position?.y || 0,
                         z: node.position?.z || 0,
                         index: nodeIndexMap.get(node.id)!,
-                        attraction: visual.attraction !== undefined ? Number(visual.attraction) : 0,
-                        repulsion: visual.repulsion !== undefined ? Number(visual.repulsion) : 50,
-                        inertia: visual.inertia !== undefined ? Number(visual.inertia) : 1.0,
+                        attraction: physics.attraction,
+                        repulsion: physics.repulsion,
+                        inertia: physics.inertia,
                         fixedX: visual.positionX !== undefined,
                         fixedY: visual.positionY !== undefined,
                         fixedZ: visual.positionZ !== undefined
@@ -331,12 +332,13 @@ export class LayoutManager {
                                 }
                             });
 
-                            const state = (window as any).app?.stateManager?.state;
+                            const app = typeof window !== 'undefined' ? (window as any).app : null;
+                            const state = app?.stateManager?.state;
                             const independentAxes = state ? state.independentAxesNormalization : true; // default true for better space usage
                             this.normalizeNodePositions(nodes, 10, independentAxes);
 
-                            if ((window as any).app && state?.autoBalanceEnabled) {
-                                (window as any).app.applyVisualBalance();
+                            if (app && state?.autoBalanceEnabled) {
+                                app.applyVisualBalance();
                             }
 
                             // Now node.position holds the final targets. Start the tweening!
@@ -353,11 +355,10 @@ export class LayoutManager {
                             this.isAnimating = true;
                             const duration = 1200; // 1.2s smooth animation
                             const startTime = performance.now();
-                            const app = (window as any).app;
 
                             const animateLoop = (time: number) => {
                                 if (!this.isAnimating) return; // allows stopping
-                                const elapsed = time - startTime;
+                                const elapsed = (time || performance.now()) - startTime;
                                 const progress = Math.min(elapsed / duration, 1.0);
                                 
                                 // Easing function (easeOutCubic)
@@ -431,6 +432,65 @@ export class LayoutManager {
                 reject(new Error(error.message || 'Worker error'));
             };
         });
+    }
+
+    private getNodePhysics(node: EntityData): { attraction: number, repulsion: number, inertia: number } {
+        // 1. Check direct properties
+        let attraction = node.attraction !== undefined ? Number(node.attraction) : undefined;
+        let repulsion = node.repulsion !== undefined ? Number(node.repulsion) : undefined;
+        let inertia = node.inertia !== undefined ? Number(node.inertia) : undefined;
+
+        // 2. Check stateVector
+        if (node.stateVector) {
+            if (attraction === undefined && node.stateVector.attraction !== undefined) {
+                attraction = Number(node.stateVector.attraction);
+            }
+            if (repulsion === undefined && node.stateVector.repulsion !== undefined) {
+                repulsion = Number(node.stateVector.repulsion);
+            }
+            if (inertia === undefined && node.stateVector.inertia !== undefined) {
+                inertia = Number(node.stateVector.inertia);
+            }
+        }
+
+        // 3. Check active presets
+        if (this.visualMappingEngine) {
+            const activeMappings = this.visualMappingEngine.getVisualMappings();
+            const activePreset = activeMappings?.defaultPresets?.[node.type];
+            if (activePreset) {
+                if (attraction === undefined && activePreset.attraction) {
+                    attraction = Number(this.visualMappingEngine.applyMapping(activePreset.attraction as any, node, 'attraction'));
+                }
+                if (repulsion === undefined && activePreset.repulsion) {
+                    repulsion = Number(this.visualMappingEngine.applyMapping(activePreset.repulsion as any, node, 'repulsion'));
+                }
+                if (inertia === undefined && activePreset.inertia) {
+                    inertia = Number(this.visualMappingEngine.applyMapping(activePreset.inertia as any, node, 'inertia'));
+                }
+            }
+
+            // 4. Check original mappings if not resolved
+            const app = typeof window !== 'undefined' ? (window as any).app : null;
+            const originalMappings = app?.originalVisualMappings;
+            const originalPreset = originalMappings?.defaultPresets?.[node.type];
+            if (originalPreset) {
+                if (attraction === undefined && originalPreset.attraction) {
+                    attraction = Number(this.visualMappingEngine.applyMapping(originalPreset.attraction as any, node, 'attraction'));
+                }
+                if (repulsion === undefined && originalPreset.repulsion) {
+                    repulsion = Number(this.visualMappingEngine.applyMapping(originalPreset.repulsion as any, node, 'repulsion'));
+                }
+                if (inertia === undefined && originalPreset.inertia) {
+                    inertia = Number(this.visualMappingEngine.applyMapping(originalPreset.inertia as any, node, 'inertia'));
+                }
+            }
+        }
+
+        return {
+            attraction: attraction !== undefined && !isNaN(attraction) ? attraction : 0,
+            repulsion: repulsion !== undefined && !isNaN(repulsion) ? repulsion : 50,
+            inertia: inertia !== undefined && !isNaN(inertia) ? inertia : 1.0
+        };
     }
 
     applyForceLayout(nodes: EntityData[], edges: RelationshipData[], fields: FieldData[] = [], options: LayoutOptions = {}) {
@@ -549,7 +609,8 @@ export class LayoutManager {
             }
         }
 
-        const state = (window as any).app?.stateManager?.state;
+        const app = typeof window !== 'undefined' ? (window as any).app : null;
+        const state = app?.stateManager?.state;
         const independentAxes = state ? state.independentAxesNormalization : true;
         this.normalizeNodePositions(nodes, 10, independentAxes);
     }
@@ -675,7 +736,8 @@ export class LayoutManager {
             temp *= 0.95; // Cool down
         }
 
-        const state = (window as any).app?.stateManager?.state;
+        const app = typeof window !== 'undefined' ? (window as any).app : null;
+        const state = app?.stateManager?.state;
         const independentAxes = state ? state.independentAxesNormalization : true;
         this.normalizeNodePositions(nodes, 10, independentAxes);
     }

@@ -560,7 +560,7 @@ export class MappingUI {
         
         const isEntity = this.currentCategory === 'entities';
         const visualProps = isEntity
-            ? ['positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation', 'attraction', 'repulsion', 'inertia']
+            ? ['positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation']
             : ['thickness', 'color', 'curvature', 'glow', 'opacity', 'animation'];
 
             const propTranslations: Record<string, string> = {
@@ -876,7 +876,7 @@ export class MappingUI {
                         bipRow.appendChild(posInput);
                         bipGroup.appendChild(bipRow);
                         details.appendChild(bipGroup);
-                    } else if (['linear', 'exponential', 'logarithmic'].includes(mapping.function) || mapping.range) {
+                    } else if ((['linear', 'exponential', 'logarithmic'].includes(mapping.function) || mapping.range) && !['categorical', 'pulse'].includes(mapping.function)) {
                         const isPosition = ['positionX', 'positionY', 'positionZ'].includes(prop);
                         const rangeMinVal = mapping.range ? mapping.range[0] : (isPosition ? -100 : 0.1);
                         const rangeMaxVal = mapping.range ? mapping.range[1] : (isPosition ? 100 : 3.0);
@@ -1371,14 +1371,30 @@ export class MappingUI {
             const preset = this.originalMappings.defaultPresets[type] as any;
             for (const prop in preset) {
                 const map = preset[prop] as VisualMapping;
-                let sourceAttr = map?.source || map?.field;
-                if (map && sourceAttr && sourceAttr !== 'constant') {
-                    sourceAttr = sourceAttr.replace(/^stateVector\./, '');
-                    // Check if already in active mappings
-                    const activePreset = this.mappings?.defaultPresets?.[type] as any;
-                    let activeSource = activePreset && activePreset[prop] ? ((activePreset[prop] as VisualMapping).source || (activePreset[prop] as VisualMapping).field) : null;
-                    if (activeSource) activeSource = activeSource.replace(/^stateVector\./, '');
-                    if (!activePreset || !activePreset[prop] || activeSource !== sourceAttr) {
+                if (!map) continue;
+                let sourceAttr = map.source || map.field;
+                if (!sourceAttr) continue;
+                
+                sourceAttr = sourceAttr.replace(/^stateVector\./, '');
+                // Check if already in active mappings
+                const activePreset = this.mappings?.defaultPresets?.[type] as any;
+                if (!activePreset || !activePreset[prop]) {
+                    return true;
+                }
+                
+                const activeMap = activePreset[prop] as VisualMapping;
+                let activeSource = activeMap.source || activeMap.field;
+                if (activeSource) activeSource = activeSource.replace(/^stateVector\./, '');
+                
+                if (activeSource !== sourceAttr) {
+                    return true;
+                }
+                
+                // If both are constant, check if the value/color/geometry differs
+                if (sourceAttr === 'constant') {
+                    const valOriginal = map.params?.value !== undefined ? map.params.value : (map.params?.color || map.params?.geometry || (map as any).value);
+                    const valActive = activeMap.params?.value !== undefined ? activeMap.params.value : (activeMap.params?.color || activeMap.params?.geometry || (activeMap as any).value);
+                    if (valOriginal !== valActive) {
                         return true;
                     }
                 }
@@ -1401,8 +1417,7 @@ export class MappingUI {
             const preset = this.originalMappings!.defaultPresets[type] as any;
             Object.keys(preset).forEach(prop => {
                 const map = preset[prop] as VisualMapping;
-                let sourceAttr = map?.source || map?.field;
-                if (map && sourceAttr && sourceAttr !== 'constant') {
+                if (map) {
                     const mapCopy = JSON.parse(JSON.stringify(map));
                     if (mapCopy.source) mapCopy.source = mapCopy.source.replace(/^stateVector\./, '');
                     if (mapCopy.field) mapCopy.field = mapCopy.field.replace(/^stateVector\./, '');

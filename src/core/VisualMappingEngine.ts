@@ -32,6 +32,13 @@ export class VisualMappingEngine {
     }
 
     /**
+     * Get current visual mappings
+     */
+    getVisualMappings(): VisualMappings | undefined {
+        return this.visualMappings;
+    }
+
+    /**
      * Set or update data model
      */
     setDataModel(dataModel: DataModel) {
@@ -172,7 +179,7 @@ export class VisualMappingEngine {
         return visual;
     }
 
-    private applyMapping(mapping: VisualMapping, data: EntityData | RelationshipData, propName?: string): any {
+    public applyMapping(mapping: VisualMapping, data: EntityData | RelationshipData, propName?: string): any {
         const sourceKey = mapping.field || mapping.source || '';
         
         // Special case: constant source

@@ -208,7 +208,7 @@ export class UIManager {
         const dataModel = graphData.dataModel;
         const presets = graphData.visualMappings?.defaultPresets || {};
 
-        const allNodeAttrs = new Set<string>(['constant', 'type', 'id']);
+        const allNodeAttrs = new Set<string>(['constant', 'type', 'id', 'attraction', 'repulsion', 'inertia']);
         const allEdgeAttrs = new Set<string>(['constant', 'type', 'id', 'source', 'target']);
 
         const allTypes = new Set<string>();

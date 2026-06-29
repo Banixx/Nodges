@@ -44,19 +44,19 @@ export class CreatePanel {
         keyHeader.style.display = 'flex';
         keyHeader.style.justifyContent = 'space-between';
         keyHeader.style.cursor = 'pointer';
-        
+
         const keyTitle = document.createElement('span');
-        keyTitle.textContent = 'LLM API Key & Anbieter (BYOK)';
-        
+        keyTitle.textContent = '1. LLM API Key & Anbieter (BYOK)';
+
         const keyToggle = document.createElement('span');
         keyToggle.textContent = '▾';
-        
+
         keyHeader.appendChild(keyTitle);
         keyHeader.appendChild(keyToggle);
 
         const keyContent = document.createElement('div');
         keyContent.style.marginTop = '10px';
-        
+
         const savedKey = LLMService.getApiKey(activeProvider);
         if (savedKey) {
             keyContent.style.display = 'none';
@@ -69,7 +69,7 @@ export class CreatePanel {
         keyDesc.style.fontSize = '11px';
         keyDesc.style.color = 'var(--text-muted)';
         keyDesc.style.marginBottom = '8px';
-        keyDesc.textContent = 'Dein Key wird sicher im LocalStorage des Browsers gespeichert und nie an unsere Server gesendet.';
+        keyDesc.textContent = 'Dein Key wird im LocalStorage des Browsers gespeichert. Du bist dort verantwortlich. Ich empfehle grundsätzlich limitierte Keys zu verwenden.';
         keyContent.appendChild(keyDesc);
 
         // Provider Select
@@ -114,7 +114,7 @@ export class CreatePanel {
 
         this.keyInput = document.createElement('input');
         this.keyInput.type = 'password';
-        this.keyInput.placeholder = 'Schlüssel hier einfügen...';
+        this.keyInput.placeholder = 'Key hier einfügen...';
         this.keyInput.className = 'form-control';
         this.keyInput.style.width = '100%';
         this.keyInput.style.marginBottom = '8px';
@@ -137,7 +137,7 @@ export class CreatePanel {
             }
         };
         keyContent.appendChild(saveKeyBtn);
-        
+
         keyHeader.onclick = () => {
             const isHidden = keyContent.style.display === 'none';
             keyContent.style.display = isHidden ? 'block' : 'none';
@@ -154,7 +154,7 @@ export class CreatePanel {
 
         const genHeader = document.createElement('h4');
         genHeader.className = 'section-header';
-        genHeader.textContent = 'Netzwerk per KI generieren';
+        genHeader.textContent = '2. Netzwerk per KI generieren';
         genSection.appendChild(genHeader);
 
         // Model Select
@@ -335,16 +335,16 @@ export class CreatePanel {
 
         try {
             const graphData = await LLMService.generateGraphData(prompt, provider, model);
-            
+
             // Append data to existing graph
             const sourceName = 'AI_Generation_' + Date.now();
             await this.app.loadGraphData(graphData, sourceName, true);
-            
+
             const nodeCount = graphData.data.entities?.length || 0;
             const edgeCount = graphData.data.relationships?.length || 0;
-            
+
             this.setStatus(`Erfolgreich hinzugefügt: ${nodeCount} Knoten, ${edgeCount} Kanten.`, 'success');
-            
+
         } catch (error: any) {
             this.setStatus(error.message || 'Ein unbekannter Fehler ist aufgetreten.', 'error');
         } finally {

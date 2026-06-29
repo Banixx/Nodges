@@ -142,6 +142,7 @@ export class LegendPanel {
             
             // Render specific mappings
             Object.entries(preset).forEach(([prop, mapping]) => {
+                if (['attraction', 'repulsion', 'inertia'].includes(prop)) return;
                 if (typeof mapping === 'object' && mapping !== null && 'source' in mapping) {
                     const row = this.createLegendRow(prop, mapping as VisualMapping, type, baseType);
                     typeGroup.appendChild(row);
