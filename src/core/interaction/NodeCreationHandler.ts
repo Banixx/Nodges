@@ -263,7 +263,7 @@ export class NodeCreationHandler {
         const initialPos = new THREE.Vector3();
         node.getWorldPosition(initialPos);
 
-        this.axisPositionHelper.start(initialPos);
+        this.axisPositionHelper.start(initialPos, nodeId);
 
         const startTime = performance.now();
         const mouseMoveHandler = (e: MouseEvent) => {

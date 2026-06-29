@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { HighlightManager } from '../effects/HighlightManager';
 import { IStateManager } from '../core/interfaces';
+import { EntityData } from '../types';
 
 type Axis = 'y' | 'x' | 'z';
 
@@ -18,6 +19,15 @@ export class AxisPositionHelper {
     private previewNode: THREE.Mesh | null = null;
     private currentPosition: THREE.Vector3;
     private initialPosition: THREE.Vector3;
+    private previewEdges: {
+        mesh: THREE.Mesh;
+        curve: THREE.QuadraticBezierCurve3;
+        otherPos: THREE.Vector3;
+        isSource: boolean;
+        tubularSegments: number;
+        radialSegments: number;
+        finalThickness: number;
+    }[] = [];
 
     private isActive: boolean = false;
     private raycaster: THREE.Raycaster;
@@ -52,7 +62,7 @@ export class AxisPositionHelper {
         this.mouse = new THREE.Vector2();
     }
 
-    start(initialPosition: THREE.Vector3) {
+    start(initialPosition: THREE.Vector3, nodeId?: string) {
         this.isActive = true;
         this.currentAxis = 'y';
         this.initialPosition.copy(initialPosition);
@@ -61,6 +71,7 @@ export class AxisPositionHelper {
         this.createPreviewNode();
         this.createAxisHelper();
         this.createTooltip();
+        this.createPreviewEdges(nodeId);
     }
 
     /**
@@ -434,6 +445,7 @@ export class AxisPositionHelper {
             }
 
             this.previewNode.position.copy(this.currentPosition);
+            this.updatePreviewEdges();
             if (this.helperGrid) {
                 this.helperGrid.position.copy(this.currentPosition);
             }
@@ -600,6 +612,21 @@ export class AxisPositionHelper {
             this.previewNode = null;
         }
 
+        if (this.previewEdges && this.previewEdges.length > 0) {
+            this.previewEdges.forEach(item => {
+                this.scene.remove(item.mesh);
+                item.mesh.geometry.dispose();
+                if (item.mesh.material) {
+                    if (Array.isArray(item.mesh.material)) {
+                        item.mesh.material.forEach(m => m.dispose());
+                    } else {
+                        item.mesh.material.dispose();
+                    }
+                }
+            });
+            this.previewEdges = [];
+        }
+
         if (this.tooltipElement) {
             if (this.tooltipElement.parentNode) {
                 this.tooltipElement.parentNode.removeChild(this.tooltipElement);
@@ -611,6 +638,194 @@ export class AxisPositionHelper {
             this.highlightManager.clearHighlight(this.lastHighlightedObject);
             this.lastHighlightedObject = null;
         }
+    }
+
+    /**
+     * Erstellt Wireframe-Preview-Kanten für alle Verbindungen des Knotens
+     */
+    private createPreviewEdges(nodeId?: string) {
+        this.previewEdges = [];
+        if (!nodeId) return;
+
+        const relationships = this.stateManager.getRelationships();
+        const entities = this.stateManager.getEntities();
+        const state = this.stateManager.state;
+
+        // Map to quickly find other nodes
+        const nodeMap = new Map<string, EntityData>();
+        entities.forEach(n => nodeMap.set(String(n.id), n));
+
+        // Scan scene to find existing edge geometries and extract their exact parameters
+        const sceneEdges = new Map<string, { radius: number; radialSegments: number; tubularSegments: number }>();
+        this.scene.traverse((obj) => {
+            if (obj instanceof THREE.Mesh && obj.userData && obj.userData.type === 'edge') {
+                const edge = obj.userData.edge;
+                if (edge) {
+                    const sNode = String(edge.source !== undefined ? edge.source : edge.start);
+                    const tNode = String(edge.target !== undefined ? edge.target : edge.end);
+                    const key = `${sNode}_${tNode}`;
+                    
+                    if (obj.geometry && (obj.geometry as any).parameters) {
+                        const params = (obj.geometry as any).parameters;
+                        if (typeof params.radius === 'number') {
+                            const data = {
+                                radius: params.radius,
+                                radialSegments: params.radialSegments || 8,
+                                tubularSegments: params.tubularSegments || 20
+                            };
+                            sceneEdges.set(key, data);
+                            if (edge.id) {
+                                sceneEdges.set(String(edge.id), data);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Find all connected relationships
+        const connectedRels = relationships.filter(rel => {
+            const s = String(rel.source !== undefined ? rel.source : rel.start);
+            const t = String(rel.target !== undefined ? rel.target : rel.end);
+            return s === nodeId || t === nodeId;
+        });
+
+        connectedRels.forEach(rel => {
+            const s = String(rel.source !== undefined ? rel.source : rel.start);
+            const t = String(rel.target !== undefined ? rel.target : rel.end);
+            
+            const isSource = s === nodeId;
+            const otherNodeId = isSource ? t : s;
+            const otherNode = nodeMap.get(otherNodeId);
+
+            if (otherNode) {
+                const otherPos = new THREE.Vector3(
+                    otherNode.position?.x || 0,
+                    otherNode.position?.y || 0,
+                    otherNode.position?.z || 0
+                );
+
+                const startPos = isSource ? this.currentPosition : otherPos;
+                const endPos = isSource ? otherPos : this.currentPosition;
+
+                // Berechne Mitte und Bogen
+                const midPoint = new THREE.Vector3().lerpVectors(startPos, endPos, 0.5);
+                const direction = new THREE.Vector3().subVectors(endPos, startPos).normalize();
+
+                let perpendicular = new THREE.Vector3(1, 0, 0).cross(direction);
+                if (perpendicular.length() < 0.0001) {
+                    perpendicular.set(0, 1, 0).cross(direction);
+                }
+                perpendicular.normalize();
+
+                const curveFactor = state.edgeCurveFactor !== undefined ? state.edgeCurveFactor : 0.15;
+                const curveHeight = direction.length() * curveFactor;
+                const controlPoint = midPoint.clone().add(perpendicular.multiplyScalar(curveHeight));
+
+                const curve = new THREE.QuadraticBezierCurve3(
+                    startPos.clone(),
+                    controlPoint,
+                    endPos.clone()
+                );
+
+                // Default values
+                let finalThickness = 0.2;
+                let radialSegments = state.edgeRadialSegments || 8;
+                let tubularSegments = state.edgeTubularSegments || 20;
+
+                // Try to find parameters of the actual edge in the scene
+                const key = `${s}_${t}`;
+                let params: { radius: number; radialSegments: number; tubularSegments: number } | undefined;
+                if (rel.id && sceneEdges.has(String(rel.id))) {
+                    params = sceneEdges.get(String(rel.id));
+                } else if (sceneEdges.has(key)) {
+                    params = sceneEdges.get(key);
+                }
+
+                if (params) {
+                    finalThickness = params.radius;
+                    radialSegments = params.radialSegments;
+                    tubularSegments = params.tubularSegments;
+                } else {
+                    const thickness = state.edgeThickness || 0.2;
+                    const exponent = state.visualScaleExponent !== undefined ? state.visualScaleExponent : 1.0;
+                    const multiplier = state.visualScaleMultiplier !== undefined ? state.visualScaleMultiplier : 1.0;
+                    finalThickness = Math.pow(thickness * 1.0, exponent) * multiplier;
+                }
+
+                const tubeGeometry = new THREE.TubeGeometry(
+                    curve,
+                    tubularSegments,
+                    finalThickness,
+                    radialSegments,
+                    false
+                );
+
+                const material = new THREE.MeshBasicMaterial({
+                    color: 0xffffff,
+                    transparent: true,
+                    opacity: 0.4,
+                    wireframe: true
+                });
+
+                const mesh = new THREE.Mesh(tubeGeometry, material);
+                this.scene.add(mesh);
+
+                this.previewEdges.push({
+                    mesh,
+                    curve,
+                    otherPos,
+                    isSource,
+                    tubularSegments,
+                    radialSegments,
+                    finalThickness
+                });
+            }
+        });
+    }
+
+    /**
+     * Aktualisiert die Position der Preview-Kanten
+     */
+    private updatePreviewEdges() {
+        if (!this.previewEdges || this.previewEdges.length === 0) return;
+
+        const state = this.stateManager.state;
+        const curveFactor = state.edgeCurveFactor !== undefined ? state.edgeCurveFactor : 0.15;
+
+        this.previewEdges.forEach(item => {
+            const startPos = item.isSource ? this.currentPosition : item.otherPos;
+            const endPos = item.isSource ? item.otherPos : this.currentPosition;
+
+            // Re-calculate the quadratic bezier curve
+            const midPoint = new THREE.Vector3().lerpVectors(startPos, endPos, 0.5);
+            const direction = new THREE.Vector3().subVectors(endPos, startPos).normalize();
+
+            let perpendicular = new THREE.Vector3(1, 0, 0).cross(direction);
+            if (perpendicular.length() < 0.0001) {
+                perpendicular.set(0, 1, 0).cross(direction);
+            }
+            perpendicular.normalize();
+
+            const curveHeight = direction.length() * curveFactor;
+            const controlPoint = midPoint.clone().add(perpendicular.multiplyScalar(curveHeight));
+
+            item.curve.v0.copy(startPos);
+            item.curve.v1.copy(controlPoint);
+            item.curve.v2.copy(endPos);
+
+            // Recreate geometry to update the tube path
+            const newGeometry = new THREE.TubeGeometry(
+                item.curve,
+                item.tubularSegments,
+                item.finalThickness,
+                item.radialSegments,
+                false
+            );
+
+            item.mesh.geometry.dispose();
+            item.mesh.geometry = newGeometry;
+        });
     }
 
     /**

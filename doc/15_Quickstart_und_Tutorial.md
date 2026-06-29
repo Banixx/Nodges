@@ -89,4 +89,4 @@ Du baust **keine** Three.js `Meshes` direkt! Formatiere stattdessen Arrays, jage
 
 ---
 *Dokumentations-Status: V2.1 (Quickstart Updated)*
-*Geprüft gegen Build: 0.101.2*
+*Geprüft gegen Build: 0.101.3*

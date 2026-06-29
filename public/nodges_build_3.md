@@ -129,3 +129,13 @@ Beziehungen verbinden die Knoten.
 - **MappingBypassException**: Strukturierte Custom-Metriken wurden tief verschachtelt. Flache alle Metriken direkt als einfache Key-Value-Paare in das `stateVector`-Objekt ab.
 - **OrphanedRelationError**: Eine Beziehung referenziert eine nicht existierende Entity-ID. Verifiziere alle IDs.
 - **MissingSchemaVersionError**: Die `schemaVersion` fehlt in den Metadaten. Sie ist in Build 3 zwingend erforderlich, damit das Mapping Panel die korrekte Formatversion (Build 3 vs Build 2) anzeigen kann.
+
+## 9. Wichtige Hinweise für KIs / LLMs bei der JSON-Generierung
+Damit das Mapping-UI (die 2D-Verbindungskurven im Mapping-Panel) und das 3D-Rendering reibungslos funktionieren, müssen KIs bei der Generierung eines Build-3-JSON zwingend auf folgende Details achten:
+
+1. **Präfix `stateVector.` in den `visualMappings` (für Entities):**
+   Da in Build 3 alle anwenderspezifischen Metriken im `stateVector`-Objekt gekapselt sind, **muss** das `field` (oder `source`) im `visualMappings`-Block den Präfix `stateVector.` tragen (z. B. `"field": "stateVector.health_status"`). Nur so kann die Mapping-Engine die Verbindung zur Datenquelle korrekt herstellen. (Die Angabe des reinen Datentyps wie `"field": "categorical"` ist ein schwerer Fehler!)
+2. **Kanten (Relationships) benötigen ebenfalls Visual Mappings:**
+   Wenn Nodes gemappt werden, dürfen die Kanten nicht vergessen werden. Wenn eine Kante ein Attribut wie z. B. `thickness` oder `status` besitzt, sollte dieses explizit im `visualMappings`-Block auf eine visuelle Eigenschaft (z. B. `"color"`) gemappt werden (z. B. `"field": "status"`). Ohne ein solches Preset zeigt das Mapping Panel keine gestrichelten Import-Verbindungslinien für Kanten an.
+3. **`dataModel` Registrierung:**
+   Jede Eigenschaft, die im `stateVector` (oder bei den Kanten) genutzt und im Mapping referenziert wird, **muss** im `dataModel` definiert sein.

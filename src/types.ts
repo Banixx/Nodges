@@ -27,10 +27,15 @@ export const RelationshipTypeSchemaSchema = z.object({
 });
 export type RelationshipTypeSchema = z.infer<typeof RelationshipTypeSchemaSchema>;
 
-export const DataModelSchema = z.object({
-    entities: z.record(EntityTypeSchemaSchema),
-    relationships: z.record(RelationshipTypeSchemaSchema),
-});
+export const DataModelSchema = z.union([
+    z.object({
+        entities: z.record(EntityTypeSchemaSchema).optional().default({}),
+        relationships: z.record(RelationshipTypeSchemaSchema).optional().default({}),
+    }),
+    z.object({
+        properties: z.record(PropertySchemaSchema).optional().default({}),
+    })
+]);
 export type DataModel = z.infer<typeof DataModelSchema>;
 
 // Visual Mappings
@@ -42,7 +47,8 @@ export const MappingFunctionSchema = z.enum([
 export type MappingFunction = z.infer<typeof MappingFunctionSchema>;
 
 export const VisualMappingSchema = z.object({
-    source: z.string(),
+    source: z.string().optional(),
+    field: z.string().optional(),
     function: MappingFunctionSchema,
     domain: z.tuple([z.number(), z.number()]).optional(),
     range: z.tuple([z.number(), z.number()]).optional(),
@@ -60,6 +66,9 @@ export const EntityVisualPresetSchema = z.object({
     geometry: VisualMappingSchema.optional(),
     glow: VisualMappingSchema.optional(),
     animation: VisualMappingSchema.optional(),
+    attraction: VisualMappingSchema.optional(), // Pull
+    repulsion: VisualMappingSchema.optional(),  // Push
+    inertia: VisualMappingSchema.optional(),    // Mass/Inertia
 }).passthrough();
 export type EntityVisualPreset = z.infer<typeof EntityVisualPresetSchema>;
 
@@ -106,6 +115,16 @@ export const RelationshipDataSchema = z.object({
 }).passthrough();
 export type RelationshipData = z.infer<typeof RelationshipDataSchema> & Record<string, unknown>;
 
+export const FieldDataSchema = z.object({
+    id: z.string(),
+    type: z.string().optional(),
+    center: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional(),
+    strength: z.number().optional(),
+    influenceRadius: z.number().optional(),
+    behavior: z.string().optional(),
+}).passthrough();
+export type FieldData = z.infer<typeof FieldDataSchema> & Record<string, unknown>;
+
 // Main Graph Data Structure
 export const GraphDataSchema = z.object({
     system: z.string(),
@@ -117,14 +136,7 @@ export const GraphDataSchema = z.object({
         description: z.string().optional(),
     }).passthrough(),
     dataModel: DataModelSchema.optional(),
-    fields: z.array(z.object({
-        id: z.string(),
-        type: z.string().optional(),
-        center: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional(),
-        strength: z.number().optional(),
-        influenceRadius: z.number().optional(),
-        behavior: z.string().optional(),
-    }).passthrough()).optional(),
+    fields: z.array(FieldDataSchema).optional(),
     visualMappings: VisualMappingsSchema.optional(),
     data: z.object({
         entities: z.array(EntityDataSchema),
@@ -181,4 +193,7 @@ export interface VisualProperties {
     thickness?: number | any;
     curvature?: number | any;
     animation?: any;
+    attraction?: number | any;
+    repulsion?: number | any;
+    inertia?: number | any;
 }

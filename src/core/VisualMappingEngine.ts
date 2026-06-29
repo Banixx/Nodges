@@ -9,6 +9,7 @@ import {
     RelationshipVisualPreset,
     DataModel
 } from '../types';
+import { getPropertySchema, getEntityAttributeValue } from './BuildFormatUtils';
 
 /**
  * VisualMappingEngine - Applies visual mappings to entities and relationships
@@ -28,6 +29,13 @@ export class VisualMappingEngine {
      */
     setVisualMappings(visualMappings: VisualMappings) {
         this.visualMappings = visualMappings;
+    }
+
+    /**
+     * Get current visual mappings
+     */
+    getVisualMappings(): VisualMappings | undefined {
+        return this.visualMappings;
     }
 
     /**
@@ -63,23 +71,23 @@ export class VisualMappingEngine {
 
         // Apply position mappings
         if (preset.positionX && preset.positionX.source !== 'constant') {
-            visual.positionX = this.applyMapping(preset.positionX, entity);
+            visual.positionX = this.applyMapping(preset.positionX, entity, 'positionX');
         }
         if (preset.positionY && preset.positionY.source !== 'constant') {
-            visual.positionY = this.applyMapping(preset.positionY, entity);
+            visual.positionY = this.applyMapping(preset.positionY, entity, 'positionY');
         }
         if (preset.positionZ && preset.positionZ.source !== 'constant') {
-            visual.positionZ = this.applyMapping(preset.positionZ, entity);
+            visual.positionZ = this.applyMapping(preset.positionZ, entity, 'positionZ');
         }
 
         // Apply size mapping
         if (preset.size) {
-            visual.size = this.applyMapping(preset.size, entity);
+            visual.size = this.applyMapping(preset.size, entity, 'size');
         }
 
         // Apply color mapping
         if (preset.color) {
-            const colorValue = this.applyMapping(preset.color, entity);
+            const colorValue = this.applyMapping(preset.color, entity, 'color');
             visual.color = this.mapToColor(colorValue, preset.color);
         }
 
@@ -90,12 +98,23 @@ export class VisualMappingEngine {
 
         // Apply glow mapping
         if (preset.glow) {
-            visual.glow = this.applyMapping(preset.glow, entity);
+            visual.glow = this.applyMapping(preset.glow, entity, 'glow');
         }
 
         // Apply animation mapping
         if (preset.animation) {
             visual.animation = this.mapToAnimation(preset.animation, entity);
+        }
+
+        // Apply physics mapping
+        if (preset.attraction) {
+            visual.attraction = this.applyMapping(preset.attraction, entity, 'attraction');
+        }
+        if (preset.repulsion) {
+            visual.repulsion = this.applyMapping(preset.repulsion, entity, 'repulsion');
+        }
+        if (preset.inertia) {
+            visual.inertia = this.applyMapping(preset.inertia, entity, 'inertia');
         }
 
         return visual;
@@ -127,28 +146,28 @@ export class VisualMappingEngine {
 
         // Apply thickness mapping
         if (preset.thickness) {
-            visual.thickness = this.applyMapping(preset.thickness, relationship);
+            visual.thickness = this.applyMapping(preset.thickness, relationship, 'thickness');
         }
 
         // Apply color mapping
         if (preset.color) {
-            const colorValue = this.applyMapping(preset.color, relationship);
+            const colorValue = this.applyMapping(preset.color, relationship, 'color');
             visual.color = this.mapToColor(colorValue, preset.color);
         }
 
         // Apply curvature mapping
         if (preset.curvature) {
-            visual.curvature = this.applyMapping(preset.curvature, relationship);
+            visual.curvature = this.applyMapping(preset.curvature, relationship, 'curvature');
         }
 
         // Apply glow mapping
         if (preset.glow) {
-            visual.glow = this.applyMapping(preset.glow, relationship);
+            visual.glow = this.applyMapping(preset.glow, relationship, 'glow');
         }
 
         // Apply opacity mapping
         if (preset.opacity) {
-            visual.opacity = this.applyMapping(preset.opacity, relationship);
+            visual.opacity = this.applyMapping(preset.opacity, relationship, 'opacity');
         }
 
         // Apply animation mapping
@@ -160,9 +179,11 @@ export class VisualMappingEngine {
         return visual;
     }
 
-    private applyMapping(mapping: VisualMapping, data: EntityData | RelationshipData): any {
+    public applyMapping(mapping: VisualMapping, data: EntityData | RelationshipData, propName?: string): any {
+        const sourceKey = mapping.field || mapping.source || '';
+        
         // Special case: constant source
-        if (mapping.source === 'constant') {
+        if (sourceKey === 'constant') {
             if (mapping.function === 'pulse') {
                 return this.pulseMapping(1.0, mapping);
             }
@@ -178,11 +199,14 @@ export class VisualMappingEngine {
             if ((mapping as any).value) {
                 return (mapping as any).value;
             }
+            if (mapping.params?.value !== undefined) {
+                return mapping.params.value;
+            }
             return 1.0;
         }
 
         // Get source value (supports nested properties like "personality.extraversion")
-        let value = this.getNestedProperty(data, mapping.source);
+        let value = this.getNestedProperty(data, sourceKey);
 
         if (value === undefined || value === null) {
             // Return middle of range or default
@@ -191,6 +215,18 @@ export class VisualMappingEngine {
 
         // Handle categorical mapping directly (keeps string values)
         if (mapping.function === 'categorical') {
+            if (propName && propName !== 'color' && propName !== 'geometry') {
+                if (mapping.params && mapping.params.categories && mapping.params.categories[String(value)] !== undefined) {
+                    const mappedValue = mapping.params.categories[String(value)];
+                    if (typeof mappedValue === 'number') {
+                        return mappedValue;
+                    }
+                    if (typeof mappedValue === 'string' && !isNaN(Number(mappedValue)) && mappedValue.trim() !== '') {
+                        return Number(mappedValue);
+                    }
+                    return mappedValue;
+                }
+            }
             return value;
         }
 
@@ -217,8 +253,7 @@ export class VisualMappingEngine {
         let domain = mapping.domain;
         if (!domain && this.dataModel && data.type) {
             const entityType = data.type;
-            const propSchema = this.dataModel.entities[entityType]?.properties?.[mapping.source]
-                || this.dataModel.relationships[entityType]?.properties?.[mapping.source];
+            const propSchema = getPropertySchema(this.dataModel, entityType, sourceKey);
             if (propSchema && propSchema.range) {
                 domain = propSchema.range;
             }
@@ -266,6 +301,9 @@ export class VisualMappingEngine {
      * Get nested property from object (e.g., "personality.extraversion")
      */
     private getNestedProperty(obj: any, path: string): any {
+        const formatVal = getEntityAttributeValue(obj as any, path);
+        if (formatVal !== undefined) return formatVal;
+
         return path.split('.').reduce((current, key) => current?.[key], obj);
     }
 
@@ -441,10 +479,12 @@ export class VisualMappingEngine {
     private mapToGeometry(mapping: VisualMapping, data: EntityData): string {
         let geom = 'sphere';
 
-        if (mapping.source === 'constant') {
+        const sourceKey = mapping.field || mapping.source || '';
+
+        if (sourceKey === 'constant') {
             geom = (mapping as any).value || mapping.params?.geometry || 'sphere';
         } else if (mapping.function === 'categorical') {
-            const val = this.getNestedProperty(data, mapping.source);
+            const val = this.getNestedProperty(data, sourceKey);
             if (val !== undefined) {
                 if (mapping.params?.categories) {
                     geom = mapping.params.categories[String(val)] || 'sphere';
@@ -455,7 +495,7 @@ export class VisualMappingEngine {
         } else if (mapping.function === 'sphereComplexity') {
             geom = 'sphere';
         } else {
-            const val = this.getNestedProperty(data, mapping.source);
+            const val = this.getNestedProperty(data, sourceKey);
             if (val !== undefined) {
                 geom = String(val).toLowerCase();
             }
@@ -487,7 +527,10 @@ export class VisualMappingEngine {
             opacity: 1.0,
             thickness: 0.1,
             curvature: 0,
-            animation: undefined
+            animation: undefined,
+            attraction: 0,
+            repulsion: 50, // Default repulsion to avoid overlap
+            inertia: 1.0
         };
     }
 
@@ -503,7 +546,10 @@ export class VisualMappingEngine {
             opacity: 1.0,
             thickness: 0.1,
             curvature: 0,
-            animation: undefined
+            animation: undefined,
+            attraction: 0,
+            repulsion: 50,
+            inertia: 1.0
         };
     }
 }

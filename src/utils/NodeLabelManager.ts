@@ -49,16 +49,16 @@ export class NodeLabelManager {
 
         // Configuration
         this.config = {
-            fontSize: 0.5,
+            fontSize: 1.2,
             color: 0xffffff,
             backgroundColor: 0x000000,
             backgroundOpacity: 0.7,
             padding: 0.1,
             visible: true,
             alwaysVisible: false,
-            distanceThreshold: 35, // Niedriger, damit Labels bei weitem Abstand ausgeblendet werden
-            constantScreenSize: true, // Wieder aktiviert!
-            screenSizeScale: 0.025 // Erhoeht (von 0.015), damit sie beim Heranzoomen gross genug sind
+            distanceThreshold: 60, // Höher, da sie jetzt mit Distanz kleiner werden
+            constantScreenSize: false, // Geändert: Sollen mit Distanz kleiner werden
+            screenSizeScale: 0.025
         };
 
         // Bind update method to use in animation loop
@@ -179,18 +179,22 @@ export class NodeLabelManager {
         const sprite = new THREE.Sprite(material);
         sprite.renderOrder = 999;
 
-        // Scale sprite based on text size (verhindert vertikale Stauchung)
-        const scale = this.config.fontSize;
-        sprite.scale.set(scale * canvas.width / fontSize, scale * canvas.height / fontSize, 1);
-
         // Position sprite -- dynamischer Offset basierend auf Node-Groesse
         const effectiveRadius = nodeRadius !== undefined ? nodeRadius : 0.5;
-        const labelOffset = effectiveRadius + 0.4;
+        
+        // Kopplung der Basisgröße an den Node-Radius, um riesige Labels bei kleinen Nodes zu verhindern
+        const baseScale = this.config.fontSize * Math.max(0.5, effectiveRadius * 0.8);
+        
+        // Scale sprite based on text size (verhindert vertikale Stauchung)
+        sprite.scale.set(baseScale * canvas.width / fontSize, baseScale * canvas.height / fontSize, 1);
+
+        const labelOffset = effectiveRadius + (baseScale * 0.5);
         
         // Speichere Canvas-Dimensionen, Offset und Basis-Position fuer spaetere Updates
         sprite.userData.canvasWidth = canvas.width;
         sprite.userData.canvasHeight = canvas.height;
         sprite.userData.canvasFontSize = fontSize;
+        sprite.userData.baseScale = baseScale;
         sprite.userData.labelOffset = labelOffset;
         sprite.userData.basePosition = position.clone();
 
@@ -418,18 +422,37 @@ export class NodeLabelManager {
 
                 // Konstante Bildschirmgroesse: Skalierung proportional zur Kamera-Distanz
                 let s = 1;
+                const cw = label.sprite.userData.canvasWidth || 100;
+                const ch = label.sprite.userData.canvasHeight || 56;
+                const cf = label.sprite.userData.canvasFontSize || 32;
+                
                 if (this.config.constantScreenSize) {
-                    const cw = label.sprite.userData.canvasWidth || 100;
-                    const ch = label.sprite.userData.canvasHeight || 56;
-                    const cf = label.sprite.userData.canvasFontSize || 32;
                     s = this.config.screenSizeScale * distance * filterScaleFactor;
                     label.sprite.scale.set(s * cw / cf, s * ch / cf, 1);
                 } else {
-                    label.sprite.scale.multiplyScalar(filterScaleFactor);
+                    const bs = label.sprite.userData.baseScale || this.config.fontSize;
+                    let finalScale = bs * filterScaleFactor;
+                    
+                    const camera = this.camera as THREE.PerspectiveCamera;
+                    const fovRad = (camera.fov || 45) * Math.PI / 180;
+                    const vFovHeight = 2 * Math.tan(fovRad / 2) * distance;
+                    const screenHeight = window.innerHeight || 1000;
+                    
+                    const f_screen = (finalScale * screenHeight) / vFovHeight;
+                    
+                    if (f_screen < 7) {
+                        label.sprite.visible = false;
+                        visibleCount--;
+                    } else {
+                        if (f_screen > 15) {
+                            finalScale = (15 * vFovHeight) / screenHeight;
+                        }
+                        label.sprite.scale.set(finalScale * cw / cf, finalScale * ch / cf, 1);
+                    }
                 }
 
                 // Dynamische Positionierung exakt am Rand des Nodes (rechts oben von Kamera aus)
-                if (label.sprite.userData.basePosition) {
+                if (label.sprite.visible && label.sprite.userData.basePosition) {
                     this.tempPos.copy(label.sprite.userData.basePosition);
                     
                     // Der urspruengliche nodeRadius wurde als (labelOffset - 0.4) gespeichert

@@ -17,3 +17,4 @@ Dieses Dokument bietet eine strukturierte Übersicht über die gesamte technisch
 - [13 Glossar und technische Begriffe](13_Glossar.md)
 - [14 Troubleshooting und FAQ](14_Troubleshooting_und_FAQ.md)
 - [15 Quickstart und Tutorial-Guide](15_Quickstart_und_Tutorial.md)
+- [17 Wireframe-Kanten-Vorschau](17_Wireframe_Kanten_Vorschau.md)

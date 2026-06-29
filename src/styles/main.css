@@ -966,10 +966,12 @@ input[type="range"] {
 /* Mapping Panel Styles */
 .mapping-panel-container {
   position: fixed !important;
-  bottom: 20px !important;
-  left: 270px !important;
-  width: 700px;
-  height: 380px;
+  top: 10px !important;
+  left: 10px !important;
+  width: 550px;
+  height: auto;
+  min-height: 250px;
+  max-height: calc(100vh - 40px);
   background: var(--panel-bg) !important;
   backdrop-filter: var(--glass-blur) !important;
   -webkit-backdrop-filter: var(--glass-blur) !important;

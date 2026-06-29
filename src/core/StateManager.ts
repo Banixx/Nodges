@@ -84,6 +84,8 @@ export interface State {
     activeColorScheme: string;
     visualScaleExponent: number;
     visualScaleMultiplier: number;
+    cameraFitMargin: number;
+    cameraTransitionDuration: number;
 
     // Dev Settings (Performance Testing)
     devPowerPreference: 'high-performance' | 'low-power' | 'default';
@@ -153,7 +155,7 @@ export class StateManager implements IStateManager {
             activeRenderMode: ((typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_render_mode') : null) === 'instance' ? 'instance' : 'mesh') as 'mesh' | 'instance',
 
             // Edge Parameters
-            edgeThickness: 0.1,
+            edgeThickness: 2.0,
             edgeTubularSegments: 20,
             edgeRadialSegments: 8,
             edgeCurveFactor: 0.4,
@@ -183,6 +185,8 @@ export class StateManager implements IStateManager {
             visualScaleMultiplier: 1.0,
             autoBalanceEnabled: true,
             normalizeCoordinatesEnabled: true,
+            cameraFitMargin: 1.05,
+            cameraTransitionDuration: 1500,
 
             // Ebenen / Layers
             layer1Visible: true,
@@ -593,14 +597,8 @@ export class StateManager implements IStateManager {
             const oldNode = { ...this.state.graphData.entities[index] };
             const newEntities = [...this.state.graphData.entities];
             
-            // Erst das Objekt zusammenfuehren
+            // Felder aus updates in den bestehenden Node mergen (nur die übergebenen Felder aktualisieren)
             const updatedNode = { ...newEntities[index], ...updates };
-            // Custom-Eigenschaften loeschen, die in updates nicht mehr existieren (und nicht mit _ beginnen)
-            for (const key in updatedNode) {
-                if (Object.prototype.hasOwnProperty.call(updatedNode, key) && !key.startsWith('_') && !(key in updates)) {
-                    delete updatedNode[key];
-                }
-            }
             
             newEntities[index] = updatedNode;
             this.update({
@@ -682,14 +680,8 @@ export class StateManager implements IStateManager {
             const oldEdge = { ...this.state.graphData.relationships[index] };
             const newRelationships = [...this.state.graphData.relationships];
             
-            // Erst das Objekt zusammenfuehren
+            // Felder aus updates in die bestehende Edge mergen (nur die übergebenen Felder aktualisieren)
             const updatedEdge = { ...newRelationships[index], ...updates };
-            // Custom-Eigenschaften loeschen, die in updates nicht mehr existieren (und nicht mit _ beginnen)
-            for (const key in updatedEdge) {
-                if (Object.prototype.hasOwnProperty.call(updatedEdge, key) && !key.startsWith('_') && !(key in updates)) {
-                    delete updatedEdge[key];
-                }
-            }
             
             newRelationships[index] = updatedEdge;
             this.update({

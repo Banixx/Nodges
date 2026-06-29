@@ -189,7 +189,6 @@ export class ViewPanel {
         // --- VISUAL BALANCE SECTION ---
         const balanceSection = document.createElement('section');
         balanceSection.className = 'panel-section';
-        balanceSection.dataset.minMode = 'expert';
 
         const balanceHeader = document.createElement('h4');
         balanceHeader.className = 'section-header';
@@ -262,6 +261,33 @@ export class ViewPanel {
 
 
         this.container.appendChild(balanceSection);
+
+        // --- CAMERA CONTROLS SECTION ---
+        const cameraSection = document.createElement('section');
+        cameraSection.className = 'panel-section';
+
+        const cameraHeader = document.createElement('h4');
+        cameraHeader.className = 'section-header';
+        cameraHeader.textContent = 'Kamerasteuerung';
+        cameraSection.appendChild(cameraHeader);
+
+        const marginRow = this.createSliderRow(
+            'Auto-Fit Randfaktor',
+            'cameraFitMargin',
+            this.stateManager.state.cameraFitMargin,
+            1.0, 3.0, 0.1, 1
+        );
+        cameraSection.appendChild(marginRow);
+
+        const durationRow = this.createSliderRow(
+            'Animationsdauer (ms)',
+            'cameraTransitionDuration',
+            this.stateManager.state.cameraTransitionDuration,
+            0, 5000, 100, 0
+        );
+        cameraSection.appendChild(durationRow);
+
+        this.container.appendChild(cameraSection);
 
         // --- COLOR SCHEME SECTION ---
         const colorSection = document.createElement('section');
@@ -489,6 +515,20 @@ export class ViewPanel {
             thresholdSlider.value = state.labelFilterThreshold.toString();
             const valueSpan = thresholdSlider.previousElementSibling?.querySelector('span:last-child');
             if (valueSpan) valueSpan.textContent = state.labelFilterThreshold.toFixed(2);
+        }
+
+        const marginSlider = document.getElementById('slider-cameraFitMargin') as HTMLInputElement;
+        const durationSlider = document.getElementById('slider-cameraTransitionDuration') as HTMLInputElement;
+
+        if (marginSlider && parseFloat(marginSlider.value) !== state.cameraFitMargin) {
+            marginSlider.value = state.cameraFitMargin.toString();
+            const valueSpan = marginSlider.previousElementSibling?.querySelector('span:last-child');
+            if (valueSpan) valueSpan.textContent = state.cameraFitMargin.toFixed(1);
+        }
+        if (durationSlider && parseFloat(durationSlider.value) !== state.cameraTransitionDuration) {
+            durationSlider.value = state.cameraTransitionDuration.toString();
+            const valueSpan = durationSlider.previousElementSibling?.querySelector('span:last-child');
+            if (valueSpan) valueSpan.textContent = state.cameraTransitionDuration.toFixed(0);
         }
 
         // Sync selects

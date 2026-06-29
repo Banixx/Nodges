@@ -5,6 +5,12 @@ import {
     GraphDataSchema,
     PropertySchema
 } from '../types';
+import {
+    isBuild1DataModel,
+    isBuild2DataModel,
+    getEntityAttributeValue,
+    setEntityAttributeValue
+} from './BuildFormatUtils';
 
 /**
  * DataParser - Parses graph data in the unified format
@@ -48,6 +54,10 @@ export class DataParser {
                 }
             };
         }
+        // 0. Detect Build Version
+        const buildVersion = this.detectBuildVersion(data);
+        if (!data.metadata) data.metadata = {};
+        data.metadata._buildVersion = buildVersion;
 
         // 1. Zod Validation
         const result = GraphDataSchema.safeParse(data);
@@ -68,7 +78,20 @@ export class DataParser {
         // 3. Calculate Network Metrics (inbound, outbound, degree)
         this.calculateNetworkMetrics(validData);
 
+        // 4. Migrate Legacy Fields to Invisible Nodes (Physics Mapping Architecture)
+        this.migrateLegacyFields(validData);
+
         return validData;
+    }
+    /**
+     * Detects the build format version
+     */
+    private static detectBuildVersion(data: any): string {
+        if (data.nodes && data.edges && !data.system) return "0.0"; // Legacy
+        if (data.metadata && data.metadata.schemaVersion) return data.metadata.schemaVersion;
+        if (data.dataModel && data.dataModel.properties) return "2.0"; // Build 2/3 fallback
+        if (data.dataModel && data.dataModel.entities) return "1.0";
+        return "1.0"; // Default
     }
 
     /**
@@ -80,30 +103,52 @@ export class DataParser {
         // Parse Entities
         graphData.data.entities.forEach(entity => {
             const entityType = entity.type;
-            const definition = graphData.dataModel?.entities[entityType];
-
-            if (definition && definition.properties) {
-                // Iterate over defined properties in schema
-                Object.entries(definition.properties).forEach(([propName, propSchema]) => {
-                    // Parse existing value
-                    if (entity[propName] !== undefined) {
-                        entity[propName] = this.parseValue(entity[propName], propSchema);
-                    }
-                });
+            
+            if (isBuild1DataModel(graphData.dataModel!)) {
+                const definition = graphData.dataModel.entities?.[entityType];
+                if (definition && definition.properties) {
+                    Object.entries(definition.properties).forEach(([propName, propSchema]) => {
+                        const val = getEntityAttributeValue(entity, propName);
+                        if (val !== undefined) {
+                            setEntityAttributeValue(entity, propName, this.parseValue(val, propSchema));
+                        }
+                    });
+                }
+            } else if (isBuild2DataModel(graphData.dataModel!)) {
+                const globalProps = graphData.dataModel.properties;
+                if (globalProps) {
+                    Object.entries(globalProps).forEach(([propName, propSchema]) => {
+                        const val = getEntityAttributeValue(entity, propName);
+                        if (val !== undefined) {
+                            setEntityAttributeValue(entity, propName, this.parseValue(val, propSchema));
+                        }
+                    });
+                }
             }
         });
 
         // Parse Relationships
         graphData.data.relationships.forEach(rel => {
             const relType = rel.type;
-            const definition = graphData.dataModel?.relationships[relType];
 
-            if (definition && definition.properties) {
-                Object.entries(definition.properties).forEach(([propName, propSchema]) => {
-                    if (rel[propName] !== undefined) {
-                        rel[propName] = this.parseValue(rel[propName], propSchema);
-                    }
-                });
+            if (isBuild1DataModel(graphData.dataModel!)) {
+                const definition = graphData.dataModel.relationships?.[relType];
+                if (definition && definition.properties) {
+                    Object.entries(definition.properties).forEach(([propName, propSchema]) => {
+                        if (rel[propName] !== undefined) {
+                            rel[propName] = this.parseValue(rel[propName], propSchema);
+                        }
+                    });
+                }
+            } else if (isBuild2DataModel(graphData.dataModel!)) {
+                const globalProps = graphData.dataModel.properties;
+                if (globalProps) {
+                    Object.entries(globalProps).forEach(([propName, propSchema]) => {
+                        if (rel[propName] !== undefined) {
+                            rel[propName] = this.parseValue(rel[propName], propSchema);
+                        }
+                    });
+                }
             }
         });
     }
@@ -304,5 +349,51 @@ export class DataParser {
         });
 
         return graphData;
+    }
+
+    /**
+     * Replaces legacy global fields with invisible node entities and sets up visual mappings
+     */
+    private static migrateLegacyFields(graphData: GraphData) {
+        if (!graphData.fields || graphData.fields.length === 0) return;
+
+        console.log(`Migrating ${graphData.fields.length} legacy fields to node entities.`);
+
+        // Ensure visual mappings exist
+        if (!graphData.visualMappings) {
+            graphData.visualMappings = { defaultPresets: {} };
+        }
+        if (!graphData.visualMappings.defaultPresets) {
+            graphData.visualMappings.defaultPresets = {};
+        }
+
+        // Setup invisible visual preset for system_attractor
+        graphData.visualMappings.defaultPresets['system_attractor'] = {
+            opacity: { source: 'constant', function: 'constant', params: { value: 0 } },
+            size: { source: 'constant', function: 'constant', params: { value: 0 } },
+            inertia: { source: 'constant', function: 'constant', params: { value: 1000000 } }, // Immovable
+            attraction: { field: 'stateVector.strength', function: 'linear', domain: [-100, 100], range: [-100, 100] }
+        };
+
+        // Convert fields to entities
+        graphData.fields.forEach((field, index) => {
+            const isAttractor = field.type === 'attractor_field';
+            const strength = field.strength || (isAttractor ? 10 : -100);
+
+            const entity = {
+                id: `system_field_${index}_${field.id}`,
+                type: 'system_attractor',
+                label: `Legacy Field ${field.id}`,
+                position: field.center || { x: 0, y: 0, z: 0 },
+                stateVector: {
+                    strength: strength
+                }
+            };
+
+            graphData.data.entities.push(entity);
+        });
+
+        // Clear legacy fields so they are not processed twice
+        graphData.fields = [];
     }
 }

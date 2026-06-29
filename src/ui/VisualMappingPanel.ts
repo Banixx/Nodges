@@ -106,15 +106,16 @@ export class VisualMappingPanel {
 
         // Get available options list
         const options = [...(this.availableAttributes[type] || ['constant'])];
-        if (!options.includes(mapping.source)) {
-            options.push(mapping.source);
+        const currentSource = mapping.source || mapping.field || '';
+        if (!options.includes(currentSource)) {
+            options.push(currentSource);
         }
 
         options.forEach(optVal => {
             const opt = document.createElement('option');
             opt.value = optVal;
             opt.textContent = optVal;
-            opt.selected = mapping.source === optVal;
+            opt.selected = currentSource === optVal;
             sourceSelect.appendChild(opt);
         });
 

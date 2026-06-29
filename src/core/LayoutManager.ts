@@ -3,7 +3,7 @@
  */
 
 import LayoutWorker from '../workers/layout-worker.ts?worker';
-import { EntityData, RelationshipData } from '../types';
+import { EntityData, RelationshipData, FieldData } from '../types';
 import type { LayoutWorkerRequest, LayoutWorkerResponse } from '../workers/WorkerTypes';
 import { errorHandler } from './ErrorHandler';
 
@@ -13,7 +13,7 @@ interface LayoutOptions {
 
 interface LayoutDefinition {
     name: string;
-    apply: (nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions) => void | Promise<boolean>;
+    apply: (nodes: EntityData[], edges: RelationshipData[], fields: FieldData[] | undefined, options: LayoutOptions) => void | Promise<boolean>;
     options: LayoutOptions;
 }
 
@@ -27,11 +27,14 @@ type LayoutEntity = EntityData & {
     index?: number; // Worker index
 };
 
+import { VisualMappingEngine } from './VisualMappingEngine';
+
 export class LayoutManager {
     private layouts: Map<string, LayoutDefinition>;
     private currentLayout: string | null;
     public isAnimating: boolean;
     public animationSpeed: number;
+    private visualMappingEngine?: VisualMappingEngine;
     /** Referenz auf aktiven Worker (fuer Cleanup/Cancel) */
     private activeWorker: Worker | null = null;
     /** Timeout-ID fuer Worker-Timeout */
@@ -47,6 +50,10 @@ export class LayoutManager {
 
         // Registriere Standard-Layouts
         this.registerDefaultLayouts();
+    }
+
+    public setVisualMappingEngine(engine: VisualMappingEngine) {
+        this.visualMappingEngine = engine;
     }
 
     /**
@@ -80,7 +87,7 @@ export class LayoutManager {
         // Force-Directed Layout
         this.registerLayout('force-directed', {
             name: 'Force-Directed',
-            apply: (nodes, edges, options) => this.applyForceLayout(nodes, edges, options),
+            apply: (nodes, edges, fields, options) => this.applyForceLayout(nodes, edges, fields, options),
             options: {
                 maxIterations: 100,
                 repulsionStrength: 50,
@@ -92,7 +99,7 @@ export class LayoutManager {
         // Fruchterman-Reingold Layout
         this.registerLayout('fruchterman-reingold', {
             name: 'Fruchterman-Reingold',
-            apply: (nodes, edges, options) => this.applyFruchtermanReingoldLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applyFruchtermanReingoldLayout(nodes, edges, options),
             options: {
                 maxIterations: 500,
                 area: 400,
@@ -103,7 +110,7 @@ export class LayoutManager {
         // Spring-Embedder Layout
         this.registerLayout('spring-embedder', {
             name: 'Spring-Embedder',
-            apply: (nodes, edges, options) => this.applySpringEmbedderLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applySpringEmbedderLayout(nodes, edges, options),
             options: {
                 maxIterations: 1000,
                 springConstant: 0.1,
@@ -116,7 +123,7 @@ export class LayoutManager {
         // Hierarchical Layout
         this.registerLayout('hierarchical', {
             name: 'Hierarchical',
-            apply: (nodes, edges, options) => this.applyHierarchicalLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applyHierarchicalLayout(nodes, edges, options),
             options: {
                 levelHeight: 3,
                 nodeSpacing: 2
@@ -126,7 +133,7 @@ export class LayoutManager {
         // Tree Layout
         this.registerLayout('tree', {
             name: 'Tree',
-            apply: (nodes, edges, options) => this.applyTreeLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applyTreeLayout(nodes, edges, options),
             options: {
                 levelHeight: 3,
                 nodeSpacing: 2
@@ -136,7 +143,7 @@ export class LayoutManager {
         // Circular Layout
         this.registerLayout('circular', {
             name: 'Circular',
-            apply: (nodes, edges, options) => this.applyCircularLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applyCircularLayout(nodes, edges, options),
             options: {
                 radius: 10,
                 height: 0
@@ -146,7 +153,7 @@ export class LayoutManager {
         // Grid Layout
         this.registerLayout('grid', {
             name: 'Grid',
-            apply: (nodes, edges, options) => this.applyGridLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applyGridLayout(nodes, edges, options),
             options: {
                 spacing: 2
             }
@@ -155,7 +162,7 @@ export class LayoutManager {
         // Random Layout
         this.registerLayout('random', {
             name: 'Random',
-            apply: (nodes, edges, options) => this.applyRandomLayout(nodes, edges, options),
+            apply: (nodes, edges, _fields, options) => this.applyRandomLayout(nodes, edges, options),
             options: {
                 minBound: -10,
                 maxBound: 10
@@ -167,7 +174,7 @@ export class LayoutManager {
         this.layouts.set(id, layout);
     }
 
-    async applyLayout(layoutId: string, nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions = {}): Promise<boolean> {
+    async applyLayout(layoutId: string, nodes: EntityData[], edges: RelationshipData[], fields: FieldData[] = [], options: LayoutOptions = {}): Promise<boolean> {
         const layout = this.layouts.get(layoutId);
         if (!layout) {
             errorHandler.handle(
@@ -189,9 +196,13 @@ export class LayoutManager {
         try {
             // Verwende Web Worker fuer rechenintensive Layouts
             if (['force-directed', 'fruchterman-reingold', 'spring-embedder'].includes(layoutId)) {
-                return await this.applyLayoutWithWorker(layoutId, nodes, edges, mergedOptions) as boolean;
+                return await this.applyLayoutWithWorker(layoutId, nodes, edges, fields, mergedOptions) as boolean;
             } else {
-                layout.apply(nodes, edges, mergedOptions);
+                layout.apply(nodes, edges, fields, mergedOptions);
+                const app = typeof window !== 'undefined' ? (window as any).app : null;
+                if (app && typeof app.fitCameraToScene === 'function') {
+                    app.fitCameraToScene();
+                }
                 return true;
             }
         } catch (error) {
@@ -213,7 +224,7 @@ export class LayoutManager {
         }
     }
 
-    async applyLayoutWithWorker(layoutId: string, nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions): Promise<boolean> {
+    async applyLayoutWithWorker(layoutId: string, nodes: EntityData[], edges: RelationshipData[], fields: FieldData[], options: LayoutOptions): Promise<boolean> {
         // Vorherigen Worker stoppen falls aktiv
         this.stopAnimation();
 
@@ -238,21 +249,32 @@ export class LayoutManager {
             const request: LayoutWorkerRequest = {
                 requestId,
                 algorithm: layoutId,
-                nodes: nodes.map(node => ({
-                    id: node.id,
-                    x: node.position?.x || 0,
-                    y: node.position?.y || 0,
-                    z: node.position?.z || 0,
-                    index: nodeIndexMap.get(node.id)!
-                })),
-                edges: edges.map(edge => {
-                    const startIndex = nodeIndexMap.get(edge.source);
-                    const endIndex = nodeIndexMap.get(edge.target);
+                nodes: nodes.map(node => {
+                    const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(node) : {};
+                    const physics = this.getNodePhysics(node);
+                    return {
+                        id: node.id,
+                        x: node.position?.x || 0,
+                        y: node.position?.y || 0,
+                        z: node.position?.z || 0,
+                        index: nodeIndexMap.get(node.id)!,
+                        attraction: physics.attraction,
+                        repulsion: physics.repulsion,
+                        inertia: physics.inertia,
+                        fixedX: visual.positionX !== undefined,
+                        fixedY: visual.positionY !== undefined,
+                        fixedZ: visual.positionZ !== undefined
+                    };
+                }),
+                edges: edges.filter(e => e.source && e.target).map(edge => {
+                    const startIndex = nodeIndexMap.get(edge.source!);
+                    const endIndex = nodeIndexMap.get(edge.target!);
                     return {
                         start: startIndex !== undefined ? startIndex : 0,
                         end: endIndex !== undefined ? endIndex : 0
                     };
                 }),
+                fields,
                 options
             };
 
@@ -279,7 +301,8 @@ export class LayoutManager {
 
                 switch (response.type) {
                     case 'progress':
-                        console.log(`[LayoutManager] Progress: ${response.progress}% (${response.currentIteration}/${response.maxIterations})`);
+                        // Just a progress update, do not modify positions to avoid flashing/jumping.
+                        // (Optional: update a UI progress bar here)
                         break;
 
                     case 'success': {
@@ -287,35 +310,97 @@ export class LayoutManager {
                         console.log(`[LayoutManager] Layout berechnet: ${iterations} Iterationen in ${duration.toFixed(1)}ms`);
 
                         if (positions && Array.isArray(positions)) {
-                            // Map fuer performante ID-basierte Zuweisung erstellen
                             const nodeMap = new Map<string, EntityData>();
+                            const startPositions = new Map<string, {x:number, y:number, z:number}>();
                             nodes.forEach(node => {
                                 nodeMap.set(node.id, node);
+                                startPositions.set(node.id, { 
+                                    x: node.position?.x || 0, 
+                                    y: node.position?.y || 0, 
+                                    z: node.position?.z || 0 
+                                });
                             });
 
                             positions.forEach(pos => {
                                 const node = nodeMap.get(pos.id);
                                 if (node) {
+                                    const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(node) : {};
                                     if (!node.position) node.position = { x: 0, y: 0, z: 0 };
-                                    node.position.x = pos.x || 0;
-                                    node.position.y = pos.y || 0;
-                                    node.position.z = pos.z || 0;
+                                    if (visual.positionX === undefined) node.position.x = pos.x || 0;
+                                    if (visual.positionY === undefined) node.position.y = pos.y || 0;
+                                    if (visual.positionZ === undefined) node.position.z = pos.z || 0;
                                 }
                             });
+
+                            const app = typeof window !== 'undefined' ? (window as any).app : null;
+                            const state = app?.stateManager?.state;
+                            const independentAxes = state ? state.independentAxesNormalization : true; // default true for better space usage
+                            this.normalizeNodePositions(nodes, 10, independentAxes);
+
+                            if (app && state?.autoBalanceEnabled) {
+                                app.applyVisualBalance();
+                            }
+
+                            // Now node.position holds the final targets. Start the tweening!
+                            const targetPositions = new Map<string, {x:number, y:number, z:number}>();
+                            nodes.forEach(node => {
+                                targetPositions.set(node.id, { ...node.position! });
+                                // Restore start position for the animation loop
+                                const start = startPositions.get(node.id)!;
+                                node.position!.x = start.x;
+                                node.position!.y = start.y;
+                                node.position!.z = start.z;
+                            });
+
+                            this.isAnimating = true;
+                            const duration = 1200; // 1.2s smooth animation
+                            const startTime = performance.now();
+
+                            const animateLoop = (time: number) => {
+                                if (!this.isAnimating) return; // allows stopping
+                                const elapsed = (time || performance.now()) - startTime;
+                                const progress = Math.min(elapsed / duration, 1.0);
+                                
+                                // Easing function (easeOutCubic)
+                                const ease = 1 - Math.pow(1 - progress, 3);
+
+                                nodes.forEach(node => {
+                                    const start = startPositions.get(node.id)!;
+                                    const target = targetPositions.get(node.id)!;
+                                    if (node.position) {
+                                        node.position.x = start.x + (target.x - start.x) * ease;
+                                        node.position.y = start.y + (target.y - start.y) * ease;
+                                        node.position.z = start.z + (target.z - start.z) * ease;
+                                    }
+                                });
+
+                                if (app && typeof app.updateNodePositions === 'function') {
+                                    app.updateNodePositions();
+                                }
+                                if (app && app.edgeObjectsManager && typeof app.edgeObjectsManager.updateEdgePositions === 'function') {
+                                    app.edgeObjectsManager.updateEdgePositions(nodes);
+                                }
+
+                                if (progress < 1.0) {
+                                    requestAnimationFrame(animateLoop);
+                                } else {
+                                    this.isAnimating = false;
+                                    resolve(true); // <--- Resolve ONLY after animation!
+                                }
+                            };
+                            
+                            requestAnimationFrame(animateLoop);
+                        } else {
+                            resolve(true);
                         }
 
-                        const state = (window as any).app?.stateManager?.state;
-                        const independentAxes = state ? state.independentAxesNormalization : true; // default true for better space usage
-                        this.normalizeNodePositions(nodes, 10, independentAxes);
-
-                        // Cleanup
+                        // Cleanup timeout and worker
                         if (this.workerTimeoutId) {
                             clearTimeout(this.workerTimeoutId);
                             this.workerTimeoutId = null;
                         }
                         worker.terminate();
                         this.activeWorker = null;
-                        resolve(true);
                         break;
                     }
 
@@ -349,7 +434,66 @@ export class LayoutManager {
         });
     }
 
-    applyForceLayout(nodes: EntityData[], edges: RelationshipData[], options: LayoutOptions = {}) {
+    private getNodePhysics(node: EntityData): { attraction: number, repulsion: number, inertia: number } {
+        // 1. Check direct properties
+        let attraction = node.attraction !== undefined ? Number(node.attraction) : undefined;
+        let repulsion = node.repulsion !== undefined ? Number(node.repulsion) : undefined;
+        let inertia = node.inertia !== undefined ? Number(node.inertia) : undefined;
+
+        // 2. Check stateVector
+        if (node.stateVector) {
+            if (attraction === undefined && node.stateVector.attraction !== undefined) {
+                attraction = Number(node.stateVector.attraction);
+            }
+            if (repulsion === undefined && node.stateVector.repulsion !== undefined) {
+                repulsion = Number(node.stateVector.repulsion);
+            }
+            if (inertia === undefined && node.stateVector.inertia !== undefined) {
+                inertia = Number(node.stateVector.inertia);
+            }
+        }
+
+        // 3. Check active presets
+        if (this.visualMappingEngine) {
+            const activeMappings = this.visualMappingEngine.getVisualMappings();
+            const activePreset = activeMappings?.defaultPresets?.[node.type];
+            if (activePreset) {
+                if (attraction === undefined && activePreset.attraction) {
+                    attraction = Number(this.visualMappingEngine.applyMapping(activePreset.attraction as any, node, 'attraction'));
+                }
+                if (repulsion === undefined && activePreset.repulsion) {
+                    repulsion = Number(this.visualMappingEngine.applyMapping(activePreset.repulsion as any, node, 'repulsion'));
+                }
+                if (inertia === undefined && activePreset.inertia) {
+                    inertia = Number(this.visualMappingEngine.applyMapping(activePreset.inertia as any, node, 'inertia'));
+                }
+            }
+
+            // 4. Check original mappings if not resolved
+            const app = typeof window !== 'undefined' ? (window as any).app : null;
+            const originalMappings = app?.originalVisualMappings;
+            const originalPreset = originalMappings?.defaultPresets?.[node.type];
+            if (originalPreset) {
+                if (attraction === undefined && originalPreset.attraction) {
+                    attraction = Number(this.visualMappingEngine.applyMapping(originalPreset.attraction as any, node, 'attraction'));
+                }
+                if (repulsion === undefined && originalPreset.repulsion) {
+                    repulsion = Number(this.visualMappingEngine.applyMapping(originalPreset.repulsion as any, node, 'repulsion'));
+                }
+                if (inertia === undefined && originalPreset.inertia) {
+                    inertia = Number(this.visualMappingEngine.applyMapping(originalPreset.inertia as any, node, 'inertia'));
+                }
+            }
+        }
+
+        return {
+            attraction: attraction !== undefined && !isNaN(attraction) ? attraction : 0,
+            repulsion: repulsion !== undefined && !isNaN(repulsion) ? repulsion : 50,
+            inertia: inertia !== undefined && !isNaN(inertia) ? inertia : 1.0
+        };
+    }
+
+    applyForceLayout(nodes: EntityData[], edges: RelationshipData[], fields: FieldData[] = [], options: LayoutOptions = {}) {
         const {
             maxIterations = 100,
             repulsionStrength = 50,
@@ -392,6 +536,7 @@ export class LayoutManager {
 
             // Attraction along edges
             edges.forEach(edge => {
+                if (!edge.source || !edge.target) return;
                 const node1 = nodeMap.get(edge.source);
                 const node2 = nodeMap.get(edge.target);
 
@@ -412,9 +557,60 @@ export class LayoutManager {
                     node2.position.z -= fz;
                 }
             });
+
+            // 3. Fields (Raumkrümmung)
+            if (fields && fields.length > 0) {
+                fields.forEach(field => {
+                    if (!field.center) return;
+                    const cx = field.center.x || 0;
+                    const cy = field.center.y || 0;
+                    const cz = field.center.z || 0;
+                    const influenceR = field.influenceRadius || 100;
+                    const strength = field.strength || 1;
+
+                    nodes.forEach(node => {
+                        // Very simple behavior matching: if field behavior includes "leaves" and node type is "leaf", etc.
+                        // Or if no behavior is specified, apply to all.
+                        if (field.behavior) {
+                            if (!node.behavior || !field.behavior.includes(node.behavior)) {
+                                if (node.type && !field.behavior.includes(node.type)) {
+                                    return; // skip if behavior doesn't match
+                                }
+                            }
+                        }
+
+                        if (!node.position) return;
+                        const dx = cx - node.position.x;
+                        const dy = cy - node.position.y;
+                        const dz = cz - node.position.z;
+                        const distance = Math.sqrt(dx*dx + dy*dy + dz*dz) + 0.01;
+
+                        if (distance <= influenceR) {
+                            // Calculate force. Attractor field pulls (+). Gravitational can push/pull.
+                            let force = 0;
+                            if (field.type === 'attractor_field') {
+                                force = strength * (distance / influenceR); // pull towards center
+                            } else if (field.type === 'gravitational_field') {
+                                force = (strength * 100) / (distance * distance); // inverse square
+                            } else {
+                                force = strength;
+                            }
+
+                            const fx = (dx / distance) * force;
+                            const fy = (dy / distance) * force;
+                            const fz = (dz / distance) * force;
+
+                            node.position.x += fx * damping;
+                            node.position.y += fy * damping;
+                            node.position.z += fz * damping;
+                        }
+                    });
+                });
+            }
         }
 
-        const state = (window as any).app?.stateManager?.state;
+        const app = typeof window !== 'undefined' ? (window as any).app : null;
+        const state = app?.stateManager?.state;
         const independentAxes = state ? state.independentAxesNormalization : true;
         this.normalizeNodePositions(nodes, 10, independentAxes);
     }
@@ -499,6 +695,7 @@ export class LayoutManager {
 
             // Calculate attractive forces
             edges.forEach(edge => {
+                if (!edge.source || !edge.target) return;
                 const v = nodeMap.get(edge.source);
                 const u = nodeMap.get(edge.target);
 
@@ -539,7 +736,8 @@ export class LayoutManager {
             temp *= 0.95; // Cool down
         }
 
-        const state = (window as any).app?.stateManager?.state;
+        const app = typeof window !== 'undefined' ? (window as any).app : null;
+        const state = app?.stateManager?.state;
         const independentAxes = state ? state.independentAxesNormalization : true;
         this.normalizeNodePositions(nodes, 10, independentAxes);
     }
@@ -563,6 +761,7 @@ export class LayoutManager {
 
             // Spring forces
             edges.forEach(edge => {
+                if (!edge.source || !edge.target) return;
                 const v1 = nodeMap.get(edge.source);
                 const v2 = nodeMap.get(edge.target);
 
@@ -665,7 +864,7 @@ export class LayoutManager {
         });
 
         edges.forEach(edge => {
-            if (adjacencyList[edge.source]) {
+            if (edge.source && edge.target && adjacencyList[edge.source]) {
                 adjacencyList[edge.source].push(edge.target);
             }
         });
@@ -674,7 +873,7 @@ export class LayoutManager {
         nodes.forEach(node => incomingCount[node.id] = 0);
         edges.forEach(edge => {
             // Safe increment
-            if (incomingCount[edge.target] !== undefined) {
+            if (edge.target && incomingCount[edge.target] !== undefined) {
                 incomingCount[edge.target]++;
             }
         });
@@ -710,8 +909,10 @@ export class LayoutManager {
         return this.currentLayout;
     }
 
-    normalizeNodePositions(nodes: EntityData[], maxExtent = 10, independentAxes = false) {
-        if (nodes.length === 0) return;
+    normalizeNodePositions(nodes: EntityData[], maxExtent?: number, independentAxes = false) {
+        if (!nodes || nodes.length === 0) return;
+
+        const effectiveMaxExtent = maxExtent !== undefined ? maxExtent : Math.max(100, Math.sqrt(nodes.length) * 15);
 
         if (!nodes[0].position) nodes[0].position = { x: 0, y: 0, z: 0 };
 
@@ -739,27 +940,29 @@ export class LayoutManager {
 
         if (independentAxes) {
             // Achsen-unabhaengige Skalierung (fuellt die Bounding-Box maximal aus)
-            const scaleX = extentX > 0 ? maxExtent / extentX : 1;
-            const scaleY = extentY > 0 ? maxExtent / extentY : 1;
-            const scaleZ = extentZ > 0 ? maxExtent / extentZ : 1;
+            const scaleX = extentX > 0 ? effectiveMaxExtent / extentX : 1;
+            const scaleY = extentY > 0 ? effectiveMaxExtent / extentY : 1;
+            const scaleZ = extentZ > 0 ? effectiveMaxExtent / extentZ : 1;
 
             nodes.forEach(node => {
                 if (node.position) {
-                    node.position.x = (node.position.x - centerX) * scaleX;
-                    node.position.y = (node.position.y - centerY) * scaleY;
-                    node.position.z = (node.position.z - centerZ) * scaleZ;
+                    const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(node) : {};
+                    if (visual.positionX === undefined) node.position.x = (node.position.x - centerX) * scaleX;
+                    if (visual.positionY === undefined) node.position.y = (node.position.y - centerY) * scaleY;
+                    if (visual.positionZ === undefined) node.position.z = (node.position.z - centerZ) * scaleZ;
                 }
             });
         } else {
             // Uniforme Skalierung (erhaelt die originalen Proportionen)
             const maxCurrentExtent = Math.max(extentX, extentY, extentZ);
-            const scale = maxCurrentExtent > 0 ? maxExtent / maxCurrentExtent : 1;
+            const scale = maxCurrentExtent > 0 ? effectiveMaxExtent / maxCurrentExtent : 1;
 
             nodes.forEach(node => {
                 if (node.position) {
-                    node.position.x = (node.position.x - centerX) * scale;
-                    node.position.y = (node.position.y - centerY) * scale;
-                    node.position.z = (node.position.z - centerZ) * scale;
+                    const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(node) : {};
+                    if (visual.positionX === undefined) node.position.x = (node.position.x - centerX) * scale;
+                    if (visual.positionY === undefined) node.position.y = (node.position.y - centerY) * scale;
+                    if (visual.positionZ === undefined) node.position.z = (node.position.z - centerZ) * scale;
                 }
             });
         }

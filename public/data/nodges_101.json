@@ -1,0 +1,542 @@
+{
+  "system": "Nodges Architecture 101",
+  "metadata": {
+    "created": "2026-06-26T09:26:58.723Z",
+    "version": "1.0",
+    "description": "Architektur von Nodges"
+  },
+  "dataModel": {
+    "entities": {
+      "component": {
+        "properties": {
+          "group": {
+            "type": "categorical"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "dependency": {
+        "properties": {
+          "label": {
+            "type": "categorical"
+          }
+        }
+      }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "component": {
+        "color": {
+          "source": "group",
+          "function": "categorical",
+          "palette": "category10"
+        }
+      },
+      "dependency": {
+        "color": {
+          "source": "label",
+          "function": "categorical",
+          "palette": "category20"
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "node_app",
+        "type": "component",
+        "label": "App\nfrontend entry\n[App.ts]",
+        "position": {
+          "x": 0,
+          "y": 15,
+          "z": 0
+        },
+        "group": "Runtime",
+        "file": "src/App.ts"
+      },
+      {
+        "id": "node_public_data",
+        "type": "component",
+        "label": "Sample Data\nseed datasets",
+        "position": {
+          "x": -15,
+          "y": 5,
+          "z": 0
+        },
+        "group": "Data/Input",
+        "file": "public/data"
+      },
+      {
+        "id": "node_service_container",
+        "type": "component",
+        "label": "Service Container\ncomposition root",
+        "position": {
+          "x": 8,
+          "y": 5,
+          "z": 0
+        },
+        "group": "Core Services",
+        "file": "src/core/di/ServiceContainer.ts"
+      },
+      {
+        "id": "node_data_parser",
+        "type": "component",
+        "label": "Data Parser\ningestion\n[DataParser.ts]",
+        "position": {
+          "x": 5.66,
+          "y": 5,
+          "z": 5.66
+        },
+        "group": "Core Services",
+        "file": "src/core/DataParser.ts"
+      },
+      {
+        "id": "node_state_manager",
+        "type": "component",
+        "label": "State Manager\napp state\n[StateManager.ts]",
+        "position": {
+          "x": 0,
+          "y": 5,
+          "z": 8
+        },
+        "group": "Core Services",
+        "file": "src/core/StateManager.ts"
+      },
+      {
+        "id": "node_event_bus",
+        "type": "component",
+        "label": "Event Bus\nevent distribution",
+        "position": {
+          "x": -5.66,
+          "y": 5,
+          "z": 5.66
+        },
+        "group": "Core Services",
+        "file": "src/core/CentralEventManager.ts"
+      },
+      {
+        "id": "node_mapping_engine",
+        "type": "component",
+        "label": "Mapping Engine\nvisual mapping",
+        "position": {
+          "x": -8,
+          "y": 5,
+          "z": 0
+        },
+        "group": "Core Services",
+        "file": "src/core/VisualMappingEngine.ts"
+      },
+      {
+        "id": "node_layout_manager",
+        "type": "component",
+        "label": "Layout Manager\ngraph layout\n[LayoutManager.ts]",
+        "position": {
+          "x": -5.66,
+          "y": 5,
+          "z": -5.66
+        },
+        "group": "Core Services",
+        "file": "src/core/LayoutManager.ts"
+      },
+      {
+        "id": "node_interaction_manager",
+        "type": "component",
+        "label": "Interaction Manager\ninput orchestration",
+        "position": {
+          "x": 0,
+          "y": 5,
+          "z": -8
+        },
+        "group": "Core Services",
+        "file": "src/core/InteractionManager.ts"
+      },
+      {
+        "id": "node_ui_manager",
+        "type": "component",
+        "label": "UI Manager\npanel coordination\n[UIManager.ts]",
+        "position": {
+          "x": 5.66,
+          "y": 5,
+          "z": -5.66
+        },
+        "group": "Core Services",
+        "file": "src/core/UIManager.ts"
+      },
+      {
+        "id": "node_node_manager",
+        "type": "component",
+        "label": "Node Manager\nscene nodes\n[NodeManager.ts]",
+        "position": {
+          "x": 19.5,
+          "y": 5,
+          "z": 0
+        },
+        "group": "Visualization",
+        "file": "src/core/NodeManager.ts"
+      },
+      {
+        "id": "node_edge_manager",
+        "type": "component",
+        "label": "Edge Manager\nscene edges",
+        "position": {
+          "x": 12.75,
+          "y": 5,
+          "z": 3.9
+        },
+        "group": "Visualization",
+        "file": "src/core/EdgeObjectsManager.ts"
+      },
+      {
+        "id": "node_layout_worker",
+        "type": "component",
+        "label": "Layout Worker\noff-thread compute\n[layout-worker.ts]",
+        "position": {
+          "x": 12.75,
+          "y": 5,
+          "z": -3.9
+        },
+        "group": "Visualization",
+        "file": "src/workers/layout-worker.ts"
+      },
+      {
+        "id": "node_file_panel",
+        "type": "component",
+        "label": "File Panel\nimport/export UI\n[FilePanelUI.ts]",
+        "position": {
+          "x": 8,
+          "y": -5,
+          "z": 0
+        },
+        "group": "UI/Tools",
+        "file": "src/ui/FilePanelUI.ts"
+      },
+      {
+        "id": "node_mapping_panel",
+        "type": "component",
+        "label": "Mapping Panel\nmapping UI\n[MappingUI.ts]",
+        "position": {
+          "x": 5.66,
+          "y": -5,
+          "z": 5.66
+        },
+        "group": "UI/Tools",
+        "file": "src/ui/MappingUI.ts"
+      },
+      {
+        "id": "node_view_panel",
+        "type": "component",
+        "label": "View Panel\nview controls\n[ViewPanel.ts]",
+        "position": {
+          "x": 0,
+          "y": -5,
+          "z": 8
+        },
+        "group": "UI/Tools",
+        "file": "src/ui/ViewPanel.ts"
+      },
+      {
+        "id": "node_info_panel",
+        "type": "component",
+        "label": "Info Panel\ninspection UI\n[InfoPanelUI.ts]",
+        "position": {
+          "x": -5.66,
+          "y": -5,
+          "z": 5.66
+        },
+        "group": "UI/Tools",
+        "file": "src/ui/InfoPanelUI.ts"
+      },
+      {
+        "id": "node_data_editor",
+        "type": "component",
+        "label": "Data Editor\ndataset editing\n[DataEditor.ts]",
+        "position": {
+          "x": -8,
+          "y": -5,
+          "z": 0
+        },
+        "group": "UI/Tools",
+        "file": "src/ui/DataEditor.ts"
+      },
+      {
+        "id": "node_import_manager",
+        "type": "component",
+        "label": "Import Manager\nfile import\n[ImportManager.ts]",
+        "position": {
+          "x": -5.66,
+          "y": -5,
+          "z": -5.66
+        },
+        "group": "UI/Tools",
+        "file": "src/utils/ImportManager.ts"
+      },
+      {
+        "id": "node_export_manager",
+        "type": "component",
+        "label": "Export Manager\nfile export\n[ExportManager.ts]",
+        "position": {
+          "x": 0,
+          "y": -5,
+          "z": -8
+        },
+        "group": "UI/Tools",
+        "file": "src/utils/ExportManager.ts"
+      },
+      {
+        "id": "node_llm_service",
+        "type": "component",
+        "label": "LLM Service\noptional AI\n[LLMService.ts]",
+        "position": {
+          "x": 5.66,
+          "y": -5,
+          "z": -5.66
+        },
+        "group": "UI/Tools",
+        "file": "src/utils/LLMService.ts"
+      }
+    ],
+    "relationships": [
+      {
+        "id": "e0",
+        "type": "dependency",
+        "source": "node_app",
+        "target": "node_service_container",
+        "label": "bootstraps"
+      },
+      {
+        "id": "e1",
+        "type": "dependency",
+        "source": "node_service_container",
+        "target": "node_data_parser",
+        "label": "wires"
+      },
+      {
+        "id": "e2",
+        "type": "dependency",
+        "source": "node_service_container",
+        "target": "node_state_manager",
+        "label": "wires"
+      },
+      {
+        "id": "e3",
+        "type": "dependency",
+        "source": "node_service_container",
+        "target": "node_event_bus",
+        "label": "wires"
+      },
+      {
+        "id": "e4",
+        "type": "dependency",
+        "source": "node_service_container",
+        "target": "node_mapping_engine",
+        "label": "wires"
+      },
+      {
+        "id": "e5",
+        "type": "dependency",
+        "source": "node_service_container",
+        "target": "node_layout_manager",
+        "label": "wires"
+      },
+      {
+        "id": "e6",
+        "type": "dependency",
+        "source": "node_service_container",
+        "target": "node_node_manager",
+        "label": "wires"
+      },
+      {
+        "id": "e7",
+        "type": "dependency",
+        "source": "node_service_container",
+        "target": "node_edge_manager",
+        "label": "wires"
+      },
+      {
+        "id": "e8",
+        "type": "dependency",
+        "source": "node_service_container",
+        "target": "node_interaction_manager",
+        "label": "wires"
+      },
+      {
+        "id": "e9",
+        "type": "dependency",
+        "source": "node_service_container",
+        "target": "node_ui_manager",
+        "label": "wires"
+      },
+      {
+        "id": "e10",
+        "type": "dependency",
+        "source": "node_public_data",
+        "target": "node_import_manager",
+        "label": "loads"
+      },
+      {
+        "id": "e11",
+        "type": "dependency",
+        "source": "node_import_manager",
+        "target": "node_data_parser",
+        "label": "parses"
+      },
+      {
+        "id": "e12",
+        "type": "dependency",
+        "source": "node_file_panel",
+        "target": "node_import_manager",
+        "label": "triggers"
+      },
+      {
+        "id": "e13",
+        "type": "dependency",
+        "source": "node_file_panel",
+        "target": "node_export_manager",
+        "label": "triggers"
+      },
+      {
+        "id": "e14",
+        "type": "dependency",
+        "source": "node_data_editor",
+        "target": "node_state_manager",
+        "label": "edits"
+      },
+      {
+        "id": "e15",
+        "type": "dependency",
+        "source": "node_state_manager",
+        "target": "node_event_bus",
+        "label": "publishes"
+      },
+      {
+        "id": "e16",
+        "type": "dependency",
+        "source": "node_event_bus",
+        "target": "node_mapping_engine",
+        "label": "updates"
+      },
+      {
+        "id": "e17",
+        "type": "dependency",
+        "source": "node_event_bus",
+        "target": "node_layout_manager",
+        "label": "updates"
+      },
+      {
+        "id": "e18",
+        "type": "dependency",
+        "source": "node_layout_manager",
+        "target": "node_layout_worker",
+        "label": "offloads"
+      },
+      {
+        "id": "e19",
+        "type": "dependency",
+        "source": "node_layout_manager",
+        "target": "node_node_manager",
+        "label": "positions"
+      },
+      {
+        "id": "e20",
+        "type": "dependency",
+        "source": "node_layout_manager",
+        "target": "node_edge_manager",
+        "label": "positions"
+      },
+      {
+        "id": "e21",
+        "type": "dependency",
+        "source": "node_mapping_engine",
+        "target": "node_node_manager",
+        "label": "styles"
+      },
+      {
+        "id": "e22",
+        "type": "dependency",
+        "source": "node_mapping_engine",
+        "target": "node_edge_manager",
+        "label": "styles"
+      },
+      {
+        "id": "e23",
+        "type": "dependency",
+        "source": "node_interaction_manager",
+        "target": "node_event_bus",
+        "label": "emits"
+      },
+      {
+        "id": "e24",
+        "type": "dependency",
+        "source": "node_interaction_manager",
+        "target": "node_state_manager",
+        "label": "mutates"
+      },
+      {
+        "id": "e25",
+        "type": "dependency",
+        "source": "node_ui_manager",
+        "target": "node_view_panel",
+        "label": "hosts"
+      },
+      {
+        "id": "e26",
+        "type": "dependency",
+        "source": "node_ui_manager",
+        "target": "node_mapping_panel",
+        "label": "hosts"
+      },
+      {
+        "id": "e27",
+        "type": "dependency",
+        "source": "node_ui_manager",
+        "target": "node_info_panel",
+        "label": "hosts"
+      },
+      {
+        "id": "e28",
+        "type": "dependency",
+        "source": "node_ui_manager",
+        "target": "node_file_panel",
+        "label": "hosts"
+      },
+      {
+        "id": "e29",
+        "type": "dependency",
+        "source": "node_ui_manager",
+        "target": "node_data_editor",
+        "label": "hosts"
+      },
+      {
+        "id": "e30",
+        "type": "dependency",
+        "source": "node_ui_manager",
+        "target": "node_llm_service",
+        "label": "optionally uses"
+      },
+      {
+        "id": "e31",
+        "type": "dependency",
+        "source": "node_ui_manager",
+        "target": "node_interaction_manager",
+        "label": "configures"
+      },
+      {
+        "id": "e32",
+        "type": "dependency",
+        "source": "node_interaction_manager",
+        "target": "node_node_manager",
+        "label": "targets"
+      },
+      {
+        "id": "e33",
+        "type": "dependency",
+        "source": "node_interaction_manager",
+        "target": "node_edge_manager",
+        "label": "targets"
+      }
+    ]
+  }
+}

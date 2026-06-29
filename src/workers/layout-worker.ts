@@ -56,28 +56,53 @@ self.onmessage = function (event: MessageEvent<LayoutWorkerRequest>): void {
                 const forces: WorkerVector3[] = positions.map(() => ({ x: 0, y: 0, z: 0 }));
                 let totalEnergy = 0;
 
-                // Coulomb-Abstossung zwischen allen Knotenpaaren
+                // Coulomb-Abstossung/Anziehung zwischen allen Knotenpaaren (N-Body)
                 for (let i = 0; i < positions.length; i++) {
-                    for (let j = i + 1; j < positions.length; j++) {
-                        const dx = positions[i].x - positions[j].x;
-                        const dy = positions[i].y - positions[j].y;
-                        const dz = positions[i].z - positions[j].z;
-                        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) || 0.01;
+                    const nodeI = nodes[i];
+                    const repI = nodeI.repulsion !== undefined ? nodeI.repulsion : repulsionStrength;
+                    const attI = nodeI.attraction || 0;
+                    const massI = nodeI.inertia || 1.0;
 
-                        const force = repulsionStrength / (distance * distance);
+                    for (let j = i + 1; j < positions.length; j++) {
+                        const nodeJ = nodes[j];
+                        const repJ = nodeJ.repulsion !== undefined ? nodeJ.repulsion : repulsionStrength;
+                        const attJ = nodeJ.attraction || 0;
+                        const massJ = nodeJ.inertia || 1.0;
+
+                        let dx = positions[i].x - positions[j].x;
+                        let dy = positions[i].y - positions[j].y;
+                        let dz = positions[i].z - positions[j].z;
+                        let distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                        
+                        if (distance < 0.001) {
+                            dx = (Math.random() - 0.5) * 0.1;
+                            dy = (Math.random() - 0.5) * 0.1;
+                            dz = (Math.random() - 0.5) * 0.1;
+                            distance = Math.sqrt(dx * dx + dy * dy + dz * dz) || 0.01;
+                        }
+
+                        // Net force calculation: Repulsion pushes apart, Attraction pulls together
+                        // Combine parameters (average them out for symmetrical force)
+                        const effectiveRepulsion = (repI + repJ) / 2;
+                        const effectiveAttraction = (attI + attJ) / 2;
+                        const netForceParam = effectiveRepulsion - effectiveAttraction;
+
+                        // F = k / d^2
+                        const forceMagnitude = netForceParam / (distance * distance);
                         const nx = dx / distance;
                         const ny = dy / distance;
                         const nz = dz / distance;
 
-                        forces[i].x += nx * force;
-                        forces[i].y += ny * force;
-                        forces[i].z += nz * force;
+                        // Apply forces inversely proportional to mass (inertia)
+                        forces[i].x += (nx * forceMagnitude) / massI;
+                        forces[i].y += (ny * forceMagnitude) / massI;
+                        forces[i].z += (nz * forceMagnitude) / massI;
 
-                        forces[j].x -= nx * force;
-                        forces[j].y -= ny * force;
-                        forces[j].z -= nz * force;
+                        forces[j].x -= (nx * forceMagnitude) / massJ;
+                        forces[j].y -= (ny * forceMagnitude) / massJ;
+                        forces[j].z -= (nz * forceMagnitude) / massJ;
 
-                        totalEnergy += Math.abs(force);
+                        totalEnergy += Math.abs(forceMagnitude);
                     }
                 }
 
@@ -87,10 +112,16 @@ self.onmessage = function (event: MessageEvent<LayoutWorkerRequest>): void {
                     const j = edge.end;
                     if (i >= positions.length || j >= positions.length) continue;
 
-                    const dx = positions[i].x - positions[j].x;
-                    const dy = positions[i].y - positions[j].y;
-                    const dz = positions[i].z - positions[j].z;
-                    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz) || 0.01;
+                    let dx = positions[i].x - positions[j].x;
+                    let dy = positions[i].y - positions[j].y;
+                    let dz = positions[i].z - positions[j].z;
+                    let distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                    if (distance < 0.001) {
+                        dx = (Math.random() - 0.5) * 0.1;
+                        dy = (Math.random() - 0.5) * 0.1;
+                        dz = (Math.random() - 0.5) * 0.1;
+                        distance = Math.sqrt(dx * dx + dy * dy + dz * dz) || 0.01;
+                    }
 
                     const force = attractionStrength * distance;
                     const nx = dx / distance;
@@ -108,15 +139,33 @@ self.onmessage = function (event: MessageEvent<LayoutWorkerRequest>): void {
                     totalEnergy += Math.abs(force);
                 }
 
+                // Topodynamische Felder (Build 3) - Legacy fields have been migrated to system_attractor nodes by DataParser
+                // No longer calculating forces from global fields here.
+
                 // Positionen und Geschwindigkeiten aktualisieren
                 for (let i = 0; i < positions.length; i++) {
-                    velocities[i].x = (velocities[i].x + forces[i].x) * damping;
-                    velocities[i].y = (velocities[i].y + forces[i].y) * damping;
-                    velocities[i].z = (velocities[i].z + forces[i].z) * damping;
+                    const nodeI = nodes[i];
+                    
+                    if (!nodeI.fixedX) {
+                        velocities[i].x = (velocities[i].x + forces[i].x) * damping;
+                        positions[i].x += velocities[i].x;
+                    } else {
+                        velocities[i].x = 0;
+                    }
 
-                    positions[i].x += velocities[i].x;
-                    positions[i].y += velocities[i].y;
-                    positions[i].z += velocities[i].z;
+                    if (!nodeI.fixedY) {
+                        velocities[i].y = (velocities[i].y + forces[i].y) * damping;
+                        positions[i].y += velocities[i].y;
+                    } else {
+                        velocities[i].y = 0;
+                    }
+
+                    if (!nodeI.fixedZ) {
+                        velocities[i].z = (velocities[i].z + forces[i].z) * damping;
+                        positions[i].z += velocities[i].z;
+                    } else {
+                        velocities[i].z = 0;
+                    }
                 }
 
                 completedIterations = iter + 1;
@@ -128,7 +177,8 @@ self.onmessage = function (event: MessageEvent<LayoutWorkerRequest>): void {
                         requestId,
                         progress: Math.round((completedIterations / maxIterations) * 100),
                         currentIteration: completedIterations,
-                        maxIterations
+                        maxIterations,
+                        positions: positions.map((p, idx) => ({ id: nodes[idx].id, x: p.x, y: p.y, z: p.z }))
                     };
                     self.postMessage(progressResponse);
                 }

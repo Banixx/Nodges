@@ -170,7 +170,7 @@ export class EdgeControlsUI {
         if (resetButton) {
             resetButton.addEventListener('click', () => {
                 const defaults = {
-                    edgeThickness: 0.1,
+                    edgeThickness: 2.0,
                     edgeTubularSegments: 20,
                     edgeRadialSegments: 8,
                     edgeCurveFactor: 0.4,

@@ -1,0 +1,1136 @@
+{
+  "system": "Complex Force Directed Test",
+  "metadata": {
+    "version": "1.0",
+    "schemaVersion": "3.0",
+    "author": "Antigravity"
+  },
+  "fields": [
+    {
+      "id": "core",
+      "type": "attractor_field",
+      "center": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "strength": 10,
+      "influenceRadius": 500
+    },
+    {
+      "id": "repulsor",
+      "type": "gravitational_field",
+      "center": {
+        "x": 50,
+        "y": 0,
+        "z": 50
+      },
+      "strength": -100,
+      "influenceRadius": 100
+    }
+  ],
+  "visualMappings": {
+    "defaultPresets": {
+      "particle": {
+        "geometry": "vector_spline",
+        "trailLength": 20,
+        "color": {
+          "function": "categorical",
+          "field": "stateVector.group"
+        },
+        "size": {
+          "function": "linear",
+          "field": "stateVector.mass",
+          "domain": [
+            1,
+            11
+          ],
+          "range": [
+            0.5,
+            2.5
+          ]
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "n0",
+        "type": "particle",
+        "label": "Node 0",
+        "stateVector": {
+          "group": 0,
+          "mass": 6.712906458647344
+        }
+      },
+      {
+        "id": "n1",
+        "type": "particle",
+        "label": "Node 1",
+        "stateVector": {
+          "group": 0,
+          "mass": 3.899338893526855
+        }
+      },
+      {
+        "id": "n2",
+        "type": "particle",
+        "label": "Node 2",
+        "stateVector": {
+          "group": 0,
+          "mass": 5.102557532021978
+        }
+      },
+      {
+        "id": "n3",
+        "type": "particle",
+        "label": "Node 3",
+        "stateVector": {
+          "group": 0,
+          "mass": 9.579539026201417
+        }
+      },
+      {
+        "id": "n4",
+        "type": "particle",
+        "label": "Node 4",
+        "stateVector": {
+          "group": 0,
+          "mass": 1.897806456193615
+        }
+      },
+      {
+        "id": "n5",
+        "type": "particle",
+        "label": "Node 5",
+        "stateVector": {
+          "group": 0,
+          "mass": 5.140715186257562
+        }
+      },
+      {
+        "id": "n6",
+        "type": "particle",
+        "label": "Node 6",
+        "stateVector": {
+          "group": 0,
+          "mass": 10.319812741253433
+        }
+      },
+      {
+        "id": "n7",
+        "type": "particle",
+        "label": "Node 7",
+        "stateVector": {
+          "group": 0,
+          "mass": 10.045656188520386
+        }
+      },
+      {
+        "id": "n8",
+        "type": "particle",
+        "label": "Node 8",
+        "stateVector": {
+          "group": 0,
+          "mass": 8.462970866083097
+        }
+      },
+      {
+        "id": "n9",
+        "type": "particle",
+        "label": "Node 9",
+        "stateVector": {
+          "group": 0,
+          "mass": 6.4149208311692405
+        }
+      },
+      {
+        "id": "n10",
+        "type": "particle",
+        "label": "Node 10",
+        "stateVector": {
+          "group": 1,
+          "mass": 9.829439690360738
+        }
+      },
+      {
+        "id": "n11",
+        "type": "particle",
+        "label": "Node 11",
+        "stateVector": {
+          "group": 1,
+          "mass": 5.408747070896927
+        }
+      },
+      {
+        "id": "n12",
+        "type": "particle",
+        "label": "Node 12",
+        "stateVector": {
+          "group": 1,
+          "mass": 6.402864331950415
+        }
+      },
+      {
+        "id": "n13",
+        "type": "particle",
+        "label": "Node 13",
+        "stateVector": {
+          "group": 1,
+          "mass": 9.292930343921883
+        }
+      },
+      {
+        "id": "n14",
+        "type": "particle",
+        "label": "Node 14",
+        "stateVector": {
+          "group": 1,
+          "mass": 3.2743921175039072
+        }
+      },
+      {
+        "id": "n15",
+        "type": "particle",
+        "label": "Node 15",
+        "stateVector": {
+          "group": 1,
+          "mass": 1.6961858256370834
+        }
+      },
+      {
+        "id": "n16",
+        "type": "particle",
+        "label": "Node 16",
+        "stateVector": {
+          "group": 1,
+          "mass": 2.546467600802177
+        }
+      },
+      {
+        "id": "n17",
+        "type": "particle",
+        "label": "Node 17",
+        "stateVector": {
+          "group": 1,
+          "mass": 5.868144145506104
+        }
+      },
+      {
+        "id": "n18",
+        "type": "particle",
+        "label": "Node 18",
+        "stateVector": {
+          "group": 1,
+          "mass": 7.502232539862327
+        }
+      },
+      {
+        "id": "n19",
+        "type": "particle",
+        "label": "Node 19",
+        "stateVector": {
+          "group": 1,
+          "mass": 6.914066198981278
+        }
+      },
+      {
+        "id": "n20",
+        "type": "particle",
+        "label": "Node 20",
+        "stateVector": {
+          "group": 2,
+          "mass": 6.4729935388738715
+        }
+      },
+      {
+        "id": "n21",
+        "type": "particle",
+        "label": "Node 21",
+        "stateVector": {
+          "group": 2,
+          "mass": 3.736843067350687
+        }
+      },
+      {
+        "id": "n22",
+        "type": "particle",
+        "label": "Node 22",
+        "stateVector": {
+          "group": 2,
+          "mass": 8.599225083864578
+        }
+      },
+      {
+        "id": "n23",
+        "type": "particle",
+        "label": "Node 23",
+        "stateVector": {
+          "group": 2,
+          "mass": 7.341070117467822
+        }
+      },
+      {
+        "id": "n24",
+        "type": "particle",
+        "label": "Node 24",
+        "stateVector": {
+          "group": 2,
+          "mass": 4.012206767496242
+        }
+      },
+      {
+        "id": "n25",
+        "type": "particle",
+        "label": "Node 25",
+        "stateVector": {
+          "group": 2,
+          "mass": 8.296532790694743
+        }
+      },
+      {
+        "id": "n26",
+        "type": "particle",
+        "label": "Node 26",
+        "stateVector": {
+          "group": 2,
+          "mass": 6.285094308680827
+        }
+      },
+      {
+        "id": "n27",
+        "type": "particle",
+        "label": "Node 27",
+        "stateVector": {
+          "group": 2,
+          "mass": 4.5896186827830245
+        }
+      },
+      {
+        "id": "n28",
+        "type": "particle",
+        "label": "Node 28",
+        "stateVector": {
+          "group": 2,
+          "mass": 1.6510767899820236
+        }
+      },
+      {
+        "id": "n29",
+        "type": "particle",
+        "label": "Node 29",
+        "stateVector": {
+          "group": 2,
+          "mass": 4.720678186254734
+        }
+      },
+      {
+        "id": "n30",
+        "type": "particle",
+        "label": "Node 30",
+        "stateVector": {
+          "group": 3,
+          "mass": 3.333496157841104
+        }
+      },
+      {
+        "id": "n31",
+        "type": "particle",
+        "label": "Node 31",
+        "stateVector": {
+          "group": 3,
+          "mass": 3.263632255814527
+        }
+      },
+      {
+        "id": "n32",
+        "type": "particle",
+        "label": "Node 32",
+        "stateVector": {
+          "group": 3,
+          "mass": 6.865133499819444
+        }
+      },
+      {
+        "id": "n33",
+        "type": "particle",
+        "label": "Node 33",
+        "stateVector": {
+          "group": 3,
+          "mass": 9.995801553209672
+        }
+      },
+      {
+        "id": "n34",
+        "type": "particle",
+        "label": "Node 34",
+        "stateVector": {
+          "group": 3,
+          "mass": 5.533604403842
+        }
+      },
+      {
+        "id": "n35",
+        "type": "particle",
+        "label": "Node 35",
+        "stateVector": {
+          "group": 3,
+          "mass": 7.039228480648666
+        }
+      },
+      {
+        "id": "n36",
+        "type": "particle",
+        "label": "Node 36",
+        "stateVector": {
+          "group": 3,
+          "mass": 10.404467485523417
+        }
+      },
+      {
+        "id": "n37",
+        "type": "particle",
+        "label": "Node 37",
+        "stateVector": {
+          "group": 3,
+          "mass": 10.558022762447393
+        }
+      },
+      {
+        "id": "n38",
+        "type": "particle",
+        "label": "Node 38",
+        "stateVector": {
+          "group": 3,
+          "mass": 2.159875513389268
+        }
+      },
+      {
+        "id": "n39",
+        "type": "particle",
+        "label": "Node 39",
+        "stateVector": {
+          "group": 3,
+          "mass": 8.167098961728103
+        }
+      },
+      {
+        "id": "n40",
+        "type": "particle",
+        "label": "Node 40",
+        "stateVector": {
+          "group": 4,
+          "mass": 4.861633278736201
+        }
+      },
+      {
+        "id": "n41",
+        "type": "particle",
+        "label": "Node 41",
+        "stateVector": {
+          "group": 4,
+          "mass": 6.9389451782186224
+        }
+      },
+      {
+        "id": "n42",
+        "type": "particle",
+        "label": "Node 42",
+        "stateVector": {
+          "group": 4,
+          "mass": 3.5997504236719626
+        }
+      },
+      {
+        "id": "n43",
+        "type": "particle",
+        "label": "Node 43",
+        "stateVector": {
+          "group": 4,
+          "mass": 1.9358737498765723
+        }
+      },
+      {
+        "id": "n44",
+        "type": "particle",
+        "label": "Node 44",
+        "stateVector": {
+          "group": 4,
+          "mass": 5.641440080793022
+        }
+      },
+      {
+        "id": "n45",
+        "type": "particle",
+        "label": "Node 45",
+        "stateVector": {
+          "group": 4,
+          "mass": 4.880352985307476
+        }
+      },
+      {
+        "id": "n46",
+        "type": "particle",
+        "label": "Node 46",
+        "stateVector": {
+          "group": 4,
+          "mass": 4.228894803551445
+        }
+      },
+      {
+        "id": "n47",
+        "type": "particle",
+        "label": "Node 47",
+        "stateVector": {
+          "group": 4,
+          "mass": 7.273418149936223
+        }
+      },
+      {
+        "id": "n48",
+        "type": "particle",
+        "label": "Node 48",
+        "stateVector": {
+          "group": 4,
+          "mass": 1.4803311753863237
+        }
+      },
+      {
+        "id": "n49",
+        "type": "particle",
+        "label": "Node 49",
+        "stateVector": {
+          "group": 4,
+          "mass": 2.9198365414761676
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "e0_5_0",
+        "type": "link",
+        "source": "n0",
+        "target": "n5"
+      },
+      {
+        "id": "e0_8_1",
+        "type": "link",
+        "source": "n0",
+        "target": "n8"
+      },
+      {
+        "id": "e1_7_0",
+        "type": "link",
+        "source": "n1",
+        "target": "n7"
+      },
+      {
+        "id": "e1_8_1",
+        "type": "link",
+        "source": "n1",
+        "target": "n8"
+      },
+      {
+        "id": "e2_4_1",
+        "type": "link",
+        "source": "n2",
+        "target": "n4"
+      },
+      {
+        "id": "e3_8_0",
+        "type": "link",
+        "source": "n3",
+        "target": "n8"
+      },
+      {
+        "id": "e3_2_1",
+        "type": "link",
+        "source": "n3",
+        "target": "n2"
+      },
+      {
+        "id": "e4_0_0",
+        "type": "link",
+        "source": "n4",
+        "target": "n0"
+      },
+      {
+        "id": "e4_3_1",
+        "type": "link",
+        "source": "n4",
+        "target": "n3"
+      },
+      {
+        "id": "e5_2_0",
+        "type": "link",
+        "source": "n5",
+        "target": "n2"
+      },
+      {
+        "id": "e5_9_1",
+        "type": "link",
+        "source": "n5",
+        "target": "n9"
+      },
+      {
+        "id": "e6_3_1",
+        "type": "link",
+        "source": "n6",
+        "target": "n3"
+      },
+      {
+        "id": "e7_4_0",
+        "type": "link",
+        "source": "n7",
+        "target": "n4"
+      },
+      {
+        "id": "e7_2_1",
+        "type": "link",
+        "source": "n7",
+        "target": "n2"
+      },
+      {
+        "id": "e9_3_0",
+        "type": "link",
+        "source": "n9",
+        "target": "n3"
+      },
+      {
+        "id": "e9_6_1",
+        "type": "link",
+        "source": "n9",
+        "target": "n6"
+      },
+      {
+        "id": "e10_13_0",
+        "type": "link",
+        "source": "n10",
+        "target": "n13"
+      },
+      {
+        "id": "e10_12_1",
+        "type": "link",
+        "source": "n10",
+        "target": "n12"
+      },
+      {
+        "id": "e11_12_0",
+        "type": "link",
+        "source": "n11",
+        "target": "n12"
+      },
+      {
+        "id": "e11_12_1",
+        "type": "link",
+        "source": "n11",
+        "target": "n12"
+      },
+      {
+        "id": "e12_18_0",
+        "type": "link",
+        "source": "n12",
+        "target": "n18"
+      },
+      {
+        "id": "e12_17_1",
+        "type": "link",
+        "source": "n12",
+        "target": "n17"
+      },
+      {
+        "id": "e13_18_1",
+        "type": "link",
+        "source": "n13",
+        "target": "n18"
+      },
+      {
+        "id": "e14_13_0",
+        "type": "link",
+        "source": "n14",
+        "target": "n13"
+      },
+      {
+        "id": "e14_10_1",
+        "type": "link",
+        "source": "n14",
+        "target": "n10"
+      },
+      {
+        "id": "e15_16_0",
+        "type": "link",
+        "source": "n15",
+        "target": "n16"
+      },
+      {
+        "id": "e16_14_0",
+        "type": "link",
+        "source": "n16",
+        "target": "n14"
+      },
+      {
+        "id": "e16_13_1",
+        "type": "link",
+        "source": "n16",
+        "target": "n13"
+      },
+      {
+        "id": "e17_10_0",
+        "type": "link",
+        "source": "n17",
+        "target": "n10"
+      },
+      {
+        "id": "e18_12_0",
+        "type": "link",
+        "source": "n18",
+        "target": "n12"
+      },
+      {
+        "id": "e18_16_1",
+        "type": "link",
+        "source": "n18",
+        "target": "n16"
+      },
+      {
+        "id": "e19_14_0",
+        "type": "link",
+        "source": "n19",
+        "target": "n14"
+      },
+      {
+        "id": "e19_12_1",
+        "type": "link",
+        "source": "n19",
+        "target": "n12"
+      },
+      {
+        "id": "e20_22_0",
+        "type": "link",
+        "source": "n20",
+        "target": "n22"
+      },
+      {
+        "id": "e20_27_1",
+        "type": "link",
+        "source": "n20",
+        "target": "n27"
+      },
+      {
+        "id": "e21_25_0",
+        "type": "link",
+        "source": "n21",
+        "target": "n25"
+      },
+      {
+        "id": "e21_24_1",
+        "type": "link",
+        "source": "n21",
+        "target": "n24"
+      },
+      {
+        "id": "e22_28_0",
+        "type": "link",
+        "source": "n22",
+        "target": "n28"
+      },
+      {
+        "id": "e23_29_0",
+        "type": "link",
+        "source": "n23",
+        "target": "n29"
+      },
+      {
+        "id": "e23_29_1",
+        "type": "link",
+        "source": "n23",
+        "target": "n29"
+      },
+      {
+        "id": "e24_26_0",
+        "type": "link",
+        "source": "n24",
+        "target": "n26"
+      },
+      {
+        "id": "e24_22_1",
+        "type": "link",
+        "source": "n24",
+        "target": "n22"
+      },
+      {
+        "id": "e25_26_0",
+        "type": "link",
+        "source": "n25",
+        "target": "n26"
+      },
+      {
+        "id": "e25_23_1",
+        "type": "link",
+        "source": "n25",
+        "target": "n23"
+      },
+      {
+        "id": "e26_29_0",
+        "type": "link",
+        "source": "n26",
+        "target": "n29"
+      },
+      {
+        "id": "e26_28_1",
+        "type": "link",
+        "source": "n26",
+        "target": "n28"
+      },
+      {
+        "id": "e27_21_0",
+        "type": "link",
+        "source": "n27",
+        "target": "n21"
+      },
+      {
+        "id": "e27_21_1",
+        "type": "link",
+        "source": "n27",
+        "target": "n21"
+      },
+      {
+        "id": "e28_24_1",
+        "type": "link",
+        "source": "n28",
+        "target": "n24"
+      },
+      {
+        "id": "e29_24_0",
+        "type": "link",
+        "source": "n29",
+        "target": "n24"
+      },
+      {
+        "id": "e29_28_1",
+        "type": "link",
+        "source": "n29",
+        "target": "n28"
+      },
+      {
+        "id": "e30_38_1",
+        "type": "link",
+        "source": "n30",
+        "target": "n38"
+      },
+      {
+        "id": "e32_30_0",
+        "type": "link",
+        "source": "n32",
+        "target": "n30"
+      },
+      {
+        "id": "e32_30_1",
+        "type": "link",
+        "source": "n32",
+        "target": "n30"
+      },
+      {
+        "id": "e33_39_0",
+        "type": "link",
+        "source": "n33",
+        "target": "n39"
+      },
+      {
+        "id": "e33_32_1",
+        "type": "link",
+        "source": "n33",
+        "target": "n32"
+      },
+      {
+        "id": "e34_35_0",
+        "type": "link",
+        "source": "n34",
+        "target": "n35"
+      },
+      {
+        "id": "e34_30_1",
+        "type": "link",
+        "source": "n34",
+        "target": "n30"
+      },
+      {
+        "id": "e35_31_0",
+        "type": "link",
+        "source": "n35",
+        "target": "n31"
+      },
+      {
+        "id": "e35_33_1",
+        "type": "link",
+        "source": "n35",
+        "target": "n33"
+      },
+      {
+        "id": "e36_35_0",
+        "type": "link",
+        "source": "n36",
+        "target": "n35"
+      },
+      {
+        "id": "e37_33_0",
+        "type": "link",
+        "source": "n37",
+        "target": "n33"
+      },
+      {
+        "id": "e37_34_1",
+        "type": "link",
+        "source": "n37",
+        "target": "n34"
+      },
+      {
+        "id": "e38_37_0",
+        "type": "link",
+        "source": "n38",
+        "target": "n37"
+      },
+      {
+        "id": "e38_33_1",
+        "type": "link",
+        "source": "n38",
+        "target": "n33"
+      },
+      {
+        "id": "e39_30_0",
+        "type": "link",
+        "source": "n39",
+        "target": "n30"
+      },
+      {
+        "id": "e39_38_1",
+        "type": "link",
+        "source": "n39",
+        "target": "n38"
+      },
+      {
+        "id": "e40_48_0",
+        "type": "link",
+        "source": "n40",
+        "target": "n48"
+      },
+      {
+        "id": "e40_46_1",
+        "type": "link",
+        "source": "n40",
+        "target": "n46"
+      },
+      {
+        "id": "e41_42_0",
+        "type": "link",
+        "source": "n41",
+        "target": "n42"
+      },
+      {
+        "id": "e41_47_1",
+        "type": "link",
+        "source": "n41",
+        "target": "n47"
+      },
+      {
+        "id": "e42_43_0",
+        "type": "link",
+        "source": "n42",
+        "target": "n43"
+      },
+      {
+        "id": "e42_40_1",
+        "type": "link",
+        "source": "n42",
+        "target": "n40"
+      },
+      {
+        "id": "e43_44_1",
+        "type": "link",
+        "source": "n43",
+        "target": "n44"
+      },
+      {
+        "id": "e44_40_1",
+        "type": "link",
+        "source": "n44",
+        "target": "n40"
+      },
+      {
+        "id": "e45_41_0",
+        "type": "link",
+        "source": "n45",
+        "target": "n41"
+      },
+      {
+        "id": "e45_43_1",
+        "type": "link",
+        "source": "n45",
+        "target": "n43"
+      },
+      {
+        "id": "e46_40_0",
+        "type": "link",
+        "source": "n46",
+        "target": "n40"
+      },
+      {
+        "id": "e46_45_1",
+        "type": "link",
+        "source": "n46",
+        "target": "n45"
+      },
+      {
+        "id": "e47_44_0",
+        "type": "link",
+        "source": "n47",
+        "target": "n44"
+      },
+      {
+        "id": "e47_46_1",
+        "type": "link",
+        "source": "n47",
+        "target": "n46"
+      },
+      {
+        "id": "e48_47_0",
+        "type": "link",
+        "source": "n48",
+        "target": "n47"
+      },
+      {
+        "id": "e48_49_1",
+        "type": "link",
+        "source": "n48",
+        "target": "n49"
+      },
+      {
+        "id": "e49_42_0",
+        "type": "link",
+        "source": "n49",
+        "target": "n42"
+      },
+      {
+        "id": "e_bridge_0",
+        "type": "link",
+        "source": "n31",
+        "target": "n39"
+      },
+      {
+        "id": "e_bridge_1",
+        "type": "link",
+        "source": "n19",
+        "target": "n19"
+      },
+      {
+        "id": "e_bridge_2",
+        "type": "link",
+        "source": "n22",
+        "target": "n31"
+      },
+      {
+        "id": "e_bridge_3",
+        "type": "link",
+        "source": "n5",
+        "target": "n13"
+      },
+      {
+        "id": "e_bridge_4",
+        "type": "link",
+        "source": "n10",
+        "target": "n34"
+      },
+      {
+        "id": "e_bridge_5",
+        "type": "link",
+        "source": "n6",
+        "target": "n27"
+      },
+      {
+        "id": "e_bridge_6",
+        "type": "link",
+        "source": "n29",
+        "target": "n31"
+      },
+      {
+        "id": "e_bridge_7",
+        "type": "link",
+        "source": "n23",
+        "target": "n0"
+      },
+      {
+        "id": "e_bridge_8",
+        "type": "link",
+        "source": "n9",
+        "target": "n35"
+      },
+      {
+        "id": "e_bridge_9",
+        "type": "link",
+        "source": "n20",
+        "target": "n15"
+      },
+      {
+        "id": "e_bridge_10",
+        "type": "link",
+        "source": "n46",
+        "target": "n23"
+      },
+      {
+        "id": "e_bridge_11",
+        "type": "link",
+        "source": "n16",
+        "target": "n39"
+      },
+      {
+        "id": "e_bridge_12",
+        "type": "link",
+        "source": "n24",
+        "target": "n43"
+      },
+      {
+        "id": "e_bridge_13",
+        "type": "link",
+        "source": "n19",
+        "target": "n2"
+      },
+      {
+        "id": "e_bridge_14",
+        "type": "link",
+        "source": "n46",
+        "target": "n6"
+      },
+      {
+        "id": "e_bridge_15",
+        "type": "link",
+        "source": "n26",
+        "target": "n40"
+      },
+      {
+        "id": "e_bridge_16",
+        "type": "link",
+        "source": "n28",
+        "target": "n42"
+      },
+      {
+        "id": "e_bridge_17",
+        "type": "link",
+        "source": "n24",
+        "target": "n39"
+      },
+      {
+        "id": "e_bridge_18",
+        "type": "link",
+        "source": "n33",
+        "target": "n48"
+      },
+      {
+        "id": "e_bridge_19",
+        "type": "link",
+        "source": "n38",
+        "target": "n25"
+      }
+    ]
+  }
+}
