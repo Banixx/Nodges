@@ -602,6 +602,30 @@ export class App {
         this.currentGraphData = null;
         this.hasExplicitPositions = false;
 
+        // Reset Visual Mappings
+        this.originalVisualMappings = null;
+        if (this.visualMappingEngine) {
+            this.visualMappingEngine.setVisualMappings({ defaultPresets: {} });
+        }
+        if (this.stateManager) {
+            this.stateManager.update({ visualMappings: { defaultPresets: {} } });
+        }
+        if (this.uiManager && this.uiManager.mappingUI) {
+            this.uiManager.mappingUI.bind(
+                { defaultPresets: {} },
+                {},
+                null,
+                [],
+                [],
+                null,
+                (newMappings) => {
+                    if (typeof (this as any).updateVisualMappings === 'function') {
+                        (this as any).updateVisualMappings(newMappings);
+                    }
+                }
+            );
+        }
+
         // Clear raycast cache
         if (this.raycastManager && this.raycastManager.clearCache) {
             this.raycastManager.clearCache();
@@ -662,6 +686,7 @@ export class App {
 
             // Save original mappings for suggestions/preview
             const originalMappings = graphData.visualMappings ? JSON.parse(JSON.stringify(graphData.visualMappings)) : null;
+            this.originalVisualMappings = originalMappings;
             
             // If appending, don't automatically apply the new file's mappings to the entire graph
             if (append) {
@@ -756,7 +781,7 @@ export class App {
             if (this.uiManager) {
                 const bounds = this.calculateBounds(this.currentEntities);
                 const buildStr = graphData.metadata?._buildVersion ? `Build ${graphData.metadata._buildVersion} | ` : '';
-                const schemaStr = graphData.metadata?.schemaVersion || '1';
+                const schemaStr = graphData.metadata?.schemaVersion || '3.0';
                 this.uiManager.updateFileInfo(
                     sourceName,
                     this.currentEntities.length,
@@ -947,25 +972,18 @@ export class App {
             this.uiManager.updateVisualMappings(mappings);
         }
     }
-private rebuildMergedSchema() {
+    private rebuildMergedSchema() {
         if (!this.currentGraphData) return;
 
         // Initialize empty containers
-        const mergedDataModel: DataModel = { entities: {}, relationships: {} };
+        const mergedDataModel: DataModel = { properties: {} };
         const originalVisualMappings: VisualMappings = { defaultPresets: {} };
 
         // Merge all schemas
         this.loadedSchemas.forEach((schema) => {
             if (schema.dataModel) {
-                if ('entities' in schema.dataModel && schema.dataModel.entities) {
-                    Object.assign((mergedDataModel as any).entities, schema.dataModel.entities);
-                }
-                if ('relationships' in schema.dataModel && schema.dataModel.relationships) {
-                    Object.assign((mergedDataModel as any).relationships, schema.dataModel.relationships);
-                }
                 if ('properties' in schema.dataModel && schema.dataModel.properties) {
-                    if (!(mergedDataModel as any).properties) (mergedDataModel as any).properties = {};
-                    Object.assign((mergedDataModel as any).properties, schema.dataModel.properties);
+                    Object.assign(mergedDataModel.properties, schema.dataModel.properties);
                 }
             }
             if (schema.visualMappings && schema.visualMappings.defaultPresets) {
@@ -976,20 +994,19 @@ private rebuildMergedSchema() {
         // Set on currentGraphData
         if (this.currentGraphData) {
             this.currentGraphData.dataModel = mergedDataModel;
-            // Always reset to empty active mappings. File mappings are only shown as dashed originals.
-            // The user must explicitly click "Datei-Mappings übernehmen" to apply them.
-            this.currentGraphData.visualMappings = { defaultPresets: {} };
+            // Auto-apply the original file mappings when loaded
+            this.currentGraphData.visualMappings = JSON.parse(JSON.stringify(originalVisualMappings));
             
             // Store original mappings so UIManager can provide them to MappingUI
             this.originalVisualMappings = originalVisualMappings;
 
             // Propagate to engine
             this.visualMappingEngine.setDataModel(mergedDataModel);
-            this.visualMappingEngine.setVisualMappings(this.currentGraphData.visualMappings);
+            this.visualMappingEngine.setVisualMappings(this.currentGraphData.visualMappings!);
 
             // Propagate to UI
             if (this.uiManager) {
-                this.uiManager.updateVisualMappings(this.currentGraphData.visualMappings);
+                this.uiManager.updateVisualMappings(this.currentGraphData.visualMappings!);
             }
         }
     }

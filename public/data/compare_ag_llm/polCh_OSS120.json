@@ -1,0 +1,122 @@
+{
+  "entities": [
+    {
+      "id": "federal_council",
+      "type": "institution",
+      "name": "Bundesrat",
+      "description": "Exekutivrat der Schweiz, bestehend aus sieben Mitgliedern, die die Bundesverwaltung leiten.",
+      "properties": {
+        "members": 7,
+        "term": "4 Jahre",
+        "head_of_state": "Kollektiv"
+      }
+    },
+    {
+      "id": "federal_assembly",
+      "type": "institution",
+      "name": "Bundesversammlung",
+      "description": "Legislativorgan der Schweiz, bestehend aus zwei Kammern.",
+      "properties": {}
+    },
+    {
+      "id": "national_council",
+      "type": "institution",
+      "name": "Nationalrat",
+      "description": "Unterhaus der Bundesversammlung mit 200 Sitzen, Vertreter aller Bevölkerung.",
+      "properties": {
+        "seats": 200,
+        "election": "Proporzsystem"
+      }
+    },
+    {
+      "id": "council_of_states",
+      "type": "institution",
+      "name": "Ständerat",
+      "description": "Oberhaus der Bundesversammlung mit 46 Sitzen, je 2 Vertreter pro Kanton.",
+      "properties": {
+        "seats": 46,
+        "election": "Majoritätssystem"
+      }
+    },
+    {
+      "id": "cantons",
+      "type": "administrative_division",
+      "name": "Kantone",
+      "description": "26 Kantone mit eigener Verfassung und Gesetzgebung.",
+      "properties": {
+        "count": 26
+      }
+    },
+    {
+      "id": "federal_court",
+      "type": "institution",
+      "name": "Bundesgericht",
+      "description": "Höchstes gerichtliches Organ der Schweiz.",
+      "properties": {}
+    },
+    {
+      "id": "referendum",
+      "type": "democratic_mechanism",
+      "name": "Volksabstimmung (Referendum)",
+      "description": "Ermöglicht den Bürgern, über Gesetze abzustimmen.",
+      "properties": {
+        "type": "obligatorisch",
+        "trigger": "Unterschriften von 50'000 Personen"
+      }
+    },
+    {
+      "id": "popular_initiative",
+      "type": "democratic_mechanism",
+      "name": "Volksinitiative",
+      "description": "Ermöglicht das Einbringen einer Verfassungsänderung.",
+      "properties": {
+        "required_signatures": 100000,
+        "deadline_months": 18
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "federal_council",
+      "target": "federal_assembly",
+      "type": "checks_and_balances",
+      "description": "Der Bundesrat ist dem Parlament rechenschaftspflichtig."
+    },
+    {
+      "source": "national_council",
+      "target": "federal_assembly",
+      "type": "member_of",
+      "description": "Nationalrat ist Teil der Bundesversammlung."
+    },
+    {
+      "source": "council_of_states",
+      "target": "federal_assembly",
+      "type": "member_of",
+      "description": "Ständerat ist Teil der Bundesversammlung."
+    },
+    {
+      "source": "cantons",
+      "target": "council_of_states",
+      "type": "appoints",
+      "description": "Jeder Kanton entsendet zwei Vertreter in den Ständerat."
+    },
+    {
+      "source": "federal_court",
+      "target": "federal_council",
+      "type": "judicial_review",
+      "description": "Das Bundesgericht kann Gesetze der Bundesverwaltung prüfen."
+    },
+    {
+      "source": "referendum",
+      "target": "federal_assembly",
+      "type": "direct_democracy",
+      "description": "Referenden können vom Parlament oder Bürgern initiiert werden."
+    },
+    {
+      "source": "popular_initiative",
+      "target": "federal_assembly",
+      "type": "direct_democracy",
+      "description": "Volksinitiativen zielen auf Verfassungsänderungen ab."
+    }
+  ]
+}

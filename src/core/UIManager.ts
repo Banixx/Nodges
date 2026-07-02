@@ -182,10 +182,10 @@ export class UIManager {
         if (elFilename) elFilename.textContent = `Dateiname: ${filename}`;
 
         const elSchema = document.getElementById('fileSchemaVersion');
-        if (elSchema) elSchema.textContent = schemaVersion || '1';
-
+        if (elSchema) elSchema.textContent = schemaVersion || '3.0';
+        
         if (this.mappingUI) {
-            this.mappingUI.updateSchema(schemaVersion || '1');
+            this.mappingUI.updateSchema(schemaVersion || '3.0');
         }
 
         if (this.statsUI) {
@@ -208,7 +208,7 @@ export class UIManager {
         const dataModel = graphData.dataModel;
         const presets = graphData.visualMappings?.defaultPresets || {};
 
-        const allNodeAttrs = new Set<string>(['constant', 'type', 'id', 'attraction', 'repulsion', 'inertia']);
+        const allNodeAttrs = new Set<string>(['constant', 'type', 'id']);
         const allEdgeAttrs = new Set<string>(['constant', 'type', 'id', 'source', 'target']);
 
         const allTypes = new Set<string>();

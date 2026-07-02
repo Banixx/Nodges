@@ -63,7 +63,7 @@ export class ExportManager {
         const exportData: any = {
             metadata: {
                 ...networkData.metadata,
-                schemaVersion: networkData.metadata?.schemaVersion || '1',
+                schemaVersion: networkData.metadata?.schemaVersion || '3.0',
                 exportedAt: new Date().toISOString(),
                 exportedBy: 'Nodges 0.101.1',
                 format: 'nodges-json'

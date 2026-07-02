@@ -100,18 +100,13 @@ export class SuggestionUI {
             let categoricalProp = '';
             let entityType = 'global_node';
             
-            if ('entities' in this.dataModel && this.dataModel.entities) {
-                for (const [t, schema] of Object.entries(this.dataModel.entities)) {
-                    if (schema.properties) {
-                        for (const [propName, propDef] of Object.entries(schema.properties)) {
-                            if (propDef.type === 'categorical') {
-                                categoricalProp = propName;
-                                entityType = t;
-                                break;
-                            }
-                        }
+            if (this.dataModel.properties) {
+                for (const [propName, propDef] of Object.entries(this.dataModel.properties)) {
+                    const pDef = propDef as any;
+                    if (pDef && pDef.type === 'categorical') {
+                        categoricalProp = propName;
+                        break;
                     }
-                    if (categoricalProp) break;
                 }
             }
 
@@ -133,18 +128,13 @@ export class SuggestionUI {
 
             // Continuous property
             let continuousProp = '';
-            if ('entities' in this.dataModel && this.dataModel.entities) {
-                for (const [t, schema] of Object.entries(this.dataModel.entities)) {
-                    if (schema.properties) {
-                        for (const [propName, propDef] of Object.entries(schema.properties)) {
-                            if (propDef.type === 'continuous') {
-                                continuousProp = propName;
-                                entityType = t;
-                                break;
-                            }
-                        }
+            if (this.dataModel.properties) {
+                for (const [propName, propDef] of Object.entries(this.dataModel.properties)) {
+                    const pDef = propDef as any;
+                    if (pDef && pDef.type === 'continuous') {
+                        continuousProp = propName;
+                        break;
                     }
-                    if (continuousProp) break;
                 }
             }
 
@@ -187,32 +177,51 @@ export class SuggestionUI {
         // Render them
         const cards: HTMLElement[] = [];
 
+        const setActiveCard = (activeLabel: string) => {
+            cards.forEach(c => {
+                const isActive = c.dataset.label === activeLabel;
+                if (isActive) {
+                    c.style.borderWidth = '2px';
+                    c.style.borderColor = '#ffa500';
+                    c.style.boxShadow = '0 0 8px rgba(255, 165, 0, 0.4)';
+                } else {
+                    c.style.borderWidth = '1px';
+                    c.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                    c.style.boxShadow = 'none';
+                }
+            });
+        };
+
         suggestions.forEach(s => {
             const card = document.createElement('div');
+            card.dataset.label = s.label;
             card.style.cssText = `
                 box-sizing: border-box;
-                background: ${s.isOriginal ? 'rgba(255, 165, 0, 0.1)' : 'rgba(255, 255, 255, 0.05)'};
-                border: 1px solid ${s.isOriginal ? 'rgba(255, 165, 0, 0.3)' : 'rgba(255, 255, 255, 0.1)'};
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
                 border-radius: 6px;
                 padding: 8px;
                 cursor: pointer;
                 transition: all 0.2s ease;
             `;
-            card.dataset.isOriginal = s.isOriginal ? 'true' : 'false';
 
             card.innerHTML = `
-                <div style="font-weight: bold; font-size: 12px; color: ${s.isOriginal ? '#ffa500' : '#fff'};">${s.label}</div>
+                <div style="font-weight: bold; font-size: 12px; color: #fff;">${s.label}</div>
                 <div style="font-size: 10px; color: #aaa; margin-top: 4px;">${s.desc}</div>
             `;
 
             // Hover -> Preview
             card.addEventListener('mouseenter', () => {
-                card.style.background = s.isOriginal ? 'rgba(255, 165, 0, 0.2)' : 'rgba(255, 255, 255, 0.1)';
+                if (card.style.borderWidth !== '2px') {
+                    card.style.background = 'rgba(255, 255, 255, 0.1)';
+                }
                 if (this.onPreviewMapping) this.onPreviewMapping(s.mapping);
             });
 
             card.addEventListener('mouseleave', () => {
-                card.style.background = s.isOriginal ? 'rgba(255, 165, 0, 0.1)' : 'rgba(255, 255, 255, 0.05)';
+                if (card.style.borderWidth !== '2px') {
+                    card.style.background = 'rgba(255, 255, 255, 0.05)';
+                }
                 if (this.onPreviewMapping) this.onPreviewMapping(null);
             });
 
@@ -220,18 +229,7 @@ export class SuggestionUI {
             card.addEventListener('click', () => {
                 if (this.onApplyMapping) this.onApplyMapping(s.mapping);
                 
-                // Reset all cards
-                cards.forEach(c => {
-                    const isOrig = c.dataset.isOriginal === 'true';
-                    c.style.borderWidth = '1px';
-                    c.style.borderColor = isOrig ? 'rgba(255, 165, 0, 0.3)' : 'rgba(255, 255, 255, 0.1)';
-                    c.style.boxShadow = 'none';
-                });
-
-                // Highlight active card
-                card.style.borderWidth = '2px';
-                card.style.borderColor = s.isOriginal ? '#ffa500' : '#fff';
-                card.style.boxShadow = s.isOriginal ? '0 0 8px rgba(255, 165, 0, 0.4)' : '0 0 8px rgba(255, 255, 255, 0.4)';
+                setActiveCard(s.label);
                 
                 // Visual feedback
                 const origBg = card.style.background;
@@ -244,5 +242,12 @@ export class SuggestionUI {
             cards.push(card);
             content.appendChild(card);
         });
+
+        // Set initial active card
+        if (this.originalMappings && Object.keys(this.originalMappings.defaultPresets || {}).length > 0) {
+            setActiveCard('Original-Mapping (Datei)');
+        } else {
+            setActiveCard('Standard-Ansicht');
+        }
     }
 }

@@ -27,11 +27,25 @@ export class MappingUI {
     private expandedProps = new Set<string>();
     private selectedDesignOption: Record<string, string> = {};
     private isDraggingSlider = false;
+    private userExpandedAttributes = new Set<string>();
+    private userCollapsedAttributes = new Set<string>();
 
     private getNestedValue(obj: any, path: string): any {
         const formatVal = getEntityAttributeValue(obj, path);
         if (formatVal !== undefined) return formatVal;
         return path.split('.').reduce((current, key) => current?.[key], obj);
+    }
+
+    private isAttributeMapped(attrName: string): boolean {
+        if (!this.mappings || !this.currentType) return false;
+        const preset = this.mappings.defaultPresets?.[this.currentType];
+        if (!preset) return false;
+
+        return Object.values(preset).some((mapping: any) => {
+            if (!mapping) return false;
+            const src = mapping.source || mapping.field || '';
+            return src === attrName || src.startsWith(attrName + '.');
+        });
     }
 
     // Drag-and-Drop state
@@ -40,6 +54,7 @@ export class MappingUI {
         isLeft: boolean;
         sourceName: string;
         visualPropName: string;
+        specificValue?: string;
         tempPath: SVGPathElement;
     } | null = null;
 
@@ -53,17 +68,19 @@ export class MappingUI {
             <div class="mapping-header">
                 <span style="display: flex; align-items: center; gap: 8px;">
                     Mapping
-                    <span id="mappingSchemaVersionBadge" style="font-size: 10px; padding: 2px 6px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; display: none;">Schema: 1</span>
                 </span>
                 <div class="mapping-toggle" id="mappingToggle">▼</div>
             </div>
-            <div class="mapping-selection-area" id="mappingSelectionArea" style="display: flex; gap: 10px; align-items: center; padding: 10px;">
-                <div class="mapping-tabs" id="categoryTabs" style="flex: 1; display: flex;">
-                    <button class="mapping-tab active" data-val="entities" style="flex: 1;">Nodes</button>
-                    <button class="mapping-tab" data-val="relationships" style="flex: 1;">Edges</button>
+            <div class="mapping-selection-area" id="mappingSelectionArea" style="display: flex; flex-direction: column; gap: 10px; padding: 10px;">
+                <div style="display: flex; gap: 10px; align-items: center; width: 100%;">
+                    <span id="mappingSchemaVersionBadge" style="font-size: 10px; padding: 2px 6px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; display: none;">Schema: 1</span>
+                    <div class="mapping-tabs" id="categoryTabs" style="flex: 1; display: flex;">
+                        <button class="mapping-tab active" data-val="entities" style="flex: 1;">Nodes</button>
+                        <button class="mapping-tab" data-val="relationships" style="flex: 1;">Edges</button>
+                    </div>
+                    <button id="btnTakeoverMapping" style="display: none; font-size: 11px; padding: 4px 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #e0e0e0; cursor: pointer; border-radius: 4px; transition: all 0.2s ease;" title="Übernimmt die mitgelieferten Mappings dieser Datei in deine aktive Konfiguration" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.3)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.1)'">Datei-Mappings übernehmen</button>
                 </div>
                 <div class="mapping-type-tabs" id="mappingTypeTabs" style="display: flex; gap: 4px; overflow-x: auto; padding-bottom: 2px;"></div>
-                <button id="btnTakeoverMapping" style="display: none; margin-left: auto; font-size: 11px; padding: 4px 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #e0e0e0; cursor: pointer; border-radius: 4px; transition: all 0.2s ease;" title="Übernimmt die mitgelieferten Mappings dieser Datei in deine aktive Konfiguration" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.3)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.1)'">Datei-Mappings übernehmen</button>
             </div>
             <div class="mapping-body" id="mappingBody" style="position: relative; flex: 1; display: flex; gap: 100px; transition: gap 0.4s ease;">
                 <div class="mapping-column left" id="mappingLeftCol" style="flex: 1; transition: flex 0.4s ease; position: relative; z-index: 2;">
@@ -192,8 +209,9 @@ export class MappingUI {
             this.currentCategory = 'entities';
         } else if (this.currentType === 'global_edge') {
             this.currentCategory = 'relationships';
-        } else if (this.dataModel) {
-            if ('relationships' in this.dataModel && this.dataModel.relationships && this.dataModel.relationships[this.currentType]) {
+        } else {
+            const isKnownRel = relationships.some(r => r.type === this.currentType);
+            if (isKnownRel) {
                 this.currentCategory = 'relationships';
             } else {
                 this.currentCategory = 'entities';
@@ -375,21 +393,40 @@ export class MappingUI {
                 return mapping;
             }
             
-            // Check original mappings if not found or constant
             const typesToCheck = this.getTypesToCheck();
+            
+            // 1. Search for active dynamic mappings
             for (const t of typesToCheck) {
                 const am = (this.mappings!.defaultPresets as any)[t]?.[prop] as VisualMapping;
                 if (am && am.source && am.source !== 'constant') return am;
             }
             
+            // 2. Search for original dynamic mappings
             if (this.originalMappings && this.originalMappings.defaultPresets) {
                 for (const t of typesToCheck) {
                     const om = (this.originalMappings.defaultPresets as any)[t]?.[prop] as VisualMapping;
                     if (om && om.source && om.source !== 'constant') return om;
                 }
             }
+
+            // 3. Fallback to active constant on current type
+            if (mapping) return mapping;
+
+            // 4. Fallback to active constant across types
+            for (const t of typesToCheck) {
+                const am = (this.mappings!.defaultPresets as any)[t]?.[prop] as VisualMapping;
+                if (am) return am;
+            }
+
+            // 5. Fallback to original constant across types
+            if (this.originalMappings && this.originalMappings.defaultPresets) {
+                for (const t of typesToCheck) {
+                    const om = (this.originalMappings.defaultPresets as any)[t]?.[prop] as VisualMapping;
+                    if (om) return om;
+                }
+            }
             
-            return mapping || { source: 'constant', function: 'constant' };
+            return { source: 'constant', function: 'constant' };
         };
 
         // 1. Render Left Column: Attributes
@@ -400,9 +437,53 @@ export class MappingUI {
         attributes.forEach(attr => {
             if (attr === 'constant') return; // Hide 'constant' from the attribute list
 
+            // Check if the unique values are actually objects (meaning this is a group)
+            let isObjectGroup = false;
+            let groupKeys: string[] = [];
+            let presenceCount = 0;
+            const uniqueValues = new Set<any>();
+            let minVal = Infinity;
+            let maxVal = -Infinity;
+            let hasNumeric = false;
+
+            currentDataItems.forEach(dItem => {
+                if (this.currentType === 'global_node' || this.currentType === 'global_edge' || dItem.type === this.currentType) {
+                    const val = this.getNestedValue(dItem, attr);
+                    if (val !== undefined && val !== null) {
+                        presenceCount++;
+                        uniqueValues.add(val);
+                        if (typeof val === 'number') {
+                            hasNumeric = true;
+                            if (val < minVal) minVal = val;
+                            if (val > maxVal) maxVal = val;
+                        }
+                    }
+                }
+            });
+
+            const firstVal = Array.from(uniqueValues)[0];
+            if (firstVal && typeof firstVal === 'object' && !Array.isArray(firstVal)) {
+                isObjectGroup = true;
+                const keysSet = new Set<string>();
+                uniqueValues.forEach(val => {
+                    if (typeof val === 'object' && val !== null) {
+                        Object.keys(val).forEach(k => keysSet.add(k));
+                    }
+                });
+                groupKeys = Array.from(keysSet).sort();
+            }
+
+            const isMapped = this.isAttributeMapped(attr);
+            const isExpanded = isMapped ? !this.userCollapsedAttributes.has(attr) : this.userExpandedAttributes.has(attr);
+
+            // Haupt-Kachel fuer das Attribut erstellen
             const item = document.createElement('div');
             item.className = 'mapping-item left';
             item.dataset.attr = attr;
+            if (isExpanded) {
+                item.style.backgroundColor = 'rgba(255,255,255,0.08)';
+            }
+            item.style.cursor = 'pointer';
 
             const labelContainer = document.createElement('div');
             labelContainer.className = 'mapping-item-label-container';
@@ -415,71 +496,76 @@ export class MappingUI {
             label.style.fontWeight = '500';
             labelContainer.appendChild(label);
 
-            // Calculate presence count and unique values count
-            if (attr !== 'constant') {
-                let presenceCount = 0;
-                const uniqueValues = new Set<any>();
-                let minVal = Infinity;
-                let maxVal = -Infinity;
-                let hasNumeric = false;
+            const stats = document.createElement('span');
+            stats.className = 'mapping-item-stats';
+            stats.style.fontSize = '9px';
+            stats.style.color = 'var(--text-muted)';
+            
+            let statsText = `${presenceCount} • ${uniqueValues.size} Werte`;
+            if (hasNumeric && minVal !== Infinity && maxVal !== -Infinity) {
+                const formatNum = (num: number) => Number.isInteger(num) ? num.toString() : num.toFixed(2);
+                statsText += ` • [${formatNum(minVal)} ... ${formatNum(maxVal)}]`;
+            } else if (uniqueValues.size > 0 && !hasNumeric) {
+                statsText += ` (Text)`;
+            }
+            stats.textContent = statsText;
+            labelContainer.appendChild(stats);
 
-                currentDataItems.forEach(dItem => {
-                    if (this.currentType === 'global_node' || this.currentType === 'global_edge' || dItem.type === this.currentType) {
-                        const val = this.getNestedValue(dItem, attr);
-                        if (val !== undefined && val !== null) {
-                            presenceCount++;
-                            uniqueValues.add(val);
-                            if (typeof val === 'number') {
-                                hasNumeric = true;
-                                if (val < minVal) minVal = val;
-                                if (val > maxVal) maxVal = val;
-                            }
-                        }
-                    }
-                });
+            item.appendChild(labelContainer);
 
-                const stats = document.createElement('span');
-                stats.className = 'mapping-item-stats';
-                stats.style.fontSize = '9px';
-                stats.style.color = 'var(--text-muted)';
-                
-                let statsText = `${presenceCount} • ${uniqueValues.size} Werte`;
-                if (hasNumeric && minVal !== Infinity && maxVal !== -Infinity) {
-                    const formatNum = (num: number) => Number.isInteger(num) ? num.toString() : num.toFixed(2);
-                    statsText += ` • [${formatNum(minVal)} ... ${formatNum(maxVal)}]`;
-                } else if (uniqueValues.size > 0 && !hasNumeric) {
-                    statsText += ` (Text)`;
-                }
+            // Values Container (collapsible)
+            if (!isObjectGroup && uniqueValues.size > 0) {
+                const valuesContainer = document.createElement('div');
+                valuesContainer.className = 'mapping-item-values';
+                valuesContainer.style.display = isExpanded ? 'block' : 'none';
+                valuesContainer.style.marginTop = '6px';
+                valuesContainer.style.fontSize = '10px';
+                valuesContainer.style.color = '#ccc';
+                valuesContainer.style.maxHeight = '150px';
+                valuesContainer.style.overflowY = 'auto';
 
-                stats.textContent = statsText;
-                labelContainer.appendChild(stats);
-
-                // Values Container (collapsible)
-                if (uniqueValues.size > 0) {
-                    const valuesContainer = document.createElement('div');
-                    valuesContainer.className = 'mapping-item-values';
-                    valuesContainer.style.display = 'none';
-                    valuesContainer.style.marginTop = '6px';
-                    valuesContainer.style.fontSize = '10px';
-                    valuesContainer.style.color = '#ccc';
-                    valuesContainer.style.maxHeight = '150px';
-                    valuesContainer.style.overflowY = 'auto';
-
-                    const valsArray = Array.from(uniqueValues).sort();
-                    const valsList = document.createElement('div');
+                const valsArray = Array.from(uniqueValues).sort();
+                const valsList = document.createElement('div');
                     valsList.style.display = 'flex';
                     valsList.style.flexWrap = 'wrap';
                     valsList.style.gap = '4px';
 
-                    valsArray.slice(0, 50).forEach(val => {
+                    valsArray.slice(0, 50).forEach(valOrKey => {
+                        const tagContainer = document.createElement('div');
+                        tagContainer.style.display = 'flex';
+                        tagContainer.style.alignItems = 'center';
+                        tagContainer.style.background = 'rgba(255,255,255,0.06)';
+                        tagContainer.style.borderRadius = '3px';
+                        tagContainer.style.padding = '2px 4px';
+                        tagContainer.style.gap = '4px';
+
                         const tag = document.createElement('span');
-                        tag.style.background = 'rgba(255,255,255,0.1)';
-                        tag.style.padding = '2px 4px';
-                        tag.style.borderRadius = '3px';
-                        // Convert objects/arrays to string for display
-                        const displayVal = typeof val === 'object' ? JSON.stringify(val) : String(val);
+                        const displayVal = String(valOrKey);
                         tag.textContent = displayVal.length > 30 ? displayVal.substring(0, 27) + '...' : displayVal;
-                        valsList.appendChild(tag);
+
+                        const valDot = document.createElement('div');
+                        valDot.className = 'snapdot left-dot sub-dot';
+                        valDot.dataset.attr = attr;
+                        valDot.dataset.val = displayVal;
+                        
+                        valDot.style.cssText = `
+                            width: 6px;
+                            height: 6px;
+                            background-color: var(--accent, #ffa500);
+                            border-radius: 50%;
+                            cursor: grab;
+                            flex-shrink: 0;
+                            opacity: 0.5;
+                        `;
+
+                        valDot.addEventListener('pointerdown', (e) => {
+                            e.stopPropagation();
+                            this.startDrag(e, valDot, true, attr, '', displayVal);
+                        });
+
+                        tagContainer.appendChild(tag);
+                        tagContainer.appendChild(valDot);
+                        valsList.appendChild(tagContainer);
                     });
 
                     if (valsArray.length > 50) {
@@ -494,54 +580,29 @@ export class MappingUI {
 
                     valuesContainer.appendChild(valsList);
                     labelContainer.appendChild(valuesContainer);
-
-                    // Add click event to toggle
-                    item.style.cursor = 'pointer';
-                    
-                    const expandItem = () => {
-                        if (valuesContainer.style.display === 'none') {
-                            valuesContainer.style.display = 'block';
-                            item.style.backgroundColor = 'rgba(255,255,255,0.1)';
-                            requestAnimationFrame(() => {
-                                this.drawCurves();
-                                this.adjustHeightAndMinimap();
-                            });
-                        }
-                    };
-                    
-                    const collapseItem = () => {
-                        if (valuesContainer.style.display !== 'none') {
-                            valuesContainer.style.display = 'none';
-                            item.style.backgroundColor = '';
-                            requestAnimationFrame(() => {
-                                this.drawCurves();
-                                this.adjustHeightAndMinimap();
-                            });
-                        }
-                    };
-
-                    item.addEventListener('mouseenter', expandItem);
-                    item.addEventListener('mouseleave', () => {
-                        if (this.activeTileId !== 'left_' + attr) {
-                            collapseItem();
-                        }
-                    });
-
-                    item.addEventListener('click', (e) => {
-                        if ((e.target as HTMLElement).classList.contains('snapdot')) return;
-                        
-                        if (this.activeTileId === 'left_' + attr) {
-                            this.activeTileId = null;
-                            this.activeColumn = null;
-                        } else {
-                            this.activeTileId = 'left_' + attr;
-                            this.activeColumn = 'left';
-                            expandItem();
-                        }
-                        this.updateColumnWidths();
-                    });
-                }
             }
+
+            // Klick-Event fuer das Haupt-Item (vereinheitlicht)
+            item.addEventListener('click', (e) => {
+                if ((e.target as HTMLElement).classList.contains('snapdot')) return;
+
+                if (isExpanded) {
+                    if (isMapped) {
+                        this.userCollapsedAttributes.add(attr);
+                    } else {
+                        this.userExpandedAttributes.delete(attr);
+                    }
+                } else {
+                    if (isMapped) {
+                        this.userCollapsedAttributes.delete(attr);
+                    } else {
+                        this.userExpandedAttributes.clear();
+                        this.userExpandedAttributes.add(attr);
+                    }
+                }
+                
+                this.renderColumns();
+            });
 
             item.appendChild(labelContainer);
 
@@ -554,13 +615,112 @@ export class MappingUI {
             dot.addEventListener('pointerdown', (e) => this.startDrag(e, dot, true, attr, ''));
 
             this.leftColumn.appendChild(item);
+
+            // WICHTIG: Wenn es eine Objektgruppe ist und aufgeklappt, rendern wir die Unterkacheln direkt als Geschwister!
+            if (isObjectGroup && isExpanded) {
+                groupKeys.forEach(key => {
+                    const subAttr = `${attr}.${key}`;
+
+                    const subItem = document.createElement('div');
+                    subItem.className = 'mapping-item left mapping-sub-item';
+                    subItem.dataset.attr = subAttr;
+                    
+                    subItem.style.cssText = `
+                        margin-left: 15px;
+                        width: calc(100% - 35px);
+                        border-left: 2px solid var(--accent, #ffa500);
+                        background: rgba(255, 255, 255, 0.02);
+                        padding: 4px 8px;
+                        border-radius: 4px;
+                        border-top: 1px solid rgba(255, 255, 255, 0.05);
+                        border-right: 1px solid rgba(255, 255, 255, 0.05);
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                        font-size: 11px;
+                        min-height: 20px;
+                        flex-shrink: 0;
+                        position: relative;
+                        box-sizing: border-box;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        transition: all 0.2s ease;
+                    `;
+
+                    subItem.onmouseover = () => {
+                        subItem.style.background = 'rgba(255, 255, 255, 0.05)';
+                        subItem.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                    };
+                    subItem.onmouseout = () => {
+                        subItem.style.background = 'rgba(255, 255, 255, 0.02)';
+                        subItem.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                    };
+
+                    const subLabelContainer = document.createElement('div');
+                    subLabelContainer.style.display = 'flex';
+                    subLabelContainer.style.flexDirection = 'column';
+                    subLabelContainer.style.gap = '2px';
+
+                    const subLabel = document.createElement('span');
+                    subLabel.style.fontWeight = '500';
+                    subLabel.textContent = `.${key}`;
+                    subLabelContainer.appendChild(subLabel);
+
+                    let subPresenceCount = 0;
+                    const uniqueSubValues = new Set<any>();
+                    let minVal = Infinity;
+                    let maxVal = -Infinity;
+                    let hasNumeric = false;
+
+                    currentDataItems.forEach(dItem => {
+                        if (this.currentType === 'global_node' || this.currentType === 'global_edge' || dItem.type === this.currentType) {
+                            const val = this.getNestedValue(dItem, subAttr);
+                            if (val !== undefined && val !== null) {
+                                subPresenceCount++;
+                                uniqueSubValues.add(val);
+                                if (typeof val === 'number') {
+                                    hasNumeric = true;
+                                    if (val < minVal) minVal = val;
+                                    if (val > maxVal) maxVal = val;
+                                }
+                            }
+                        }
+                    });
+
+                    if (subPresenceCount > 0) {
+                        const subStats = document.createElement('span');
+                        subStats.style.fontSize = '9px';
+                        subStats.style.color = 'var(--text-muted)';
+                        if (hasNumeric && minVal !== Infinity && maxVal !== -Infinity) {
+                            const formatNum = (num: number) => Number.isInteger(num) ? num.toString() : num.toFixed(1);
+                            subStats.textContent = `[${formatNum(minVal)}...${formatNum(maxVal)}]`;
+                        } else {
+                            subStats.textContent = `${uniqueSubValues.size} W`;
+                        }
+                        subLabelContainer.appendChild(subStats);
+                    }
+
+                    subItem.appendChild(subLabelContainer);
+
+                    const subDot = document.createElement('div');
+                    subDot.className = 'snapdot left-dot sub-dot';
+                    subDot.dataset.attr = subAttr;
+                    subItem.appendChild(subDot);
+
+                    subDot.addEventListener('pointerdown', (e) => {
+                        e.stopPropagation();
+                        this.startDrag(e, subDot, true, subAttr, '', '');
+                    });
+
+                    this.leftColumn.appendChild(subItem);
+                });
+            }
         });
 
         // 2. Render Right Column: Visual Properties
         
         const isEntity = this.currentCategory === 'entities';
         const visualProps = isEntity
-            ? ['positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation']
+            ? ['positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation', 'attraction', 'repulsion', 'inertia']
             : ['thickness', 'color', 'curvature', 'glow', 'opacity', 'animation'];
 
             const propTranslations: Record<string, string> = {
@@ -597,9 +757,37 @@ export class MappingUI {
                 const header = document.createElement('div');
                 header.className = 'mapping-item-header';
 
+                const labelContainer = document.createElement('div');
+                labelContainer.style.display = 'flex';
+                labelContainer.style.alignItems = 'center';
+                labelContainer.style.gap = '8px';
+
                 const label = document.createElement('span');
                 label.textContent = propTranslations[prop] || prop.charAt(0).toUpperCase() + prop.slice(1);
-                header.appendChild(label);
+                labelContainer.appendChild(label);
+
+                if (mapping && mapping.source === 'constant') {
+                    const valBadge = document.createElement('div');
+                    valBadge.style.cssText = 'padding: 1px 5px; background: rgba(255,255,255,0.08); border-radius: 4px; font-size: 10px; color: #ccc; display: flex; align-items: center; white-space: nowrap;';
+                    let hasValue = false;
+                    
+                    if (mapping.params && mapping.params.color) {
+                        valBadge.innerHTML = `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:${mapping.params.color}; margin-right:4px;"></span>${mapping.params.color}`;
+                        hasValue = true;
+                    } else if (mapping.params && mapping.params.value !== undefined) {
+                        valBadge.textContent = String(mapping.params.value);
+                        hasValue = true;
+                    } else if ((mapping as any).value !== undefined) {
+                        valBadge.textContent = String((mapping as any).value);
+                        hasValue = true;
+                    }
+                    
+                    if (hasValue) {
+                        labelContainer.appendChild(valBadge);
+                    }
+                }
+                
+                header.appendChild(labelContainer);
 
                 const actions = document.createElement('div');
                 actions.style.display = 'flex';
@@ -1436,7 +1624,19 @@ export class MappingUI {
     private drawCurve(sourceAttr: string, prop: string, className: string, isInteractive: boolean, isOriginal: boolean = false) {
         // Build 2/3 imported mappings might have "stateVector.group", but UI displays "group"
         const normalizedAttr = sourceAttr.replace(/^stateVector\./, '');
-        const leftDot = this.leftColumn.querySelector(`.snapdot[data-attr="${normalizedAttr}"]`) as HTMLElement;
+        
+        let leftDot = this.leftColumn.querySelector(`.snapdot[data-attr="${normalizedAttr}"]`) as HTMLElement;
+        
+        if (!leftDot) {
+            // Falls das Unterattribut eingeklappt/nicht gerendert ist, nimm den uebergeordneten Parent-Dot als Fallback
+            const parentPath = normalizedAttr.split('.')[0];
+            leftDot = this.leftColumn.querySelector(`.snapdot:not(.sub-dot)[data-attr="${parentPath}"]`) as HTMLElement;
+        }
+
+        if (!leftDot) {
+            return;
+        }
+
         const rightDot = this.rightColumn.querySelector(`.snapdot[data-prop="${prop}"]`) as HTMLElement;
 
         if (leftDot && rightDot) {
@@ -1508,7 +1708,7 @@ export class MappingUI {
         }
     }
 
-    private startDrag(e: PointerEvent, dot: HTMLElement, isLeft: boolean, attrName: string, propName: string) {
+    private startDrag(e: PointerEvent, dot: HTMLElement, isLeft: boolean, attrName: string, propName: string, specificValue?: string) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -1524,6 +1724,7 @@ export class MappingUI {
             isLeft,
             sourceName: attrName,
             visualPropName: propName,
+            specificValue,
             tempPath
         };
 
@@ -1566,13 +1767,16 @@ export class MappingUI {
             if (this.activeDrag.isLeft && !isTargetLeft) {
                 const targetProp = targetDot.dataset.prop || '';
                 const sourceAttr = this.activeDrag.sourceName;
-                this.connectMapping(sourceAttr, targetProp);
+                this.connectMapping(sourceAttr, targetProp, this.activeDrag.specificValue);
             } 
             // Connect input (right) to output (left)
             else if (!this.activeDrag.isLeft && isTargetLeft) {
                 const sourceAttr = targetDot.dataset.attr || '';
                 const targetProp = this.activeDrag.visualPropName;
-                this.connectMapping(sourceAttr, targetProp);
+                // Since the drag started from right, the target dot is on the left.
+                // We check if it has a specific value dataset.
+                const specificValue = targetDot.dataset.val;
+                this.connectMapping(sourceAttr, targetProp, specificValue);
             }
         } else {
             // Dropped in empty space: if dragged from a visual property, disconnect it
@@ -1589,7 +1793,7 @@ export class MappingUI {
         this.drawCurves();
     }
 
-    private connectMapping(sourceAttr: string, propName: string) {
+    private connectMapping(sourceAttr: string, propName: string, specificValue?: string) {
         if (!this.mappings || !this.currentType || !this.onUpdate) return;
 
         if (!this.mappings.defaultPresets) {
@@ -1603,7 +1807,9 @@ export class MappingUI {
 
         let defaultFunc: any = 'linear';
         const isCategoricalSource = ['type', 'id', 'category', 'label', 'domain'].includes(sourceAttr);
-        if (propName === 'color') {
+        if (specificValue || isCategoricalSource) {
+            defaultFunc = 'categorical';
+        } else if (propName === 'color') {
             if (isCategoricalSource) {
                 defaultFunc = 'categorical';
             } else {
@@ -1683,6 +1889,29 @@ export class MappingUI {
 
         // Auto-expand connected mapping property
         this.expandedProps.add(propName);
+        
+        // Let the UI render the expanded property first
+        requestAnimationFrame(() => {
+            if (specificValue) {
+                // Try to find the specific category input and focus it
+                setTimeout(() => {
+                    const rightCol = this.rightColumn;
+                    const item = rightCol.querySelector(`.mapping-item.right[data-prop="${propName}"]`);
+                    if (item) {
+                        const inputs = item.querySelectorAll('input');
+                        inputs.forEach(input => {
+                            // Find the label or input that matches the specific value
+                            const row = input.closest('div');
+                            if (row && row.textContent?.includes(specificValue)) {
+                                input.focus();
+                                input.style.boxShadow = '0 0 0 2px var(--accent, #ffa500)';
+                                setTimeout(() => input.style.boxShadow = '', 2000);
+                            }
+                        });
+                    }
+                }, 50);
+            }
+        });
 
         this.onUpdate(this.mappings);
     }

@@ -25,7 +25,7 @@ Dieses Dokument sammelt typische Probleme und Fragestellungen auf Entwicklungs- 
 ### Symptom: Knoten sind unsichtbar, obwohl laut Konsole Daten im `StateManager` geladen sind.
 *   **Ursache**: Der `InstancedMesh`-Buffer (`instanceMatrix`) fordert oft manuell an, geupdated zu werden.
 *   **Diagnose**: Prüfe in `NodeManager`: Ist `mesh.instanceMatrix.needsUpdate = true` aufgerufen worden, nachdem Positionen verändert wurden?
-*   **Lösung**: Sobald die Float32-Buffer eines InstancedMesh beschrieben sind, **muss** Three.js benachrichtigt werden, diese Buffers final zur GPU zu flushen. Das Setzen von `needsUpdate` is hierfür zwingend.
+*   **Lösung**: Sobald die Float32-Buffer eines InstancedMesh beschrieben sind, **muss** Three.js benachrichtigt werden, diese Buffers final zur GPU zu flushen. Das Setzen von `needsUpdate` ist hierfür zwingend.
 
 ## C. Setup und DevContainer
 

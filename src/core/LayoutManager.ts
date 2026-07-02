@@ -263,7 +263,9 @@ export class LayoutManager {
                         inertia: physics.inertia,
                         fixedX: visual.positionX !== undefined,
                         fixedY: visual.positionY !== undefined,
-                        fixedZ: visual.positionZ !== undefined
+                        fixedZ: visual.positionZ !== undefined,
+                        type: node.type,
+                        behavior: node.behavior
                     };
                 }),
                 edges: edges.filter(e => e.source && e.target).map(edge => {

@@ -17,25 +17,9 @@ export const PropertySchemaSchema = z.object({
 });
 export type PropertySchema = z.infer<typeof PropertySchemaSchema>;
 
-export const EntityTypeSchemaSchema = z.object({
+export const DataModelSchema = z.object({
     properties: z.record(PropertySchemaSchema).optional().default({}),
 });
-export type EntityTypeSchema = z.infer<typeof EntityTypeSchemaSchema>;
-
-export const RelationshipTypeSchemaSchema = z.object({
-    properties: z.record(PropertySchemaSchema).optional().default({}),
-});
-export type RelationshipTypeSchema = z.infer<typeof RelationshipTypeSchemaSchema>;
-
-export const DataModelSchema = z.union([
-    z.object({
-        entities: z.record(EntityTypeSchemaSchema).optional().default({}),
-        relationships: z.record(RelationshipTypeSchemaSchema).optional().default({}),
-    }),
-    z.object({
-        properties: z.record(PropertySchemaSchema).optional().default({}),
-    })
-]);
 export type DataModel = z.infer<typeof DataModelSchema>;
 
 // Visual Mappings

@@ -1,0 +1,275 @@
+{
+  "meta": {
+    "title": "Politisches System der Schweiz",
+    "version": "S46t",
+    "created": "2026-06-30",
+    "description": "Semantisch angereichertes Nodges-Dataset: Institutionen, Akteure und Mechanismen des schweizerischen Bundesstaates.",
+    "node_count": 46,
+    "edge_count": 64
+  },
+  "nodes": [
+
+    { "id": "volk", "label": "Schweizer Volk",
+      "type": "Souveraen",
+      "properties": { "role": "Souverän", "stimmberechtigt_mio": 5.6, "wahlbeteiligung_pct": 46, "category": "Volk", "ebene": "Bund", "beschreibung": "Oberste politische Instanz; entscheidet über Gesetze und Verfassung." }},
+
+    { "id": "auslandschweizer", "label": "Auslandschweizer (Fünfte Schweiz)",
+      "type": "Souveraen",
+      "properties": { "anzahl": 813000, "wahlberechtigt": true, "briefwahlpflicht": true, "category": "Volk", "ebene": "International" }},
+
+    { "id": "kantone", "label": "Kantone (26)",
+      "type": "Foederalismus",
+      "properties": { "anzahl": 26, "davon_halbkantone": 6, "category": "Foederalismus", "ebene": "Kanton", "stimmrecht_bundesebene": true, "beschreibung": "Gliedstaaten mit eigener Verfassung, Parlament und Regierung." }},
+
+    { "id": "gemeinden", "label": "Gemeinden (~2128)",
+      "type": "Foederalismus",
+      "properties": { "anzahl": 2128, "autonomiegrad": "hoch", "category": "Foederalismus", "ebene": "Gemeinde", "beschreibung": "Kleinste Gebietskörperschaft; vollzieht Bundes- und Kantonsrecht." }},
+
+    { "id": "landsgemeinde", "label": "Landsgemeinde (GL, AR)",
+      "type": "Direkte Demokratie",
+      "properties": { "kantone": ["Glarus","Appenzell Innerrhoden"], "haendeheben": true, "category": "Direkte Demokratie", "ebene": "Kanton", "beschreibung": "Offene Volksversammlung als kantonale Gesetzgebungsinstanz." }},
+
+    { "id": "volksinitiative", "label": "Volksinitiative (100k Unterschriften)",
+      "type": "Direkte Demokratie",
+      "properties": { "unterschriften": 100000, "sammelfrist_monate": 18, "erfolgsquote_pct": 10, "category": "Direkte Demokratie", "ebene": "Bund", "beschreibung": "Instrument zur Änderung der Bundesverfassung durch das Volk." }},
+
+    { "id": "obligatorisches_referendum", "label": "Obligatorisches Referendum",
+      "type": "Direkte Demokratie",
+      "properties": { "pflicht": true, "anwendung": "Verfassungsänderungen, dringl. Gesetze, Staatsvertraege", "staendemehr": true, "category": "Direkte Demokratie", "ebene": "Bund" }},
+
+    { "id": "fakultatives_referendum", "label": "Fakultatives Referendum (50k)",
+      "type": "Direkte Demokratie",
+      "properties": { "unterschriften": 50000, "sammelfrist_monate": 100, "anwendung": "Bundesgesetze, Bundesbeschluesse", "category": "Direkte Demokratie", "ebene": "Bund" }},
+
+    { "id": "kantonsinitiative", "label": "Standesinitiative",
+      "type": "Direkte Demokratie",
+      "properties": { "einreicher": "Kanton", "adressat": "Bundesversammlung", "bindungskraft": "Pflicht zur Beratung", "category": "Direkte Demokratie", "ebene": "Kanton" }},
+
+    { "id": "bundesversammlung", "label": "Vereinigte Bundesversammlung",
+      "type": "Legislative",
+      "properties": { "kammern": 2, "sitzungen": "gemeinsame Anlaesse", "kompetenzen": ["Bundesratswahl","Bundesgerichtswahl","Begnadigungen"], "category": "Legislative", "ebene": "Bund" }},
+
+    { "id": "nationalrat", "label": "Nationalrat (200 Sitze)",
+      "type": "Kammer",
+      "properties": { "sitze": 200, "wahlsystem": "Proporz", "amtsdauer_jahre": 4, "volksvertreter": true, "category": "Legislative", "ebene": "Bund", "beschreibung": "Grosse Kammer; repräsentiert die Bevölkerung." }},
+
+    { "id": "staenderat", "label": "Ständerat (46 Sitze)",
+      "type": "Kammer",
+      "properties": { "sitze": 46, "pro_kanton": 2, "pro_halbkanton": 1, "wahlsystem": "Majorz", "amtsdauer_jahre": 4, "category": "Legislative", "ebene": "Bund", "beschreibung": "Kleine Kammer; repräsentiert die Kantone." }},
+
+    { "id": "nationalratskommissionen", "label": "Kommissionen Nationalrat",
+      "type": "Legislative",
+      "properties": { "anzahl": 12, "aufgabe": "Vorberatung Gesetzgebung", "category": "Legislative", "ebene": "Bund" }},
+
+    { "id": "staenderatskommissionen", "label": "Kommissionen Ständerat",
+      "type": "Legislative",
+      "properties": { "anzahl": 12, "aufgabe": "Vorberatung Gesetzgebung", "category": "Legislative", "ebene": "Bund" }},
+
+    { "id": "parlamentsdienste", "label": "Parlamentsdienste",
+      "type": "Legislative",
+      "properties": { "mitarbeitende": 250, "aufgabe": "Sekretariat und Beratung der Räte", "category": "Legislative", "ebene": "Bund" }},
+
+    { "id": "svp", "label": "SVP (Volkspartei)",
+      "type": "Partei",
+      "properties": { "gruendung": 1971, "sitze_nr_2023": 62, "sitze_sr_2023": 6, "ideologie": "nationalkonservativ", "bundesraete_2024": 1, "category": "Partei", "ebene": "Bund" }},
+
+    { "id": "sp", "label": "SP (Sozialdemokraten)",
+      "type": "Partei",
+      "properties": { "gruendung": 1888, "sitze_nr_2023": 41, "sitze_sr_2023": 9, "ideologie": "sozialdemokratisch", "bundesraete_2024": 2, "category": "Partei", "ebene": "Bund" }},
+
+    { "id": "fdp", "label": "FDP (Liberaldemokraten)",
+      "type": "Partei",
+      "properties": { "gruendung": 2009, "sitze_nr_2023": 28, "sitze_sr_2023": 12, "ideologie": "liberal", "bundesraete_2024": 2, "category": "Partei", "ebene": "Bund" }},
+
+    { "id": "mitte", "label": "Die Mitte",
+      "type": "Partei",
+      "properties": { "gruendung": 2021, "sitze_nr_2023": 29, "sitze_sr_2023": 15, "ideologie": "christlichdemokratisch", "bundesraete_2024": 2, "category": "Partei", "ebene": "Bund" }},
+
+    { "id": "gruene", "label": "Grüne Partei",
+      "type": "Partei",
+      "properties": { "gruendung": 1983, "sitze_nr_2023": 23, "sitze_sr_2023": 5, "ideologie": "grün-links", "bundesraete_2024": 0, "category": "Partei", "ebene": "Bund" }},
+
+    { "id": "glp", "label": "GLP (Grünliberale)",
+      "type": "Partei",
+      "properties": { "gruendung": 2007, "sitze_nr_2023": 10, "sitze_sr_2023": 2, "ideologie": "grünliberal", "bundesraete_2024": 0, "category": "Partei", "ebene": "Bund" }},
+
+    { "id": "bundesrat", "label": "Bundesrat (7 Mitglieder)",
+      "type": "Exekutive",
+      "properties": { "mitglieder": 7, "konkordanz": true, "amtsdauer_jahre": 4, "wiederwahlbar": true, "praesidium": "jährlich rotierend", "category": "Exekutive", "ebene": "Bund", "beschreibung": "Kollegialregierung; leitet die Bundesverwaltung." }},
+
+    { "id": "bundespräsident", "label": "Bundespräsident/in",
+      "type": "Exekutive",
+      "properties": { "amtsdauer_monate": 12, "wahl": "durch Bundesrat intern", "repräsentativ": true, "keine_mehrkompetenzen": true, "category": "Exekutive", "ebene": "Bund" }},
+
+    { "id": "bundeskanzlei", "label": "Bundeskanzlei",
+      "type": "Exekutive",
+      "properties": { "leitung": "Bundeskanzler/in", "aufgabe": "Stabstelle des Bundesrates", "mitarbeitende": 430, "category": "Exekutive", "ebene": "Bund" }},
+
+    { "id": "eda", "label": "EDA – Auswärtiges",
+      "type": "Departement",
+      "properties": { "kuerzel": "EDA", "vollname": "Eidg. Departement für auswärtige Angelegenheiten", "mitarbeitende": 5700, "botschaften": 170, "category": "Departement", "ebene": "Bund" }},
+
+    { "id": "edi", "label": "EDI – Inneres",
+      "type": "Departement",
+      "properties": { "kuerzel": "EDI", "vollname": "Eidg. Departement des Innern", "bereiche": ["Gesundheit","Kultur","Sozialversicherungen","Wissenschaft"], "category": "Departement", "ebene": "Bund" }},
+
+    { "id": "ejpd", "label": "EJPD – Justiz & Polizei",
+      "type": "Departement",
+      "properties": { "kuerzel": "EJPD", "bereiche": ["Strafrecht","Migration","Polizei","Datenschutz"], "category": "Departement", "ebene": "Bund" }},
+
+    { "id": "vbs", "label": "VBS – Verteidigung",
+      "type": "Departement",
+      "properties": { "kuerzel": "VBS", "bereiche": ["Armee","Zivilschutz","Sport","Meteorologie"], "category": "Departement", "ebene": "Bund" }},
+
+    { "id": "efd", "label": "EFD – Finanzen",
+      "type": "Departement",
+      "properties": { "kuerzel": "EFD", "budget_chf_mrd": 82, "bereiche": ["Steuern","Zoll","Informatik Bund"], "category": "Departement", "ebene": "Bund" }},
+
+    { "id": "wbf", "label": "WBF – Wirtschaft & Bildung",
+      "type": "Departement",
+      "properties": { "kuerzel": "WBF", "bereiche": ["Bildung","Forschung","Innovation","Arbeit","Wirtschaftspolitik"], "category": "Departement", "ebene": "Bund" }},
+
+    { "id": "uvek", "label": "UVEK – Umwelt & Verkehr",
+      "type": "Departement",
+      "properties": { "kuerzel": "UVEK", "bereiche": ["Energie","Umwelt","Verkehr","Kommunikation"], "category": "Departement", "ebene": "Bund" }},
+
+    { "id": "bundesverwaltung", "label": "Bundesverwaltung",
+      "type": "Exekutive",
+      "properties": { "stellen_fte": 38000, "hauptsitz": "Bern", "category": "Exekutive", "ebene": "Bund" }},
+
+    { "id": "bundesgericht", "label": "Bundesgericht",
+      "type": "Judikative",
+      "properties": { "sitz": "Lausanne", "richter": 38, "richterstellen_total": 120, "oberste_instanz": true, "category": "Judikative", "ebene": "Bund", "beschreibung": "Oberstes Gericht der Schweiz; überprüft kantonale Urteile und Bundesrecht." }},
+
+    { "id": "bundesstrafgericht", "label": "Bundesstrafgericht",
+      "type": "Judikative",
+      "properties": { "sitz": "Bellinzona", "zustaendig": "Schwerste Bundesstrafdelikte", "category": "Judikative", "ebene": "Bund" }},
+
+    { "id": "bundesverwaltungsgericht", "label": "Bundesverwaltungsgericht",
+      "type": "Judikative",
+      "properties": { "sitz": "St. Gallen", "zustaendig": "Beschwerden gegen Bundesbehörden", "richter": 68, "category": "Judikative", "ebene": "Bund" }},
+
+    { "id": "bundespatentgericht", "label": "Bundespatentgericht",
+      "type": "Judikative",
+      "properties": { "sitz": "St. Gallen", "zustaendig": "Patentstreitigkeiten", "category": "Judikative", "ebene": "Bund" }},
+
+    { "id": "efd_finanzkontrolle", "label": "Eidg. Finanzkontrolle (EFK)",
+      "type": "Kontrollinstanz",
+      "properties": { "unabhaengig": true, "aufgabe": "Finanzaufsicht Bund", "rechenschaftspflicht_an": "Bundesversammlung", "category": "Kontrollinstanz", "ebene": "Bund" }},
+
+    { "id": "datenschutzbeauftragter", "label": "Datenschutzbeauftragter (EDÖB)",
+      "type": "Kontrollinstanz",
+      "properties": { "unabhaengig": true, "aufgabe": "Datenschutzaufsicht", "category": "Kontrollinstanz", "ebene": "Bund" }},
+
+    { "id": "ombudsmann", "label": "Parlamentarische Ombudsstelle",
+      "type": "Kontrollinstanz",
+      "properties": { "aufgabe": "Vermittlung Bürger-Verwaltung", "category": "Kontrollinstanz", "ebene": "Bund" }},
+
+    { "id": "kantonsparlamente", "label": "Kantonsparlamente (26)",
+      "type": "Foederalismus",
+      "properties": { "anzahl": 26, "sitze_range": "58-180", "amtsdauer_jahre": 4, "category": "Foederalismus", "ebene": "Kanton" }},
+
+    { "id": "kantonsregierungen", "label": "Kantonsregierungen (26)",
+      "type": "Foederalismus",
+      "properties": { "anzahl": 26, "mitglieder_range": "5-7", "amtsdauer_jahre": 4, "category": "Foederalismus", "ebene": "Kanton" }},
+
+    { "id": "kantonsgericht", "label": "Kantonale Gerichte",
+      "type": "Judikative",
+      "properties": { "anzahl": 26, "aufgabe": "Zivil-, Straf-, Verwaltungsrecht", "category": "Judikative", "ebene": "Kanton" }},
+
+    { "id": "gemeindeexekutive", "label": "Gemeindeexekutiven (~2128)",
+      "type": "Foederalismus",
+      "properties": { "aufgabe": "Gemeindevollzug", "category": "Foederalismus", "ebene": "Gemeinde" }},
+
+    { "id": "eu_bilaterale", "label": "Bilaterale Verträge CH–EU",
+      "type": "International",
+      "properties": { "pakete": 2, "abkommen_total": 120, "status": "in Neuverhandlung (2024)", "category": "International", "ebene": "International" }},
+
+    { "id": "uno", "label": "UNO-Mitgliedschaft",
+      "type": "International",
+      "properties": { "beitritt": 2002, "genf_bedeutung": "Sitz vieler UNO-Organe", "category": "International", "ebene": "International" }},
+
+    { "id": "medien_zivilgesellschaft", "label": "Medien & Zivilgesellschaft",
+      "type": "Gesellschaft",
+      "properties": { "funktion": "Öffentliche Kontrolle", "presserechtlich": "freie Presse", "ngo_registriert": 15000, "category": "Gesellschaft", "ebene": "Bund" }}
+  ],
+
+  "edges": [
+    { "source": "volk", "target": "nationalrat", "label": "wählt (Proporz)", "properties": { "frequenz": "4-jährlich", "verbindlichkeit": "direkt" }},
+    { "source": "volk", "target": "staenderat", "label": "wählt (meist Majorz)", "properties": { "frequenz": "4-jährlich" }},
+    { "source": "volk", "target": "volksinitiative", "label": "lanciert", "properties": { "mindest_unterschriften": 100000 }},
+    { "source": "volk", "target": "obligatorisches_referendum", "label": "stimmt ab", "properties": { "obligatorisch": true }},
+    { "source": "volk", "target": "fakultatives_referendum", "label": "ergreift", "properties": { "mindest_unterschriften": 50000 }},
+    { "source": "auslandschweizer", "target": "nationalrat", "label": "wählt (Briefwahl)", "properties": {}},
+    { "source": "auslandschweizer", "target": "volksinitiative", "label": "kann unterschreiben", "properties": {}},
+
+    { "source": "kantone", "target": "staenderat", "label": "bestimmen Wahlverfahren", "properties": {}},
+    { "source": "kantone", "target": "obligatorisches_referendum", "label": "Ständemehr erforderlich", "properties": { "minimum_kantone": 12 }},
+    { "source": "kantone", "target": "kantonsinitiative", "label": "reichen ein", "properties": {}},
+    { "source": "kantone", "target": "kantonsparlamente", "label": "gliedern sich in", "properties": {}},
+    { "source": "kantone", "target": "kantonsregierungen", "label": "gliedern sich in", "properties": {}},
+    { "source": "kantone", "target": "kantonsgericht", "label": "betreiben", "properties": {}},
+    { "source": "kantone", "target": "gemeinden", "label": "delegieren Aufgaben", "properties": {}},
+    { "source": "kantone", "target": "landsgemeinde", "label": "GL/AR führen durch", "properties": {}},
+    { "source": "gemeinden", "target": "gemeindeexekutive", "label": "wählen", "properties": {}},
+    { "source": "kantonsparlamente", "target": "kantonsregierungen", "label": "kontrollieren", "properties": {}},
+    { "source": "kantonsregierungen", "target": "bundesverwaltung", "label": "Vollzugskooperation", "properties": {}},
+
+    { "source": "svp", "target": "nationalrat", "label": "stellt Abgeordnete", "properties": { "sitze_2023": 62 }},
+    { "source": "sp", "target": "nationalrat", "label": "stellt Abgeordnete", "properties": { "sitze_2023": 41 }},
+    { "source": "fdp", "target": "nationalrat", "label": "stellt Abgeordnete", "properties": { "sitze_2023": 28 }},
+    { "source": "mitte", "target": "nationalrat", "label": "stellt Abgeordnete", "properties": { "sitze_2023": 29 }},
+    { "source": "gruene", "target": "nationalrat", "label": "stellt Abgeordnete", "properties": { "sitze_2023": 23 }},
+    { "source": "glp", "target": "nationalrat", "label": "stellt Abgeordnete", "properties": { "sitze_2023": 10 }},
+    { "source": "mitte", "target": "staenderat", "label": "stellt Abgeordnete", "properties": { "sitze_2023": 15 }},
+    { "source": "fdp", "target": "staenderat", "label": "stellt Abgeordnete", "properties": { "sitze_2023": 12 }},
+    { "source": "sp", "target": "bundesrat", "label": "stellt BR (Zauberformel)", "properties": { "sitze_2024": 2 }},
+    { "source": "fdp", "target": "bundesrat", "label": "stellt BR (Zauberformel)", "properties": { "sitze_2024": 2 }},
+    { "source": "mitte", "target": "bundesrat", "label": "stellt BR (Zauberformel)", "properties": { "sitze_2024": 2 }},
+    { "source": "svp", "target": "bundesrat", "label": "stellt BR (Zauberformel)", "properties": { "sitze_2024": 1 }},
+
+    { "source": "nationalrat", "target": "bundesversammlung", "label": "bildet", "properties": {}},
+    { "source": "staenderat", "target": "bundesversammlung", "label": "bildet", "properties": {}},
+    { "source": "nationalrat", "target": "nationalratskommissionen", "label": "setzt ein", "properties": {}},
+    { "source": "staenderat", "target": "staenderatskommissionen", "label": "setzt ein", "properties": {}},
+    { "source": "parlamentsdienste", "target": "nationalrat", "label": "unterstützt", "properties": {}},
+    { "source": "parlamentsdienste", "target": "staenderat", "label": "unterstützt", "properties": {}},
+
+    { "source": "bundesversammlung", "target": "bundesrat", "label": "wählt (4-jährlich)", "properties": { "wiederwahl": true }},
+    { "source": "bundesversammlung", "target": "bundeskanzlei", "label": "wählt Kanzler/in", "properties": {}},
+    { "source": "bundesversammlung", "target": "bundesgericht", "label": "wählt Bundesrichter/innen", "properties": {}},
+    { "source": "bundesversammlung", "target": "bundesstrafgericht", "label": "wählt", "properties": {}},
+    { "source": "bundesversammlung", "target": "bundesverwaltungsgericht", "label": "wählt", "properties": {}},
+    { "source": "bundesversammlung", "target": "bundespatentgericht", "label": "wählt", "properties": {}},
+    { "source": "bundesversammlung", "target": "efd_finanzkontrolle", "label": "beaufsichtigt", "properties": {}},
+    { "source": "volksinitiative", "target": "bundesversammlung", "label": "vorgelegt an", "properties": {}},
+    { "source": "kantonsinitiative", "target": "bundesversammlung", "label": "überwiesen an", "properties": {}},
+
+    { "source": "bundesrat", "target": "bundespräsident", "label": "wählt intern", "properties": { "amtsdauer_monate": 12 }},
+    { "source": "bundesrat", "target": "eda", "label": "leitet", "properties": {}},
+    { "source": "bundesrat", "target": "edi", "label": "leitet", "properties": {}},
+    { "source": "bundesrat", "target": "ejpd", "label": "leitet", "properties": {}},
+    { "source": "bundesrat", "target": "vbs", "label": "leitet", "properties": {}},
+    { "source": "bundesrat", "target": "efd", "label": "leitet", "properties": {}},
+    { "source": "bundesrat", "target": "wbf", "label": "leitet", "properties": {}},
+    { "source": "bundesrat", "target": "uvek", "label": "leitet", "properties": {}},
+    { "source": "bundesrat", "target": "kantone", "label": "Vollzugskooperation", "properties": {}},
+    { "source": "bundeskanzlei", "target": "bundesrat", "label": "unterstützt", "properties": {}},
+    { "source": "eda", "target": "eu_bilaterale", "label": "verhandelt", "properties": {}},
+    { "source": "eda", "target": "uno", "label": "vertritt CH bei", "properties": {}},
+
+    { "source": "edi", "target": "bundesverwaltung", "label": "Teil von", "properties": {}},
+    { "source": "ejpd", "target": "bundesverwaltung", "label": "Teil von", "properties": {}},
+    { "source": "vbs", "target": "bundesverwaltung", "label": "Teil von", "properties": {}},
+    { "source": "efd", "target": "bundesverwaltung", "label": "Teil von", "properties": {}},
+    { "source": "wbf", "target": "bundesverwaltung", "label": "Teil von", "properties": {}},
+    { "source": "uvek", "target": "bundesverwaltung", "label": "Teil von", "properties": {}},
+
+    { "source": "bundesgericht", "target": "kantonsgericht", "label": "letzte Beschwerdeinstanz gegen", "properties": {}},
+    { "source": "efd_finanzkontrolle", "target": "bundesverwaltung", "label": "prüft", "properties": {}},
+    { "source": "datenschutzbeauftragter", "target": "bundesverwaltung", "label": "beaufsichtigt", "properties": {}},
+    { "source": "medien_zivilgesellschaft", "target": "bundesrat", "label": "kontrolliert öffentlich", "properties": {}},
+    { "source": "medien_zivilgesellschaft", "target": "bundesversammlung", "label": "berichtet über", "properties": {}},
+    { "source": "ombudsmann", "target": "bundesverwaltung", "label": "vermittelt bei", "properties": {}}
+  ]
+}

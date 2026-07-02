@@ -1,0 +1,20 @@
+{
+  "nodes": [
+    { "id": "volk", "label": "Schweizer Volk", "type": "Souveraen" },
+    { "id": "bundesversammlung", "label": "Bundesversammlung", "type": "Legislative" },
+    { "id": "nationalrat", "label": "Nationalrat (200 Sitze)", "type": "Kammer" },
+    { "id": "staenderat", "label": "Staenderat (46 Sitze)", "type": "Kammer" },
+    { "id": "bundesrat", "label": "Bundesrat (7 Mitglieder)", "type": "Exekutive" },
+    { "id": "bundeskanzlei", "label": "Bundeskanzlei", "type": "Stabstelle" },
+    { "id": "bundesgericht", "label": "Bundesgericht", "type": "Judikative" }
+  ],
+  "edges": [
+    { "source": "volk", "target": "nationalrat", "label": "waehlt" },
+    { "source": "volk", "target": "staenderat", "label": "waehlt" },
+    { "source": "nationalrat", "target": "bundesversammlung", "label": "bildet" },
+    { "source": "staenderat", "target": "bundesversammlung", "label": "bildet" },
+    { "source": "bundesversammlung", "target": "bundesrat", "label": "waehlt" },
+    { "source": "bundesversammlung", "target": "bundeskanzlei", "label": "waehlt Kanzler" },
+    { "source": "bundesversammlung", "target": "bundesgericht", "label": "waehlt Richter" }
+  ]
+}

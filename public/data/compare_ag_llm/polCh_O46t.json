@@ -1,0 +1,274 @@
+{
+  "system": "Politisches System der Schweiz",
+  "metadata": {
+    "created": "2026-06-30T11:18:35+02:00",
+    "version": "1.0",
+    "schemaVersion": "1.0",
+    "author": "Antigravity",
+    "description": "Semantisches Modell des politischen Systems der Schweiz fuer Nodges"
+  },
+  "dataModel": {
+    "properties": {
+      "power_index": { "type": "continuous", "range": [0, 100], "unit": "Einflusspunkte" },
+      "level": { "type": "categorical", "values": ["national", "kantonal", "kommunal", "zivilgesellschaft"] },
+      "staff_size": { "type": "continuous", "unit": "Personen" },
+      "founded_year": { "type": "continuous", "unit": "Jahr" },
+      "description": { "type": "categorical" },
+      "importance": { "type": "continuous", "range": [1, 10] }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": { "source": "power_index", "function": "linear", "domain": [0, 100], "range": [1.0, 5.5] }
+      },
+      "Souveraen": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#ffaa00" } },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "sphere" } },
+        "repulsion": { "source": "constant", "function": "constant", "params": { "value": 100 } },
+        "inertia": { "source": "constant", "function": "constant", "params": { "value": 5.0 } }
+      },
+      "Legislative": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#3388ff" } },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "cube" } },
+        "repulsion": { "source": "constant", "function": "constant", "params": { "value": 60 } }
+      },
+      "Exekutive": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#ff3333" } },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "sphere" } },
+        "glow": { "source": "constant", "function": "constant", "params": { "value": 0.8 } },
+        "inertia": { "source": "constant", "function": "constant", "params": { "value": 2.0 } }
+      },
+      "Departement": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#ff6633" } },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "sphere" } },
+        "repulsion": { "source": "constant", "function": "constant", "params": { "value": 45 } }
+      },
+      "Judikative": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#9933ff" } },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "cube" } }
+      },
+      "Demokratieinstrument": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#00cc66" } },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "sphere" } },
+        "glow": { "source": "constant", "function": "constant", "params": { "value": 0.4 } }
+      },
+      "Foederalismus": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#e6b800" } },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "sphere" } }
+      },
+      "Akteure": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#8899a6" } },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "sphere" } }
+      },
+      "Kontrolle": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#cc44aa" } },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "cube" } }
+      },
+      "global_edge": {
+        "thickness": { "source": "importance", "function": "linear", "domain": [1, 10], "range": [0.05, 0.3] },
+        "color": { "source": "importance", "function": "bipolar", "domain": [1, 10], "params": { "positive": "#ff3333", "negative": "#888888" } }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "volk", "type": "Souveraen", "label": "Schweizer Volk",
+        "stateVector": { "power_index": 100, "level": "national", "staff_size": 5500000, "founded_year": 1291, "description": "Der oberste Souveraen der Schweiz mit Stimm- und Wahlrecht auf allen Staatsebenen." }
+      },
+      {
+        "id": "kantone", "type": "Souveraen", "label": "Die 26 Kantone",
+        "stateVector": { "power_index": 80, "level": "kantonal", "staff_size": 26, "founded_year": 1848, "description": "Gliedstaaten des Bundes mit eigenen Verfassungen, Parlamenten und Gerichten." }
+      },
+      {
+        "id": "gemeinden", "type": "Foederalismus", "label": "Gemeinden (ca. 2'131)",
+        "stateVector": { "power_index": 50, "level": "kommunal", "staff_size": 2131, "description": "Kleinste politische Einheit mit Autonomie in Schul-, Sozial- und Bauwesen." }
+      },
+      {
+        "id": "fuenfte_schweiz", "type": "Souveraen", "label": "Fuenfte Schweiz",
+        "stateVector": { "power_index": 40, "level": "national", "staff_size": 220000, "description": "Im Ausland lebende Schweizer mit Stimm- und Wahlrecht." }
+      },
+      {
+        "id": "nationalrat", "type": "Legislative", "label": "Nationalrat (200 Sitze)",
+        "stateVector": { "power_index": 85, "level": "national", "staff_size": 200, "founded_year": 1848, "description": "Grosse Kammer, Volksvertretung, gewaehlt im Proporzverfahren." }
+      },
+      {
+        "id": "staenderat", "type": "Legislative", "label": "Staenderat (46 Sitze)",
+        "stateVector": { "power_index": 85, "level": "national", "staff_size": 46, "founded_year": 1848, "description": "Kleine Kammer, Kantonsvertretung. 2 Sitze pro Vollkanton, 1 pro Halbkanton." }
+      },
+      {
+        "id": "bundesversammlung", "type": "Legislative", "label": "Vereinigte Bundesversammlung",
+        "stateVector": { "power_index": 90, "level": "national", "staff_size": 246, "founded_year": 1848, "description": "Gemeinsame Sitzung beider Raete. Waehlt Bundesrat, Bundesrichter und General." }
+      },
+      {
+        "id": "parlamentsdienste", "type": "Legislative", "label": "Parlamentsdienste",
+        "stateVector": { "power_index": 35, "level": "national", "staff_size": 350, "description": "Administrative und wissenschaftliche Unterstuetzung der Bundesversammlung." }
+      },
+      {
+        "id": "bundesrat", "type": "Exekutive", "label": "Bundesrat (7 Mitglieder)",
+        "stateVector": { "power_index": 95, "level": "national", "staff_size": 7, "founded_year": 1848, "description": "Landesregierung nach Kollegialitaetsprinzip mit jaehrlich wechselndem Praesidium." }
+      },
+      {
+        "id": "bundespraesidium", "type": "Exekutive", "label": "Bundespraesidium (Primus inter Pares)",
+        "stateVector": { "power_index": 60, "level": "national", "staff_size": 1, "description": "Jaehrlich rotierendes Amt ohne Sondervollmachten, leitet Bundesratssitzungen." }
+      },
+      {
+        "id": "bundeskanzlei", "type": "Exekutive", "label": "Bundeskanzlei",
+        "stateVector": { "power_index": 65, "level": "national", "staff_size": 250, "founded_year": 1803, "description": "Stabstelle des Bundesrats, leitet vom Bundeskanzler." }
+      },
+      {
+        "id": "dep_eda", "type": "Departement", "label": "EDA (Auswaertiges)",
+        "stateVector": { "power_index": 75, "level": "national", "staff_size": 5800, "description": "Aussenpolitik, Voelkerrecht und internationale Zusammenarbeit." }
+      },
+      {
+        "id": "dep_edi", "type": "Departement", "label": "EDI (Inneres)",
+        "stateVector": { "power_index": 75, "level": "national", "staff_size": 2500, "description": "Gesundheit, Sozialversicherungen, Kultur und Gleichstellung." }
+      },
+      {
+        "id": "dep_ejpd", "type": "Departement", "label": "EJPD (Justiz & Polizei)",
+        "stateVector": { "power_index": 75, "level": "national", "staff_size": 2800, "description": "Migration, Asylrecht, Strafverfolgung und Datenschutz." }
+      },
+      {
+        "id": "dep_vbs", "type": "Departement", "label": "VBS (Verteidigung & Sport)",
+        "stateVector": { "power_index": 70, "level": "national", "staff_size": 12000, "description": "Armee, Nachrichtendienst, Bevoelkerungsschutz und Sport." }
+      },
+      {
+        "id": "dep_efd", "type": "Departement", "label": "EFD (Finanzen)",
+        "stateVector": { "power_index": 80, "level": "national", "staff_size": 9000, "description": "Bundeshaushalt, Steuerpolitik, Zoll und Informatik." }
+      },
+      {
+        "id": "dep_wbf", "type": "Departement", "label": "WBF (Wirtschaft & Bildung)",
+        "stateVector": { "power_index": 75, "level": "national", "staff_size": 2200, "description": "Agrarpolitik, Arbeitsmarkt, Hochschulen und Forschung." }
+      },
+      {
+        "id": "dep_uvek", "type": "Departement", "label": "UVEK (Umwelt & Verkehr)",
+        "stateVector": { "power_index": 80, "level": "national", "staff_size": 2800, "description": "Infrastruktur, Energie, Telekommunikation und Umweltschutz." }
+      },
+      {
+        "id": "bundesgericht", "type": "Judikative", "label": "Bundesgericht (Lausanne)",
+        "stateVector": { "power_index": 85, "level": "national", "staff_size": 38, "founded_year": 1848, "description": "Oberstes Gericht, sichert einheitliche Rechtsanwendung." }
+      },
+      {
+        "id": "bstrafgericht", "type": "Judikative", "label": "Bundesstrafgericht (Bellinzona)",
+        "stateVector": { "power_index": 60, "level": "national", "staff_size": 80, "founded_year": 2004, "description": "Erstinstanzlich fuer Bundesstrafsachen." }
+      },
+      {
+        "id": "bverwgericht", "type": "Judikative", "label": "Bundesverwaltungsgericht (St. Gallen)",
+        "stateVector": { "power_index": 60, "level": "national", "staff_size": 350, "founded_year": 2007, "description": "Beurteilt Beschwerden gegen Bundesverfuegungen." }
+      },
+      {
+        "id": "bpatentgericht", "type": "Judikative", "label": "Bundespatentgericht (St. Gallen)",
+        "stateVector": { "power_index": 40, "level": "national", "staff_size": 20, "founded_year": 2012, "description": "Zustaendig fuer patentrechtliche Streitigkeiten." }
+      },
+      {
+        "id": "volksinitiative", "type": "Demokratieinstrument", "label": "Volksinitiative",
+        "stateVector": { "power_index": 70, "level": "national", "description": "100'000 Unterschriften fuer Verfassungsaenderung per Volksabstimmung." }
+      },
+      {
+        "id": "fak_referendum", "type": "Demokratieinstrument", "label": "Fakultatives Referendum",
+        "stateVector": { "power_index": 70, "level": "national", "description": "50'000 Unterschriften oder 8 Kantone erzwingen Abstimmung ueber Bundesgesetz." }
+      },
+      {
+        "id": "obl_referendum", "type": "Demokratieinstrument", "label": "Obligatorisches Referendum",
+        "stateVector": { "power_index": 75, "level": "national", "description": "Zwingende Abstimmung bei Verfassungsaenderungen und Beitritt zu int. Organisationen." }
+      },
+      {
+        "id": "standesinitiative", "type": "Demokratieinstrument", "label": "Standesinitiative",
+        "stateVector": { "power_index": 50, "level": "kantonal", "description": "Recht eines Kantons, der Bundesversammlung einen Gesetzesentwurf vorzuschlagen." }
+      },
+      {
+        "id": "kantonsreferendum", "type": "Demokratieinstrument", "label": "Kantonsreferendum",
+        "stateVector": { "power_index": 45, "level": "kantonal", "description": "8 Kantone koennen Volksabstimmung ueber ein Bundesgesetz verlangen." }
+      },
+      {
+        "id": "vernehmlassung", "type": "Demokratieinstrument", "label": "Vernehmlassungsverfahren",
+        "stateVector": { "power_index": 55, "level": "national", "description": "Konsultationsverfahren bei dem Kantone, Parteien und Verbaende zu Gesetzesentwuerfen Stellung nehmen." }
+      },
+      {
+        "id": "efk", "type": "Kontrolle", "label": "Eidg. Finanzkontrolle (EFK)",
+        "stateVector": { "power_index": 55, "level": "national", "staff_size": 120, "founded_year": 1877, "description": "Oberstes Finanzaufsichtsorgan des Bundes, prueft die Bundesfinanzen." }
+      },
+      {
+        "id": "gpk", "type": "Kontrolle", "label": "Geschaeftspruefungskommissionen (GPK)",
+        "stateVector": { "power_index": 60, "level": "national", "staff_size": 50, "description": "Parlamentarische Oberaufsicht ueber Bundesrat und Bundesverwaltung." }
+      },
+      {
+        "id": "fk", "type": "Kontrolle", "label": "Finanzkommissionen (FK)",
+        "stateVector": { "power_index": 55, "level": "national", "staff_size": 50, "description": "Parlamentarische Kontrolle ueber den Bundeshaushalt und die Kreditvergabe." }
+      },
+      {
+        "id": "snb", "type": "Akteure", "label": "Schweizerische Nationalbank (SNB)",
+        "stateVector": { "power_index": 75, "level": "national", "staff_size": 900, "founded_year": 1907, "description": "Unabhaengige Zentralbank, verantwortlich fuer Geld- und Waehrungspolitik." }
+      },
+      {
+        "id": "parteien", "type": "Akteure", "label": "Politische Parteien",
+        "stateVector": { "power_index": 70, "level": "zivilgesellschaft", "description": "SVP, SP, FDP, Mitte, Gruene, GLP pregen den politischen Diskurs." }
+      },
+      {
+        "id": "lobbyisten", "type": "Akteure", "label": "Interessenverbaende & Lobbyisten",
+        "stateVector": { "power_index": 60, "level": "zivilgesellschaft", "description": "Wirtschaftsverbaende, Gewerkschaften und NGOs beeinflussen Gesetzgebung." }
+      },
+      {
+        "id": "medien", "type": "Akteure", "label": "Medien (Vierte Gewalt)",
+        "stateVector": { "power_index": 65, "level": "zivilgesellschaft", "description": "SRG SSR und private Verlage informieren die Oeffentlichkeit." }
+      },
+      {
+        "id": "ngo", "type": "Akteure", "label": "Zivilgesellschaft & NGOs",
+        "stateVector": { "power_index": 45, "level": "zivilgesellschaft", "description": "Hilfswerke, Umweltorganisationen und Menschenrechtsgruppen." }
+      }
+    ],
+    "relationships": [
+      { "id": "r1", "type": "demokratisch", "source": "volk", "target": "nationalrat", "label": "waehlt (Proporz)", "importance": 10 },
+      { "id": "r2", "type": "demokratisch", "source": "volk", "target": "staenderat", "label": "waehlt (Majorz)", "importance": 10 },
+      { "id": "r3", "type": "organisatorisch", "source": "kantone", "target": "staenderat", "label": "entsenden je 2 Vertreter", "importance": 8 },
+      { "id": "r4", "type": "organisatorisch", "source": "nationalrat", "target": "bundesversammlung", "label": "bildet", "importance": 9 },
+      { "id": "r5", "type": "organisatorisch", "source": "staenderat", "target": "bundesversammlung", "label": "bildet", "importance": 9 },
+      { "id": "r6", "type": "demokratisch", "source": "bundesversammlung", "target": "bundesrat", "label": "waehlt Bundesraete", "importance": 9 },
+      { "id": "r7", "type": "demokratisch", "source": "bundesversammlung", "target": "bundesgericht", "label": "waehlt Bundesrichter", "importance": 8 },
+      { "id": "r8", "type": "demokratisch", "source": "bundesversammlung", "target": "bundeskanzlei", "label": "waehlt Bundeskanzler", "importance": 7 },
+      { "id": "r9", "type": "organisatorisch", "source": "bundesrat", "target": "dep_eda", "label": "leitet", "importance": 8 },
+      { "id": "r10", "type": "organisatorisch", "source": "bundesrat", "target": "dep_edi", "label": "leitet", "importance": 8 },
+      { "id": "r11", "type": "organisatorisch", "source": "bundesrat", "target": "dep_ejpd", "label": "leitet", "importance": 8 },
+      { "id": "r12", "type": "organisatorisch", "source": "bundesrat", "target": "dep_vbs", "label": "leitet", "importance": 8 },
+      { "id": "r13", "type": "organisatorisch", "source": "bundesrat", "target": "dep_efd", "label": "leitet", "importance": 8 },
+      { "id": "r14", "type": "organisatorisch", "source": "bundesrat", "target": "dep_wbf", "label": "leitet", "importance": 8 },
+      { "id": "r15", "type": "organisatorisch", "source": "bundesrat", "target": "dep_uvek", "label": "leitet", "importance": 8 },
+      { "id": "r16", "type": "organisatorisch", "source": "bundeskanzlei", "target": "bundesrat", "label": "unterstuetzt", "importance": 7 },
+      { "id": "r17", "type": "organisatorisch", "source": "bundesrat", "target": "bundespraesidium", "label": "rotiert jaehrlich", "importance": 6 },
+      { "id": "r18", "type": "organisatorisch", "source": "parlamentsdienste", "target": "bundesversammlung", "label": "unterstuetzt administrativ", "importance": 5 },
+      { "id": "r19", "type": "demokratisch", "source": "volk", "target": "volksinitiative", "label": "startet (100k Unterschriften)", "importance": 9 },
+      { "id": "r20", "type": "demokratisch", "source": "volk", "target": "fak_referendum", "label": "erzwingt (50k Unterschriften)", "importance": 8 },
+      { "id": "r21", "type": "demokratisch", "source": "kantone", "target": "kantonsreferendum", "label": "erzwingen (8 Kantone)", "importance": 6 },
+      { "id": "r22", "type": "organisatorisch", "source": "kantone", "target": "standesinitiative", "label": "reichen ein", "importance": 5 },
+      { "id": "r23", "type": "demokratisch", "source": "volksinitiative", "target": "volk", "label": "Volksabstimmung notwendig", "importance": 9 },
+      { "id": "r24", "type": "kontrollierend", "source": "fak_referendum", "target": "bundesversammlung", "label": "stoppt / erzwingt Abstimmung", "importance": 8 },
+      { "id": "r25", "type": "demokratisch", "source": "obl_referendum", "target": "volk", "label": "zwingende Volksabstimmung", "importance": 9 },
+      { "id": "r26", "type": "organisatorisch", "source": "bundesversammlung", "target": "obl_referendum", "label": "loest aus bei Verfassungsaenderung", "importance": 8 },
+      { "id": "r27", "type": "beratend", "source": "vernehmlassung", "target": "bundesrat", "label": "Stellungnahmen fliessen ein", "importance": 7 },
+      { "id": "r28", "type": "organisatorisch", "source": "bundesrat", "target": "vernehmlassung", "label": "eroeffnet Verfahren", "importance": 7 },
+      { "id": "r29", "type": "kontrollierend", "source": "bundesgericht", "target": "kantone", "label": "prueft kantonale Gesetze", "importance": 8 },
+      { "id": "r30", "type": "kontrollierend", "source": "bundesgericht", "target": "bstrafgericht", "label": "Beschwerdeinstanz", "importance": 7 },
+      { "id": "r31", "type": "kontrollierend", "source": "bundesgericht", "target": "bverwgericht", "label": "Beschwerdeinstanz", "importance": 7 },
+      { "id": "r32", "type": "kontrollierend", "source": "bundesgericht", "target": "bpatentgericht", "label": "Beschwerdeinstanz", "importance": 5 },
+      { "id": "r33", "type": "kontrollierend", "source": "gpk", "target": "bundesrat", "label": "parlamentarische Oberaufsicht", "importance": 8 },
+      { "id": "r34", "type": "kontrollierend", "source": "fk", "target": "dep_efd", "label": "Budgetkontrolle", "importance": 7 },
+      { "id": "r35", "type": "kontrollierend", "source": "efk", "target": "bundesrat", "label": "prueft Bundesfinanzen", "importance": 7 },
+      { "id": "r36", "type": "organisatorisch", "source": "gpk", "target": "bundesversammlung", "label": "Kommission von", "importance": 6 },
+      { "id": "r37", "type": "organisatorisch", "source": "fk", "target": "bundesversammlung", "label": "Kommission von", "importance": 6 },
+      { "id": "r38", "type": "organisatorisch", "source": "kantone", "target": "gemeinden", "label": "gliedern sich in", "importance": 7 },
+      { "id": "r39", "type": "demokratisch", "source": "volk", "target": "gemeinden", "label": "waehlt Gemeindebehoerden", "importance": 7 },
+      { "id": "r40", "type": "organisatorisch", "source": "parteien", "target": "nationalrat", "label": "stellen Abgeordnete", "importance": 8 },
+      { "id": "r41", "type": "organisatorisch", "source": "parteien", "target": "staenderat", "label": "stellen Abgeordnete", "importance": 7 },
+      { "id": "r42", "type": "organisatorisch", "source": "parteien", "target": "bundesrat", "label": "Zauberformel", "importance": 8 },
+      { "id": "r43", "type": "beratend", "source": "lobbyisten", "target": "bundesversammlung", "label": "Einfluss auf Gesetzgebung", "importance": 6 },
+      { "id": "r44", "type": "beratend", "source": "lobbyisten", "target": "vernehmlassung", "label": "nehmen Stellung", "importance": 6 },
+      { "id": "r45", "type": "beratend", "source": "medien", "target": "volk", "label": "informieren und praegen Meinung", "importance": 8 },
+      { "id": "r46", "type": "kontrollierend", "source": "medien", "target": "bundesrat", "label": "beobachten Regierungsarbeit", "importance": 7 },
+      { "id": "r47", "type": "organisatorisch", "source": "snb", "target": "dep_efd", "label": "koordiniert Geldpolitik", "importance": 7 },
+      { "id": "r48", "type": "demokratisch", "source": "fuenfte_schweiz", "target": "nationalrat", "label": "waehlen mit", "importance": 6 },
+      { "id": "r49", "type": "beratend", "source": "ngo", "target": "vernehmlassung", "label": "nehmen Stellung", "importance": 5 },
+      { "id": "r50", "type": "beratend", "source": "ngo", "target": "volk", "label": "sensibilisieren Oeffentlichkeit", "importance": 5 }
+    ]
+  }
+}
