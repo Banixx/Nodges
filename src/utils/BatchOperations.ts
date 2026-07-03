@@ -234,7 +234,7 @@ export class BatchOperations {
                 previousGroupId: node.groupId
             });
 
-            this.nodeGroupManager.addNodeToGroup(node, groupId);
+            this.nodeGroupManager.addNodeToGroup(nodeObject.userData.id, groupId);
         });
 
         this.addToHistory(operation);
@@ -268,7 +268,7 @@ export class BatchOperations {
                 previousGroupId: node.groupId
             });
 
-            this.nodeGroupManager.removeNodeFromGroup(node);
+            this.nodeGroupManager.removeNodeFromGroup(nodeObject.userData.id);
         });
 
         this.addToHistory(operation);

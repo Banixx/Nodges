@@ -38,7 +38,7 @@ export class SuggestionUI {
 
         this.container.innerHTML = `
             <div class="mapping-header" style="cursor: grab; display: flex; justify-content: space-between; align-items: center;">
-                <span>Vorschläge (Mappings)</span>
+                <span>Suggestion Mappings</span>
                 <div class="panel-toggle" style="cursor: pointer; color: var(--text-muted); font-size: 12px; padding: 2px 6px;">▼</div>
             </div>
             <div class="panel-content" style="padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">

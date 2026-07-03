@@ -82,6 +82,31 @@ export class InfoPanelUI {
                 this.stateManager.setSelectedObject(foundObject);
             }
         });
+
+        // Add listener for group create button
+        this.infoPanelContent.addEventListener('click', (event) => {
+            const target = event.target as HTMLElement;
+            if (target.id === 'createGroupBtn') {
+                const currentSelection = this.stateManager.state.selectedObjects;
+                if (!currentSelection || currentSelection.size === 0) return;
+                
+                if (this.app.batchOperations && this.app.nodeGroupManager) {
+                    const groupId = this.app.nodeGroupManager.createGroup();
+                    this.app.batchOperations.addToGroup(groupId);
+                    
+                    // Feedback UI
+                    const originalText = target.textContent;
+                    target.textContent = 'Gruppe erstellt!';
+                    target.style.backgroundColor = '#4CAF50';
+                    setTimeout(() => {
+                        if (target) {
+                            target.textContent = originalText;
+                            target.style.backgroundColor = '';
+                        }
+                    }, 2000);
+                }
+            }
+        });
     }
 
     private showInfoPanelFor(object: any) {
@@ -195,14 +220,14 @@ export class InfoPanelUI {
                     ${rows}
                 </tbody>
             </table>
-            <button class="action-button" style="margin-top: 15px; font-size: 11px;">Gruppe erstellen (Beta)</button>
+            <button id="createGroupBtn" class="action-button" style="margin-top: 15px; font-size: 11px;">Gruppe erstellen</button>
         `;
 
         this.infoPanelContent.innerHTML = content;
 
         const titleEl = document.getElementById('infoPanelTitle');
         if (titleEl) {
-            titleEl.textContent = 'Mehrfachauswahl';
+            titleEl.textContent = 'Multiselect';
         }
 
         this.infoPanel.classList.remove('hidden');

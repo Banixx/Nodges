@@ -25,7 +25,7 @@ import { NeighborhoodHighlighter } from './utils/NeighborhoodHighlighter';
 import { KeyboardShortcuts } from './utils/KeyboardShortcuts';
 import { BatchOperations } from './utils/BatchOperations';
 import { NodeGroupManager } from './utils/NodeGroupManager';
-import { LayoutGUI } from './ui/LayoutGUI';
+
 import { HighlightManager } from './effects/HighlightManager';
 import { GlowEffect } from './effects/GlowEffect';
 import { EdgeObjectsManager } from './core/EdgeObjectsManager';
@@ -77,7 +77,7 @@ export class App {
     public keyboardShortcuts!: KeyboardShortcuts;
     public batchOperations!: BatchOperations;
     public nodeGroupManager!: NodeGroupManager;
-    public layoutGUI!: LayoutGUI;
+
     public highlightManager!: HighlightManager;
     public glowEffect!: GlowEffect;
     public nodeManager: NodeManager;
@@ -488,9 +488,37 @@ export class App {
     }
 
     async initGUI() {
-        const layoutContent = document.getElementById('layoutPanelContent');
-        this.layoutGUI = new LayoutGUI(this, layoutContent || document.body);
         this.uiManager.init();
+
+        // Layout-Callback fuer MappingUI bereitstellen
+        if (this.uiManager.mappingUI) {
+            this.uiManager.mappingUI.setLayoutCallback(
+                async (algorithm: string, params: Record<string, number>) => {
+                    if (this.layoutManager && this.currentEntities && this.currentRelationships) {
+                        const success = await this.layoutManager.applyLayout(
+                            algorithm,
+                            this.currentEntities,
+                            this.currentRelationships,
+                            this.currentGraphData?.fields || [],
+                            params
+                        );
+                        if (success) {
+                            if (this.stateManager) {
+                                this.stateManager.setGraphData(this.currentEntities, this.currentRelationships);
+                            }
+                            if (this.updateNodePositions) {
+                                this.updateNodePositions();
+                            }
+                        }
+                    }
+                },
+                () => {
+                    if (this.layoutManager) {
+                        this.layoutManager.stopAnimation();
+                    }
+                }
+            );
+        }
 
         try {
             this.minimapUI = new MinimapUI('minimapContainer');

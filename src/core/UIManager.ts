@@ -5,7 +5,6 @@
 import type { App } from '../App';
 import { IStateManager } from './interfaces';
 import type { State } from './StateManager';
-import { VisualMappingPanel } from '../ui/VisualMappingPanel';
 import { EnvironmentPanel } from '../ui/EnvironmentPanel';
 import { ViewPanel } from '../ui/ViewPanel';
 import { StatsUI } from '../ui/StatsUI';
@@ -30,7 +29,6 @@ interface Bounds {
 export class UIManager {
     private app: App;
     private stateManager: IStateManager;
-    private visualMappingPanel: VisualMappingPanel;
     public mappingUI!: MappingUI;
     private legendPanel: LegendPanel;
 
@@ -55,15 +53,6 @@ export class UIManager {
 
         // Initialize new ViewPanel for the 'Ansicht' tab (self-registers with StateManager)
         new ViewPanel('viewPanelContent', this.stateManager);
-
-        // Initialize Visual Mapping panel (now in its own tab)
-        const vmContent = document.getElementById('visualMappingContainer');
-        if (vmContent) {
-            this.visualMappingPanel = new VisualMappingPanel('visualMappingContainer');
-        } else {
-            console.warn('visualMappingContainer not found');
-            this.visualMappingPanel = null as any;
-        }
 
         // Initialize new interactive Mapping panel (floating overlay like minimap)
         const mappingContent = document.getElementById('mappingPanelContainer');
@@ -266,16 +255,6 @@ export class UIManager {
 
     updateVisualMappings(mappings: VisualMappings) {
         const availableAttributes = this.getAvailableAttributes();
-
-        if (this.visualMappingPanel) {
-            this.visualMappingPanel.bind(mappings, availableAttributes, (newMappings) => {
-                if (this.app.updateVisualMappings) {
-                    this.app.updateVisualMappings(newMappings);
-                } else {
-                    console.warn('App does not implement updateVisualMappings');
-                }
-            });
-        }
 
         if (this.mappingUI) {
             const dataModel = (this.app as any).currentGraphData?.dataModel || null;

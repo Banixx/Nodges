@@ -30,6 +30,81 @@ export class MappingUI {
     private userExpandedAttributes = new Set<string>();
     private userCollapsedAttributes = new Set<string>();
 
+    // --- Layout-Engine State ---
+    private layoutCallback: ((algorithm: string, params: Record<string, number>) => Promise<void>) | null = null;
+    private layoutStopCallback: (() => void) | null = null;
+    private layoutEnabled = false;
+    private layoutExpanded = false;
+    private selectedAlgorithm = 'force-directed';
+    private layoutCurrentParams: Record<string, number> = {};
+    private layoutParameters: Record<string, Record<string, { min: number; max: number; default: number; step: number }>> = {
+        'force-directed': {
+            maxIterations: { min: 100, max: 2000, default: 500, step: 50 },
+            repulsionStrength: { min: 100, max: 5000, default: 1000, step: 100 },
+            attractionStrength: { min: 0.01, max: 1, default: 0.1, step: 0.01 },
+            damping: { min: 0.1, max: 1, default: 0.9, step: 0.05 }
+        },
+        'fruchterman-reingold': {
+            maxIterations: { min: 100, max: 1000, default: 500, step: 50 },
+            area: { min: 100, max: 1000, default: 400, step: 50 },
+            temperature: { min: 1, max: 50, default: 10, step: 1 }
+        },
+        'spring-embedder': {
+            maxIterations: { min: 100, max: 2000, default: 1000, step: 100 },
+            springConstant: { min: 0.01, max: 1, default: 0.1, step: 0.01 },
+            repulsionConstant: { min: 100, max: 5000, default: 1000, step: 100 },
+            damping: { min: 0.1, max: 1, default: 0.95, step: 0.05 },
+            naturalLength: { min: 0.5, max: 10, default: 2, step: 0.5 }
+        },
+        'hierarchical': {
+            levelHeight: { min: 1, max: 10, default: 3, step: 0.5 },
+            nodeSpacing: { min: 0.5, max: 5, default: 2, step: 0.1 }
+        },
+        'tree': {
+            levelHeight: { min: 1, max: 10, default: 3, step: 0.5 },
+            nodeSpacing: { min: 0.5, max: 5, default: 2, step: 0.1 }
+        },
+        'circular': {
+            radius: { min: 5, max: 50, default: 10, step: 1 },
+            height: { min: -10, max: 10, default: 0, step: 0.5 }
+        },
+        'grid': {
+            spacing: { min: 0.5, max: 10, default: 2, step: 0.1 }
+        },
+        'random': {
+            minBound: { min: -50, max: 0, default: -10, step: 1 },
+            maxBound: { min: 0, max: 50, default: 10, step: 1 }
+        }
+    };
+    private layoutAlgorithmNames: Record<string, string> = {
+        'force-directed': 'Force-Directed',
+        'fruchterman-reingold': 'Fruchterman-Reingold',
+        'spring-embedder': 'Spring-Embedder',
+        'hierarchical': 'Hierarchisch',
+        'tree': 'Baum',
+        'circular': 'Kreisfoermig',
+        'grid': 'Raster',
+        'random': 'Zufaellig'
+    };
+    private layoutParamNames: Record<string, string> = {
+        maxIterations: 'Max. Iterationen',
+        repulsionStrength: 'Abstossungskraft',
+        attractionStrength: 'Anziehungskraft',
+        damping: 'Daempfung',
+        area: 'Flaeche',
+        temperature: 'Temperatur',
+        springConstant: 'Federkonstante',
+        repulsionConstant: 'Abstossungskonstante',
+        naturalLength: 'Natuerliche Laenge',
+        levelHeight: 'Ebenen-Hoehe',
+        nodeSpacing: 'Knoten-Abstand',
+        radius: 'Radius',
+        height: 'Hoehe',
+        spacing: 'Abstand',
+        minBound: 'Min. Grenze',
+        maxBound: 'Max. Grenze'
+    };
+
     private getNestedValue(obj: any, path: string): any {
         const formatVal = getEntityAttributeValue(obj, path);
         if (formatVal !== undefined) return formatVal;
@@ -1430,8 +1505,279 @@ export class MappingUI {
 
                 this.rightColumn.appendChild(item);
             });
+
+        // Layout-Engine-Sektion nach den Visualisierungs-Kacheln rendern (nur bei Entities)
+        if (isEntity) {
+            this.renderLayoutEngineSection();
+        }
+
         // Draw active curves after browser layout pass
         requestAnimationFrame(() => this.drawCurves());
+    }
+
+    /** Setzt den Callback fuer Layout-Anwendung. Wird von App.ts aufgerufen. */
+    public setLayoutCallback(
+        onApply: (algorithm: string, params: Record<string, number>) => Promise<void>,
+        onStop: () => void
+    ) {
+        this.layoutCallback = onApply;
+        this.layoutStopCallback = onStop;
+    }
+
+    /** Setzt den Layout-Enabled-State von aussen (z.B. StateManager). */
+    public setLayoutEnabled(enabled: boolean) {
+        this.layoutEnabled = enabled;
+    }
+
+    /** Rendert die Layout-Engine-Steuerung als Sektion in der rechten Spalte. */
+    private renderLayoutEngineSection() {
+        const section = document.createElement('div');
+        section.className = 'layout-engine-section';
+        section.style.cssText = `
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        `;
+
+        // --- Header: Toggle + Label + Apply Button ---
+        const header = document.createElement('div');
+        header.style.cssText = `
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        `;
+        header.onmouseover = () => header.style.background = 'rgba(255, 255, 255, 0.06)';
+        header.onmouseout = () => header.style.background = 'rgba(255, 255, 255, 0.03)';
+
+        // Toggle Switch
+        const toggle = document.createElement('input');
+        toggle.type = 'checkbox';
+        toggle.checked = this.layoutEnabled;
+        toggle.style.cssText = `
+            appearance: none; width: 28px; height: 14px;
+            background: ${this.layoutEnabled ? 'rgba(255, 165, 0, 0.6)' : 'rgba(255, 255, 255, 0.15)'};
+            border-radius: 7px; position: relative; cursor: pointer;
+            transition: background 0.2s ease; flex-shrink: 0;
+        `;
+        // Thumb via box-shadow trick
+        const updateToggleStyle = () => {
+            toggle.style.background = toggle.checked ? 'rgba(255, 165, 0, 0.6)' : 'rgba(255, 255, 255, 0.15)';
+            toggle.style.boxShadow = toggle.checked
+                ? 'inset 16px 0 0 -4px rgba(255, 165, 0, 1)'
+                : 'inset -16px 0 0 -4px rgba(255, 255, 255, 0.5)';
+        };
+        updateToggleStyle();
+        toggle.addEventListener('change', (e) => {
+            e.stopPropagation();
+            this.layoutEnabled = toggle.checked;
+            updateToggleStyle();
+            updateControlsState();
+            // Sync with StateManager via global app
+            const app = typeof window !== 'undefined' ? (window as any).app : null;
+            if (app?.stateManager) {
+                app.stateManager.update({ layoutEnabled: this.layoutEnabled });
+            }
+        });
+        toggle.addEventListener('click', (e) => e.stopPropagation());
+
+        // Label
+        const label = document.createElement('span');
+        label.textContent = '⚙ Layout-Engine';
+        label.style.cssText = `
+            flex: 1; font-size: 12px; font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+        `;
+
+        // Expand Arrow
+        const arrow = document.createElement('span');
+        arrow.textContent = this.layoutExpanded ? '▾' : '▸';
+        arrow.style.cssText = `
+            font-size: 10px; color: rgba(255, 255, 255, 0.4);
+            transition: transform 0.2s ease;
+        `;
+
+        // Apply Button (compact)
+        const applyBtn = document.createElement('button');
+        applyBtn.textContent = '▶';
+        applyBtn.title = 'Layout anwenden';
+        applyBtn.style.cssText = `
+            width: 24px; height: 24px; border: none;
+            background: rgba(255, 165, 0, 0.2); color: #ffa500;
+            border-radius: 4px; cursor: pointer; font-size: 10px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; flex-shrink: 0;
+        `;
+        applyBtn.onmouseover = () => { if (this.layoutEnabled) applyBtn.style.background = 'rgba(255, 165, 0, 0.4)'; };
+        applyBtn.onmouseout = () => { applyBtn.style.background = 'rgba(255, 165, 0, 0.2)'; };
+        applyBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (!this.layoutEnabled || !this.layoutCallback) return;
+            applyBtn.textContent = '⏳';
+            applyBtn.style.pointerEvents = 'none';
+            try {
+                await this.layoutCallback(this.selectedAlgorithm, { ...this.layoutCurrentParams });
+            } finally {
+                applyBtn.textContent = '▶';
+                applyBtn.style.pointerEvents = 'auto';
+            }
+        });
+
+        // Stop Button
+        const stopBtn = document.createElement('button');
+        stopBtn.textContent = '■';
+        stopBtn.title = 'Layout stoppen';
+        stopBtn.style.cssText = `
+            width: 24px; height: 24px; border: none;
+            background: rgba(255, 80, 80, 0.15); color: #ff6666;
+            border-radius: 4px; cursor: pointer; font-size: 8px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; flex-shrink: 0;
+        `;
+        stopBtn.onmouseover = () => { if (this.layoutEnabled) stopBtn.style.background = 'rgba(255, 80, 80, 0.3)'; };
+        stopBtn.onmouseout = () => { stopBtn.style.background = 'rgba(255, 80, 80, 0.15)'; };
+        stopBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (this.layoutStopCallback) this.layoutStopCallback();
+        });
+
+        header.appendChild(toggle);
+        header.appendChild(label);
+        header.appendChild(arrow);
+        header.appendChild(applyBtn);
+        header.appendChild(stopBtn);
+
+        // --- Expandable Details ---
+        const details = document.createElement('div');
+        details.style.cssText = `
+            display: ${this.layoutExpanded ? 'block' : 'none'};
+            padding: 8px;
+            margin-top: 4px;
+        `;
+
+        // Algorithm Dropdown
+        const algoGroup = document.createElement('div');
+        algoGroup.style.cssText = 'margin-bottom: 10px;';
+        const algoLabel = document.createElement('label');
+        algoLabel.textContent = 'Algorithmus';
+        algoLabel.style.cssText = 'display: block; font-size: 10px; color: rgba(255,255,255,0.5); margin-bottom: 4px;';
+        const algoSelect = document.createElement('select');
+        algoSelect.style.cssText = `
+            width: 100%; padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e0e0e0; border-radius: 4px; font-size: 11px;
+        `;
+        Object.entries(this.layoutAlgorithmNames).forEach(([key, name]) => {
+            const opt = document.createElement('option');
+            opt.value = key;
+            opt.textContent = name;
+            opt.selected = key === this.selectedAlgorithm;
+            algoSelect.appendChild(opt);
+        });
+        algoSelect.addEventListener('change', () => {
+            this.selectedAlgorithm = algoSelect.value;
+            this.initLayoutParams();
+            renderParams();
+        });
+        algoGroup.appendChild(algoLabel);
+        algoGroup.appendChild(algoSelect);
+        details.appendChild(algoGroup);
+
+        // Parameter Container
+        const paramContainer = document.createElement('div');
+        details.appendChild(paramContainer);
+
+        const renderParams = () => {
+            paramContainer.innerHTML = '';
+            const params = this.layoutParameters[this.selectedAlgorithm] || {};
+            Object.entries(params).forEach(([paramName, paramDef]) => {
+                const group = document.createElement('div');
+                group.style.cssText = 'margin-bottom: 6px;';
+
+                const labelRow = document.createElement('div');
+                labelRow.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;';
+
+                const pLabel = document.createElement('label');
+                pLabel.textContent = this.layoutParamNames[paramName] || paramName;
+                pLabel.style.cssText = 'font-size: 10px; color: rgba(255,255,255,0.5);';
+
+                const pValue = document.createElement('span');
+                pValue.style.cssText = 'font-size: 10px; color: rgba(255,255,255,0.7); font-variant-numeric: tabular-nums;';
+                const currentVal = this.layoutCurrentParams[paramName] !== undefined
+                    ? this.layoutCurrentParams[paramName]
+                    : paramDef.default;
+                pValue.textContent = String(currentVal);
+
+                labelRow.appendChild(pLabel);
+                labelRow.appendChild(pValue);
+
+                const slider = document.createElement('input');
+                slider.type = 'range';
+                slider.min = String(paramDef.min);
+                slider.max = String(paramDef.max);
+                slider.step = String(paramDef.step);
+                slider.value = String(currentVal);
+                slider.style.cssText = 'width: 100%;';
+                slider.addEventListener('input', () => {
+                    const val = parseFloat(slider.value);
+                    this.layoutCurrentParams[paramName] = val;
+                    pValue.textContent = String(val);
+                });
+
+                group.appendChild(labelRow);
+                group.appendChild(slider);
+                paramContainer.appendChild(group);
+            });
+        };
+
+        // Initialize params and render
+        this.initLayoutParams();
+        renderParams();
+
+        // Toggle expand/collapse
+        header.addEventListener('click', () => {
+            this.layoutExpanded = !this.layoutExpanded;
+            details.style.display = this.layoutExpanded ? 'block' : 'none';
+            arrow.textContent = this.layoutExpanded ? '▾' : '▸';
+        });
+
+        // Enable/Disable helper
+        const updateControlsState = () => {
+            const opacity = this.layoutEnabled ? '1' : '0.4';
+            const events = this.layoutEnabled ? 'auto' : 'none';
+            applyBtn.style.opacity = opacity;
+            applyBtn.style.pointerEvents = events;
+            stopBtn.style.opacity = opacity;
+            stopBtn.style.pointerEvents = events;
+            algoSelect.style.opacity = opacity;
+            algoSelect.style.pointerEvents = events;
+            paramContainer.style.opacity = opacity;
+            paramContainer.style.pointerEvents = events;
+        };
+        updateControlsState();
+
+        section.appendChild(header);
+        section.appendChild(details);
+        this.rightColumn.appendChild(section);
+
+        // Sicherstellen, dass Kurven nach dem Rendern neu gezeichnet werden (mit leichter Verzögerung für DOM Reflow)
+        setTimeout(() => this.drawCurves(), 50);
+    }
+
+    /** Initialisiert die Layout-Parameter-Werte fuer den aktuell gewaehlten Algorithmus. */
+    private initLayoutParams() {
+        const params = this.layoutParameters[this.selectedAlgorithm] || {};
+        // Nur fehlende Parameter initialisieren, bestehende behalten
+        const newParams: Record<string, number> = {};
+        Object.entries(params).forEach(([key, def]) => {
+            newParams[key] = this.layoutCurrentParams[key] !== undefined ? this.layoutCurrentParams[key] : def.default;
+        });
+        this.layoutCurrentParams = newParams;
     }
 
     private updatePropertyMapping(propName: string, updates: Partial<VisualMapping>) {
@@ -1472,14 +1818,14 @@ export class MappingUI {
         }
         return typesToCheck;
     }
-
-    private drawCurves() {
+private drawCurves() {
         // Clear previous paths
         this.svgOverlay.innerHTML = '';
 
         if (!this.mappings || !this.currentType) return;
 
         const typesToCheck = this.getTypesToCheck();
+        let debugLog = `T:${typesToCheck.join(',')} | `;
 
         const originalLines = new Set<string>(); // "source|prop"
         const activeLines = new Set<string>(); // "source|prop"
@@ -1521,17 +1867,46 @@ export class MappingUI {
             });
         }
 
-        // 3. Draw original lines
-        originalLines.forEach(line => {
-            const [sourceAttr, prop] = line.split('|');
-            this.drawCurve(sourceAttr, prop, 'mapping-curve original-curve', true, true);
-        });
+        // 3. & 4. Draw lines
+        let drawnActive = 0;
+        let drawnOriginal = 0;
+        let failedActive = 0;
+        let failedOriginal = 0;
 
-        // 4. Draw active lines
         activeLines.forEach(line => {
             const [sourceAttr, prop] = line.split('|');
-            this.drawCurve(sourceAttr, prop, 'mapping-curve', true, false);
+            const result = this.drawCurve(sourceAttr, prop, 'mapping-curve', true, false);
+            if (result === 'OK') {
+                drawnActive++;
+            } else {
+                failedActive++;
+                debugLog += `[A:${line}=${result}] `;
+            }
         });
+        
+        originalLines.forEach(line => {
+            const [sourceAttr, prop] = line.split('|');
+            const result = this.drawCurve(sourceAttr, prop, 'mapping-curve original-curve', false, true);
+            if (result === 'OK') {
+                drawnOriginal++;
+            } else {
+                failedOriginal++;
+                debugLog += `[O:${line}=${result}] `;
+            }
+        });
+
+        debugLog += `ALines:${activeLines.size} OLines:${originalLines.size} DrA:${drawnActive} DrO:${drawnOriginal}`;
+        const header = this.container.querySelector('.mapping-header');
+        if (header) {
+            let debugEl = header.querySelector('.mapping-debug') as HTMLElement;
+            if (!debugEl) {
+                debugEl = document.createElement('div');
+                debugEl.className = 'mapping-debug';
+                debugEl.style.cssText = 'font-size:8px; color:red; position:absolute; bottom:0; left:100px;';
+                header.appendChild(debugEl);
+            }
+            debugEl.textContent = debugLog;
+        }
 
         // 5. Update connection dots
         this.rightColumn.querySelectorAll('.snapdot').forEach(dot => {
@@ -1621,7 +1996,7 @@ export class MappingUI {
         this.renderColumns();
     }
 
-    private drawCurve(sourceAttr: string, prop: string, className: string, isInteractive: boolean, isOriginal: boolean = false) {
+    private drawCurve(sourceAttr: string, prop: string, curveClass: string, isActive: boolean, isDashed: boolean): string {
         // Build 2/3 imported mappings might have "stateVector.group", but UI displays "group"
         const normalizedAttr = sourceAttr.replace(/^stateVector\./, '');
         
@@ -1633,79 +2008,86 @@ export class MappingUI {
             leftDot = this.leftColumn.querySelector(`.snapdot:not(.sub-dot)[data-attr="${parentPath}"]`) as HTMLElement;
         }
 
-        if (!leftDot) {
-            return;
-        }
-
         const rightDot = this.rightColumn.querySelector(`.snapdot[data-prop="${prop}"]`) as HTMLElement;
 
-        if (leftDot && rightDot) {
-            if (isInteractive) {
-                leftDot.classList.add('connected');
-                rightDot.classList.add('connected');
-            }
-
-            const bodyRect = this.bodyContainer.getBoundingClientRect();
-            const leftRect = leftDot.getBoundingClientRect();
-            const rightRect = rightDot.getBoundingClientRect();
-
-            const x1 = leftRect.left + leftRect.width / 2 - bodyRect.left;
-            const y1 = leftRect.top + leftRect.height / 2 - bodyRect.top;
-            const x2 = rightRect.left + rightRect.width / 2 - bodyRect.left;
-            const y2 = rightRect.top + rightRect.height / 2 - bodyRect.top;
-
-            const dx = Math.abs(x2 - x1) * 0.5;
-            const dStr = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
-            
-            // Create a group to hold both visible path and transparent hit area
-            const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-            
-            const visiblePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            visiblePath.setAttribute('class', className);
-            visiblePath.setAttribute('d', dStr);
-            if (isOriginal) {
-                visiblePath.setAttribute('stroke-dasharray', '5,5');
-                visiblePath.style.stroke = 'rgba(255, 255, 255, 0.4)'; // Ensure it's visibly a dashed line, regardless of external CSS
-                visiblePath.style.strokeWidth = '2px';
-            }
-            
-            const hitAreaPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            hitAreaPath.setAttribute('class', 'mapping-curve-hitarea');
-            hitAreaPath.setAttribute('d', dStr);
-            hitAreaPath.style.fill = 'none';
-            hitAreaPath.style.stroke = 'transparent';
-            hitAreaPath.style.strokeWidth = '20';
-            hitAreaPath.style.pointerEvents = 'stroke';
-            
-            group.appendChild(visiblePath);
-            group.appendChild(hitAreaPath);
-
-            if (isInteractive) {
-                group.style.cursor = 'pointer';
-                
-                // Hover effect simulation
-                group.addEventListener('mouseenter', () => {
-                    visiblePath.style.stroke = '#00aaff';
-                    visiblePath.style.strokeWidth = '3';
-                });
-                group.addEventListener('mouseleave', () => {
-                    visiblePath.style.stroke = '';
-                    visiblePath.style.strokeWidth = '';
-                });
-
-                // Click path to disconnect
-                group.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    if (isOriginal) {
-                        this.disconnectOriginalMapping(prop);
-                    } else {
-                        this.disconnectMapping(prop);
-                    }
-                });
-            }
-
-            this.svgOverlay.appendChild(group);
+        if (!leftDot || !rightDot) {
+            return `NoDot(L:${!!leftDot},R:${!!rightDot})`;
         }
+
+        if (isActive) {
+            leftDot.classList.add('connected');
+            rightDot.classList.add('connected');
+        }
+
+        const bodyRect = this.bodyContainer.getBoundingClientRect();
+        const leftRect = leftDot.getBoundingClientRect();
+        const rightRect = rightDot.getBoundingClientRect();
+
+        // Check if dots are actually visible (e.g. not display: none)
+        if (leftRect.width === 0 && leftRect.height === 0) {
+            const style = window.getComputedStyle(leftDot);
+            const parentStyle = window.getComputedStyle(leftDot.parentElement || document.body);
+            return `ZeroRect(L,d:${style.display},v:${style.visibility},pd:${parentStyle.display})`;
+        }
+        if (rightRect.width === 0 && rightRect.height === 0) return `ZeroRect(R)`;
+
+        const x1 = leftRect.left + leftRect.width / 2 - bodyRect.left;
+        const y1 = leftRect.top + leftRect.height / 2 - bodyRect.top;
+        const x2 = rightRect.left + rightRect.width / 2 - bodyRect.left;
+        const y2 = rightRect.top + rightRect.height / 2 - bodyRect.top;
+
+        const dx = Math.abs(x2 - x1) * 0.5;
+        const dStr = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+        
+        // Create a group to hold both visible path and transparent hit area
+        const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        
+        const visiblePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        visiblePath.setAttribute('class', curveClass);
+        visiblePath.setAttribute('d', dStr);
+        if (isDashed) {
+            visiblePath.setAttribute('stroke-dasharray', '5,5');
+            visiblePath.style.stroke = 'rgba(255, 255, 255, 0.4)';
+            visiblePath.style.strokeWidth = '2px';
+        }
+        
+        const hitAreaPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        hitAreaPath.setAttribute('class', 'mapping-curve-hitarea');
+        hitAreaPath.setAttribute('d', dStr);
+        hitAreaPath.style.fill = 'none';
+        hitAreaPath.style.stroke = 'transparent';
+        hitAreaPath.style.strokeWidth = '20';
+        hitAreaPath.style.pointerEvents = 'stroke';
+        
+        group.appendChild(visiblePath);
+        group.appendChild(hitAreaPath);
+
+        if (isActive) {
+            group.style.cursor = 'pointer';
+            
+            // Hover effect simulation
+            group.addEventListener('mouseenter', () => {
+                visiblePath.style.stroke = '#00aaff';
+                visiblePath.style.strokeWidth = '3';
+            });
+            group.addEventListener('mouseleave', () => {
+                visiblePath.style.stroke = '';
+                visiblePath.style.strokeWidth = '';
+            });
+
+            // Click path to disconnect
+            group.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (isDashed) {
+                    this.disconnectOriginalMapping(prop);
+                } else {
+                    this.disconnectMapping(prop);
+                }
+            });
+        }
+
+        this.svgOverlay.appendChild(group);
+        return 'OK';
     }
 
     private startDrag(e: PointerEvent, dot: HTMLElement, isLeft: boolean, attrName: string, propName: string, specificValue?: string) {
