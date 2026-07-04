@@ -1902,7 +1902,7 @@ private drawCurves() {
             if (!debugEl) {
                 debugEl = document.createElement('div');
                 debugEl.className = 'mapping-debug';
-                debugEl.style.cssText = 'font-size:8px; color:red; position:absolute; bottom:0; left:100px;';
+                debugEl.style.cssText = 'display:none; font-size:8px; color:red; position:absolute; bottom:0; left:100px;';
                 header.appendChild(debugEl);
             }
             debugEl.textContent = debugLog;
