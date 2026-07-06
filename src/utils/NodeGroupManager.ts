@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { IStateManager } from '../core/interfaces';
+
 import { NodeObject } from '../types';
 import { ServiceContainer } from '../core/di/ServiceContainer';
 
@@ -32,21 +32,14 @@ interface NodeGroupNode extends NodeObject {
  * Manages node grouping functionality and visual indicators
  */
 export class NodeGroupManager {
-    private scene: THREE.Scene;
-    private stateManager: IStateManager;
     private nodeManager: any; // NodeManager reference
     private groups: Map<string, GroupData>;
     private nodeGroups: Map<string, string>; // nodeId -> groupId
     private defaultColors: number[];
 
     constructor(container: ServiceContainer) {
-        const [scene, stateManager, nodeManager] = 
-            container.resolve<THREE.Scene, IStateManager, any>(
-                'Scene', 'IStateManager', 'NodeManager'
-            );
+        const nodeManager = container.get<any>('NodeManager');
             
-        this.scene = scene;
-        this.stateManager = stateManager;
         this.nodeManager = nodeManager;
         this.groups = new Map();
         this.nodeGroups = new Map();
@@ -153,14 +146,14 @@ export class NodeGroupManager {
     /**
      * Create or update the outline for a node (Deprecated for InstancedMesh)
      */
-    createOrUpdateOutline(node: NodeGroupNode, group: GroupData) {
+    createOrUpdateOutline(_node: NodeGroupNode, _group: GroupData) {
         // Obsolete
     }
 
     /**
      * Remove the outline from a node
      */
-    removeOutline(node: NodeGroupNode) {
+    removeOutline(_node: NodeGroupNode) {
         // Obsolete
     }
 
@@ -174,7 +167,7 @@ export class NodeGroupManager {
     /**
      * Find a node by its ID
      */
-    findNodeById(nodeId: string | number): NodeGroupNode | null {
+    findNodeById(_nodeId: string | number): NodeGroupNode | null {
         // Not used anymore in InstancedMesh approach
         return null;
     }
@@ -238,7 +231,7 @@ export class NodeGroupManager {
      */
     destroy() {
         // Reset colors
-        this.nodeGroups.forEach((groupId, nodeId) => {
+        this.nodeGroups.forEach((_groupId, nodeId) => {
             if (this.nodeManager) this.nodeManager.resetNodeColor(nodeId);
         });
 

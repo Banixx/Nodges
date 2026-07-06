@@ -7,42 +7,48 @@ Das "Build 4" JSON-Format erweitert die bestehenden Nodges-Datenstrukturen um ze
 
 ```json
 {
-  "nodes": [
-    {
-      "id": "node1",
-      "label": "Bundesrat",
-      "type": "institution",
-      "temporal": {
-        "validFrom": "1848-01-01T00:00:00Z",
-        "validTo": null,
-        "history": [
-          {
-            "timestamp": "1999-01-01T00:00:00Z",
-            "changes": {
-              "description": "Neue Verfassung in Kraft getreten",
-              "color": "#ff0000"
+  "system": "Mein_Netzwerk",
+  "metadata": {
+    "schemaVersion": "4.0",
+    "description": "Beispiel"
+  },
+  "dataModel": { /* ... */ },
+  "visualMappings": { /* ... */ },
+  "data": {
+    "entities": [
+      {
+        "id": "node1",
+        "label": "Bundesrat",
+        "type": "institution",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1999,
+              "changes": {
+                "color": "#ff0000"
+              }
             }
-          }
-        ]
-      },
-      "properties": {
+          ]
+        },
         "color": "#cccccc",
         "description": "Exekutive"
       }
-    }
-  ],
-  "edges": [
-    {
-      "id": "edge1",
-      "source": "node1",
-      "target": "node2",
-      "type": "elects",
-      "temporal": {
-        "validFrom": "1848-01-01T00:00:00Z",
-        "validTo": "2024-01-01T00:00:00Z"
+    ],
+    "relationships": [
+      {
+        "id": "edge1",
+        "source": "node1",
+        "target": "node2",
+        "type": "elects",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": 2024
+        }
       }
-    }
-  ]
+    ]
+  }
 }
 ```
 

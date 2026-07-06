@@ -63,6 +63,10 @@ export const RelationshipVisualPresetSchema = z.object({
     glow: VisualMappingSchema.optional(),
     opacity: VisualMappingSchema.optional(),
     animation: VisualMappingSchema.optional(),
+    animation_flow: VisualMappingSchema.optional(),
+    animation_sequential: VisualMappingSchema.optional(),
+    animation_pulse: VisualMappingSchema.optional(),
+    animation_segments: VisualMappingSchema.optional(),
 }).passthrough();
 export type RelationshipVisualPreset = z.infer<typeof RelationshipVisualPresetSchema>;
 
@@ -70,6 +74,19 @@ export const VisualMappingsSchema = z.object({
     defaultPresets: z.record(z.union([EntityVisualPresetSchema, RelationshipVisualPresetSchema])),
 });
 export type VisualMappings = z.infer<typeof VisualMappingsSchema>;
+
+// Temporal Data (Build 4)
+export const TemporalHistorySchema = z.object({
+    timestamp: z.number(),
+    changes: z.record(z.any())
+});
+
+export const TemporalDataSchema = z.object({
+    validFrom: z.number().optional().nullable(),
+    validTo: z.number().optional().nullable(),
+    history: z.array(TemporalHistorySchema).optional()
+});
+export type TemporalData = z.infer<typeof TemporalDataSchema>;
 
 // Entity and Relationship Data
 // Note: passthrough() is intentional - entities/relationships can have
@@ -86,6 +103,9 @@ export const EntityDataSchema = z.object({
     }).optional(),
     stateVector: z.record(z.any()).optional(),
     behavior: z.string().optional(),
+    temporal: TemporalDataSchema.optional(),
+    mapX: z.number().optional(),
+    mapY: z.number().optional(),
 }).passthrough();
 export type EntityData = z.infer<typeof EntityDataSchema> & Record<string, unknown>;
 
@@ -96,6 +116,7 @@ export const RelationshipDataSchema = z.object({
     target: z.string().optional(),
     nodes: z.array(z.string()).optional(),
     label: z.string().optional(),
+    temporal: TemporalDataSchema.optional(),
 }).passthrough();
 export type RelationshipData = z.infer<typeof RelationshipDataSchema> & Record<string, unknown>;
 
@@ -114,10 +135,15 @@ export const GraphDataSchema = z.object({
     system: z.string(),
     metadata: z.object({
         created: z.string().optional(),
-        version: z.string().optional(),
+        version: z.union([z.string(), z.number()]).optional(),
         schemaVersion: z.string().optional(),
         author: z.string().optional(),
         description: z.string().optional(),
+        map: z.object({
+            image: z.string(),
+            referenceWidth: z.number(),
+            referenceHeight: z.number()
+        }).optional(),
     }).passthrough(),
     dataModel: DataModelSchema.optional(),
     fields: z.array(FieldDataSchema).optional(),
@@ -177,6 +203,10 @@ export interface VisualProperties {
     thickness?: number | any;
     curvature?: number | any;
     animation?: any;
+    animation_flow?: any;
+    animation_sequential?: any;
+    animation_pulse?: any;
+    animation_segments?: any;
     attraction?: number | any;
     repulsion?: number | any;
     inertia?: number | any;

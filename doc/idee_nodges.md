@@ -58,3 +58,10 @@ Die Kacheln im Mapping-Panel (linke Seitenleiste) listen die Attribute des Syste
 - **Nativ geführte 1-zu-n-Beziehungen:** Einführung eines echten 1-zu-n-Datenmodells für Beziehungen (z. B. durch ein `targets`-Array), das sowohl im `LayoutManager` als auch im Layout-Worker als sternförmiges Kraftmodell (Anziehungskraft vom Quellknoten zu allen Zielknoten) abgebildet wird.
 - **Unterstützung für Hyperedges/Nodes-Array im Layout:** Integration des bestehenden `nodes`-Arrays in die Layout-Engine, um Gruppenverbindungen oder ungerichtete Cliquen physikalisch zu simulieren, ohne dass diese vom Worker gefiltert und ignoriert werden.
 
+## 7. Erweiterbares Vorlagen- und Preset-System (Mapping Library)
+**Problem/Status quo:** Bisherige visuelle Zuweisungen (Mappings) wurden entweder direkt im Hintergrund angewandt oder mussten manuell über einen einfachen "Übernehmen"-Button aus der JSON-Datei bestätigt werden. Dies bot wenig Flexibilität für Quervergleiche.
+**Lösungsansatz:** Nodges erhält in der SuggestionUI eine offene, erweiterbare Vorlagen-Bibliothek für Visual Mappings. Dem Nutzer stehen jederzeit verschiedene Visualisierungs-Ansätze zur Auswahl:
+- **Original:** Das vom LLM oder der geladenen Datei generierte, datengetriebene Mapping (wie bisher).
+- **Neutral:** Ein minimalistisches Basis-Mapping ohne dynamische Zuweisungen (alles auf Fallback-Konstanten), um visuelles Rauschen gezielt zu reduzieren.
+- **Erweiterte Vorlagen (mittelfristig):** Aus den Daten automatisch interpretierte Best-Practice-Mappings, fachspezifische Visualisierungsstandards oder hartcodierte Corporate Identity (CI) Vorlagen.
+**Ziel:** Dieses offene System reduziert den Lernaufwand beim Wechsel zwischen Datensätzen drastisch. Nutzer können vertraute visuelle Muster (Vorlagen) konstant auf unterschiedliche Daten anwenden. Einer ersten inhaltlichen Einstiegshürde in den Graphen darf keine zusätzliche Hürde durch inkonsistente oder fremde Darstellungen folgen. Das System bleibt so ansprechend, zielgruppengerecht und optisch stabil.

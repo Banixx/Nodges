@@ -1,0 +1,197 @@
+{
+  "system": "Schweizer_Politik_Full_Context",
+  "metadata": {
+    "schemaVersion": "4.0",
+    "description": "Detailliertes Modell der Schweizer Politik basierend auf dem gesamten Nodges-Projektwissen (inkl. Deltas, unendlichem ValidTo und Map-Integration).",
+    "author": "Antigravity",
+    "map": {
+      "image": "Switzerland.jpg",
+      "referenceWidth": 1000,
+      "referenceHeight": 650
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "institution": {
+        "properties": {
+          "power_level": { "type": "continuous", "range": [0, 100] },
+          "branch": { "type": "categorical", "values": ["Legislative", "Exekutive", "Judikative"] }
+        }
+      },
+      "partei": {
+        "properties": {
+          "waehleranteil": { "type": "continuous", "range": [0, 50] },
+          "spektrum": { "type": "categorical", "values": ["Links", "Mitte", "Rechts"] }
+        }
+      }
+    },
+    "relationships": {
+      "waehlt": { "properties": {} },
+      "einfluss": { "properties": {} }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "institution": {
+        "color": { "source": "branch", "function": "categorical" },
+        "size": { "source": "power_level", "function": "linear", "range": [1.0, 2.5] }
+      },
+      "partei": {
+        "color": { "source": "spektrum", "function": "categorical" },
+        "size": { "source": "waehleranteil", "function": "linear", "range": [0.5, 2.0] }
+      },
+      "waehlt": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#aaaaaa" } },
+        "thickness": { "source": "constant", "function": "constant", "range": [0.1, 0.1] }
+      },
+      "einfluss": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#ffaa00" } },
+        "thickness": { "source": "constant", "function": "constant", "range": [0.05, 0.05] }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "bundesrat",
+        "type": "institution",
+        "label": "Bundesrat",
+        "power_level": 90,
+        "branch": "Exekutive",
+        "mapX": 450,
+        "mapY": 320,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            { "timestamp": 1959, "changes": { "power_level": 95 } }
+          ]
+        }
+      },
+      {
+        "id": "nationalrat",
+        "type": "institution",
+        "label": "Nationalrat",
+        "power_level": 80,
+        "branch": "Legislative",
+        "mapX": 460,
+        "mapY": 310,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        }
+      },
+      {
+        "id": "staenderat",
+        "type": "institution",
+        "label": "Ständerat",
+        "power_level": 80,
+        "branch": "Legislative",
+        "mapX": 440,
+        "mapY": 310,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        }
+      },
+      {
+        "id": "fdp",
+        "type": "partei",
+        "label": "FDP",
+        "waehleranteil": 40,
+        "spektrum": "Rechts",
+        "mapX": 500,
+        "mapY": 250,
+        "temporal": {
+          "validFrom": 1894,
+          "validTo": null,
+          "history": [
+            { "timestamp": 1959, "changes": { "waehleranteil": 25 } },
+            { "timestamp": 2003, "changes": { "waehleranteil": 17 } }
+          ]
+        }
+      },
+      {
+        "id": "sp",
+        "type": "partei",
+        "label": "SP",
+        "waehleranteil": 20,
+        "spektrum": "Links",
+        "mapX": 400,
+        "mapY": 250,
+        "temporal": {
+          "validFrom": 1888,
+          "validTo": null,
+          "history": [
+            { "timestamp": 1959, "changes": { "waehleranteil": 28 } },
+            { "timestamp": 2003, "changes": { "waehleranteil": 23 } }
+          ]
+        }
+      },
+      {
+        "id": "cvp",
+        "type": "partei",
+        "label": "CVP",
+        "waehleranteil": 20,
+        "spektrum": "Mitte",
+        "mapX": 450,
+        "mapY": 200,
+        "temporal": {
+          "validFrom": 1912,
+          "validTo": null,
+          "history": [
+            { "timestamp": 1959, "changes": { "waehleranteil": 23 } },
+            { "timestamp": 2021, "changes": { "label": "Die Mitte", "waehleranteil": 14 } }
+          ]
+        }
+      },
+      {
+        "id": "svp",
+        "type": "partei",
+        "label": "SVP",
+        "waehleranteil": 11,
+        "spektrum": "Rechts",
+        "mapX": 550,
+        "mapY": 300,
+        "temporal": {
+          "validFrom": 1971,
+          "validTo": null,
+          "history": [
+            { "timestamp": 1999, "changes": { "waehleranteil": 22 } },
+            { "timestamp": 2015, "changes": { "waehleranteil": 29 } }
+          ]
+        }
+      },
+      {
+        "id": "gruene",
+        "type": "partei",
+        "label": "Grüne",
+        "waehleranteil": 5,
+        "spektrum": "Links",
+        "mapX": 350,
+        "mapY": 300,
+        "temporal": {
+          "validFrom": 1983,
+          "validTo": null,
+          "history": [
+            { "timestamp": 2019, "changes": { "waehleranteil": 13 } }
+          ]
+        }
+      }
+    ],
+    "relationships": [
+      { "id": "rel1", "type": "waehlt", "source": "nationalrat", "target": "bundesrat", "temporal": { "validFrom": 1848, "validTo": null } },
+      { "id": "rel2", "type": "waehlt", "source": "staenderat", "target": "bundesrat", "temporal": { "validFrom": 1848, "validTo": null } },
+      { "id": "rel3", "type": "einfluss", "source": "fdp", "target": "bundesrat", "temporal": { "validFrom": 1894, "validTo": null } },
+      { "id": "rel4", "type": "einfluss", "source": "sp", "target": "bundesrat", "temporal": { "validFrom": 1943, "validTo": 1953 } },
+      { "id": "rel5", "type": "einfluss", "source": "sp", "target": "bundesrat", "temporal": { "validFrom": 1959, "validTo": null } },
+      { "id": "rel6", "type": "einfluss", "source": "cvp", "target": "bundesrat", "temporal": { "validFrom": 1912, "validTo": null } },
+      { "id": "rel7", "type": "einfluss", "source": "svp", "target": "bundesrat", "temporal": { "validFrom": 1971, "validTo": null } },
+      { "id": "rel8", "type": "einfluss", "source": "fdp", "target": "nationalrat", "temporal": { "validFrom": 1894, "validTo": null } },
+      { "id": "rel9", "type": "einfluss", "source": "sp", "target": "nationalrat", "temporal": { "validFrom": 1888, "validTo": null } },
+      { "id": "rel10", "type": "einfluss", "source": "svp", "target": "nationalrat", "temporal": { "validFrom": 1971, "validTo": null } }
+    ]
+  }
+}

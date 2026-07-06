@@ -93,6 +93,12 @@ export interface State {
     devFpsLimit: number;
     _triggerRendererRebuild: number;
 
+    // Build 4: Temporal & Geospatial State
+    currentTimestamp: number | null;
+    isPlaying: boolean;
+    playbackSpeed: number;
+    mapActive: boolean;
+
     [key: string]: any; // Allow for dynamic properties during migration
 }
 
@@ -208,7 +214,13 @@ export class StateManager implements IStateManager {
             devPowerPreference: (typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_dev_power_pref') : null) as any || 'high-performance',
             devPixelRatio: parseFloat((typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_dev_pixel_ratio') : null) || '1.0'),
             devFpsLimit: parseInt((typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_dev_fps_limit') : null) || '0', 10),
-            _triggerRendererRebuild: 0
+            _triggerRendererRebuild: 0,
+            
+            // Build 4
+            currentTimestamp: null,
+            isPlaying: false,
+            playbackSpeed: 1.0,
+            mapActive: false,
         };
 
         this.subscribers = new Map();
@@ -483,6 +495,19 @@ export class StateManager implements IStateManager {
     setInteractionEnabled(enabled: boolean) {
         if (this.state.isInteractionEnabled !== enabled) {
             this.update({ isInteractionEnabled: enabled });
+        }
+    }
+
+    // --- Build 4 Methods ---
+    setCurrentTimestamp(timestamp: number | null) {
+        if (this.state.currentTimestamp !== timestamp) {
+            this.update({ currentTimestamp: timestamp });
+        }
+    }
+    
+    setPlaying(playing: boolean) {
+        if (this.state.isPlaying !== playing) {
+            this.update({ isPlaying: playing });
         }
     }
 

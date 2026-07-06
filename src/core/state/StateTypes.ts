@@ -116,6 +116,10 @@ export interface SystemState {
     layoutEnabled: boolean;
     renderMode: 'auto' | 'mesh' | 'instance';
     activeRenderMode: 'mesh' | 'instance';
+    currentTimestamp: number | null;
+    isPlaying: boolean;
+    playbackSpeed: number;
+    mapActive: boolean;
 }
 
 /**
@@ -239,6 +243,10 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     layoutEnabled: [STATE_CATEGORIES.SYSTEM],
     renderMode: [STATE_CATEGORIES.SYSTEM],
     activeRenderMode: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.SYSTEM],
+    currentTimestamp: [STATE_CATEGORIES.SYSTEM, STATE_CATEGORIES.DATA],
+    isPlaying: [STATE_CATEGORIES.SYSTEM],
+    playbackSpeed: [STATE_CATEGORIES.SYSTEM],
+    mapActive: [STATE_CATEGORIES.SYSTEM],
 
     // DevState
     devPowerPreference: [STATE_CATEGORIES.DEV],

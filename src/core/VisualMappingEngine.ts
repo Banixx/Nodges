@@ -17,6 +17,7 @@ import { getPropertySchema, getEntityAttributeValue } from './BuildFormatUtils';
  */
 export class VisualMappingEngine {
     private visualMappings: VisualMappings | undefined;
+    private originalVisualMappings: VisualMappings | undefined;
     private dataModel: DataModel | undefined;
 
     constructor(visualMappings?: VisualMappings, dataModel?: DataModel) {
@@ -29,6 +30,13 @@ export class VisualMappingEngine {
      */
     setVisualMappings(visualMappings: VisualMappings) {
         this.visualMappings = visualMappings;
+    }
+
+    /**
+     * Set original (suggested) visual mappings
+     */
+    setOriginalVisualMappings(originalMappings: VisualMappings | undefined) {
+        this.originalVisualMappings = originalMappings;
     }
 
     /**
@@ -45,25 +53,28 @@ export class VisualMappingEngine {
         this.dataModel = dataModel;
     }
 
+    private getEffectivePreset(type: string, isNode: boolean): any {
+        const activeSpecific = this.visualMappings?.defaultPresets?.[type];
+        const activeGlobal = this.visualMappings?.defaultPresets?.[isNode ? 'global_node' : 'global_edge'];
+        
+        const originalSpecific = this.originalVisualMappings?.defaultPresets?.[type];
+        const originalGlobal = this.originalVisualMappings?.defaultPresets?.[isNode ? 'global_node' : 'global_edge'];
+
+        const preset = {};
+        if (originalGlobal) Object.assign(preset, originalGlobal);
+        if (originalSpecific) Object.assign(preset, originalSpecific);
+        if (activeGlobal) Object.assign(preset, activeGlobal);
+        if (activeSpecific) Object.assign(preset, activeSpecific);
+        
+        return preset;
+    }
+
     /**
      * Apply visual mappings to an entity
      */
     applyToEntity(entity: EntityData): VisualProperties {
-        if (!this.visualMappings) {
-            return this.getDefaultVisualProperties();
-        }
-
-        let specificPreset = this.visualMappings.defaultPresets[entity.type] as EntityVisualPreset;
-        let globalPreset = this.visualMappings.defaultPresets['global_node'] as EntityVisualPreset;
-        
-        let preset: EntityVisualPreset;
-        if (globalPreset && specificPreset) {
-            preset = { ...specificPreset, ...globalPreset };
-        } else if (globalPreset) {
-            preset = globalPreset;
-        } else if (specificPreset) {
-            preset = specificPreset;
-        } else {
+        const preset = this.getEffectivePreset(entity.type, true) as EntityVisualPreset;
+        if (Object.keys(preset).length === 0) {
             return this.getDefaultVisualProperties();
         }
 
@@ -124,21 +135,8 @@ export class VisualMappingEngine {
      * Apply visual mappings to a relationship
      */
     applyToRelationship(relationship: RelationshipData): VisualProperties {
-        if (!this.visualMappings) {
-            return this.getDefaultVisualProperties();
-        }
-
-        let specificPreset = this.visualMappings.defaultPresets[relationship.type] as RelationshipVisualPreset;
-        let globalPreset = this.visualMappings.defaultPresets['global_edge'] as RelationshipVisualPreset;
-
-        let preset: RelationshipVisualPreset;
-        if (globalPreset && specificPreset) {
-            preset = { ...specificPreset, ...globalPreset };
-        } else if (globalPreset) {
-            preset = globalPreset;
-        } else if (specificPreset) {
-            preset = specificPreset;
-        } else {
+        const preset = this.getEffectivePreset(relationship.type, false) as RelationshipVisualPreset;
+        if (Object.keys(preset).length === 0) {
             return this.getDefaultVisualProperties();
         }
 
@@ -170,10 +168,22 @@ export class VisualMappingEngine {
             visual.opacity = this.applyMapping(preset.opacity, relationship, 'opacity');
         }
 
-        // Apply animation mapping
+        // Apply animation mappings
         if (preset.animation) {
             visual.animation = this.mapToAnimation(preset.animation, relationship);
-            console.log(`[VisualMappingEngine] Applied animation for ${relationship.type}:`, visual.animation);
+            console.log(`[VisualMappingEngine] Applied legacy animation for ${relationship.type}:`, visual.animation);
+        }
+        if (preset.animation_flow) {
+            visual.animation_flow = this.applyMapping(preset.animation_flow, relationship, 'animation_flow');
+        }
+        if (preset.animation_sequential) {
+            visual.animation_sequential = this.applyMapping(preset.animation_sequential, relationship, 'animation_sequential');
+        }
+        if (preset.animation_pulse) {
+            visual.animation_pulse = this.applyMapping(preset.animation_pulse, relationship, 'animation_pulse');
+        }
+        if (preset.animation_segments) {
+            visual.animation_segments = this.applyMapping(preset.animation_segments, relationship, 'animation_segments');
         }
 
         return visual;

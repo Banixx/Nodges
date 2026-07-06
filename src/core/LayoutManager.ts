@@ -245,6 +245,9 @@ export class LayoutManager {
 
             const requestId = `layout_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
+            const app = typeof window !== 'undefined' ? (window as any).app : null;
+            const currentTimestamp = app && app.stateManager ? app.stateManager.state.currentTimestamp : null;
+
             // Typisierte Anfrage senden
             const request: LayoutWorkerRequest = {
                 requestId,
@@ -252,18 +255,29 @@ export class LayoutManager {
                 nodes: nodes.map(node => {
                     const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(node) : {};
                     const physics = this.getNodePhysics(node);
+                    
+                    // Temporale Exklusion: Wenn currentTimestamp aktiv ist und Node nicht sichtbar ist, fixiere ihn (sodass er die Physik nicht stört)
+                    let isTemporalVisible = true;
+                    if (currentTimestamp !== null && node.temporal) {
+                        if (node.temporal.validFrom !== undefined && node.temporal.validFrom !== null && currentTimestamp < node.temporal.validFrom) isTemporalVisible = false;
+                        if (node.temporal.validTo !== undefined && node.temporal.validTo !== null && currentTimestamp > node.temporal.validTo) isTemporalVisible = false;
+                    }
+
+                    const isMapFixed = node.mapX !== undefined && node.mapY !== undefined;
+                    const forceFixed = isMapFixed || !isTemporalVisible;
+
                     return {
                         id: node.id,
                         x: node.position?.x || 0,
                         y: node.position?.y || 0,
                         z: node.position?.z || 0,
                         index: nodeIndexMap.get(node.id)!,
-                        attraction: physics.attraction,
-                        repulsion: physics.repulsion,
+                        attraction: forceFixed ? 0 : physics.attraction, // Wenn fixiert, keine Anziehung
+                        repulsion: forceFixed ? 0 : physics.repulsion, // Wenn fixiert, keine Abstoßung
                         inertia: physics.inertia,
-                        fixedX: visual.positionX !== undefined,
-                        fixedY: visual.positionY !== undefined,
-                        fixedZ: visual.positionZ !== undefined,
+                        fixedX: forceFixed || visual.positionX !== undefined,
+                        fixedY: forceFixed || visual.positionY !== undefined,
+                        fixedZ: forceFixed || visual.positionZ !== undefined,
                         type: node.type,
                         behavior: node.behavior
                     };

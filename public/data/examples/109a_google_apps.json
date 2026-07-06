@@ -1,0 +1,1695 @@
+{
+  "metadata": {
+    "version": 4,
+    "schemaVersion": "3.0",
+    "description": "Alphabet Apps History"
+  },
+  "dataModel": {
+    "entities": {},
+    "relationships": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "alphabet",
+        "type": "company",
+        "name": "Alphabet Inc",
+        "temporal": {
+          "validFrom": 2015,
+          "history": [
+            {
+              "timestamp": 2015,
+              "changes": {
+                "size": 1,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2016,
+              "changes": {
+                "size": 1.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2017,
+              "changes": {
+                "size": 2,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2018,
+              "changes": {
+                "size": 2.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2019,
+              "changes": {
+                "size": 3,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2020,
+              "changes": {
+                "size": 3.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2021,
+              "changes": {
+                "size": 4,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2022,
+              "changes": {
+                "size": 4.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2023,
+              "changes": {
+                "size": 5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2024,
+              "changes": {
+                "size": 5.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2025,
+              "changes": {
+                "size": 6,
+                "color": "#2ecc71"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "google",
+        "type": "core",
+        "name": "Google Search",
+        "temporal": {
+          "validFrom": 1998,
+          "history": [
+            {
+              "timestamp": 1998,
+              "changes": {
+                "size": 1,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 1999,
+              "changes": {
+                "size": 1.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2000,
+              "changes": {
+                "size": 2,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2001,
+              "changes": {
+                "size": 2.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2002,
+              "changes": {
+                "size": 3,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2003,
+              "changes": {
+                "size": 3.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2004,
+              "changes": {
+                "size": 4,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2005,
+              "changes": {
+                "size": 4.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2006,
+              "changes": {
+                "size": 5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2007,
+              "changes": {
+                "size": 5.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2008,
+              "changes": {
+                "size": 6,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2009,
+              "changes": {
+                "size": 6.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2010,
+              "changes": {
+                "size": 7,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2011,
+              "changes": {
+                "size": 7.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2012,
+              "changes": {
+                "size": 8,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2013,
+              "changes": {
+                "size": 8.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2014,
+              "changes": {
+                "size": 9,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2015,
+              "changes": {
+                "size": 9.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2016,
+              "changes": {
+                "size": 10,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2017,
+              "changes": {
+                "size": 10.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2018,
+              "changes": {
+                "size": 11,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2019,
+              "changes": {
+                "size": 11.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2020,
+              "changes": {
+                "size": 12,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2021,
+              "changes": {
+                "size": 12.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2022,
+              "changes": {
+                "size": 13,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2023,
+              "changes": {
+                "size": 13.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2024,
+              "changes": {
+                "size": 14,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2025,
+              "changes": {
+                "size": 14.5,
+                "color": "#3498db"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "youtube",
+        "type": "product",
+        "name": "YouTube",
+        "temporal": {
+          "validFrom": 2005,
+          "history": [
+            {
+              "timestamp": 2005,
+              "changes": {
+                "size": 1,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2006,
+              "changes": {
+                "size": 1.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2007,
+              "changes": {
+                "size": 2,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2008,
+              "changes": {
+                "size": 2.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2009,
+              "changes": {
+                "size": 3,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2010,
+              "changes": {
+                "size": 3.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2011,
+              "changes": {
+                "size": 4,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2012,
+              "changes": {
+                "size": 4.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2013,
+              "changes": {
+                "size": 5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2014,
+              "changes": {
+                "size": 5.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2015,
+              "changes": {
+                "size": 6,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2016,
+              "changes": {
+                "size": 6.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2017,
+              "changes": {
+                "size": 7,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2018,
+              "changes": {
+                "size": 7.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2019,
+              "changes": {
+                "size": 8,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2020,
+              "changes": {
+                "size": 8.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2021,
+              "changes": {
+                "size": 9,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2022,
+              "changes": {
+                "size": 9.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2023,
+              "changes": {
+                "size": 10,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2024,
+              "changes": {
+                "size": 10.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2025,
+              "changes": {
+                "size": 11,
+                "color": "#2ecc71"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "gmail",
+        "type": "product",
+        "name": "Gmail",
+        "temporal": {
+          "validFrom": 2004,
+          "history": [
+            {
+              "timestamp": 2004,
+              "changes": {
+                "size": 1,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2005,
+              "changes": {
+                "size": 1.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2006,
+              "changes": {
+                "size": 2,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2007,
+              "changes": {
+                "size": 2.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2008,
+              "changes": {
+                "size": 3,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2009,
+              "changes": {
+                "size": 3.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2010,
+              "changes": {
+                "size": 4,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2011,
+              "changes": {
+                "size": 4.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2012,
+              "changes": {
+                "size": 5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2013,
+              "changes": {
+                "size": 5.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2014,
+              "changes": {
+                "size": 6,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2015,
+              "changes": {
+                "size": 6.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2016,
+              "changes": {
+                "size": 7,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2017,
+              "changes": {
+                "size": 7.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2018,
+              "changes": {
+                "size": 8,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2019,
+              "changes": {
+                "size": 8.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2020,
+              "changes": {
+                "size": 9,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2021,
+              "changes": {
+                "size": 9.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2022,
+              "changes": {
+                "size": 10,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2023,
+              "changes": {
+                "size": 10.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2024,
+              "changes": {
+                "size": 11,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2025,
+              "changes": {
+                "size": 11.5,
+                "color": "#2ecc71"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "maps",
+        "type": "product",
+        "name": "Google Maps",
+        "temporal": {
+          "validFrom": 2005,
+          "history": [
+            {
+              "timestamp": 2005,
+              "changes": {
+                "size": 1,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2006,
+              "changes": {
+                "size": 1.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2007,
+              "changes": {
+                "size": 2,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2008,
+              "changes": {
+                "size": 2.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2009,
+              "changes": {
+                "size": 3,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2010,
+              "changes": {
+                "size": 3.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2011,
+              "changes": {
+                "size": 4,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2012,
+              "changes": {
+                "size": 4.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2013,
+              "changes": {
+                "size": 5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2014,
+              "changes": {
+                "size": 5.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2015,
+              "changes": {
+                "size": 6,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2016,
+              "changes": {
+                "size": 6.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2017,
+              "changes": {
+                "size": 7,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2018,
+              "changes": {
+                "size": 7.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2019,
+              "changes": {
+                "size": 8,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2020,
+              "changes": {
+                "size": 8.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2021,
+              "changes": {
+                "size": 9,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2022,
+              "changes": {
+                "size": 9.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2023,
+              "changes": {
+                "size": 10,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2024,
+              "changes": {
+                "size": 10.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2025,
+              "changes": {
+                "size": 11,
+                "color": "#2ecc71"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "android",
+        "type": "core",
+        "name": "Android",
+        "temporal": {
+          "validFrom": 2008,
+          "history": [
+            {
+              "timestamp": 2008,
+              "changes": {
+                "size": 1,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2009,
+              "changes": {
+                "size": 1.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2010,
+              "changes": {
+                "size": 2,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2011,
+              "changes": {
+                "size": 2.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2012,
+              "changes": {
+                "size": 3,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2013,
+              "changes": {
+                "size": 3.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2014,
+              "changes": {
+                "size": 4,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2015,
+              "changes": {
+                "size": 4.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2016,
+              "changes": {
+                "size": 5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2017,
+              "changes": {
+                "size": 5.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2018,
+              "changes": {
+                "size": 6,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2019,
+              "changes": {
+                "size": 6.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2020,
+              "changes": {
+                "size": 7,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2021,
+              "changes": {
+                "size": 7.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2022,
+              "changes": {
+                "size": 8,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2023,
+              "changes": {
+                "size": 8.5,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2024,
+              "changes": {
+                "size": 9,
+                "color": "#3498db"
+              }
+            },
+            {
+              "timestamp": 2025,
+              "changes": {
+                "size": 9.5,
+                "color": "#3498db"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "orkut",
+        "type": "failed",
+        "name": "Orkut",
+        "temporal": {
+          "validFrom": 2004,
+          "validTo": 2014,
+          "history": [
+            {
+              "timestamp": 2004,
+              "changes": {
+                "size": 1,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2005,
+              "changes": {
+                "size": 1.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2006,
+              "changes": {
+                "size": 2,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2007,
+              "changes": {
+                "size": 2.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2008,
+              "changes": {
+                "size": 3,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2009,
+              "changes": {
+                "size": 3.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2010,
+              "changes": {
+                "size": 4,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2011,
+              "changes": {
+                "size": 4.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2012,
+              "changes": {
+                "size": 5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2013,
+              "changes": {
+                "size": 5.5,
+                "color": "#ff0000"
+              }
+            },
+            {
+              "timestamp": 2014,
+              "changes": {
+                "size": 6,
+                "color": "#ff0000"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "reader",
+        "type": "failed",
+        "name": "Google Reader",
+        "temporal": {
+          "validFrom": 2005,
+          "validTo": 2013,
+          "history": [
+            {
+              "timestamp": 2005,
+              "changes": {
+                "size": 1,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2006,
+              "changes": {
+                "size": 1.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2007,
+              "changes": {
+                "size": 2,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2008,
+              "changes": {
+                "size": 2.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2009,
+              "changes": {
+                "size": 3,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2010,
+              "changes": {
+                "size": 3.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2011,
+              "changes": {
+                "size": 4,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2012,
+              "changes": {
+                "size": 4.5,
+                "color": "#ff0000"
+              }
+            },
+            {
+              "timestamp": 2013,
+              "changes": {
+                "size": 5,
+                "color": "#ff0000"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "wave",
+        "type": "failed",
+        "name": "Google Wave",
+        "temporal": {
+          "validFrom": 2009,
+          "validTo": 2012,
+          "history": [
+            {
+              "timestamp": 2009,
+              "changes": {
+                "size": 1,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2010,
+              "changes": {
+                "size": 1.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2011,
+              "changes": {
+                "size": 2,
+                "color": "#ff0000"
+              }
+            },
+            {
+              "timestamp": 2012,
+              "changes": {
+                "size": 2.5,
+                "color": "#ff0000"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "plus",
+        "type": "failed",
+        "name": "Google+",
+        "temporal": {
+          "validFrom": 2011,
+          "validTo": 2019,
+          "history": [
+            {
+              "timestamp": 2011,
+              "changes": {
+                "size": 1,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2012,
+              "changes": {
+                "size": 1.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2013,
+              "changes": {
+                "size": 2,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2014,
+              "changes": {
+                "size": 2.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2015,
+              "changes": {
+                "size": 3,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2016,
+              "changes": {
+                "size": 3.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2017,
+              "changes": {
+                "size": 4,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2018,
+              "changes": {
+                "size": 4.5,
+                "color": "#ff0000"
+              }
+            },
+            {
+              "timestamp": 2019,
+              "changes": {
+                "size": 5,
+                "color": "#ff0000"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "glass",
+        "type": "hardware",
+        "name": "Google Glass",
+        "temporal": {
+          "validFrom": 2013,
+          "history": [
+            {
+              "timestamp": 2013,
+              "changes": {
+                "size": 1,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2014,
+              "changes": {
+                "size": 1.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2015,
+              "changes": {
+                "size": 2,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2016,
+              "changes": {
+                "size": 2.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2017,
+              "changes": {
+                "size": 3,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2018,
+              "changes": {
+                "size": 3.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2019,
+              "changes": {
+                "size": 4,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2020,
+              "changes": {
+                "size": 4.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2021,
+              "changes": {
+                "size": 5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2022,
+              "changes": {
+                "size": 5.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2023,
+              "changes": {
+                "size": 6,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2024,
+              "changes": {
+                "size": 6.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2025,
+              "changes": {
+                "size": 7,
+                "color": "#2ecc71"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "stadia",
+        "type": "failed",
+        "name": "Stadia",
+        "temporal": {
+          "validFrom": 2019,
+          "validTo": 2023,
+          "history": [
+            {
+              "timestamp": 2019,
+              "changes": {
+                "size": 1,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2020,
+              "changes": {
+                "size": 1.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2021,
+              "changes": {
+                "size": 2,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2022,
+              "changes": {
+                "size": 2.5,
+                "color": "#ff0000"
+              }
+            },
+            {
+              "timestamp": 2023,
+              "changes": {
+                "size": 3,
+                "color": "#ff0000"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "pixel",
+        "type": "hardware",
+        "name": "Pixel",
+        "temporal": {
+          "validFrom": 2016,
+          "history": [
+            {
+              "timestamp": 2016,
+              "changes": {
+                "size": 1,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2017,
+              "changes": {
+                "size": 1.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2018,
+              "changes": {
+                "size": 2,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2019,
+              "changes": {
+                "size": 2.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2020,
+              "changes": {
+                "size": 3,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2021,
+              "changes": {
+                "size": 3.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2022,
+              "changes": {
+                "size": 4,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2023,
+              "changes": {
+                "size": 4.5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2024,
+              "changes": {
+                "size": 5,
+                "color": "#2ecc71"
+              }
+            },
+            {
+              "timestamp": 2025,
+              "changes": {
+                "size": 5.5,
+                "color": "#2ecc71"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "deepmind",
+        "type": "ai",
+        "name": "DeepMind",
+        "temporal": {
+          "validFrom": 2014,
+          "history": [
+            {
+              "timestamp": 2014,
+              "changes": {
+                "size": 1,
+                "color": "#9b59b6"
+              }
+            },
+            {
+              "timestamp": 2015,
+              "changes": {
+                "size": 1.5,
+                "color": "#9b59b6"
+              }
+            },
+            {
+              "timestamp": 2016,
+              "changes": {
+                "size": 2,
+                "color": "#9b59b6"
+              }
+            },
+            {
+              "timestamp": 2017,
+              "changes": {
+                "size": 2.5,
+                "color": "#9b59b6"
+              }
+            },
+            {
+              "timestamp": 2018,
+              "changes": {
+                "size": 3,
+                "color": "#9b59b6"
+              }
+            },
+            {
+              "timestamp": 2019,
+              "changes": {
+                "size": 3.5,
+                "color": "#9b59b6"
+              }
+            },
+            {
+              "timestamp": 2020,
+              "changes": {
+                "size": 4,
+                "color": "#9b59b6"
+              }
+            },
+            {
+              "timestamp": 2021,
+              "changes": {
+                "size": 4.5,
+                "color": "#9b59b6"
+              }
+            },
+            {
+              "timestamp": 2022,
+              "changes": {
+                "size": 5,
+                "color": "#9b59b6"
+              }
+            },
+            {
+              "timestamp": 2023,
+              "changes": {
+                "size": 5.5,
+                "color": "#9b59b6"
+              }
+            },
+            {
+              "timestamp": 2024,
+              "changes": {
+                "size": 6,
+                "color": "#9b59b6"
+              }
+            },
+            {
+              "timestamp": 2025,
+              "changes": {
+                "size": 6.5,
+                "color": "#9b59b6"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "gemini",
+        "type": "ai",
+        "name": "Gemini",
+        "temporal": {
+          "validFrom": 2023,
+          "history": [
+            {
+              "timestamp": 2023,
+              "changes": {
+                "size": 1,
+                "color": "#9b59b6"
+              }
+            },
+            {
+              "timestamp": 2024,
+              "changes": {
+                "size": 1.5,
+                "color": "#9b59b6"
+              }
+            },
+            {
+              "timestamp": 2025,
+              "changes": {
+                "size": 2,
+                "color": "#9b59b6"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "e1",
+        "start": "alphabet",
+        "end": "google",
+        "type": "owns",
+        "temporal": {
+          "validFrom": 2015
+        }
+      },
+      {
+        "id": "e2",
+        "start": "alphabet",
+        "end": "deepmind",
+        "type": "owns",
+        "temporal": {
+          "validFrom": 2015
+        }
+      },
+      {
+        "id": "e3",
+        "start": "google",
+        "end": "youtube",
+        "type": "owns",
+        "temporal": {
+          "validFrom": 2005
+        }
+      },
+      {
+        "id": "e4",
+        "start": "google",
+        "end": "gmail",
+        "type": "owns",
+        "temporal": {
+          "validFrom": 2004
+        }
+      },
+      {
+        "id": "e5",
+        "start": "google",
+        "end": "maps",
+        "type": "owns",
+        "temporal": {
+          "validFrom": 2005
+        }
+      },
+      {
+        "id": "e6",
+        "start": "google",
+        "end": "android",
+        "type": "owns",
+        "temporal": {
+          "validFrom": 2008
+        }
+      },
+      {
+        "id": "e7",
+        "start": "google",
+        "end": "orkut",
+        "type": "owns",
+        "temporal": {
+          "validFrom": 2004,
+          "validTo": 2014
+        }
+      },
+      {
+        "id": "e8",
+        "start": "google",
+        "end": "reader",
+        "type": "owns",
+        "temporal": {
+          "validFrom": 2005,
+          "validTo": 2013
+        }
+      },
+      {
+        "id": "e9",
+        "start": "google",
+        "end": "wave",
+        "type": "owns",
+        "temporal": {
+          "validFrom": 2009,
+          "validTo": 2012
+        }
+      },
+      {
+        "id": "e10",
+        "start": "google",
+        "end": "plus",
+        "type": "owns",
+        "temporal": {
+          "validFrom": 2011,
+          "validTo": 2019
+        }
+      },
+      {
+        "id": "e11",
+        "start": "google",
+        "end": "glass",
+        "type": "owns",
+        "temporal": {
+          "validFrom": 2013
+        }
+      },
+      {
+        "id": "e12",
+        "start": "google",
+        "end": "stadia",
+        "type": "owns",
+        "temporal": {
+          "validFrom": 2019,
+          "validTo": 2023
+        }
+      },
+      {
+        "id": "e13",
+        "start": "google",
+        "end": "pixel",
+        "type": "owns",
+        "temporal": {
+          "validFrom": 2016
+        }
+      },
+      {
+        "id": "e14",
+        "start": "deepmind",
+        "end": "gemini",
+        "type": "creates",
+        "temporal": {
+          "validFrom": 2023
+        }
+      },
+      {
+        "id": "e15",
+        "start": "google",
+        "end": "gemini",
+        "type": "integrates",
+        "temporal": {
+          "validFrom": 2023
+        }
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {}
+  },
+  "system": "Nodges"
+}

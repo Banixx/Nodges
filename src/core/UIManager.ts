@@ -19,6 +19,7 @@ import { EdgeControlsUI } from '../ui/EdgeControlsUI';
 import { VisualMappings } from '../types';
 import { MappingUI } from '../ui/MappingUI';
 import { getAvailableProperties } from './BuildFormatUtils';
+import { TimePlayerUI } from '../ui/TimePlayerUI';
 
 interface Bounds {
     x: { min: number, max: number };
@@ -76,6 +77,9 @@ export class UIManager {
 
         // Initialize Legend Panel
         this.legendPanel = new LegendPanel('legendContainer', this.stateManager);
+
+        // Initialize Time Player UI (Build 4)
+        new TimePlayerUI(this.stateManager, this.app);
 
         this.initModeSwitch();
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'ui');
@@ -170,11 +174,22 @@ export class UIManager {
         const elFilename = document.getElementById('fileFilename');
         if (elFilename) elFilename.textContent = `Dateiname: ${filename}`;
 
+        // Build-Label aus schemaVersion ableiten
+        const sv = schemaVersion || '3.0';
+        let buildLabel: string;
+        if (sv.includes('4') || sv === '4.0') {
+            buildLabel = 'Build 4';
+        } else if (sv.includes('3') || sv === '3.0') {
+            buildLabel = 'Build 3';
+        } else {
+            buildLabel = `Schema: ${sv}`;
+        }
+
         const elSchema = document.getElementById('fileSchemaVersion');
-        if (elSchema) elSchema.textContent = schemaVersion || '3.0';
+        if (elSchema) elSchema.textContent = buildLabel;
         
         if (this.mappingUI) {
-            this.mappingUI.updateSchema(schemaVersion || '3.0');
+            this.mappingUI.updateSchema(buildLabel);
         }
 
         if (this.statsUI) {
@@ -182,6 +197,7 @@ export class UIManager {
             if (bounds) this.statsUI.updateBounds(bounds);
         }
     }
+
 
     public updateFps(fps: number) {
         if (this.statsUI) {

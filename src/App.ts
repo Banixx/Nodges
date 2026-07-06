@@ -1,6 +1,7 @@
 // App.ts - Build: 1.0.0.0
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { MapManager } from './core/MapManager';
 import { StateManager } from './core/StateManager';
 import { NodeManager } from './core/NodeManager';
 import { CentralEventManager } from './core/CentralEventManager';
@@ -114,6 +115,7 @@ export class App {
         return this._isInitialized;
     }
     private ground: THREE.Mesh | null = null;
+    private mapManager: MapManager | null = null;
 
     constructor() {
         console.log('Initializing Nodges');
@@ -435,6 +437,10 @@ export class App {
         this.exportManager = new ExportManager();
         this.container.register('ExportManager', this.exportManager);
 
+        // Init MapManager (Build 4)
+        this.mapManager = new MapManager(this.scene, this.stateManager);
+        this.container.register('MapManager', this.mapManager);
+
         // Init & Register FileHandler
         const fileHandler = new FileHandler(this.container, this.loadGraphData.bind(this));
         this.container.register('FileHandler', fileHandler);
@@ -630,9 +636,9 @@ export class App {
         this.currentGraphData = null;
         this.hasExplicitPositions = false;
 
-        // Reset Visual Mappings
         this.originalVisualMappings = null;
         if (this.visualMappingEngine) {
+            this.visualMappingEngine.setOriginalVisualMappings(undefined);
             this.visualMappingEngine.setVisualMappings({ defaultPresets: {} });
         }
         if (this.stateManager) {
@@ -716,10 +722,9 @@ export class App {
             const originalMappings = graphData.visualMappings ? JSON.parse(JSON.stringify(graphData.visualMappings)) : null;
             this.originalVisualMappings = originalMappings;
             
-            // If appending, don't automatically apply the new file's mappings to the entire graph
-            if (append) {
-                graphData.visualMappings = { defaultPresets: {} };
-            }
+            // Do not automatically apply the file's mappings to the active graph state.
+            // They will be available as suggestions.
+            graphData.visualMappings = { defaultPresets: {} };
 
             this.stateManager.update({
                 selectedObject: null,
@@ -779,6 +784,26 @@ export class App {
             console.log(`[App] Creating edges... (${this.currentRelationships.length})`);
             await this.createEdges();
 
+            // Build 4: Check for map and temporal data
+            if (graphData.metadata?.version === 4 || graphData.metadata?.version === '4') {
+                if (graphData.metadata?.map && this.mapManager) {
+                    const map = graphData.metadata.map;
+                    await this.mapManager.loadMap(map.image, map.referenceWidth, map.referenceHeight);
+                } else if (this.mapManager) {
+                    this.mapManager.removeMap();
+                }
+
+                // If mapX/mapY exist, set them as initial positions
+                this.currentEntities.forEach(e => {
+                    if (e.mapX !== undefined && e.mapY !== undefined) {
+                        e.position = { x: e.mapX, y: 0, z: e.mapY };
+                        // Note: Fixed state is handled in LayoutManager for the worker
+                    }
+                });
+            } else if (this.mapManager) {
+                this.mapManager.removeMap();
+            }
+
             // Only apply layout if entities don't have valid positions
             // Wir prüfen ob wenigstens ein Knoten eine valide Position ungleich 0,0,0 hat,
             // um zu verhindern, dass mitgelieferte Positionen überschrieben werden.
@@ -808,14 +833,13 @@ export class App {
             // Update UI
             if (this.uiManager) {
                 const bounds = this.calculateBounds(this.currentEntities);
-                const buildStr = graphData.metadata?._buildVersion ? `Build ${graphData.metadata._buildVersion} | ` : '';
-                const schemaStr = graphData.metadata?.schemaVersion || '3.0';
+                const schemaVersion = graphData.metadata?.schemaVersion || '3.0';
                 this.uiManager.updateFileInfo(
                     sourceName,
                     this.currentEntities.length,
                     this.currentRelationships.length,
                     bounds,
-                    `${buildStr}Schema: ${schemaStr}`
+                    schemaVersion
                 );
             }
 
@@ -1022,14 +1046,15 @@ export class App {
         // Set on currentGraphData
         if (this.currentGraphData) {
             this.currentGraphData.dataModel = mergedDataModel;
-            // Auto-apply the original file mappings when loaded
-            this.currentGraphData.visualMappings = JSON.parse(JSON.stringify(originalVisualMappings));
+            // Auto-apply was disabled by user request. Mappings will stay as suggestions until accepted.
+            this.currentGraphData.visualMappings = { defaultPresets: {} };
             
             // Store original mappings so UIManager can provide them to MappingUI
             this.originalVisualMappings = originalVisualMappings;
 
             // Propagate to engine
             this.visualMappingEngine.setDataModel(mergedDataModel);
+            this.visualMappingEngine.setOriginalVisualMappings(this.originalVisualMappings || undefined);
             this.visualMappingEngine.setVisualMappings(this.currentGraphData.visualMappings!);
 
             // Propagate to UI
@@ -1359,14 +1384,32 @@ export class App {
         const state = this.stateManager.state;
         const now = performance.now();
 
-        // Apply Dev FPS Throttling
         if (state.devFpsLimit > 0) {
             const minFrameTime = 1000 / state.devFpsLimit;
             if (now - this.lastRenderTime < minFrameTime) {
                 return; // Skip this frame
             }
         }
+        
+        const deltaTime = (now - this.lastRenderTime) / 1000;
         this.lastRenderTime = now;
+
+        // Build 4: Playback Fortschritt
+        if (state.isPlaying && state.currentTimestamp !== null) {
+            const newTime = state.currentTimestamp + (deltaTime * state.playbackSpeed * 1000); 
+            // In einer vollständigen Lösung sollte TimePlayerUI die Max-Grenzen prüfen
+            this.stateManager.setCurrentTimestamp(newTime);
+        }
+
+        if (this.nodeManager) {
+            this.nodeManager.updateTemporalState(this.stateManager.state.currentTimestamp);
+        }
+        if (this.edgeObjectsManager && (this.edgeObjectsManager as any).updateTemporalState) {
+            (this.edgeObjectsManager as any).updateTemporalState(this.stateManager.state.currentTimestamp);
+        }
+        if (this.edgeObjectsManager && this.stateManager.state.currentTimestamp !== null) {
+            this.edgeObjectsManager.updateEdgePositions(this.stateManager.getEntities());
+        }
 
         if (this.edgeObjectsManager) {
             this.edgeObjectsManager.animate();

@@ -1116,6 +1116,15 @@ input[type="range"] {
   border-color: rgba(255, 255, 255, 0.1);
 }
 
+.mapping-item.active-mapping {
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 0 8px rgba(160, 128, 96, 0.2);
+}
+
+.mapping-item.suggested-mapping {
+  border: 1px solid rgba(160, 128, 96, 0.3);
+}
+
 .mapping-item.left {
   justify-content: space-between;
 }
@@ -1246,6 +1255,11 @@ input[type="range"] {
 .snapdot.connected {
   background: var(--accent-color);
   border-color: #fff;
+}
+
+.snapdot.suggested {
+  border-color: rgba(255, 165, 0, 0.7);
+  background: rgba(255, 165, 0, 0.2);
 }
 
 .mapping-svg-overlay {

@@ -369,7 +369,7 @@ export class FilePanelUI {
         saveConfirmBtn.textContent = 'Speichern';
         saveConfirmBtn.onclick = async () => {
             const filenameInput = nameGroup.querySelector('#saveFilenameInput') as HTMLInputElement;
-            const includeVizStateCheckbox = checkboxRow.querySelector('#includeVizStateCheckbox') as HTMLInputElement;
+            // (checkbox reserved for future use)
 
             let filename = filenameInput.value.trim();
             if (!filename) {
@@ -383,47 +383,61 @@ export class FilePanelUI {
                 filename += ext;
             }
 
-            const options: any = {};
-            if (format === 'json') {
-                options.includeVisualizationState = includeVizStateCheckbox.checked;
-            }
-
-            // Construct currentNodes and currentEdges in the format expected by ExportManager.getCurrentNetworkData
-            const currentNodes = this.app.currentEntities.map((entity: any) => ({
-                id: entity.id,
-                mesh: {
-                    name: entity.label || entity.name || entity.id,
-                    position: entity.position || { x: 0, y: 0, z: 0 }
-                },
-                metadata: { ...entity },
-                options: {
-                    color: entity.color || entity.options?.color,
-                    size: entity.size || entity.options?.size,
-                    type: entity.type || entity.options?.type || entity.geometryType
-                }
-            }));
-
-            const currentEdges = this.app.currentRelationships.map((rel: any) => ({
-                startNode: { id: rel.source },
-                endNode: { id: rel.target },
-                name: rel.name || rel.type || rel.label || '',
-                metadata: { ...rel },
-                options: {
-                    color: rel.color || rel.options?.color
-                }
-            }));
-
             // Close dialog
+
             if (document.body.contains(overlay)) {
                 document.body.removeChild(overlay);
             }
 
             // Execute export
             try {
-                await this.app.fileHandler.exportNetwork(currentNodes, currentEdges, format, filename, options);
+                if (format === 'json') {
+                    // Nativer Nodges-Export: erhält alle Build-3/4-Daten
+                    const graphData = this.app.currentGraphData;
+                    if (!graphData) {
+                        alert('Keine Graphdaten geladen.');
+                        return;
+                    }
+                    const exportOptions: any = { currentEntities: this.app.currentEntities };
+                    const jsonStr = this.app.fileHandler['exportManager'].exportNodgesJSON(graphData, exportOptions);
+                    const blob = new Blob([jsonStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                } else {
+                    // Legacy-Export für GEXF, GraphML, CSV
+                    const currentNodes = this.app.currentEntities.map((entity: any) => ({
+                        id: entity.id,
+                        mesh: {
+                            name: entity.label || entity.name || entity.id,
+                            position: entity.position || { x: 0, y: 0, z: 0 }
+                        },
+                        metadata: { ...entity },
+                        options: {
+                            color: entity.color || entity.options?.color,
+                            size: entity.size || entity.options?.size,
+                            type: entity.type || entity.options?.type || entity.geometryType
+                        }
+                    }));
+                    const currentEdges = this.app.currentRelationships.map((rel: any) => ({
+                        startNode: { id: rel.source },
+                        endNode: { id: rel.target },
+                        name: rel.name || rel.type || rel.label || '',
+                        metadata: { ...rel },
+                        options: { color: rel.color || rel.options?.color }
+                    }));
+                    const legacyOptions: any = {};
+                    await this.app.fileHandler.exportNetwork(currentNodes, currentEdges, format, filename, legacyOptions);
+                }
             } catch (error: any) {
                 console.error('[FilePanelUI] Export error:', error);
             }
+
         };
 
         const cancelBtn = document.createElement('button');

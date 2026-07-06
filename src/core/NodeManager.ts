@@ -500,4 +500,191 @@ export class NodeManager {
             faces: geo.index ? geo.index.count / 3 : geo.attributes.position.count / 3
         };
     }
+
+    // --- Build 4: Temporal Animation ---
+    public updateTemporalState(timestamp: number | null) {
+        if (timestamp === null) {
+            // Restore visibility if timestamp is removed
+            if (this.stateManager.state.activeRenderMode === 'instance') {
+                const dummy = new THREE.Object3D();
+                this.meshes.forEach((mesh, type) => {
+                    const entities = this.entityDataMap.get(type);
+                    if (!entities) return;
+                    for (let i = 0; i < entities.length; i++) {
+                        mesh.getMatrixAt(i, dummy.matrix);
+                        dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
+                        // We would need to restore the original scale... for now just leave it.
+                    }
+                });
+            } else {
+                this.individualMeshes.forEach(mesh => {
+                    mesh.visible = true;
+                });
+            }
+            return;
+        }
+
+        const dummy = new THREE.Object3D();
+        const updateInstanceColor = new Set<THREE.InstancedMesh>();
+        const updateInstanceMatrix = new Set<THREE.InstancedMesh>();
+
+        if (this.stateManager.state.activeRenderMode === 'instance') {
+            this.entityDataMap.forEach((entities, type) => {
+                const mesh = this.meshes.get(type);
+                if (!mesh) return;
+
+                let matrixDirty = false;
+                let colorDirty = false;
+
+                for (let i = 0; i < entities.length; i++) {
+                    const entity = entities[i];
+                    if (!entity.temporal) continue; // No temporal data, assume always visible and static
+
+                    const validFrom = entity.temporal.validFrom;
+                    const validTo = entity.temporal.validTo;
+                    const isVisible = (validFrom === undefined || validFrom === null || timestamp >= validFrom) &&
+                                      (validTo === undefined || validTo === null || timestamp <= validTo);
+
+                    mesh.getMatrixAt(i, dummy.matrix);
+                    dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
+
+                    if (!isVisible) {
+                        if (dummy.scale.x > 0.001) {
+                            dummy.scale.set(0, 0, 0); // Hide
+                            dummy.updateMatrix();
+                            mesh.setMatrixAt(i, dummy.matrix);
+                            matrixDirty = true;
+                        }
+                        continue; // Skip interpolation if hidden
+                    } else if (dummy.scale.x < 0.001) {
+                         // Restore base scale if it was hidden (simple restore to 1, accurate restore needs original scale tracking)
+                         dummy.scale.set(1, 1, 1);
+                         dummy.updateMatrix();
+                         mesh.setMatrixAt(i, dummy.matrix);
+                         matrixDirty = true;
+                    }
+
+                    // Interpolate Keyframes
+                    if (entity.temporal.history && entity.temporal.history.length > 0) {
+                        const interp = this.getInterpolatedTemporalValues(entity.temporal, timestamp);
+                        if (interp.position) {
+                            if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
+                            entity.position.x = interp.position.x;
+                            entity.position.y = interp.position.y;
+                            entity.position.z = interp.position.z;
+                            dummy.position.copy(interp.position);
+                            dummy.updateMatrix();
+                            mesh.setMatrixAt(i, dummy.matrix);
+                            matrixDirty = true;
+                        }
+                        if (interp.size !== undefined) {
+                            dummy.scale.setScalar(interp.size);
+                            dummy.updateMatrix();
+                            mesh.setMatrixAt(i, dummy.matrix);
+                            matrixDirty = true;
+                        }
+                        if (interp.color) {
+                            mesh.setColorAt(i, interp.color);
+                            colorDirty = true;
+                        }
+                    }
+                }
+                if (matrixDirty) updateInstanceMatrix.add(mesh);
+                if (colorDirty) updateInstanceColor.add(mesh);
+            });
+
+            updateInstanceMatrix.forEach(m => m.instanceMatrix.needsUpdate = true);
+            updateInstanceColor.forEach(m => { if(m.instanceColor) m.instanceColor.needsUpdate = true; });
+
+        } else {
+            // Individual Meshes
+            this.individualMeshes.forEach((mesh, id) => {
+                const map = this.entityIdMap.get(id);
+                if (!map) return;
+                const entity = this.entityDataMap.get(map.type)?.[map.index];
+                if (!entity || !entity.temporal) return;
+
+                const validFrom = entity.temporal.validFrom;
+                const validTo = entity.temporal.validTo;
+                const isVisible = (validFrom === undefined || validFrom === null || timestamp >= validFrom) &&
+                                  (validTo === undefined || validTo === null || timestamp <= validTo);
+
+                mesh.visible = isVisible;
+                
+                if (isVisible && entity.temporal.history && entity.temporal.history.length > 0) {
+                     const interp = this.getInterpolatedTemporalValues(entity.temporal, timestamp);
+                     if (interp.position) {
+                         if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
+                         entity.position.x = interp.position.x;
+                         entity.position.y = interp.position.y;
+                         entity.position.z = interp.position.z;
+                         mesh.position.copy(interp.position);
+                     }
+                     if (interp.size !== undefined) mesh.scale.setScalar(interp.size);
+                     if (interp.color && mesh.material) {
+                         ((mesh.material as THREE.MeshPhongMaterial).color).copy(interp.color);
+                     }
+                }
+            });
+        }
+    }
+
+    private getInterpolatedTemporalValues(temporal: any, timestamp: number): { position?: THREE.Vector3, color?: THREE.Color, size?: number } {
+        const history = temporal.history;
+        if (!history || history.length === 0) return {};
+
+        let leftIdx = -1;
+        let rightIdx = -1;
+
+        for (let i = 0; i < history.length; i++) {
+            if (history[i].timestamp <= timestamp) {
+                leftIdx = i;
+            } else if (history[i].timestamp > timestamp) {
+                rightIdx = i;
+                break;
+            }
+        }
+
+        if (leftIdx === -1 && rightIdx !== -1) return this.extractChanges(history[rightIdx].changes);
+        if (rightIdx === -1 && leftIdx !== -1) return this.extractChanges(history[leftIdx].changes);
+
+        const left = history[leftIdx];
+        const right = history[rightIdx];
+        const t = (timestamp - left.timestamp) / (right.timestamp - left.timestamp);
+
+        const leftVals = this.extractChanges(left.changes);
+        const rightVals = this.extractChanges(right.changes);
+        const result: any = {};
+
+        if (leftVals.position && rightVals.position) {
+            result.position = new THREE.Vector3().copy(leftVals.position).lerp(rightVals.position, t);
+        } else if (leftVals.position) result.position = leftVals.position;
+        else if (rightVals.position) result.position = rightVals.position;
+
+        if (leftVals.color && rightVals.color) {
+            result.color = new THREE.Color().copy(leftVals.color).lerp(rightVals.color, t);
+        } else if (leftVals.color) result.color = leftVals.color;
+        else if (rightVals.color) result.color = rightVals.color;
+
+        if (leftVals.size !== undefined && rightVals.size !== undefined) {
+            result.size = leftVals.size + (rightVals.size - leftVals.size) * t;
+        } else if (leftVals.size !== undefined) result.size = leftVals.size;
+        else if (rightVals.size !== undefined) result.size = rightVals.size;
+
+        return result;
+    }
+
+    private extractChanges(changes: any): { position?: THREE.Vector3, color?: THREE.Color, size?: number } {
+        const res: any = {};
+        if (changes.x !== undefined && changes.y !== undefined && changes.z !== undefined) {
+            res.position = new THREE.Vector3(changes.x, changes.y, changes.z);
+        }
+        if (changes.color) {
+            res.color = new THREE.Color(changes.color);
+        }
+        if (changes.size !== undefined) {
+            res.size = changes.size;
+        }
+        return res;
+    }
 }

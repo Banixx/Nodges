@@ -27,16 +27,34 @@ export class DataParser {
      * Now uses Zod for strict validation AND parses values based on DataModel
      */
     private static normalizeData(data: any): GraphData {
-        // Enforce Build 3.0 schema version
+        // Accept Build 3 and Build 4
         const schemaVersion = data.metadata?.schemaVersion;
-        if (schemaVersion !== "3.0") {
-            throw new Error(`Data Validation Failed: Unsupported schema version "${schemaVersion || 'unknown'}". Only Build 3 (schemaVersion "3.0") is supported.`);
+        const SUPPORTED_VERSIONS = ['3.0', '4.0'];
+        if (!SUPPORTED_VERSIONS.includes(schemaVersion)) {
+            throw new Error(`Data Validation Failed: Unsupported schema version "${schemaVersion || 'unknown'}". Supported: ${SUPPORTED_VERSIONS.join(', ')}`);
         }
 
-        // Set Build Version to 3.0
-        const buildVersion = "3.0";
+        // Preserve the original schemaVersion as build indicator
         if (!data.metadata) data.metadata = {};
-        data.metadata._buildVersion = buildVersion;
+        data.metadata._buildVersion = schemaVersion;
+
+        // Normalize relationships: sync start/end and source/target
+        if (data && data.data && Array.isArray(data.data.relationships)) {
+            data.data.relationships.forEach((rel: any) => {
+                if (rel.start !== undefined && rel.source === undefined) {
+                    rel.source = rel.start;
+                }
+                if (rel.source !== undefined && rel.start === undefined) {
+                    rel.start = rel.source;
+                }
+                if (rel.end !== undefined && rel.target === undefined) {
+                    rel.target = rel.end;
+                }
+                if (rel.target !== undefined && rel.end === undefined) {
+                    rel.end = rel.target;
+                }
+            });
+        }
 
         // 1. Zod Validation
         const result = GraphDataSchema.safeParse(data);

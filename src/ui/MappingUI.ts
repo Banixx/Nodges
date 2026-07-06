@@ -118,7 +118,7 @@ export class MappingUI {
 
         return Object.values(preset).some((mapping: any) => {
             if (!mapping) return false;
-            const src = mapping.source || mapping.field || '';
+            const src = mapping.field || mapping.source || '';
             return src === attrName || src.startsWith(attrName + '.');
         });
     }
@@ -153,7 +153,6 @@ export class MappingUI {
                         <button class="mapping-tab active" data-val="entities" style="flex: 1;">Nodes</button>
                         <button class="mapping-tab" data-val="relationships" style="flex: 1;">Edges</button>
                     </div>
-                    <button id="btnTakeoverMapping" style="display: none; font-size: 11px; padding: 4px 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #e0e0e0; cursor: pointer; border-radius: 4px; transition: all 0.2s ease;" title="Übernimmt die mitgelieferten Mappings dieser Datei in deine aktive Konfiguration" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.3)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.1)'">Datei-Mappings übernehmen</button>
                 </div>
                 <div class="mapping-type-tabs" id="mappingTypeTabs" style="display: flex; gap: 4px; overflow-x: auto; padding-bottom: 2px;"></div>
             </div>
@@ -427,9 +426,9 @@ export class MappingUI {
                 flex: 0 0 auto;
                 font-size: 11px;
                 padding: 4px 8px;
-                background: ${this.currentType === t.value ? 'rgba(255, 165, 0, 0.2)' : 'rgba(255, 255, 255, 0.05)'};
-                color: ${this.currentType === t.value ? '#ffa500' : '#e0e0e0'};
-                border: 1px solid ${this.currentType === t.value ? 'rgba(255, 165, 0, 0.5)' : 'rgba(255, 255, 255, 0.1)'};
+                background: ${this.currentType === t.value ? 'rgba(160, 128, 96, 0.2)' : 'rgba(255, 255, 255, 0.05)'};
+                color: ${this.currentType === t.value ? 'var(--accent-color)' : '#e0e0e0'};
+                border: 1px solid ${this.currentType === t.value ? 'rgba(160, 128, 96, 0.5)' : 'rgba(255, 255, 255, 0.1)'};
                 border-radius: 4px;
                 cursor: pointer;
                 transition: all 0.2s ease;
@@ -510,7 +509,7 @@ export class MappingUI {
         const currentDataItems = isEntityType ? this.entities : this.relationships;
 
         attributes.forEach(attr => {
-            if (attr === 'constant') return; // Hide 'constant' from the attribute list
+            if (attr === 'constant') return; // Hide 'constant' from the regular attribute list loop
 
             // Check if the unique values are actually objects (meaning this is a group)
             let isObjectGroup = false;
@@ -626,7 +625,7 @@ export class MappingUI {
                         valDot.style.cssText = `
                             width: 6px;
                             height: 6px;
-                            background-color: var(--accent, #ffa500);
+                            background-color: var(--accent-color);
                             border-radius: 50%;
                             cursor: grab;
                             flex-shrink: 0;
@@ -703,7 +702,7 @@ export class MappingUI {
                     subItem.style.cssText = `
                         margin-left: 15px;
                         width: calc(100% - 35px);
-                        border-left: 2px solid var(--accent, #ffa500);
+                        border-left: 2px solid var(--accent-color);
                         background: rgba(255, 255, 255, 0.02);
                         padding: 4px 8px;
                         border-radius: 4px;
@@ -796,7 +795,7 @@ export class MappingUI {
         const isEntity = this.currentCategory === 'entities';
         const visualProps = isEntity
             ? ['positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation', 'attraction', 'repulsion', 'inertia']
-            : ['thickness', 'color', 'curvature', 'glow', 'opacity', 'animation'];
+            : ['thickness', 'color', 'curvature', 'glow', 'opacity', 'animation_flow', 'animation_sequential', 'animation_pulse', 'animation_segments'];
 
             const propTranslations: Record<string, string> = {
                 positionX: 'Position X',
@@ -807,6 +806,10 @@ export class MappingUI {
                 geometry: 'Geometrie',
                 glow: 'Leuchten',
                 animation: 'Animation',
+                animation_flow: 'Anim: Lauflicht (Flow)',
+                animation_sequential: 'Anim: Welle (Sequential)',
+                animation_pulse: 'Anim: Puls (Pulse)',
+                animation_segments: 'Anim: Segmente',
                 thickness: 'Linienstärke',
                 curvature: 'Krümmung',
                 opacity: 'Deckkraft',
@@ -951,8 +954,8 @@ export class MappingUI {
                         functions = ['categorical', 'sphereComplexity'];
                     } else if (['size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ', 'attraction', 'repulsion', 'inertia'].includes(prop)) {
                         functions = ['linear', 'exponential', 'logarithmic', 'categorical'];
-                    } else if (prop === 'animation') {
-                        functions = ['pulse'];
+                    } else if (prop === 'animation' || prop.startsWith('animation_')) {
+                        functions = ['linear', 'exponential', 'constant'];
                     } else {
                         functions = ['linear', 'exponential', 'logarithmic', 'heatmap', 'bipolar', 'pulse', 'sphereComplexity', 'categorical'];
                     }
@@ -973,7 +976,7 @@ export class MappingUI {
                         const updates: Partial<VisualMapping> = { function: newFunc as any };
                         
                         if (newFunc === 'categorical') {
-                            const source = mapping.source || mapping.field || '';
+                            const source = mapping.field || mapping.source || '';
                             const uniqueValues = this.getAttributeUniqueValues(source);
                             const currentCategories = mapping.params?.categories || {};
                             
@@ -1020,7 +1023,7 @@ export class MappingUI {
                         // 2. Domain Min/Max
                         let defaultDomain: [number, number] = [0, 1];
                         if (this.dataModel) {
-                            const propSchema = getPropertySchema(this.dataModel, this.currentType, mapping.source || mapping.field || '');
+                            const propSchema = getPropertySchema(this.dataModel, this.currentType, mapping.field || mapping.source || '');
                             if (propSchema && propSchema.range) {
                                 defaultDomain = propSchema.range;
                             }
@@ -1277,7 +1280,7 @@ export class MappingUI {
                         catLabel.style.marginBottom = '6px';
                         catGroup.appendChild(catLabel);
                         
-                        const source = mapping.source || mapping.field || '';
+                        const source = mapping.field || mapping.source || '';
                         const uniqueValues = this.getAttributeUniqueValues(source);
                         const categories = mapping.params?.categories || {};
                         
@@ -1460,11 +1463,11 @@ export class MappingUI {
                             }
                         };
                         constGroup.appendChild(numInput);
-                    } else if (prop === 'animation') {
+                    } else if (prop === 'animation' || prop.startsWith('animation_')) {
                         const animSelect = document.createElement('select');
                         animSelect.className = 'mapping-control-select';
-                        const animOptions = ['none', 'pulse'];
-                        const currentAnim = mapping.function === 'pulse' ? 'pulse' : 'none';
+                        const animOptions = ['none', 'active'];
+                        const currentAnim = (mapping.function === 'constant' && mapping.params?.active) ? 'active' : 'none';
                         animOptions.forEach(optVal => {
                             const opt = document.createElement('option');
                             opt.value = optVal;
@@ -1473,17 +1476,17 @@ export class MappingUI {
                             animSelect.appendChild(opt);
                         });
                         animSelect.onchange = () => {
-                            if (animSelect.value === 'pulse') {
+                            if (animSelect.value === 'active') {
                                 this.updatePropertyMapping(prop, { 
                                     source: 'constant',
-                                    function: 'pulse',
-                                    params: { frequency: 'heartbeat' }
+                                    function: 'constant',
+                                    params: { active: true, value: 1.0 }
                                 });
                             } else {
                                 this.updatePropertyMapping(prop, { 
                                     source: 'constant',
                                     function: 'constant',
-                                    params: {}
+                                    params: { active: false, value: 0 }
                                 });
                             }
                         };
@@ -1511,8 +1514,8 @@ export class MappingUI {
             this.renderLayoutEngineSection();
         }
 
-        // Draw active curves after browser layout pass
-        requestAnimationFrame(() => this.drawCurves());
+        // Draw active curves after browser layout pass and during transitions
+        this.animateCurves();
     }
 
     /** Setzt den Callback fuer Layout-Anwendung. Wird von App.ts aufgerufen. */
@@ -1607,7 +1610,7 @@ export class MappingUI {
         applyBtn.title = 'Layout anwenden';
         applyBtn.style.cssText = `
             width: 24px; height: 24px; border: none;
-            background: rgba(255, 165, 0, 0.2); color: #ffa500;
+            background: rgba(160, 128, 96, 0.2); color: var(--accent-color);
             border-radius: 4px; cursor: pointer; font-size: 10px;
             display: flex; align-items: center; justify-content: center;
             transition: all 0.2s ease; flex-shrink: 0;
@@ -1765,8 +1768,8 @@ export class MappingUI {
         section.appendChild(details);
         this.rightColumn.appendChild(section);
 
-        // Sicherstellen, dass Kurven nach dem Rendern neu gezeichnet werden (mit leichter Verzögerung für DOM Reflow)
-        setTimeout(() => this.drawCurves(), 50);
+        // Sicherstellen, dass Kurven nach dem Rendern neu gezeichnet werden
+        this.animateCurves();
     }
 
     /** Initialisiert die Layout-Parameter-Werte fuer den aktuell gewaehlten Algorithmus. */
@@ -1798,7 +1801,7 @@ export class MappingUI {
         };
 
         this.onUpdate(this.mappings);
-        requestAnimationFrame(() => this.drawCurves());
+        this.animateCurves();
     }
 
     private getTypesToCheck(): string[] {
@@ -1818,9 +1821,16 @@ export class MappingUI {
         }
         return typesToCheck;
     }
-private drawCurves() {
+
+    private drawCurves() {
         // Clear previous paths
         this.svgOverlay.innerHTML = '';
+
+        // Clear previous active states
+        this.container.querySelectorAll('.snapdot.connected').forEach(dot => dot.classList.remove('connected'));
+        this.container.querySelectorAll('.snapdot.suggested').forEach(dot => dot.classList.remove('suggested'));
+        this.container.querySelectorAll('.mapping-item.active-mapping').forEach(item => item.classList.remove('active-mapping'));
+        this.container.querySelectorAll('.mapping-item.suggested-mapping').forEach(item => item.classList.remove('suggested-mapping'));
 
         if (!this.mappings || !this.currentType) return;
 
@@ -1838,10 +1848,12 @@ private drawCurves() {
                 if (preset) {
                     Object.entries(preset).forEach(([prop, mapping]) => {
                         if (typeof mapping === 'object' && mapping !== null && ('source' in mapping || 'field' in mapping)) {
-                            const sourceAttr = (mapping as VisualMapping).source || (mapping as VisualMapping).field;
-                            if (sourceAttr && sourceAttr !== 'constant') {
-                                activeLines.add(`${sourceAttr}|${prop}`);
-                                activeProps.add(prop);
+                            const sourceAttr = (mapping as VisualMapping).field || (mapping as VisualMapping).source;
+                            if (sourceAttr) {
+                                if (sourceAttr !== 'constant') {
+                                    activeLines.add(`${sourceAttr}|${prop}`);
+                                    activeProps.add(prop);
+                                }
                             }
                         }
                     });
@@ -1856,7 +1868,7 @@ private drawCurves() {
                 if (preset) {
                     Object.entries(preset).forEach(([prop, mapping]) => {
                         if (typeof mapping === 'object' && mapping !== null && ('source' in mapping || 'field' in mapping)) {
-                            const sourceAttr = (mapping as VisualMapping).source || (mapping as VisualMapping).field;
+                            const sourceAttr = (mapping as VisualMapping).field || (mapping as VisualMapping).source;
                             // Only add if not overridden by any active mapping for this property
                             if (sourceAttr && sourceAttr !== 'constant' && !activeProps.has(prop)) {
                                 originalLines.add(`${sourceAttr}|${prop}`);
@@ -1894,37 +1906,20 @@ private drawCurves() {
                 debugLog += `[O:${line}=${result}] `;
             }
         });
-
-        debugLog += `ALines:${activeLines.size} OLines:${originalLines.size} DrA:${drawnActive} DrO:${drawnOriginal}`;
-        const header = this.container.querySelector('.mapping-header');
-        if (header) {
-            let debugEl = header.querySelector('.mapping-debug') as HTMLElement;
-            if (!debugEl) {
-                debugEl = document.createElement('div');
-                debugEl.className = 'mapping-debug';
-                debugEl.style.cssText = 'display:none; font-size:8px; color:red; position:absolute; bottom:0; left:100px;';
-                header.appendChild(debugEl);
-            }
-            debugEl.textContent = debugLog;
-        }
-
-        // 5. Update connection dots
+        
+        console.log(`[MappingUI] drawCurves Debug: ${debugLog} ALines:${activeLines.size} OLines:${originalLines.size} DrA:${drawnActive} DrO:${drawnOriginal}`);
+        
+        // 5. Update connection dots (already cleared at start, but we can leave this for specific prop checks if needed, though it's redundant now)
         this.rightColumn.querySelectorAll('.snapdot').forEach(dot => {
             const prop = (dot as HTMLElement).dataset.prop;
             if (prop && !activeProps.has(prop)) {
                 dot.classList.remove('connected');
+                const item = dot.closest('.mapping-item');
+                if (item) item.classList.remove('active-mapping');
             }
         });
 
-        // Update Takeover Button visibility
-        const btnTakeover = this.container.querySelector('#btnTakeoverMapping') as HTMLElement;
-        if (btnTakeover) {
-            const hasMappings = this.hasOriginalMappingsToTakeover();
-            btnTakeover.style.display = hasMappings ? 'block' : 'none';
-            if (hasMappings) {
-                btnTakeover.textContent = `Datei-Mappings übernehmen`;
-            }
-        }
+        // Takeover Button logic removed from here as it is now in SuggestionUI
     }
 
     private hasOriginalMappingsToTakeover(): boolean {
@@ -1935,7 +1930,7 @@ private drawCurves() {
             for (const prop in preset) {
                 const map = preset[prop] as VisualMapping;
                 if (!map) continue;
-                let sourceAttr = map.source || map.field;
+                let sourceAttr = map.field || map.source;
                 if (!sourceAttr) continue;
                 
                 sourceAttr = sourceAttr.replace(/^stateVector\./, '');
@@ -1997,15 +1992,26 @@ private drawCurves() {
     }
 
     private drawCurve(sourceAttr: string, prop: string, curveClass: string, isActive: boolean, isDashed: boolean): string {
-        // Build 2/3 imported mappings might have "stateVector.group", but UI displays "group"
-        const normalizedAttr = sourceAttr.replace(/^stateVector\./, '');
-        
-        let leftDot = this.leftColumn.querySelector(`.snapdot[data-attr="${normalizedAttr}"]`) as HTMLElement;
+        // Build 2/3 imported mappings might have "stateVector.group", but UI might display it differently.
+        // First try the exact sourceAttr.
+        let leftDot = this.leftColumn.querySelector(`.snapdot:not([data-val])[data-attr="${sourceAttr}"]`) as HTMLElement;
         
         if (!leftDot) {
-            // Falls das Unterattribut eingeklappt/nicht gerendert ist, nimm den uebergeordneten Parent-Dot als Fallback
-            const parentPath = normalizedAttr.split('.')[0];
-            leftDot = this.leftColumn.querySelector(`.snapdot:not(.sub-dot)[data-attr="${parentPath}"]`) as HTMLElement;
+            // Try normalized attribute (fallback for older mappings)
+            const normalizedAttr = sourceAttr.replace(/^stateVector\./, '');
+            leftDot = this.leftColumn.querySelector(`.snapdot:not([data-val])[data-attr="${normalizedAttr}"]`) as HTMLElement;
+        }
+        
+        if (!leftDot) {
+            // If sub-attribute is collapsed, use the parent attribute dot
+            const parentPath = sourceAttr.split('.')[0];
+            leftDot = this.leftColumn.querySelector(`.snapdot:not(.sub-dot):not([data-val])[data-attr="${parentPath}"]`) as HTMLElement;
+        }
+
+        if (!leftDot) {
+            // Ultimate fallback for normalized parent
+            const normalizedParentPath = sourceAttr.replace(/^stateVector\./, '').split('.')[0];
+            leftDot = this.leftColumn.querySelector(`.snapdot:not(.sub-dot):not([data-val])[data-attr="${normalizedParentPath}"]`) as HTMLElement;
         }
 
         const rightDot = this.rightColumn.querySelector(`.snapdot[data-prop="${prop}"]`) as HTMLElement;
@@ -2017,24 +2023,40 @@ private drawCurves() {
         if (isActive) {
             leftDot.classList.add('connected');
             rightDot.classList.add('connected');
+            
+            const leftItem = leftDot.closest('.mapping-item');
+            if (leftItem) leftItem.classList.add('active-mapping');
+            
+            const rightItem = rightDot.closest('.mapping-item');
+            if (rightItem) rightItem.classList.add('active-mapping');
+        } else if (isDashed) {
+            leftDot.classList.add('suggested');
+            rightDot.classList.add('suggested');
+            
+            const leftItem = leftDot.closest('.mapping-item');
+            if (leftItem) leftItem.classList.add('suggested-mapping');
+            
+            const rightItem = rightDot.closest('.mapping-item');
+            if (rightItem) rightItem.classList.add('suggested-mapping');
         }
 
         const bodyRect = this.bodyContainer.getBoundingClientRect();
         const leftRect = leftDot.getBoundingClientRect();
         const rightRect = rightDot.getBoundingClientRect();
 
-        // Check if dots are actually visible (e.g. not display: none)
-        if (leftRect.width === 0 && leftRect.height === 0) {
-            const style = window.getComputedStyle(leftDot);
-            const parentStyle = window.getComputedStyle(leftDot.parentElement || document.body);
-            return `ZeroRect(L,d:${style.display},v:${style.visibility},pd:${parentStyle.display})`;
-        }
-        if (rightRect.width === 0 && rightRect.height === 0) return `ZeroRect(R)`;
-
         const x1 = leftRect.left + leftRect.width / 2 - bodyRect.left;
         const y1 = leftRect.top + leftRect.height / 2 - bodyRect.top;
         const x2 = rightRect.left + rightRect.width / 2 - bodyRect.left;
         const y2 = rightRect.top + rightRect.height / 2 - bodyRect.top;
+
+        // Restore ZeroRect check but log it instead of silently failing
+        if (leftRect.width === 0 && leftRect.height === 0) {
+            const pStyle = window.getComputedStyle(leftDot.parentElement || document.body);
+            return `ZRL(attr:${leftDot.dataset.attr},p:${leftDot.parentElement?.className},pvis:${pStyle.display},bW:${bodyRect.width})`;
+        }
+        if (rightRect.width === 0 && rightRect.height === 0) {
+            return `ZeroRectR`;
+        }
 
         const dx = Math.abs(x2 - x1) * 0.5;
         const dStr = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
@@ -2286,7 +2308,7 @@ private drawCurves() {
                             const row = input.closest('div');
                             if (row && row.textContent?.includes(specificValue)) {
                                 input.focus();
-                                input.style.boxShadow = '0 0 0 2px var(--accent, #ffa500)';
+                                input.style.boxShadow = '0 0 0 2px var(--accent-color)';
                                 setTimeout(() => input.style.boxShadow = '', 2000);
                             }
                         });
@@ -2691,7 +2713,7 @@ private drawCurves() {
 
             currentDataItems.forEach(item => {
                 if (item.type === this.currentType) {
-                    const val = parseFloat(this.getNestedValue(item, mapping.source || mapping.field || ''));
+                    const val = parseFloat(this.getNestedValue(item, mapping.field || mapping.source || ''));
                     if (!isNaN(val)) {
                         const pct = (absMax > absMin) ? (val - absMin) / (absMax - absMin) : 0.5;
                         const binIdx = Math.max(0, Math.min(9, Math.floor(pct * 10)));

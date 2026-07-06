@@ -87,7 +87,7 @@ export class SuggestionUI {
         // 1. Original Mappings from file
         if (this.originalMappings && Object.keys(this.originalMappings.defaultPresets || {}).length > 0) {
             suggestions.push({
-                label: 'Original-Mapping (Datei)',
+                label: 'Mapping aus Vorlage',
                 desc: 'Die in der geladenen Datei definierten Visualisierungen.',
                 mapping: this.originalMappings,
                 isOriginal: true
@@ -182,8 +182,8 @@ export class SuggestionUI {
                 const isActive = c.dataset.label === activeLabel;
                 if (isActive) {
                     c.style.borderWidth = '2px';
-                    c.style.borderColor = '#ffa500';
-                    c.style.boxShadow = '0 0 8px rgba(255, 165, 0, 0.4)';
+                    c.style.borderColor = 'var(--accent-color)';
+                    c.style.boxShadow = '0 0 8px rgba(160, 128, 96, 0.4)';
                 } else {
                     c.style.borderWidth = '1px';
                     c.style.borderColor = 'rgba(255, 255, 255, 0.1)';
@@ -205,10 +205,17 @@ export class SuggestionUI {
                 transition: all 0.2s ease;
             `;
 
-            card.innerHTML = `
+            let cardHtml = `
                 <div style="font-weight: bold; font-size: 12px; color: #fff;">${s.label}</div>
                 <div style="font-size: 10px; color: #aaa; margin-top: 4px;">${s.desc}</div>
             `;
+            if (s.isOriginal) {
+                cardHtml += `
+                <button class="takeover-btn" style="margin-top: 8px; width: 100%; background: var(--accent-color); color: #fff; border: none; padding: 6px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                    Mapping aus Vorlage übernehmen
+                </button>`;
+            }
+            card.innerHTML = cardHtml;
 
             // Hover -> Preview
             card.addEventListener('mouseenter', () => {
@@ -245,7 +252,7 @@ export class SuggestionUI {
 
         // Set initial active card
         if (this.originalMappings && Object.keys(this.originalMappings.defaultPresets || {}).length > 0) {
-            setActiveCard('Original-Mapping (Datei)');
+            setActiveCard('Mapping aus Vorlage');
         } else {
             setActiveCard('Standard-Ansicht');
         }

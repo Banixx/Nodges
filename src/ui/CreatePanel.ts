@@ -13,6 +13,7 @@ export class CreatePanel {
     private providerSelect!: HTMLSelectElement;
     private keyInput!: HTMLInputElement;
     private modelSelect!: HTMLSelectElement;
+    private formatSelect!: HTMLSelectElement;
     private promptTextarea!: HTMLTextAreaElement;
     private generateBtn!: HTMLButtonElement;
     private statusText!: HTMLElement;
@@ -194,6 +195,42 @@ export class CreatePanel {
             LLMService.setActiveModel(provider, this.modelSelect.value);
         };
 
+        // Format Select
+        const formatLabel = document.createElement('label');
+        formatLabel.textContent = 'Format-Version:';
+        formatLabel.style.display = 'block';
+        formatLabel.style.marginBottom = '5px';
+        formatLabel.style.color = 'var(--text-muted)';
+        genSection.appendChild(formatLabel);
+
+        this.formatSelect = document.createElement('select');
+        this.formatSelect.className = 'form-control';
+        this.formatSelect.style.width = '100%';
+        this.formatSelect.style.marginBottom = '15px';
+        this.formatSelect.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+        this.formatSelect.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+        this.formatSelect.style.color = 'var(--text-color)';
+        this.formatSelect.style.padding = '6px';
+        this.formatSelect.style.borderRadius = '4px';
+        this.formatSelect.style.fontFamily = 'inherit';
+
+        const formats = [
+            { value: '/prompts/build_4_prompt.md', label: 'Build 4 (Aktuell)' },
+            { value: '/prompts/build_3_prompt.md', label: 'Build 3' },
+            { value: '/prompts/default_prompt.md', label: 'Legacy / Default' }
+        ];
+
+        formats.forEach(f => {
+            const opt = document.createElement('option');
+            opt.value = f.value;
+            opt.textContent = f.label;
+            if (f.value === '/prompts/build_4_prompt.md') {
+                opt.selected = true;
+            }
+            this.formatSelect.appendChild(opt);
+        });
+        genSection.appendChild(this.formatSelect);
+
         const promptLabel = document.createElement('label');
         promptLabel.textContent = 'Dein Prompt:';
         promptLabel.style.display = 'block';
@@ -218,7 +255,7 @@ export class CreatePanel {
 
         this.generateBtn = document.createElement('button');
         this.generateBtn.className = 'action-button';
-        this.generateBtn.textContent = '✨ Generieren & Hinzufügen';
+        this.generateBtn.textContent = ' Generieren & Hinzufügen';
         this.generateBtn.onclick = this.handleGenerate.bind(this);
         genSection.appendChild(this.generateBtn);
 
@@ -324,6 +361,7 @@ export class CreatePanel {
 
         const provider = this.providerSelect.value as LLMProvider;
         const model = this.modelSelect.value;
+        const format = this.formatSelect.value;
 
         if (!LLMService.getApiKey(provider)) {
             this.setStatus(`Bitte hinterlege zuerst deinen API-Key für ${provider}.`, 'error');
@@ -334,7 +372,7 @@ export class CreatePanel {
         this.setStatus('Generiere Graph-Daten... (Das kann einige Sekunden dauern)', 'info');
 
         try {
-            const graphData = await LLMService.generateGraphData(prompt, provider, model);
+            const graphData = await LLMService.generateGraphData(prompt, provider, model, format);
 
             // Append data to existing graph
             const sourceName = 'AI_Generation_' + Date.now();

@@ -1,0 +1,156 @@
+{
+  "metadata": {
+    "version": 4,
+    "schemaVersion": "4.0",
+    "description": "Build 4 Demo mit Map und Temporal Keyframes",
+    "map": {
+      "image": "Switzerland.jpg",
+      "referenceWidth": 100,
+      "referenceHeight": 70
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "city": {
+        "properties": {
+          "name": "string",
+          "population": "number"
+        }
+      }
+    },
+    "relationships": {
+      "route": {
+        "properties": {
+          "distance": "number"
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "node1",
+        "type": "city",
+        "name": "Zürich",
+        "population": 400000,
+        "mapX": -10,
+        "mapY": -5,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": 100,
+          "history": [
+            {
+              "timestamp": 0,
+              "changes": {
+                "size": 1,
+                "color": "#ff0000"
+              }
+            },
+            {
+              "timestamp": 50,
+              "changes": {
+                "size": 3,
+                "color": "#00ff00"
+              }
+            },
+            {
+              "timestamp": 100,
+              "changes": {
+                "size": 1,
+                "color": "#0000ff"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "node2",
+        "type": "city",
+        "name": "Genf",
+        "population": 200000,
+        "mapX": -30,
+        "mapY": 15,
+        "temporal": {
+          "validFrom": 20,
+          "validTo": 80,
+          "history": [
+            {
+              "timestamp": 20,
+              "changes": {
+                "size": 1,
+                "color": "#ffff00"
+              }
+            },
+            {
+              "timestamp": 80,
+              "changes": {
+                "size": 2,
+                "color": "#ff00ff"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "node3",
+        "type": "city",
+        "name": "Lugano",
+        "population": 60000,
+        "mapX": 15,
+        "mapY": 25,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": 100,
+          "history": [
+            {
+              "timestamp": 0,
+              "changes": {
+                "size": 0.5,
+                "color": "#00ffff"
+              }
+            },
+            {
+              "timestamp": 100,
+              "changes": {
+                "size": 1.5,
+                "color": "#00ffff"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "edge1",
+        "type": "route",
+        "start": "node1",
+        "end": "node2",
+        "distance": 250,
+        "temporal": {
+          "validFrom": 20,
+          "validTo": 80
+        }
+      },
+      {
+        "id": "edge2",
+        "type": "route",
+        "start": "node1",
+        "end": "node3",
+        "distance": 180
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "city": {
+        "geometry": "sphere",
+        "color": "#3498db"
+      },
+      "route": {
+        "color": "#ffffff"
+      }
+    }
+  },
+  "system": "Nodges"
+}

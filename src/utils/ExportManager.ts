@@ -87,6 +87,55 @@ export class ExportManager {
         return JSON.stringify(exportData, null, options.minify ? 0 : 2);
     }
 
+    /**
+     * Exportiert den vollständigen nativen Nodges-Graph (Build 3 / Build 4).
+     * Erhält alle semantischen Daten: temporal, map, fields, visualMappings, dataModel.
+     * Schreibt aktuelle Positionen der Entities aus dem Renderer zurück.
+     */
+    exportNodgesJSON(graphData: any, options: any = {}): string {
+        if (!graphData) throw new Error('Keine Graphdaten zum Exportieren vorhanden.');
+
+        // Deep-clone um das Original nicht zu verändern
+        const clone = JSON.parse(JSON.stringify(graphData));
+
+        // Aktuelle Positionen der Entities aus dem Renderer einschreiben
+        if (options.currentEntities && Array.isArray(options.currentEntities)) {
+            const posMap = new Map<string, { x: number; y: number; z: number }>();
+            options.currentEntities.forEach((e: any) => {
+                if (e.id && e.position) posMap.set(String(e.id), e.position);
+            });
+            if (clone.data && Array.isArray(clone.data.entities)) {
+                clone.data.entities.forEach((entity: any) => {
+                    const pos = posMap.get(String(entity.id));
+                    if (pos) {
+                        entity.position = { x: pos.x, y: pos.y, z: pos.z };
+                    }
+                });
+            }
+        }
+
+        // Interne Felder bereinigen
+        if (clone.metadata) {
+            delete clone.metadata._buildVersion; // wird beim Laden neu gesetzt
+        }
+        // Berechnete Metriken nicht mitexportieren
+        if (clone.data && Array.isArray(clone.data.entities)) {
+            clone.data.entities.forEach((entity: any) => {
+                delete entity.inbound;
+                delete entity.outbound;
+                delete entity.degree;
+            });
+        }
+
+        // Export-Zeitstempel anhängen
+        if (!clone.metadata) clone.metadata = {};
+        clone.metadata.exportedAt = new Date().toISOString();
+
+        return JSON.stringify(clone, null, options.minify ? 0 : 2);
+    }
+
+
+
     exportCSV(networkData: any, options: any = {}): string {
         const exportType = options.type || 'nodes'; // 'nodes', 'edges', or 'both'
 
