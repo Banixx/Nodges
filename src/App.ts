@@ -874,7 +874,9 @@ export class App {
                             // Revert to active mappings from state
                             this.visualMappingEngine.setVisualMappings(this.stateManager.state.visualMappings || { defaultPresets: {} });
                         }
-                        this.updateNodePositions();
+                        if (this.nodeManager) {
+                            this.nodeManager.updateNodes(this.currentEntities);
+                        }
                         if (this.edgeObjectsManager) {
                             this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
                         }

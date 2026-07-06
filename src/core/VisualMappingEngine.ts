@@ -56,13 +56,8 @@ export class VisualMappingEngine {
     private getEffectivePreset(type: string, isNode: boolean): any {
         const activeSpecific = this.visualMappings?.defaultPresets?.[type];
         const activeGlobal = this.visualMappings?.defaultPresets?.[isNode ? 'global_node' : 'global_edge'];
-        
-        const originalSpecific = this.originalVisualMappings?.defaultPresets?.[type];
-        const originalGlobal = this.originalVisualMappings?.defaultPresets?.[isNode ? 'global_node' : 'global_edge'];
 
         const preset = {};
-        if (originalGlobal) Object.assign(preset, originalGlobal);
-        if (originalSpecific) Object.assign(preset, originalSpecific);
         if (activeGlobal) Object.assign(preset, activeGlobal);
         if (activeSpecific) Object.assign(preset, activeSpecific);
         

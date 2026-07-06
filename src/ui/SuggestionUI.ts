@@ -8,6 +8,7 @@ export class SuggestionUI {
 
     private originalMappings: VisualMappings | null = null;
     private dataModel: DataModel | null = null;
+    private currentPreviewMapping: VisualMappings | null = null;
 
     constructor(containerId: string) {
         let el = document.getElementById(containerId);
@@ -229,32 +230,59 @@ export class SuggestionUI {
                 if (card.style.borderWidth !== '2px') {
                     card.style.background = 'rgba(255, 255, 255, 0.05)';
                 }
-                if (this.onPreviewMapping) this.onPreviewMapping(null);
+                if (this.onPreviewMapping) this.onPreviewMapping(this.currentPreviewMapping);
             });
 
-            // Click -> Apply
-            card.addEventListener('click', () => {
-                if (this.onApplyMapping) this.onApplyMapping(s.mapping);
+            // Click -> Set as active preview
+            card.addEventListener('click', (e) => {
+                // If clicked on takeover button, don't trigger the card click
+                if ((e.target as HTMLElement).classList.contains('takeover-btn')) return;
+
+                this.currentPreviewMapping = s.mapping;
+                if (this.onPreviewMapping) this.onPreviewMapping(this.currentPreviewMapping);
                 
                 setActiveCard(s.label);
                 
                 // Visual feedback
                 const origBg = card.style.background;
-                card.style.background = 'rgba(0, 255, 0, 0.3)';
+                card.style.background = 'rgba(255, 165, 0, 0.2)'; // Orange tint for preview
                 setTimeout(() => {
                     card.style.background = origBg;
                 }, 300);
             });
 
+            // Takeover Button Logic
+            const takeoverBtn = card.querySelector('.takeover-btn') as HTMLElement;
+            if (takeoverBtn) {
+                takeoverBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent card click
+                    if (this.onApplyMapping) this.onApplyMapping(s.mapping);
+                    
+                    // Visual feedback
+                    const origBg = takeoverBtn.style.background;
+                    takeoverBtn.style.background = 'rgba(0, 255, 0, 0.6)';
+                    setTimeout(() => {
+                        takeoverBtn.style.background = origBg;
+                    }, 500);
+                });
+            }
+
             cards.push(card);
             content.appendChild(card);
         });
 
-        // Set initial active card
+        // Set initial active card and preview it
         if (this.originalMappings && Object.keys(this.originalMappings.defaultPresets || {}).length > 0) {
+            this.currentPreviewMapping = this.originalMappings;
             setActiveCard('Mapping aus Vorlage');
         } else {
+            this.currentPreviewMapping = defaultMap;
             setActiveCard('Standard-Ansicht');
+        }
+        
+        // Initial preview
+        if (this.onPreviewMapping) {
+            this.onPreviewMapping(this.currentPreviewMapping);
         }
     }
 }

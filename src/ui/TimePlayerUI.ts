@@ -13,6 +13,12 @@ export class TimePlayerUI {
     constructor(stateManager: IStateManager, _app: App) {
         this.stateManager = stateManager;
 
+        // Remove any existing instance to prevent duplicates (e.g., from HMR)
+        const existing = document.getElementById('timePlayerContainer');
+        if (existing) {
+            existing.remove();
+        }
+
         this.container = document.createElement('div');
         this.container.id = 'timePlayerContainer';
         this.container.className = 'time-player-panel';

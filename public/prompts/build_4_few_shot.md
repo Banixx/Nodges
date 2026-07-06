@@ -71,17 +71,14 @@ WICHTIGE REGELN FUER MAXIMALE QUALITAET:
    - Halte dich exakt an die `dataModel -> visualMappings -> data.entities/relationships` Hierarchie.
    - `metadata.schemaVersion` MUSS exakt der String `"4.0"` sein.
 
-2. INHALTLICHE TIEFE (Dynamische Ontologie & Flache Struktur):
-   - Generiere realistische, domaenenspezifische Daten.
-   - ONTOLOGIE: Entwickle ein dynamisches Schema basierend auf den Textinhalten. Teile Entitaeten in sinnvolle Klassen (Types) ein (z.B. `Institution`, `Person`, `Gesetz`).
-   - TYP-SPEZIFISCHE ATTRIBUTE: Vermeide blinde Attribut-Vererbung! Vergebe Attribute nur dort, wo sie logisch passen (z.B. eine Person bekommt ein "Partei"-Attribut, eine Institution jedoch nicht).
-   - FLACHE STRUKTUR & SEMANTISCHE KANTEN: Bilde Hierarchien und Zugehoerigkeiten (z.B. Person ist Mitglied in Institution) NIEMALS durch Verschachtelung im JSON ab, sondern immer ueber Kanten (z.B. `BELONGS_TO`, `PART_OF`).
+2. INHALTLICHE TIEFE (Semantik):
+   - Generiere realistische, domaenenspezifische Daten. Nutze keine generischen Platzhalter.
+   - Jede Entity braucht mindestens 2-3 semantische Properties (z.B. Macht, Budget, Kategorie, Waehleranteil). Erfasse diese im `dataModel`.
 
 3. VISUELLE MAPPINGS (Die Macht von Nodges):
-   - Nutze `color` (categorical) um die abgeleiteten Entitaets-Typen oder zentrale typ-spezifische Attribute sofort erkennbar zu machen.
-   - Nutze `geometry` um z.B. Personen (sphere) von Institutionen (box) zu unterscheiden.
+   - Nutze `color` (categorical) um Gruppen sofort erkennbar zu machen.
    - Nutze `size` (continuous, linear) um Hierarchien und Gewichtung darzustellen (Range typischerweise [0.5, 2.5]).
-   - Bei Edges: Nutze verschiedene Farben und `thickness` fuer semantische Kanten (z.B. `BELONGS_TO` = duenn/grau, `OPPOSES` = dick/rot).
+   - Bei Edges: Nutze verschiedene Farben und `thickness` fuer verschiedene Relationship-Typen (z.B. Koalition = dick/gruen, Konflikt = duenn/rot).
 
 4. ZEITLICHE DYNAMIK (Erzaehle eine Geschichte):
    - Erschaffe eine Timeline. Elemente entstehen (`validFrom`) und vergehen (`validTo`). `validTo: null` = existiert bis heute.
@@ -95,3 +92,84 @@ WICHTIGE REGELN FUER MAXIMALE QUALITAET:
 
 6. UMFANG:
    - Generiere ein echtes, dichtes Netzwerk. Mindestens 10-15 Entities und 15-25 Relationships mit mehreren verschiedenen Typen.
+
+---
+
+FEW-SHOT BEISPIEL (Zur inhaltlichen und narrativen Orientierung):
+Hier ist ein "Gold Standard" Beispiel fuer ein Netzwerk. Achte darauf, wie kreativ das dataModel entworfen ist, wie die Mappings genutzt werden, und vor allem wie die Delta-Regel in der History strikt angewendet wird (z.B. aendert sich nur der Waehleranteil zu einem bestimmten Jahr).
+
+{
+  "system": "Schweizer_Politik",
+  "metadata": {
+    "schemaVersion": "4.0",
+    "description": "Detailliertes Modell der Parteienlandschaft.",
+    "author": "Antigravity",
+    "map": { "image": "Switzerland.jpg", "referenceWidth": 1000, "referenceHeight": 650 }
+  },
+  "dataModel": {
+    "entities": {
+      "partei": {
+        "properties": {
+          "waehleranteil": { "type": "continuous", "range": [0, 50] },
+          "spektrum": { "type": "categorical", "values": ["Links", "Mitte", "Rechts"] }
+        }
+      }
+    },
+    "relationships": {
+      "einfluss": { "properties": {} }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "partei": {
+        "color": { "source": "spektrum", "function": "categorical" },
+        "size": { "source": "waehleranteil", "function": "linear", "range": [0.5, 2.0] }
+      },
+      "einfluss": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#ffaa00" } },
+        "thickness": { "source": "constant", "function": "constant", "range": [0.05, 0.05] }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "fdp",
+        "type": "partei",
+        "label": "FDP",
+        "waehleranteil": 40,
+        "spektrum": "Rechts",
+        "mapX": 500,
+        "mapY": 250,
+        "temporal": {
+          "validFrom": 1894,
+          "validTo": null,
+          "history": [
+            { "timestamp": 1959, "changes": { "waehleranteil": 25 } },
+            { "timestamp": 2003, "changes": { "waehleranteil": 17 } }
+          ]
+        }
+      },
+      {
+        "id": "cvp",
+        "type": "partei",
+        "label": "CVP",
+        "waehleranteil": 20,
+        "spektrum": "Mitte",
+        "mapX": 450,
+        "mapY": 200,
+        "temporal": {
+          "validFrom": 1912,
+          "validTo": null,
+          "history": [
+            { "timestamp": 1959, "changes": { "waehleranteil": 23 } },
+            { "timestamp": 2021, "changes": { "label": "Die Mitte", "waehleranteil": 14 } }
+          ]
+        }
+      }
+    ],
+    "relationships": [
+      { "id": "rel3", "type": "einfluss", "source": "fdp", "target": "cvp", "temporal": { "validFrom": 1894, "validTo": null } }
+    ]
+  }
+}

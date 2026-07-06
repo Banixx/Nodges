@@ -398,7 +398,11 @@ export class FilePanelUI {
                         alert('Keine Graphdaten geladen.');
                         return;
                     }
-                    const exportOptions: any = { currentEntities: this.app.currentEntities };
+                    const exportOptions: any = { 
+                        currentEntities: this.app.currentEntities,
+                        activeVisualMappings: this.app.visualMappingEngine?.getVisualMappings() || null,
+                        activeDataModel: graphData.dataModel || null
+                    };
                     const jsonStr = this.app.fileHandler['exportManager'].exportNodgesJSON(graphData, exportOptions);
                     const blob = new Blob([jsonStr], { type: 'application/json' });
                     const url = URL.createObjectURL(blob);

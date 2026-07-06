@@ -1,0 +1,1376 @@
+{
+  "system": "Politisches_System_der_Schweiz",
+  "metadata": {
+    "schemaVersion": "4.0",
+    "description": "Dynamisches Netzwerk der schweizerischen Staatsordnung mit Bund, Kantonen, Gemeinden, Parlament, Regierung, Gerichten, Volksrechten und tragenden Prinzipien wie Föderalismus, direkter Demokratie, Konkordanz und Kollegialität.",
+    "author": "AI",
+    "map": {
+      "image": "Switzerland.jpg",
+      "referenceWidth": 1000,
+      "referenceHeight": 650
+    },
+    "exportedAt": "2026-07-06T17:33:29.793Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "visualMappings": {
+    "defaultPresets": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1783359209756_bund",
+        "type": "institution",
+        "label": "Schweizerische Eidgenossenschaft",
+        "ebene": "Bund",
+        "gewalt": "Staatsebene",
+        "einfluss": 96,
+        "sitze": 0,
+        "professionalisierung": 78,
+        "demokratischeBreite": 95,
+        "position": {
+          "x": 0,
+          "y": 18,
+          "z": 0
+        },
+        "mapX": 485,
+        "mapY": 330,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1874,
+              "changes": {
+                "demokratischeBreite": 97
+              }
+            },
+            {
+              "timestamp": 1999,
+              "changes": {
+                "einfluss": 96
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783359209756_kantone",
+        "type": "institution",
+        "label": "Kantone",
+        "ebene": "Kanton",
+        "gewalt": "Staatsebene",
+        "einfluss": 88,
+        "sitze": 26,
+        "professionalisierung": 66,
+        "demokratischeBreite": 92,
+        "position": {
+          "x": -12,
+          "y": 12,
+          "z": 0
+        },
+        "mapX": 500,
+        "mapY": 335,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1979,
+              "changes": {
+                "sitze": 26
+              }
+            },
+            {
+              "timestamp": 1999,
+              "changes": {
+                "einfluss": 88
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 6,
+          "inbound": 3,
+          "outbound": 3
+        },
+        "inDegree": 3,
+        "outDegree": 3
+      },
+      {
+        "id": "AI_Generation_1783359209756_gemeinden",
+        "type": "institution",
+        "label": "Gemeinden",
+        "ebene": "Gemeinde",
+        "gewalt": "Staatsebene",
+        "einfluss": 65,
+        "sitze": 0,
+        "professionalisierung": 42,
+        "demokratischeBreite": 90,
+        "position": {
+          "x": -22,
+          "y": 6,
+          "z": 0
+        },
+        "mapX": 510,
+        "mapY": 345,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 2000,
+              "changes": {
+                "professionalisierung": 46
+              }
+            },
+            {
+              "timestamp": 2020,
+              "changes": {
+                "einfluss": 65
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783359209756_stimmvolk",
+        "type": "institution",
+        "label": "Stimmbevölkerung",
+        "ebene": "Mehrere Ebenen",
+        "gewalt": "Volk",
+        "einfluss": 98,
+        "sitze": 0,
+        "professionalisierung": 5,
+        "demokratischeBreite": 100,
+        "position": {
+          "x": 0,
+          "y": 24,
+          "z": -12
+        },
+        "mapX": 500,
+        "mapY": 315,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1971,
+              "changes": {
+                "demokratischeBreite": 100
+              }
+            },
+            {
+              "timestamp": 1999,
+              "changes": {
+                "einfluss": 98
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "inDegree": 2,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783359209756_bundesversammlung",
+        "type": "institution",
+        "label": "Bundesversammlung",
+        "ebene": "Bund",
+        "gewalt": "Legislative",
+        "einfluss": 93,
+        "sitze": 246,
+        "professionalisierung": 48,
+        "demokratischeBreite": 86,
+        "position": {
+          "x": 0,
+          "y": 15,
+          "z": 12
+        },
+        "mapX": 485,
+        "mapY": 330,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1919,
+              "changes": {
+                "demokratischeBreite": 88
+              }
+            },
+            {
+              "timestamp": 1999,
+              "changes": {
+                "einfluss": 93
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 6,
+          "inbound": 4,
+          "outbound": 2
+        },
+        "inDegree": 4,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783359209756_nationalrat",
+        "type": "institution",
+        "label": "Nationalrat",
+        "ebene": "Bund",
+        "gewalt": "Legislative",
+        "einfluss": 87,
+        "sitze": 200,
+        "professionalisierung": 47,
+        "demokratischeBreite": 90,
+        "position": {
+          "x": -10,
+          "y": 12,
+          "z": 18
+        },
+        "mapX": 485,
+        "mapY": 330,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1919,
+              "changes": {
+                "demokratischeBreite": 92
+              }
+            },
+            {
+              "timestamp": 1963,
+              "changes": {
+                "sitze": 200
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "inDegree": 2,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783359209756_staenderat",
+        "type": "institution",
+        "label": "Ständerat",
+        "ebene": "Bund",
+        "gewalt": "Legislative",
+        "einfluss": 84,
+        "sitze": 46,
+        "professionalisierung": 45,
+        "demokratischeBreite": 74,
+        "position": {
+          "x": 10,
+          "y": 12,
+          "z": 18
+        },
+        "mapX": 485,
+        "mapY": 330,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1979,
+              "changes": {
+                "sitze": 46
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "inDegree": 2,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783359209756_vereinigte_bundesversammlung",
+        "type": "institution",
+        "label": "Vereinigte Bundesversammlung",
+        "ebene": "Bund",
+        "gewalt": "Hybrid",
+        "einfluss": 82,
+        "sitze": 246,
+        "professionalisierung": 50,
+        "demokratischeBreite": 83,
+        "position": {
+          "x": 0,
+          "y": 17,
+          "z": 24
+        },
+        "mapX": 485,
+        "mapY": 330,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1999,
+              "changes": {
+                "einfluss": 82
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 4,
+          "inbound": 0,
+          "outbound": 4
+        },
+        "inDegree": 0,
+        "outDegree": 4
+      },
+      {
+        "id": "AI_Generation_1783359209756_bundesrat",
+        "type": "institution",
+        "label": "Bundesrat",
+        "ebene": "Bund",
+        "gewalt": "Exekutive",
+        "einfluss": 92,
+        "sitze": 7,
+        "professionalisierung": 94,
+        "demokratischeBreite": 70,
+        "position": {
+          "x": 18,
+          "y": 16,
+          "z": 6
+        },
+        "mapX": 485,
+        "mapY": 330,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1959,
+              "changes": {
+                "demokratischeBreite": 78
+              }
+            },
+            {
+              "timestamp": 2007,
+              "changes": {
+                "einfluss": 91
+              }
+            },
+            {
+              "timestamp": 2026,
+              "changes": {
+                "einfluss": 92
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 5,
+          "inbound": 5,
+          "outbound": 0
+        },
+        "inDegree": 5,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783359209756_bundeskanzlei",
+        "type": "institution",
+        "label": "Bundeskanzlei",
+        "ebene": "Bund",
+        "gewalt": "Verwaltung",
+        "einfluss": 58,
+        "sitze": 1,
+        "professionalisierung": 96,
+        "demokratischeBreite": 35,
+        "position": {
+          "x": 24,
+          "y": 12,
+          "z": 0
+        },
+        "mapX": 485,
+        "mapY": 330,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1999,
+              "changes": {
+                "professionalisierung": 96
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783359209756_bundesgericht",
+        "type": "institution",
+        "label": "Bundesgericht",
+        "ebene": "Bund",
+        "gewalt": "Judikative",
+        "einfluss": 86,
+        "sitze": 38,
+        "professionalisierung": 98,
+        "demokratischeBreite": 45,
+        "position": {
+          "x": 18,
+          "y": 10,
+          "z": -14
+        },
+        "mapX": 245,
+        "mapY": 410,
+        "temporal": {
+          "validFrom": 1875,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 2007,
+              "changes": {
+                "einfluss": 86
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783359209756_bundesstrafgericht",
+        "type": "institution",
+        "label": "Bundesstrafgericht",
+        "ebene": "Bund",
+        "gewalt": "Judikative",
+        "einfluss": 62,
+        "sitze": 25,
+        "professionalisierung": 97,
+        "demokratischeBreite": 38,
+        "position": {
+          "x": 26,
+          "y": 8,
+          "z": -20
+        },
+        "mapX": 635,
+        "mapY": 505,
+        "temporal": {
+          "validFrom": 2004,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783359209756_bundesverwaltungsgericht",
+        "type": "institution",
+        "label": "Bundesverwaltungsgericht",
+        "ebene": "Bund",
+        "gewalt": "Judikative",
+        "einfluss": 70,
+        "sitze": 65,
+        "professionalisierung": 98,
+        "demokratischeBreite": 40,
+        "position": {
+          "x": 26,
+          "y": 9,
+          "z": -10
+        },
+        "mapX": 735,
+        "mapY": 255,
+        "temporal": {
+          "validFrom": 2007,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 2012,
+              "changes": {
+                "position": {
+                  "x": 26,
+                  "y": 9,
+                  "z": -10
+                }
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783359209756_bundespatentgericht",
+        "type": "institution",
+        "label": "Bundespatentgericht",
+        "ebene": "Bund",
+        "gewalt": "Judikative",
+        "einfluss": 42,
+        "sitze": 41,
+        "professionalisierung": 96,
+        "demokratischeBreite": 25,
+        "position": {
+          "x": 30,
+          "y": 7,
+          "z": -6
+        },
+        "mapX": 735,
+        "mapY": 255,
+        "temporal": {
+          "validFrom": 2012,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783359209756_kantonsparlamente",
+        "type": "institution",
+        "label": "Kantonsparlamente",
+        "ebene": "Kanton",
+        "gewalt": "Legislative",
+        "einfluss": 72,
+        "sitze": 180,
+        "professionalisierung": 36,
+        "demokratischeBreite": 84,
+        "position": {
+          "x": -18,
+          "y": 9,
+          "z": 10
+        },
+        "mapX": 500,
+        "mapY": 335,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1995,
+              "changes": {
+                "professionalisierung": 38
+              }
+            },
+            {
+              "timestamp": 2006,
+              "changes": {
+                "demokratischeBreite": 84
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783359209756_kantonsregierungen",
+        "type": "institution",
+        "label": "Kantonsregierungen",
+        "ebene": "Kanton",
+        "gewalt": "Exekutive",
+        "einfluss": 76,
+        "sitze": 7,
+        "professionalisierung": 70,
+        "demokratischeBreite": 72,
+        "position": {
+          "x": -18,
+          "y": 9,
+          "z": -8
+        },
+        "mapX": 500,
+        "mapY": 335,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 2003,
+              "changes": {
+                "professionalisierung": 72
+              }
+            },
+            {
+              "timestamp": 2005,
+              "changes": {
+                "einfluss": 76
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783359209756_landsgemeinde",
+        "type": "institution",
+        "label": "Landsgemeinde",
+        "ebene": "Kanton",
+        "gewalt": "Versammlung",
+        "einfluss": 55,
+        "sitze": 0,
+        "professionalisierung": 10,
+        "demokratischeBreite": 76,
+        "position": {
+          "x": -28,
+          "y": 6,
+          "z": 4
+        },
+        "mapX": 620,
+        "mapY": 265,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1997,
+              "changes": {
+                "einfluss": 55
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783359209756_foederalismus",
+        "type": "prinzip",
+        "label": "Föderalismus",
+        "anwendungsbereich": "Staatsaufbau",
+        "normtyp": "Verfassungsprinzip",
+        "tragweite": 98,
+        "stabilisierungsgrad": 92,
+        "konfliktpotenzial": 45,
+        "position": {
+          "x": -8,
+          "y": 25,
+          "z": -2
+        },
+        "mapX": 500,
+        "mapY": 335,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1999,
+              "changes": {
+                "tragweite": 98
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783359209756_direkte_demokratie",
+        "type": "prinzip",
+        "label": "Direkte Demokratie",
+        "anwendungsbereich": "Demokratie",
+        "normtyp": "Verfassungsprinzip",
+        "tragweite": 97,
+        "stabilisierungsgrad": 88,
+        "konfliktpotenzial": 62,
+        "position": {
+          "x": 0,
+          "y": 26,
+          "z": -20
+        },
+        "mapX": 500,
+        "mapY": 315,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1874,
+              "changes": {
+                "tragweite": 90
+              }
+            },
+            {
+              "timestamp": 1891,
+              "changes": {
+                "tragweite": 97
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783359209756_konkordanz",
+        "type": "prinzip",
+        "label": "Konkordanz",
+        "anwendungsbereich": "Regierung",
+        "normtyp": "Politische Kultur",
+        "tragweite": 86,
+        "stabilisierungsgrad": 91,
+        "konfliktpotenzial": 30,
+        "position": {
+          "x": 16,
+          "y": 24,
+          "z": 2
+        },
+        "mapX": 485,
+        "mapY": 330,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1959,
+              "changes": {
+                "stabilisierungsgrad": 93
+              }
+            },
+            {
+              "timestamp": 2003,
+              "changes": {
+                "konfliktpotenzial": 36
+              }
+            },
+            {
+              "timestamp": 2026,
+              "changes": {
+                "stabilisierungsgrad": 91
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783359209756_kollegialitaet",
+        "type": "prinzip",
+        "label": "Kollegialitätsprinzip",
+        "anwendungsbereich": "Regierung",
+        "normtyp": "Institutionelle Praxis",
+        "tragweite": 88,
+        "stabilisierungsgrad": 90,
+        "konfliktpotenzial": 24,
+        "position": {
+          "x": 24,
+          "y": 22,
+          "z": 8
+        },
+        "mapX": 485,
+        "mapY": 330,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1999,
+              "changes": {
+                "tragweite": 88
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783359209756_gewaltenteilung",
+        "type": "prinzip",
+        "label": "Strikte Gewaltenteilung",
+        "anwendungsbereich": "Rechtsordnung",
+        "normtyp": "Verfassungsprinzip",
+        "tragweite": 84,
+        "stabilisierungsgrad": 87,
+        "konfliktpotenzial": 38,
+        "position": {
+          "x": 8,
+          "y": 23,
+          "z": 14
+        },
+        "mapX": 485,
+        "mapY": 330,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1999,
+              "changes": {
+                "stabilisierungsgrad": 87
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783359209756_rechtsstaat",
+        "type": "prinzip",
+        "label": "Rechtsstaatlichkeit",
+        "anwendungsbereich": "Justiz",
+        "normtyp": "Verfassungsprinzip",
+        "tragweite": 91,
+        "stabilisierungsgrad": 89,
+        "konfliktpotenzial": 28,
+        "position": {
+          "x": 18,
+          "y": 21,
+          "z": -14
+        },
+        "mapX": 430,
+        "mapY": 375,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1999,
+              "changes": {
+                "tragweite": 91
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783359209756_milizsystem",
+        "type": "prinzip",
+        "label": "Milizparlament",
+        "anwendungsbereich": "Parlament",
+        "normtyp": "Institutionelle Praxis",
+        "tragweite": 72,
+        "stabilisierungsgrad": 70,
+        "konfliktpotenzial": 55,
+        "position": {
+          "x": -6,
+          "y": 20,
+          "z": 24
+        },
+        "mapX": 485,
+        "mapY": 330,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1990,
+              "changes": {
+                "konfliktpotenzial": 58
+              }
+            },
+            {
+              "timestamp": 2020,
+              "changes": {
+                "tragweite": 72
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783359209756_referendum",
+        "type": "volksrecht",
+        "label": "Referendum",
+        "funktion": "Bremsend",
+        "ebene": "Mehrere Ebenen",
+        "huerde": 62,
+        "direktheitsgrad": 93,
+        "nutzungshauefigkeit": 78,
+        "position": {
+          "x": -8,
+          "y": 19,
+          "z": -24
+        },
+        "mapX": 500,
+        "mapY": 315,
+        "temporal": {
+          "validFrom": 1874,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1999,
+              "changes": {
+                "direktheitsgrad": 93
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783359209756_volksinitiative",
+        "type": "volksrecht",
+        "label": "Volksinitiative",
+        "funktion": "Initiierend",
+        "ebene": "Mehrere Ebenen",
+        "huerde": 72,
+        "direktheitsgrad": 96,
+        "nutzungshauefigkeit": 70,
+        "position": {
+          "x": 8,
+          "y": 19,
+          "z": -24
+        },
+        "mapX": 500,
+        "mapY": 315,
+        "temporal": {
+          "validFrom": 1891,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1971,
+              "changes": {
+                "nutzungshauefigkeit": 72
+              }
+            },
+            {
+              "timestamp": 1999,
+              "changes": {
+                "direktheitsgrad": 96
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783359209756_gemeindeversammlung",
+        "type": "volksrecht",
+        "label": "Gemeindeversammlung",
+        "funktion": "Versammlungsdemokratisch",
+        "ebene": "Gemeinde",
+        "huerde": 18,
+        "direktheitsgrad": 99,
+        "nutzungshauefigkeit": 66,
+        "position": {
+          "x": -28,
+          "y": 8,
+          "z": -6
+        },
+        "mapX": 510,
+        "mapY": 345,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 2000,
+              "changes": {
+                "nutzungshauefigkeit": 62
+              }
+            },
+            {
+              "timestamp": 2020,
+              "changes": {
+                "nutzungshauefigkeit": 66
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1783359209756_rel_001",
+        "type": "gliedert_sich_in",
+        "source": "AI_Generation_1783359209756_bund",
+        "target": "AI_Generation_1783359209756_kantone",
+        "label": "Der Bundesstaat umfasst die Kantone als autonome Gliedstaaten.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_002",
+        "type": "gliedert_sich_in",
+        "source": "AI_Generation_1783359209756_kantone",
+        "target": "AI_Generation_1783359209756_gemeinden",
+        "label": "Kantone gewähren ihren Gemeinden politischen Spielraum.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_003",
+        "type": "praegt",
+        "source": "AI_Generation_1783359209756_foederalismus",
+        "target": "AI_Generation_1783359209756_bund",
+        "label": "Föderalismus prägt Kompetenzverteilung und Willensbildung.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_004",
+        "type": "praegt",
+        "source": "AI_Generation_1783359209756_foederalismus",
+        "target": "AI_Generation_1783359209756_kantone",
+        "label": "Kantonale Autonomie ist Kern des schweizerischen Föderalismus.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_005",
+        "type": "besteht_aus",
+        "source": "AI_Generation_1783359209756_bundesversammlung",
+        "target": "AI_Generation_1783359209756_nationalrat",
+        "label": "Die Bundesversammlung besteht aus Nationalrat und Ständerat.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_006",
+        "type": "besteht_aus",
+        "source": "AI_Generation_1783359209756_bundesversammlung",
+        "target": "AI_Generation_1783359209756_staenderat",
+        "label": "Der Ständerat ist die zweite gleichwertige Kammer.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_007",
+        "type": "repraesentiert",
+        "source": "AI_Generation_1783359209756_nationalrat",
+        "target": "AI_Generation_1783359209756_stimmvolk",
+        "label": "Der Nationalrat bildet die Volksvertretung mit 200 Mitgliedern.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_008",
+        "type": "repraesentiert",
+        "source": "AI_Generation_1783359209756_staenderat",
+        "target": "AI_Generation_1783359209756_kantone",
+        "label": "Der Ständerat bildet die Ständevertretung mit 46 Mitgliedern.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_009",
+        "type": "besteht_aus",
+        "source": "AI_Generation_1783359209756_vereinigte_bundesversammlung",
+        "target": "AI_Generation_1783359209756_nationalrat",
+        "label": "Nationalrat vereinigt sich für Wahlen und besondere Akte mit dem Ständerat.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_010",
+        "type": "besteht_aus",
+        "source": "AI_Generation_1783359209756_vereinigte_bundesversammlung",
+        "target": "AI_Generation_1783359209756_staenderat",
+        "label": "Ständerat ist Teil der Vereinigten Bundesversammlung.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_011",
+        "type": "waehlt",
+        "source": "AI_Generation_1783359209756_vereinigte_bundesversammlung",
+        "target": "AI_Generation_1783359209756_bundesrat",
+        "label": "Die Vereinigte Bundesversammlung wählt die sieben Mitglieder des Bundesrates.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_012",
+        "type": "waehlt",
+        "source": "AI_Generation_1783359209756_vereinigte_bundesversammlung",
+        "target": "AI_Generation_1783359209756_bundesgericht",
+        "label": "Die Vereinigte Bundesversammlung wählt die Bundesrichterinnen und Bundesrichter.",
+        "temporal": {
+          "validFrom": 1875,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_013",
+        "type": "unterstuetzt",
+        "source": "AI_Generation_1783359209756_bundeskanzlei",
+        "target": "AI_Generation_1783359209756_bundesrat",
+        "label": "Die Bundeskanzlei ist Scharnier zwischen Regierung, Verwaltung, Parlament und Öffentlichkeit.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_014",
+        "type": "praegt",
+        "source": "AI_Generation_1783359209756_kollegialitaet",
+        "target": "AI_Generation_1783359209756_bundesrat",
+        "label": "Der Bundesrat entscheidet als Kollegialregierung ohne eigentlichen Regierungschef.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_015",
+        "type": "praegt",
+        "source": "AI_Generation_1783359209756_konkordanz",
+        "target": "AI_Generation_1783359209756_bundesrat",
+        "label": "Konkordanz bindet möglichst viele politische Kräfte in Regierungsentscheidungen ein.",
+        "temporal": {
+          "validFrom": 1959,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_016",
+        "type": "begrenzt",
+        "source": "AI_Generation_1783359209756_gewaltenteilung",
+        "target": "AI_Generation_1783359209756_bundesrat",
+        "label": "Die Regierung kann während der Wahlperiode nicht parlamentarisch abberufen werden.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_017",
+        "type": "begrenzt",
+        "source": "AI_Generation_1783359209756_gewaltenteilung",
+        "target": "AI_Generation_1783359209756_bundesversammlung",
+        "label": "Das Parlament kann nicht von der Regierung aufgelöst werden.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_018",
+        "type": "praegt",
+        "source": "AI_Generation_1783359209756_milizsystem",
+        "target": "AI_Generation_1783359209756_bundesversammlung",
+        "label": "Das Bundesparlament arbeitet als Milizparlament mit Kommissionsschwerpunkt.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_019",
+        "type": "legitimiert",
+        "source": "AI_Generation_1783359209756_stimmvolk",
+        "target": "AI_Generation_1783359209756_bundesversammlung",
+        "label": "Die Stimmbevölkerung wählt die eidgenössische Legislative.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_020",
+        "type": "kontrolliert",
+        "source": "AI_Generation_1783359209756_referendum",
+        "target": "AI_Generation_1783359209756_bundesversammlung",
+        "label": "Das Referendum wirkt bremsend und kontrollierend auf Parlamentsbeschlüsse.",
+        "temporal": {
+          "validFrom": 1874,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_021",
+        "type": "legitimiert",
+        "source": "AI_Generation_1783359209756_volksinitiative",
+        "target": "AI_Generation_1783359209756_direkte_demokratie",
+        "label": "Die Volksinitiative erweitert die direkte Einflussnahme über Parlamente hinweg.",
+        "temporal": {
+          "validFrom": 1891,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_022",
+        "type": "praegt",
+        "source": "AI_Generation_1783359209756_direkte_demokratie",
+        "target": "AI_Generation_1783359209756_stimmvolk",
+        "label": "Direkte Demokratie macht die Stimmbevölkerung zu einem zentralen Vetospieler.",
+        "temporal": {
+          "validFrom": 1874,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_023",
+        "type": "besteht_aus",
+        "source": "AI_Generation_1783359209756_kantone",
+        "target": "AI_Generation_1783359209756_kantonsparlamente",
+        "label": "Kantone besitzen eigene Parlamente, meist Kantonsrat oder Grosser Rat genannt.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_024",
+        "type": "besteht_aus",
+        "source": "AI_Generation_1783359209756_kantone",
+        "target": "AI_Generation_1783359209756_kantonsregierungen",
+        "label": "Kantone besitzen eigene Exekutiven, meist Regierungsrat oder Staatsrat genannt.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783359209756_rel_025",
+        "type": "legitimiert",
+        "source": "AI_Generation_1783359209756_gemeindeversammlung",
+        "target": "AI_Generation_1783359209756_gemeinden",
+        "label": "Gemeindeversammlungen verkörpern die versammlungsdemokratische Wurzel der Volksrechte.",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      }
+    ]
+  }
+}

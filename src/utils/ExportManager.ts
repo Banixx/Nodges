@@ -118,6 +118,15 @@ export class ExportManager {
         if (clone.metadata) {
             delete clone.metadata._buildVersion; // wird beim Laden neu gesetzt
         }
+
+        // Aktives Mapping und DataModel einbetten, falls übergeben
+        if (options.activeVisualMappings) {
+            clone.visualMappings = JSON.parse(JSON.stringify(options.activeVisualMappings));
+        }
+        if (options.activeDataModel) {
+            clone.dataModel = JSON.parse(JSON.stringify(options.activeDataModel));
+        }
+
         // Berechnete Metriken nicht mitexportieren
         if (clone.data && Array.isArray(clone.data.entities)) {
             clone.data.entities.forEach((entity: any) => {

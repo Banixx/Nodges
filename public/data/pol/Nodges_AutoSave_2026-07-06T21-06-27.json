@@ -1,0 +1,24 @@
+{
+  "system": "Menschliche_Niere_Physiologie",
+  "metadata": {
+    "schemaVersion": "4.0",
+    "description": "Strukturelle und funktionelle Ontologie der menschlichen Niere, basierend auf makroskopischer Anatomie, Feinbau (Nephron), Gefäßversorgung und physiologischen Prozessen.",
+    "author": "AI",
+    "map": {
+      "image": "Map.jpg",
+      "referenceWidth": 1000,
+      "referenceHeight": 1000
+    },
+    "exportedAt": "2026-07-06T21:06:27.764Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "visualMappings": {
+    "defaultPresets": {}
+  },
+  "data": {
+    "entities": [],
+    "relationships": []
+  }
+}
