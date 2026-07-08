@@ -42,6 +42,7 @@ export const VisualMappingSchema = z.object({
 export type VisualMapping = z.infer<typeof VisualMappingSchema>;
 
 export const EntityVisualPresetSchema = z.object({
+    position: VisualMappingSchema.optional(),
     positionX: VisualMappingSchema.optional(),
     positionY: VisualMappingSchema.optional(),
     positionZ: VisualMappingSchema.optional(),

@@ -820,9 +820,9 @@ export class App {
                 this.hasExplicitPositions = this.hasExplicitPositions || hasPositions;
             }
 
-            if (this.layoutManager && !hasPositions) {
-                await this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships, this.currentGraphData?.fields || []);
-                this.updateNodePositions();
+            if (this.layoutManager) {
+                // Auto-layout is now disabled by default. Layout must be explicitly mapped via algorithms.
+                this.layoutManager.stopAnimation();
             }
 
             // Create labels for nodes
@@ -981,27 +981,45 @@ export class App {
             this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
         }
 
-        // Auto-Trigger Layout if physics are mapped
+        // Auto-Trigger Layout if physics are mapped or algorithm mapped to position
         let hasPhysicsMappings = false;
+        let selectedAlgorithm: string | null = null;
         const presets = mappings.defaultPresets || {};
+        
         Object.values(presets).forEach((preset: any) => {
             if (preset.attraction || preset.repulsion || preset.inertia) {
                 hasPhysicsMappings = true;
             }
+            if (preset.position) {
+                const source = preset.position.source || preset.position.field;
+                if (source && source.startsWith('algo:')) {
+                    selectedAlgorithm = source.substring(5); // Extract algo name
+                }
+            }
         });
 
-        if (hasPhysicsMappings && this.layoutManager) {
-            console.log('[App] Physics mappings detected. Auto-triggering layout...');
+        if (this.layoutManager) {
             this.layoutManager.stopAnimation();
-            this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships, this.currentGraphData?.fields || [])
-                .then(() => {
+            
+            if (selectedAlgorithm) {
+                console.log(`[App] Algorithm mapping detected. Auto-triggering layout: ${selectedAlgorithm}`);
+                this.layoutManager.applyLayout(selectedAlgorithm, this.currentEntities, this.currentRelationships, this.currentGraphData?.fields || [])
+                    .then(() => {
+                        this.fitCameraToScene();
+                    });
+            } else if (hasPhysicsMappings) {
+                // Legacy support for pure physics mappings without explicit algo
+                console.log('[App] Physics mappings detected. Auto-triggering layout...');
+                this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships, this.currentGraphData?.fields || [])
+                    .then(() => {
+                        this.fitCameraToScene();
+                    });
+            } else {
+                // Wenn keine Physik oder Algorithmus aktiv ist, wurden die Knoten evtl. direkt positioniert. Kamera anpassen!
+                setTimeout(() => {
                     this.fitCameraToScene();
-                });
-        } else {
-            // Wenn keine Physik aktiv ist, wurden die Knoten evtl. direkt positioniert. Kamera anpassen!
-            setTimeout(() => {
-                this.fitCameraToScene();
-            }, 50);
+                }, 50);
+            }
         }
 
         // Re-apply to nodes

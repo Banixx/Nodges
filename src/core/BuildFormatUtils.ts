@@ -10,8 +10,22 @@ import { DataModel, PropertySchema, EntityData } from '../types';
 /**
  * Retrieves the PropertySchema for a given attribute.
  */
-export function getPropertySchema(dm: DataModel | undefined, _entityType: string, propName: string): PropertySchema | undefined {
+export function getPropertySchema(dm: DataModel | undefined, entityType: string, propName: string): PropertySchema | undefined {
     if (!dm) return undefined;
+    
+    // Build 5 Schema: dm.entities[type].properties
+    if (dm.entities && dm.entities[entityType] && dm.entities[entityType].properties) {
+        const schema = dm.entities[entityType].properties[propName];
+        if (schema) return schema as PropertySchema;
+    }
+    
+    // Build 5 Schema für Relationships
+    if (dm.relationships && dm.relationships[entityType] && dm.relationships[entityType].properties) {
+        const schema = dm.relationships[entityType].properties[propName];
+        if (schema) return schema as PropertySchema;
+    }
+
+    // Build 4 Fallback: dm.properties
     return dm.properties?.[propName];
 }
 
@@ -34,14 +48,20 @@ export function collectPaths(obj: any, prefix = ''): string[] {
     return paths;
 }
 
-/**
- * Returns a list of all available property names for an entity type.
- */
-export function getAvailableProperties(dm: DataModel | undefined, _entityType: string, entity?: EntityData): string[] {
+export function getAvailableProperties(dm: DataModel | undefined, entityType: string, entity?: EntityData): string[] {
     const props = new Set<string>();
 
+    // Build 4: global properties
     if (dm && dm.properties) {
         Object.keys(dm.properties).forEach(k => props.add(k));
+    }
+    
+    // Build 5: type-specific properties
+    if (dm && dm.entities && dm.entities[entityType] && dm.entities[entityType].properties) {
+        Object.keys(dm.entities[entityType].properties).forEach(k => props.add(k));
+    }
+    if (dm && dm.relationships && dm.relationships[entityType] && dm.relationships[entityType].properties) {
+        Object.keys(dm.relationships[entityType].properties).forEach(k => props.add(k));
     }
 
     // Fallback/Erweiterung: Wenn eine Entity übergeben wurde, auch deren dynamische Keys scannen
@@ -50,6 +70,16 @@ export function getAvailableProperties(dm: DataModel | undefined, _entityType: s
         if (entity.stateVector && typeof entity.stateVector === 'object') {
             Object.keys(entity.stateVector).forEach(k => props.add(k));
         }
+        
+        // In Build 5 koennen Eigenschaften auch direkt auf der Entity liegen (ausser den reservierten Keys)
+        const reservedKeys = ['id', 'type', 'label', 'temporal', 'stateVector']; // 'position' entfernt aus Reservierungen, da wir es mappen wollen
+        Object.keys(entity).forEach(k => {
+            if (!reservedKeys.includes(k)) {
+                if (typeof (entity as any)[k] !== 'object' || Array.isArray((entity as any)[k])) {
+                    props.add(k);
+                }
+            }
+        });
     }
 
     return Array.from(props);
@@ -59,6 +89,12 @@ export function getAvailableProperties(dm: DataModel | undefined, _entityType: s
  * Retrieves an attribute value from an entity, abstracting stateVector access.
  */
 export function getEntityAttributeValue(entity: EntityData, attrName: string): any {
+    // 1. Zuerst schauen wir, ob das Attribut direkt auf der Entity liegt (Build 5)
+    if (attrName in entity && attrName !== 'stateVector') {
+        return (entity as any)[attrName];
+    }
+
+    // 2. Fallback auf stateVector (Build 3/4)
     if (!entity.stateVector || typeof entity.stateVector !== 'object') return undefined;
 
     let normalizedPath = attrName;

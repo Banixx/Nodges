@@ -213,7 +213,11 @@ export class UIManager {
         const dataModel = graphData.dataModel;
         const presets = graphData.visualMappings?.defaultPresets || {};
 
-        const allNodeAttrs = new Set<string>(['constant', 'type', 'id']);
+        const allNodeAttrs = new Set<string>([
+            'constant', 'type', 'id', 
+            'algo:force-directed', 'algo:fruchterman-reingold', 'algo:spring-embedder', 
+            'algo:hierarchical', 'algo:tree', 'algo:circular', 'algo:grid', 'algo:random'
+        ]);
         const allEdgeAttrs = new Set<string>(['constant', 'type', 'id', 'source', 'target']);
 
         const allTypes = new Set<string>();
@@ -228,7 +232,7 @@ export class UIManager {
         entities.forEach((e: any) => {
             if (e.type) allTypes.add(e.type);
             getAvailableProperties(dataModel, e.type, e).forEach(k => {
-                if (k !== 'position') allNodeAttrs.add(k);
+                allNodeAttrs.add(k);
             });
         });
 

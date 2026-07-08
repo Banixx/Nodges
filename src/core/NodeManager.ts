@@ -168,23 +168,10 @@ export class NodeManager {
                 group.forEach(({ entity, visual }, index) => {
                     entityList.push(entity);
 
-                    // Position mapped override
-                    if (visual.positionX !== undefined) {
-                        if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
-                        entity.position.x = visual.positionX;
-                    }
-                    if (visual.positionY !== undefined) {
-                        if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
-                        entity.position.y = visual.positionY;
-                    }
-                    if (visual.positionZ !== undefined) {
-                        if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
-                        entity.position.z = visual.positionZ;
-                    }
-
-                    const x = entity.position?.x || 0;
-                    const y = entity.position?.y || 0;
-                    const z = entity.position?.z || 0;
+                    // Position mapped override (strict 0,0,0 fallback)
+                    const x = visual.positionX !== undefined ? visual.positionX : 0;
+                    const y = visual.positionY !== undefined ? visual.positionY : 0;
+                    const z = visual.positionZ !== undefined ? visual.positionZ : 0;
                     dummy.position.set(x, y, z);
 
                     // Scale / Size
@@ -266,23 +253,10 @@ export class NodeManager {
                     const material = baseMaterial.clone() as THREE.MeshPhongMaterial;
                     const mesh = new THREE.Mesh(geometry, material);
 
-                    // Position mapped override
-                    if (visual.positionX !== undefined) {
-                        if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
-                        entity.position.x = visual.positionX;
-                    }
-                    if (visual.positionY !== undefined) {
-                        if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
-                        entity.position.y = visual.positionY;
-                    }
-                    if (visual.positionZ !== undefined) {
-                        if (!entity.position) entity.position = { x: 0, y: 0, z: 0 };
-                        entity.position.z = visual.positionZ;
-                    }
-
-                    const x = entity.position?.x || 0;
-                    const y = entity.position?.y || 0;
-                    const z = entity.position?.z || 0;
+                    // Position mapped override (strict 0,0,0 fallback)
+                    const x = visual.positionX !== undefined ? visual.positionX : 0;
+                    const y = visual.positionY !== undefined ? visual.positionY : 0;
+                    const z = visual.positionZ !== undefined ? visual.positionZ : 0;
                     mesh.position.set(x, y, z);
 
                     // Scale / Size

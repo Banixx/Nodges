@@ -14,7 +14,6 @@ export class MappingUI {
     private rightColumn: HTMLElement;
     private svgOverlay: SVGSVGElement;
     private categoryTabs: HTMLElement;
-    private typeTabs: HTMLElement;
 
     private mappings: VisualMappings | null = null;
     private availableAttributes: Record<string, string[]> = {};
@@ -29,6 +28,7 @@ export class MappingUI {
     private isDraggingSlider = false;
     private userExpandedAttributes = new Set<string>();
     private userCollapsedAttributes = new Set<string>();
+    private boxExpandedAttributes = new Set<string>();
 
     // --- Layout-Engine State ---
     private layoutCallback: ((algorithm: string, params: Record<string, number>) => Promise<void>) | null = null;
@@ -154,7 +154,6 @@ export class MappingUI {
                         <button class="mapping-tab" data-val="relationships" style="flex: 1;">Edges</button>
                     </div>
                 </div>
-                <div class="mapping-type-tabs" id="mappingTypeTabs" style="display: flex; gap: 4px; overflow-x: auto; padding-bottom: 2px;"></div>
             </div>
             <div class="mapping-body" id="mappingBody" style="position: relative; flex: 1; display: flex; gap: 100px; transition: gap 0.4s ease;">
                 <div class="mapping-column left" id="mappingLeftCol" style="flex: 1; transition: flex 0.4s ease; position: relative; z-index: 2;">
@@ -172,7 +171,6 @@ export class MappingUI {
         this.rightColumn = this.container.querySelector('#mappingRightCol') as HTMLElement;
         this.svgOverlay = this.container.querySelector('#mappingSvg') as SVGSVGElement;
         this.categoryTabs = this.container.querySelector('#categoryTabs') as HTMLElement;
-        this.typeTabs = this.container.querySelector('#mappingTypeTabs') as HTMLElement;
 
         // Toggle logic (Expand/Collapse)
         const toggle = this.container.querySelector('#mappingToggle') as HTMLElement;
@@ -207,7 +205,6 @@ export class MappingUI {
                 target.classList.add('active');
                 
                 this.currentType = this.currentCategory === 'entities' ? 'global_node' : 'global_edge';
-                this.updateTypeSelect();
                 this.renderColumns();
             });
         });
@@ -306,7 +303,6 @@ export class MappingUI {
         const toggleBtn = this.container.querySelector('#mappingToggle') as HTMLElement;
         if (toggleBtn) toggleBtn.textContent = '▼';
 
-        this.updateTypeSelect();
         this.renderColumns();
         
         requestAnimationFrame(() => this.adjustHeightAndMinimap());
@@ -372,79 +368,7 @@ export class MappingUI {
         }
     }
 
-    private updateTypeSelect() {
-        this.typeTabs.innerHTML = '';
-        
-        const typesList: { value: string, text: string }[] = [];
-        
-        // Add global fallback type first
-        typesList.push({
-            value: this.currentCategory === 'entities' ? 'global_node' : 'global_edge',
-            text: this.currentCategory === 'entities' ? 'Alle Knoten' : 'Alle Kanten'
-        });
-        
-        const uniqueTypes = new Set<string>();
-        const items = this.currentCategory === 'entities' ? this.entities : this.relationships;
-        items.forEach(item => {
-            if (item.type) {
-                uniqueTypes.add(item.type);
-            }
-        });
 
-        // Also add types from dataModel just in case they have no entities yet
-        if (this.dataModel) {
-            const types = this.currentCategory === 'entities' 
-                ? ('entities' in this.dataModel ? this.dataModel.entities : null)
-                : ('relationships' in this.dataModel ? this.dataModel.relationships : null);
-            if (types) {
-                Object.keys(types).forEach(type => uniqueTypes.add(type));
-            }
-        }
-
-        uniqueTypes.forEach(type => {
-            typesList.push({ value: type, text: type });
-        });
-
-        // Keep currentType if it exists in the new options, otherwise default to global
-        let typeExists = typesList.some(t => t.value === this.currentType);
-        
-        if (!typeExists) {
-            // Auto-select the first specific type if available, otherwise fallback to global
-            const firstSpecificType = Array.from(uniqueTypes)[0];
-            if (firstSpecificType && firstSpecificType !== typesList[0].value) {
-                this.currentType = firstSpecificType;
-            } else {
-                this.currentType = typesList[0].value;
-            }
-        }
-
-        // Render tabs
-        typesList.forEach(t => {
-            const btn = document.createElement('button');
-            btn.className = `mapping-type-tab ${this.currentType === t.value ? 'active' : ''}`;
-            btn.style.cssText = `
-                flex: 0 0 auto;
-                font-size: 11px;
-                padding: 4px 8px;
-                background: ${this.currentType === t.value ? 'rgba(160, 128, 96, 0.2)' : 'rgba(255, 255, 255, 0.05)'};
-                color: ${this.currentType === t.value ? 'var(--accent-color)' : '#e0e0e0'};
-                border: 1px solid ${this.currentType === t.value ? 'rgba(160, 128, 96, 0.5)' : 'rgba(255, 255, 255, 0.1)'};
-                border-radius: 4px;
-                cursor: pointer;
-                transition: all 0.2s ease;
-            `;
-            btn.textContent = t.text;
-            btn.onclick = () => {
-                this.currentType = t.value;
-                this.updateTypeSelect(); // Re-render tabs to update active state
-                this.renderColumns();
-            };
-            this.typeTabs.appendChild(btn);
-        });
-
-        // Hide typeTabs permanently as requested by the user
-        this.typeTabs.style.display = 'none';
-    }
 
     private renderColumns() {
         // Clear columns except titles
@@ -548,13 +472,15 @@ export class MappingUI {
             }
 
             const isMapped = this.isAttributeMapped(attr);
+            const isBoxExpanded = this.boxExpandedAttributes.has(attr);
+            // We'll keep isExpanded for object groups, but user interaction is now different for values
             const isExpanded = isMapped ? !this.userCollapsedAttributes.has(attr) : this.userExpandedAttributes.has(attr);
 
             // Haupt-Kachel fuer das Attribut erstellen
             const item = document.createElement('div');
             item.className = 'mapping-item left';
             item.dataset.attr = attr;
-            if (isExpanded) {
+            if (isBoxExpanded || (isExpanded && isObjectGroup)) {
                 item.style.backgroundColor = 'rgba(255,255,255,0.08)';
             }
             item.style.cursor = 'pointer';
@@ -566,32 +492,45 @@ export class MappingUI {
             labelContainer.style.gap = '2px';
 
             const label = document.createElement('span');
-            label.textContent = attr;
+            
+            const isAlgorithm = attr.startsWith('algo:');
+            if (isAlgorithm) {
+                const algoName = attr.substring(5); // remove 'algo:'
+                label.innerHTML = `<span style="color: #64ffda; margin-right: 4px;">▶</span>${algoName}`;
+                item.style.borderLeft = '2px solid #64ffda';
+                item.style.backgroundColor = 'rgba(100, 255, 218, 0.05)';
+            } else {
+                label.textContent = attr;
+            }
+            
             label.style.fontWeight = '500';
             labelContainer.appendChild(label);
 
-            const stats = document.createElement('span');
-            stats.className = 'mapping-item-stats';
-            stats.style.fontSize = '9px';
-            stats.style.color = 'var(--text-muted)';
-            
-            let statsText = `${presenceCount} • ${uniqueValues.size} Werte`;
-            if (hasNumeric && minVal !== Infinity && maxVal !== -Infinity) {
-                const formatNum = (num: number) => Number.isInteger(num) ? num.toString() : num.toFixed(2);
-                statsText += ` • [${formatNum(minVal)} ... ${formatNum(maxVal)}]`;
-            } else if (uniqueValues.size > 0 && !hasNumeric) {
-                statsText += ` (Text)`;
+            if (!isAlgorithm) {
+                const stats = document.createElement('span');
+                stats.className = 'mapping-item-stats';
+                stats.style.fontSize = '9px';
+                stats.style.color = 'var(--text-muted)';
+                
+                let statsText = `${presenceCount} • ${uniqueValues.size} Werte`;
+                if (hasNumeric && minVal !== Infinity && maxVal !== -Infinity) {
+                    const formatNum = (num: number) => Number.isInteger(num) ? num.toString() : num.toFixed(2);
+                    statsText += ` • [${formatNum(minVal)} ... ${formatNum(maxVal)}]`;
+                } else if (uniqueValues.size > 0 && !hasNumeric) {
+                    statsText += ` (Text)`;
+                }
+                stats.textContent = statsText;
+                labelContainer.appendChild(stats);
             }
-            stats.textContent = statsText;
-            labelContainer.appendChild(stats);
 
             item.appendChild(labelContainer);
 
-            // Values Container (collapsible)
+            // Values Container (collapsible on hover)
+            let valuesContainer: HTMLElement | null = null;
             if (!isObjectGroup && uniqueValues.size > 0) {
-                const valuesContainer = document.createElement('div');
+                valuesContainer = document.createElement('div');
                 valuesContainer.className = 'mapping-item-values';
-                valuesContainer.style.display = isExpanded ? 'block' : 'none';
+                valuesContainer.style.display = 'none'; // Hidden by default, shown on hover
                 valuesContainer.style.marginTop = '6px';
                 valuesContainer.style.fontSize = '10px';
                 valuesContainer.style.color = '#ccc';
@@ -600,78 +539,99 @@ export class MappingUI {
 
                 const valsArray = Array.from(uniqueValues).sort();
                 const valsList = document.createElement('div');
-                    valsList.style.display = 'flex';
-                    valsList.style.flexWrap = 'wrap';
-                    valsList.style.gap = '4px';
+                valsList.style.display = 'flex';
+                valsList.style.flexWrap = 'wrap';
+                valsList.style.gap = '4px';
 
-                    valsArray.slice(0, 50).forEach(valOrKey => {
-                        const tagContainer = document.createElement('div');
-                        tagContainer.style.display = 'flex';
-                        tagContainer.style.alignItems = 'center';
-                        tagContainer.style.background = 'rgba(255,255,255,0.06)';
-                        tagContainer.style.borderRadius = '3px';
-                        tagContainer.style.padding = '2px 4px';
-                        tagContainer.style.gap = '4px';
+                valsArray.slice(0, 50).forEach(valOrKey => {
+                    const tagContainer = document.createElement('div');
+                    tagContainer.style.display = 'flex';
+                    tagContainer.style.alignItems = 'center';
+                    tagContainer.style.background = 'rgba(255,255,255,0.06)';
+                    tagContainer.style.borderRadius = '3px';
+                    tagContainer.style.padding = '2px 4px';
+                    tagContainer.style.gap = '4px';
 
-                        const tag = document.createElement('span');
-                        const displayVal = String(valOrKey);
-                        tag.textContent = displayVal.length > 30 ? displayVal.substring(0, 27) + '...' : displayVal;
+                    const tag = document.createElement('span');
+                    const displayVal = String(valOrKey);
+                    tag.textContent = displayVal.length > 30 ? displayVal.substring(0, 27) + '...' : displayVal;
 
-                        const valDot = document.createElement('div');
-                        valDot.className = 'snapdot left-dot sub-dot';
-                        valDot.dataset.attr = attr;
-                        valDot.dataset.val = displayVal;
-                        
-                        valDot.style.cssText = `
-                            width: 6px;
-                            height: 6px;
-                            background-color: var(--accent-color);
-                            border-radius: 50%;
-                            cursor: grab;
-                            flex-shrink: 0;
-                            opacity: 0.5;
-                        `;
+                    const valDot = document.createElement('div');
+                    valDot.className = 'snapdot left-dot sub-dot';
+                    valDot.dataset.attr = attr;
+                    valDot.dataset.val = displayVal;
+                    
+                    valDot.style.cssText = `
+                        width: 6px;
+                        height: 6px;
+                        background-color: var(--accent-color);
+                        border-radius: 50%;
+                        cursor: grab;
+                        flex-shrink: 0;
+                        opacity: 0.5;
+                    `;
 
-                        valDot.addEventListener('pointerdown', (e) => {
-                            e.stopPropagation();
-                            this.startDrag(e, valDot, true, attr, '', displayVal);
-                        });
-
-                        tagContainer.appendChild(tag);
-                        tagContainer.appendChild(valDot);
-                        valsList.appendChild(tagContainer);
+                    valDot.addEventListener('pointerdown', (e) => {
+                        e.stopPropagation();
+                        this.startDrag(e, valDot, true, attr, '', displayVal);
                     });
 
-                    if (valsArray.length > 50) {
-                        const moreTag = document.createElement('span');
-                        moreTag.style.background = 'rgba(255,255,255,0.05)';
-                        moreTag.style.padding = '2px 4px';
-                        moreTag.style.borderRadius = '3px';
-                        moreTag.style.fontStyle = 'italic';
-                        moreTag.textContent = `+ ${valsArray.length - 50} weitere...`;
-                        valsList.appendChild(moreTag);
-                    }
+                    tagContainer.appendChild(tag);
+                    tagContainer.appendChild(valDot);
+                    valsList.appendChild(tagContainer);
+                });
 
-                    valuesContainer.appendChild(valsList);
-                    labelContainer.appendChild(valuesContainer);
+                if (valsArray.length > 50) {
+                    const moreTag = document.createElement('span');
+                    moreTag.style.background = 'rgba(255,255,255,0.05)';
+                    moreTag.style.padding = '2px 4px';
+                    moreTag.style.borderRadius = '3px';
+                    moreTag.style.fontStyle = 'italic';
+                    moreTag.textContent = `+ ${valsArray.length - 50} weitere...`;
+                    valsList.appendChild(moreTag);
+                }
+
+                valuesContainer.appendChild(valsList);
+                labelContainer.appendChild(valuesContainer);
             }
 
-            // Klick-Event fuer das Haupt-Item (vereinheitlicht)
+            // Hover event to expand tags
+            item.addEventListener('mouseenter', () => {
+                if (valuesContainer && !isBoxExpanded) {
+                    valuesContainer.style.display = 'block';
+                }
+            });
+            item.addEventListener('mouseleave', () => {
+                if (valuesContainer && !isBoxExpanded) {
+                    valuesContainer.style.display = 'none';
+                }
+            });
+
+            // Klick-Event fuer das Haupt-Item
             item.addEventListener('click', (e) => {
                 if ((e.target as HTMLElement).classList.contains('snapdot')) return;
 
-                if (isExpanded) {
-                    if (isMapped) {
-                        this.userCollapsedAttributes.add(attr);
+                if (isObjectGroup) {
+                    if (isExpanded) {
+                        if (isMapped) {
+                            this.userCollapsedAttributes.add(attr);
+                        } else {
+                            this.userExpandedAttributes.delete(attr);
+                        }
                     } else {
-                        this.userExpandedAttributes.delete(attr);
+                        if (isMapped) {
+                            this.userCollapsedAttributes.delete(attr);
+                        } else {
+                            this.userExpandedAttributes.clear();
+                            this.userExpandedAttributes.add(attr);
+                        }
                     }
                 } else {
-                    if (isMapped) {
-                        this.userCollapsedAttributes.delete(attr);
+                    if (isBoxExpanded) {
+                        this.boxExpandedAttributes.delete(attr);
                     } else {
-                        this.userExpandedAttributes.clear();
-                        this.userExpandedAttributes.add(attr);
+                        this.boxExpandedAttributes.add(attr);
+                        if (valuesContainer) valuesContainer.style.display = 'none'; // hide tags when boxes are shown
                     }
                 }
                 
@@ -691,13 +651,20 @@ export class MappingUI {
             this.leftColumn.appendChild(item);
 
             // WICHTIG: Wenn es eine Objektgruppe ist und aufgeklappt, rendern wir die Unterkacheln direkt als Geschwister!
-            if (isObjectGroup && isExpanded) {
-                groupKeys.forEach(key => {
-                    const subAttr = `${attr}.${key}`;
+            // ODER wenn es ein normales Attribut ist und isBoxExpanded wahr ist!
+            if ((isObjectGroup && isExpanded) || (!isObjectGroup && isBoxExpanded)) {
+                const subItemsList = isObjectGroup ? groupKeys : Array.from(uniqueValues).sort().slice(0, 50);
+                
+                subItemsList.forEach(valOrKey => {
+                    const subAttr = isObjectGroup ? `${attr}.${valOrKey}` : attr;
+                    const displayVal = String(valOrKey);
 
                     const subItem = document.createElement('div');
                     subItem.className = 'mapping-item left mapping-sub-item';
                     subItem.dataset.attr = subAttr;
+                    if (!isObjectGroup) {
+                        subItem.dataset.val = displayVal;
+                    }
                     
                     subItem.style.cssText = `
                         margin-left: 15px;
@@ -736,41 +703,43 @@ export class MappingUI {
 
                     const subLabel = document.createElement('span');
                     subLabel.style.fontWeight = '500';
-                    subLabel.textContent = `.${key}`;
+                    subLabel.textContent = isObjectGroup ? `.${displayVal}` : `= ${displayVal}`;
                     subLabelContainer.appendChild(subLabel);
 
-                    let subPresenceCount = 0;
-                    const uniqueSubValues = new Set<any>();
-                    let minVal = Infinity;
-                    let maxVal = -Infinity;
-                    let hasNumeric = false;
+                    if (isObjectGroup) {
+                        let subPresenceCount = 0;
+                        const uniqueSubValues = new Set<any>();
+                        let minVal = Infinity;
+                        let maxVal = -Infinity;
+                        let hasNumeric = false;
 
-                    currentDataItems.forEach(dItem => {
-                        if (this.currentType === 'global_node' || this.currentType === 'global_edge' || dItem.type === this.currentType) {
-                            const val = this.getNestedValue(dItem, subAttr);
-                            if (val !== undefined && val !== null) {
-                                subPresenceCount++;
-                                uniqueSubValues.add(val);
-                                if (typeof val === 'number') {
-                                    hasNumeric = true;
-                                    if (val < minVal) minVal = val;
-                                    if (val > maxVal) maxVal = val;
+                        currentDataItems.forEach(dItem => {
+                            if (this.currentType === 'global_node' || this.currentType === 'global_edge' || dItem.type === this.currentType) {
+                                const val = this.getNestedValue(dItem, subAttr);
+                                if (val !== undefined && val !== null) {
+                                    subPresenceCount++;
+                                    uniqueSubValues.add(val);
+                                    if (typeof val === 'number') {
+                                        hasNumeric = true;
+                                        if (val < minVal) minVal = val;
+                                        if (val > maxVal) maxVal = val;
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
 
-                    if (subPresenceCount > 0) {
-                        const subStats = document.createElement('span');
-                        subStats.style.fontSize = '9px';
-                        subStats.style.color = 'var(--text-muted)';
-                        if (hasNumeric && minVal !== Infinity && maxVal !== -Infinity) {
-                            const formatNum = (num: number) => Number.isInteger(num) ? num.toString() : num.toFixed(1);
-                            subStats.textContent = `[${formatNum(minVal)}...${formatNum(maxVal)}]`;
-                        } else {
-                            subStats.textContent = `${uniqueSubValues.size} W`;
+                        if (subPresenceCount > 0) {
+                            const subStats = document.createElement('span');
+                            subStats.style.fontSize = '9px';
+                            subStats.style.color = 'var(--text-muted)';
+                            if (hasNumeric && minVal !== Infinity && maxVal !== -Infinity) {
+                                const formatNum = (num: number) => Number.isInteger(num) ? num.toString() : num.toFixed(1);
+                                subStats.textContent = `[${formatNum(minVal)}...${formatNum(maxVal)}]`;
+                            } else {
+                                subStats.textContent = `${uniqueSubValues.size} W`;
+                            }
+                            subLabelContainer.appendChild(subStats);
                         }
-                        subLabelContainer.appendChild(subStats);
                     }
 
                     subItem.appendChild(subLabelContainer);
@@ -778,11 +747,14 @@ export class MappingUI {
                     const subDot = document.createElement('div');
                     subDot.className = 'snapdot left-dot sub-dot';
                     subDot.dataset.attr = subAttr;
+                    if (!isObjectGroup) {
+                        subDot.dataset.val = displayVal;
+                    }
                     subItem.appendChild(subDot);
 
                     subDot.addEventListener('pointerdown', (e) => {
                         e.stopPropagation();
-                        this.startDrag(e, subDot, true, subAttr, '', '');
+                        this.startDrag(e, subDot, true, subAttr, '', isObjectGroup ? '' : displayVal);
                     });
 
                     this.leftColumn.appendChild(subItem);
@@ -793,11 +765,33 @@ export class MappingUI {
         // 2. Render Right Column: Visual Properties
         
         const isEntity = this.currentCategory === 'entities';
-        const visualProps = isEntity
-            ? ['positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation', 'attraction', 'repulsion', 'inertia']
+        const baseVisualProps = isEntity
+            ? ['position', 'positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation', 'attraction', 'repulsion', 'inertia']
             : ['thickness', 'color', 'curvature', 'glow', 'opacity', 'animation_flow', 'animation_sequential', 'animation_pulse', 'animation_segments'];
 
+        const visualProps: string[] = [];
+        baseVisualProps.forEach(prop => {
+            // Include base prop
+            visualProps.push(prop);
+            
+            // Check if mapped, and append additional unmapped slots
+            let i = 1;
+            while (true) {
+                const currentProp = i === 1 ? prop : `${prop}_${i-1}`;
+                const mapping = getEffectiveMapping(currentProp);
+                const isConnected = mapping && mapping.source && mapping.source !== 'constant';
+                if (isConnected) {
+                    const nextProp = `${prop}_${i}`;
+                    visualProps.push(nextProp);
+                    i++;
+                } else {
+                    break;
+                }
+            }
+        });
+
             const propTranslations: Record<string, string> = {
+                position: 'Position',
                 positionX: 'Position X',
                 positionY: 'Position Y',
                 positionZ: 'Position Z',
@@ -819,9 +813,41 @@ export class MappingUI {
             };
 
             visualProps.forEach(prop => {
+                const baseProp = prop.replace(/_\d+$/, '');
                 const item = document.createElement('div');
                 item.className = 'mapping-item right';
                 item.dataset.prop = prop;
+
+                const isSubProp = ['positionX', 'positionY', 'positionZ'].includes(baseProp);
+                if (isSubProp) {
+                    item.className = 'mapping-item right mapping-sub-item';
+                    item.style.cssText = `
+                        margin-left: 15px;
+                        width: calc(100% - 15px);
+                        border-left: 2px solid var(--accent-color);
+                        background: rgba(255, 255, 255, 0.02);
+                        padding: 4px 8px;
+                        border-radius: 4px;
+                        border-top: 1px solid rgba(255, 255, 255, 0.05);
+                        border-right: 1px solid rgba(255, 255, 255, 0.05);
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                        font-size: 11px;
+                        min-height: 30px;
+                        position: relative;
+                        box-sizing: border-box;
+                        transition: all 0.2s ease;
+                        margin-top: -6px; /* pull slightly closer to main prop */
+                    `;
+                    // Keep hover styles
+                    item.onmouseover = () => {
+                        item.style.background = 'rgba(255, 255, 255, 0.05)';
+                        item.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                    };
+                    item.onmouseout = () => {
+                        item.style.background = 'rgba(255, 255, 255, 0.02)';
+                        item.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                    };
+                }
 
                 let mapping = getEffectiveMapping(prop);
                 const isConnected = mapping && mapping.source && mapping.source !== 'constant';
@@ -840,8 +866,19 @@ export class MappingUI {
                 labelContainer.style.alignItems = 'center';
                 labelContainer.style.gap = '8px';
 
+                const getLabel = (p: string) => {
+                    let base = p;
+                    let suf = '';
+                    const m = p.match(/^(.*?)_(\d+)$/);
+                    if (m && !p.startsWith('animation_') || (p.startsWith('animation_') && m && m[1] !== 'animation')) {
+                        base = m[1];
+                        suf = ` (${parseInt(m[2]) + 1})`;
+                    }
+                    return (propTranslations[base] || base.charAt(0).toUpperCase() + base.slice(1)) + suf;
+                };
+
                 const label = document.createElement('span');
-                label.textContent = propTranslations[prop] || prop.charAt(0).toUpperCase() + prop.slice(1);
+                label.textContent = getLabel(prop);
                 labelContainer.appendChild(label);
 
                 if (mapping && mapping.source === 'constant') {
@@ -948,13 +985,13 @@ export class MappingUI {
                     funcSelect.className = 'mapping-control-select';
 
                     let functions: string[] = [];
-                    if (prop === 'color') {
+                    if (baseProp === 'color') {
                         functions = ['heatmap', 'bipolar', 'categorical'];
-                    } else if (prop === 'geometry') {
+                    } else if (baseProp === 'geometry') {
                         functions = ['categorical', 'sphereComplexity'];
-                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ', 'attraction', 'repulsion', 'inertia'].includes(prop)) {
+                    } else if (['position', 'size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ', 'attraction', 'repulsion', 'inertia'].includes(baseProp)) {
                         functions = ['linear', 'exponential', 'logarithmic', 'categorical'];
-                    } else if (prop === 'animation' || prop.startsWith('animation_')) {
+                    } else if (baseProp === 'animation' || baseProp.startsWith('animation_')) {
                         functions = ['linear', 'exponential', 'constant'];
                     } else {
                         functions = ['linear', 'exponential', 'logarithmic', 'heatmap', 'bipolar', 'pulse', 'sphereComplexity', 'categorical'];
@@ -980,14 +1017,14 @@ export class MappingUI {
                             const uniqueValues = this.getAttributeUniqueValues(source);
                             const currentCategories = mapping.params?.categories || {};
                             
-                            if (prop === 'color') {
+                            if (baseProp === 'color') {
                                 const palette = mapping.palette || 'all';
                                 updates.palette = palette;
                                 updates.params = { 
                                     ...(mapping.params || {}), 
                                     categories: this.generateCategoricalColors(uniqueValues, palette) 
                                 };
-                            } else if (prop === 'geometry') {
+                            } else if (baseProp === 'geometry') {
                                 const categories: Record<string, string> = {};
                                 const shapes = ['sphere', 'cube', 'cylinder', 'cone', 'torus'];
                                 uniqueValues.forEach((val, idx) => {
@@ -997,7 +1034,7 @@ export class MappingUI {
                             } else {
                                 // Numeric property
                                 const categories: Record<string, number> = {};
-                                const isPosition = ['positionX', 'positionY', 'positionZ'].includes(prop);
+                                const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(baseProp);
                                 const defaultRange = isPosition ? [-50, 50] : [0.1, 3.0];
                                 const rangeMin = mapping.range ? mapping.range[0] : defaultRange[0];
                                 const rangeMax = mapping.range ? mapping.range[1] : defaultRange[1];
@@ -1143,7 +1180,7 @@ export class MappingUI {
                         bipGroup.appendChild(bipRow);
                         details.appendChild(bipGroup);
                     } else if ((['linear', 'exponential', 'logarithmic'].includes(mapping.function) || mapping.range) && !['categorical', 'pulse'].includes(mapping.function)) {
-                        const isPosition = ['positionX', 'positionY', 'positionZ'].includes(prop);
+                        const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(baseProp);
                         const rangeMinVal = mapping.range ? mapping.range[0] : (isPosition ? -100 : 0.1);
                         const rangeMaxVal = mapping.range ? mapping.range[1] : (isPosition ? 100 : 3.0);
 
@@ -1284,7 +1321,7 @@ export class MappingUI {
                         const uniqueValues = this.getAttributeUniqueValues(source);
                         const categories = mapping.params?.categories || {};
                         
-                        if (prop === 'color') {
+                        if (baseProp === 'color') {
                             const palGroup = document.createElement('div');
                             palGroup.className = 'mapping-control-group';
                             palGroup.style.marginBottom = '8px';
@@ -1330,7 +1367,7 @@ export class MappingUI {
                             nameSpan.style.whiteSpace = 'nowrap';
                             row.appendChild(nameSpan);
                             
-                            if (prop === 'color') {
+                            if (baseProp === 'color') {
                                 const input = document.createElement('input');
                                 input.className = 'mapping-control-input';
                                 input.type = 'color';
@@ -1350,7 +1387,7 @@ export class MappingUI {
                                     this.updatePropertyMapping(prop, { params });
                                 };
                                 row.appendChild(input);
-                            } else if (prop === 'geometry') {
+                            } else if (baseProp === 'geometry') {
                                 const select = document.createElement('select');
                                 select.className = 'mapping-control-select';
                                 select.style.width = '100px';
@@ -1412,7 +1449,7 @@ export class MappingUI {
                     constLabel.textContent = 'Fester Wert';
                     constGroup.appendChild(constLabel);
 
-                    if (prop === 'color') {
+                    if (baseProp === 'color') {
                         const colorInput = document.createElement('input');
                         colorInput.className = 'mapping-control-input';
                         colorInput.type = 'color';
@@ -1426,7 +1463,7 @@ export class MappingUI {
                             this.updatePropertyMapping(prop, { params });
                         };
                         constGroup.appendChild(colorInput);
-                    } else if (prop === 'geometry') {
+                    } else if (baseProp === 'geometry') {
                         const shapeSelect = document.createElement('select');
                         shapeSelect.className = 'mapping-control-select';
                         const shapes = ['sphere', 'cube', 'cylinder', 'cone', 'torus'];
@@ -1446,7 +1483,7 @@ export class MappingUI {
                             } as any);
                         };
                         constGroup.appendChild(shapeSelect);
-                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ', 'attraction', 'repulsion', 'inertia'].includes(prop)) {
+                    } else if (['position', 'size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ', 'attraction', 'repulsion', 'inertia'].includes(baseProp)) {
                         const numInput = document.createElement('input');
                         numInput.className = 'mapping-control-input';
                         numInput.type = 'number';
@@ -1463,7 +1500,7 @@ export class MappingUI {
                             }
                         };
                         constGroup.appendChild(numInput);
-                    } else if (prop === 'animation' || prop.startsWith('animation_')) {
+                    } else if (baseProp === 'animation' || baseProp.startsWith('animation_')) {
                         const animSelect = document.createElement('select');
                         animSelect.className = 'mapping-control-select';
                         const animOptions = ['none', 'active'];
@@ -2084,17 +2121,22 @@ export class MappingUI {
         group.appendChild(visiblePath);
         group.appendChild(hitAreaPath);
 
-        if (isActive) {
+        if (isActive || isDashed) {
             group.style.cursor = 'pointer';
             
             // Hover effect simulation
             group.addEventListener('mouseenter', () => {
-                visiblePath.style.stroke = '#00aaff';
+                visiblePath.style.stroke = isDashed ? 'rgba(0, 170, 255, 0.8)' : '#00aaff';
                 visiblePath.style.strokeWidth = '3';
             });
             group.addEventListener('mouseleave', () => {
-                visiblePath.style.stroke = '';
-                visiblePath.style.strokeWidth = '';
+                if (isDashed) {
+                    visiblePath.style.stroke = 'rgba(255, 255, 255, 0.4)';
+                    visiblePath.style.strokeWidth = '2px';
+                } else {
+                    visiblePath.style.stroke = '';
+                    visiblePath.style.strokeWidth = '';
+                }
             });
 
             // Click path to disconnect
@@ -2210,20 +2252,21 @@ export class MappingUI {
         const preset = this.mappings.defaultPresets[this.currentType] as any;
 
         let defaultFunc: any = 'linear';
+        const basePropName = propName.replace(/_\d+$/, '');
         const isCategoricalSource = ['type', 'id', 'category', 'label', 'domain'].includes(sourceAttr);
         if (specificValue || isCategoricalSource) {
             defaultFunc = 'categorical';
-        } else if (propName === 'color') {
+        } else if (basePropName === 'color') {
             if (isCategoricalSource) {
                 defaultFunc = 'categorical';
             } else {
                 defaultFunc = 'heatmap';
             }
-        } else if (propName === 'geometry') {
+        } else if (basePropName === 'geometry') {
             defaultFunc = 'categorical';
-        } else if (propName === 'animation') {
+        } else if (basePropName === 'animation') {
             defaultFunc = 'pulse';
-        } else if (['positionX', 'positionY', 'positionZ', 'size', 'thickness', 'curvature', 'glow', 'opacity', 'attraction', 'repulsion', 'inertia'].includes(propName)) {
+        } else if (['position', 'positionX', 'positionY', 'positionZ', 'size', 'thickness', 'curvature', 'glow', 'opacity', 'attraction', 'repulsion', 'inertia'].includes(basePropName)) {
             if (isCategoricalSource) {
                 defaultFunc = 'categorical';
             } else {
@@ -2236,7 +2279,7 @@ export class MappingUI {
             newDomain = this.getAttributeDataBounds(sourceAttr);
         }
 
-        const isPosition = ['positionX', 'positionY', 'positionZ'].includes(propName);
+        const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(basePropName);
         const defaultRange: [number, number] = isPosition ? [-100, 100] : [0.1, 3.0];
 
         const existingMapping = preset[propName] || { source: 'constant', function: 'constant' };
@@ -2254,14 +2297,14 @@ export class MappingUI {
             const uniqueValues = this.getAttributeUniqueValues(sourceAttr);
             const currentCategories = existingMapping.params?.categories || {};
             
-            if (propName === 'color') {
+            if (basePropName === 'color') {
                 const palette = existingMapping.palette || 'all';
                 updates.palette = palette;
                 updates.params = { 
                     ...(existingMapping.params || {}), 
                     categories: this.generateCategoricalColors(uniqueValues, palette) 
                 };
-            } else if (propName === 'geometry') {
+            } else if (basePropName === 'geometry') {
                 const categories: Record<string, string> = {};
                 const shapes = ['sphere', 'cube', 'cylinder', 'cone', 'torus'];
                 uniqueValues.forEach((val, idx) => {
@@ -2271,7 +2314,7 @@ export class MappingUI {
             } else {
                 // Numeric property
                 const categories: Record<string, number> = {};
-                const isPosition = ['positionX', 'positionY', 'positionZ'].includes(propName);
+                const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(basePropName);
                 const defaultRange = isPosition ? [-50, 50] : [0.1, 3.0];
                 const rangeMin = existingMapping.range ? existingMapping.range[0] : defaultRange[0];
                 const rangeMax = existingMapping.range ? existingMapping.range[1] : defaultRange[1];

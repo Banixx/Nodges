@@ -29,7 +29,7 @@ export class DataParser {
     private static normalizeData(data: any): GraphData {
         // Accept Build 3 and Build 4
         const schemaVersion = data.metadata?.schemaVersion;
-        const SUPPORTED_VERSIONS = ['3.0', '4.0'];
+        const SUPPORTED_VERSIONS = ['3.0', '4.0', '5.0'];
         if (!SUPPORTED_VERSIONS.includes(schemaVersion)) {
             throw new Error(`Data Validation Failed: Unsupported schema version "${schemaVersion || 'unknown'}". Supported: ${SUPPORTED_VERSIONS.join(', ')}`);
         }

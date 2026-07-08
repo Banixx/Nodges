@@ -245,19 +245,25 @@ export class LLMService {
             cleanResponse = cleanResponse.replace(/^```json\s*/, '').replace(/```$/, '').trim();
         }
 
-        let parsedData: GraphData;
+        let parsedData: any;
         try {
-            parsedData = JSON.parse(cleanResponse) as GraphData;
+            parsedData = JSON.parse(cleanResponse);
         } catch (e) {
             console.error("Failed to parse JSON:", responseText);
             throw new Error('Das Modell hat kein gültiges JSON zurückgegeben.');
         }
 
-        if (!parsedData.data || !Array.isArray(parsedData.data.entities) || !Array.isArray(parsedData.data.relationships)) {
-            throw new Error('Das generierte JSON hat nicht die erwartete Struktur (data.entities und data.relationships fehlen).');
+        // Flexiblere Validierung: Es muss ENTWEDER data.entities/relationships geben ODER ein dataModel ODER visualMappings (fuer Multi-Step)
+        const hasData = parsedData.data && Array.isArray(parsedData.data.entities) && Array.isArray(parsedData.data.relationships);
+        const hasDataModel = parsedData.dataModel && typeof parsedData.dataModel === 'object';
+        const hasVisualMappings = parsedData.visualMappings && typeof parsedData.visualMappings === 'object';
+
+        if (!hasData && !hasDataModel && !hasVisualMappings) {
+            console.error("Invalid JSON structure:", parsedData);
+            throw new Error('Das generierte JSON hat nicht die erwartete Struktur (weder Daten, noch Schema, noch Visual Mappings gefunden).');
         }
 
-        return parsedData;
+        return parsedData as GraphData;
     }
 
     public static async generateGraphData(
@@ -279,6 +285,69 @@ export class LLMService {
         }
 
         return this._executeLLMCall(systemPrompt, prompt, provider, model);
+    }
+
+    public static async generateGraphDataMultiStepBuild5(
+        prompt: string, 
+        provider: LLMProvider, 
+        model: string,
+        onProgress?: (msg: string) => void
+    ): Promise<GraphData> {
+        // Step 1: Schema / Ontologie
+        const schemaPromptFile = '/prompts/build_5_ontology_prompt.md';
+        let schemaSystemPrompt = '';
+        try {
+            const res = await fetch(schemaPromptFile);
+            if (!res.ok) throw new Error();
+            schemaSystemPrompt = await res.text();
+        } catch {
+            throw new Error(`Konnte Schema-Datei nicht laden: ${schemaPromptFile}`);
+        }
+        
+        if (onProgress) onProgress('Schritt 1/3: Ontologie (Schema) wird entworfen...');
+        
+        const step1UserPrompt = `Erstelle ein dataModel (Ontologie) basierend auf der folgenden Anfrage:\n\n${prompt}`;
+        const step1Data = await this._executeLLMCall(schemaSystemPrompt, step1UserPrompt, provider, model);
+        
+        // Step 2: Data
+        if (onProgress) onProgress('Schritt 2/3: Datenpunkte werden generiert...');
+        
+        const dataPromptFile = '/prompts/build_5_data_prompt.md';
+        let dataSystemPrompt = '';
+        try {
+            const res = await fetch(dataPromptFile);
+            if (!res.ok) throw new Error();
+            dataSystemPrompt = await res.text();
+        } catch {
+            throw new Error(`Konnte Data-Prompt nicht laden: ${dataPromptFile}`);
+        }
+
+        const step2UserPrompt = `Nutze EXAKT das folgende Schema (Ontologie), um die Daten zu generieren:\n\n${JSON.stringify(step1Data, null, 2)}\n\nBefuelle nun die data.entities und data.relationships Arrays basierend auf der Originalanfrage:\n${prompt}`;
+        
+        const step2Data = await this._executeLLMCall(dataSystemPrompt, step2UserPrompt, provider, model);
+        
+        // Merge Step 1 and Step 2
+        const mergedData = { ...step1Data, ...step2Data };
+        
+        // Step 3: Visual Mappings
+        if (onProgress) onProgress('Schritt 3/3: Visuelles Mapping (Build 5) wird berechnet...');
+        
+        const visualPromptFile = '/prompts/build_5_visual_prompt.md';
+        let visualSystemPrompt = '';
+        try {
+            const res = await fetch(visualPromptFile);
+            if (!res.ok) throw new Error();
+            visualSystemPrompt = await res.text();
+        } catch {
+            throw new Error(`Konnte Visual-Prompt nicht laden: ${visualPromptFile}`);
+        }
+
+        const step3UserPrompt = `Erstelle die visuellen Mappings fuer diesen Datensatz:\n\n${JSON.stringify(mergedData, null, 2)}`;
+        
+        const step3Data = await this._executeLLMCall(visualSystemPrompt, step3UserPrompt, provider, model);
+        
+        // Final Merge
+        return { ...mergedData, ...step3Data };
     }
 
     public static async generateGraphDataMultiStep(

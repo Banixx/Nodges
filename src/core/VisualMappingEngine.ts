@@ -76,6 +76,18 @@ export class VisualMappingEngine {
         const visual: VisualProperties = {};
 
         // Apply position mappings
+        if (preset.position && preset.position.source !== 'constant') {
+            const posVal = this.applyMapping(preset.position, entity, 'position');
+            if (Array.isArray(posVal) && posVal.length >= 3) {
+                visual.positionX = Number(posVal[0]);
+                visual.positionY = Number(posVal[1]);
+                visual.positionZ = Number(posVal[2]);
+            } else if (posVal && typeof posVal === 'object') {
+                visual.positionX = Number(posVal.x) || 0;
+                visual.positionY = Number(posVal.y) || 0;
+                visual.positionZ = Number(posVal.z) || 0;
+            }
+        }
         if (preset.positionX && preset.positionX.source !== 'constant') {
             visual.positionX = this.applyMapping(preset.positionX, entity, 'positionX');
         }
@@ -211,11 +223,23 @@ export class VisualMappingEngine {
         }
 
         // Get source value (supports nested properties like "personality.extraversion")
-        let value = this.getNestedProperty(data, sourceKey);
+        let value: any;
+        if (sourceKey.startsWith('algo:')) {
+            // Algorithm layouts update the entity.position directly.
+            // By returning data.position here, the VisualMappingEngine naturally uses the algorithm's output.
+            value = (data as EntityData).position;
+        } else {
+            value = this.getNestedProperty(data, sourceKey);
+        }
 
         if (value === undefined || value === null) {
             // Return middle of range or default
             return mapping.range ? (mapping.range[0] + mapping.range[1]) / 2 : 1;
+        }
+
+        // Pass through raw position arrays/objects
+        if (propName === 'position' && (Array.isArray(value) || (typeof value === 'object' && ('x' in value || 'X' in value)))) {
+            return value;
         }
 
         // Handle categorical mapping directly (keeps string values)

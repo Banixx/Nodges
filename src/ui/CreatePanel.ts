@@ -200,47 +200,9 @@ export class CreatePanel {
             LLMService.setActiveModel(provider, this.modelSelect.value);
         };
 
-        // Format Select
-        const formatLabel = document.createElement('label');
-        formatLabel.textContent = 'Format-Version:';
-        formatLabel.style.display = 'block';
-        formatLabel.style.marginBottom = '5px';
-        formatLabel.style.color = 'var(--text-muted)';
-        genSection.appendChild(formatLabel);
-
-        this.formatSelect = document.createElement('select');
-        this.formatSelect.className = 'form-control';
-        this.formatSelect.style.width = '100%';
-        this.formatSelect.style.marginBottom = '15px';
-        this.formatSelect.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
-        this.formatSelect.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-        this.formatSelect.style.color = 'var(--text-color)';
-        this.formatSelect.style.padding = '6px';
-        this.formatSelect.style.borderRadius = '4px';
-        this.formatSelect.style.fontFamily = 'inherit';
-
-        const formats = [
-            { value: '/prompts/build_4_few_shot.md', label: 'Build 4 (Deep Few-Shot)' },
-            { value: '/prompts/build_4_prompt.md', label: 'Build 4 (Standard)' },
-            { value: '/prompts/ontology_prompt.md', label: 'Ontologie (Nur Schema)' },
-            { value: '/prompts/build_3_prompt.md', label: 'Build 3' },
-            { value: '/prompts/default_prompt.md', label: 'Legacy / Default' }
-        ];
-
-        formats.forEach(f => {
-            const opt = document.createElement('option');
-            opt.value = f.value;
-            opt.textContent = f.label;
-            if (f.value === '/prompts/build_4_few_shot.md') {
-                opt.selected = true;
-            }
-            this.formatSelect.appendChild(opt);
-        });
-        genSection.appendChild(this.formatSelect);
-
-        // Pipeline Select
+        // Pipeline Select (Ersetzt die alte Format-Version komplett)
         const pipelineLabel = document.createElement('label');
-        pipelineLabel.textContent = 'Modus / Pipeline:';
+        pipelineLabel.textContent = 'Generierungs-Modus:';
         pipelineLabel.style.display = 'block';
         pipelineLabel.style.marginBottom = '5px';
         pipelineLabel.style.color = 'var(--text-muted)';
@@ -258,9 +220,8 @@ export class CreatePanel {
         this.pipelineSelect.style.fontFamily = 'inherit';
 
         const pipelines = [
-            { value: 'oneshot', label: 'One-Shot (Schnell, Klassisch)' },
-            { value: 'multistep', label: 'Deep Think (2-stufig, hohe Qualität)' },
-            { value: 'refine', label: 'Iterativ (Bestehendes Netzwerk anpassen)' }
+            { value: 'build5', label: 'Neu: Build 5 (3-stufig: Ontologie -> Daten -> Mapping)' },
+            { value: 'refine', label: 'Update: Iterativ (Bestehendes Netzwerk anpassen)' }
         ];
 
         pipelines.forEach(p => {
@@ -506,7 +467,6 @@ export class CreatePanel {
 
         const provider = this.providerSelect.value as LLMProvider;
         const model = this.modelSelect.value;
-        const format = this.formatSelect.value;
         const pipeline = this.pipelineSelect.value;
 
         if (!LLMService.getApiKey(provider)) {
@@ -520,24 +480,21 @@ export class CreatePanel {
         try {
             let graphData: any;
 
-            if (pipeline === 'oneshot') {
-                this.setStatus('Sende Anfrage an KI (Dies kann 1-3 Minuten dauern)...', 'info');
-                graphData = await LLMService.generateGraphData(prompt, provider, model, format);
-            } else if (pipeline === 'multistep') {
-                graphData = await LLMService.generateGraphDataMultiStep(prompt, provider, model, (msg) => {
+            if (pipeline === 'build5') {
+                graphData = await LLMService.generateGraphDataMultiStepBuild5(prompt, provider, model, (msg) => {
                     this.setStatus(msg, 'info');
                 });
             } else if (pipeline === 'refine') {
                 const existingData = {
-                    metadata: { schemaVersion: "4.0" },
-                    dataModel: { entities: {}, relationships: {} },
-                    visualMappings: { defaultPresets: {} },
+                    metadata: { schemaVersion: "5.0" },
+                    dataModel: this.app.currentGraphData?.dataModel || { entities: {}, relationships: {} },
+                    visualMappings: this.app.currentGraphData?.visualMappings || { defaultPresets: {} },
                     data: {
                         entities: this.stateManager.getEntities(),
                         relationships: this.stateManager.getRelationships()
                     }
                 };
-                graphData = await LLMService.refineGraphData(existingData as any, prompt, provider, model, format, (msg) => {
+                graphData = await LLMService.refineGraphData(existingData as any, prompt, provider, model, '/prompts/build_5_data_prompt.md', (msg) => {
                     this.setStatus(msg, 'info');
                 });
             }
