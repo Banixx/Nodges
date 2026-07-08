@@ -43,7 +43,7 @@ export class CreatePanel {
         // --- API KEY SECTION ---
         const keySection = document.createElement('section');
         keySection.className = 'panel-section';
-        keySection.style.display = 'none'; // Voruebergehend ausgeblendet
+        keySection.style.display = 'block';
 
         const keyHeader = document.createElement('h4');
         keyHeader.className = 'section-header';
