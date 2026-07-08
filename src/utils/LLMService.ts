@@ -17,9 +17,10 @@ export class LLMService {
     public static readonly PROVIDER_MODELS: Record<LLMProvider, LLMModel[]> = {
         openrouter: [
             { id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini (OpenAI)' },
-            { id: 'google/gemini-flash-1.5', name: 'Gemini 1.5 Flash (Google)' },
+            { id: 'google/gemini-2.5-flash', name: 'Gemini 2.5 Flash (Google)' },
+            { id: 'google/gemini-2.5-pro', name: 'Gemini 2.5 Pro (Google)' },
             { id: 'anthropic/claude-3-haiku', name: 'Claude 3 Haiku (Anthropic)' },
-            { id: 'mistralai/mistral-7b-instruct:free', name: 'Mistral 7B (Free)' },
+            { id: 'qwen/qwen3-coder:free', name: 'Qwen 3 Coder (Free)' },
             { id: 'qwen/qwen-2.5-72b-instruct', name: 'Qwen 2.5 72B (Alibaba)' },
             { id: 'zhipu/glm-4', name: 'GLM 4 (Zhipu)' },
             { id: 'qwen/qwen3.6-plus', name: 'Qwen 3.6 Plus (Alibaba)' },
