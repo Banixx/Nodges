@@ -1962,36 +1962,37 @@ export class MappingUI {
     private hasOriginalMappingsToTakeover(): boolean {
         if (!this.originalMappings || !this.originalMappings.defaultPresets) return false;
         
-        for (const type in this.originalMappings.defaultPresets) {
-            const preset = this.originalMappings.defaultPresets[type] as any;
-            for (const prop in preset) {
-                const map = preset[prop] as VisualMapping;
-                if (!map) continue;
-                let sourceAttr = map.field || map.source;
-                if (!sourceAttr) continue;
-                
-                sourceAttr = sourceAttr.replace(/^stateVector\./, '');
-                // Check if already in active mappings
-                const activePreset = this.mappings?.defaultPresets?.[type] as any;
-                if (!activePreset || !activePreset[prop]) {
+        const type = this.currentType;
+        const preset = this.originalMappings.defaultPresets[type] as any;
+        if (!preset) return false;
+        
+        for (const prop in preset) {
+            const map = preset[prop] as VisualMapping;
+            if (!map) continue;
+            let sourceAttr = map.field || map.source;
+            if (!sourceAttr) continue;
+            
+            sourceAttr = sourceAttr.replace(/^stateVector\./, '');
+            // Check if already in active mappings
+            const activePreset = this.mappings?.defaultPresets?.[type] as any;
+            if (!activePreset || !activePreset[prop]) {
+                return true;
+            }
+            
+            const activeMap = activePreset[prop] as VisualMapping;
+            let activeSource = activeMap.source || activeMap.field;
+            if (activeSource) activeSource = activeSource.replace(/^stateVector\./, '');
+            
+            if (activeSource !== sourceAttr) {
+                return true;
+            }
+            
+            // If both are constant, check if the value/color/geometry differs
+            if (sourceAttr === 'constant') {
+                const valOriginal = map.params?.value !== undefined ? map.params.value : (map.params?.color || map.params?.geometry || (map as any).value);
+                const valActive = activeMap.params?.value !== undefined ? activeMap.params.value : (activeMap.params?.color || activeMap.params?.geometry || (activeMap as any).value);
+                if (valOriginal !== valActive) {
                     return true;
-                }
-                
-                const activeMap = activePreset[prop] as VisualMapping;
-                let activeSource = activeMap.source || activeMap.field;
-                if (activeSource) activeSource = activeSource.replace(/^stateVector\./, '');
-                
-                if (activeSource !== sourceAttr) {
-                    return true;
-                }
-                
-                // If both are constant, check if the value/color/geometry differs
-                if (sourceAttr === 'constant') {
-                    const valOriginal = map.params?.value !== undefined ? map.params.value : (map.params?.color || map.params?.geometry || (map as any).value);
-                    const valActive = activeMap.params?.value !== undefined ? activeMap.params.value : (activeMap.params?.color || activeMap.params?.geometry || (activeMap as any).value);
-                    if (valOriginal !== valActive) {
-                        return true;
-                    }
                 }
             }
         }
@@ -2005,11 +2006,13 @@ export class MappingUI {
             this.mappings.defaultPresets = {};
         }
 
-        Object.keys(this.originalMappings.defaultPresets).forEach(type => {
-            if (!this.mappings!.defaultPresets[type]) {
-                this.mappings!.defaultPresets[type] = {} as any;
-            }
-            const preset = this.originalMappings!.defaultPresets[type] as any;
+        const type = this.currentType;
+        if (!this.mappings!.defaultPresets[type]) {
+            this.mappings!.defaultPresets[type] = {} as any;
+        }
+        
+        const preset = this.originalMappings!.defaultPresets[type] as any;
+        if (preset) {
             Object.keys(preset).forEach(prop => {
                 const map = preset[prop] as VisualMapping;
                 if (map) {
@@ -2019,7 +2022,7 @@ export class MappingUI {
                     (this.mappings!.defaultPresets[type] as any)[prop] = mapCopy;
                 }
             });
-        });
+        }
 
         if (this.onUpdate) {
             this.onUpdate(this.mappings);

@@ -95,7 +95,7 @@ export type TemporalData = z.infer<typeof TemporalDataSchema>;
 // that are defined in the dataModel schema at runtime, not compile-time.
 export const EntityDataSchema = z.object({
     id: z.string(),
-    type: z.string(),
+    type: z.string().optional(),
     label: z.string().optional(),
     position: z.object({
         x: z.number(),
@@ -112,7 +112,7 @@ export type EntityData = z.infer<typeof EntityDataSchema> & Record<string, unkno
 
 export const RelationshipDataSchema = z.object({
     id: z.string().optional(),
-    type: z.string(),
+    type: z.string().optional(),
     source: z.string().optional(),
     target: z.string().optional(),
     nodes: z.array(z.string()).optional(),

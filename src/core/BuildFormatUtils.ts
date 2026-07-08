@@ -72,7 +72,7 @@ export function getAvailableProperties(dm: DataModel | undefined, entityType: st
         }
         
         // In Build 5 koennen Eigenschaften auch direkt auf der Entity liegen (ausser den reservierten Keys)
-        const reservedKeys = ['id', 'type', 'label', 'temporal', 'stateVector']; // 'position' entfernt aus Reservierungen, da wir es mappen wollen
+        const reservedKeys = ['id', 'label', 'temporal', 'stateVector']; // 'position' entfernt aus Reservierungen, da wir es mappen wollen
         Object.keys(entity).forEach(k => {
             if (!reservedKeys.includes(k)) {
                 if (typeof (entity as any)[k] !== 'object' || Array.isArray((entity as any)[k])) {

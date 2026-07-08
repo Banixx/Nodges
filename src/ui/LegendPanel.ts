@@ -79,40 +79,13 @@ export class LegendPanel {
     }
 
     private populateSection(section: HTMLElement, baseType: 'node' | 'edge') {
-        if (!this.mappings) return;
+        if (!this.mappings || !this.mappings.defaultPresets) return;
 
-        const state = this.stateManager.state;
         const presets = this.mappings.defaultPresets;
-        
-        // Find types that are actually used in the current graph data
-        const usedTypes = new Set<string>();
-        if (baseType === 'node') {
-            state.graphData.entities.forEach(e => usedTypes.add(e.type));
-        } else {
-            state.graphData.relationships.forEach(r => usedTypes.add(r.type));
-        }
+        const globalType = baseType === 'node' ? 'global_node' : 'global_edge';
+        const preset = presets[globalType];
 
-        // Also include types defined in presets even if not currently in data (optional, but good for "initial overview")
-        const presetTypes = Object.keys(presets).filter(type => {
-            const preset = presets[type];
-            // If it's already in usedTypes, we keep it
-            if (usedTypes.has(type)) return true;
-            
-            // Heuristic fallback if data is empty
-            if (baseType === 'node') {
-                return 'size' in preset || 'geometry' in preset || 'shape' in preset;
-            } else {
-                return 'thickness' in preset || 'curvature' in preset || 'source' in preset; // relationships usually have source/target but presets don't
-            }
-        });
-
-        // Combine both
-        const allRelevantTypes = Array.from(new Set([...Array.from(usedTypes), ...presetTypes])).filter(type => {
-            // Final check: does it have a preset?
-            return !!presets[type];
-        });
-
-        if (allRelevantTypes.length === 0) {
+        if (!preset || Object.keys(preset).length === 0) {
             const empty = document.createElement('div');
             empty.className = 'info-row';
             empty.innerHTML = '<span class="info-label">Keine Daten</span>';
@@ -120,37 +93,33 @@ export class LegendPanel {
             return;
         }
 
-        allRelevantTypes.forEach(type => {
-            const typeGroup = document.createElement('div');
-            typeGroup.className = 'legend-type-group';
-            typeGroup.style.marginBottom = '15px';
-            typeGroup.style.padding = '8px';
-            typeGroup.style.backgroundColor = 'rgba(255,255,255,0.03)';
-            typeGroup.style.borderRadius = '4px';
+        const typeGroup = document.createElement('div');
+        typeGroup.className = 'legend-type-group';
+        typeGroup.style.marginBottom = '15px';
+        typeGroup.style.padding = '8px';
+        typeGroup.style.backgroundColor = 'rgba(255,255,255,0.03)';
+        typeGroup.style.borderRadius = '4px';
 
-            const typeTitle = document.createElement('div');
-            typeTitle.style.fontWeight = 'bold';
-            typeTitle.style.color = 'var(--accent-color)';
-            typeTitle.style.marginBottom = '8px';
-            typeTitle.style.fontSize = '0.9em';
-            typeTitle.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-            typeTitle.style.paddingBottom = '4px';
-            typeTitle.textContent = type.toUpperCase();
-            typeGroup.appendChild(typeTitle);
+        const typeTitle = document.createElement('div');
+        typeTitle.style.fontWeight = 'bold';
+        typeTitle.style.color = 'var(--accent-color)';
+        typeTitle.style.marginBottom = '8px';
+        typeTitle.style.fontSize = '0.9em';
+        typeTitle.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+        typeTitle.style.paddingBottom = '4px';
+        typeTitle.textContent = baseType === 'node' ? 'ALLE KNOTEN' : 'ALLE KANTEN';
+        typeGroup.appendChild(typeTitle);
 
-            const preset = presets[type];
-            
-            // Render specific mappings
-            Object.entries(preset).forEach(([prop, mapping]) => {
-                if (['attraction', 'repulsion', 'inertia'].includes(prop)) return;
-                if (typeof mapping === 'object' && mapping !== null && 'source' in mapping) {
-                    const row = this.createLegendRow(prop, mapping as VisualMapping, type, baseType);
-                    typeGroup.appendChild(row);
-                }
-            });
-
-            section.appendChild(typeGroup);
+        // Render specific mappings
+        Object.entries(preset).forEach(([prop, mapping]) => {
+            if (['attraction', 'repulsion', 'inertia'].includes(prop)) return;
+            if (typeof mapping === 'object' && mapping !== null && 'source' in mapping) {
+                const row = this.createLegendRow(prop, mapping as VisualMapping, globalType, baseType);
+                typeGroup.appendChild(row);
+            }
         });
+
+        section.appendChild(typeGroup);
     }
 
     private createLegendRow(prop: string, mapping: VisualMapping, type: string, baseType: 'node' | 'edge'): HTMLElement {

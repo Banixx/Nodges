@@ -44,6 +44,7 @@ export class CreatePanel {
         // --- API KEY SECTION ---
         const keySection = document.createElement('section');
         keySection.className = 'panel-section';
+        keySection.style.display = 'none'; // Voruebergehend ausgeblendet
 
         const keyHeader = document.createElement('h4');
         keyHeader.className = 'section-header';
@@ -160,7 +161,7 @@ export class CreatePanel {
 
         const genHeader = document.createElement('h4');
         genHeader.className = 'section-header';
-        genHeader.textContent = '2. Netzwerk per KI generieren';
+        genHeader.textContent = 'Netzwerk per KI generieren';
         genSection.appendChild(genHeader);
 
         // Model Select
@@ -459,6 +460,25 @@ export class CreatePanel {
             this.setStatus('Bitte gib ein Prompt ein.', 'error');
             return;
         }
+
+        // --- Frontend NSFW Filter (mittelstreng) ---
+        const nsfwKeywords = [
+            'porn', 'sex', 'nude', 'nsfw', 'gore', 'murder', 'rape', 'pedophile', 
+            'porno', 'nackt', 'sexuell', 'vergewaltigung', 'mord', 'töten', 'schlampe', 
+            'hure', 'fuck', 'shit', 'bitch', 'asshole', 'dick', 'cock', 'pussy', 'vagina', 
+            'penis', 'hitler', 'nazi', 'terrorist', 'bomb'
+        ];
+        
+        const lowerPrompt = prompt.toLowerCase();
+        for (const word of nsfwKeywords) {
+            // Regex um das Wort als ganzes Wort zu matchen (verhindert False Positives wie "cocktail")
+            const regex = new RegExp(`\\b${word}\\b`, 'i');
+            if (regex.test(lowerPrompt)) {
+                this.setStatus('Fehler: Die Anfrage verstösst gegen die Inhaltsrichtlinien (NSFW-Filter).', 'error');
+                return;
+            }
+        }
+        // -------------------------------------------
 
         const ragText = this.ragTextarea?.value.trim();
         if (ragText) {

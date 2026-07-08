@@ -53,13 +53,11 @@ export class VisualMappingEngine {
         this.dataModel = dataModel;
     }
 
-    private getEffectivePreset(type: string, isNode: boolean): any {
-        const activeSpecific = this.visualMappings?.defaultPresets?.[type];
+    private getEffectivePreset(isNode: boolean): any {
         const activeGlobal = this.visualMappings?.defaultPresets?.[isNode ? 'global_node' : 'global_edge'];
 
         const preset = {};
         if (activeGlobal) Object.assign(preset, activeGlobal);
-        if (activeSpecific) Object.assign(preset, activeSpecific);
         
         return preset;
     }
@@ -68,7 +66,7 @@ export class VisualMappingEngine {
      * Apply visual mappings to an entity
      */
     applyToEntity(entity: EntityData): VisualProperties {
-        const preset = this.getEffectivePreset(entity.type, true) as EntityVisualPreset;
+        const preset = this.getEffectivePreset(true) as EntityVisualPreset;
         if (Object.keys(preset).length === 0) {
             return this.getDefaultVisualProperties();
         }
@@ -142,7 +140,7 @@ export class VisualMappingEngine {
      * Apply visual mappings to a relationship
      */
     applyToRelationship(relationship: RelationshipData): VisualProperties {
-        const preset = this.getEffectivePreset(relationship.type, false) as RelationshipVisualPreset;
+        const preset = this.getEffectivePreset(false) as RelationshipVisualPreset;
         if (Object.keys(preset).length === 0) {
             return this.getDefaultVisualProperties();
         }

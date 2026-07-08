@@ -17,9 +17,17 @@ export class LLMService {
     public static readonly PROVIDER_MODELS: Record<LLMProvider, LLMModel[]> = {
         openrouter: [
             { id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini (OpenAI)' },
-            { id: 'meta-llama/llama-3-8b-instruct:free', name: 'Llama 3 8B (Free)' },
-            { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet (Anthropic)' },
-            { id: 'google/gemini-flash-1.5', name: 'Gemini 1.5 Flash (Google)' }
+            { id: 'google/gemini-flash-1.5', name: 'Gemini 1.5 Flash (Google)' },
+            { id: 'anthropic/claude-3-haiku', name: 'Claude 3 Haiku (Anthropic)' },
+            { id: 'mistralai/mistral-7b-instruct:free', name: 'Mistral 7B (Free)' },
+            { id: 'qwen/qwen-2.5-72b-instruct', name: 'Qwen 2.5 72B (Alibaba)' },
+            { id: 'zhipu/glm-4', name: 'GLM 4 (Zhipu)' },
+            { id: 'qwen/qwen3.6-plus', name: 'Qwen 3.6 Plus (Alibaba)' },
+            { id: 'z-ai/glm-5.2', name: 'GLM 5.2 (Zhipu)' },
+            { id: 'deepseek/deepseek-v4-pro', name: 'DeepSeek V4 Pro' },
+            { id: 'mistralai/mistral-nemo', name: 'Mistral Nemo' },
+            { id: 'tencent/hy3m', name: 'Tencent HY3M' },
+            { id: 'moonshotai/kimi-k2.7-code', name: 'Kimi K2.7 Code (Moonshot)' }
         ],
         openai: [
             { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
@@ -88,6 +96,8 @@ export class LLMService {
                 localStorage.removeItem('openrouter_api_key');
                 return oldKey;
             }
+            // Temporaerer Key fuer öffentliche Nutzung ohne eigene Eingabe
+            return localStorage.getItem('llm_key_openrouter') || '';
         }
         return localStorage.getItem(`llm_key_${provider}`);
     }
@@ -113,30 +123,7 @@ export class LLMService {
      * Fetches models from OpenRouter API or returns cached/fallback models.
      */
     public static async fetchOpenRouterModels(): Promise<LLMModel[]> {
-        if (this.cachedOpenRouterModels) {
-            return this.cachedOpenRouterModels;
-        }
-
-        try {
-            const response = await fetch('https://openrouter.ai/api/v1/models');
-            if (!response.ok) {
-                throw new Error(`HTTP Fehler ${response.status}`);
-            }
-            const data = await response.json();
-            if (data && Array.isArray(data.data)) {
-                const models: LLMModel[] = data.data.map((m: any) => ({
-                    id: m.id,
-                    name: m.name || m.id
-                }));
-                // Sort alphabetically
-                models.sort((a, b) => a.name.localeCompare(b.name));
-                this.cachedOpenRouterModels = models;
-                return models;
-            }
-        } catch (error) {
-            console.warn('Fehler beim Laden der OpenRouter-Modelle, benutze Fallback:', error);
-        }
-
+        // Testweise auf 5 Mittelklasse-Modelle eingeschränkt
         return this.PROVIDER_MODELS.openrouter;
     }
 
@@ -167,6 +154,7 @@ export class LLMService {
                 },
                 body: JSON.stringify({
                     model: model,
+                    provider: { data_collection: 'deny' },
                     messages: [
                         { role: 'system', content: systemPrompt },
                         { role: 'user', content: userPrompt }
