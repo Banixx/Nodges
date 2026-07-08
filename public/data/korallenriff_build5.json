@@ -1,0 +1,276 @@
+{
+  "system": "Korallenriff_Oekosystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Modell eines tropischen Korallenriff-Oekosystems mit Organismen, Umweltfaktoren und oekologischen Wechselwirkungen.",
+    "author": "AI",
+    "competencyQuestions": [
+      "Welche Nahrungsketten existieren im Riff und wer ist Raeuber, wer Beute?",
+      "Wie wirkt sich die Wassertemperatur auf die Korallenbleiche und damit auf das gesamte Oekosystem aus?",
+      "Welche Arten sind Schluesselfiguren (Keystone Species) und welche Beziehungen wuerden bei ihrem Wegfall kollabieren?",
+      "Wie hat sich die Biodiversitaet im Riff ueber die letzten Jahrzehnte veraendert?"
+    ],
+    "map": { "image": "Map.jpg", "referenceWidth": 1000, "referenceHeight": 1000 }
+  },
+  "dataModel": {
+    "entities": {
+      "Koralle": {
+        "properties": {
+          "Gattung": { "type": "categorical", "values": ["Steinkoralle", "Weichkoralle", "Feuerkoralle"] },
+          "Bedeckungsgrad_Prozent": { "type": "continuous", "range": [0, 100] },
+          "Bleichungsresistenz": { "type": "continuous", "range": [0, 1] }
+        }
+      },
+      "Fisch": {
+        "properties": {
+          "Trophieebene": { "type": "categorical", "values": ["Herbivore", "Planktivore", "Karnivore", "Omnivore"] },
+          "Populationsgroesse": { "type": "continuous", "range": [10, 100000] },
+          "Koerperlaenge_cm": { "type": "continuous", "range": [1, 500] }
+        }
+      },
+      "Invertebrat": {
+        "properties": {
+          "Klasse": { "type": "categorical", "values": ["Mollusken", "Echinodermen", "Crustaceen", "Schwamm"] },
+          "Populationsgroesse": { "type": "continuous", "range": [10, 50000] }
+        }
+      },
+      "Umweltfaktor": {
+        "properties": {
+          "Kategorie": { "type": "categorical", "values": ["Physikalisch", "Chemisch", "Anthropogen"] },
+          "Intensitaet": { "type": "continuous", "range": [0, 10] }
+        }
+      }
+    },
+    "relationships": {
+      "FRISST": {
+        "properties": {
+          "Frequenz": { "type": "continuous", "range": [0, 1] }
+        }
+      },
+      "SYMBIOSE_MIT": {
+        "properties": {
+          "Typ": { "type": "categorical", "values": ["Mutualismus", "Kommensalismus", "Parasitismus"] }
+        }
+      },
+      "BEEINFLUSST": {
+        "properties": {
+          "Wirkung": { "type": "categorical", "values": ["Positiv", "Negativ", "Neutral"] },
+          "Staerke": { "type": "continuous", "range": [0, 1] }
+        }
+      },
+      "KONKURRIERT_MIT": {
+        "properties": {
+          "Intensitaet": { "type": "continuous", "range": [0, 1] }
+        }
+      },
+      "LEBT_IN": {
+        "properties": {}
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "acropora", "type": "Koralle", "label": "Acropora (Geweihkoralle)",
+        "Gattung": "Steinkoralle", "Bedeckungsgrad_Prozent": 35, "Bleichungsresistenz": 0.2,
+        "position": { "x": 0, "y": -5, "z": 0 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [
+          { "timestamp": 1998, "changes": { "Bedeckungsgrad_Prozent": 15 } },
+          { "timestamp": 2005, "changes": { "Bedeckungsgrad_Prozent": 22 } },
+          { "timestamp": 2016, "changes": { "Bedeckungsgrad_Prozent": 8 } }
+        ]}
+      },
+      {
+        "id": "porites", "type": "Koralle", "label": "Porites (Massive Koralle)",
+        "Gattung": "Steinkoralle", "Bedeckungsgrad_Prozent": 25, "Bleichungsresistenz": 0.7,
+        "position": { "x": 4, "y": -5, "z": 3 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [
+          { "timestamp": 1998, "changes": { "Bedeckungsgrad_Prozent": 20 } },
+          { "timestamp": 2016, "changes": { "Bedeckungsgrad_Prozent": 18 } }
+        ]}
+      },
+      {
+        "id": "weichkoralle_1", "type": "Koralle", "label": "Sinularia (Lederkoralle)",
+        "Gattung": "Weichkoralle", "Bedeckungsgrad_Prozent": 12, "Bleichungsresistenz": 0.5,
+        "position": { "x": -3, "y": -4, "z": -2 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [] }
+      },
+      {
+        "id": "clownfisch", "type": "Fisch", "label": "Clownfisch (Amphiprion)",
+        "Trophieebene": "Omnivore", "Populationsgroesse": 5000, "Koerperlaenge_cm": 11,
+        "position": { "x": 2, "y": 0, "z": 1 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [
+          { "timestamp": 2003, "changes": { "Populationsgroesse": 8000 } },
+          { "timestamp": 2020, "changes": { "Populationsgroesse": 4000 } }
+        ]}
+      },
+      {
+        "id": "papageifisch", "type": "Fisch", "label": "Papageifisch",
+        "Trophieebene": "Herbivore", "Populationsgroesse": 3000, "Koerperlaenge_cm": 50,
+        "position": { "x": -5, "y": 2, "z": 4 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [
+          { "timestamp": 2000, "changes": { "Populationsgroesse": 1500 } },
+          { "timestamp": 2015, "changes": { "Populationsgroesse": 2000 } }
+        ]}
+      },
+      {
+        "id": "barrakuda", "type": "Fisch", "label": "Grosser Barrakuda",
+        "Trophieebene": "Karnivore", "Populationsgroesse": 200, "Koerperlaenge_cm": 180,
+        "position": { "x": 0, "y": 10, "z": -5 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [] }
+      },
+      {
+        "id": "doktorfisch", "type": "Fisch", "label": "Blauer Doktorfisch",
+        "Trophieebene": "Herbivore", "Populationsgroesse": 8000, "Koerperlaenge_cm": 30,
+        "position": { "x": -4, "y": 1, "z": -3 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [] }
+      },
+      {
+        "id": "muraene", "type": "Fisch", "label": "Riesenmuräne",
+        "Trophieebene": "Karnivore", "Populationsgroesse": 150, "Koerperlaenge_cm": 300,
+        "position": { "x": 6, "y": 5, "z": -4 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [] }
+      },
+      {
+        "id": "zackenbarsch", "type": "Fisch", "label": "Zackenbarsch",
+        "Trophieebene": "Karnivore", "Populationsgroesse": 500, "Koerperlaenge_cm": 120,
+        "position": { "x": 3, "y": 7, "z": 2 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [
+          { "timestamp": 1990, "changes": { "Populationsgroesse": 300 } },
+          { "timestamp": 2010, "changes": { "Populationsgroesse": 180 } }
+        ]}
+      },
+      {
+        "id": "seegurke", "type": "Invertebrat", "label": "Seegurke",
+        "Klasse": "Echinodermen", "Populationsgroesse": 2000,
+        "position": { "x": -2, "y": -6, "z": 5 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [] }
+      },
+      {
+        "id": "seeigel", "type": "Invertebrat", "label": "Diadem-Seeigel",
+        "Klasse": "Echinodermen", "Populationsgroesse": 15000,
+        "position": { "x": 1, "y": -3, "z": -4 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [
+          { "timestamp": 1983, "changes": { "Populationsgroesse": 500 } },
+          { "timestamp": 2010, "changes": { "Populationsgroesse": 5000 } }
+        ]}
+      },
+      {
+        "id": "riesenmuschel", "type": "Invertebrat", "label": "Riesenmuschel (Tridacna)",
+        "Klasse": "Mollusken", "Populationsgroesse": 300,
+        "position": { "x": 5, "y": -5, "z": 1 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [
+          { "timestamp": 2000, "changes": { "Populationsgroesse": 100 } }
+        ]}
+      },
+      {
+        "id": "putzergarnele", "type": "Invertebrat", "label": "Putzergarnele",
+        "Klasse": "Crustaceen", "Populationsgroesse": 10000,
+        "position": { "x": 3, "y": -1, "z": 3 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [] }
+      },
+      {
+        "id": "anemone", "type": "Invertebrat", "label": "Seeanemone",
+        "Klasse": "Schwamm", "Populationsgroesse": 4000,
+        "position": { "x": 2, "y": -2, "z": 1 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [] }
+      },
+      {
+        "id": "temperatur", "type": "Umweltfaktor", "label": "Wassertemperatur",
+        "Kategorie": "Physikalisch", "Intensitaet": 7,
+        "position": { "x": -10, "y": 15, "z": 0 },
+        "temporal": { "validFrom": 1950, "validTo": null, "history": [
+          { "timestamp": 1998, "changes": { "Intensitaet": 9 } },
+          { "timestamp": 2005, "changes": { "Intensitaet": 7.5 } },
+          { "timestamp": 2016, "changes": { "Intensitaet": 9.5 } }
+        ]}
+      },
+      {
+        "id": "versauerung", "type": "Umweltfaktor", "label": "Ozeanversauerung",
+        "Kategorie": "Chemisch", "Intensitaet": 5,
+        "position": { "x": -8, "y": 13, "z": -3 },
+        "temporal": { "validFrom": 1980, "validTo": null, "history": [
+          { "timestamp": 2000, "changes": { "Intensitaet": 6 } },
+          { "timestamp": 2020, "changes": { "Intensitaet": 7.5 } }
+        ]}
+      },
+      {
+        "id": "ueberfischung", "type": "Umweltfaktor", "label": "Ueberfischung",
+        "Kategorie": "Anthropogen", "Intensitaet": 8,
+        "position": { "x": -12, "y": 12, "z": 4 },
+        "temporal": { "validFrom": 1970, "validTo": null, "history": [
+          { "timestamp": 1990, "changes": { "Intensitaet": 6 } },
+          { "timestamp": 2010, "changes": { "Intensitaet": 8.5 } }
+        ]}
+      }
+    ],
+    "relationships": [
+      { "id": "r_papagei_algen", "type": "FRISST", "source": "papageifisch", "target": "acropora", "label": "frisst Algen von Korallen", "Frequenz": 0.9, "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_doktor_algen", "type": "FRISST", "source": "doktorfisch", "target": "porites", "label": "grast Algen ab", "Frequenz": 0.8, "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_seeigel_algen", "type": "FRISST", "source": "seeigel", "target": "acropora", "label": "weidet Algen", "Frequenz": 0.7, "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_barrakuda_papagei", "type": "FRISST", "source": "barrakuda", "target": "papageifisch", "label": "jagt Papageifisch", "Frequenz": 0.4, "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_murane_clown", "type": "FRISST", "source": "muraene", "target": "clownfisch", "label": "jagt Clownfisch", "Frequenz": 0.3, "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_zacken_doktor", "type": "FRISST", "source": "zackenbarsch", "target": "doktorfisch", "label": "jagt Doktorfisch", "Frequenz": 0.5, "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_barrakuda_zacken", "type": "FRISST", "source": "barrakuda", "target": "zackenbarsch", "label": "jagt Zackenbarsch", "Frequenz": 0.2, "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_clown_anemone", "type": "SYMBIOSE_MIT", "source": "clownfisch", "target": "anemone", "label": "Clownfisch-Anemone Symbiose", "Typ": "Mutualismus", "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_putzer_murane", "type": "SYMBIOSE_MIT", "source": "putzergarnele", "target": "muraene", "label": "Putzersymbiose", "Typ": "Mutualismus", "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_putzer_zacken", "type": "SYMBIOSE_MIT", "source": "putzergarnele", "target": "zackenbarsch", "label": "Putzersymbiose", "Typ": "Mutualismus", "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_temp_acropora", "type": "BEEINFLUSST", "source": "temperatur", "target": "acropora", "label": "Hitzestress verursacht Bleiche", "Wirkung": "Negativ", "Staerke": 0.95, "temporal": { "validFrom": 1980, "validTo": null } },
+      { "id": "r_temp_porites", "type": "BEEINFLUSST", "source": "temperatur", "target": "porites", "label": "Hitzestress (resistenter)", "Wirkung": "Negativ", "Staerke": 0.4, "temporal": { "validFrom": 1980, "validTo": null } },
+      { "id": "r_versauerung_acropora", "type": "BEEINFLUSST", "source": "versauerung", "target": "acropora", "label": "Hemmt Kalkbildung", "Wirkung": "Negativ", "Staerke": 0.7, "temporal": { "validFrom": 1990, "validTo": null } },
+      { "id": "r_versauerung_muschel", "type": "BEEINFLUSST", "source": "versauerung", "target": "riesenmuschel", "label": "Schalenbildung gehemmt", "Wirkung": "Negativ", "Staerke": 0.6, "temporal": { "validFrom": 1990, "validTo": null } },
+      { "id": "r_ueberfischung_zacken", "type": "BEEINFLUSST", "source": "ueberfischung", "target": "zackenbarsch", "label": "Population dezimiert", "Wirkung": "Negativ", "Staerke": 0.85, "temporal": { "validFrom": 1980, "validTo": null } },
+      { "id": "r_ueberfischung_barrakuda", "type": "BEEINFLUSST", "source": "ueberfischung", "target": "barrakuda", "label": "Beifang", "Wirkung": "Negativ", "Staerke": 0.5, "temporal": { "validFrom": 1985, "validTo": null } },
+      { "id": "r_acro_porites_konk", "type": "KONKURRIERT_MIT", "source": "acropora", "target": "porites", "label": "Licht- und Raumkonkurrenz", "Intensitaet": 0.6, "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_weich_acro_konk", "type": "KONKURRIERT_MIT", "source": "weichkoralle_1", "target": "acropora", "label": "Chemische Abwehr", "Intensitaet": 0.4, "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_clown_lebt_anemone", "type": "LEBT_IN", "source": "clownfisch", "target": "anemone", "label": "lebt in Seeanemone", "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_murane_lebt_koralle", "type": "LEBT_IN", "source": "muraene", "target": "acropora", "label": "lebt in Korallenriff", "temporal": { "validFrom": 1950, "validTo": null } },
+      { "id": "r_seegurke_lebt_koralle", "type": "LEBT_IN", "source": "seegurke", "target": "porites", "label": "lebt am Riffboden", "temporal": { "validFrom": 1950, "validTo": null } }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Koralle": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#ff7f50" } },
+        "size": { "source": "constant", "function": "constant", "params": { "value": 1.5 } },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "dodecahedron" } },
+        "positionY": { "source": "Bedeckungsgrad_Prozent", "function": "linear", "range": [-2, 2] }
+      },
+      "Fisch": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#2196F3" } },
+        "size": { "source": "Populationsgroesse", "function": "linear", "range": [0.5, 2.0] },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "sphere" } }
+      },
+      "Invertebrat": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#9C27B0" } },
+        "size": { "source": "Populationsgroesse", "function": "linear", "range": [0.3, 1.2] },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "octahedron" } }
+      },
+      "Umweltfaktor": {
+        "color": { "source": "Kategorie", "function": "categorical" },
+        "size": { "source": "constant", "function": "constant", "params": { "value": 2.0 } },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "box" } }
+      },
+      "FRISST": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#FF5722" } },
+        "thickness": { "source": "Frequenz", "function": "linear", "range": [0.05, 0.4] }
+      },
+      "SYMBIOSE_MIT": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#4CAF50" } },
+        "thickness": { "source": "constant", "function": "constant", "params": { "value": 0.15 } }
+      },
+      "BEEINFLUSST": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#F44336" } },
+        "thickness": { "source": "Staerke", "function": "linear", "range": [0.05, 0.5] }
+      },
+      "KONKURRIERT_MIT": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#FF9800" } },
+        "thickness": { "source": "Intensitaet", "function": "linear", "range": [0.05, 0.3] }
+      },
+      "LEBT_IN": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#607D8B" } },
+        "thickness": { "source": "constant", "function": "constant", "params": { "value": 0.05 } }
+      }
+    }
+  }
+}

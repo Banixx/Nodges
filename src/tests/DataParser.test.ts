@@ -10,6 +10,7 @@ describe('DataParser', () => {
                 metadata: {
                     created: '2026-02-11',
                     version: '1.0',
+                    schemaVersion: '3.0',
                 },
                 data: {
                     entities: [
@@ -32,7 +33,9 @@ describe('DataParser', () => {
         it('sollte einen Fehler werfen bei fehlenden data.entities', () => {
             const invalidData = {
                 system: 'Nodges',
-                metadata: {},
+                metadata: {
+                    schemaVersion: '3.0'
+                },
                 data: {
                     relationships: [],
                 },
@@ -49,7 +52,9 @@ describe('DataParser', () => {
     describe('getEntities()', () => {
         const sampleData: GraphData = {
             system: 'Nodges',
-            metadata: {},
+            metadata: {
+                schemaVersion: '3.0'
+            },
             data: {
                 entities: [
                     { id: '1', type: 'person', label: 'Alice' },
@@ -80,7 +85,9 @@ describe('DataParser', () => {
     describe('getRelationships()', () => {
         const sampleData: GraphData = {
             system: 'Nodges',
-            metadata: {},
+            metadata: {
+                schemaVersion: '3.0'
+            },
             data: {
                 entities: [],
                 relationships: [
@@ -106,7 +113,9 @@ describe('DataParser', () => {
     describe('findEntity()', () => {
         const sampleData: GraphData = {
             system: 'Nodges',
-            metadata: {},
+            metadata: {
+                schemaVersion: '3.0'
+            },
             data: {
                 entities: [
                     { id: 'alice', type: 'person', label: 'Alice' },
@@ -131,7 +140,9 @@ describe('DataParser', () => {
     describe('findRelationshipsForEntity()', () => {
         const sampleData: GraphData = {
             system: 'Nodges',
-            metadata: {},
+            metadata: {
+                schemaVersion: '3.0'
+            },
             data: {
                 entities: [
                     { id: '1', type: 'person' },
@@ -159,7 +170,9 @@ describe('DataParser', () => {
         it('sollte leeres Array zurueckgeben fuer Entity ohne Connections', () => {
             const noConnections: GraphData = {
                 system: 'Nodges',
-                metadata: {},
+                metadata: {
+                    schemaVersion: '3.0'
+                },
                 data: {
                     entities: [{ id: 'isolated', type: 'person' }],
                     relationships: [],

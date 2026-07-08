@@ -1,0 +1,71 @@
+{
+  "nodes": [
+    { "id": "volk", "label": "Schweizer Volk", "type": "Souveraen" },
+    { "id": "kantone", "label": "Kantone (26)", "type": "Foederalismus" },
+    { "id": "gemeinden", "label": "Gemeinden (~2136)", "type": "Foederalismus" },
+    
+    { "id": "initiative", "label": "Volksinitiative (100k Unterschriften)", "type": "Direkte Demokratie" },
+    { "id": "fakultatives_referendum", "label": "Fakultatives Referendum (50k)", "type": "Direkte Demokratie" },
+    { "id": "obligatorisches_referendum", "label": "Obligatorisches Referendum", "type": "Direkte Demokratie" },
+    
+    { "id": "bundesversammlung", "label": "Vereinigte Bundesversammlung", "type": "Legislative" },
+    { "id": "nationalrat", "label": "Nationalrat (200 Sitze, Proporz)", "type": "Kammer" },
+    { "id": "staenderat", "label": "Staenderat (46 Sitze, Majorz)", "type": "Kammer" },
+    
+    { "id": "parteien", "label": "Politische Parteien (SVP, SP, FDP, Mitte, Gruene, GLP)", "type": "Politik" },
+    
+    { "id": "bundesrat", "label": "Bundesrat (7 Mitglieder, Konkordanz)", "type": "Exekutive" },
+    { "id": "bundeskanzlei", "label": "Bundeskanzlei (Stabstelle)", "type": "Exekutive" },
+    
+    { "id": "eda", "label": "EDA (Aeusseres)", "type": "Departement" },
+    { "id": "edi", "label": "EDI (Inneres)", "type": "Departement" },
+    { "id": "ejpd", "label": "EJPD (Justiz & Polizei)", "type": "Departement" },
+    { "id": "vbs", "label": "VBS (Verteidigung & Sport)", "type": "Departement" },
+    { "id": "efd", "label": "EFD (Finanzen)", "type": "Departement" },
+    { "id": "wbf", "label": "WBF (Wirtschaft & Bildung)", "type": "Departement" },
+    { "id": "uvek", "label": "UVEK (Umwelt & Verkehr)", "type": "Departement" },
+    
+    { "id": "bundesgericht", "label": "Bundesgericht", "type": "Judikative" },
+    { "id": "bundesstrafgericht", "label": "Bundesstrafgericht", "type": "Judikative" },
+    { "id": "bundesverwaltungsgericht", "label": "Bundesverwaltungsgericht", "type": "Judikative" },
+    { "id": "bundespatentgericht", "label": "Bundespatentgericht", "type": "Judikative" }
+  ],
+  "edges": [
+    { "source": "volk", "target": "nationalrat", "label": "waehlt" },
+    { "source": "volk", "target": "staenderat", "label": "waehlt (meistens)" },
+    { "source": "kantone", "target": "staenderat", "label": "bestimmen Wahlverfahren" },
+    
+    { "source": "volk", "target": "initiative", "label": "lanciert" },
+    { "source": "volk", "target": "fakultatives_referendum", "label": "ergreift" },
+    { "source": "volk", "target": "obligatorisches_referendum", "label": "stimmt ab" },
+    { "source": "kantone", "target": "obligatorisches_referendum", "label": "Staendemehr noetig" },
+    
+    { "source": "parteien", "target": "nationalrat", "label": "stellen Abgeordnete" },
+    { "source": "parteien", "target": "staenderat", "label": "stellen Abgeordnete" },
+    { "source": "parteien", "target": "bundesrat", "label": "stellen Bundesraete (Zauberformel)" },
+    
+    { "source": "nationalrat", "target": "bundesversammlung", "label": "bildet" },
+    { "source": "staenderat", "target": "bundesversammlung", "label": "bildet" },
+    
+    { "source": "bundesversammlung", "target": "bundesrat", "label": "waehlt" },
+    { "source": "bundesversammlung", "target": "bundeskanzlei", "label": "waehlt Kanzler:in" },
+    
+    { "source": "bundesrat", "target": "eda", "label": "leitet" },
+    { "source": "bundesrat", "target": "edi", "label": "leitet" },
+    { "source": "bundesrat", "target": "ejpd", "label": "leitet" },
+    { "source": "bundesrat", "target": "vbs", "label": "leitet" },
+    { "source": "bundesrat", "target": "efd", "label": "leitet" },
+    { "source": "bundesrat", "target": "wbf", "label": "leitet" },
+    { "source": "bundesrat", "target": "uvek", "label": "leitet" },
+    
+    { "source": "bundesversammlung", "target": "bundesgericht", "label": "waehlt Bundesrichter:innen" },
+    { "source": "bundesversammlung", "target": "bundesstrafgericht", "label": "waehlt" },
+    { "source": "bundesversammlung", "target": "bundesverwaltungsgericht", "label": "waehlt" },
+    { "source": "bundesversammlung", "target": "bundespatentgericht", "label": "waehlt" },
+    
+    { "source": "kantone", "target": "gemeinden", "label": "delegieren Aufgaben" },
+    { "source": "bundesrat", "target": "kantone", "label": "Vollzugskooperation" },
+    
+    { "source": "bundeskanzlei", "target": "bundesrat", "label": "unterstuetzt" }
+  ]
+}

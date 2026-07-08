@@ -347,7 +347,22 @@ export class NodeLabelManager {
                 return;
             }
 
-            const basePos = label.sprite.userData.basePosition || label.sprite.position;
+            // Check temporal validity of the entity
+            const currentTimestamp = state?.currentTimestamp;
+            if (currentTimestamp !== undefined && currentTimestamp !== null && label.entity.temporal) {
+                const validFrom = label.entity.temporal.validFrom;
+                const validTo = label.entity.temporal.validTo;
+                const isTempVisible = (validFrom === undefined || validFrom === null || currentTimestamp >= validFrom) &&
+                                      (validTo === undefined || validTo === null || currentTimestamp <= validTo);
+                if (!isTempVisible) {
+                    label.sprite.visible = false;
+                    return;
+                }
+            }
+
+            const basePos = label.entity.position
+                ? new THREE.Vector3(label.entity.position.x, label.entity.position.y, label.entity.position.z)
+                : (label.sprite.userData.basePosition || label.sprite.position);
 
             // Berechne Distanz zur Kamera
             const distance = this.camera.position.distanceTo(basePos);
@@ -452,8 +467,8 @@ export class NodeLabelManager {
                 }
 
                 // Dynamische Positionierung exakt am Rand des Nodes (rechts oben von Kamera aus)
-                if (label.sprite.visible && label.sprite.userData.basePosition) {
-                    this.tempPos.copy(label.sprite.userData.basePosition);
+                if (label.sprite.visible) {
+                    this.tempPos.copy(basePos);
                     
                     // Der urspruengliche nodeRadius wurde als (labelOffset - 0.4) gespeichert
                     const baseOffset = label.sprite.userData.labelOffset || 0.9;
@@ -521,7 +536,9 @@ export class NodeLabelManager {
         this.labels.forEach((label) => {
             labelsToRefresh.push({
                 entity: label.entity,
-                position: label.sprite.userData.basePosition ? label.sprite.userData.basePosition.clone() : label.sprite.position.clone()
+                position: label.entity.position 
+                    ? new THREE.Vector3(label.entity.position.x, label.entity.position.y, label.entity.position.z) 
+                    : (label.sprite.userData.basePosition ? label.sprite.userData.basePosition.clone() : label.sprite.position.clone())
             });
         });
 

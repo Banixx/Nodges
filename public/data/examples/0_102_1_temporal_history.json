@@ -1,0 +1,200 @@
+{
+  "system": "Europa_Historie",
+  "metadata": {
+    "schemaVersion": "4.0",
+    "description": "Die historische Entwicklung europäischer Reiche mit komplexen temporalen Verläufen"
+  },
+  "dataModel": {
+    "types": [
+      {
+        "name": "empire",
+        "description": "Ein großes Reich oder eine Nation",
+        "properties": ["population", "capital"]
+      },
+      {
+        "name": "city",
+        "description": "Eine bedeutende Stadt",
+        "properties": ["founded"]
+      }
+    ]
+  },
+  "visualMappings": {},
+  "data": {
+    "entities": [
+      {
+        "id": "roman_empire",
+        "label": "Römisches Reich",
+        "type": "empire",
+        "color": "#800000",
+        "size": 1.0,
+        "description": "Das antike Römische Reich",
+        "temporal": {
+          "validFrom": -27,
+          "validTo": 476,
+          "history": [
+            {
+              "timestamp": 117,
+              "changes": {
+                "size": 3.0,
+                "color": "#ff0000",
+                "label": "Römisches Reich (Maximale Ausdehnung)"
+              }
+            },
+            {
+              "timestamp": 285,
+              "changes": {
+                "size": 2.5,
+                "label": "Römisches Reich (Diokletianische Teilung)"
+              }
+            },
+            {
+              "timestamp": 395,
+              "changes": {
+                "size": 1.5,
+                "color": "#8b0000",
+                "label": "Weströmisches Reich"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "byzantine_empire",
+        "label": "Byzantinisches Reich",
+        "type": "empire",
+        "color": "#ffd700",
+        "size": 1.5,
+        "description": "Das Oströmische Reich",
+        "temporal": {
+          "validFrom": 395,
+          "validTo": 1453,
+          "history": [
+            {
+              "timestamp": 555,
+              "changes": {
+                "size": 2.0,
+                "label": "Byzantinisches Reich (Justinian)"
+              }
+            },
+            {
+              "timestamp": 1204,
+              "changes": {
+                "size": 0.8,
+                "color": "#b8860b",
+                "label": "Byzantinisches Reich (Nach 4. Kreuzzug)"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "rome",
+        "label": "Rom",
+        "type": "city",
+        "color": "#ffffff",
+        "size": 1.0,
+        "temporal": {
+          "validFrom": -753,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": -27,
+              "changes": {
+                "size": 2.0,
+                "color": "#ffcccc"
+              }
+            },
+            {
+              "timestamp": 476,
+              "changes": {
+                "size": 1.0,
+                "color": "#aaaaaa"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "constantinople",
+        "label": "Konstantinopel",
+        "type": "city",
+        "color": "#ffffff",
+        "size": 1.0,
+        "temporal": {
+          "validFrom": 330,
+          "validTo": 1453,
+          "history": [
+            {
+              "timestamp": 1453,
+              "changes": {
+                "label": "Istanbul",
+                "color": "#00ff00"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "istanbul",
+        "label": "Istanbul",
+        "type": "city",
+        "color": "#00ff00",
+        "size": 1.5,
+        "temporal": {
+          "validFrom": 1453,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1923,
+              "changes": {
+                "size": 2.5
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "cap_rome",
+        "source": "roman_empire",
+        "target": "rome",
+        "type": "capital",
+        "temporal": {
+          "validFrom": -27,
+          "validTo": 286
+        }
+      },
+      {
+        "id": "cap_med",
+        "source": "roman_empire",
+        "target": "rome",
+        "type": "capital",
+        "temporal": {
+          "validFrom": 286,
+          "validTo": 395
+        }
+      },
+      {
+        "id": "cap_byz",
+        "source": "byzantine_empire",
+        "target": "constantinople",
+        "type": "capital",
+        "temporal": {
+          "validFrom": 395,
+          "validTo": 1453
+        }
+      },
+      {
+        "id": "split_empire",
+        "source": "roman_empire",
+        "target": "byzantine_empire",
+        "type": "split_into",
+        "temporal": {
+          "validFrom": 395,
+          "validTo": 476
+        }
+      }
+    ]
+  }
+}

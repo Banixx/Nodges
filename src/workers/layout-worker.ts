@@ -18,7 +18,7 @@ console.log('Layout Worker loaded');
 
 self.onmessage = function (event: MessageEvent<LayoutWorkerRequest>): void {
     const startTime = performance.now();
-    const { requestId, nodes, edges, algorithm, options } = event.data;
+    const { requestId, nodes, edges, algorithm, fields, options } = event.data;
 
     try {
         if (!nodes || !Array.isArray(nodes)) {
@@ -37,6 +37,8 @@ self.onmessage = function (event: MessageEvent<LayoutWorkerRequest>): void {
             y: node.y || (Math.random() - 0.5) * 10,
             z: node.z || (Math.random() - 0.5) * 10
         }));
+        console.log('[LayoutWorker] received nodes (first 2):', JSON.stringify(nodes.slice(0, 2).map(n => ({ id: n.id, x: n.x, y: n.y, z: n.z }))));
+        console.log('[LayoutWorker] initialized positions (first 2):', JSON.stringify(positions.slice(0, 2).map(p => ({ id: p.id, x: p.x, y: p.y, z: p.z }))));
 
         const velocities: WorkerVector3[] = positions.map(() => ({ x: 0, y: 0, z: 0 }));
 
@@ -87,8 +89,8 @@ self.onmessage = function (event: MessageEvent<LayoutWorkerRequest>): void {
                         const effectiveAttraction = (attI + attJ) / 2;
                         const netForceParam = effectiveRepulsion - effectiveAttraction;
 
-                        // F = k / d^2
-                        const forceMagnitude = netForceParam / (distance * distance);
+                        // F = k / (d^2 + 1.0) - Softening factor added for physical stability
+                        const forceMagnitude = netForceParam / (distance * distance + 1.0);
                         const nx = dx / distance;
                         const ny = dy / distance;
                         const nz = dz / distance;
@@ -139,29 +141,77 @@ self.onmessage = function (event: MessageEvent<LayoutWorkerRequest>): void {
                     totalEnergy += Math.abs(force);
                 }
 
-                // Topodynamische Felder (Build 3) - Legacy fields have been migrated to system_attractor nodes by DataParser
-                // No longer calculating forces from global fields here.
+                // Topodynamische Felder (Build 3)
+                if (fields && fields.length > 0) {
+                    fields.forEach(field => {
+                        if (!field.center) return;
+                        const cx = field.center.x || 0;
+                        const cy = field.center.y || 0;
+                        const cz = field.center.z || 0;
+                        const influenceR = field.influenceRadius || 100;
+                        const strength = field.strength || 1;
 
-                // Positionen und Geschwindigkeiten aktualisieren
+                        for (let i = 0; i < positions.length; i++) {
+                            const nodeI = nodes[i];
+                            
+                            // Selektive Filterung nach Typ/Verhalten
+                            if (field.behavior) {
+                                if (!nodeI.behavior || !field.behavior.includes(nodeI.behavior)) {
+                                    if (nodeI.type && !field.behavior.includes(nodeI.type)) {
+                                        continue; // skip if behavior doesn't match
+                                    }
+                                }
+                            }
+
+                            const dx = cx - positions[i].x;
+                            const dy = cy - positions[i].y;
+                            const dz = cz - positions[i].z;
+                            const distance = Math.sqrt(dx*dx + dy*dy + dz*dz) + 0.01;
+
+                            if (distance <= influenceR) {
+                                // Calculate force. Attractor field pulls (+). Gravitational can push/pull.
+                                let force = 0;
+                                if (field.type === 'attractor_field') {
+                                    force = strength * (distance / influenceR); // pull towards center
+                                } else if (field.type === 'gravitational_field') {
+                                    force = (strength * 100) / (distance * distance); // inverse square
+                                } else {
+                                    force = strength;
+                                }
+
+                                const fx = (dx / distance) * force;
+                                const fy = (dy / distance) * force;
+                                const fz = (dz / distance) * force;
+
+                                forces[i].x += fx;
+                                forces[i].y += fy;
+                                forces[i].z += fz;
+                            }
+                        }
+                    });
+                }
+
+                // Positionen und Geschwindigkeiten aktualisieren mit Velocity-Capping gegen Koordinatenexplosion
+                const MAX_VELOCITY = 10.0;
                 for (let i = 0; i < positions.length; i++) {
                     const nodeI = nodes[i];
                     
                     if (!nodeI.fixedX) {
-                        velocities[i].x = (velocities[i].x + forces[i].x) * damping;
+                        velocities[i].x = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, (velocities[i].x + forces[i].x) * damping));
                         positions[i].x += velocities[i].x;
                     } else {
                         velocities[i].x = 0;
                     }
 
                     if (!nodeI.fixedY) {
-                        velocities[i].y = (velocities[i].y + forces[i].y) * damping;
+                        velocities[i].y = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, (velocities[i].y + forces[i].y) * damping));
                         positions[i].y += velocities[i].y;
                     } else {
                         velocities[i].y = 0;
                     }
 
                     if (!nodeI.fixedZ) {
-                        velocities[i].z = (velocities[i].z + forces[i].z) * damping;
+                        velocities[i].z = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, (velocities[i].z + forces[i].z) * damping));
                         positions[i].z += velocities[i].z;
                     } else {
                         velocities[i].z = 0;
@@ -191,6 +241,7 @@ self.onmessage = function (event: MessageEvent<LayoutWorkerRequest>): void {
         }
 
         // Erfolgsantwort mit Metriken
+        console.log('[LayoutWorker] final positions (first 2):', JSON.stringify(positions.slice(0, 2)));
         const duration = performance.now() - startTime;
         const successResponse: LayoutWorkerResponse = {
             type: 'success',

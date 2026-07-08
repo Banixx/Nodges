@@ -6,6 +6,7 @@ export class FilePanelUI {
     private stateManager: IStateManager;
     private filePanelContent: HTMLElement | null;
     private availableFiles: string[] = [];
+    private currentDirectory: string = '';
     private isRenderFilePanelPending: boolean = false;
 
     constructor(containerId: string, stateManager: IStateManager, app: App) {
@@ -137,8 +138,10 @@ export class FilePanelUI {
         const availableHeader = document.createElement('h4');
         availableHeader.className = 'section-header';
         availableHeader.style.marginTop = '15px';
+        
+        let pathLabel = this.currentDirectory === '' ? 'Verfügbare Dateien' : `Verfügbare Dateien (${this.currentDirectory})`;
         availableHeader.innerHTML = `
-            <span>Verfügbare Dateien</span>
+            <span>${pathLabel}</span>
             <button id="addFileBtn" class="file-action-btn add" style="width: 20px; height: 20px; padding: 0; font-size: 14px;" title="Datei hinzufügen">+</button>
         `;
         this.filePanelContent.appendChild(availableHeader);
@@ -149,31 +152,90 @@ export class FilePanelUI {
             empty.textContent = 'Keine Dateien gefunden';
             this.filePanelContent.appendChild(empty);
         } else {
-            this.availableFiles.forEach(filename => {
-                // Don't show in available if already loaded (optional)
-                const isLoaded = loadedFiles.some((f: any) => f.id === `${filename}.json`);
+            if (this.currentDirectory !== '') {
+                const backContainer = document.createElement('div');
+                backContainer.className = 'file-item-container';
+                const backBtn = document.createElement('div');
+                backBtn.className = 'file-item';
+                backBtn.textContent = '..';
+                backBtn.style.cursor = 'pointer';
+                backBtn.onclick = () => {
+                    const parts = this.currentDirectory.split('/');
+                    parts.pop();
+                    this.currentDirectory = parts.join('/');
+                    this.renderFilePanel();
+                };
+                backContainer.appendChild(backBtn);
+                this.filePanelContent.appendChild(backContainer);
+            }
 
+            const itemsToShow = new Map<string, { type: 'file' | 'directory', path: string, name: string }>();
+            
+            this.availableFiles.forEach(filepath => {
+                if (this.currentDirectory === '') {
+                    const parts = filepath.split('/');
+                    if (parts.length === 1) {
+                        itemsToShow.set(filepath, { type: 'file', path: filepath, name: parts[0] });
+                    } else {
+                        itemsToShow.set(parts[0], { type: 'directory', path: parts[0], name: parts[0] });
+                    }
+                } else {
+                    if (filepath.startsWith(this.currentDirectory + '/')) {
+                        const remaining = filepath.substring(this.currentDirectory.length + 1);
+                        const parts = remaining.split('/');
+                        if (parts.length === 1) {
+                            itemsToShow.set(filepath, { type: 'file', path: filepath, name: parts[0] });
+                        } else {
+                            const dirPath = this.currentDirectory + '/' + parts[0];
+                            itemsToShow.set(dirPath, { type: 'directory', path: dirPath, name: parts[0] });
+                        }
+                    }
+                }
+            });
+
+            const sortedItems = Array.from(itemsToShow.values()).sort((a, b) => {
+                if (a.type !== b.type) {
+                    return a.type === 'directory' ? -1 : 1;
+                }
+                return a.name.localeCompare(b.name);
+            });
+
+            sortedItems.forEach(item => {
                 const container = document.createElement('div');
                 container.className = 'file-item-container';
 
                 const button = document.createElement('div');
-                button.className = `file-item ${isLoaded ? 'active' : ''}`;
-                button.textContent = this.createDisplayName(filename);
-                button.onclick = () => {
-                    this.app.loadData(`data/${filename}.json`);
-                };
+                if (item.type === 'directory') {
+                    button.className = 'file-item';
+                    button.textContent = item.name + '/';
+                    button.style.cursor = 'pointer';
+                    button.onclick = () => {
+                        this.currentDirectory = item.path;
+                        this.renderFilePanel();
+                    };
+                    container.appendChild(button);
+                } else {
+                    const isLoaded = loadedFiles.some((f: any) => f.id === `data/${item.path}` || f.id === item.path);
+                    button.className = `file-item ${isLoaded ? 'active' : ''}`;
+                    button.textContent = this.createDisplayName(item.name.replace('.json', ''));
+                    button.style.cursor = 'pointer';
+                    button.onclick = () => {
+                        this.app.loadData(`data/${item.path}`);
+                    };
 
-                const addBtn = document.createElement('button');
-                addBtn.className = 'file-action-btn add';
-                addBtn.innerHTML = '+';
-                addBtn.title = 'Zur Szene hinzufügen';
-                addBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    this.app.addData(`data/${filename}.json`);
-                };
+                    const addBtn = document.createElement('button');
+                    addBtn.className = 'file-action-btn add';
+                    addBtn.innerHTML = '+';
+                    addBtn.title = 'Zur Szene hinzufügen';
+                    addBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        this.app.addData(`data/${item.path}`);
+                    };
 
-                container.appendChild(button);
-                container.appendChild(addBtn);
+                    container.appendChild(button);
+                    container.appendChild(addBtn);
+                }
+
                 this.filePanelContent!.appendChild(container);
             });
         }
@@ -190,18 +252,15 @@ export class FilePanelUI {
 
     private async fetchDirectoryContents(): Promise<string[]> {
         // Use Vite's import.meta.glob to dynamically discover all JSON files in public/data/
-        // This is evaluated at build time
-        const dataFiles = import.meta.glob('/public/data/*.json');
+        // including those in subdirectories
+        const dataFiles = import.meta.glob('/public/data/**/*.json');
 
-        // Extract filenames without path and extension
-        const filenames = Object.keys(dataFiles).map(path => {
-            // Extract filename from '/public/data/filename.json'
-            const parts = path.split('/');
-            const lastPart = parts[parts.length - 1];
-            return lastPart.replace('.json', '');
+        // Extract paths relative to public/data/
+        const paths = Object.keys(dataFiles).map(path => {
+            return path.replace('/public/data/', '');
         }).filter(name => name !== '');
 
-        return filenames.sort(); // Sort alphabetically
+        return paths.sort(); // Sort alphabetically
     }
 
     private createDisplayName(filename: string): string {
@@ -310,7 +369,7 @@ export class FilePanelUI {
         saveConfirmBtn.textContent = 'Speichern';
         saveConfirmBtn.onclick = async () => {
             const filenameInput = nameGroup.querySelector('#saveFilenameInput') as HTMLInputElement;
-            const includeVizStateCheckbox = checkboxRow.querySelector('#includeVizStateCheckbox') as HTMLInputElement;
+            // (checkbox reserved for future use)
 
             let filename = filenameInput.value.trim();
             if (!filename) {
@@ -324,47 +383,65 @@ export class FilePanelUI {
                 filename += ext;
             }
 
-            const options: any = {};
-            if (format === 'json') {
-                options.includeVisualizationState = includeVizStateCheckbox.checked;
-            }
-
-            // Construct currentNodes and currentEdges in the format expected by ExportManager.getCurrentNetworkData
-            const currentNodes = this.app.currentEntities.map((entity: any) => ({
-                id: entity.id,
-                mesh: {
-                    name: entity.label || entity.name || entity.id,
-                    position: entity.position || { x: 0, y: 0, z: 0 }
-                },
-                metadata: { ...entity },
-                options: {
-                    color: entity.color || entity.options?.color,
-                    size: entity.size || entity.options?.size,
-                    type: entity.type || entity.options?.type || entity.geometryType
-                }
-            }));
-
-            const currentEdges = this.app.currentRelationships.map((rel: any) => ({
-                startNode: { id: rel.source },
-                endNode: { id: rel.target },
-                name: rel.name || rel.type || rel.label || '',
-                metadata: { ...rel },
-                options: {
-                    color: rel.color || rel.options?.color
-                }
-            }));
-
             // Close dialog
+
             if (document.body.contains(overlay)) {
                 document.body.removeChild(overlay);
             }
 
             // Execute export
             try {
-                await this.app.fileHandler.exportNetwork(currentNodes, currentEdges, format, filename, options);
+                if (format === 'json') {
+                    // Nativer Nodges-Export: erhält alle Build-3/4-Daten
+                    const graphData = this.app.currentGraphData;
+                    if (!graphData) {
+                        alert('Keine Graphdaten geladen.');
+                        return;
+                    }
+                    const exportOptions: any = { 
+                        currentEntities: this.app.currentEntities,
+                        activeVisualMappings: this.app.visualMappingEngine?.getVisualMappings() || null,
+                        activeDataModel: graphData.dataModel || null
+                    };
+                    const jsonStr = this.app.fileHandler['exportManager'].exportNodgesJSON(graphData, exportOptions);
+                    const blob = new Blob([jsonStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                } else {
+                    // Legacy-Export für GEXF, GraphML, CSV
+                    const currentNodes = this.app.currentEntities.map((entity: any) => ({
+                        id: entity.id,
+                        mesh: {
+                            name: entity.label || entity.name || entity.id,
+                            position: entity.position || { x: 0, y: 0, z: 0 }
+                        },
+                        metadata: { ...entity },
+                        options: {
+                            color: entity.color || entity.options?.color,
+                            size: entity.size || entity.options?.size,
+                            type: entity.type || entity.options?.type || entity.geometryType
+                        }
+                    }));
+                    const currentEdges = this.app.currentRelationships.map((rel: any) => ({
+                        startNode: { id: rel.source },
+                        endNode: { id: rel.target },
+                        name: rel.name || rel.type || rel.label || '',
+                        metadata: { ...rel },
+                        options: { color: rel.color || rel.options?.color }
+                    }));
+                    const legacyOptions: any = {};
+                    await this.app.fileHandler.exportNetwork(currentNodes, currentEdges, format, filename, legacyOptions);
+                }
             } catch (error: any) {
                 console.error('[FilePanelUI] Export error:', error);
             }
+
         };
 
         const cancelBtn = document.createElement('button');

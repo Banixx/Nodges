@@ -1,0 +1,315 @@
+{
+  "system": "NaCl-Kristall in Lösung – Elektrostatik",
+  "metadata": {
+    "schemaVersion": "3.0",
+    "description": "Simulation eines NaCl-Kristalls, der sich in Wasser auflöst. Natrium-Kationen (Na+) und Chlor-Anionen (Cl-) interagieren über Coulomb-Kräfte. Wassermoleküle (H2O) bilden Hydrathüllen. Die Datei demonstriert Anziehung (entgegengesetzte Ladungen), Abstoßung (gleiche Ladungen) und Trägheit (atomare Masse)."
+  },
+  "dataModel": {
+    "entities": {
+      "kation": {
+        "description": "Positiv geladenes Ion (Na+)",
+        "properties": {
+          "ladung": { "type": "continuous", "unit": "e", "range": [0, 2] },
+          "masse": { "type": "continuous", "unit": "u", "range": [1, 40] },
+          "ionenradius": { "type": "continuous", "unit": "pm", "range": [50, 200] }
+        }
+      },
+      "anion": {
+        "description": "Negativ geladenes Ion (Cl-)",
+        "properties": {
+          "ladung": { "type": "continuous", "unit": "e", "range": [-2, 0] },
+          "masse": { "type": "continuous", "unit": "u", "range": [1, 40] },
+          "ionenradius": { "type": "continuous", "unit": "pm", "range": [50, 200] }
+        }
+      },
+      "wasser": {
+        "description": "Dipol-Molekuel (H2O)",
+        "properties": {
+          "ladung": { "type": "continuous", "unit": "e", "range": [-0.5, 0.5] },
+          "masse": { "type": "continuous", "unit": "u", "range": [1, 20] },
+          "dipolmoment": { "type": "continuous", "unit": "D", "range": [0, 2] }
+        }
+      }
+    },
+    "relationships": {
+      "ionenbindung": { "description": "Elektrostatische Bindung zwischen Ionen" },
+      "hydratation": { "description": "Hydrathülle – Wasser umgibt Ion" },
+      "wasserstoffbruecke": { "description": "H-Brücke zwischen Wassermolekülen" }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "kation": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": { "color": "#4A90D9" }
+        },
+        "size": {
+          "source": "stateVector.ionenradius",
+          "function": "linear",
+          "domain": [50, 200],
+          "range": [0.6, 1.8]
+        },
+        "attraction": {
+          "source": "stateVector.ladung",
+          "function": "linear",
+          "domain": [0, 2],
+          "range": [0, 150]
+        },
+        "repulsion": {
+          "source": "stateVector.ladung",
+          "function": "linear",
+          "domain": [0, 2],
+          "range": [50, 200]
+        },
+        "inertia": {
+          "source": "stateVector.masse",
+          "function": "linear",
+          "domain": [1, 40],
+          "range": [0.5, 4.0]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": { "value": "sphere" }
+        }
+      },
+      "anion": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": { "color": "#E85D3A" }
+        },
+        "size": {
+          "source": "stateVector.ionenradius",
+          "function": "linear",
+          "domain": [50, 200],
+          "range": [0.6, 1.8]
+        },
+        "attraction": {
+          "source": "stateVector.ladung",
+          "function": "linear",
+          "domain": [-2, 0],
+          "range": [150, 0]
+        },
+        "repulsion": {
+          "source": "stateVector.ladung",
+          "function": "linear",
+          "domain": [-2, 0],
+          "range": [200, 50]
+        },
+        "inertia": {
+          "source": "stateVector.masse",
+          "function": "linear",
+          "domain": [1, 40],
+          "range": [0.5, 4.0]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": { "value": "sphere" }
+        }
+      },
+      "wasser": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": { "color": "#7EC8E3" }
+        },
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": { "value": 0.4 }
+        },
+        "attraction": {
+          "source": "stateVector.dipolmoment",
+          "function": "linear",
+          "domain": [0, 2],
+          "range": [5, 30]
+        },
+        "repulsion": {
+          "source": "constant",
+          "function": "constant",
+          "params": { "value": 15 }
+        },
+        "inertia": {
+          "source": "stateVector.masse",
+          "function": "linear",
+          "domain": [1, 20],
+          "range": [0.3, 1.5]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": { "value": "torus" }
+        }
+      }
+    }
+  },
+  "fields": [
+    {
+      "id": "loesungsmittel",
+      "type": "attractor_field",
+      "center": { "x": 0, "y": 0, "z": 0 },
+      "strength": 5,
+      "influenceRadius": 300,
+      "description": "Schwaches zentrales Feld – simuliert den begrenzten Raum der Lösung"
+    }
+  ],
+  "data": {
+    "entities": [
+      {
+        "id": "na1", "type": "kation", "label": "Na⁺ (1)",
+        "stateVector": { "ladung": 1.0, "masse": 22.99, "ionenradius": 102 }
+      },
+      {
+        "id": "na2", "type": "kation", "label": "Na⁺ (2)",
+        "stateVector": { "ladung": 1.0, "masse": 22.99, "ionenradius": 102 }
+      },
+      {
+        "id": "na3", "type": "kation", "label": "Na⁺ (3)",
+        "stateVector": { "ladung": 1.0, "masse": 22.99, "ionenradius": 102 }
+      },
+      {
+        "id": "na4", "type": "kation", "label": "Na⁺ (4)",
+        "stateVector": { "ladung": 1.0, "masse": 22.99, "ionenradius": 102 }
+      },
+      {
+        "id": "na5", "type": "kation", "label": "Na⁺ (5)",
+        "stateVector": { "ladung": 1.0, "masse": 22.99, "ionenradius": 102 }
+      },
+      {
+        "id": "na6", "type": "kation", "label": "Na⁺ (6)",
+        "stateVector": { "ladung": 1.0, "masse": 22.99, "ionenradius": 102 }
+      },
+      {
+        "id": "cl1", "type": "anion", "label": "Cl⁻ (1)",
+        "stateVector": { "ladung": -1.0, "masse": 35.45, "ionenradius": 181 }
+      },
+      {
+        "id": "cl2", "type": "anion", "label": "Cl⁻ (2)",
+        "stateVector": { "ladung": -1.0, "masse": 35.45, "ionenradius": 181 }
+      },
+      {
+        "id": "cl3", "type": "anion", "label": "Cl⁻ (3)",
+        "stateVector": { "ladung": -1.0, "masse": 35.45, "ionenradius": 181 }
+      },
+      {
+        "id": "cl4", "type": "anion", "label": "Cl⁻ (4)",
+        "stateVector": { "ladung": -1.0, "masse": 35.45, "ionenradius": 181 }
+      },
+      {
+        "id": "cl5", "type": "anion", "label": "Cl⁻ (5)",
+        "stateVector": { "ladung": -1.0, "masse": 35.45, "ionenradius": 181 }
+      },
+      {
+        "id": "cl6", "type": "anion", "label": "Cl⁻ (6)",
+        "stateVector": { "ladung": -1.0, "masse": 35.45, "ionenradius": 181 }
+      },
+      {
+        "id": "h2o_01", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_02", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_03", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_04", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_05", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_06", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_07", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_08", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_09", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_10", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_11", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_12", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_13", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_14", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_15", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      },
+      {
+        "id": "h2o_16", "type": "wasser", "label": "H₂O",
+        "stateVector": { "ladung": 0.0, "masse": 18.015, "dipolmoment": 1.85 }
+      }
+    ],
+    "relationships": [
+      { "id": "ib_na1_cl1", "type": "ionenbindung", "source": "na1", "target": "cl1", "label": "Coulomb" },
+      { "id": "ib_na1_cl2", "type": "ionenbindung", "source": "na1", "target": "cl2", "label": "Coulomb" },
+      { "id": "ib_na2_cl1", "type": "ionenbindung", "source": "na2", "target": "cl1", "label": "Coulomb" },
+      { "id": "ib_na2_cl3", "type": "ionenbindung", "source": "na2", "target": "cl3", "label": "Coulomb" },
+      { "id": "ib_na3_cl2", "type": "ionenbindung", "source": "na3", "target": "cl2", "label": "Coulomb" },
+      { "id": "ib_na3_cl4", "type": "ionenbindung", "source": "na3", "target": "cl4", "label": "Coulomb" },
+      { "id": "ib_na4_cl3", "type": "ionenbindung", "source": "na4", "target": "cl3", "label": "Coulomb" },
+      { "id": "ib_na4_cl5", "type": "ionenbindung", "source": "na4", "target": "cl5", "label": "Coulomb" },
+      { "id": "ib_na5_cl4", "type": "ionenbindung", "source": "na5", "target": "cl4", "label": "Coulomb" },
+      { "id": "ib_na5_cl6", "type": "ionenbindung", "source": "na5", "target": "cl6", "label": "Coulomb" },
+      { "id": "ib_na6_cl5", "type": "ionenbindung", "source": "na6", "target": "cl5", "label": "Coulomb" },
+      { "id": "ib_na6_cl6", "type": "ionenbindung", "source": "na6", "target": "cl6", "label": "Coulomb" },
+
+      { "id": "hy_na1_w01", "type": "hydratation", "source": "na1", "target": "h2o_01", "label": "Hydrat" },
+      { "id": "hy_na1_w02", "type": "hydratation", "source": "na1", "target": "h2o_02", "label": "Hydrat" },
+      { "id": "hy_na2_w03", "type": "hydratation", "source": "na2", "target": "h2o_03", "label": "Hydrat" },
+      { "id": "hy_na3_w04", "type": "hydratation", "source": "na3", "target": "h2o_04", "label": "Hydrat" },
+      { "id": "hy_na4_w05", "type": "hydratation", "source": "na4", "target": "h2o_05", "label": "Hydrat" },
+      { "id": "hy_na5_w06", "type": "hydratation", "source": "na5", "target": "h2o_06", "label": "Hydrat" },
+      { "id": "hy_na6_w07", "type": "hydratation", "source": "na6", "target": "h2o_07", "label": "Hydrat" },
+
+      { "id": "hy_cl1_w08", "type": "hydratation", "source": "cl1", "target": "h2o_08", "label": "Hydrat" },
+      { "id": "hy_cl1_w09", "type": "hydratation", "source": "cl1", "target": "h2o_09", "label": "Hydrat" },
+      { "id": "hy_cl2_w10", "type": "hydratation", "source": "cl2", "target": "h2o_10", "label": "Hydrat" },
+      { "id": "hy_cl3_w11", "type": "hydratation", "source": "cl3", "target": "h2o_11", "label": "Hydrat" },
+      { "id": "hy_cl4_w12", "type": "hydratation", "source": "cl4", "target": "h2o_12", "label": "Hydrat" },
+      { "id": "hy_cl5_w13", "type": "hydratation", "source": "cl5", "target": "h2o_13", "label": "Hydrat" },
+      { "id": "hy_cl6_w14", "type": "hydratation", "source": "cl6", "target": "h2o_14", "label": "Hydrat" },
+
+      { "id": "wb_w01_w02", "type": "wasserstoffbruecke", "source": "h2o_01", "target": "h2o_02", "label": "H-Brücke" },
+      { "id": "wb_w03_w04", "type": "wasserstoffbruecke", "source": "h2o_03", "target": "h2o_04", "label": "H-Brücke" },
+      { "id": "wb_w05_w06", "type": "wasserstoffbruecke", "source": "h2o_05", "target": "h2o_06", "label": "H-Brücke" },
+      { "id": "wb_w08_w09", "type": "wasserstoffbruecke", "source": "h2o_08", "target": "h2o_09", "label": "H-Brücke" },
+      { "id": "wb_w10_w11", "type": "wasserstoffbruecke", "source": "h2o_10", "target": "h2o_11", "label": "H-Brücke" },
+      { "id": "wb_w12_w13", "type": "wasserstoffbruecke", "source": "h2o_12", "target": "h2o_13", "label": "H-Brücke" },
+      { "id": "wb_w14_w15", "type": "wasserstoffbruecke", "source": "h2o_14", "target": "h2o_15", "label": "H-Brücke" },
+      { "id": "wb_w15_w16", "type": "wasserstoffbruecke", "source": "h2o_15", "target": "h2o_16", "label": "H-Brücke" }
+    ]
+  }
+}

@@ -1,6 +1,7 @@
 // App.ts - Build: 1.0.0.0
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { MapManager } from './core/MapManager';
 import { StateManager } from './core/StateManager';
 import { NodeManager } from './core/NodeManager';
 import { CentralEventManager } from './core/CentralEventManager';
@@ -25,7 +26,7 @@ import { NeighborhoodHighlighter } from './utils/NeighborhoodHighlighter';
 import { KeyboardShortcuts } from './utils/KeyboardShortcuts';
 import { BatchOperations } from './utils/BatchOperations';
 import { NodeGroupManager } from './utils/NodeGroupManager';
-import { LayoutGUI } from './ui/LayoutGUI';
+
 import { HighlightManager } from './effects/HighlightManager';
 import { GlowEffect } from './effects/GlowEffect';
 import { EdgeObjectsManager } from './core/EdgeObjectsManager';
@@ -77,7 +78,7 @@ export class App {
     public keyboardShortcuts!: KeyboardShortcuts;
     public batchOperations!: BatchOperations;
     public nodeGroupManager!: NodeGroupManager;
-    public layoutGUI!: LayoutGUI;
+
     public highlightManager!: HighlightManager;
     public glowEffect!: GlowEffect;
     public nodeManager: NodeManager;
@@ -114,6 +115,7 @@ export class App {
         return this._isInitialized;
     }
     private ground: THREE.Mesh | null = null;
+    private mapManager: MapManager | null = null;
 
     constructor() {
         console.log('Initializing Nodges');
@@ -435,6 +437,10 @@ export class App {
         this.exportManager = new ExportManager();
         this.container.register('ExportManager', this.exportManager);
 
+        // Init MapManager (Build 4)
+        this.mapManager = new MapManager(this.scene, this.stateManager);
+        this.container.register('MapManager', this.mapManager);
+
         // Init & Register FileHandler
         const fileHandler = new FileHandler(this.container, this.loadGraphData.bind(this));
         this.container.register('FileHandler', fileHandler);
@@ -488,9 +494,37 @@ export class App {
     }
 
     async initGUI() {
-        const layoutContent = document.getElementById('layoutPanelContent');
-        this.layoutGUI = new LayoutGUI(this, layoutContent || document.body);
         this.uiManager.init();
+
+        // Layout-Callback fuer MappingUI bereitstellen
+        if (this.uiManager.mappingUI) {
+            this.uiManager.mappingUI.setLayoutCallback(
+                async (algorithm: string, params: Record<string, number>) => {
+                    if (this.layoutManager && this.currentEntities && this.currentRelationships) {
+                        const success = await this.layoutManager.applyLayout(
+                            algorithm,
+                            this.currentEntities,
+                            this.currentRelationships,
+                            this.currentGraphData?.fields || [],
+                            params
+                        );
+                        if (success) {
+                            if (this.stateManager) {
+                                this.stateManager.setGraphData(this.currentEntities, this.currentRelationships);
+                            }
+                            if (this.updateNodePositions) {
+                                this.updateNodePositions();
+                            }
+                        }
+                    }
+                },
+                () => {
+                    if (this.layoutManager) {
+                        this.layoutManager.stopAnimation();
+                    }
+                }
+            );
+        }
 
         try {
             this.minimapUI = new MinimapUI('minimapContainer');
@@ -602,6 +636,30 @@ export class App {
         this.currentGraphData = null;
         this.hasExplicitPositions = false;
 
+        this.originalVisualMappings = null;
+        if (this.visualMappingEngine) {
+            this.visualMappingEngine.setOriginalVisualMappings(undefined);
+            this.visualMappingEngine.setVisualMappings({ defaultPresets: {} });
+        }
+        if (this.stateManager) {
+            this.stateManager.update({ visualMappings: { defaultPresets: {} } });
+        }
+        if (this.uiManager && this.uiManager.mappingUI) {
+            this.uiManager.mappingUI.bind(
+                { defaultPresets: {} },
+                {},
+                null,
+                [],
+                [],
+                null,
+                (newMappings) => {
+                    if (typeof (this as any).updateVisualMappings === 'function') {
+                        (this as any).updateVisualMappings(newMappings);
+                    }
+                }
+            );
+        }
+
         // Clear raycast cache
         if (this.raycastManager && this.raycastManager.clearCache) {
             this.raycastManager.clearCache();
@@ -662,11 +720,11 @@ export class App {
 
             // Save original mappings for suggestions/preview
             const originalMappings = graphData.visualMappings ? JSON.parse(JSON.stringify(graphData.visualMappings)) : null;
+            this.originalVisualMappings = originalMappings;
             
-            // If appending, don't automatically apply the new file's mappings to the entire graph
-            if (append) {
-                graphData.visualMappings = { defaultPresets: {} };
-            }
+            // Do not automatically apply the file's mappings to the active graph state.
+            // They will be available as suggestions.
+            graphData.visualMappings = { defaultPresets: {} };
 
             this.stateManager.update({
                 selectedObject: null,
@@ -726,6 +784,26 @@ export class App {
             console.log(`[App] Creating edges... (${this.currentRelationships.length})`);
             await this.createEdges();
 
+            // Build 4: Check for map and temporal data
+            if (graphData.metadata?.version === 4 || graphData.metadata?.version === '4') {
+                if (graphData.metadata?.map && this.mapManager) {
+                    const map = graphData.metadata.map;
+                    await this.mapManager.loadMap(map.image, map.referenceWidth, map.referenceHeight);
+                } else if (this.mapManager) {
+                    this.mapManager.removeMap();
+                }
+
+                // If mapX/mapY exist, set them as initial positions
+                this.currentEntities.forEach(e => {
+                    if (e.mapX !== undefined && e.mapY !== undefined) {
+                        e.position = { x: e.mapX, y: 0, z: e.mapY };
+                        // Note: Fixed state is handled in LayoutManager for the worker
+                    }
+                });
+            } else if (this.mapManager) {
+                this.mapManager.removeMap();
+            }
+
             // Only apply layout if entities don't have valid positions
             // Wir prüfen ob wenigstens ein Knoten eine valide Position ungleich 0,0,0 hat,
             // um zu verhindern, dass mitgelieferte Positionen überschrieben werden.
@@ -742,9 +820,9 @@ export class App {
                 this.hasExplicitPositions = this.hasExplicitPositions || hasPositions;
             }
 
-            if (this.layoutManager && !hasPositions) {
-                await this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships, this.currentGraphData?.fields || []);
-                this.updateNodePositions();
+            if (this.layoutManager) {
+                // Auto-layout is now disabled by default. Layout must be explicitly mapped via algorithms.
+                this.layoutManager.stopAnimation();
             }
 
             // Create labels for nodes
@@ -755,14 +833,13 @@ export class App {
             // Update UI
             if (this.uiManager) {
                 const bounds = this.calculateBounds(this.currentEntities);
-                const buildStr = graphData.metadata?._buildVersion ? `Build ${graphData.metadata._buildVersion} | ` : '';
-                const schemaStr = graphData.metadata?.schemaVersion || '1';
+                const schemaVersion = graphData.metadata?.schemaVersion || '3.0';
                 this.uiManager.updateFileInfo(
                     sourceName,
                     this.currentEntities.length,
                     this.currentRelationships.length,
                     bounds,
-                    `${buildStr}Schema: ${schemaStr}`
+                    schemaVersion
                 );
             }
 
@@ -797,7 +874,9 @@ export class App {
                             // Revert to active mappings from state
                             this.visualMappingEngine.setVisualMappings(this.stateManager.state.visualMappings || { defaultPresets: {} });
                         }
-                        this.updateNodePositions();
+                        if (this.nodeManager) {
+                            this.nodeManager.updateNodes(this.currentEntities);
+                        }
                         if (this.edgeObjectsManager) {
                             this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
                         }
@@ -902,27 +981,45 @@ export class App {
             this.edgeObjectsManager.updateEdges(this.currentRelationships, this.currentEntities);
         }
 
-        // Auto-Trigger Layout if physics are mapped
+        // Auto-Trigger Layout if physics are mapped or algorithm mapped to position
         let hasPhysicsMappings = false;
+        let selectedAlgorithm: string | null = null;
         const presets = mappings.defaultPresets || {};
+        
         Object.values(presets).forEach((preset: any) => {
             if (preset.attraction || preset.repulsion || preset.inertia) {
                 hasPhysicsMappings = true;
             }
+            if (preset.position) {
+                const source = preset.position.source || preset.position.field;
+                if (source && source.startsWith('algo:')) {
+                    selectedAlgorithm = source.substring(5); // Extract algo name
+                }
+            }
         });
 
-        if (hasPhysicsMappings && this.layoutManager) {
-            console.log('[App] Physics mappings detected. Auto-triggering layout...');
+        if (this.layoutManager) {
             this.layoutManager.stopAnimation();
-            this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships, this.currentGraphData?.fields || [])
-                .then(() => {
+            
+            if (selectedAlgorithm) {
+                console.log(`[App] Algorithm mapping detected. Auto-triggering layout: ${selectedAlgorithm}`);
+                this.layoutManager.applyLayout(selectedAlgorithm, this.currentEntities, this.currentRelationships, this.currentGraphData?.fields || [])
+                    .then(() => {
+                        this.fitCameraToScene();
+                    });
+            } else if (hasPhysicsMappings) {
+                // Legacy support for pure physics mappings without explicit algo
+                console.log('[App] Physics mappings detected. Auto-triggering layout...');
+                this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships, this.currentGraphData?.fields || [])
+                    .then(() => {
+                        this.fitCameraToScene();
+                    });
+            } else {
+                // Wenn keine Physik oder Algorithmus aktiv ist, wurden die Knoten evtl. direkt positioniert. Kamera anpassen!
+                setTimeout(() => {
                     this.fitCameraToScene();
-                });
-        } else {
-            // Wenn keine Physik aktiv ist, wurden die Knoten evtl. direkt positioniert. Kamera anpassen!
-            setTimeout(() => {
-                this.fitCameraToScene();
-            }, 50);
+                }, 50);
+            }
         }
 
         // Re-apply to nodes
@@ -947,25 +1044,18 @@ export class App {
             this.uiManager.updateVisualMappings(mappings);
         }
     }
-private rebuildMergedSchema() {
+    private rebuildMergedSchema() {
         if (!this.currentGraphData) return;
 
         // Initialize empty containers
-        const mergedDataModel: DataModel = { entities: {}, relationships: {} };
+        const mergedDataModel: DataModel = { properties: {} };
         const originalVisualMappings: VisualMappings = { defaultPresets: {} };
 
         // Merge all schemas
         this.loadedSchemas.forEach((schema) => {
             if (schema.dataModel) {
-                if ('entities' in schema.dataModel && schema.dataModel.entities) {
-                    Object.assign((mergedDataModel as any).entities, schema.dataModel.entities);
-                }
-                if ('relationships' in schema.dataModel && schema.dataModel.relationships) {
-                    Object.assign((mergedDataModel as any).relationships, schema.dataModel.relationships);
-                }
                 if ('properties' in schema.dataModel && schema.dataModel.properties) {
-                    if (!(mergedDataModel as any).properties) (mergedDataModel as any).properties = {};
-                    Object.assign((mergedDataModel as any).properties, schema.dataModel.properties);
+                    Object.assign(mergedDataModel.properties, schema.dataModel.properties);
                 }
             }
             if (schema.visualMappings && schema.visualMappings.defaultPresets) {
@@ -976,8 +1066,7 @@ private rebuildMergedSchema() {
         // Set on currentGraphData
         if (this.currentGraphData) {
             this.currentGraphData.dataModel = mergedDataModel;
-            // Always reset to empty active mappings. File mappings are only shown as dashed originals.
-            // The user must explicitly click "Datei-Mappings übernehmen" to apply them.
+            // Auto-apply was disabled by user request. Mappings will stay as suggestions until accepted.
             this.currentGraphData.visualMappings = { defaultPresets: {} };
             
             // Store original mappings so UIManager can provide them to MappingUI
@@ -985,11 +1074,12 @@ private rebuildMergedSchema() {
 
             // Propagate to engine
             this.visualMappingEngine.setDataModel(mergedDataModel);
-            this.visualMappingEngine.setVisualMappings(this.currentGraphData.visualMappings);
+            this.visualMappingEngine.setOriginalVisualMappings(this.originalVisualMappings || undefined);
+            this.visualMappingEngine.setVisualMappings(this.currentGraphData.visualMappings!);
 
             // Propagate to UI
             if (this.uiManager) {
-                this.uiManager.updateVisualMappings(this.currentGraphData.visualMappings);
+                this.uiManager.updateVisualMappings(this.currentGraphData.visualMappings!);
             }
         }
     }
@@ -1314,14 +1404,32 @@ private rebuildMergedSchema() {
         const state = this.stateManager.state;
         const now = performance.now();
 
-        // Apply Dev FPS Throttling
         if (state.devFpsLimit > 0) {
             const minFrameTime = 1000 / state.devFpsLimit;
             if (now - this.lastRenderTime < minFrameTime) {
                 return; // Skip this frame
             }
         }
+        
+        const deltaTime = (now - this.lastRenderTime) / 1000;
         this.lastRenderTime = now;
+
+        // Build 4: Playback Fortschritt
+        if (state.isPlaying && state.currentTimestamp !== null) {
+            const newTime = state.currentTimestamp + (deltaTime * state.playbackSpeed * 1000); 
+            // In einer vollständigen Lösung sollte TimePlayerUI die Max-Grenzen prüfen
+            this.stateManager.setCurrentTimestamp(newTime);
+        }
+
+        if (this.nodeManager) {
+            this.nodeManager.updateTemporalState(this.stateManager.state.currentTimestamp);
+        }
+        if (this.edgeObjectsManager && (this.edgeObjectsManager as any).updateTemporalState) {
+            (this.edgeObjectsManager as any).updateTemporalState(this.stateManager.state.currentTimestamp);
+        }
+        if (this.edgeObjectsManager && this.stateManager.state.currentTimestamp !== null) {
+            this.edgeObjectsManager.updateEdgePositions(this.stateManager.getEntities());
+        }
 
         if (this.edgeObjectsManager) {
             this.edgeObjectsManager.animate();

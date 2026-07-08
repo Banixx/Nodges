@@ -1,0 +1,765 @@
+{
+  "system": "Anatomie_Und_Physiologie_der_Niere",
+  "metadata": {
+    "schemaVersion": "4.0",
+    "description": "Makroskopischer und mikroskopischer Aufbau der menschlichen Niere, Blutversorgung, Funktionalitaet und Pathologien.",
+    "author": "AI",
+    "map": {
+      "image": "Niere_Anatomie.jpg",
+      "referenceWidth": 1000,
+      "referenceHeight": 1000
+    },
+    "exportedAt": "2026-07-06T20:53:31.399Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "visualMappings": {
+    "defaultPresets": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1783371126813_niere_gesamt",
+        "type": "struktur",
+        "label": "Niere (Ren)",
+        "ebene": "Organ",
+        "bedeutung": 100,
+        "lage": "Systemisch",
+        "mapX": 500,
+        "mapY": 500,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1842,
+              "changes": {
+                "bedeutung": 95
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 7,
+          "inbound": 2,
+          "outbound": 5
+        },
+        "inDegree": 2,
+        "outDegree": 5,
+        "position": {
+          "x": -0.24732777090284347,
+          "y": 2.46271988063069,
+          "z": 0.30307269433250755
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_cortex",
+        "type": "struktur",
+        "label": "Nierenrinde (Cortex renalis)",
+        "ebene": "Makroskopisch",
+        "bedeutung": 85,
+        "lage": "Rinde",
+        "mapX": 520,
+        "mapY": 380,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1,
+        "position": {
+          "x": 4.625959368921043,
+          "y": 4.8165250586122434,
+          "z": 4.8506216184863495
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_medulla",
+        "type": "struktur",
+        "label": "Nierenmark (Medulla renalis)",
+        "ebene": "Makroskopisch",
+        "bedeutung": 85,
+        "lage": "Mark",
+        "mapX": 540,
+        "mapY": 550,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1,
+        "position": {
+          "x": 3.220491405073836,
+          "y": 1.0698606653989378,
+          "z": -3.3690234456242356
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_hilum",
+        "type": "struktur",
+        "label": "Nierenhilus (Hilus renalis)",
+        "ebene": "Makroskopisch",
+        "bedeutung": 75,
+        "lage": "Hilum",
+        "mapX": 380,
+        "mapY": 500,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1,
+        "position": {
+          "x": -3.8851657002982245,
+          "y": -0.6287171234945951,
+          "z": 0.5019998468160932
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_sinus",
+        "type": "struktur",
+        "label": "Sinus renalis",
+        "ebene": "Makroskopisch",
+        "bedeutung": 50,
+        "lage": "Sinus",
+        "mapX": 420,
+        "mapY": 520,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -4.625959368921043,
+          "y": 4.00387697750072,
+          "z": 2.610563509918123
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_capsula_fib",
+        "type": "struktur",
+        "label": "Capsula fibrosa",
+        "ebene": "Makroskopisch",
+        "bedeutung": 40,
+        "lage": "Kapsel",
+        "mapX": 620,
+        "mapY": 350,
+        "temporal": {
+          "validFrom": 1901,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -0.003624506247660532,
+          "y": -1.058999249014362,
+          "z": 0.48392102065269443
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_nephron",
+        "type": "struktur",
+        "label": "Nephron",
+        "ebene": "Mikroskopisch",
+        "bedeutung": 95,
+        "lage": "Parenchym",
+        "mapX": 600,
+        "mapY": 450,
+        "temporal": {
+          "validFrom": 1842,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1905,
+              "changes": {
+                "bedeutung": 98
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 3,
+          "inbound": 1,
+          "outbound": 2
+        },
+        "inDegree": 1,
+        "outDegree": 2,
+        "position": {
+          "x": 2.353987990279861,
+          "y": -5,
+          "z": 3.809249613096084
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_malpighi",
+        "type": "struktur",
+        "label": "Malpighisches Koerperchen",
+        "ebene": "Mikroskopisch",
+        "bedeutung": 88,
+        "lage": "Rinde",
+        "mapX": 650,
+        "mapY": 400,
+        "temporal": {
+          "validFrom": 1842,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 5,
+          "inbound": 3,
+          "outbound": 2
+        },
+        "inDegree": 3,
+        "outDegree": 2,
+        "position": {
+          "x": 3.2053965488957483,
+          "y": -0.35036495581034804,
+          "z": 3.158077794629057
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_tubulus",
+        "type": "struktur",
+        "label": "Nierenkanaelchen (Tubulus)",
+        "ebene": "Mikroskopisch",
+        "bedeutung": 82,
+        "lage": "Mark",
+        "mapX": 580,
+        "mapY": 600,
+        "temporal": {
+          "validFrom": 1842,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 4,
+          "inbound": 2,
+          "outbound": 2
+        },
+        "inDegree": 2,
+        "outDegree": 2,
+        "position": {
+          "x": -1.906129296279267,
+          "y": -2.7502648721610896,
+          "z": -0.9134159025880065
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_a_renalis",
+        "type": "struktur",
+        "label": "Arteria renalis",
+        "ebene": "Vaskulaer",
+        "bedeutung": 90,
+        "lage": "Hilum",
+        "mapX": 250,
+        "mapY": 480,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 3.6735894433456315,
+          "y": 5,
+          "z": -2.6789333872758108
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_v_renalis",
+        "type": "struktur",
+        "label": "Vena renalis",
+        "ebene": "Vaskulaer",
+        "bedeutung": 80,
+        "lage": "Hilum",
+        "mapX": 250,
+        "mapY": 520,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -4.453401976065275,
+          "y": 0.9052196034170646,
+          "z": -4.8506216184863495
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_a_interlobar",
+        "type": "struktur",
+        "label": "A. interlobaris",
+        "ebene": "Vaskulaer",
+        "bedeutung": 60,
+        "lage": "Mark",
+        "mapX": 350,
+        "mapY": 400,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1,
+        "position": {
+          "x": -3.560732298666651,
+          "y": 3.037653650162232,
+          "z": -1.2524462610755591
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_a_arcuata",
+        "type": "struktur",
+        "label": "A. arcuata",
+        "ebene": "Vaskulaer",
+        "bedeutung": 55,
+        "lage": "Rinde",
+        "mapX": 480,
+        "mapY": 350,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1,
+        "position": {
+          "x": 3.667236586167413,
+          "y": 4.094330714825576,
+          "z": 4.465319812879537
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_vas_aff",
+        "type": "struktur",
+        "label": "Vas afferens",
+        "ebene": "Vaskulaer",
+        "bedeutung": 70,
+        "lage": "Rinde",
+        "mapX": 580,
+        "mapY": 380,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 3,
+          "inbound": 1,
+          "outbound": 2
+        },
+        "inDegree": 1,
+        "outDegree": 2,
+        "position": {
+          "x": -4.4240606555797655,
+          "y": -1.418625653428239,
+          "z": -0.21730357726144375
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_vas_eff",
+        "type": "struktur",
+        "label": "Vas efferens",
+        "ebene": "Vaskulaer",
+        "bedeutung": 65,
+        "lage": "Rinde",
+        "mapX": 620,
+        "mapY": 330,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -4.604782214598185,
+          "y": -4.125529126855986,
+          "z": -3.368319131602361
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_ureter",
+        "type": "struktur",
+        "label": "Ureter (Harnleiter)",
+        "ebene": "Makroskopisch",
+        "bedeutung": 78,
+        "lage": "Hilum",
+        "mapX": 200,
+        "mapY": 620,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 4.547360038031682,
+          "y": 2.1686552885128147,
+          "z": -0.17020826111478476
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_nebenniere",
+        "type": "struktur",
+        "label": "Nebenniere",
+        "ebene": "Makroskopisch",
+        "bedeutung": 60,
+        "lage": "Kapsel",
+        "mapX": 500,
+        "mapY": 220,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 2.7142864667832205,
+          "y": -2.7623962448418453,
+          "z": 1.8173385529341446
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_infarkt",
+        "type": "struktur",
+        "label": "Niereninfarkt",
+        "ebene": "Pathologisch",
+        "bedeutung": 45,
+        "lage": "Parenchym",
+        "mapX": 750,
+        "mapY": 250,
+        "temporal": {
+          "validFrom": 1950,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 2000,
+              "changes": {
+                "bedeutung": 50
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -1.9494453715361901,
+          "y": -2.3082517202963757,
+          "z": -3.0375205817619224
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_nusknacker",
+        "type": "struktur",
+        "label": "Nussknacker-Syndrom",
+        "ebene": "Pathologisch",
+        "bedeutung": 40,
+        "lage": "Systemisch",
+        "mapX": 150,
+        "mapY": 400,
+        "temporal": {
+          "validFrom": 1980,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -1.4943489404698913,
+          "y": 1.401821959879261,
+          "z": -3.7977236950323063
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1783371126813_rel_01",
+        "type": "enthaelt",
+        "source": "AI_Generation_1783371126813_niere_gesamt",
+        "target": "AI_Generation_1783371126813_cortex",
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_02",
+        "type": "enthaelt",
+        "source": "AI_Generation_1783371126813_niere_gesamt",
+        "target": "AI_Generation_1783371126813_medulla",
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_03",
+        "type": "enthaelt",
+        "source": "AI_Generation_1783371126813_niere_gesamt",
+        "target": "AI_Generation_1783371126813_hilum",
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_04",
+        "type": "enthaelt",
+        "source": "AI_Generation_1783371126813_niere_gesamt",
+        "target": "AI_Generation_1783371126813_capsula_fib",
+        "temporal": {
+          "validFrom": 1901,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_05",
+        "type": "enthaelt",
+        "source": "AI_Generation_1783371126813_cortex",
+        "target": "AI_Generation_1783371126813_malpighi",
+        "temporal": {
+          "validFrom": 1842,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_06",
+        "type": "enthaelt",
+        "source": "AI_Generation_1783371126813_medulla",
+        "target": "AI_Generation_1783371126813_tubulus",
+        "temporal": {
+          "validFrom": 1842,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_07",
+        "type": "enthaelt",
+        "source": "AI_Generation_1783371126813_nephron",
+        "target": "AI_Generation_1783371126813_malpighi",
+        "temporal": {
+          "validFrom": 1842,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_08",
+        "type": "enthaelt",
+        "source": "AI_Generation_1783371126813_nephron",
+        "target": "AI_Generation_1783371126813_tubulus",
+        "temporal": {
+          "validFrom": 1842,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_09",
+        "type": "enthaelt",
+        "source": "AI_Generation_1783371126813_hilum",
+        "target": "AI_Generation_1783371126813_sinus",
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_10",
+        "type": "versorgt",
+        "source": "AI_Generation_1783371126813_a_renalis",
+        "target": "AI_Generation_1783371126813_a_interlobar",
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_11",
+        "type": "versorgt",
+        "source": "AI_Generation_1783371126813_a_interlobar",
+        "target": "AI_Generation_1783371126813_a_arcuata",
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_12",
+        "type": "versorgt",
+        "source": "AI_Generation_1783371126813_a_arcuata",
+        "target": "AI_Generation_1783371126813_vas_aff",
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_13",
+        "type": "versorgt",
+        "source": "AI_Generation_1783371126813_vas_aff",
+        "target": "AI_Generation_1783371126813_malpighi",
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_14",
+        "type": "versorgt",
+        "source": "AI_Generation_1783371126813_malpighi",
+        "target": "AI_Generation_1783371126813_vas_eff",
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_15",
+        "type": "transportiert",
+        "source": "AI_Generation_1783371126813_tubulus",
+        "target": "AI_Generation_1783371126813_ureter",
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_16",
+        "type": "funktioniert_als",
+        "source": "AI_Generation_1783371126813_malpighi",
+        "target": "AI_Generation_1783371126813_niere_gesamt",
+        "label": "Ultrafiltration",
+        "temporal": {
+          "validFrom": 1842,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_17",
+        "type": "funktioniert_als",
+        "source": "AI_Generation_1783371126813_tubulus",
+        "target": "AI_Generation_1783371126813_niere_gesamt",
+        "label": "Rueckresorption",
+        "temporal": {
+          "validFrom": 1842,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_18",
+        "type": "betroffen_von",
+        "source": "AI_Generation_1783371126813_vas_aff",
+        "target": "AI_Generation_1783371126813_infarkt",
+        "label": "Endarterienverschluss",
+        "temporal": {
+          "validFrom": 1950,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_19",
+        "type": "betroffen_von",
+        "source": "AI_Generation_1783371126813_v_renalis",
+        "target": "AI_Generation_1783371126813_nusknacker",
+        "label": "Kompression A. mesenterica",
+        "temporal": {
+          "validFrom": 1980,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783371126813_rel_20",
+        "type": "enthaelt",
+        "source": "AI_Generation_1783371126813_niere_gesamt",
+        "target": "AI_Generation_1783371126813_nephron",
+        "label": "ca. 1 Mio Einheiten",
+        "temporal": {
+          "validFrom": 1905,
+          "validTo": null
+        }
+      }
+    ]
+  }
+}

@@ -4,7 +4,7 @@
 
 ### Was ist Nodges?
 
-**Nodges** (ein Portmanteau aus **NO**des und e**DGES**) definiert die Netzwerkanalyse neu. Es ist nicht nur ein weiterer Graph-Viewer, sondern eine hochspezialisierte **Spatial Analytics Engine** für den Browser. In einer Ära, in der Datensätze nicht nur größer, sondern auch komplexer und vernetzter werden ("Hyperconnected Data"), versagen klassische 2D-Ansätze oft. Nodges nutzt die dritte Dimension nicht als Gimmick, sondern als notwendigen Freiheitsgrad, um dichte Topologien to entflechten.
+**Nodges** (ein Portmanteau aus **NO**des und e**DGES**) definiert die Netzwerkanalyse neu. Es ist nicht nur ein weiterer Graph-Viewer, sondern eine hochspezialisierte **Spatial Analytics Engine** für den Browser. In einer Ära, in der Datensätze nicht nur größer, sondern auch komplexer und vernetzter werden ("Hyperconnected Data"), versagen klassische 2D-Ansätze oft. Nodges nutzt die dritte Dimension nicht als Gimmick, sondern als notwendigen Freiheitsgrad, um dichte Topologien zu entflechten.
 
 ### Die Philosophie: "Spatial Literacy"
 

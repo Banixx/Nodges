@@ -1,0 +1,24 @@
+{
+  "system": "Human_Kidney_Network",
+  "metadata": {
+    "schemaVersion": "4.0",
+    "description": "Ontologie der menschlichen Niere: Anatomie, Funktionseinheiten (Nephron), Blutversorgung und Pathologie",
+    "author": "AI",
+    "map": {
+      "image": "Map.jpg",
+      "referenceWidth": 1000,
+      "referenceHeight": 1000
+    },
+    "exportedAt": "2026-07-06T21:09:24.698Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "visualMappings": {
+    "defaultPresets": {}
+  },
+  "data": {
+    "entities": [],
+    "relationships": []
+  }
+}

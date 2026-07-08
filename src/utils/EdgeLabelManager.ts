@@ -230,6 +230,11 @@ export class EdgeLabelManager {
                 label.sprite.visible = true;
             }
 
+            // Check line visibility
+            if (label.sprite.visible && label.edge.line && !label.edge.line.visible) {
+                label.sprite.visible = false;
+            }
+
             // Face camera
             label.sprite.quaternion.copy(this.camera.quaternion);
         });

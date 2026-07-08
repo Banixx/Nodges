@@ -15,6 +15,10 @@ export interface IStateManager {
     batchUpdate(updates: Partial<State>): void;
     undo(): void;
     redo(): void;
+    
+    // Build 4
+    setCurrentTimestamp(time: number | null): void;
+    setPlaying(playing: boolean): void;
 
     // Graph Operations
     addNode(data: EntityData): void;

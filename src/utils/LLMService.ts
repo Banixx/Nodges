@@ -143,183 +143,291 @@ export class LLMService {
     /**
      * Sends a prompt to the LLM and parses the JSON response into GraphData.
      */
-    public static async generateGraphData(
-        prompt: string, 
-        provider: LLMProvider, 
+    private static async _executeLLMCall(
+        systemPrompt: string,
+        userPrompt: string,
+        provider: LLMProvider,
         model: string
     ): Promise<GraphData> {
         const apiKey = this.getApiKey(provider);
-        
         if (!apiKey) {
             throw new Error(`Kein API-Key für ${provider} gefunden. Bitte gib deinen API-Key ein.`);
         }
 
-        const systemPrompt = `Du bist ein hochpraeziser Daten-Generator fuer Nodges, eine 3D-Netzwerk-Visualisierung.
-Deine Antwort MUSS ausschliesslich gueltiges JSON sein, ohne Markdown-Formatierung.
+        let responseText = '';
 
-PFLICHTSTRUKTUR (alle Top-Level-Felder sind PFLICHT):
-{
-  "system": "Systemname",
-  "metadata": { "description": "Beschreibung", "version": "1.0", "author": "AI" },
-  "dataModel": {
-    "entities": {
-      "<EntityTyp>": {
-        "properties": {
-          "<kategorisches_attribut>": { "type": "categorical", "values": ["Wert1", "Wert2", "Wert3"] },
-          "<numerisches_attribut>": { "type": "continuous", "range": [0, 100] }
+        if (provider === 'openrouter') {
+            const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'HTTP-Referer': window.location.href,
+                    'X-Title': 'Nodges 3D Graph',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: userPrompt }
+                    ],
+                    response_format: { type: 'json_object' }
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(`OpenRouter API Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
+            }
+
+            const data = await response.json();
+            responseText = data.choices[0]?.message?.content;
+
+        } else if (provider === 'openai') {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: userPrompt }
+                    ],
+                    response_format: { type: 'json_object' }
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(`OpenAI API Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
+            }
+
+            const data = await response.json();
+            responseText = data.choices[0]?.message?.content;
+
+        } else if (provider === 'anthropic') {
+            const response = await fetch('https://api.anthropic.com/v1/messages', {
+                method: 'POST',
+                headers: {
+                    'x-api-key': apiKey,
+                    'anthropic-version': '2023-06-01',
+                    'content-type': 'application/json',
+                    'anthropic-dangerous-direct-browser-access': 'true'
+                },
+                body: JSON.stringify({
+                    model: model,
+                    max_tokens: 8000,
+                    system: systemPrompt,
+                    messages: [
+                        { role: 'user', content: userPrompt }
+                    ]
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(`Anthropic API Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
+            }
+
+            const data = await response.json();
+            responseText = data.content[0]?.text;
         }
-      }
-    },
-    "relationships": {
-      "<RelTyp>": { "properties": {} }
-    }
-  },
-  "visualMappings": {
-    "defaultPresets": {
-      "<EntityTyp>": {
-        "color": { "source": "<kategorisches_attribut>", "function": "categorical" },
-        "size": { "source": "<numerisches_attribut>", "function": "linear", "range": [0.5, 1.5] }
-      },
-      "<RelTyp>": {
-        "color": { "source": "constant", "function": "constant", "params": { "color": "#hexcode" } },
-        "thickness": { "source": "constant", "function": "constant", "range": [0.08, 0.08] }
-      }
-    }
-  },
-  "data": {
-    "entities": [
-      { "id": "unique_id", "type": "<EntityTyp>", "label": "Anzeigename",
-        "<kategorisches_attribut>": "Wert1", "<numerisches_attribut>": 42,
-        "position": { "x": 0, "y": 5, "z": 0 } }
-    ],
-    "relationships": [
-      { "id": "rel_id", "type": "<RelTyp>", "source": "id1", "target": "id2", "label": "Beschreibung" }
-    ]
-  }
-}
 
-WICHTIGE REGELN:
-1. FARBVIELFALT: Verwende IMMER "function": "categorical" fuer Entity-Farben, gemappt auf ein kategorisches Attribut mit mindestens 3 verschiedenen Werten. Jeder Entity-Typ braucht ein color-Mapping.
-2. GROESSEN-DIFFERENZIERUNG: Verwende "function": "linear" fuer Entity-Groessen, gemappt auf ein numerisches Attribut. Der range MUSS [0.5, 1.5] sein.
-3. DATENREICHTUM: Jede Entity muss 3-5 semantische Attribute als flache Felder haben (NICHT in einem verschachtelten properties-Objekt). Alle Attribute muessen im dataModel definiert sein.
-4. POSITIONEN: Setze fuer JEDE Entity ein position-Objekt mit x, y, z. Y-Achse = Hierarchie/Wichtigkeit (oben=wichtig, Bereich 0-30). X und Z verteilen die Nodes raeumlich (Bereich -20 bis +20). Mindestabstand 5 Einheiten zwischen Nodes.
-5. VERSCHIEDENE EDGE-TYPEN: Nutze mindestens 2 verschiedene Relationship-Typen mit unterschiedlichen Farben. Jeder Typ braucht einen Eintrag in visualMappings.defaultPresets.
-6. UMFANG: Generiere mindestens 10 Entities und 15 Relationships.
-7. EDGE-CURVATURE: Bei mehreren Edge-Typen nutze unterschiedliche curvature-Werte (0.0, 0.25, 0.5) damit sich Linien nicht ueberlagern.
-8. Jede Entity-ID und Relationship-ID muss eindeutig sein. Keine Leerzeichen in IDs.
-9. Alle source/target Werte in Relationships MUESSEN auf existierende Entity-IDs verweisen.
-10. Fuer jeden verwendeten type (Entity oder Relationship) MUSS ein Eintrag in visualMappings.defaultPresets existieren.
+        if (!responseText) {
+            throw new Error('Das Modell hat keine Antwort zurückgegeben.');
+        }
+
+        let cleanResponse = responseText.trim();
+        if (cleanResponse.startsWith('```')) {
+            cleanResponse = cleanResponse.replace(/^```json\s*/, '').replace(/```$/, '').trim();
+        }
+
+        let parsedData: any;
+        try {
+            parsedData = JSON.parse(cleanResponse);
+        } catch (e) {
+            console.error("Failed to parse JSON:", responseText);
+            throw new Error('Das Modell hat kein gültiges JSON zurückgegeben.');
+        }
+
+        // Flexiblere Validierung: Es muss ENTWEDER data.entities/relationships geben ODER ein dataModel ODER visualMappings (fuer Multi-Step)
+        const hasData = parsedData.data && Array.isArray(parsedData.data.entities) && Array.isArray(parsedData.data.relationships);
+        const hasDataModel = parsedData.dataModel && typeof parsedData.dataModel === 'object';
+        const hasVisualMappings = parsedData.visualMappings && typeof parsedData.visualMappings === 'object';
+
+        if (!hasData && !hasDataModel && !hasVisualMappings) {
+            console.error("Invalid JSON structure:", parsedData);
+            throw new Error('Das generierte JSON hat nicht die erwartete Struktur (weder Daten, noch Schema, noch Visual Mappings gefunden).');
+        }
+
+        return parsedData as GraphData;
+    }
+
+    public static async generateGraphData(
+        prompt: string, 
+        provider: LLMProvider, 
+        model: string,
+        formatFile: string = '/nodges_build_4.md'
+    ): Promise<GraphData> {
+        let systemPrompt = '';
+        try {
+            const promptResponse = await fetch(formatFile);
+            if (!promptResponse.ok) {
+                throw new Error(`Konnte Format-Datei ${formatFile} nicht laden. HTTP Status: ` + promptResponse.status);
+            }
+            systemPrompt = await promptResponse.text();
+        } catch (error) {
+            console.error('Fehler beim Laden der Format-Datei:', error);
+            throw new Error(`Konnte Format-Datei nicht laden. Stelle sicher, dass ${formatFile} existiert.`);
+        }
+
+        return this._executeLLMCall(systemPrompt, prompt, provider, model);
+    }
+
+    public static async generateGraphDataMultiStepBuild5(
+        prompt: string, 
+        provider: LLMProvider, 
+        model: string,
+        onProgress?: (msg: string) => void
+    ): Promise<GraphData> {
+        // Step 1: Schema / Ontologie
+        const schemaPromptFile = '/prompts/build_5_ontology_prompt.md';
+        let schemaSystemPrompt = '';
+        try {
+            const res = await fetch(schemaPromptFile);
+            if (!res.ok) throw new Error();
+            schemaSystemPrompt = await res.text();
+        } catch {
+            throw new Error(`Konnte Schema-Datei nicht laden: ${schemaPromptFile}`);
+        }
+        
+        if (onProgress) onProgress('Schritt 1/3: Ontologie (Schema) wird entworfen...');
+        
+        const step1UserPrompt = `Erstelle ein dataModel (Ontologie) basierend auf der folgenden Anfrage:\n\n${prompt}`;
+        const step1Data = await this._executeLLMCall(schemaSystemPrompt, step1UserPrompt, provider, model);
+        
+        // Step 2: Data
+        if (onProgress) onProgress('Schritt 2/3: Datenpunkte werden generiert...');
+        
+        const dataPromptFile = '/prompts/build_5_data_prompt.md';
+        let dataSystemPrompt = '';
+        try {
+            const res = await fetch(dataPromptFile);
+            if (!res.ok) throw new Error();
+            dataSystemPrompt = await res.text();
+        } catch {
+            throw new Error(`Konnte Data-Prompt nicht laden: ${dataPromptFile}`);
+        }
+
+        const step2UserPrompt = `Nutze EXAKT das folgende Schema (Ontologie), um die Daten zu generieren:\n\n${JSON.stringify(step1Data, null, 2)}\n\nBefuelle nun die data.entities und data.relationships Arrays basierend auf der Originalanfrage:\n${prompt}`;
+        
+        const step2Data = await this._executeLLMCall(dataSystemPrompt, step2UserPrompt, provider, model);
+        
+        // Merge Step 1 and Step 2
+        const mergedData = { ...step1Data, ...step2Data };
+        
+        // Step 3: Visual Mappings
+        if (onProgress) onProgress('Schritt 3/3: Visuelles Mapping (Build 5) wird berechnet...');
+        
+        const visualPromptFile = '/prompts/build_5_visual_prompt.md';
+        let visualSystemPrompt = '';
+        try {
+            const res = await fetch(visualPromptFile);
+            if (!res.ok) throw new Error();
+            visualSystemPrompt = await res.text();
+        } catch {
+            throw new Error(`Konnte Visual-Prompt nicht laden: ${visualPromptFile}`);
+        }
+
+        const step3UserPrompt = `Erstelle die visuellen Mappings fuer diesen Datensatz:\n\n${JSON.stringify(mergedData, null, 2)}`;
+        
+        const step3Data = await this._executeLLMCall(visualSystemPrompt, step3UserPrompt, provider, model);
+        
+        // Final Merge
+        return { ...mergedData, ...step3Data };
+    }
+
+    public static async generateGraphDataMultiStep(
+        prompt: string, 
+        provider: LLMProvider, 
+        model: string,
+        onProgress?: (msg: string) => void
+    ): Promise<GraphData> {
+        const ontologyPromptFile = '/prompts/ontology_prompt.md';
+        let ontologySystemPrompt = '';
+        try {
+            const res = await fetch(ontologyPromptFile);
+            if (!res.ok) throw new Error();
+            ontologySystemPrompt = await res.text();
+        } catch {
+            throw new Error(`Konnte Ontology-Format-Datei nicht laden: ${ontologyPromptFile}`);
+        }
+        
+        if (onProgress) onProgress('Schritt 1/2: Ontologie (Schema) wird entworfen...');
+        
+        // Call 1: Generate Ontology
+        const ontologyData = await this._executeLLMCall(ontologySystemPrompt, prompt, provider, model);
+        
+        if (onProgress) onProgress('Schritt 2/2: Datenpunkte werden basierend auf Schema generiert...');
+        
+        const dataPromptFile = '/prompts/build_4_prompt.md';
+        let dataSystemPrompt = '';
+        try {
+            const res = await fetch(dataPromptFile);
+            if (!res.ok) throw new Error();
+            dataSystemPrompt = await res.text();
+        } catch {
+            throw new Error(`Konnte Data-Format-Datei nicht laden: ${dataPromptFile}`);
+        }
+
+        const step2UserPrompt = `
+Nutze EXAKT das folgende Schema (Ontologie), um die Daten zu generieren. Erfinde keine neuen Entity-Typen oder Attribute, die nicht im Schema stehen!
+Befuelle nun die data.entities und data.relationships Arrays basierend auf der Originalanfrage.
+
+=== ONTOLOGIE ===
+${JSON.stringify(ontologyData, null, 2)}
+=================
+
+USER PROMPT (Thema): ${prompt}
+`;
+        
+        // Call 2: Generate Data
+        return this._executeLLMCall(dataSystemPrompt, step2UserPrompt, provider, model);
+    }
+
+    public static async refineGraphData(
+        existingData: GraphData,
+        prompt: string, 
+        provider: LLMProvider, 
+        model: string,
+        formatFile: string = '/prompts/build_4_prompt.md',
+        onProgress?: (msg: string) => void
+    ): Promise<GraphData> {
+        let systemPrompt = '';
+        try {
+            const res = await fetch(formatFile);
+            if (!res.ok) throw new Error();
+            systemPrompt = await res.text();
+        } catch {
+            throw new Error(`Konnte Format-Datei nicht laden: ${formatFile}`);
+        }
+
+        if (onProgress) onProgress('Analysiere Graphen und wende Änderungen an...');
+
+        const refineUserPrompt = `
+Hier ist ein bestehender Datensatz (Graph). Deine Aufgabe ist es, diesen basierend auf der neuen User-Anweisung zu veraendern oder zu erweitern.
+Gib IMMER den kompletten Graphen (inklusive der unveraenderten Teile) zurueck! Behalte bestehende IDs bei.
+
+=== BESTEHENDER GRAPH ===
+${JSON.stringify(existingData, null, 2)}
+=========================
+
+USER ANWEISUNG: ${prompt}
 `;
 
-        try {
-            let responseText = '';
-
-            if (provider === 'openrouter') {
-                const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'HTTP-Referer': window.location.href,
-                        'X-Title': 'Nodges 3D Graph',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: model,
-                        messages: [
-                            { role: 'system', content: systemPrompt },
-                            { role: 'user', content: prompt }
-                        ],
-                        response_format: { type: 'json_object' }
-                    })
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    throw new Error(`OpenRouter API Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
-                }
-
-                const data = await response.json();
-                responseText = data.choices[0]?.message?.content;
-
-            } else if (provider === 'openai') {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: model,
-                        messages: [
-                            { role: 'system', content: systemPrompt },
-                            { role: 'user', content: prompt }
-                        ],
-                        response_format: { type: 'json_object' }
-                    })
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    throw new Error(`OpenAI API Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
-                }
-
-                const data = await response.json();
-                responseText = data.choices[0]?.message?.content;
-
-            } else if (provider === 'anthropic') {
-                const response = await fetch('https://api.anthropic.com/v1/messages', {
-                    method: 'POST',
-                    headers: {
-                        'x-api-key': apiKey,
-                        'anthropic-version': '2023-06-01',
-                        'content-type': 'application/json',
-                        'anthropic-dangerous-direct-browser-access': 'true'
-                    },
-                    body: JSON.stringify({
-                        model: model,
-                        max_tokens: 8000,
-                        system: systemPrompt,
-                        messages: [
-                            { role: 'user', content: prompt }
-                        ]
-                    })
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    throw new Error(`Anthropic API Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
-                }
-
-                const data = await response.json();
-                responseText = data.content[0]?.text;
-            }
-
-            if (!responseText) {
-                throw new Error('Das Modell hat keine Antwort zurückgegeben.');
-            }
-
-            let cleanResponse = responseText.trim();
-            if (cleanResponse.startsWith('```')) {
-                cleanResponse = cleanResponse.replace(/^```json\s*/, '').replace(/```$/, '').trim();
-            }
-
-            let parsedData: GraphData;
-            try {
-                parsedData = JSON.parse(cleanResponse) as GraphData;
-            } catch (e) {
-                console.error("Failed to parse JSON:", responseText);
-                throw new Error('Das Modell hat kein gültiges JSON zurückgegeben.');
-            }
-
-            if (!parsedData.data || !Array.isArray(parsedData.data.entities) || !Array.isArray(parsedData.data.relationships)) {
-                throw new Error('Das generierte JSON hat nicht die erwartete Struktur (data.entities und data.relationships fehlen).');
-            }
-
-            return parsedData;
-
-        } catch (error) {
-            console.error('LLM Generation Error:', error);
-            throw error;
-        }
+        return this._executeLLMCall(systemPrompt, refineUserPrompt, provider, model);
     }
 }

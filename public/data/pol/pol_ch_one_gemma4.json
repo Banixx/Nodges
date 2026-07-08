@@ -1,0 +1,536 @@
+{
+  "system": "Politisches_System_Schweiz",
+  "metadata": {
+    "schemaVersion": "4.0",
+    "description": "Visualisierung der Schweizer Staatsstruktur mit Fokus auf Föderalismus, Gewaltenteilung und direkte Demokratie.",
+    "author": "AI",
+    "map": {
+      "image": "Switzerland_Map.jpg",
+      "referenceWidth": 1000,
+      "referenceHeight": 1000
+    },
+    "exportedAt": "2026-07-06T17:19:03.277Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "visualMappings": {
+    "defaultPresets": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1783358321210_inst_bundesversammlung",
+        "type": "Institution",
+        "label": "Bundesversammlung",
+        "level": "Bund",
+        "powerIndex": 90,
+        "position": {
+          "x": 0,
+          "y": 20,
+          "z": 0
+        },
+        "mapX": 500,
+        "mapY": 500,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 6,
+          "inbound": 4,
+          "outbound": 2
+        },
+        "inDegree": 4,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783358321210_inst_nationalrat",
+        "type": "Institution",
+        "label": "Nationalrat",
+        "level": "Bund",
+        "powerIndex": 80,
+        "position": {
+          "x": -10,
+          "y": 15,
+          "z": 5
+        },
+        "mapX": 480,
+        "mapY": 520,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783358321210_inst_staenderat",
+        "type": "Institution",
+        "label": "Ständerat",
+        "level": "Bund",
+        "powerIndex": 80,
+        "position": {
+          "x": 10,
+          "y": 15,
+          "z": 5
+        },
+        "mapX": 520,
+        "mapY": 520,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783358321210_inst_bundesrat",
+        "type": "Institution",
+        "label": "Bundesrat (Gesamt)",
+        "level": "Bund",
+        "powerIndex": 95,
+        "position": {
+          "x": 0,
+          "y": 10,
+          "z": -10
+        },
+        "mapX": 500,
+        "mapY": 480,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 7,
+          "inbound": 7,
+          "outbound": 0
+        },
+        "inDegree": 7,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783358321210_pers_parmelin",
+        "type": "Person",
+        "label": "Guy Parmelin",
+        "party": "SVP",
+        "influence": 85,
+        "position": {
+          "x": -2,
+          "y": 8,
+          "z": -12
+        },
+        "mapX": 510,
+        "mapY": 470,
+        "temporal": {
+          "validFrom": 2016,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 2026,
+              "changes": {
+                "influence": 90
+              }
+            }
+          ]
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783358321210_pers_cassis",
+        "type": "Person",
+        "label": "Ignazio Cassis",
+        "party": "FDP",
+        "influence": 80,
+        "position": {
+          "x": 2,
+          "y": 8,
+          "z": -12
+        },
+        "mapX": 520,
+        "mapY": 470,
+        "temporal": {
+          "validFrom": 2017,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783358321210_pers_baume_schneider",
+        "type": "Person",
+        "label": "Elisabeth Baume-Schneider",
+        "party": "SP",
+        "influence": 75,
+        "position": {
+          "x": 4,
+          "y": 8,
+          "z": -12
+        },
+        "mapX": 530,
+        "mapY": 470,
+        "temporal": {
+          "validFrom": 2023,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783358321210_inst_bundesgericht",
+        "type": "Institution",
+        "label": "Bundesgericht",
+        "level": "Bund",
+        "powerIndex": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -20
+        },
+        "mapX": 400,
+        "mapY": 600,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783358321210_right_initiative",
+        "type": "DemocraticRight",
+        "label": "Volksinitiative",
+        "function": "Initiierend",
+        "impact": 90,
+        "position": {
+          "x": -20,
+          "y": 5,
+          "z": 10
+        },
+        "mapX": 300,
+        "mapY": 700,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783358321210_right_referendum",
+        "type": "DemocraticRight",
+        "label": "Referendum",
+        "function": "Kontrollierend",
+        "impact": 95,
+        "position": {
+          "x": -20,
+          "y": 5,
+          "z": 0
+        },
+        "mapX": 300,
+        "mapY": 800,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783358321210_inst_kanton_bern",
+        "type": "Institution",
+        "label": "Kanton Bern",
+        "level": "Kanton",
+        "powerIndex": 50,
+        "position": {
+          "x": 15,
+          "y": -10,
+          "z": 5
+        },
+        "mapX": 600,
+        "mapY": 400,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "inDegree": 2,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783358321210_inst_gemeinde_generic",
+        "type": "Institution",
+        "label": "Gemeinden",
+        "level": "Gemeinde",
+        "powerIndex": 30,
+        "position": {
+          "x": 15,
+          "y": -20,
+          "z": 5
+        },
+        "mapX": 600,
+        "mapY": 300,
+        "temporal": {
+          "validFrom": 0,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783358321210_inst_bundeskanzlei",
+        "type": "Institution",
+        "label": "Bundeskanzlei",
+        "level": "Bund",
+        "powerIndex": 40,
+        "position": {
+          "x": 0,
+          "y": 10,
+          "z": -5
+        },
+        "mapX": 500,
+        "mapY": 490,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1783358321210_rel_1",
+        "type": "belongsTo",
+        "source": "AI_Generation_1783358321210_inst_nationalrat",
+        "target": "AI_Generation_1783358321210_inst_bundesversammlung",
+        "label": "Teil von",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_2",
+        "type": "belongsTo",
+        "source": "AI_Generation_1783358321210_inst_staenderat",
+        "target": "AI_Generation_1783358321210_inst_bundesversammlung",
+        "label": "Teil von",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_3",
+        "type": "elects",
+        "source": "AI_Generation_1783358321210_inst_bundesversammlung",
+        "target": "AI_Generation_1783358321210_inst_bundesrat",
+        "label": "Wählt Bundesräte",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_4",
+        "type": "belongsTo",
+        "source": "AI_Generation_1783358321210_pers_parmelin",
+        "target": "AI_Generation_1783358321210_inst_bundesrat",
+        "label": "Mitglied",
+        "temporal": {
+          "validFrom": 2016,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_5",
+        "type": "belongsTo",
+        "source": "AI_Generation_1783358321210_pers_cassis",
+        "target": "AI_Generation_1783358321210_inst_bundesrat",
+        "label": "Mitglied",
+        "temporal": {
+          "validFrom": 2017,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_6",
+        "type": "belongsTo",
+        "source": "AI_Generation_1783358321210_pers_baume_schneider",
+        "target": "AI_Generation_1783358321210_inst_bundesrat",
+        "label": "Mitglied",
+        "temporal": {
+          "validFrom": 2023,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_7",
+        "type": "elects",
+        "source": "AI_Generation_1783358321210_inst_bundesversammlung",
+        "target": "AI_Generation_1783358321210_inst_bundesgericht",
+        "label": "Wählt Richter",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_8",
+        "type": "constrains",
+        "source": "AI_Generation_1783358321210_right_referendum",
+        "target": "AI_Generation_1783358321210_inst_bundesversammlung",
+        "label": "stoppt Gesetze",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_9",
+        "type": "constrains",
+        "source": "AI_Generation_1783358321210_right_initiative",
+        "target": "AI_Generation_1783358321210_inst_bundesversammlung",
+        "label": "erzwingt Prüfung",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_10",
+        "type": "represents",
+        "source": "AI_Generation_1783358321210_inst_staenderat",
+        "target": "AI_Generation_1783358321210_inst_kanton_bern",
+        "label": "Kantonsvertretung",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_11",
+        "type": "belongsTo",
+        "source": "AI_Generation_1783358321210_inst_kanton_bern",
+        "target": "AI_Generation_1783358321210_inst_bundesrat",
+        "label": "Föderative Teil",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_12",
+        "type": "represents",
+        "source": "AI_Generation_1783358321210_inst_gemeinde_generic",
+        "target": "AI_Generation_1783358321210_inst_kanton_bern",
+        "label": "Basis",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_13",
+        "type": "belongsTo",
+        "source": "AI_Generation_1783358321210_inst_bundeskanzlei",
+        "target": "AI_Generation_1783358321210_inst_bundesrat",
+        "label": "Stabsstelle",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_14",
+        "type": "constrains",
+        "source": "AI_Generation_1783358321210_inst_bundesgericht",
+        "target": "AI_Generation_1783358321210_inst_bundesrat",
+        "label": "überwacht Recht",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783358321210_rel_15",
+        "type": "represents",
+        "source": "AI_Generation_1783358321210_inst_nationalrat",
+        "target": "AI_Generation_1783358321210_right_initiative",
+        "label": "interagiert mit Volk",
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null
+        }
+      }
+    ]
+  }
+}

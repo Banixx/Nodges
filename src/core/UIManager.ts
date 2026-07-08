@@ -5,7 +5,6 @@
 import type { App } from '../App';
 import { IStateManager } from './interfaces';
 import type { State } from './StateManager';
-import { VisualMappingPanel } from '../ui/VisualMappingPanel';
 import { EnvironmentPanel } from '../ui/EnvironmentPanel';
 import { ViewPanel } from '../ui/ViewPanel';
 import { StatsUI } from '../ui/StatsUI';
@@ -20,6 +19,7 @@ import { EdgeControlsUI } from '../ui/EdgeControlsUI';
 import { VisualMappings } from '../types';
 import { MappingUI } from '../ui/MappingUI';
 import { getAvailableProperties } from './BuildFormatUtils';
+import { TimePlayerUI } from '../ui/TimePlayerUI';
 
 interface Bounds {
     x: { min: number, max: number };
@@ -30,7 +30,6 @@ interface Bounds {
 export class UIManager {
     private app: App;
     private stateManager: IStateManager;
-    private visualMappingPanel: VisualMappingPanel;
     public mappingUI!: MappingUI;
     private legendPanel: LegendPanel;
 
@@ -56,15 +55,6 @@ export class UIManager {
         // Initialize new ViewPanel for the 'Ansicht' tab (self-registers with StateManager)
         new ViewPanel('viewPanelContent', this.stateManager);
 
-        // Initialize Visual Mapping panel (now in its own tab)
-        const vmContent = document.getElementById('visualMappingContainer');
-        if (vmContent) {
-            this.visualMappingPanel = new VisualMappingPanel('visualMappingContainer');
-        } else {
-            console.warn('visualMappingContainer not found');
-            this.visualMappingPanel = null as any;
-        }
-
         // Initialize new interactive Mapping panel (floating overlay like minimap)
         const mappingContent = document.getElementById('mappingPanelContainer');
         if (mappingContent) {
@@ -87,6 +77,9 @@ export class UIManager {
 
         // Initialize Legend Panel
         this.legendPanel = new LegendPanel('legendContainer', this.stateManager);
+
+        // Initialize Time Player UI (Build 4)
+        new TimePlayerUI(this.stateManager, this.app);
 
         this.initModeSwitch();
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'ui');
@@ -181,11 +174,22 @@ export class UIManager {
         const elFilename = document.getElementById('fileFilename');
         if (elFilename) elFilename.textContent = `Dateiname: ${filename}`;
 
-        const elSchema = document.getElementById('fileSchemaVersion');
-        if (elSchema) elSchema.textContent = schemaVersion || '1';
+        // Build-Label aus schemaVersion ableiten
+        const sv = schemaVersion || '3.0';
+        let buildLabel: string;
+        if (sv.includes('4') || sv === '4.0') {
+            buildLabel = 'Build 4';
+        } else if (sv.includes('3') || sv === '3.0') {
+            buildLabel = 'Build 3';
+        } else {
+            buildLabel = `Schema: ${sv}`;
+        }
 
+        const elSchema = document.getElementById('fileSchemaVersion');
+        if (elSchema) elSchema.textContent = buildLabel;
+        
         if (this.mappingUI) {
-            this.mappingUI.updateSchema(schemaVersion || '1');
+            this.mappingUI.updateSchema(buildLabel);
         }
 
         if (this.statsUI) {
@@ -193,6 +197,7 @@ export class UIManager {
             if (bounds) this.statsUI.updateBounds(bounds);
         }
     }
+
 
     public updateFps(fps: number) {
         if (this.statsUI) {
@@ -208,7 +213,11 @@ export class UIManager {
         const dataModel = graphData.dataModel;
         const presets = graphData.visualMappings?.defaultPresets || {};
 
-        const allNodeAttrs = new Set<string>(['constant', 'type', 'id', 'attraction', 'repulsion', 'inertia']);
+        const allNodeAttrs = new Set<string>([
+            'constant', 'type', 'id', 
+            'algo:force-directed', 'algo:fruchterman-reingold', 'algo:spring-embedder', 
+            'algo:hierarchical', 'algo:tree', 'algo:circular', 'algo:grid', 'algo:random'
+        ]);
         const allEdgeAttrs = new Set<string>(['constant', 'type', 'id', 'source', 'target']);
 
         const allTypes = new Set<string>();
@@ -223,7 +232,7 @@ export class UIManager {
         entities.forEach((e: any) => {
             if (e.type) allTypes.add(e.type);
             getAvailableProperties(dataModel, e.type, e).forEach(k => {
-                if (k !== 'position') allNodeAttrs.add(k);
+                allNodeAttrs.add(k);
             });
         });
 
@@ -266,16 +275,6 @@ export class UIManager {
 
     updateVisualMappings(mappings: VisualMappings) {
         const availableAttributes = this.getAvailableAttributes();
-
-        if (this.visualMappingPanel) {
-            this.visualMappingPanel.bind(mappings, availableAttributes, (newMappings) => {
-                if (this.app.updateVisualMappings) {
-                    this.app.updateVisualMappings(newMappings);
-                } else {
-                    console.warn('App does not implement updateVisualMappings');
-                }
-            });
-        }
 
         if (this.mappingUI) {
             const dataModel = (this.app as any).currentGraphData?.dataModel || null;

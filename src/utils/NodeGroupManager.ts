@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { IStateManager } from '../core/interfaces';
+
 import { NodeObject } from '../types';
 import { ServiceContainer } from '../core/di/ServiceContainer';
 
@@ -32,37 +32,22 @@ interface NodeGroupNode extends NodeObject {
  * Manages node grouping functionality and visual indicators
  */
 export class NodeGroupManager {
-    private scene: THREE.Scene;
-    private stateManager: IStateManager;
+    private nodeManager: any; // NodeManager reference
     private groups: Map<string, GroupData>;
-    private nodeGroups: Map<string | number, string>;
-    private outlineObjects: Map<string | number, THREE.Mesh>;
+    private nodeGroups: Map<string, string>; // nodeId -> groupId
     private defaultColors: number[];
 
     constructor(container: ServiceContainer) {
-        const [scene, stateManager] = 
-            container.resolve<THREE.Scene, IStateManager>(
-                'Scene', 'IStateManager'
-            );
+        const nodeManager = container.get<any>('NodeManager');
             
-        this.scene = scene;
-        this.stateManager = stateManager;
-        this.groups = new Map(); // Map of group ID to group data
-        this.nodeGroups = new Map(); // Map of node ID to group ID
-        this.outlineObjects = new Map(); // Map of node ID to outline mesh
+        this.nodeManager = nodeManager;
+        this.groups = new Map();
+        this.nodeGroups = new Map();
 
         // Default group colors
         this.defaultColors = [
-            0xff0000, // Red
-            0x00ff00, // Green
-            0x0000ff, // Blue
-            0xffff00, // Yellow
-            0xff00ff, // Magenta
-            0x00ffff, // Cyan
-            0xffa500, // Orange
-            0x800080, // Purple
-            0x008000, // Dark Green
-            0x000080  // Navy
+            0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 
+            0x00ffff, 0xffa500, 0x800080, 0x008000, 0x000080
         ];
     }
 
@@ -103,177 +88,88 @@ export class NodeGroupManager {
     /**
      * Add a node to a group
      */
-    addNodeToGroup(node: NodeGroupNode, groupId: string) {
+    addNodeToGroup(nodeId: string, groupId: string) {
         if (!this.groups.has(groupId)) {
             return;
         }
 
         // Remove node from any existing group
-        this.removeNodeFromGroup(node);
+        this.removeNodeFromGroup(nodeId);
 
         // Add node to the specified group
         const group = this.groups.get(groupId)!;
-        group.nodes.push(node);
-        this.nodeGroups.set(node.nodeData.id, groupId);
-        node.groupId = groupId; // Store on node as well
+        // We push a dummy object for backward compatibility in group.nodes
+        group.nodes.push({ nodeData: { id: nodeId } } as any);
+        this.nodeGroups.set(nodeId, groupId);
 
         // Apply visual indicators
-        this.applyGroupVisualIndicators(node, group);
+        this.applyGroupVisualIndicators(nodeId, group);
     }
 
     /**
      * Remove a node from its current group
      */
-    removeNodeFromGroup(node: NodeGroupNode) {
-        const groupId = this.nodeGroups.get(node.nodeData.id);
+    removeNodeFromGroup(nodeId: string) {
+        const groupId = this.nodeGroups.get(nodeId);
         if (!groupId) return;
 
         // Remove node from group
         const group = this.groups.get(groupId);
         if (group) {
-            group.nodes = group.nodes.filter(n => n.nodeData.id !== node.nodeData.id);
+            group.nodes = group.nodes.filter(n => n.nodeData.id !== nodeId);
         }
 
-        this.nodeGroups.delete(node.nodeData.id);
-        delete node.groupId;
+        this.nodeGroups.delete(nodeId);
 
         // Remove visual indicators
-        this.removeGroupVisualIndicators(node);
+        this.removeGroupVisualIndicators(nodeId);
     }
 
     /**
-     * Apply visual indicators (color coding and outline) to a node based on its group
+     * Apply visual indicators (color coding) to a node based on its group
      */
-    applyGroupVisualIndicators(node: NodeGroupNode, group: GroupData) {
-        // Apply color coding
-        if (group.color) {
-            if (node.mesh && (node.mesh.material instanceof THREE.MeshBasicMaterial || node.mesh.material instanceof THREE.MeshPhongMaterial || node.mesh.material instanceof THREE.MeshLambertMaterial)) {
-                node.mesh.material.color.setHex(group.color);
-            }
-            node.originalColor = group.color; // Update original color reference
-        }
-
-        // Apply outline if enabled
-        if (group.outline && group.outline.enabled) {
-            this.createOrUpdateOutline(node, group);
+    applyGroupVisualIndicators(nodeId: string, group: GroupData) {
+        if (group.color && this.nodeManager) {
+            this.nodeManager.setNodeColor(nodeId, group.color);
         }
     }
 
     /**
      * Remove visual indicators from a node
      */
-    removeGroupVisualIndicators(node: NodeGroupNode) {
-        // Reset color to default
-        if (node.options && node.options.color) {
-            if (node.mesh && (node.mesh.material instanceof THREE.MeshBasicMaterial || node.mesh.material instanceof THREE.MeshPhongMaterial || node.mesh.material instanceof THREE.MeshLambertMaterial)) {
-                node.mesh.material.color.setHex(node.options.color);
-            }
-            node.originalColor = node.options.color;
+    removeGroupVisualIndicators(nodeId: string) {
+        if (this.nodeManager) {
+            this.nodeManager.resetNodeColor(nodeId);
         }
-
-        // Remove outline
-        this.removeOutline(node);
     }
 
     /**
-     * Create or update the outline for a node
+     * Create or update the outline for a node (Deprecated for InstancedMesh)
      */
-    createOrUpdateOutline(node: NodeGroupNode, group: GroupData) {
-        // Remove existing outline if any
-        this.removeOutline(node);
-
-        const mesh = node.mesh;
-        if (!mesh || !mesh.geometry) return;
-
-        // Create a slightly larger geometry for the outline
-        const outlineGeometry = mesh.geometry.clone();
-        const outlineScale = 1 + (group.outline.thickness || 0.05);
-
-        // Create outline material
-        const outlineMaterial = new THREE.MeshBasicMaterial({
-            color: group.outline.color || group.color,
-            side: THREE.BackSide,
-            transparent: true,
-            opacity: 0.8
-        });
-
-        // Create outline mesh
-        const outlineMesh = new THREE.Mesh(outlineGeometry, outlineMaterial);
-        outlineMesh.scale.set(outlineScale, outlineScale, outlineScale);
-        outlineMesh.position.copy(mesh.position);
-        outlineMesh.quaternion.copy(mesh.quaternion);
-        outlineMesh.userData.isOutline = true;
-
-        // Add outline mesh to scene
-        this.scene.add(outlineMesh);
-
-        // Store reference to outline mesh
-        this.outlineObjects.set(node.nodeData.id, outlineMesh);
+    createOrUpdateOutline(_node: NodeGroupNode, _group: GroupData) {
+        // Obsolete
     }
 
     /**
      * Remove the outline from a node
      */
-    removeOutline(node: NodeGroupNode) {
-        const outlineMesh = this.outlineObjects.get(node.nodeData.id);
-        if (outlineMesh) {
-            this.scene.remove(outlineMesh);
-            outlineMesh.geometry.dispose();
-            if (outlineMesh.material instanceof THREE.Material) {
-                outlineMesh.material.dispose();
-            }
-            this.outlineObjects.delete(node.nodeData.id);
-        }
+    removeOutline(_node: NodeGroupNode) {
+        // Obsolete
     }
 
     /**
      * Update the outline position and rotation for a node
-     * Called during animation loop to keep outlines in sync with nodes
      */
     updateOutlines() {
-        this.outlineObjects.forEach((outlineMesh, nodeId) => {
-            // Find the node with this ID
-            const node = this.findNodeById(nodeId);
-            if (node && node.mesh) {
-                // Update position and rotation
-                outlineMesh.position.copy(node.mesh.position);
-                outlineMesh.quaternion.copy(node.mesh.quaternion);
-
-                // Update visibility to match the node
-                outlineMesh.visible = node.mesh.visible;
-
-                // If the node is selected, make the outline more visible
-                if (this.stateManager && this.stateManager.getSelectedObject() === node.mesh) {
-                    if (outlineMesh.material instanceof THREE.Material) {
-                        outlineMesh.material.opacity = 1.0;
-                    }
-                } else {
-                    if (outlineMesh.material instanceof THREE.Material) {
-                        outlineMesh.material.opacity = 0.8;
-                    }
-                }
-            }
-        });
+        // Obsolete
     }
 
     /**
      * Find a node by its ID
      */
-    findNodeById(nodeId: string | number): NodeGroupNode | null {
-        // Search for the node in the scene
-        let foundNode: NodeGroupNode | null = null;
-
-        this.scene.traverse((object: THREE.Object3D) => {
-            if (object.userData &&
-                object.userData.type === 'node' &&
-                object.userData.node &&
-                object.userData.node.nodeData &&
-                object.userData.node.nodeData.id === nodeId) {
-                foundNode = object.userData.node as NodeGroupNode;
-            }
-        });
-
-        return foundNode;
+    findNodeById(_nodeId: string | number): NodeGroupNode | null {
+        // Not used anymore in InstancedMesh approach
+        return null;
     }
 
     /**
@@ -286,8 +182,8 @@ export class NodeGroupManager {
     /**
      * Get the group a node belongs to
      */
-    getNodeGroup(node: NodeGroupNode): GroupData | null {
-        const groupId = this.nodeGroups.get(node.nodeData.id);
+    getNodeGroup(nodeId: string): GroupData | null {
+        const groupId = this.nodeGroups.get(nodeId);
         return groupId ? this.groups.get(groupId) || null : null;
     }
 
@@ -306,7 +202,7 @@ export class NodeGroupManager {
 
         // Update visual indicators for all nodes in the group
         updatedGroup.nodes.forEach(node => {
-            this.applyGroupVisualIndicators(node as NodeGroupNode, updatedGroup);
+            this.applyGroupVisualIndicators(node.nodeData.id, updatedGroup);
         });
     }
 
@@ -323,7 +219,7 @@ export class NodeGroupManager {
 
         // Remove all nodes from the group
         group.nodes.forEach(node => {
-            this.removeNodeFromGroup(node as NodeGroupNode);
+            this.removeNodeFromGroup(node.nodeData.id);
         });
 
         // Delete the group
@@ -334,16 +230,11 @@ export class NodeGroupManager {
      * Clean up resources
      */
     destroy() {
-        // Remove all outlines
-        this.outlineObjects.forEach((outlineMesh) => {
-            this.scene.remove(outlineMesh);
-            outlineMesh.geometry.dispose();
-            if (outlineMesh.material instanceof THREE.Material) {
-                outlineMesh.material.dispose();
-            }
+        // Reset colors
+        this.nodeGroups.forEach((_groupId, nodeId) => {
+            if (this.nodeManager) this.nodeManager.resetNodeColor(nodeId);
         });
 
-        this.outlineObjects.clear();
         this.nodeGroups.clear();
         this.groups.clear();
     }

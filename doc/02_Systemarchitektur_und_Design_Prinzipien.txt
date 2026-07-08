@@ -8,7 +8,7 @@ Nodges vermeidet monolithischen Code ("God Classes"). Stattdessen implementiert 
 
 ### Die Rolle der `App`-Klasse
 
-Die Klasse `App.ts` ist the **Orchestrator**. Sie enthält kaum eigene Geschäftslogik. Ihre Aufgaben sind:
+Die Klasse `App.ts` ist der **Orchestrator**. Sie enthält kaum eigene Geschäftslogik. Ihre Aufgaben sind:
 
 1. **Bootstrapping**: Initialisierung der 3D-Szene (Three.js) und des DOM.
 2. **Dependency Injection**: Instanziierung aller Manager und Injektion der Abhängigkeiten (z.B. bekommt der `RaycastManager` Zugriff auf die `Camera`).

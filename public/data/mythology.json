@@ -1,67 +1,102 @@
 {
     "system": "Greek Mythology Pantheon",
     "metadata": {
-        "created": "2026-01-13T11:05:00Z",
-        "description": "Stammbaum und Domänen der griechischen Götter"
+        "schemaVersion": "4.0",
+        "created": "2026-07-06T20:40:00Z",
+        "description": "Maximal vernetztes Mythologie-Dataset mit hunderten von Beziehungen (SiblingOf, Protects, Guides, PunishedBy, etc.) für ein extrem dichtes Visualisierungs-Erlebnis."
     },
     "dataModel": {
-        "entities": {
-            "Deity": {
-                "properties": {
-                    "Generation": {
-                        "type": "continuous",
-                        "range": [
-                            1,
-                            3
-                        ]
-                    },
-                    "Power": {
-                        "type": "continuous",
-                        "range": [
-                            0,
-                            100
-                        ]
-                    },
-                    "Domain": {
-                        "type": "categorical",
-                        "values": [
-                            "Sky",
-                            "Sea",
-                            "Underworld",
-                            "Earth",
-                            "War",
-                            "Love",
-                            "Wisdom",
-                            "Hunt",
-                            "Sun",
-                            "Fire",
-                            "Wine",
-                            "Messenger"
-                        ]
-                    }
-                }
+        "properties": {
+            "Generation": {
+                "type": "categorical",
+                "values": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4
+                ]
             },
-            "Location": {
-                "properties": {
-                    "Type": {
-                        "type": "categorical",
-                        "values": [
-                            "Mountain",
-                            "Realm"
-                        ]
-                    }
-                }
-            }
-        },
-        "relationships": {
-            "ParentOf": {
-                "properties": {}
+            "Power": {
+                "type": "continuous",
+                "range": [
+                    0,
+                    100
+                ]
             },
-            "MarriedTo": {
-                "properties": {}
+            "Domain": {
+                "type": "categorical",
+                "values": [
+                    "Sky",
+                    "Sea",
+                    "Underworld",
+                    "Earth",
+                    "War",
+                    "Love",
+                    "Wisdom",
+                    "Hunt",
+                    "Sun",
+                    "Fire",
+                    "Wine",
+                    "Messenger",
+                    "Arts",
+                    "Destiny",
+                    "Magic",
+                    "Nature"
+                ]
             },
-            "ResidesIn": {
-                "properties": {}
+            "Faction": {
+                "type": "categorical",
+                "values": [
+                    "Primordial",
+                    "Titan",
+                    "Olympian",
+                    "Minor Deity",
+                    "Monster",
+                    "Hero",
+                    "Mortal"
+                ]
+            },
+            "Role": {
+                "type": "categorical",
+                "values": [
+                    "Ruler",
+                    "Creator",
+                    "Warrior",
+                    "Messenger",
+                    "Smith",
+                    "Protector"
+                ]
+            },
+            "Type": {
+                "type": "categorical",
+                "values": [
+                    "Mountain",
+                    "Realm",
+                    "City",
+                    "Building",
+                    "River"
+                ]
+            },
+            "Epoch": {
+                "type": "categorical",
+                "values": [
+                    "Creation",
+                    "Golden Age",
+                    "Silver Age",
+                    "Bronze Age",
+                    "Heroic Age"
+                ]
+            },
+            "Nature": {
+                "type": "categorical",
+                "values": [
+                    "Abstract Principle",
+                    "Personified Deity",
+                    "Mortal Hero",
+                    "Creature",
+                    "Mythical Place"
+                ]
             }
         }
     },
@@ -69,22 +104,25 @@
         "defaultPresets": {
             "Deity": {
                 "color": {
-                    "source": "Domain",
+                    "source": "Faction",
                     "function": "categorical",
-                    "palette": "schemePaired"
+                    "palette": "schemeSet2"
                 },
                 "size": {
                     "source": "Power",
-                    "function": "linear",
+                    "function": "exponential",
                     "range": [
                         2,
-                        5
+                        9
                     ]
                 },
                 "position": {
                     "source": "Generation",
                     "function": "categorical",
                     "params": {
+                        "0": {
+                            "y": 50
+                        },
                         "1": {
                             "y": 30
                         },
@@ -93,6 +131,9 @@
                         },
                         "3": {
                             "y": -10
+                        },
+                        "4": {
+                            "y": -30
                         }
                     }
                 }
@@ -134,6 +175,14 @@
                     "params": {
                         "color": "#FFFFFF"
                     }
+                },
+                "animation_flow": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "speed": 1.5,
+                        "direction": 1
+                    }
                 }
             },
             "MarriedTo": {
@@ -159,6 +208,214 @@
                         1,
                         1
                     ]
+                },
+                "animation_pulse": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "speed": 2,
+                        "scale": 1.2
+                    }
+                }
+            },
+            "EnemyOf": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.4,
+                        0.4
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#FF0000"
+                    }
+                },
+                "style": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "dashed"
+                }
+            },
+            "Slayed": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.5,
+                        0.5
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#8B0000"
+                    }
+                },
+                "style": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "dotted"
+                }
+            },
+            "Guards": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.3,
+                        0.3
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#FFA500"
+                    }
+                }
+            },
+            "Visited": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.2,
+                        0.2
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#ADD8E6"
+                    }
+                },
+                "style": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "dashed"
+                }
+            },
+            "CursedBy": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.3,
+                        0.3
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#800080"
+                    }
+                }
+            },
+            "Protects": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.4,
+                        0.4
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#1E90FF"
+                    }
+                }
+            },
+            "SiblingOf": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.2,
+                        0.2
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#A9A9A9"
+                    }
+                },
+                "style": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "dashed"
+                }
+            },
+            "LoverOf": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.2,
+                        0.2
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#FF69B4"
+                    }
+                },
+                "style": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "dotted"
+                }
+            },
+            "Guides": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.3,
+                        0.3
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#FFD700"
+                    }
+                },
+                "style": {
+                    "source": "constant",
+                    "function": "constant",
+                    "value": "dashed"
+                }
+            },
+            "PunishedBy": {
+                "thickness": {
+                    "source": "constant",
+                    "function": "constant",
+                    "range": [
+                        0.4,
+                        0.4
+                    ]
+                },
+                "color": {
+                    "source": "constant",
+                    "function": "constant",
+                    "params": {
+                        "color": "#8B0000"
+                    }
                 }
             }
         }
@@ -174,7 +431,9 @@
                     "x": 0,
                     "y": 40,
                     "z": 0
-                }
+                },
+                "Epoch": "Creation",
+                "Nature": "Mythical Place"
             },
             {
                 "id": "HadesRealm",
@@ -185,218 +444,1216 @@
                     "x": 0,
                     "y": -40,
                     "z": 0
-                }
+                },
+                "Epoch": "Creation",
+                "Nature": "Mythical Place"
+            },
+            {
+                "id": "Troy",
+                "type": "Location",
+                "label": "Troy",
+                "Type": "City",
+                "position": {
+                    "x": 60,
+                    "y": 0,
+                    "z": 20
+                },
+                "Epoch": "Creation",
+                "Nature": "Mythical Place"
+            },
+            {
+                "id": "Labyrinth",
+                "type": "Location",
+                "label": "The Labyrinth",
+                "Type": "Building",
+                "position": {
+                    "x": 50,
+                    "y": -20,
+                    "z": 20
+                },
+                "Epoch": "Creation",
+                "Nature": "Mythical Place"
+            },
+            {
+                "id": "RiverStyx",
+                "type": "Location",
+                "label": "River Styx",
+                "Type": "River",
+                "position": {
+                    "x": 20,
+                    "y": -35,
+                    "z": -10
+                },
+                "Epoch": "Creation",
+                "Nature": "Mythical Place"
+            },
+            {
+                "id": "Uranus",
+                "type": "Deity",
+                "label": "Uranus",
+                "Generation": 0,
+                "Faction": "Primordial",
+                "Role": "Ruler",
+                "Power": 95,
+                "Domain": "Sky",
+                "position": {
+                    "x": -10,
+                    "y": 50,
+                    "z": 0
+                },
+                "Epoch": "Creation",
+                "Nature": "Abstract Principle"
+            },
+            {
+                "id": "Gaia",
+                "type": "Deity",
+                "label": "Gaia",
+                "Generation": 0,
+                "Faction": "Primordial",
+                "Role": "Creator",
+                "Power": 100,
+                "Domain": "Earth",
+                "position": {
+                    "x": 10,
+                    "y": 50,
+                    "z": 0
+                },
+                "Epoch": "Creation",
+                "Nature": "Abstract Principle"
+            },
+            {
+                "id": "Nyx",
+                "type": "Deity",
+                "label": "Nyx",
+                "Generation": 0,
+                "Faction": "Primordial",
+                "Role": "Creator",
+                "Power": 98,
+                "Domain": "Underworld",
+                "position": {
+                    "x": -30,
+                    "y": 50,
+                    "z": 0
+                },
+                "Epoch": "Creation",
+                "Nature": "Abstract Principle"
+            },
+            {
+                "id": "Erebus",
+                "type": "Deity",
+                "label": "Erebus",
+                "Generation": 0,
+                "Faction": "Primordial",
+                "Role": "Creator",
+                "Power": 90,
+                "Domain": "Underworld",
+                "position": {
+                    "x": -45,
+                    "y": 50,
+                    "z": 0
+                },
+                "Epoch": "Creation",
+                "Nature": "Abstract Principle"
+            },
+            {
+                "id": "Tartarus",
+                "type": "Deity",
+                "label": "Tartarus",
+                "Generation": 0,
+                "Faction": "Primordial",
+                "Role": "Ruler",
+                "Power": 98,
+                "Domain": "Underworld",
+                "position": {
+                    "x": 30,
+                    "y": 50,
+                    "z": 0
+                },
+                "Epoch": "Creation",
+                "Nature": "Abstract Principle"
+            },
+            {
+                "id": "Eros",
+                "type": "Deity",
+                "label": "Eros",
+                "Generation": 0,
+                "Faction": "Primordial",
+                "Role": "Creator",
+                "Power": 90,
+                "Domain": "Love",
+                "position": {
+                    "x": -20,
+                    "y": 50,
+                    "z": 5
+                },
+                "Epoch": "Creation",
+                "Nature": "Abstract Principle"
+            },
+            {
+                "id": "Clotho",
+                "type": "Deity",
+                "label": "Clotho (Fate)",
+                "Generation": 0,
+                "Faction": "Primordial",
+                "Role": "Creator",
+                "Power": 100,
+                "Domain": "Destiny",
+                "position": {
+                    "x": 60,
+                    "y": 50,
+                    "z": 10
+                },
+                "Epoch": "Creation",
+                "Nature": "Abstract Principle"
+            },
+            {
+                "id": "Lachesis",
+                "type": "Deity",
+                "label": "Lachesis (Fate)",
+                "Generation": 0,
+                "Faction": "Primordial",
+                "Role": "Ruler",
+                "Power": 100,
+                "Domain": "Destiny",
+                "position": {
+                    "x": 70,
+                    "y": 50,
+                    "z": 10
+                },
+                "Epoch": "Creation",
+                "Nature": "Abstract Principle"
+            },
+            {
+                "id": "Atropos",
+                "type": "Deity",
+                "label": "Atropos (Fate)",
+                "Generation": 0,
+                "Faction": "Primordial",
+                "Role": "Warrior",
+                "Power": 100,
+                "Domain": "Destiny",
+                "position": {
+                    "x": 80,
+                    "y": 50,
+                    "z": 10
+                },
+                "Epoch": "Creation",
+                "Nature": "Abstract Principle"
             },
             {
                 "id": "Cronus",
                 "type": "Deity",
                 "label": "Cronus",
                 "Generation": 1,
-                "Power": 90,
+                "Faction": "Titan",
+                "Role": "Ruler",
+                "Power": 95,
                 "Domain": "Earth",
                 "position": {
-                    "x": -10,
+                    "x": -15,
                     "y": 30,
                     "z": 0
-                }
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Rhea",
                 "type": "Deity",
                 "label": "Rhea",
                 "Generation": 1,
-                "Power": 85,
+                "Faction": "Titan",
+                "Role": "Creator",
+                "Power": 90,
                 "Domain": "Earth",
                 "position": {
-                    "x": 10,
+                    "x": 15,
                     "y": 30,
                     "z": 0
-                }
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Oceanus",
+                "type": "Deity",
+                "label": "Oceanus",
+                "Generation": 1,
+                "Faction": "Titan",
+                "Role": "Creator",
+                "Power": 92,
+                "Domain": "Sea",
+                "position": {
+                    "x": -45,
+                    "y": 30,
+                    "z": 0
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Tethys",
+                "type": "Deity",
+                "label": "Tethys",
+                "Generation": 1,
+                "Faction": "Titan",
+                "Role": "Creator",
+                "Power": 88,
+                "Domain": "Sea",
+                "position": {
+                    "x": -55,
+                    "y": 30,
+                    "z": 0
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Hyperion",
+                "type": "Deity",
+                "label": "Hyperion",
+                "Generation": 1,
+                "Faction": "Titan",
+                "Role": "Ruler",
+                "Power": 90,
+                "Domain": "Sun",
+                "position": {
+                    "x": 45,
+                    "y": 30,
+                    "z": 0
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Theia",
+                "type": "Deity",
+                "label": "Theia",
+                "Generation": 1,
+                "Faction": "Titan",
+                "Role": "Creator",
+                "Power": 85,
+                "Domain": "Sky",
+                "position": {
+                    "x": 55,
+                    "y": 30,
+                    "z": 0
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Coeus",
+                "type": "Deity",
+                "label": "Coeus",
+                "Generation": 1,
+                "Faction": "Titan",
+                "Role": "Ruler",
+                "Power": 85,
+                "Domain": "Wisdom",
+                "position": {
+                    "x": -65,
+                    "y": 30,
+                    "z": 0
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Phoebe",
+                "type": "Deity",
+                "label": "Phoebe",
+                "Generation": 1,
+                "Faction": "Titan",
+                "Role": "Creator",
+                "Power": 85,
+                "Domain": "Wisdom",
+                "position": {
+                    "x": -75,
+                    "y": 30,
+                    "z": 0
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Iapetus",
+                "type": "Deity",
+                "label": "Iapetus",
+                "Generation": 1,
+                "Faction": "Titan",
+                "Role": "Warrior",
+                "Power": 88,
+                "Domain": "Earth",
+                "position": {
+                    "x": 65,
+                    "y": 30,
+                    "z": 0
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Mnemosyne",
+                "type": "Deity",
+                "label": "Mnemosyne",
+                "Generation": 1,
+                "Faction": "Titan",
+                "Role": "Creator",
+                "Power": 82,
+                "Domain": "Wisdom",
+                "position": {
+                    "x": -85,
+                    "y": 30,
+                    "z": 0
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Themis",
+                "type": "Deity",
+                "label": "Themis",
+                "Generation": 1,
+                "Faction": "Titan",
+                "Role": "Ruler",
+                "Power": 88,
+                "Domain": "Wisdom",
+                "position": {
+                    "x": 75,
+                    "y": 30,
+                    "z": 0
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Crius",
+                "type": "Deity",
+                "label": "Crius",
+                "Generation": 1,
+                "Faction": "Titan",
+                "Role": "Warrior",
+                "Power": 84,
+                "Domain": "Sky",
+                "position": {
+                    "x": 85,
+                    "y": 30,
+                    "z": 0
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Atlas",
+                "type": "Deity",
+                "label": "Atlas",
+                "Generation": 1,
+                "Faction": "Titan",
+                "Role": "Warrior",
+                "Power": 90,
+                "Domain": "Earth",
+                "position": {
+                    "x": -30,
+                    "y": 30,
+                    "z": 0
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Prometheus",
+                "type": "Deity",
+                "label": "Prometheus",
+                "Generation": 1,
+                "Faction": "Titan",
+                "Role": "Creator",
+                "Power": 85,
+                "Domain": "Fire",
+                "position": {
+                    "x": 30,
+                    "y": 30,
+                    "z": 0
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Zeus",
                 "type": "Deity",
                 "label": "Zeus",
                 "Generation": 2,
+                "Faction": "Olympian",
+                "Role": "Ruler",
                 "Power": 100,
                 "Domain": "Sky",
                 "position": {
                     "x": 0,
                     "y": 15,
                     "z": 0
-                }
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Hera",
                 "type": "Deity",
                 "label": "Hera",
                 "Generation": 2,
-                "Power": 95,
+                "Faction": "Olympian",
+                "Role": "Protector",
+                "Power": 100,
                 "Domain": "Sky",
                 "position": {
                     "x": 10,
                     "y": 15,
                     "z": 0
-                }
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Poseidon",
                 "type": "Deity",
                 "label": "Poseidon",
                 "Generation": 2,
-                "Power": 98,
+                "Faction": "Olympian",
+                "Role": "Ruler",
+                "Power": 100,
                 "Domain": "Sea",
                 "position": {
                     "x": -20,
                     "y": 10,
                     "z": 0
-                }
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Hades",
                 "type": "Deity",
                 "label": "Hades",
                 "Generation": 2,
-                "Power": 98,
+                "Faction": "Olympian",
+                "Role": "Ruler",
+                "Power": 100,
                 "Domain": "Underworld",
                 "position": {
                     "x": 20,
                     "y": 10,
                     "z": 0
-                }
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Demeter",
                 "type": "Deity",
                 "label": "Demeter",
                 "Generation": 2,
+                "Faction": "Olympian",
+                "Role": "Creator",
                 "Power": 90,
                 "Domain": "Earth",
                 "position": {
                     "x": -30,
                     "y": 10,
                     "z": 0
-                }
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Hestia",
                 "type": "Deity",
                 "label": "Hestia",
                 "Generation": 2,
+                "Faction": "Olympian",
+                "Role": "Protector",
                 "Power": 80,
                 "Domain": "Fire",
                 "position": {
                     "x": 30,
                     "y": 10,
                     "z": 0
-                }
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Leto",
+                "type": "Deity",
+                "label": "Leto",
+                "Generation": 2,
+                "Faction": "Titan",
+                "Role": "Protector",
+                "Power": 85,
+                "Domain": "Earth",
+                "position": {
+                    "x": -40,
+                    "y": 10,
+                    "z": 0
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Helios",
+                "type": "Deity",
+                "label": "Helios",
+                "Generation": 2,
+                "Faction": "Titan",
+                "Role": "Ruler",
+                "Power": 88,
+                "Domain": "Sun",
+                "position": {
+                    "x": 40,
+                    "y": 15,
+                    "z": 0
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Selene",
+                "type": "Deity",
+                "label": "Selene",
+                "Generation": 2,
+                "Faction": "Titan",
+                "Role": "Creator",
+                "Power": 82,
+                "Domain": "Sky",
+                "position": {
+                    "x": 50,
+                    "y": 10,
+                    "z": 0
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Eos",
+                "type": "Deity",
+                "label": "Eos",
+                "Generation": 2,
+                "Faction": "Titan",
+                "Role": "Creator",
+                "Power": 75,
+                "Domain": "Sky",
+                "position": {
+                    "x": 60,
+                    "y": 10,
+                    "z": 0
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Calliope",
+                "type": "Deity",
+                "label": "Calliope",
+                "Generation": 2,
+                "Faction": "Minor Deity",
+                "Role": "Creator",
+                "Power": 70,
+                "Domain": "Arts",
+                "position": {
+                    "x": -50,
+                    "y": 5,
+                    "z": 10
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Clio",
+                "type": "Deity",
+                "label": "Clio",
+                "Generation": 2,
+                "Faction": "Minor Deity",
+                "Role": "Creator",
+                "Power": 70,
+                "Domain": "Arts",
+                "position": {
+                    "x": -60,
+                    "y": 5,
+                    "z": 10
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Erato",
+                "type": "Deity",
+                "label": "Erato",
+                "Generation": 2,
+                "Faction": "Minor Deity",
+                "Role": "Creator",
+                "Power": 70,
+                "Domain": "Arts",
+                "position": {
+                    "x": -70,
+                    "y": 5,
+                    "z": 10
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Athena",
                 "type": "Deity",
                 "label": "Athena",
                 "Generation": 3,
-                "Power": 88,
+                "Faction": "Olympian",
+                "Role": "Warrior",
+                "Power": 93,
                 "Domain": "Wisdom",
                 "position": {
                     "x": -5,
                     "y": -10,
                     "z": 10
-                }
+                },
+                "Epoch": "Bronze Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Apollo",
                 "type": "Deity",
                 "label": "Apollo",
                 "Generation": 3,
-                "Power": 85,
+                "Faction": "Olympian",
+                "Role": "Protector",
+                "Power": 90,
                 "Domain": "Sun",
                 "position": {
                     "x": 5,
                     "y": -10,
                     "z": 5
-                }
+                },
+                "Epoch": "Bronze Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Artemis",
                 "type": "Deity",
                 "label": "Artemis",
                 "Generation": 3,
+                "Faction": "Olympian",
+                "Role": "Warrior",
                 "Power": 85,
                 "Domain": "Hunt",
                 "position": {
                     "x": 10,
                     "y": -10,
                     "z": 5
-                }
+                },
+                "Epoch": "Bronze Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Ares",
                 "type": "Deity",
                 "label": "Ares",
                 "Generation": 3,
+                "Faction": "Olympian",
+                "Role": "Warrior",
                 "Power": 85,
                 "Domain": "War",
                 "position": {
                     "x": -15,
                     "y": -10,
                     "z": 0
-                }
+                },
+                "Epoch": "Bronze Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Aphrodite",
                 "type": "Deity",
                 "label": "Aphrodite",
                 "Generation": 3,
+                "Faction": "Olympian",
+                "Role": "Creator",
                 "Power": 85,
                 "Domain": "Love",
                 "position": {
                     "x": 15,
                     "y": -10,
                     "z": 0
-                }
+                },
+                "Epoch": "Bronze Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Hephaestus",
                 "type": "Deity",
                 "label": "Hephaestus",
                 "Generation": 3,
+                "Faction": "Olympian",
+                "Role": "Smith",
                 "Power": 80,
                 "Domain": "Fire",
                 "position": {
                     "x": 20,
                     "y": -15,
                     "z": 0
-                }
+                },
+                "Epoch": "Bronze Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Hermes",
                 "type": "Deity",
                 "label": "Hermes",
                 "Generation": 3,
+                "Faction": "Olympian",
+                "Role": "Messenger",
                 "Power": 82,
                 "Domain": "Messenger",
                 "position": {
                     "x": 25,
                     "y": -5,
                     "z": 0
-                }
+                },
+                "Epoch": "Bronze Age",
+                "Nature": "Personified Deity"
             },
             {
                 "id": "Dionysus",
                 "type": "Deity",
                 "label": "Dionysus",
                 "Generation": 3,
+                "Faction": "Olympian",
+                "Role": "Creator",
                 "Power": 80,
                 "Domain": "Wine",
                 "position": {
                     "x": 30,
                     "y": -10,
                     "z": 0
+                },
+                "Epoch": "Bronze Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Persephone",
+                "type": "Deity",
+                "label": "Persephone",
+                "Generation": 3,
+                "Faction": "Olympian",
+                "Role": "Ruler",
+                "Power": 85,
+                "Domain": "Underworld",
+                "position": {
+                    "x": 35,
+                    "y": -10,
+                    "z": 0
+                },
+                "Epoch": "Bronze Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Heracles",
+                "type": "Deity",
+                "label": "Heracles",
+                "Generation": 4,
+                "Faction": "Hero",
+                "Role": "Warrior",
+                "Power": 95,
+                "Domain": "Earth",
+                "position": {
+                    "x": 0,
+                    "y": -30,
+                    "z": 10
+                },
+                "Epoch": "Heroic Age",
+                "Nature": "Mortal Hero"
+            },
+            {
+                "id": "Perseus",
+                "type": "Deity",
+                "label": "Perseus",
+                "Generation": 4,
+                "Faction": "Hero",
+                "Role": "Warrior",
+                "Power": 80,
+                "Domain": "Earth",
+                "position": {
+                    "x": 10,
+                    "y": -30,
+                    "z": 5
+                },
+                "Epoch": "Heroic Age",
+                "Nature": "Mortal Hero"
+            },
+            {
+                "id": "Theseus",
+                "type": "Deity",
+                "label": "Theseus",
+                "Generation": 4,
+                "Faction": "Hero",
+                "Role": "Warrior",
+                "Power": 85,
+                "Domain": "Earth",
+                "position": {
+                    "x": 40,
+                    "y": -30,
+                    "z": 10
+                },
+                "Epoch": "Heroic Age",
+                "Nature": "Mortal Hero"
+            },
+            {
+                "id": "Achilles",
+                "type": "Deity",
+                "label": "Achilles",
+                "Generation": 4,
+                "Faction": "Hero",
+                "Role": "Warrior",
+                "Power": 95,
+                "Domain": "War",
+                "position": {
+                    "x": 60,
+                    "y": -30,
+                    "z": 10
+                },
+                "Epoch": "Heroic Age",
+                "Nature": "Mortal Hero"
+            },
+            {
+                "id": "Odysseus",
+                "type": "Deity",
+                "label": "Odysseus",
+                "Generation": 4,
+                "Faction": "Hero",
+                "Role": "Warrior",
+                "Power": 90,
+                "Domain": "Wisdom",
+                "position": {
+                    "x": 70,
+                    "y": -30,
+                    "z": 10
+                },
+                "Epoch": "Heroic Age",
+                "Nature": "Mortal Hero"
+            },
+            {
+                "id": "Pan",
+                "type": "Deity",
+                "label": "Pan",
+                "Generation": 4,
+                "Faction": "Minor Deity",
+                "Role": "Protector",
+                "Power": 70,
+                "Domain": "Earth",
+                "position": {
+                    "x": 30,
+                    "y": -25,
+                    "z": 5
+                },
+                "Epoch": "Heroic Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Typhon",
+                "type": "Deity",
+                "label": "Typhon",
+                "Generation": 0,
+                "Faction": "Monster",
+                "Role": "Warrior",
+                "Power": 100,
+                "Domain": "Underworld",
+                "position": {
+                    "x": 40,
+                    "y": 45,
+                    "z": -15
+                },
+                "Epoch": "Creation",
+                "Nature": "Creature"
+            },
+            {
+                "id": "Echidna",
+                "type": "Deity",
+                "label": "Echidna",
+                "Generation": 0,
+                "Faction": "Monster",
+                "Role": "Creator",
+                "Power": 85,
+                "Domain": "Underworld",
+                "position": {
+                    "x": 50,
+                    "y": 45,
+                    "z": -15
+                },
+                "Epoch": "Creation",
+                "Nature": "Creature"
+            },
+            {
+                "id": "Cerberus",
+                "type": "Deity",
+                "label": "Cerberus",
+                "Generation": 1,
+                "Faction": "Monster",
+                "Role": "Protector",
+                "Power": 80,
+                "Domain": "Underworld",
+                "position": {
+                    "x": 10,
+                    "y": -35,
+                    "z": -10
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Creature"
+            },
+            {
+                "id": "Medusa",
+                "type": "Deity",
+                "label": "Medusa",
+                "Generation": 2,
+                "Faction": "Monster",
+                "Role": "Warrior",
+                "Power": 75,
+                "Domain": "Earth",
+                "position": {
+                    "x": 20,
+                    "y": -20,
+                    "z": -10
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Creature"
+            },
+            {
+                "id": "Hydra",
+                "type": "Deity",
+                "label": "Lernean Hydra",
+                "Generation": 1,
+                "Faction": "Monster",
+                "Role": "Warrior",
+                "Power": 90,
+                "Domain": "Underworld",
+                "position": {
+                    "x": 20,
+                    "y": -40,
+                    "z": -15
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Creature"
+            },
+            {
+                "id": "Chimera",
+                "type": "Deity",
+                "label": "Chimera",
+                "Generation": 1,
+                "Faction": "Monster",
+                "Role": "Warrior",
+                "Power": 85,
+                "Domain": "Fire",
+                "position": {
+                    "x": 30,
+                    "y": -40,
+                    "z": -15
+                },
+                "Epoch": "Golden Age",
+                "Nature": "Creature"
+            },
+            {
+                "id": "Minotaur",
+                "type": "Deity",
+                "label": "Minotaur",
+                "Generation": 3,
+                "Faction": "Monster",
+                "Role": "Warrior",
+                "Power": 85,
+                "Domain": "Earth",
+                "position": {
+                    "x": 50,
+                    "y": -20,
+                    "z": 10
+                },
+                "Epoch": "Bronze Age",
+                "Nature": "Creature"
+            },
+            {
+                "id": "Hecate",
+                "type": "Deity",
+                "label": "Hecate",
+                "Generation": 2,
+                "Faction": "Minor Deity",
+                "Role": "Creator",
+                "Power": 85,
+                "Domain": "Magic",
+                "position": {
+                    "x": -45,
+                    "y": 10,
+                    "z": 0
+                },
+                "Epoch": "Silver Age",
+                "Nature": "Personified Deity"
+            },
+            {
+                "id": "Chaos",
+                "type": "Deity",
+                "label": "Chaos",
+                "Generation": 0,
+                "Faction": "Primordial",
+                "Role": "Creator",
+                "Power": 100,
+                "Domain": "Sky",
+                "Epoch": "Creation",
+                "Nature": "Abstract Principle",
+                "position": {
+                    "x": 0,
+                    "y": 70,
+                    "z": 0
                 }
             }
         ],
         "relationships": [
+            {
+                "source": "Uranus",
+                "target": "Cronus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Gaia",
+                "target": "Cronus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Uranus",
+                "target": "Rhea",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Gaia",
+                "target": "Rhea",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Uranus",
+                "target": "Oceanus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Gaia",
+                "target": "Oceanus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Uranus",
+                "target": "Tethys",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Gaia",
+                "target": "Tethys",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Uranus",
+                "target": "Hyperion",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Gaia",
+                "target": "Hyperion",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Uranus",
+                "target": "Theia",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Gaia",
+                "target": "Theia",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Uranus",
+                "target": "Coeus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Gaia",
+                "target": "Coeus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Uranus",
+                "target": "Phoebe",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Gaia",
+                "target": "Phoebe",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Uranus",
+                "target": "Iapetus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Gaia",
+                "target": "Iapetus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Uranus",
+                "target": "Mnemosyne",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Gaia",
+                "target": "Mnemosyne",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Uranus",
+                "target": "Themis",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Gaia",
+                "target": "Themis",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Uranus",
+                "target": "Crius",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Gaia",
+                "target": "Crius",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Uranus",
+                "target": "Gaia",
+                "type": "MarriedTo"
+            },
+            {
+                "source": "Nyx",
+                "target": "Erebus",
+                "type": "MarriedTo"
+            },
+            {
+                "source": "Nyx",
+                "target": "Clotho",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Nyx",
+                "target": "Lachesis",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Nyx",
+                "target": "Atropos",
+                "type": "ParentOf"
+            },
             {
                 "source": "Cronus",
                 "target": "Zeus",
@@ -413,13 +1670,48 @@
                 "type": "ParentOf"
             },
             {
+                "source": "Rhea",
+                "target": "Hera",
+                "type": "ParentOf"
+            },
+            {
                 "source": "Cronus",
+                "target": "Poseidon",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Rhea",
                 "target": "Poseidon",
                 "type": "ParentOf"
             },
             {
                 "source": "Cronus",
                 "target": "Hades",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Rhea",
+                "target": "Hades",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Cronus",
+                "target": "Demeter",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Rhea",
+                "target": "Demeter",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Cronus",
+                "target": "Hestia",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Rhea",
+                "target": "Hestia",
                 "type": "ParentOf"
             },
             {
@@ -431,6 +1723,101 @@
                 "source": "Cronus",
                 "target": "Rhea",
                 "type": "MarriedTo"
+            },
+            {
+                "source": "Oceanus",
+                "target": "Tethys",
+                "type": "MarriedTo"
+            },
+            {
+                "source": "Hyperion",
+                "target": "Theia",
+                "type": "MarriedTo"
+            },
+            {
+                "source": "Hyperion",
+                "target": "Helios",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Theia",
+                "target": "Helios",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Hyperion",
+                "target": "Selene",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Theia",
+                "target": "Selene",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Hyperion",
+                "target": "Eos",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Theia",
+                "target": "Eos",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Coeus",
+                "target": "Phoebe",
+                "type": "MarriedTo"
+            },
+            {
+                "source": "Coeus",
+                "target": "Leto",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Phoebe",
+                "target": "Leto",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Iapetus",
+                "target": "Atlas",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Iapetus",
+                "target": "Prometheus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Calliope",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Mnemosyne",
+                "target": "Calliope",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Clio",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Mnemosyne",
+                "target": "Clio",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Erato",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Mnemosyne",
+                "target": "Erato",
+                "type": "ParentOf"
             },
             {
                 "source": "Hephaestus",
@@ -448,7 +1835,17 @@
                 "type": "ParentOf"
             },
             {
+                "source": "Leto",
+                "target": "Apollo",
+                "type": "ParentOf"
+            },
+            {
                 "source": "Zeus",
+                "target": "Artemis",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Leto",
                 "target": "Artemis",
                 "type": "ParentOf"
             },
@@ -474,6 +1871,81 @@
             },
             {
                 "source": "Zeus",
+                "target": "Persephone",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Demeter",
+                "target": "Persephone",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Hades",
+                "target": "Persephone",
+                "type": "MarriedTo"
+            },
+            {
+                "source": "Zeus",
+                "target": "Heracles",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Perseus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Gaia",
+                "target": "Typhon",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Tartarus",
+                "target": "Typhon",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Typhon",
+                "target": "Echidna",
+                "type": "MarriedTo"
+            },
+            {
+                "source": "Typhon",
+                "target": "Cerberus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Echidna",
+                "target": "Cerberus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Typhon",
+                "target": "Hydra",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Echidna",
+                "target": "Hydra",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Typhon",
+                "target": "Chimera",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Echidna",
+                "target": "Chimera",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Hermes",
+                "target": "Pan",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Zeus",
                 "target": "Olympus",
                 "type": "ResidesIn"
             },
@@ -486,6 +1958,291 @@
                 "source": "Hades",
                 "target": "HadesRealm",
                 "type": "ResidesIn"
+            },
+            {
+                "source": "Cerberus",
+                "target": "HadesRealm",
+                "type": "Guards"
+            },
+            {
+                "source": "Minotaur",
+                "target": "Labyrinth",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Athena",
+                "target": "Olympus",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Apollo",
+                "target": "Olympus",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Artemis",
+                "target": "Olympus",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Ares",
+                "target": "Olympus",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Aphrodite",
+                "target": "Olympus",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Hephaestus",
+                "target": "Olympus",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Hermes",
+                "target": "Olympus",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Dionysus",
+                "target": "Olympus",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Calliope",
+                "target": "Olympus",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Clio",
+                "target": "Olympus",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Erato",
+                "target": "Olympus",
+                "type": "ResidesIn"
+            },
+            {
+                "source": "Zeus",
+                "target": "Cronus",
+                "type": "EnemyOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Atlas",
+                "type": "EnemyOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Prometheus",
+                "type": "EnemyOf"
+            },
+            {
+                "source": "Zeus",
+                "target": "Typhon",
+                "type": "EnemyOf"
+            },
+            {
+                "source": "Heracles",
+                "target": "Cerberus",
+                "type": "EnemyOf"
+            },
+            {
+                "source": "Athena",
+                "target": "Ares",
+                "type": "EnemyOf"
+            },
+            {
+                "source": "Poseidon",
+                "target": "Athena",
+                "type": "EnemyOf"
+            },
+            {
+                "source": "Hera",
+                "target": "Heracles",
+                "type": "EnemyOf"
+            },
+            {
+                "source": "Apollo",
+                "target": "Achilles",
+                "type": "EnemyOf"
+            },
+            {
+                "source": "Poseidon",
+                "target": "Troy",
+                "type": "EnemyOf"
+            },
+            {
+                "source": "Hera",
+                "target": "Troy",
+                "type": "EnemyOf"
+            },
+            {
+                "source": "Achilles",
+                "target": "Troy",
+                "type": "EnemyOf"
+            },
+            {
+                "source": "Perseus",
+                "target": "Medusa",
+                "type": "Slayed"
+            },
+            {
+                "source": "Theseus",
+                "target": "Minotaur",
+                "type": "Slayed"
+            },
+            {
+                "source": "Heracles",
+                "target": "Hydra",
+                "type": "Slayed"
+            },
+            {
+                "source": "Theseus",
+                "target": "Labyrinth",
+                "type": "Visited"
+            },
+            {
+                "source": "Achilles",
+                "target": "Troy",
+                "type": "Visited"
+            },
+            {
+                "source": "Odysseus",
+                "target": "Troy",
+                "type": "Visited"
+            },
+            {
+                "source": "Poseidon",
+                "target": "Odysseus",
+                "type": "CursedBy"
+            },
+            {
+                "source": "Minotaur",
+                "target": "Poseidon",
+                "type": "CursedBy"
+            },
+            {
+                "source": "Medusa",
+                "target": "Athena",
+                "type": "CursedBy"
+            },
+            {
+                "source": "Athena",
+                "target": "Odysseus",
+                "type": "Protects"
+            },
+            {
+                "source": "Apollo",
+                "target": "Troy",
+                "type": "Protects"
+            },
+            {
+                "source": "Aphrodite",
+                "target": "Troy",
+                "type": "Protects"
+            },
+            {
+                "source": "Athena",
+                "target": "Achilles",
+                "type": "Protects"
+            },
+            {
+                "source": "Poseidon",
+                "target": "Theseus",
+                "type": "Protects"
+            },
+            {
+                "source": "Zeus",
+                "target": "Poseidon",
+                "type": "SiblingOf"
+            },
+            {
+                "source": "Poseidon",
+                "target": "Hades",
+                "type": "SiblingOf"
+            },
+            {
+                "source": "Hades",
+                "target": "Zeus",
+                "type": "SiblingOf"
+            },
+            {
+                "source": "Hera",
+                "target": "Demeter",
+                "type": "SiblingOf"
+            },
+            {
+                "source": "Demeter",
+                "target": "Hestia",
+                "type": "SiblingOf"
+            },
+            {
+                "source": "Apollo",
+                "target": "Artemis",
+                "type": "SiblingOf"
+            },
+            {
+                "source": "Ares",
+                "target": "Hephaestus",
+                "type": "SiblingOf"
+            },
+            {
+                "source": "Ares",
+                "target": "Aphrodite",
+                "type": "LoverOf"
+            },
+            {
+                "source": "Hermes",
+                "target": "Perseus",
+                "type": "Guides"
+            },
+            {
+                "source": "Athena",
+                "target": "Perseus",
+                "type": "Guides"
+            },
+            {
+                "source": "Athena",
+                "target": "Heracles",
+                "type": "Guides"
+            },
+            {
+                "source": "Atlas",
+                "target": "Zeus",
+                "type": "PunishedBy"
+            },
+            {
+                "source": "Prometheus",
+                "target": "Zeus",
+                "type": "PunishedBy"
+            },
+            {
+                "source": "Chaos",
+                "target": "Gaia",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Chaos",
+                "target": "Tartarus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Chaos",
+                "target": "Eros",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Chaos",
+                "target": "Erebus",
+                "type": "ParentOf"
+            },
+            {
+                "source": "Chaos",
+                "target": "Nyx",
+                "type": "ParentOf"
             }
         ]
     }

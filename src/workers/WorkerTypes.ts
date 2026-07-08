@@ -30,6 +30,8 @@ export interface WorkerNode {
     fixedX?: boolean;
     fixedY?: boolean;
     fixedZ?: boolean;
+    type?: string;
+    behavior?: string;
 }
 
 /** Ergebnis-Position fuer einen Node aus dem Worker */

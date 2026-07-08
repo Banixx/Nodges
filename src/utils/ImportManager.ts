@@ -641,7 +641,7 @@ export class ImportManager {
         };
 
         if (!normalized.metadata.schemaVersion) {
-            normalized.metadata.schemaVersion = '1';
+            normalized.metadata.schemaVersion = '3.0';
         }
 
         // Validate nodes

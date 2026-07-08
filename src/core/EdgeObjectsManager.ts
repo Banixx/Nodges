@@ -27,7 +27,7 @@ export class EdgeObjectsManager {
     private edges: EdgeObject[] = [];
     private animatedEdges: {
         baseColor: THREE.Color;
-        pulse: any;
+        animations: { flow?: number, sequential?: number, pulse?: number, segments?: number, legacy?: any };
         obj: EdgeObject;
     }[] = [];
 
@@ -201,26 +201,30 @@ export class EdgeObjectsManager {
                         (edgeObj.tube.material as THREE.MeshPhongMaterial).opacity = finalOpacity;
                     }
 
-                    // Animation Detection (Pulse)
-                    // Priority: Explicit pulse object in data, then mapped animation/glow
-                    let pulseAnim = (edgeData as any).pulse;
-                    if (pulseAnim) {
-                        if (typeof pulseAnim === 'object' && !pulseAnim.type) {
-                            pulseAnim = { ...pulseAnim, type: 'pulse' };
+                    // Animation Detection
+                    let animConfig: { flow?: number, sequential?: number, pulse?: number, segments?: number, legacy?: any } = {};
+                    let hasAnimation = false;
+
+                    // Direct properties from mapping
+                    if (visual.animation_flow !== undefined) { animConfig.flow = visual.animation_flow; hasAnimation = true; }
+                    if (visual.animation_sequential !== undefined) { animConfig.sequential = visual.animation_sequential; hasAnimation = true; }
+                    if (visual.animation_pulse !== undefined) { animConfig.pulse = visual.animation_pulse; hasAnimation = true; }
+                    if (visual.animation_segments !== undefined) { animConfig.segments = visual.animation_segments; hasAnimation = true; }
+
+                    // Legacy / Manual data mapping fallback
+                    let legacyAnim = (edgeData as any).pulse || visual.animation;
+                    if (legacyAnim) {
+                        if (typeof legacyAnim === 'object' && !legacyAnim.type) {
+                            legacyAnim = { ...legacyAnim, type: 'pulse' };
                         }
-                        console.log(`[Pulse] Found direct pulse for edge ${edgeData.id}`, pulseAnim);
-                    } else {
-                        const mappedAnim = visual.animation; // Removed visual.glow dependency
-                        if (mappedAnim && typeof mappedAnim === 'object' && (mappedAnim.type === 'pulse')) {
-                            pulseAnim = mappedAnim;
-                        }
+                        animConfig.legacy = legacyAnim;
+                        hasAnimation = true;
                     }
 
-                    if (pulseAnim && (pulseAnim.type === 'pulse' || pulseAnim.frequency)) {
-                        console.log(`[EdgeObjectsManager] Registering animated edge: ${edgeData.id || index}, type: ${pulseAnim.type}`);
+                    if (hasAnimation) {
                         this.animatedEdges.push({
                             baseColor: baseColor.clone(),
-                            pulse: pulseAnim,
+                            animations: animConfig,
                             obj: edgeObj
                         });
                     }
@@ -263,7 +267,6 @@ export class EdgeObjectsManager {
 
         const time = Date.now() * 0.001;
         const state = this.stateManager.state;
-        const mode = state.edgeAnimationMode;
 
         const highlightColor = new THREE.Color(0xffffff);
         const tempColor = new THREE.Color();
@@ -280,53 +283,70 @@ export class EdgeObjectsManager {
             const radialSegments = geometry.parameters.radialSegments;
             const vertexCount = colors.count;
 
-            const baseFreq = item.pulse.frequency === 'heartbeat' ? 2.0 : (parseFloat(item.pulse.frequency) || 1.0);
-            const freq = baseFreq * state.edgePulseSpeed;
+            const globalSpeed = state.edgePulseSpeed || 1.0;
 
-            if (mode === 'pulse') {
-                // Klassisches Pulsieren (Material-Farbe)
+            // Determine active modes (prioritize specific mappings over legacy)
+            let modePulse = item.animations.pulse !== undefined;
+            let modeSequential = item.animations.sequential !== undefined;
+            let modeFlow = item.animations.flow !== undefined;
+            let modeSegments = item.animations.segments !== undefined;
+
+            // Legacy fallback reads from global state
+            if (!modePulse && !modeSequential && !modeFlow && !modeSegments && item.animations.legacy) {
+                if (state.edgeAnimationMode === 'pulse') modePulse = true;
+                else if (state.edgeAnimationMode === 'sequential') modeSequential = true;
+                else if (state.edgeAnimationMode === 'flow') modeFlow = true;
+                else if (state.edgeAnimationMode === 'segments') modeSegments = true;
+            }
+
+            // --- Pulse Animation (Material Color) ---
+            if (modePulse) {
+                let pulseFreq = item.animations.pulse !== undefined ? item.animations.pulse : 1.0;
+                if (item.animations.legacy && item.animations.legacy.frequency === 'heartbeat') pulseFreq = 2.0;
+                
+                const freq = pulseFreq * globalSpeed;
                 const intensity = (Math.sin(time * freq * Math.PI) + 1) * 0.5;
                 tempColor.copy(item.baseColor).lerp(highlightColor, intensity * 0.7);
                 (mesh.material as THREE.MeshPhongMaterial).color.copy(tempColor);
-
-                // Reset Vertex Colors falls vorher ein anderer Mode aktiv war
-                if (colors.needsUpdate === false) {
-                    for (let i = 0; i < vertexCount; i++) {
-                        colors.setXYZ(i, 1, 1, 1); // Materialfarbe dominiert
-                    }
-                    colors.needsUpdate = true;
-                }
             } else {
-                // Vertex-basierte Animationen
-                (mesh.material as THREE.MeshPhongMaterial).color.set(0xffffff); // Basis Weiß
+                (mesh.material as THREE.MeshPhongMaterial).color.set(0xffffff);
+            }
+
+            // --- Vertex-basierte Animationen (Flow, Sequential, Segments) ---
+            if (modeSequential || modeFlow || modeSegments) {
+                // Prepare speeds
+                const seqFreq = (item.animations.sequential || 1.0) * globalSpeed;
+                const flowFreq = (item.animations.flow || 1.0) * globalSpeed;
+                const segFreq = (item.animations.segments || 1.0) * globalSpeed;
 
                 for (let t = 0; t <= tubularSegments; t++) {
-                    let segmentIntensity = 0;
+                    let totalIntensity = 0;
                     tempColor.copy(item.baseColor);
 
-                    if (mode === 'sequential') {
-                        // Welle: Phasenverschiebung pro Segment
-                        const phase = (time * freq * Math.PI) - (t / tubularSegments * Math.PI * 4);
-                        segmentIntensity = (Math.sin(phase) + 1) * 0.5;
-                        tempColor.lerp(highlightColor, segmentIntensity * 0.9);
+                    if (modeSequential) {
+                        const phase = (time * seqFreq * Math.PI) - (t / tubularSegments * Math.PI * 4);
+                        const intensity = (Math.sin(phase) + 1) * 0.5;
+                        totalIntensity = Math.max(totalIntensity, intensity * 0.9);
                     }
-                    else if (mode === 'flow') {
-                        // Lauflicht: Ein Paket wandert
-                        const pos = (time * freq * 0.5) % 1.5 - 0.25; // 0..1 (mit Puffer)
+                    if (modeFlow) {
+                        const pos = (time * flowFreq * 0.5) % 1.5 - 0.25;
                         const dist = Math.abs(t / tubularSegments - pos);
-                        segmentIntensity = Math.max(0, 1 - dist * 4); // Scharfer Punkt
-                        tempColor.lerp(highlightColor, segmentIntensity);
+                        const intensity = Math.max(0, 1 - dist * 4);
+                        totalIntensity = Math.max(totalIntensity, intensity);
                     }
-                    else if (mode === 'segments') {
-                        // Bunte Segmente: Jedes Segment eine andere Farbe
-                        const hue = (t / tubularSegments + time * freq * 0.1) % 1;
+                    
+                    if (modeSegments) {
+                        const hue = (t / tubularSegments + time * segFreq * 0.1) % 1;
                         tempColor.setHSL(hue, 0.8, 0.5);
-                        // Optionales Blinken
-                        const pulse = (Math.sin(time * freq * Math.PI + t) + 1) * 0.5;
-                        tempColor.lerp(highlightColor, pulse * 0.3);
+                        const pulse = (Math.sin(time * segFreq * Math.PI + t) + 1) * 0.5;
+                        totalIntensity = Math.max(totalIntensity, pulse * 0.3);
                     }
 
-                    // Wende Farbe auf alle Vertices dieses Rings an
+                    if (totalIntensity > 0) {
+                        tempColor.lerp(highlightColor, totalIntensity);
+                    }
+
+                    // Apply to all vertices in ring
                     for (let r = 0; r <= radialSegments; r++) {
                         const index = t * (radialSegments + 1) + r;
                         if (index < vertexCount) {
@@ -335,6 +355,22 @@ export class EdgeObjectsManager {
                     }
                 }
                 colors.needsUpdate = true;
+            } else if (!modePulse) {
+                // Neither pulse nor vertex animation -> Reset colors
+                if (colors.needsUpdate === false) {
+                    for (let i = 0; i < vertexCount; i++) {
+                        colors.setXYZ(i, item.baseColor.r, item.baseColor.g, item.baseColor.b);
+                    }
+                    colors.needsUpdate = true;
+                }
+            } else if (modePulse) {
+                 // Pulse uses material color, set vertex color to white to let material color through completely
+                if (colors.needsUpdate === false) {
+                    for (let i = 0; i < vertexCount; i++) {
+                        colors.setXYZ(i, 1, 1, 1);
+                    }
+                    colors.needsUpdate = true;
+                }
             }
         });
     }
@@ -549,5 +585,61 @@ export class EdgeObjectsManager {
     // Get all edges with the same connection (for highlighting related edges)
     public getRelatedEdges(connectionKey: string): EdgeObject[] {
         return this.connectionToEdges.get(connectionKey) || [];
+    }
+
+    // --- Build 4: Temporal Animation ---
+    public updateTemporalState(timestamp: number | null) {
+        if (timestamp === null) {
+            this.edges.forEach(edge => {
+                edge.tube.visible = true;
+            });
+            return;
+        }
+
+        const nodes = this.stateManager.getEntities();
+        const nodeMap = new Map<string, EntityData>();
+        nodes.forEach(node => nodeMap.set(String(node.id), node));
+
+        this.edges.forEach(edgeObj => {
+            const edgeData = edgeObj.tube.userData.edgeData;
+            const startNode = nodeMap.get(String(edgeObj.options.start));
+            const endNode = nodeMap.get(String(edgeObj.options.end));
+
+            let isVisible = true;
+
+            // Check edge temporal data
+            if (edgeData && edgeData.temporal) {
+                const validFrom = edgeData.temporal.validFrom;
+                const validTo = edgeData.temporal.validTo;
+                if ((validFrom !== undefined && validFrom !== null && timestamp < validFrom) ||
+                    (validTo !== undefined && validTo !== null && timestamp > validTo)) {
+                    isVisible = false;
+                }
+            }
+
+            // Check node temporal data (edge is hidden if any connected node is hidden)
+            if (isVisible && startNode && startNode.temporal) {
+                const validFrom = startNode.temporal.validFrom;
+                const validTo = startNode.temporal.validTo;
+                if ((validFrom !== undefined && validFrom !== null && timestamp < validFrom) ||
+                    (validTo !== undefined && validTo !== null && timestamp > validTo)) {
+                    isVisible = false;
+                }
+            }
+            if (isVisible && endNode && endNode.temporal) {
+                const validFrom = endNode.temporal.validFrom;
+                const validTo = endNode.temporal.validTo;
+                if ((validFrom !== undefined && validFrom !== null && timestamp < validFrom) ||
+                    (validTo !== undefined && validTo !== null && timestamp > validTo)) {
+                    isVisible = false;
+                }
+            }
+
+            edgeObj.tube.visible = isVisible;
+            
+            // Wait, what about Keyframes for Edges (color/thickness interpolation)?
+            // Currently edge keyframes are not fully implemented, but we can do it later.
+            // Edge temporal changes are usually structural.
+        });
     }
 }

@@ -14,7 +14,6 @@ export class MappingUI {
     private rightColumn: HTMLElement;
     private svgOverlay: SVGSVGElement;
     private categoryTabs: HTMLElement;
-    private typeTabs: HTMLElement;
 
     private mappings: VisualMappings | null = null;
     private availableAttributes: Record<string, string[]> = {};
@@ -27,11 +26,101 @@ export class MappingUI {
     private expandedProps = new Set<string>();
     private selectedDesignOption: Record<string, string> = {};
     private isDraggingSlider = false;
+    private userExpandedAttributes = new Set<string>();
+    private userCollapsedAttributes = new Set<string>();
+    private boxExpandedAttributes = new Set<string>();
+
+    // --- Layout-Engine State ---
+    private layoutCallback: ((algorithm: string, params: Record<string, number>) => Promise<void>) | null = null;
+    private layoutStopCallback: (() => void) | null = null;
+    private layoutEnabled = false;
+    private layoutExpanded = false;
+    private selectedAlgorithm = 'force-directed';
+    private layoutCurrentParams: Record<string, number> = {};
+    private layoutParameters: Record<string, Record<string, { min: number; max: number; default: number; step: number }>> = {
+        'force-directed': {
+            maxIterations: { min: 100, max: 2000, default: 500, step: 50 },
+            repulsionStrength: { min: 100, max: 5000, default: 1000, step: 100 },
+            attractionStrength: { min: 0.01, max: 1, default: 0.1, step: 0.01 },
+            damping: { min: 0.1, max: 1, default: 0.9, step: 0.05 }
+        },
+        'fruchterman-reingold': {
+            maxIterations: { min: 100, max: 1000, default: 500, step: 50 },
+            area: { min: 100, max: 1000, default: 400, step: 50 },
+            temperature: { min: 1, max: 50, default: 10, step: 1 }
+        },
+        'spring-embedder': {
+            maxIterations: { min: 100, max: 2000, default: 1000, step: 100 },
+            springConstant: { min: 0.01, max: 1, default: 0.1, step: 0.01 },
+            repulsionConstant: { min: 100, max: 5000, default: 1000, step: 100 },
+            damping: { min: 0.1, max: 1, default: 0.95, step: 0.05 },
+            naturalLength: { min: 0.5, max: 10, default: 2, step: 0.5 }
+        },
+        'hierarchical': {
+            levelHeight: { min: 1, max: 10, default: 3, step: 0.5 },
+            nodeSpacing: { min: 0.5, max: 5, default: 2, step: 0.1 }
+        },
+        'tree': {
+            levelHeight: { min: 1, max: 10, default: 3, step: 0.5 },
+            nodeSpacing: { min: 0.5, max: 5, default: 2, step: 0.1 }
+        },
+        'circular': {
+            radius: { min: 5, max: 50, default: 10, step: 1 },
+            height: { min: -10, max: 10, default: 0, step: 0.5 }
+        },
+        'grid': {
+            spacing: { min: 0.5, max: 10, default: 2, step: 0.1 }
+        },
+        'random': {
+            minBound: { min: -50, max: 0, default: -10, step: 1 },
+            maxBound: { min: 0, max: 50, default: 10, step: 1 }
+        }
+    };
+    private layoutAlgorithmNames: Record<string, string> = {
+        'force-directed': 'Force-Directed',
+        'fruchterman-reingold': 'Fruchterman-Reingold',
+        'spring-embedder': 'Spring-Embedder',
+        'hierarchical': 'Hierarchisch',
+        'tree': 'Baum',
+        'circular': 'Kreisfoermig',
+        'grid': 'Raster',
+        'random': 'Zufaellig'
+    };
+    private layoutParamNames: Record<string, string> = {
+        maxIterations: 'Max. Iterationen',
+        repulsionStrength: 'Abstossungskraft',
+        attractionStrength: 'Anziehungskraft',
+        damping: 'Daempfung',
+        area: 'Flaeche',
+        temperature: 'Temperatur',
+        springConstant: 'Federkonstante',
+        repulsionConstant: 'Abstossungskonstante',
+        naturalLength: 'Natuerliche Laenge',
+        levelHeight: 'Ebenen-Hoehe',
+        nodeSpacing: 'Knoten-Abstand',
+        radius: 'Radius',
+        height: 'Hoehe',
+        spacing: 'Abstand',
+        minBound: 'Min. Grenze',
+        maxBound: 'Max. Grenze'
+    };
 
     private getNestedValue(obj: any, path: string): any {
         const formatVal = getEntityAttributeValue(obj, path);
         if (formatVal !== undefined) return formatVal;
         return path.split('.').reduce((current, key) => current?.[key], obj);
+    }
+
+    private isAttributeMapped(attrName: string): boolean {
+        if (!this.mappings || !this.currentType) return false;
+        const preset = this.mappings.defaultPresets?.[this.currentType];
+        if (!preset) return false;
+
+        return Object.values(preset).some((mapping: any) => {
+            if (!mapping) return false;
+            const src = mapping.field || mapping.source || '';
+            return src === attrName || src.startsWith(attrName + '.');
+        });
     }
 
     // Drag-and-Drop state
@@ -40,6 +129,7 @@ export class MappingUI {
         isLeft: boolean;
         sourceName: string;
         visualPropName: string;
+        specificValue?: string;
         tempPath: SVGPathElement;
     } | null = null;
 
@@ -53,17 +143,17 @@ export class MappingUI {
             <div class="mapping-header">
                 <span style="display: flex; align-items: center; gap: 8px;">
                     Mapping
-                    <span id="mappingSchemaVersionBadge" style="font-size: 10px; padding: 2px 6px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; display: none;">Schema: 1</span>
                 </span>
                 <div class="mapping-toggle" id="mappingToggle">▼</div>
             </div>
-            <div class="mapping-selection-area" id="mappingSelectionArea" style="display: flex; gap: 10px; align-items: center; padding: 10px;">
-                <div class="mapping-tabs" id="categoryTabs" style="flex: 1; display: flex;">
-                    <button class="mapping-tab active" data-val="entities" style="flex: 1;">Nodes</button>
-                    <button class="mapping-tab" data-val="relationships" style="flex: 1;">Edges</button>
+            <div class="mapping-selection-area" id="mappingSelectionArea" style="display: flex; flex-direction: column; gap: 10px; padding: 10px;">
+                <div style="display: flex; gap: 10px; align-items: center; width: 100%;">
+                    <span id="mappingSchemaVersionBadge" style="font-size: 10px; padding: 2px 6px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; display: none;">Schema: 1</span>
+                    <div class="mapping-tabs" id="categoryTabs" style="flex: 1; display: flex;">
+                        <button class="mapping-tab active" data-val="entities" style="flex: 1;">Nodes</button>
+                        <button class="mapping-tab" data-val="relationships" style="flex: 1;">Edges</button>
+                    </div>
                 </div>
-                <div class="mapping-type-tabs" id="mappingTypeTabs" style="display: flex; gap: 4px; overflow-x: auto; padding-bottom: 2px;"></div>
-                <button id="btnTakeoverMapping" style="display: none; margin-left: auto; font-size: 11px; padding: 4px 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #e0e0e0; cursor: pointer; border-radius: 4px; transition: all 0.2s ease;" title="Übernimmt die mitgelieferten Mappings dieser Datei in deine aktive Konfiguration" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.3)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.1)'">Datei-Mappings übernehmen</button>
             </div>
             <div class="mapping-body" id="mappingBody" style="position: relative; flex: 1; display: flex; gap: 100px; transition: gap 0.4s ease;">
                 <div class="mapping-column left" id="mappingLeftCol" style="flex: 1; transition: flex 0.4s ease; position: relative; z-index: 2;">
@@ -81,7 +171,6 @@ export class MappingUI {
         this.rightColumn = this.container.querySelector('#mappingRightCol') as HTMLElement;
         this.svgOverlay = this.container.querySelector('#mappingSvg') as SVGSVGElement;
         this.categoryTabs = this.container.querySelector('#categoryTabs') as HTMLElement;
-        this.typeTabs = this.container.querySelector('#mappingTypeTabs') as HTMLElement;
 
         // Toggle logic (Expand/Collapse)
         const toggle = this.container.querySelector('#mappingToggle') as HTMLElement;
@@ -116,7 +205,6 @@ export class MappingUI {
                 target.classList.add('active');
                 
                 this.currentType = this.currentCategory === 'entities' ? 'global_node' : 'global_edge';
-                this.updateTypeSelect();
                 this.renderColumns();
             });
         });
@@ -192,8 +280,9 @@ export class MappingUI {
             this.currentCategory = 'entities';
         } else if (this.currentType === 'global_edge') {
             this.currentCategory = 'relationships';
-        } else if (this.dataModel) {
-            if ('relationships' in this.dataModel && this.dataModel.relationships && this.dataModel.relationships[this.currentType]) {
+        } else {
+            const isKnownRel = relationships.some(r => r.type === this.currentType);
+            if (isKnownRel) {
                 this.currentCategory = 'relationships';
             } else {
                 this.currentCategory = 'entities';
@@ -214,7 +303,6 @@ export class MappingUI {
         const toggleBtn = this.container.querySelector('#mappingToggle') as HTMLElement;
         if (toggleBtn) toggleBtn.textContent = '▼';
 
-        this.updateTypeSelect();
         this.renderColumns();
         
         requestAnimationFrame(() => this.adjustHeightAndMinimap());
@@ -280,79 +368,7 @@ export class MappingUI {
         }
     }
 
-    private updateTypeSelect() {
-        this.typeTabs.innerHTML = '';
-        
-        const typesList: { value: string, text: string }[] = [];
-        
-        // Add global fallback type first
-        typesList.push({
-            value: this.currentCategory === 'entities' ? 'global_node' : 'global_edge',
-            text: this.currentCategory === 'entities' ? 'Alle Knoten' : 'Alle Kanten'
-        });
-        
-        const uniqueTypes = new Set<string>();
-        const items = this.currentCategory === 'entities' ? this.entities : this.relationships;
-        items.forEach(item => {
-            if (item.type) {
-                uniqueTypes.add(item.type);
-            }
-        });
 
-        // Also add types from dataModel just in case they have no entities yet
-        if (this.dataModel) {
-            const types = this.currentCategory === 'entities' 
-                ? ('entities' in this.dataModel ? this.dataModel.entities : null)
-                : ('relationships' in this.dataModel ? this.dataModel.relationships : null);
-            if (types) {
-                Object.keys(types).forEach(type => uniqueTypes.add(type));
-            }
-        }
-
-        uniqueTypes.forEach(type => {
-            typesList.push({ value: type, text: type });
-        });
-
-        // Keep currentType if it exists in the new options, otherwise default to global
-        let typeExists = typesList.some(t => t.value === this.currentType);
-        
-        if (!typeExists) {
-            // Auto-select the first specific type if available, otherwise fallback to global
-            const firstSpecificType = Array.from(uniqueTypes)[0];
-            if (firstSpecificType && firstSpecificType !== typesList[0].value) {
-                this.currentType = firstSpecificType;
-            } else {
-                this.currentType = typesList[0].value;
-            }
-        }
-
-        // Render tabs
-        typesList.forEach(t => {
-            const btn = document.createElement('button');
-            btn.className = `mapping-type-tab ${this.currentType === t.value ? 'active' : ''}`;
-            btn.style.cssText = `
-                flex: 0 0 auto;
-                font-size: 11px;
-                padding: 4px 8px;
-                background: ${this.currentType === t.value ? 'rgba(255, 165, 0, 0.2)' : 'rgba(255, 255, 255, 0.05)'};
-                color: ${this.currentType === t.value ? '#ffa500' : '#e0e0e0'};
-                border: 1px solid ${this.currentType === t.value ? 'rgba(255, 165, 0, 0.5)' : 'rgba(255, 255, 255, 0.1)'};
-                border-radius: 4px;
-                cursor: pointer;
-                transition: all 0.2s ease;
-            `;
-            btn.textContent = t.text;
-            btn.onclick = () => {
-                this.currentType = t.value;
-                this.updateTypeSelect(); // Re-render tabs to update active state
-                this.renderColumns();
-            };
-            this.typeTabs.appendChild(btn);
-        });
-
-        // Hide typeTabs permanently as requested by the user
-        this.typeTabs.style.display = 'none';
-    }
 
     private renderColumns() {
         // Clear columns except titles
@@ -375,21 +391,40 @@ export class MappingUI {
                 return mapping;
             }
             
-            // Check original mappings if not found or constant
             const typesToCheck = this.getTypesToCheck();
+            
+            // 1. Search for active dynamic mappings
             for (const t of typesToCheck) {
                 const am = (this.mappings!.defaultPresets as any)[t]?.[prop] as VisualMapping;
                 if (am && am.source && am.source !== 'constant') return am;
             }
             
+            // 2. Search for original dynamic mappings
             if (this.originalMappings && this.originalMappings.defaultPresets) {
                 for (const t of typesToCheck) {
                     const om = (this.originalMappings.defaultPresets as any)[t]?.[prop] as VisualMapping;
                     if (om && om.source && om.source !== 'constant') return om;
                 }
             }
+
+            // 3. Fallback to active constant on current type
+            if (mapping) return mapping;
+
+            // 4. Fallback to active constant across types
+            for (const t of typesToCheck) {
+                const am = (this.mappings!.defaultPresets as any)[t]?.[prop] as VisualMapping;
+                if (am) return am;
+            }
+
+            // 5. Fallback to original constant across types
+            if (this.originalMappings && this.originalMappings.defaultPresets) {
+                for (const t of typesToCheck) {
+                    const om = (this.originalMappings.defaultPresets as any)[t]?.[prop] as VisualMapping;
+                    if (om) return om;
+                }
+            }
             
-            return mapping || { source: 'constant', function: 'constant' };
+            return { source: 'constant', function: 'constant' };
         };
 
         // 1. Render Left Column: Attributes
@@ -398,11 +433,57 @@ export class MappingUI {
         const currentDataItems = isEntityType ? this.entities : this.relationships;
 
         attributes.forEach(attr => {
-            if (attr === 'constant') return; // Hide 'constant' from the attribute list
+            if (attr === 'constant') return; // Hide 'constant' from the regular attribute list loop
 
+            // Check if the unique values are actually objects (meaning this is a group)
+            let isObjectGroup = false;
+            let groupKeys: string[] = [];
+            let presenceCount = 0;
+            const uniqueValues = new Set<any>();
+            let minVal = Infinity;
+            let maxVal = -Infinity;
+            let hasNumeric = false;
+
+            currentDataItems.forEach(dItem => {
+                if (this.currentType === 'global_node' || this.currentType === 'global_edge' || dItem.type === this.currentType) {
+                    const val = this.getNestedValue(dItem, attr);
+                    if (val !== undefined && val !== null) {
+                        presenceCount++;
+                        uniqueValues.add(val);
+                        if (typeof val === 'number') {
+                            hasNumeric = true;
+                            if (val < minVal) minVal = val;
+                            if (val > maxVal) maxVal = val;
+                        }
+                    }
+                }
+            });
+
+            const firstVal = Array.from(uniqueValues)[0];
+            if (firstVal && typeof firstVal === 'object' && !Array.isArray(firstVal)) {
+                isObjectGroup = true;
+                const keysSet = new Set<string>();
+                uniqueValues.forEach(val => {
+                    if (typeof val === 'object' && val !== null) {
+                        Object.keys(val).forEach(k => keysSet.add(k));
+                    }
+                });
+                groupKeys = Array.from(keysSet).sort();
+            }
+
+            const isMapped = this.isAttributeMapped(attr);
+            const isBoxExpanded = this.boxExpandedAttributes.has(attr);
+            // We'll keep isExpanded for object groups, but user interaction is now different for values
+            const isExpanded = isMapped ? !this.userCollapsedAttributes.has(attr) : this.userExpandedAttributes.has(attr);
+
+            // Haupt-Kachel fuer das Attribut erstellen
             const item = document.createElement('div');
             item.className = 'mapping-item left';
             item.dataset.attr = attr;
+            if (isBoxExpanded || (isExpanded && isObjectGroup)) {
+                item.style.backgroundColor = 'rgba(255,255,255,0.08)';
+            }
+            item.style.cursor = 'pointer';
 
             const labelContainer = document.createElement('div');
             labelContainer.className = 'mapping-item-label-container';
@@ -411,33 +492,21 @@ export class MappingUI {
             labelContainer.style.gap = '2px';
 
             const label = document.createElement('span');
-            label.textContent = attr;
+            
+            const isAlgorithm = attr.startsWith('algo:');
+            if (isAlgorithm) {
+                const algoName = attr.substring(5); // remove 'algo:'
+                label.innerHTML = `<span style="color: #64ffda; margin-right: 4px;">▶</span>${algoName}`;
+                item.style.borderLeft = '2px solid #64ffda';
+                item.style.backgroundColor = 'rgba(100, 255, 218, 0.05)';
+            } else {
+                label.textContent = attr;
+            }
+            
             label.style.fontWeight = '500';
             labelContainer.appendChild(label);
 
-            // Calculate presence count and unique values count
-            if (attr !== 'constant') {
-                let presenceCount = 0;
-                const uniqueValues = new Set<any>();
-                let minVal = Infinity;
-                let maxVal = -Infinity;
-                let hasNumeric = false;
-
-                currentDataItems.forEach(dItem => {
-                    if (this.currentType === 'global_node' || this.currentType === 'global_edge' || dItem.type === this.currentType) {
-                        const val = this.getNestedValue(dItem, attr);
-                        if (val !== undefined && val !== null) {
-                            presenceCount++;
-                            uniqueValues.add(val);
-                            if (typeof val === 'number') {
-                                hasNumeric = true;
-                                if (val < minVal) minVal = val;
-                                if (val > maxVal) maxVal = val;
-                            }
-                        }
-                    }
-                });
-
+            if (!isAlgorithm) {
                 const stats = document.createElement('span');
                 stats.className = 'mapping-item-stats';
                 stats.style.fontSize = '9px';
@@ -450,98 +519,124 @@ export class MappingUI {
                 } else if (uniqueValues.size > 0 && !hasNumeric) {
                     statsText += ` (Text)`;
                 }
-
                 stats.textContent = statsText;
                 labelContainer.appendChild(stats);
-
-                // Values Container (collapsible)
-                if (uniqueValues.size > 0) {
-                    const valuesContainer = document.createElement('div');
-                    valuesContainer.className = 'mapping-item-values';
-                    valuesContainer.style.display = 'none';
-                    valuesContainer.style.marginTop = '6px';
-                    valuesContainer.style.fontSize = '10px';
-                    valuesContainer.style.color = '#ccc';
-                    valuesContainer.style.maxHeight = '150px';
-                    valuesContainer.style.overflowY = 'auto';
-
-                    const valsArray = Array.from(uniqueValues).sort();
-                    const valsList = document.createElement('div');
-                    valsList.style.display = 'flex';
-                    valsList.style.flexWrap = 'wrap';
-                    valsList.style.gap = '4px';
-
-                    valsArray.slice(0, 50).forEach(val => {
-                        const tag = document.createElement('span');
-                        tag.style.background = 'rgba(255,255,255,0.1)';
-                        tag.style.padding = '2px 4px';
-                        tag.style.borderRadius = '3px';
-                        // Convert objects/arrays to string for display
-                        const displayVal = typeof val === 'object' ? JSON.stringify(val) : String(val);
-                        tag.textContent = displayVal.length > 30 ? displayVal.substring(0, 27) + '...' : displayVal;
-                        valsList.appendChild(tag);
-                    });
-
-                    if (valsArray.length > 50) {
-                        const moreTag = document.createElement('span');
-                        moreTag.style.background = 'rgba(255,255,255,0.05)';
-                        moreTag.style.padding = '2px 4px';
-                        moreTag.style.borderRadius = '3px';
-                        moreTag.style.fontStyle = 'italic';
-                        moreTag.textContent = `+ ${valsArray.length - 50} weitere...`;
-                        valsList.appendChild(moreTag);
-                    }
-
-                    valuesContainer.appendChild(valsList);
-                    labelContainer.appendChild(valuesContainer);
-
-                    // Add click event to toggle
-                    item.style.cursor = 'pointer';
-                    
-                    const expandItem = () => {
-                        if (valuesContainer.style.display === 'none') {
-                            valuesContainer.style.display = 'block';
-                            item.style.backgroundColor = 'rgba(255,255,255,0.1)';
-                            requestAnimationFrame(() => {
-                                this.drawCurves();
-                                this.adjustHeightAndMinimap();
-                            });
-                        }
-                    };
-                    
-                    const collapseItem = () => {
-                        if (valuesContainer.style.display !== 'none') {
-                            valuesContainer.style.display = 'none';
-                            item.style.backgroundColor = '';
-                            requestAnimationFrame(() => {
-                                this.drawCurves();
-                                this.adjustHeightAndMinimap();
-                            });
-                        }
-                    };
-
-                    item.addEventListener('mouseenter', expandItem);
-                    item.addEventListener('mouseleave', () => {
-                        if (this.activeTileId !== 'left_' + attr) {
-                            collapseItem();
-                        }
-                    });
-
-                    item.addEventListener('click', (e) => {
-                        if ((e.target as HTMLElement).classList.contains('snapdot')) return;
-                        
-                        if (this.activeTileId === 'left_' + attr) {
-                            this.activeTileId = null;
-                            this.activeColumn = null;
-                        } else {
-                            this.activeTileId = 'left_' + attr;
-                            this.activeColumn = 'left';
-                            expandItem();
-                        }
-                        this.updateColumnWidths();
-                    });
-                }
             }
+
+            item.appendChild(labelContainer);
+
+            // Values Container (collapsible on hover)
+            let valuesContainer: HTMLElement | null = null;
+            if (!isObjectGroup && uniqueValues.size > 0) {
+                valuesContainer = document.createElement('div');
+                valuesContainer.className = 'mapping-item-values';
+                valuesContainer.style.display = 'none'; // Hidden by default, shown on hover
+                valuesContainer.style.marginTop = '6px';
+                valuesContainer.style.fontSize = '10px';
+                valuesContainer.style.color = '#ccc';
+                valuesContainer.style.maxHeight = '150px';
+                valuesContainer.style.overflowY = 'auto';
+
+                const valsArray = Array.from(uniqueValues).sort();
+                const valsList = document.createElement('div');
+                valsList.style.display = 'flex';
+                valsList.style.flexWrap = 'wrap';
+                valsList.style.gap = '4px';
+
+                valsArray.slice(0, 50).forEach(valOrKey => {
+                    const tagContainer = document.createElement('div');
+                    tagContainer.style.display = 'flex';
+                    tagContainer.style.alignItems = 'center';
+                    tagContainer.style.background = 'rgba(255,255,255,0.06)';
+                    tagContainer.style.borderRadius = '3px';
+                    tagContainer.style.padding = '2px 4px';
+                    tagContainer.style.gap = '4px';
+
+                    const tag = document.createElement('span');
+                    const displayVal = String(valOrKey);
+                    tag.textContent = displayVal.length > 30 ? displayVal.substring(0, 27) + '...' : displayVal;
+
+                    const valDot = document.createElement('div');
+                    valDot.className = 'snapdot left-dot sub-dot';
+                    valDot.dataset.attr = attr;
+                    valDot.dataset.val = displayVal;
+                    
+                    valDot.style.cssText = `
+                        width: 6px;
+                        height: 6px;
+                        background-color: var(--accent-color);
+                        border-radius: 50%;
+                        cursor: grab;
+                        flex-shrink: 0;
+                        opacity: 0.5;
+                    `;
+
+                    valDot.addEventListener('pointerdown', (e) => {
+                        e.stopPropagation();
+                        this.startDrag(e, valDot, true, attr, '', displayVal);
+                    });
+
+                    tagContainer.appendChild(tag);
+                    tagContainer.appendChild(valDot);
+                    valsList.appendChild(tagContainer);
+                });
+
+                if (valsArray.length > 50) {
+                    const moreTag = document.createElement('span');
+                    moreTag.style.background = 'rgba(255,255,255,0.05)';
+                    moreTag.style.padding = '2px 4px';
+                    moreTag.style.borderRadius = '3px';
+                    moreTag.style.fontStyle = 'italic';
+                    moreTag.textContent = `+ ${valsArray.length - 50} weitere...`;
+                    valsList.appendChild(moreTag);
+                }
+
+                valuesContainer.appendChild(valsList);
+                labelContainer.appendChild(valuesContainer);
+            }
+
+            // Hover event to expand tags
+            item.addEventListener('mouseenter', () => {
+                if (valuesContainer && !isBoxExpanded) {
+                    valuesContainer.style.display = 'block';
+                }
+            });
+            item.addEventListener('mouseleave', () => {
+                if (valuesContainer && !isBoxExpanded) {
+                    valuesContainer.style.display = 'none';
+                }
+            });
+
+            // Klick-Event fuer das Haupt-Item
+            item.addEventListener('click', (e) => {
+                if ((e.target as HTMLElement).classList.contains('snapdot')) return;
+
+                if (isObjectGroup) {
+                    if (isExpanded) {
+                        if (isMapped) {
+                            this.userCollapsedAttributes.add(attr);
+                        } else {
+                            this.userExpandedAttributes.delete(attr);
+                        }
+                    } else {
+                        if (isMapped) {
+                            this.userCollapsedAttributes.delete(attr);
+                        } else {
+                            this.userExpandedAttributes.clear();
+                            this.userExpandedAttributes.add(attr);
+                        }
+                    }
+                } else {
+                    if (isBoxExpanded) {
+                        this.boxExpandedAttributes.delete(attr);
+                    } else {
+                        this.boxExpandedAttributes.add(attr);
+                        if (valuesContainer) valuesContainer.style.display = 'none'; // hide tags when boxes are shown
+                    }
+                }
+                
+                this.renderColumns();
+            });
 
             item.appendChild(labelContainer);
 
@@ -554,16 +649,149 @@ export class MappingUI {
             dot.addEventListener('pointerdown', (e) => this.startDrag(e, dot, true, attr, ''));
 
             this.leftColumn.appendChild(item);
+
+            // WICHTIG: Wenn es eine Objektgruppe ist und aufgeklappt, rendern wir die Unterkacheln direkt als Geschwister!
+            // ODER wenn es ein normales Attribut ist und isBoxExpanded wahr ist!
+            if ((isObjectGroup && isExpanded) || (!isObjectGroup && isBoxExpanded)) {
+                const subItemsList = isObjectGroup ? groupKeys : Array.from(uniqueValues).sort().slice(0, 50);
+                
+                subItemsList.forEach(valOrKey => {
+                    const subAttr = isObjectGroup ? `${attr}.${valOrKey}` : attr;
+                    const displayVal = String(valOrKey);
+
+                    const subItem = document.createElement('div');
+                    subItem.className = 'mapping-item left mapping-sub-item';
+                    subItem.dataset.attr = subAttr;
+                    if (!isObjectGroup) {
+                        subItem.dataset.val = displayVal;
+                    }
+                    
+                    subItem.style.cssText = `
+                        margin-left: 15px;
+                        width: calc(100% - 35px);
+                        border-left: 2px solid var(--accent-color);
+                        background: rgba(255, 255, 255, 0.02);
+                        padding: 4px 8px;
+                        border-radius: 4px;
+                        border-top: 1px solid rgba(255, 255, 255, 0.05);
+                        border-right: 1px solid rgba(255, 255, 255, 0.05);
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                        font-size: 11px;
+                        min-height: 20px;
+                        flex-shrink: 0;
+                        position: relative;
+                        box-sizing: border-box;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        transition: all 0.2s ease;
+                    `;
+
+                    subItem.onmouseover = () => {
+                        subItem.style.background = 'rgba(255, 255, 255, 0.05)';
+                        subItem.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                    };
+                    subItem.onmouseout = () => {
+                        subItem.style.background = 'rgba(255, 255, 255, 0.02)';
+                        subItem.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                    };
+
+                    const subLabelContainer = document.createElement('div');
+                    subLabelContainer.style.display = 'flex';
+                    subLabelContainer.style.flexDirection = 'column';
+                    subLabelContainer.style.gap = '2px';
+
+                    const subLabel = document.createElement('span');
+                    subLabel.style.fontWeight = '500';
+                    subLabel.textContent = isObjectGroup ? `.${displayVal}` : `= ${displayVal}`;
+                    subLabelContainer.appendChild(subLabel);
+
+                    if (isObjectGroup) {
+                        let subPresenceCount = 0;
+                        const uniqueSubValues = new Set<any>();
+                        let minVal = Infinity;
+                        let maxVal = -Infinity;
+                        let hasNumeric = false;
+
+                        currentDataItems.forEach(dItem => {
+                            if (this.currentType === 'global_node' || this.currentType === 'global_edge' || dItem.type === this.currentType) {
+                                const val = this.getNestedValue(dItem, subAttr);
+                                if (val !== undefined && val !== null) {
+                                    subPresenceCount++;
+                                    uniqueSubValues.add(val);
+                                    if (typeof val === 'number') {
+                                        hasNumeric = true;
+                                        if (val < minVal) minVal = val;
+                                        if (val > maxVal) maxVal = val;
+                                    }
+                                }
+                            }
+                        });
+
+                        if (subPresenceCount > 0) {
+                            const subStats = document.createElement('span');
+                            subStats.style.fontSize = '9px';
+                            subStats.style.color = 'var(--text-muted)';
+                            if (hasNumeric && minVal !== Infinity && maxVal !== -Infinity) {
+                                const formatNum = (num: number) => Number.isInteger(num) ? num.toString() : num.toFixed(1);
+                                subStats.textContent = `[${formatNum(minVal)}...${formatNum(maxVal)}]`;
+                            } else {
+                                subStats.textContent = `${uniqueSubValues.size} W`;
+                            }
+                            subLabelContainer.appendChild(subStats);
+                        }
+                    }
+
+                    subItem.appendChild(subLabelContainer);
+
+                    const subDot = document.createElement('div');
+                    subDot.className = 'snapdot left-dot sub-dot';
+                    subDot.dataset.attr = subAttr;
+                    if (!isObjectGroup) {
+                        subDot.dataset.val = displayVal;
+                    }
+                    subItem.appendChild(subDot);
+
+                    subDot.addEventListener('pointerdown', (e) => {
+                        e.stopPropagation();
+                        this.startDrag(e, subDot, true, subAttr, '', isObjectGroup ? '' : displayVal);
+                    });
+
+                    this.leftColumn.appendChild(subItem);
+                });
+            }
         });
 
         // 2. Render Right Column: Visual Properties
         
         const isEntity = this.currentCategory === 'entities';
-        const visualProps = isEntity
-            ? ['positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation']
-            : ['thickness', 'color', 'curvature', 'glow', 'opacity', 'animation'];
+        const baseVisualProps = isEntity
+            ? ['position', 'positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation', 'attraction', 'repulsion', 'inertia']
+            : ['thickness', 'color', 'curvature', 'glow', 'opacity', 'animation_flow', 'animation_sequential', 'animation_pulse', 'animation_segments'];
+
+        const visualProps: string[] = [];
+        baseVisualProps.forEach(prop => {
+            // Include base prop
+            visualProps.push(prop);
+            
+            // Check if mapped, and append additional unmapped slots
+            let i = 1;
+            while (true) {
+                const currentProp = i === 1 ? prop : `${prop}_${i-1}`;
+                const mapping = getEffectiveMapping(currentProp);
+                const isConnected = mapping && mapping.source && mapping.source !== 'constant';
+                if (isConnected) {
+                    const nextProp = `${prop}_${i}`;
+                    visualProps.push(nextProp);
+                    i++;
+                } else {
+                    break;
+                }
+            }
+        });
 
             const propTranslations: Record<string, string> = {
+                position: 'Position',
                 positionX: 'Position X',
                 positionY: 'Position Y',
                 positionZ: 'Position Z',
@@ -572,6 +800,10 @@ export class MappingUI {
                 geometry: 'Geometrie',
                 glow: 'Leuchten',
                 animation: 'Animation',
+                animation_flow: 'Anim: Lauflicht (Flow)',
+                animation_sequential: 'Anim: Welle (Sequential)',
+                animation_pulse: 'Anim: Puls (Pulse)',
+                animation_segments: 'Anim: Segmente',
                 thickness: 'Linienstärke',
                 curvature: 'Krümmung',
                 opacity: 'Deckkraft',
@@ -581,9 +813,41 @@ export class MappingUI {
             };
 
             visualProps.forEach(prop => {
+                const baseProp = prop.replace(/_\d+$/, '');
                 const item = document.createElement('div');
                 item.className = 'mapping-item right';
                 item.dataset.prop = prop;
+
+                const isSubProp = ['positionX', 'positionY', 'positionZ'].includes(baseProp);
+                if (isSubProp) {
+                    item.className = 'mapping-item right mapping-sub-item';
+                    item.style.cssText = `
+                        margin-left: 15px;
+                        width: calc(100% - 15px);
+                        border-left: 2px solid var(--accent-color);
+                        background: rgba(255, 255, 255, 0.02);
+                        padding: 4px 8px;
+                        border-radius: 4px;
+                        border-top: 1px solid rgba(255, 255, 255, 0.05);
+                        border-right: 1px solid rgba(255, 255, 255, 0.05);
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                        font-size: 11px;
+                        min-height: 30px;
+                        position: relative;
+                        box-sizing: border-box;
+                        transition: all 0.2s ease;
+                        margin-top: -6px; /* pull slightly closer to main prop */
+                    `;
+                    // Keep hover styles
+                    item.onmouseover = () => {
+                        item.style.background = 'rgba(255, 255, 255, 0.05)';
+                        item.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                    };
+                    item.onmouseout = () => {
+                        item.style.background = 'rgba(255, 255, 255, 0.02)';
+                        item.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                    };
+                }
 
                 let mapping = getEffectiveMapping(prop);
                 const isConnected = mapping && mapping.source && mapping.source !== 'constant';
@@ -597,9 +861,48 @@ export class MappingUI {
                 const header = document.createElement('div');
                 header.className = 'mapping-item-header';
 
+                const labelContainer = document.createElement('div');
+                labelContainer.style.display = 'flex';
+                labelContainer.style.alignItems = 'center';
+                labelContainer.style.gap = '8px';
+
+                const getLabel = (p: string) => {
+                    let base = p;
+                    let suf = '';
+                    const m = p.match(/^(.*?)_(\d+)$/);
+                    if (m && !p.startsWith('animation_') || (p.startsWith('animation_') && m && m[1] !== 'animation')) {
+                        base = m[1];
+                        suf = ` (${parseInt(m[2]) + 1})`;
+                    }
+                    return (propTranslations[base] || base.charAt(0).toUpperCase() + base.slice(1)) + suf;
+                };
+
                 const label = document.createElement('span');
-                label.textContent = propTranslations[prop] || prop.charAt(0).toUpperCase() + prop.slice(1);
-                header.appendChild(label);
+                label.textContent = getLabel(prop);
+                labelContainer.appendChild(label);
+
+                if (mapping && mapping.source === 'constant') {
+                    const valBadge = document.createElement('div');
+                    valBadge.style.cssText = 'padding: 1px 5px; background: rgba(255,255,255,0.08); border-radius: 4px; font-size: 10px; color: #ccc; display: flex; align-items: center; white-space: nowrap;';
+                    let hasValue = false;
+                    
+                    if (mapping.params && mapping.params.color) {
+                        valBadge.innerHTML = `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:${mapping.params.color}; margin-right:4px;"></span>${mapping.params.color}`;
+                        hasValue = true;
+                    } else if (mapping.params && mapping.params.value !== undefined) {
+                        valBadge.textContent = String(mapping.params.value);
+                        hasValue = true;
+                    } else if ((mapping as any).value !== undefined) {
+                        valBadge.textContent = String((mapping as any).value);
+                        hasValue = true;
+                    }
+                    
+                    if (hasValue) {
+                        labelContainer.appendChild(valBadge);
+                    }
+                }
+                
+                header.appendChild(labelContainer);
 
                 const actions = document.createElement('div');
                 actions.style.display = 'flex';
@@ -682,14 +985,14 @@ export class MappingUI {
                     funcSelect.className = 'mapping-control-select';
 
                     let functions: string[] = [];
-                    if (prop === 'color') {
+                    if (baseProp === 'color') {
                         functions = ['heatmap', 'bipolar', 'categorical'];
-                    } else if (prop === 'geometry') {
+                    } else if (baseProp === 'geometry') {
                         functions = ['categorical', 'sphereComplexity'];
-                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ', 'attraction', 'repulsion', 'inertia'].includes(prop)) {
+                    } else if (['position', 'size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ', 'attraction', 'repulsion', 'inertia'].includes(baseProp)) {
                         functions = ['linear', 'exponential', 'logarithmic', 'categorical'];
-                    } else if (prop === 'animation') {
-                        functions = ['pulse'];
+                    } else if (baseProp === 'animation' || baseProp.startsWith('animation_')) {
+                        functions = ['linear', 'exponential', 'constant'];
                     } else {
                         functions = ['linear', 'exponential', 'logarithmic', 'heatmap', 'bipolar', 'pulse', 'sphereComplexity', 'categorical'];
                     }
@@ -710,18 +1013,18 @@ export class MappingUI {
                         const updates: Partial<VisualMapping> = { function: newFunc as any };
                         
                         if (newFunc === 'categorical') {
-                            const source = mapping.source || mapping.field || '';
+                            const source = mapping.field || mapping.source || '';
                             const uniqueValues = this.getAttributeUniqueValues(source);
                             const currentCategories = mapping.params?.categories || {};
                             
-                            if (prop === 'color') {
+                            if (baseProp === 'color') {
                                 const palette = mapping.palette || 'all';
                                 updates.palette = palette;
                                 updates.params = { 
                                     ...(mapping.params || {}), 
                                     categories: this.generateCategoricalColors(uniqueValues, palette) 
                                 };
-                            } else if (prop === 'geometry') {
+                            } else if (baseProp === 'geometry') {
                                 const categories: Record<string, string> = {};
                                 const shapes = ['sphere', 'cube', 'cylinder', 'cone', 'torus'];
                                 uniqueValues.forEach((val, idx) => {
@@ -731,7 +1034,7 @@ export class MappingUI {
                             } else {
                                 // Numeric property
                                 const categories: Record<string, number> = {};
-                                const isPosition = ['positionX', 'positionY', 'positionZ'].includes(prop);
+                                const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(baseProp);
                                 const defaultRange = isPosition ? [-50, 50] : [0.1, 3.0];
                                 const rangeMin = mapping.range ? mapping.range[0] : defaultRange[0];
                                 const rangeMax = mapping.range ? mapping.range[1] : defaultRange[1];
@@ -757,7 +1060,7 @@ export class MappingUI {
                         // 2. Domain Min/Max
                         let defaultDomain: [number, number] = [0, 1];
                         if (this.dataModel) {
-                            const propSchema = getPropertySchema(this.dataModel, this.currentType, mapping.source || mapping.field || '');
+                            const propSchema = getPropertySchema(this.dataModel, this.currentType, mapping.field || mapping.source || '');
                             if (propSchema && propSchema.range) {
                                 defaultDomain = propSchema.range;
                             }
@@ -877,7 +1180,7 @@ export class MappingUI {
                         bipGroup.appendChild(bipRow);
                         details.appendChild(bipGroup);
                     } else if ((['linear', 'exponential', 'logarithmic'].includes(mapping.function) || mapping.range) && !['categorical', 'pulse'].includes(mapping.function)) {
-                        const isPosition = ['positionX', 'positionY', 'positionZ'].includes(prop);
+                        const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(baseProp);
                         const rangeMinVal = mapping.range ? mapping.range[0] : (isPosition ? -100 : 0.1);
                         const rangeMaxVal = mapping.range ? mapping.range[1] : (isPosition ? 100 : 3.0);
 
@@ -1014,11 +1317,11 @@ export class MappingUI {
                         catLabel.style.marginBottom = '6px';
                         catGroup.appendChild(catLabel);
                         
-                        const source = mapping.source || mapping.field || '';
+                        const source = mapping.field || mapping.source || '';
                         const uniqueValues = this.getAttributeUniqueValues(source);
                         const categories = mapping.params?.categories || {};
                         
-                        if (prop === 'color') {
+                        if (baseProp === 'color') {
                             const palGroup = document.createElement('div');
                             palGroup.className = 'mapping-control-group';
                             palGroup.style.marginBottom = '8px';
@@ -1064,7 +1367,7 @@ export class MappingUI {
                             nameSpan.style.whiteSpace = 'nowrap';
                             row.appendChild(nameSpan);
                             
-                            if (prop === 'color') {
+                            if (baseProp === 'color') {
                                 const input = document.createElement('input');
                                 input.className = 'mapping-control-input';
                                 input.type = 'color';
@@ -1084,7 +1387,7 @@ export class MappingUI {
                                     this.updatePropertyMapping(prop, { params });
                                 };
                                 row.appendChild(input);
-                            } else if (prop === 'geometry') {
+                            } else if (baseProp === 'geometry') {
                                 const select = document.createElement('select');
                                 select.className = 'mapping-control-select';
                                 select.style.width = '100px';
@@ -1146,7 +1449,7 @@ export class MappingUI {
                     constLabel.textContent = 'Fester Wert';
                     constGroup.appendChild(constLabel);
 
-                    if (prop === 'color') {
+                    if (baseProp === 'color') {
                         const colorInput = document.createElement('input');
                         colorInput.className = 'mapping-control-input';
                         colorInput.type = 'color';
@@ -1160,7 +1463,7 @@ export class MappingUI {
                             this.updatePropertyMapping(prop, { params });
                         };
                         constGroup.appendChild(colorInput);
-                    } else if (prop === 'geometry') {
+                    } else if (baseProp === 'geometry') {
                         const shapeSelect = document.createElement('select');
                         shapeSelect.className = 'mapping-control-select';
                         const shapes = ['sphere', 'cube', 'cylinder', 'cone', 'torus'];
@@ -1180,7 +1483,7 @@ export class MappingUI {
                             } as any);
                         };
                         constGroup.appendChild(shapeSelect);
-                    } else if (['size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ', 'attraction', 'repulsion', 'inertia'].includes(prop)) {
+                    } else if (['position', 'size', 'thickness', 'curvature', 'glow', 'opacity', 'positionX', 'positionY', 'positionZ', 'attraction', 'repulsion', 'inertia'].includes(baseProp)) {
                         const numInput = document.createElement('input');
                         numInput.className = 'mapping-control-input';
                         numInput.type = 'number';
@@ -1197,11 +1500,11 @@ export class MappingUI {
                             }
                         };
                         constGroup.appendChild(numInput);
-                    } else if (prop === 'animation') {
+                    } else if (baseProp === 'animation' || baseProp.startsWith('animation_')) {
                         const animSelect = document.createElement('select');
                         animSelect.className = 'mapping-control-select';
-                        const animOptions = ['none', 'pulse'];
-                        const currentAnim = mapping.function === 'pulse' ? 'pulse' : 'none';
+                        const animOptions = ['none', 'active'];
+                        const currentAnim = (mapping.function === 'constant' && mapping.params?.active) ? 'active' : 'none';
                         animOptions.forEach(optVal => {
                             const opt = document.createElement('option');
                             opt.value = optVal;
@@ -1210,17 +1513,17 @@ export class MappingUI {
                             animSelect.appendChild(opt);
                         });
                         animSelect.onchange = () => {
-                            if (animSelect.value === 'pulse') {
+                            if (animSelect.value === 'active') {
                                 this.updatePropertyMapping(prop, { 
                                     source: 'constant',
-                                    function: 'pulse',
-                                    params: { frequency: 'heartbeat' }
+                                    function: 'constant',
+                                    params: { active: true, value: 1.0 }
                                 });
                             } else {
                                 this.updatePropertyMapping(prop, { 
                                     source: 'constant',
                                     function: 'constant',
-                                    params: {}
+                                    params: { active: false, value: 0 }
                                 });
                             }
                         };
@@ -1242,8 +1545,279 @@ export class MappingUI {
 
                 this.rightColumn.appendChild(item);
             });
-        // Draw active curves after browser layout pass
-        requestAnimationFrame(() => this.drawCurves());
+
+        // Layout-Engine-Sektion nach den Visualisierungs-Kacheln rendern (nur bei Entities)
+        if (isEntity) {
+            this.renderLayoutEngineSection();
+        }
+
+        // Draw active curves after browser layout pass and during transitions
+        this.animateCurves();
+    }
+
+    /** Setzt den Callback fuer Layout-Anwendung. Wird von App.ts aufgerufen. */
+    public setLayoutCallback(
+        onApply: (algorithm: string, params: Record<string, number>) => Promise<void>,
+        onStop: () => void
+    ) {
+        this.layoutCallback = onApply;
+        this.layoutStopCallback = onStop;
+    }
+
+    /** Setzt den Layout-Enabled-State von aussen (z.B. StateManager). */
+    public setLayoutEnabled(enabled: boolean) {
+        this.layoutEnabled = enabled;
+    }
+
+    /** Rendert die Layout-Engine-Steuerung als Sektion in der rechten Spalte. */
+    private renderLayoutEngineSection() {
+        const section = document.createElement('div');
+        section.className = 'layout-engine-section';
+        section.style.cssText = `
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        `;
+
+        // --- Header: Toggle + Label + Apply Button ---
+        const header = document.createElement('div');
+        header.style.cssText = `
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        `;
+        header.onmouseover = () => header.style.background = 'rgba(255, 255, 255, 0.06)';
+        header.onmouseout = () => header.style.background = 'rgba(255, 255, 255, 0.03)';
+
+        // Toggle Switch
+        const toggle = document.createElement('input');
+        toggle.type = 'checkbox';
+        toggle.checked = this.layoutEnabled;
+        toggle.style.cssText = `
+            appearance: none; width: 28px; height: 14px;
+            background: ${this.layoutEnabled ? 'rgba(255, 165, 0, 0.6)' : 'rgba(255, 255, 255, 0.15)'};
+            border-radius: 7px; position: relative; cursor: pointer;
+            transition: background 0.2s ease; flex-shrink: 0;
+        `;
+        // Thumb via box-shadow trick
+        const updateToggleStyle = () => {
+            toggle.style.background = toggle.checked ? 'rgba(255, 165, 0, 0.6)' : 'rgba(255, 255, 255, 0.15)';
+            toggle.style.boxShadow = toggle.checked
+                ? 'inset 16px 0 0 -4px rgba(255, 165, 0, 1)'
+                : 'inset -16px 0 0 -4px rgba(255, 255, 255, 0.5)';
+        };
+        updateToggleStyle();
+        toggle.addEventListener('change', (e) => {
+            e.stopPropagation();
+            this.layoutEnabled = toggle.checked;
+            updateToggleStyle();
+            updateControlsState();
+            // Sync with StateManager via global app
+            const app = typeof window !== 'undefined' ? (window as any).app : null;
+            if (app?.stateManager) {
+                app.stateManager.update({ layoutEnabled: this.layoutEnabled });
+            }
+        });
+        toggle.addEventListener('click', (e) => e.stopPropagation());
+
+        // Label
+        const label = document.createElement('span');
+        label.textContent = '⚙ Layout-Engine';
+        label.style.cssText = `
+            flex: 1; font-size: 12px; font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+        `;
+
+        // Expand Arrow
+        const arrow = document.createElement('span');
+        arrow.textContent = this.layoutExpanded ? '▾' : '▸';
+        arrow.style.cssText = `
+            font-size: 10px; color: rgba(255, 255, 255, 0.4);
+            transition: transform 0.2s ease;
+        `;
+
+        // Apply Button (compact)
+        const applyBtn = document.createElement('button');
+        applyBtn.textContent = '▶';
+        applyBtn.title = 'Layout anwenden';
+        applyBtn.style.cssText = `
+            width: 24px; height: 24px; border: none;
+            background: rgba(160, 128, 96, 0.2); color: var(--accent-color);
+            border-radius: 4px; cursor: pointer; font-size: 10px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; flex-shrink: 0;
+        `;
+        applyBtn.onmouseover = () => { if (this.layoutEnabled) applyBtn.style.background = 'rgba(255, 165, 0, 0.4)'; };
+        applyBtn.onmouseout = () => { applyBtn.style.background = 'rgba(255, 165, 0, 0.2)'; };
+        applyBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (!this.layoutEnabled || !this.layoutCallback) return;
+            applyBtn.textContent = '⏳';
+            applyBtn.style.pointerEvents = 'none';
+            try {
+                await this.layoutCallback(this.selectedAlgorithm, { ...this.layoutCurrentParams });
+            } finally {
+                applyBtn.textContent = '▶';
+                applyBtn.style.pointerEvents = 'auto';
+            }
+        });
+
+        // Stop Button
+        const stopBtn = document.createElement('button');
+        stopBtn.textContent = '■';
+        stopBtn.title = 'Layout stoppen';
+        stopBtn.style.cssText = `
+            width: 24px; height: 24px; border: none;
+            background: rgba(255, 80, 80, 0.15); color: #ff6666;
+            border-radius: 4px; cursor: pointer; font-size: 8px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; flex-shrink: 0;
+        `;
+        stopBtn.onmouseover = () => { if (this.layoutEnabled) stopBtn.style.background = 'rgba(255, 80, 80, 0.3)'; };
+        stopBtn.onmouseout = () => { stopBtn.style.background = 'rgba(255, 80, 80, 0.15)'; };
+        stopBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (this.layoutStopCallback) this.layoutStopCallback();
+        });
+
+        header.appendChild(toggle);
+        header.appendChild(label);
+        header.appendChild(arrow);
+        header.appendChild(applyBtn);
+        header.appendChild(stopBtn);
+
+        // --- Expandable Details ---
+        const details = document.createElement('div');
+        details.style.cssText = `
+            display: ${this.layoutExpanded ? 'block' : 'none'};
+            padding: 8px;
+            margin-top: 4px;
+        `;
+
+        // Algorithm Dropdown
+        const algoGroup = document.createElement('div');
+        algoGroup.style.cssText = 'margin-bottom: 10px;';
+        const algoLabel = document.createElement('label');
+        algoLabel.textContent = 'Algorithmus';
+        algoLabel.style.cssText = 'display: block; font-size: 10px; color: rgba(255,255,255,0.5); margin-bottom: 4px;';
+        const algoSelect = document.createElement('select');
+        algoSelect.style.cssText = `
+            width: 100%; padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e0e0e0; border-radius: 4px; font-size: 11px;
+        `;
+        Object.entries(this.layoutAlgorithmNames).forEach(([key, name]) => {
+            const opt = document.createElement('option');
+            opt.value = key;
+            opt.textContent = name;
+            opt.selected = key === this.selectedAlgorithm;
+            algoSelect.appendChild(opt);
+        });
+        algoSelect.addEventListener('change', () => {
+            this.selectedAlgorithm = algoSelect.value;
+            this.initLayoutParams();
+            renderParams();
+        });
+        algoGroup.appendChild(algoLabel);
+        algoGroup.appendChild(algoSelect);
+        details.appendChild(algoGroup);
+
+        // Parameter Container
+        const paramContainer = document.createElement('div');
+        details.appendChild(paramContainer);
+
+        const renderParams = () => {
+            paramContainer.innerHTML = '';
+            const params = this.layoutParameters[this.selectedAlgorithm] || {};
+            Object.entries(params).forEach(([paramName, paramDef]) => {
+                const group = document.createElement('div');
+                group.style.cssText = 'margin-bottom: 6px;';
+
+                const labelRow = document.createElement('div');
+                labelRow.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;';
+
+                const pLabel = document.createElement('label');
+                pLabel.textContent = this.layoutParamNames[paramName] || paramName;
+                pLabel.style.cssText = 'font-size: 10px; color: rgba(255,255,255,0.5);';
+
+                const pValue = document.createElement('span');
+                pValue.style.cssText = 'font-size: 10px; color: rgba(255,255,255,0.7); font-variant-numeric: tabular-nums;';
+                const currentVal = this.layoutCurrentParams[paramName] !== undefined
+                    ? this.layoutCurrentParams[paramName]
+                    : paramDef.default;
+                pValue.textContent = String(currentVal);
+
+                labelRow.appendChild(pLabel);
+                labelRow.appendChild(pValue);
+
+                const slider = document.createElement('input');
+                slider.type = 'range';
+                slider.min = String(paramDef.min);
+                slider.max = String(paramDef.max);
+                slider.step = String(paramDef.step);
+                slider.value = String(currentVal);
+                slider.style.cssText = 'width: 100%;';
+                slider.addEventListener('input', () => {
+                    const val = parseFloat(slider.value);
+                    this.layoutCurrentParams[paramName] = val;
+                    pValue.textContent = String(val);
+                });
+
+                group.appendChild(labelRow);
+                group.appendChild(slider);
+                paramContainer.appendChild(group);
+            });
+        };
+
+        // Initialize params and render
+        this.initLayoutParams();
+        renderParams();
+
+        // Toggle expand/collapse
+        header.addEventListener('click', () => {
+            this.layoutExpanded = !this.layoutExpanded;
+            details.style.display = this.layoutExpanded ? 'block' : 'none';
+            arrow.textContent = this.layoutExpanded ? '▾' : '▸';
+        });
+
+        // Enable/Disable helper
+        const updateControlsState = () => {
+            const opacity = this.layoutEnabled ? '1' : '0.4';
+            const events = this.layoutEnabled ? 'auto' : 'none';
+            applyBtn.style.opacity = opacity;
+            applyBtn.style.pointerEvents = events;
+            stopBtn.style.opacity = opacity;
+            stopBtn.style.pointerEvents = events;
+            algoSelect.style.opacity = opacity;
+            algoSelect.style.pointerEvents = events;
+            paramContainer.style.opacity = opacity;
+            paramContainer.style.pointerEvents = events;
+        };
+        updateControlsState();
+
+        section.appendChild(header);
+        section.appendChild(details);
+        this.rightColumn.appendChild(section);
+
+        // Sicherstellen, dass Kurven nach dem Rendern neu gezeichnet werden
+        this.animateCurves();
+    }
+
+    /** Initialisiert die Layout-Parameter-Werte fuer den aktuell gewaehlten Algorithmus. */
+    private initLayoutParams() {
+        const params = this.layoutParameters[this.selectedAlgorithm] || {};
+        // Nur fehlende Parameter initialisieren, bestehende behalten
+        const newParams: Record<string, number> = {};
+        Object.entries(params).forEach(([key, def]) => {
+            newParams[key] = this.layoutCurrentParams[key] !== undefined ? this.layoutCurrentParams[key] : def.default;
+        });
+        this.layoutCurrentParams = newParams;
     }
 
     private updatePropertyMapping(propName: string, updates: Partial<VisualMapping>) {
@@ -1264,7 +1838,7 @@ export class MappingUI {
         };
 
         this.onUpdate(this.mappings);
-        requestAnimationFrame(() => this.drawCurves());
+        this.animateCurves();
     }
 
     private getTypesToCheck(): string[] {
@@ -1289,9 +1863,16 @@ export class MappingUI {
         // Clear previous paths
         this.svgOverlay.innerHTML = '';
 
+        // Clear previous active states
+        this.container.querySelectorAll('.snapdot.connected').forEach(dot => dot.classList.remove('connected'));
+        this.container.querySelectorAll('.snapdot.suggested').forEach(dot => dot.classList.remove('suggested'));
+        this.container.querySelectorAll('.mapping-item.active-mapping').forEach(item => item.classList.remove('active-mapping'));
+        this.container.querySelectorAll('.mapping-item.suggested-mapping').forEach(item => item.classList.remove('suggested-mapping'));
+
         if (!this.mappings || !this.currentType) return;
 
         const typesToCheck = this.getTypesToCheck();
+        let debugLog = `T:${typesToCheck.join(',')} | `;
 
         const originalLines = new Set<string>(); // "source|prop"
         const activeLines = new Set<string>(); // "source|prop"
@@ -1304,10 +1885,12 @@ export class MappingUI {
                 if (preset) {
                     Object.entries(preset).forEach(([prop, mapping]) => {
                         if (typeof mapping === 'object' && mapping !== null && ('source' in mapping || 'field' in mapping)) {
-                            const sourceAttr = (mapping as VisualMapping).source || (mapping as VisualMapping).field;
-                            if (sourceAttr && sourceAttr !== 'constant') {
-                                activeLines.add(`${sourceAttr}|${prop}`);
-                                activeProps.add(prop);
+                            const sourceAttr = (mapping as VisualMapping).field || (mapping as VisualMapping).source;
+                            if (sourceAttr) {
+                                if (sourceAttr !== 'constant') {
+                                    activeLines.add(`${sourceAttr}|${prop}`);
+                                    activeProps.add(prop);
+                                }
                             }
                         }
                     });
@@ -1322,7 +1905,7 @@ export class MappingUI {
                 if (preset) {
                     Object.entries(preset).forEach(([prop, mapping]) => {
                         if (typeof mapping === 'object' && mapping !== null && ('source' in mapping || 'field' in mapping)) {
-                            const sourceAttr = (mapping as VisualMapping).source || (mapping as VisualMapping).field;
+                            const sourceAttr = (mapping as VisualMapping).field || (mapping as VisualMapping).source;
                             // Only add if not overridden by any active mapping for this property
                             if (sourceAttr && sourceAttr !== 'constant' && !activeProps.has(prop)) {
                                 originalLines.add(`${sourceAttr}|${prop}`);
@@ -1333,35 +1916,47 @@ export class MappingUI {
             });
         }
 
-        // 3. Draw original lines
-        originalLines.forEach(line => {
-            const [sourceAttr, prop] = line.split('|');
-            this.drawCurve(sourceAttr, prop, 'mapping-curve original-curve', true, true);
-        });
+        // 3. & 4. Draw lines
+        let drawnActive = 0;
+        let drawnOriginal = 0;
+        let failedActive = 0;
+        let failedOriginal = 0;
 
-        // 4. Draw active lines
         activeLines.forEach(line => {
             const [sourceAttr, prop] = line.split('|');
-            this.drawCurve(sourceAttr, prop, 'mapping-curve', true, false);
+            const result = this.drawCurve(sourceAttr, prop, 'mapping-curve', true, false);
+            if (result === 'OK') {
+                drawnActive++;
+            } else {
+                failedActive++;
+                debugLog += `[A:${line}=${result}] `;
+            }
         });
-
-        // 5. Update connection dots
+        
+        originalLines.forEach(line => {
+            const [sourceAttr, prop] = line.split('|');
+            const result = this.drawCurve(sourceAttr, prop, 'mapping-curve original-curve', false, true);
+            if (result === 'OK') {
+                drawnOriginal++;
+            } else {
+                failedOriginal++;
+                debugLog += `[O:${line}=${result}] `;
+            }
+        });
+        
+        console.log(`[MappingUI] drawCurves Debug: ${debugLog} ALines:${activeLines.size} OLines:${originalLines.size} DrA:${drawnActive} DrO:${drawnOriginal}`);
+        
+        // 5. Update connection dots (already cleared at start, but we can leave this for specific prop checks if needed, though it's redundant now)
         this.rightColumn.querySelectorAll('.snapdot').forEach(dot => {
             const prop = (dot as HTMLElement).dataset.prop;
             if (prop && !activeProps.has(prop)) {
                 dot.classList.remove('connected');
+                const item = dot.closest('.mapping-item');
+                if (item) item.classList.remove('active-mapping');
             }
         });
 
-        // Update Takeover Button visibility
-        const btnTakeover = this.container.querySelector('#btnTakeoverMapping') as HTMLElement;
-        if (btnTakeover) {
-            const hasMappings = this.hasOriginalMappingsToTakeover();
-            btnTakeover.style.display = hasMappings ? 'block' : 'none';
-            if (hasMappings) {
-                btnTakeover.textContent = `Datei-Mappings übernehmen`;
-            }
-        }
+        // Takeover Button logic removed from here as it is now in SuggestionUI
     }
 
     private hasOriginalMappingsToTakeover(): boolean {
@@ -1372,7 +1967,7 @@ export class MappingUI {
             for (const prop in preset) {
                 const map = preset[prop] as VisualMapping;
                 if (!map) continue;
-                let sourceAttr = map.source || map.field;
+                let sourceAttr = map.field || map.source;
                 if (!sourceAttr) continue;
                 
                 sourceAttr = sourceAttr.replace(/^stateVector\./, '');
@@ -1433,82 +2028,133 @@ export class MappingUI {
         this.renderColumns();
     }
 
-    private drawCurve(sourceAttr: string, prop: string, className: string, isInteractive: boolean, isOriginal: boolean = false) {
-        // Build 2/3 imported mappings might have "stateVector.group", but UI displays "group"
-        const normalizedAttr = sourceAttr.replace(/^stateVector\./, '');
-        const leftDot = this.leftColumn.querySelector(`.snapdot[data-attr="${normalizedAttr}"]`) as HTMLElement;
+    private drawCurve(sourceAttr: string, prop: string, curveClass: string, isActive: boolean, isDashed: boolean): string {
+        // Build 2/3 imported mappings might have "stateVector.group", but UI might display it differently.
+        // First try the exact sourceAttr.
+        let leftDot = this.leftColumn.querySelector(`.snapdot:not([data-val])[data-attr="${sourceAttr}"]`) as HTMLElement;
+        
+        if (!leftDot) {
+            // Try normalized attribute (fallback for older mappings)
+            const normalizedAttr = sourceAttr.replace(/^stateVector\./, '');
+            leftDot = this.leftColumn.querySelector(`.snapdot:not([data-val])[data-attr="${normalizedAttr}"]`) as HTMLElement;
+        }
+        
+        if (!leftDot) {
+            // If sub-attribute is collapsed, use the parent attribute dot
+            const parentPath = sourceAttr.split('.')[0];
+            leftDot = this.leftColumn.querySelector(`.snapdot:not(.sub-dot):not([data-val])[data-attr="${parentPath}"]`) as HTMLElement;
+        }
+
+        if (!leftDot) {
+            // Ultimate fallback for normalized parent
+            const normalizedParentPath = sourceAttr.replace(/^stateVector\./, '').split('.')[0];
+            leftDot = this.leftColumn.querySelector(`.snapdot:not(.sub-dot):not([data-val])[data-attr="${normalizedParentPath}"]`) as HTMLElement;
+        }
+
         const rightDot = this.rightColumn.querySelector(`.snapdot[data-prop="${prop}"]`) as HTMLElement;
 
-        if (leftDot && rightDot) {
-            if (isInteractive) {
-                leftDot.classList.add('connected');
-                rightDot.classList.add('connected');
-            }
+        if (!leftDot || !rightDot) {
+            return `NoDot(L:${!!leftDot},R:${!!rightDot})`;
+        }
 
-            const bodyRect = this.bodyContainer.getBoundingClientRect();
-            const leftRect = leftDot.getBoundingClientRect();
-            const rightRect = rightDot.getBoundingClientRect();
+        if (isActive) {
+            leftDot.classList.add('connected');
+            rightDot.classList.add('connected');
+            
+            const leftItem = leftDot.closest('.mapping-item');
+            if (leftItem) leftItem.classList.add('active-mapping');
+            
+            const rightItem = rightDot.closest('.mapping-item');
+            if (rightItem) rightItem.classList.add('active-mapping');
+        } else if (isDashed) {
+            leftDot.classList.add('suggested');
+            rightDot.classList.add('suggested');
+            
+            const leftItem = leftDot.closest('.mapping-item');
+            if (leftItem) leftItem.classList.add('suggested-mapping');
+            
+            const rightItem = rightDot.closest('.mapping-item');
+            if (rightItem) rightItem.classList.add('suggested-mapping');
+        }
 
-            const x1 = leftRect.left + leftRect.width / 2 - bodyRect.left;
-            const y1 = leftRect.top + leftRect.height / 2 - bodyRect.top;
-            const x2 = rightRect.left + rightRect.width / 2 - bodyRect.left;
-            const y2 = rightRect.top + rightRect.height / 2 - bodyRect.top;
+        const bodyRect = this.bodyContainer.getBoundingClientRect();
+        const leftRect = leftDot.getBoundingClientRect();
+        const rightRect = rightDot.getBoundingClientRect();
 
-            const dx = Math.abs(x2 - x1) * 0.5;
-            const dStr = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
-            
-            // Create a group to hold both visible path and transparent hit area
-            const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-            
-            const visiblePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            visiblePath.setAttribute('class', className);
-            visiblePath.setAttribute('d', dStr);
-            if (isOriginal) {
-                visiblePath.setAttribute('stroke-dasharray', '5,5');
-                visiblePath.style.stroke = 'rgba(255, 255, 255, 0.4)'; // Ensure it's visibly a dashed line, regardless of external CSS
-                visiblePath.style.strokeWidth = '2px';
-            }
-            
-            const hitAreaPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            hitAreaPath.setAttribute('class', 'mapping-curve-hitarea');
-            hitAreaPath.setAttribute('d', dStr);
-            hitAreaPath.style.fill = 'none';
-            hitAreaPath.style.stroke = 'transparent';
-            hitAreaPath.style.strokeWidth = '20';
-            hitAreaPath.style.pointerEvents = 'stroke';
-            
-            group.appendChild(visiblePath);
-            group.appendChild(hitAreaPath);
+        const x1 = leftRect.left + leftRect.width / 2 - bodyRect.left;
+        const y1 = leftRect.top + leftRect.height / 2 - bodyRect.top;
+        const x2 = rightRect.left + rightRect.width / 2 - bodyRect.left;
+        const y2 = rightRect.top + rightRect.height / 2 - bodyRect.top;
 
-            if (isInteractive) {
-                group.style.cursor = 'pointer';
-                
-                // Hover effect simulation
-                group.addEventListener('mouseenter', () => {
-                    visiblePath.style.stroke = '#00aaff';
-                    visiblePath.style.strokeWidth = '3';
-                });
-                group.addEventListener('mouseleave', () => {
+        // Restore ZeroRect check but log it instead of silently failing
+        if (leftRect.width === 0 && leftRect.height === 0) {
+            const pStyle = window.getComputedStyle(leftDot.parentElement || document.body);
+            return `ZRL(attr:${leftDot.dataset.attr},p:${leftDot.parentElement?.className},pvis:${pStyle.display},bW:${bodyRect.width})`;
+        }
+        if (rightRect.width === 0 && rightRect.height === 0) {
+            return `ZeroRectR`;
+        }
+
+        const dx = Math.abs(x2 - x1) * 0.5;
+        const dStr = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+        
+        // Create a group to hold both visible path and transparent hit area
+        const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        
+        const visiblePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        visiblePath.setAttribute('class', curveClass);
+        visiblePath.setAttribute('d', dStr);
+        if (isDashed) {
+            visiblePath.setAttribute('stroke-dasharray', '5,5');
+            visiblePath.style.stroke = 'rgba(255, 255, 255, 0.4)';
+            visiblePath.style.strokeWidth = '2px';
+        }
+        
+        const hitAreaPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        hitAreaPath.setAttribute('class', 'mapping-curve-hitarea');
+        hitAreaPath.setAttribute('d', dStr);
+        hitAreaPath.style.fill = 'none';
+        hitAreaPath.style.stroke = 'transparent';
+        hitAreaPath.style.strokeWidth = '20';
+        hitAreaPath.style.pointerEvents = 'stroke';
+        
+        group.appendChild(visiblePath);
+        group.appendChild(hitAreaPath);
+
+        if (isActive || isDashed) {
+            group.style.cursor = 'pointer';
+            
+            // Hover effect simulation
+            group.addEventListener('mouseenter', () => {
+                visiblePath.style.stroke = isDashed ? 'rgba(0, 170, 255, 0.8)' : '#00aaff';
+                visiblePath.style.strokeWidth = '3';
+            });
+            group.addEventListener('mouseleave', () => {
+                if (isDashed) {
+                    visiblePath.style.stroke = 'rgba(255, 255, 255, 0.4)';
+                    visiblePath.style.strokeWidth = '2px';
+                } else {
                     visiblePath.style.stroke = '';
                     visiblePath.style.strokeWidth = '';
-                });
+                }
+            });
 
-                // Click path to disconnect
-                group.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    if (isOriginal) {
-                        this.disconnectOriginalMapping(prop);
-                    } else {
-                        this.disconnectMapping(prop);
-                    }
-                });
-            }
-
-            this.svgOverlay.appendChild(group);
+            // Click path to disconnect
+            group.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (isDashed) {
+                    this.disconnectOriginalMapping(prop);
+                } else {
+                    this.disconnectMapping(prop);
+                }
+            });
         }
+
+        this.svgOverlay.appendChild(group);
+        return 'OK';
     }
 
-    private startDrag(e: PointerEvent, dot: HTMLElement, isLeft: boolean, attrName: string, propName: string) {
+    private startDrag(e: PointerEvent, dot: HTMLElement, isLeft: boolean, attrName: string, propName: string, specificValue?: string) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -1524,6 +2170,7 @@ export class MappingUI {
             isLeft,
             sourceName: attrName,
             visualPropName: propName,
+            specificValue,
             tempPath
         };
 
@@ -1566,13 +2213,16 @@ export class MappingUI {
             if (this.activeDrag.isLeft && !isTargetLeft) {
                 const targetProp = targetDot.dataset.prop || '';
                 const sourceAttr = this.activeDrag.sourceName;
-                this.connectMapping(sourceAttr, targetProp);
+                this.connectMapping(sourceAttr, targetProp, this.activeDrag.specificValue);
             } 
             // Connect input (right) to output (left)
             else if (!this.activeDrag.isLeft && isTargetLeft) {
                 const sourceAttr = targetDot.dataset.attr || '';
                 const targetProp = this.activeDrag.visualPropName;
-                this.connectMapping(sourceAttr, targetProp);
+                // Since the drag started from right, the target dot is on the left.
+                // We check if it has a specific value dataset.
+                const specificValue = targetDot.dataset.val;
+                this.connectMapping(sourceAttr, targetProp, specificValue);
             }
         } else {
             // Dropped in empty space: if dragged from a visual property, disconnect it
@@ -1589,7 +2239,7 @@ export class MappingUI {
         this.drawCurves();
     }
 
-    private connectMapping(sourceAttr: string, propName: string) {
+    private connectMapping(sourceAttr: string, propName: string, specificValue?: string) {
         if (!this.mappings || !this.currentType || !this.onUpdate) return;
 
         if (!this.mappings.defaultPresets) {
@@ -1602,18 +2252,21 @@ export class MappingUI {
         const preset = this.mappings.defaultPresets[this.currentType] as any;
 
         let defaultFunc: any = 'linear';
+        const basePropName = propName.replace(/_\d+$/, '');
         const isCategoricalSource = ['type', 'id', 'category', 'label', 'domain'].includes(sourceAttr);
-        if (propName === 'color') {
+        if (specificValue || isCategoricalSource) {
+            defaultFunc = 'categorical';
+        } else if (basePropName === 'color') {
             if (isCategoricalSource) {
                 defaultFunc = 'categorical';
             } else {
                 defaultFunc = 'heatmap';
             }
-        } else if (propName === 'geometry') {
+        } else if (basePropName === 'geometry') {
             defaultFunc = 'categorical';
-        } else if (propName === 'animation') {
+        } else if (basePropName === 'animation') {
             defaultFunc = 'pulse';
-        } else if (['positionX', 'positionY', 'positionZ', 'size', 'thickness', 'curvature', 'glow', 'opacity', 'attraction', 'repulsion', 'inertia'].includes(propName)) {
+        } else if (['position', 'positionX', 'positionY', 'positionZ', 'size', 'thickness', 'curvature', 'glow', 'opacity', 'attraction', 'repulsion', 'inertia'].includes(basePropName)) {
             if (isCategoricalSource) {
                 defaultFunc = 'categorical';
             } else {
@@ -1626,7 +2279,7 @@ export class MappingUI {
             newDomain = this.getAttributeDataBounds(sourceAttr);
         }
 
-        const isPosition = ['positionX', 'positionY', 'positionZ'].includes(propName);
+        const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(basePropName);
         const defaultRange: [number, number] = isPosition ? [-100, 100] : [0.1, 3.0];
 
         const existingMapping = preset[propName] || { source: 'constant', function: 'constant' };
@@ -1644,14 +2297,14 @@ export class MappingUI {
             const uniqueValues = this.getAttributeUniqueValues(sourceAttr);
             const currentCategories = existingMapping.params?.categories || {};
             
-            if (propName === 'color') {
+            if (basePropName === 'color') {
                 const palette = existingMapping.palette || 'all';
                 updates.palette = palette;
                 updates.params = { 
                     ...(existingMapping.params || {}), 
                     categories: this.generateCategoricalColors(uniqueValues, palette) 
                 };
-            } else if (propName === 'geometry') {
+            } else if (basePropName === 'geometry') {
                 const categories: Record<string, string> = {};
                 const shapes = ['sphere', 'cube', 'cylinder', 'cone', 'torus'];
                 uniqueValues.forEach((val, idx) => {
@@ -1661,7 +2314,7 @@ export class MappingUI {
             } else {
                 // Numeric property
                 const categories: Record<string, number> = {};
-                const isPosition = ['positionX', 'positionY', 'positionZ'].includes(propName);
+                const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(basePropName);
                 const defaultRange = isPosition ? [-50, 50] : [0.1, 3.0];
                 const rangeMin = existingMapping.range ? existingMapping.range[0] : defaultRange[0];
                 const rangeMax = existingMapping.range ? existingMapping.range[1] : defaultRange[1];
@@ -1683,6 +2336,29 @@ export class MappingUI {
 
         // Auto-expand connected mapping property
         this.expandedProps.add(propName);
+        
+        // Let the UI render the expanded property first
+        requestAnimationFrame(() => {
+            if (specificValue) {
+                // Try to find the specific category input and focus it
+                setTimeout(() => {
+                    const rightCol = this.rightColumn;
+                    const item = rightCol.querySelector(`.mapping-item.right[data-prop="${propName}"]`);
+                    if (item) {
+                        const inputs = item.querySelectorAll('input');
+                        inputs.forEach(input => {
+                            // Find the label or input that matches the specific value
+                            const row = input.closest('div');
+                            if (row && row.textContent?.includes(specificValue)) {
+                                input.focus();
+                                input.style.boxShadow = '0 0 0 2px var(--accent-color)';
+                                setTimeout(() => input.style.boxShadow = '', 2000);
+                            }
+                        });
+                    }
+                }, 50);
+            }
+        });
 
         this.onUpdate(this.mappings);
     }
@@ -2080,7 +2756,7 @@ export class MappingUI {
 
             currentDataItems.forEach(item => {
                 if (item.type === this.currentType) {
-                    const val = parseFloat(this.getNestedValue(item, mapping.source || mapping.field || ''));
+                    const val = parseFloat(this.getNestedValue(item, mapping.field || mapping.source || ''));
                     if (!isNaN(val)) {
                         const pct = (absMax > absMin) ? (val - absMin) / (absMax - absMin) : 0.5;
                         const binIdx = Math.max(0, Math.min(9, Math.floor(pct * 10)));

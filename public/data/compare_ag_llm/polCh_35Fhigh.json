@@ -1,0 +1,1108 @@
+{
+  "system": "Politische Schweiz 3.5 Flash High",
+  "metadata": {
+    "created": "2026-06-30T11:20:00.000Z",
+    "version": "1.0",
+    "schemaVersion": "1.0",
+    "author": "Gemini 3.5 Flash (High) via Antigravity",
+    "description": "Detailliertes semantisches Modell des politischen Systems der Schweiz mit reicher Attributierung für fortgeschrittenes Nodges-Mapping."
+  },
+  "dataModel": {
+    "entities": {
+      "Souveraen": {
+        "properties": {
+          "ebene": {
+            "type": "categorical",
+            "values": ["Bund", "Kanton", "Gemeinde"]
+          },
+          "einfluss": {
+            "type": "continuous",
+            "range": [0, 100]
+          },
+          "mitglieder": {
+            "type": "continuous"
+          },
+          "typ": {
+            "type": "categorical",
+            "values": ["Souveraen"]
+          }
+        }
+      },
+      "Organ": {
+        "properties": {
+          "ebene": {
+            "type": "categorical",
+            "values": ["Bund", "Kanton", "Gemeinde"]
+          },
+          "einfluss": {
+            "type": "continuous",
+            "range": [0, 100]
+          },
+          "mitglieder": {
+            "type": "continuous"
+          },
+          "typ": {
+            "type": "categorical",
+            "values": ["Exekutive", "Legislative", "Judikative", "Foederalismus"]
+          }
+        }
+      },
+      "Akteur": {
+        "properties": {
+          "ebene": {
+            "type": "categorical",
+            "values": ["Bund", "Kanton", "Gemeinde"]
+          },
+          "einfluss": {
+            "type": "continuous",
+            "range": [0, 100]
+          },
+          "mitglieder": {
+            "type": "continuous"
+          },
+          "typ": {
+            "type": "categorical",
+            "values": ["Partei", "Interessenvertretung"]
+          }
+        }
+      },
+      "Instrument": {
+        "properties": {
+          "ebene": {
+            "type": "categorical",
+            "values": ["Bund", "Kanton", "Gemeinde"]
+          },
+          "einfluss": {
+            "type": "continuous",
+            "range": [0, 100]
+          },
+          "mitglieder": {
+            "type": "continuous"
+          },
+          "typ": {
+            "type": "categorical",
+            "values": ["Direkte Demokratie"]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "interaktion": {
+        "properties": {
+          "typ": {
+            "type": "categorical",
+            "values": ["waehlt", "leitet", "kontrolliert", "beeinflusst", "schlaegt_vor", "entscheidet", "unterstuetzt"]
+          },
+          "staerke": {
+            "type": "continuous",
+            "range": [0, 100]
+          }
+        }
+      }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Souveraen": {
+        "color": {
+          "source": "typ",
+          "function": "categorical",
+          "palette": "category10"
+        },
+        "size": {
+          "source": "einfluss",
+          "function": "linear",
+          "domain": [0, 100],
+          "range": [5, 20]
+        }
+      },
+      "Organ": {
+        "color": {
+          "source": "typ",
+          "function": "categorical",
+          "palette": "category10"
+        },
+        "size": {
+          "source": "einfluss",
+          "function": "linear",
+          "domain": [0, 100],
+          "range": [4, 18]
+        }
+      },
+      "Akteur": {
+        "color": {
+          "source": "typ",
+          "function": "categorical",
+          "palette": "category10"
+        },
+        "size": {
+          "source": "einfluss",
+          "function": "linear",
+          "domain": [0, 100],
+          "range": [3, 14]
+        }
+      },
+      "Instrument": {
+        "color": {
+          "source": "typ",
+          "function": "categorical",
+          "palette": "category10"
+        },
+        "size": {
+          "source": "einfluss",
+          "function": "linear",
+          "domain": [0, 100],
+          "range": [3, 12]
+        }
+      },
+      "interaktion": {
+        "color": {
+          "source": "typ",
+          "function": "categorical",
+          "palette": "category20"
+        },
+        "thickness": {
+          "source": "staerke",
+          "function": "linear",
+          "domain": [0, 100],
+          "range": [0.5, 3]
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "volk",
+        "type": "Souveraen",
+        "label": "Schweizer Stimmvolk (Souverän)",
+        "ebene": "Bund",
+        "einfluss": 100,
+        "mitglieder": 5600000,
+        "typ": "Souveraen",
+        "beschreibung": "Die oberste verfassunggebende Instanz der Schweiz. Trifft finale Entscheidungen über Verfassung, Staatsverträge und Gesetze."
+      },
+      {
+        "id": "kantone",
+        "type": "Organ",
+        "label": "Kantone (26 Gliedstaaten)",
+        "ebene": "Kanton",
+        "einfluss": 85,
+        "mitglieder": 26,
+        "typ": "Foederalismus",
+        "beschreibung": "Die 26 teilsouveränen Gliedstaaten der Schweizer Eidgenossenschaft mit eigener Verfassung, Legislative, Exekutive und Judikative."
+      },
+      {
+        "id": "gemeinden",
+        "type": "Organ",
+        "label": "Gemeinden (~2136)",
+        "ebene": "Gemeinde",
+        "einfluss": 60,
+        "mitglieder": 2136,
+        "typ": "Foederalismus",
+        "beschreibung": "Die kleinste politische Ebene mit Autonomie bei lokalen Steuern, Schulwesen, Ortspolizei und Gemeindeplanung."
+      },
+      {
+        "id": "nationalrat",
+        "type": "Organ",
+        "label": "Nationalrat (Große Kammer)",
+        "ebene": "Bund",
+        "einfluss": 80,
+        "mitglieder": 200,
+        "typ": "Legislative",
+        "beschreibung": "Repräsentiert die Gesamtbevölkerung des Landes. Die 200 Abgeordneten werden alle 4 Jahre nach dem Proporzverfahren gewählt."
+      },
+      {
+        "id": "staenderat",
+        "type": "Organ",
+        "label": "Ständerat (Kleine Kammer)",
+        "ebene": "Bund",
+        "einfluss": 80,
+        "mitglieder": 46,
+        "typ": "Legislative",
+        "beschreibung": "Repräsentiert die Kantone (46 Sitze; 2 pro Vollkanton, 1 pro Halbkanton). Wahlverfahren wird kantonal bestimmt, meist Majorz."
+      },
+      {
+        "id": "bundesversammlung",
+        "type": "Organ",
+        "label": "Vereinigte Bundesversammlung",
+        "ebene": "Bund",
+        "einfluss": 90,
+        "mitglieder": 246,
+        "typ": "Legislative",
+        "beschreibung": "Gemeinsame Sitzung von Nationalrat und Ständerat zur Wahl des Bundesrates, der Bundesrichter und des Bundeskanzlers."
+      },
+      {
+        "id": "bundesrat",
+        "type": "Organ",
+        "label": "Bundesrat (Kollegialbehörde)",
+        "ebene": "Bund",
+        "einfluss": 95,
+        "mitglieder": 7,
+        "typ": "Exekutive",
+        "beschreibung": "Die siebenköpfige Landesregierung der Schweiz, organisiert nach dem Kollegialitätsprinzip und der parteipolitischen Konkordanz."
+      },
+      {
+        "id": "bundeskanzlei",
+        "type": "Organ",
+        "label": "Bundeskanzlei (Stabstelle)",
+        "ebene": "Bund",
+        "einfluss": 50,
+        "mitglieder": 1,
+        "typ": "Exekutive",
+        "beschreibung": "Stabsstelle des Bundesrates, geleitet vom Bundeskanzler. Unterstützt bei Planung, Organisation und Koordination der Bundesverwaltung."
+      },
+      {
+        "id": "eda",
+        "type": "Organ",
+        "label": "EDA (Aussenpolitik)",
+        "ebene": "Bund",
+        "einfluss": 75,
+        "mitglieder": 1,
+        "typ": "Exekutive",
+        "beschreibung": "Eidgenössisches Departement für auswärtige Angelegenheiten. Vertritt die Schweiz nach aussen und pflegt internationale Beziehungen."
+      },
+      {
+        "id": "edi",
+        "type": "Organ",
+        "label": "EDI (Inneres & Soziales)",
+        "ebene": "Bund",
+        "einfluss": 75,
+        "mitglieder": 1,
+        "typ": "Exekutive",
+        "beschreibung": "Eidgenössisches Departement des Innern. Zuständig für Gesundheit, Sozialversicherungen, Kultur, Gleichstellung und Statistik."
+      },
+      {
+        "id": "ejpd",
+        "type": "Organ",
+        "label": "EJPD (Justiz & Polizei)",
+        "ebene": "Bund",
+        "einfluss": 75,
+        "mitglieder": 1,
+        "typ": "Exekutive",
+        "beschreibung": "Eidgenössisches Justiz- und Polizeidepartement. Zuständig für Asyl, Migration, Kriminalitätsbekämpfung, innere Sicherheit und Zivilrecht."
+      },
+      {
+        "id": "vbs",
+        "type": "Organ",
+        "label": "VBS (Verteidigung & Sport)",
+        "ebene": "Bund",
+        "einfluss": 75,
+        "mitglieder": 1,
+        "typ": "Exekutive",
+        "beschreibung": "Eidgenössisches Departement für Verteidigung, Bevölkerungsschutz und Sport. Koordiniert Schweizer Armee und Sportförderung."
+      },
+      {
+        "id": "efd",
+        "type": "Organ",
+        "label": "EFD (Finanzpolitik)",
+        "ebene": "Bund",
+        "einfluss": 85,
+        "mitglieder": 1,
+        "typ": "Exekutive",
+        "beschreibung": "Eidgenössisches Finanzdepartement. Zuständig für Bundeshaushalt, Steuern, Zoll, Personal der Bundesverwaltung und Informatik."
+      },
+      {
+        "id": "wbf",
+        "type": "Organ",
+        "label": "WBF (Wirtschaft & Bildung)",
+        "ebene": "Bund",
+        "einfluss": 80,
+        "mitglieder": 1,
+        "typ": "Exekutive",
+        "beschreibung": "Eidgenössisches Departement für Wirtschaft, Bildung und Forschung. Zuständig für Aussenhandel, Landwirtschaft, Bildung und Innovation."
+      },
+      {
+        "id": "uvek",
+        "type": "Organ",
+        "label": "UVEK (Umwelt & Verkehr)",
+        "ebene": "Bund",
+        "einfluss": 80,
+        "mitglieder": 1,
+        "typ": "Exekutive",
+        "beschreibung": "Eidgenössisches Departement für Umwelt, Verkehr, Energie und Kommunikation. Regelt Strassen, Schienen, Energiepolitik und Umweltauflagen."
+      },
+      {
+        "id": "bundesgericht",
+        "type": "Organ",
+        "label": "Bundesgericht (Lausanne)",
+        "ebene": "Bund",
+        "einfluss": 85,
+        "mitglieder": 38,
+        "typ": "Judikative",
+        "beschreibung": "Das oberste Gericht der Schweiz. Schützt das verfassungsmässige Recht der Bürgerinnen und Bürger und sorgt für einheitliches Recht."
+      },
+      {
+        "id": "bundesstrafgericht",
+        "type": "Organ",
+        "label": "Bundesstrafgericht (Bellinzona)",
+        "ebene": "Bund",
+        "einfluss": 60,
+        "mitglieder": 20,
+        "typ": "Judikative",
+        "beschreibung": "Beurteilt erstinstanzlich Strafsachen, die der Bundesgerichtsbarkeit unterliegen (z. B. Sprengstoffdelikte, Terrorismus)."
+      },
+      {
+        "id": "bundesverwaltungsgericht",
+        "type": "Organ",
+        "label": "Bundesverwaltungsgericht (St. Gallen)",
+        "ebene": "Bund",
+        "einfluss": 65,
+        "mitglieder": 70,
+        "typ": "Judikative",
+        "beschreibung": "Beurteilt Beschwerden gegen Entscheide von Bundesbehörden (z. B. Asylentscheide, Abgaben, Bahnverkehr)."
+      },
+      {
+        "id": "bundespatentgericht",
+        "type": "Organ",
+        "label": "Bundespatentgericht (St. Gallen)",
+        "ebene": "Bund",
+        "einfluss": 40,
+        "mitglieder": 2,
+        "typ": "Judikative",
+        "beschreibung": "Spezialisiertes erstinstanzliches Gericht für zivilrechtliche Streitigkeiten bezüglich Patenten."
+      },
+      {
+        "id": "initiative",
+        "type": "Instrument",
+        "label": "Volksinitiative",
+        "ebene": "Bund",
+        "einfluss": 85,
+        "mitglieder": 100000,
+        "typ": "Direkte Demokratie",
+        "beschreibung": "Ermöglicht Bürgern, Verfassungsänderungen vorzuschlagen. Benötigt 100'000 gültige Unterschriften innerhalb von 18 Monaten."
+      },
+      {
+        "id": "fakultatives_referendum",
+        "type": "Instrument",
+        "label": "Fakultatives Referendum",
+        "ebene": "Bund",
+        "einfluss": 80,
+        "mitglieder": 50000,
+        "typ": "Direkte Demokratie",
+        "beschreibung": "Ermöglicht dem Volk, über beschlossene Gesetze abzustimmen. Benötigt 50'000 Unterschriften innerhalb von 100 Tagen."
+      },
+      {
+        "id": "obligatorisches_referendum",
+        "type": "Instrument",
+        "label": "Obligatorisches Referendum",
+        "ebene": "Bund",
+        "einfluss": 90,
+        "mitglieder": 0,
+        "typ": "Direkte Demokratie",
+        "beschreibung": "Zwingende Volksabstimmung über alle Verfassungsänderungen und den Beitritt zu supranationalen Gemeinschaften."
+      },
+      {
+        "id": "kantonsreferendum",
+        "type": "Instrument",
+        "label": "Kantonsreferendum",
+        "ebene": "Bund",
+        "einfluss": 50,
+        "mitglieder": 8,
+        "typ": "Direkte Demokratie",
+        "beschreibung": "Acht Kantone können gemeinsam verlangen, dass ein vom Parlament verabschiedetes Gesetz dem Volk zur Abstimmung vorgelegt wird."
+      },
+      {
+        "id": "svp",
+        "type": "Akteur",
+        "label": "SVP (Schweizerische Volkspartei)",
+        "ebene": "Bund",
+        "einfluss": 75,
+        "mitglieder": 90000,
+        "typ": "Partei",
+        "beschreibung": "Rechtskonservative Partei. Setzt auf nationale Souveränität, Neutralität, Steuererleichterungen und restriktive Asylpolitik."
+      },
+      {
+        "id": "sp",
+        "type": "Akteur",
+        "label": "SP (Sozialdemokratische Partei)",
+        "ebene": "Bund",
+        "einfluss": 70,
+        "mitglieder": 32000,
+        "typ": "Partei",
+        "beschreibung": "Sozialdemokratische Partei (Mitte-links). Schwerpunkte liegen auf sozialer Gerechtigkeit, öffentlichem Dienst und Umweltschutz."
+      },
+      {
+        "id": "fdp",
+        "type": "Akteur",
+        "label": "FDP (Die Liberalen)",
+        "ebene": "Bund",
+        "einfluss": 65,
+        "mitglieder": 120000,
+        "typ": "Partei",
+        "beschreibung": "Liberale Partei (Mitte-rechts). Setzt auf Wirtschaftswachstum, Bürokratieabbau, freie Märkte und Eigenverantwortung."
+      },
+      {
+        "id": "die_mitte",
+        "type": "Akteur",
+        "label": "Die Mitte",
+        "ebene": "Bund",
+        "einfluss": 65,
+        "mitglieder": 100000,
+        "typ": "Partei",
+        "beschreibung": "Mitte-Partei (entstanden aus CVP und BDP). Betont den föderalistischen Zusammenhalt, christliche Werte und Konsensfindung."
+      },
+      {
+        "id": "gruene",
+        "type": "Akteur",
+        "label": "Grüne Schweiz",
+        "ebene": "Bund",
+        "einfluss": 50,
+        "mitglieder": 25000,
+        "typ": "Partei",
+        "beschreibung": "Ökologische Partei (links). Kernanliegen sind Umwelt- und Klimaschutz, nachhaltige Entwicklung und soziale Gleichheit."
+      },
+      {
+        "id": "glp",
+        "type": "Akteur",
+        "label": "GLP (Grünliberale Partei)",
+        "ebene": "Bund",
+        "einfluss": 45,
+        "mitglieder": 20000,
+        "typ": "Partei",
+        "beschreibung": "Grünliberale Partei. Kombiniert ökologische Anliegen mit liberaler, marktwirtschaftlicher Wirtschaftspolitik."
+      },
+      {
+        "id": "economiesuisse",
+        "type": "Akteur",
+        "label": "economiesuisse",
+        "ebene": "Bund",
+        "einfluss": 70,
+        "mitglieder": 100000,
+        "typ": "Interessenvertretung",
+        "beschreibung": "Der grösste Dachverband der Schweizer Wirtschaft, vertritt die Interessen der exportorientierten Unternehmen und Grosskonzerne."
+      },
+      {
+        "id": "sgb",
+        "type": "Akteur",
+        "label": "Schweizerischer Gewerkschaftsbund",
+        "ebene": "Bund",
+        "einfluss": 65,
+        "mitglieder": 370000,
+        "typ": "Interessenvertretung",
+        "beschreibung": "Die grösste gewerkschaftliche Dachorganisation. Setzt sich für Arbeitnehmerrechte, Löhne und soziale Sicherheit ein."
+      },
+      {
+        "id": "sbv",
+        "type": "Akteur",
+        "label": "Schweizer Bauernverband",
+        "ebene": "Bund",
+        "einfluss": 60,
+        "mitglieder": 50000,
+        "typ": "Interessenvertretung",
+        "beschreibung": "Verband zur Wahrung der bäuerlichen Interessen. Verfügt über eine ausgesprochen starke und treue Lobby im eidgenössischen Parlament."
+      },
+      {
+        "id": "tcs",
+        "type": "Akteur",
+        "label": "TCS (Touring Club Schweiz)",
+        "ebene": "Bund",
+        "einfluss": 55,
+        "mitglieder": 1600000,
+        "typ": "Interessenvertretung",
+        "beschreibung": "Verkehrsclub und Konsumentenorganisation mit grossem Einfluss bei Volksabstimmungen über Infrastruktur und Mobilität."
+      },
+      {
+        "id": "uniko",
+        "type": "Akteur",
+        "label": "swissuniversities",
+        "ebene": "Bund",
+        "einfluss": 40,
+        "mitglieder": 30,
+        "typ": "Interessenvertretung",
+        "beschreibung": "Dachorganisation der Schweizer Hochschulen. Lobbyiert für Finanzierung von Forschung, Lehre und akademischen Austausch."
+      },
+      {
+        "id": "kantonsregierungen",
+        "type": "Organ",
+        "label": "Kantonsregierungen (26)",
+        "ebene": "Kanton",
+        "einfluss": 75,
+        "mitglieder": 130,
+        "typ": "Exekutive",
+        "beschreibung": "Exekutivbehörden der Kantone. Setzen kantonales Recht um und leiten die jeweiligen kantonalen Verwaltungen."
+      },
+      {
+        "id": "kantonsparlamente",
+        "type": "Organ",
+        "label": "Kantonsparlamente (26)",
+        "ebene": "Kanton",
+        "einfluss": 70,
+        "mitglieder": 2600,
+        "typ": "Legislative",
+        "beschreibung": "Gesetzgeber auf Kantonsebene. Beschliessen kantonale Gesetze und kontrollieren die kantonale Regierung."
+      },
+      {
+        "id": "gemeindeversammlungen",
+        "type": "Organ",
+        "label": "Gemeindeversammlungen",
+        "ebene": "Gemeinde",
+        "einfluss": 50,
+        "mitglieder": 0,
+        "typ": "Legislative",
+        "beschreibung": "Direktdemokratische Versammlungen der stimmberechtigten Gemeindemitglieder zur Beschlussfassung über lokale Vorlagen."
+      },
+      {
+        "id": "staendemehr",
+        "type": "Organ",
+        "label": "Ständemehr (Föderalismus)",
+        "ebene": "Bund",
+        "einfluss": 85,
+        "mitglieder": 26,
+        "typ": "Foederalismus",
+        "beschreibung": "Erfordernis der Zustimmung der Mehrheit der Kantone bei Verfassungsänderungen, schützt kleinere Kantone vor Überstimmung."
+      }
+    ],
+    "relationships": [
+      {
+        "type": "interaktion",
+        "source": "volk",
+        "target": "nationalrat",
+        "label": "wählt",
+        "typ": "waehlt",
+        "staerke": 95,
+        "beschreibung": "Wählt alle 4 Jahre die Volksvertreter proportional zur Kantonsbevölkerung."
+      },
+      {
+        "type": "interaktion",
+        "source": "volk",
+        "target": "staenderat",
+        "label": "wählt",
+        "typ": "waehlt",
+        "staerke": 90,
+        "beschreibung": "Wählt die kantonalen Vertreter (meist nach Majorzverfahren)."
+      },
+      {
+        "type": "interaktion",
+        "source": "volk",
+        "target": "kantonsparlamente",
+        "label": "wählt",
+        "typ": "waehlt",
+        "staerke": 90,
+        "beschreibung": "Wählt die Volksvertretung auf Kantonsebene."
+      },
+      {
+        "type": "interaktion",
+        "source": "volk",
+        "target": "kantonsregierungen",
+        "label": "wählt",
+        "typ": "waehlt",
+        "staerke": 90,
+        "beschreibung": "Wählt direkt die Regierungsmitglieder der allermeisten Kantone."
+      },
+      {
+        "type": "interaktion",
+        "source": "volk",
+        "target": "gemeindeversammlungen",
+        "label": "bildet",
+        "typ": "unterstuetzt",
+        "staerke": 95,
+        "beschreibung": "Stimmberechtigte Bürger versammeln sich zur Ausübung der lokalen Legislative."
+      },
+      {
+        "type": "interaktion",
+        "source": "volk",
+        "target": "initiative",
+        "label": "lanciert",
+        "typ": "waehlt",
+        "staerke": 80,
+        "beschreibung": "Sammelt 100'000 Unterschriften zur Einreichung einer Volksinitiative."
+      },
+      {
+        "type": "interaktion",
+        "source": "volk",
+        "target": "fakultatives_referendum",
+        "label": "ergreift",
+        "typ": "waehlt",
+        "staerke": 75,
+        "beschreibung": "Sammelt 50'000 Unterschriften gegen ein neues Bundesgesetz."
+      },
+      {
+        "type": "interaktion",
+        "source": "volk",
+        "target": "obligatorisches_referendum",
+        "label": "entscheidet über",
+        "typ": "entscheidet",
+        "staerke": 95,
+        "beschreibung": "Stimmt obligatorisch über jede Verfassungsänderung ab."
+      },
+      {
+        "type": "interaktion",
+        "source": "kantone",
+        "target": "staenderat",
+        "label": "bestimmen Wahl für",
+        "typ": "kontrolliert",
+        "staerke": 85,
+        "beschreibung": "Jeder Kanton legt die Modalitäten der Wahl seiner Ständeräte fest."
+      },
+      {
+        "type": "interaktion",
+        "source": "kantone",
+        "target": "staendemehr",
+        "label": "bilden",
+        "typ": "unterstuetzt",
+        "staerke": 100,
+        "beschreibung": "Kantonsabstimmungen fliessen in die Ermittlung des Ständemehrs ein."
+      },
+      {
+        "type": "interaktion",
+        "source": "staendemehr",
+        "target": "obligatorisches_referendum",
+        "label": "mitentscheidet über",
+        "typ": "entscheidet",
+        "staerke": 95,
+        "beschreibung": "Erfordert zwingend das Ständemehr (Mehrheit der Standesstimmen)."
+      },
+      {
+        "type": "interaktion",
+        "source": "kantone",
+        "target": "kantonsreferendum",
+        "label": "ergreifen",
+        "typ": "beeinflusst",
+        "staerke": 45,
+        "beschreibung": "Mindestens 8 Kantone können zusammen ein Referendum erzwingen."
+      },
+      {
+        "type": "interaktion",
+        "source": "kantone",
+        "target": "gemeinden",
+        "label": "beaufsichtigen",
+        "typ": "kontrolliert",
+        "staerke": 80,
+        "beschreibung": "Kantonale Hoheit legt Gemeindeautonomie und -grenzen fest."
+      },
+      {
+        "type": "interaktion",
+        "source": "nationalrat",
+        "target": "bundesversammlung",
+        "label": "bildet",
+        "typ": "unterstuetzt",
+        "staerke": 100,
+        "beschreibung": "Nationalräte nehmen an der Bundesversammlung teil."
+      },
+      {
+        "type": "interaktion",
+        "source": "staenderat",
+        "target": "bundesversammlung",
+        "label": "bildet",
+        "typ": "unterstuetzt",
+        "staerke": 100,
+        "beschreibung": "Ständeräte nehmen an der Bundesversammlung teil."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesversammlung",
+        "target": "bundesrat",
+        "label": "wählt",
+        "typ": "waehlt",
+        "staerke": 95,
+        "beschreibung": "Wählt die 7 Regierungsmitglieder für eine 4-jährige Amtsperiode."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesversammlung",
+        "target": "bundeskanzlei",
+        "label": "wählt Kanzler:in für",
+        "typ": "waehlt",
+        "staerke": 70,
+        "beschreibung": "Wählt den Kanzler/die Kanzlerin als Stabschef des Bundesrats."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesversammlung",
+        "target": "bundesgericht",
+        "label": "wählt Richter:innen für",
+        "typ": "waehlt",
+        "staerke": 90,
+        "beschreibung": "Bestimmt die 38 Bundesrichter der Schweizer Eidgenossenschaft."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesversammlung",
+        "target": "bundesstrafgericht",
+        "label": "wählt Richter:innen für",
+        "typ": "waehlt",
+        "staerke": 80,
+        "beschreibung": "Wählt die Strafrichter des Bundes."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesversammlung",
+        "target": "bundesverwaltungsgericht",
+        "label": "wählt Richter:innen für",
+        "typ": "waehlt",
+        "staerke": 80,
+        "beschreibung": "Wählt die Richter für Verwaltungsbeschwerden auf Bundesebene."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesversammlung",
+        "target": "bundespatentgericht",
+        "label": "wählt Richter:innen für",
+        "typ": "waehlt",
+        "staerke": 60,
+        "beschreibung": "Wählt die Richter des Spezialgerichts für Patentrecht."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesrat",
+        "target": "eda",
+        "label": "leitet",
+        "typ": "leitet",
+        "staerke": 95,
+        "beschreibung": "Ein Bundesrat steht dem Aussendepartement vor."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesrat",
+        "target": "edi",
+        "label": "leitet",
+        "typ": "leitet",
+        "staerke": 95,
+        "beschreibung": "Ein Bundesrat steht dem Innendepartement vor."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesrat",
+        "target": "ejpd",
+        "label": "leitet",
+        "typ": "leitet",
+        "staerke": 95,
+        "beschreibung": "Ein Bundesrat steht dem Justiz- und Polizeidepartement vor."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesrat",
+        "target": "vbs",
+        "label": "leitet",
+        "typ": "leitet",
+        "staerke": 95,
+        "beschreibung": "Ein Bundesrat steht dem Departement für Verteidigung und Sport vor."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesrat",
+        "target": "efd",
+        "label": "leitet",
+        "typ": "leitet",
+        "staerke": 95,
+        "beschreibung": "Ein Bundesrat leitet das Eidgenössische Finanzdepartement."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesrat",
+        "target": "wbf",
+        "label": "leitet",
+        "typ": "leitet",
+        "staerke": 95,
+        "beschreibung": "Ein Bundesrat steht dem Wirtschafts- und Bildungsdepartement vor."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesrat",
+        "target": "uvek",
+        "label": "leitet",
+        "typ": "leitet",
+        "staerke": 95,
+        "beschreibung": "Ein Bundesrat leitet das Umwelt- und Verkehrsdepartement."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundeskanzlei",
+        "target": "bundesrat",
+        "label": "unterstützt",
+        "typ": "unterstuetzt",
+        "staerke": 85,
+        "beschreibung": "Bereitet die Bundesratssitzungen vor und erledigt Stabsaufgaben."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesrat",
+        "target": "kantonsregierungen",
+        "label": "kooperiert mit",
+        "typ": "unterstuetzt",
+        "staerke": 80,
+        "beschreibung": "Stellt Vollzugskooperation sicher und holt kantonale Vernehmlassungen ein."
+      },
+      {
+        "type": "interaktion",
+        "source": "kantonsregierungen",
+        "target": "gemeinden",
+        "label": "kooperieren mit",
+        "typ": "unterstuetzt",
+        "staerke": 75,
+        "beschreibung": "Vollziehen kantonale Vorgaben auf kommunaler Ebene."
+      },
+      {
+        "type": "interaktion",
+        "source": "kantonsparlamente",
+        "target": "kantonsregierungen",
+        "label": "kontrollieren",
+        "typ": "kontrolliert",
+        "staerke": 80,
+        "beschreibung": "Parlamente prüfen die Regierungsarbeit und das Budget der Kantone."
+      },
+      {
+        "type": "interaktion",
+        "source": "svp",
+        "target": "nationalrat",
+        "label": "stellt Sitze in",
+        "typ": "beeinflusst",
+        "staerke": 80,
+        "beschreibung": "Derzeit wählerstärkste Fraktion in der Grossen Kammer."
+      },
+      {
+        "type": "interaktion",
+        "source": "svp",
+        "target": "staenderat",
+        "label": "stellt Sitze in",
+        "typ": "beeinflusst",
+        "staerke": 60,
+        "beschreibung": "Vertreten durch namhafte Ständeratsmitglieder."
+      },
+      {
+        "type": "interaktion",
+        "source": "svp",
+        "target": "bundesrat",
+        "label": "stellt Bundesräte",
+        "typ": "beeinflusst",
+        "staerke": 85,
+        "beschreibung": "Hält gemäss parteipolitischer Zauberformel seit Jahrzehnten 2 Sitze."
+      },
+      {
+        "type": "interaktion",
+        "source": "sp",
+        "target": "nationalrat",
+        "label": "stellt Sitze in",
+        "typ": "beeinflusst",
+        "staerke": 75,
+        "beschreibung": "Zweitstärkste Kraft und stärkste linke Fraktion."
+      },
+      {
+        "type": "interaktion",
+        "source": "sp",
+        "target": "staenderat",
+        "label": "stellt Sitze in",
+        "typ": "beeinflusst",
+        "staerke": 55,
+        "beschreibung": "Vertreten im Ständerat."
+      },
+      {
+        "type": "interaktion",
+        "source": "sp",
+        "target": "bundesrat",
+        "label": "stellt Bundesräte",
+        "typ": "beeinflusst",
+        "staerke": 85,
+        "beschreibung": "Hält gemäss parteipolitischer Zauberformel seit 1959 2 Sitze."
+      },
+      {
+        "type": "interaktion",
+        "source": "fdp",
+        "target": "nationalrat",
+        "label": "stellt Sitze in",
+        "typ": "beeinflusst",
+        "staerke": 65,
+        "beschreibung": "Einflussreiche liberale Fraktion."
+      },
+      {
+        "type": "interaktion",
+        "source": "fdp",
+        "target": "staenderat",
+        "label": "stellt Sitze in",
+        "typ": "beeinflusst",
+        "staerke": 70,
+        "beschreibung": "Traditionell sehr stark vertreten im Ständerat."
+      },
+      {
+        "type": "interaktion",
+        "source": "fdp",
+        "target": "bundesrat",
+        "label": "stellt Bundesräte",
+        "typ": "beeinflusst",
+        "staerke": 85,
+        "beschreibung": "Hält gemäss parteipolitischer Zauberformel 2 Sitze."
+      },
+      {
+        "type": "interaktion",
+        "source": "die_mitte",
+        "target": "nationalrat",
+        "label": "stellt Sitze in",
+        "typ": "beeinflusst",
+        "staerke": 65,
+        "beschreibung": "Zünglein an der Waage bei vielen Sachentscheiden."
+      },
+      {
+        "type": "interaktion",
+        "source": "die_mitte",
+        "target": "staenderat",
+        "label": "stellt Sitze in",
+        "typ": "beeinflusst",
+        "staerke": 75,
+        "beschreibung": "Häufig stärkste oder zweitstärkste Fraktion in der Kleinen Kammer."
+      },
+      {
+        "type": "interaktion",
+        "source": "die_mitte",
+        "target": "bundesrat",
+        "label": "stellt Bundesräte",
+        "typ": "beeinflusst",
+        "staerke": 85,
+        "beschreibung": "Hält gemäss Zauberformel 1 Sitz in der Landesregierung."
+      },
+      {
+        "type": "interaktion",
+        "source": "gruene",
+        "target": "nationalrat",
+        "label": "stellt Sitze in",
+        "typ": "beeinflusst",
+        "staerke": 50,
+        "beschreibung": "Vertritt ökologische und gesellschaftspolitisch linke Themen."
+      },
+      {
+        "type": "interaktion",
+        "source": "gruene",
+        "target": "staenderat",
+        "label": "stellt Sitze in",
+        "typ": "beeinflusst",
+        "staerke": 40,
+        "beschreibung": "Vereinzelt im Ständerat vertreten."
+      },
+      {
+        "type": "interaktion",
+        "source": "glp",
+        "target": "nationalrat",
+        "label": "stellt Sitze in",
+        "typ": "beeinflusst",
+        "staerke": 45,
+        "beschreibung": "Vertritt ökologische Ansätze in Kombination mit Marktliberalismus."
+      },
+      {
+        "type": "interaktion",
+        "source": "glp",
+        "target": "staenderat",
+        "label": "stellt Sitze in",
+        "typ": "beeinflusst",
+        "staerke": 30,
+        "beschreibung": "Vereinzelte Vertretung im Ständerat."
+      },
+      {
+        "type": "interaktion",
+        "source": "economiesuisse",
+        "target": "nationalrat",
+        "label": "lobbyiert in",
+        "typ": "beeinflusst",
+        "staerke": 65,
+        "beschreibung": "Präsentiert wirtschaftspolitische Argumente in Kommissionen."
+      },
+      {
+        "type": "interaktion",
+        "source": "economiesuisse",
+        "target": "staenderat",
+        "label": "lobbyiert in",
+        "typ": "beeinflusst",
+        "staerke": 60,
+        "beschreibung": "Lobbying bei ständerätlichen Vertretern."
+      },
+      {
+        "type": "interaktion",
+        "source": "economiesuisse",
+        "target": "bundesrat",
+        "label": "beeinflusst",
+        "typ": "beeinflusst",
+        "staerke": 50,
+        "beschreibung": "Nimmt an Vernehmlassungsverfahren des Bundesrats teil."
+      },
+      {
+        "type": "interaktion",
+        "source": "sgb",
+        "target": "nationalrat",
+        "label": "lobbyiert in",
+        "typ": "beeinflusst",
+        "staerke": 60,
+        "beschreibung": "Setzt sich für gesetzliche Arbeitnehmerrechte und Arbeitsschutz ein."
+      },
+      {
+        "type": "interaktion",
+        "source": "sgb",
+        "target": "staenderat",
+        "label": "lobbyiert in",
+        "typ": "beeinflusst",
+        "staerke": 50,
+        "beschreibung": "Lobbying für sozialpartnerschaftliche Abkommen."
+      },
+      {
+        "type": "interaktion",
+        "source": "sgb",
+        "target": "bundesrat",
+        "label": "beeinflusst",
+        "typ": "beeinflusst",
+        "staerke": 45,
+        "beschreibung": "Gibt sozialpolitische Stellungnahmen im Gesetzgebungsprozess ab."
+      },
+      {
+        "type": "interaktion",
+        "source": "sbv",
+        "target": "nationalrat",
+        "label": "beeinflusst",
+        "typ": "beeinflusst",
+        "staerke": 75,
+        "beschreibung": "Traditionell extrem einflussreiche Bauernlobby im Nationalrat."
+      },
+      {
+        "type": "interaktion",
+        "source": "sbv",
+        "target": "staenderat",
+        "label": "beeinflusst",
+        "typ": "beeinflusst",
+        "staerke": 70,
+        "beschreibung": "Pflegt enge Kontakte zu ländlich geprägten Ständeräten."
+      },
+      {
+        "type": "interaktion",
+        "source": "tcs",
+        "target": "nationalrat",
+        "label": "lobbyiert in",
+        "typ": "beeinflusst",
+        "staerke": 55,
+        "beschreibung": "Lobbying bei verkehrs- und strassenrelevanten Vorlagen."
+      },
+      {
+        "type": "interaktion",
+        "source": "uniko",
+        "target": "wbf",
+        "label": "lobbyiert in",
+        "typ": "beeinflusst",
+        "staerke": 55,
+        "beschreibung": "Setzt sich für Bildungs- und Forschungsetats beim WBF ein."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesgericht",
+        "target": "bundesstrafgericht",
+        "label": "überprüft",
+        "typ": "kontrolliert",
+        "staerke": 85,
+        "beschreibung": "Überprüft letztinstanzlich Urteile des Bundesstrafgerichts."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesgericht",
+        "target": "bundesverwaltungsgericht",
+        "label": "überprüft",
+        "typ": "kontrolliert",
+        "staerke": 85,
+        "beschreibung": "Letztinstanzliches Berufungsorgan für Bundesverwaltungsurteile."
+      },
+      {
+        "type": "interaktion",
+        "source": "bundesgericht",
+        "target": "bundespatentgericht",
+        "label": "überprüft",
+        "typ": "kontrolliert",
+        "staerke": 80,
+        "beschreibung": "Letzte Instanz bei Beschwerden über Patenturteile."
+      }
+    ]
+  }
+}

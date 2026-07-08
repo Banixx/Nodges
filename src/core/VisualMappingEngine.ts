@@ -17,6 +17,7 @@ import { getPropertySchema, getEntityAttributeValue } from './BuildFormatUtils';
  */
 export class VisualMappingEngine {
     private visualMappings: VisualMappings | undefined;
+    private originalVisualMappings: VisualMappings | undefined;
     private dataModel: DataModel | undefined;
 
     constructor(visualMappings?: VisualMappings, dataModel?: DataModel) {
@@ -29,6 +30,13 @@ export class VisualMappingEngine {
      */
     setVisualMappings(visualMappings: VisualMappings) {
         this.visualMappings = visualMappings;
+    }
+
+    /**
+     * Set original (suggested) visual mappings
+     */
+    setOriginalVisualMappings(originalMappings: VisualMappings | undefined) {
+        this.originalVisualMappings = originalMappings;
     }
 
     /**
@@ -45,31 +53,41 @@ export class VisualMappingEngine {
         this.dataModel = dataModel;
     }
 
+    private getEffectivePreset(type: string, isNode: boolean): any {
+        const activeSpecific = this.visualMappings?.defaultPresets?.[type];
+        const activeGlobal = this.visualMappings?.defaultPresets?.[isNode ? 'global_node' : 'global_edge'];
+
+        const preset = {};
+        if (activeGlobal) Object.assign(preset, activeGlobal);
+        if (activeSpecific) Object.assign(preset, activeSpecific);
+        
+        return preset;
+    }
+
     /**
      * Apply visual mappings to an entity
      */
     applyToEntity(entity: EntityData): VisualProperties {
-        if (!this.visualMappings) {
-            return this.getDefaultVisualProperties();
-        }
-
-        let specificPreset = this.visualMappings.defaultPresets[entity.type] as EntityVisualPreset;
-        let globalPreset = this.visualMappings.defaultPresets['global_node'] as EntityVisualPreset;
-        
-        let preset: EntityVisualPreset;
-        if (globalPreset && specificPreset) {
-            preset = { ...specificPreset, ...globalPreset };
-        } else if (globalPreset) {
-            preset = globalPreset;
-        } else if (specificPreset) {
-            preset = specificPreset;
-        } else {
+        const preset = this.getEffectivePreset(entity.type, true) as EntityVisualPreset;
+        if (Object.keys(preset).length === 0) {
             return this.getDefaultVisualProperties();
         }
 
         const visual: VisualProperties = {};
 
         // Apply position mappings
+        if (preset.position && preset.position.source !== 'constant') {
+            const posVal = this.applyMapping(preset.position, entity, 'position');
+            if (Array.isArray(posVal) && posVal.length >= 3) {
+                visual.positionX = Number(posVal[0]);
+                visual.positionY = Number(posVal[1]);
+                visual.positionZ = Number(posVal[2]);
+            } else if (posVal && typeof posVal === 'object') {
+                visual.positionX = Number(posVal.x) || 0;
+                visual.positionY = Number(posVal.y) || 0;
+                visual.positionZ = Number(posVal.z) || 0;
+            }
+        }
         if (preset.positionX && preset.positionX.source !== 'constant') {
             visual.positionX = this.applyMapping(preset.positionX, entity, 'positionX');
         }
@@ -124,21 +142,8 @@ export class VisualMappingEngine {
      * Apply visual mappings to a relationship
      */
     applyToRelationship(relationship: RelationshipData): VisualProperties {
-        if (!this.visualMappings) {
-            return this.getDefaultVisualProperties();
-        }
-
-        let specificPreset = this.visualMappings.defaultPresets[relationship.type] as RelationshipVisualPreset;
-        let globalPreset = this.visualMappings.defaultPresets['global_edge'] as RelationshipVisualPreset;
-
-        let preset: RelationshipVisualPreset;
-        if (globalPreset && specificPreset) {
-            preset = { ...specificPreset, ...globalPreset };
-        } else if (globalPreset) {
-            preset = globalPreset;
-        } else if (specificPreset) {
-            preset = specificPreset;
-        } else {
+        const preset = this.getEffectivePreset(relationship.type, false) as RelationshipVisualPreset;
+        if (Object.keys(preset).length === 0) {
             return this.getDefaultVisualProperties();
         }
 
@@ -170,10 +175,22 @@ export class VisualMappingEngine {
             visual.opacity = this.applyMapping(preset.opacity, relationship, 'opacity');
         }
 
-        // Apply animation mapping
+        // Apply animation mappings
         if (preset.animation) {
             visual.animation = this.mapToAnimation(preset.animation, relationship);
-            console.log(`[VisualMappingEngine] Applied animation for ${relationship.type}:`, visual.animation);
+            console.log(`[VisualMappingEngine] Applied legacy animation for ${relationship.type}:`, visual.animation);
+        }
+        if (preset.animation_flow) {
+            visual.animation_flow = this.applyMapping(preset.animation_flow, relationship, 'animation_flow');
+        }
+        if (preset.animation_sequential) {
+            visual.animation_sequential = this.applyMapping(preset.animation_sequential, relationship, 'animation_sequential');
+        }
+        if (preset.animation_pulse) {
+            visual.animation_pulse = this.applyMapping(preset.animation_pulse, relationship, 'animation_pulse');
+        }
+        if (preset.animation_segments) {
+            visual.animation_segments = this.applyMapping(preset.animation_segments, relationship, 'animation_segments');
         }
 
         return visual;
@@ -206,11 +223,23 @@ export class VisualMappingEngine {
         }
 
         // Get source value (supports nested properties like "personality.extraversion")
-        let value = this.getNestedProperty(data, sourceKey);
+        let value: any;
+        if (sourceKey.startsWith('algo:')) {
+            // Algorithm layouts update the entity.position directly.
+            // By returning data.position here, the VisualMappingEngine naturally uses the algorithm's output.
+            value = (data as EntityData).position;
+        } else {
+            value = this.getNestedProperty(data, sourceKey);
+        }
 
         if (value === undefined || value === null) {
             // Return middle of range or default
             return mapping.range ? (mapping.range[0] + mapping.range[1]) / 2 : 1;
+        }
+
+        // Pass through raw position arrays/objects
+        if (propName === 'position' && (Array.isArray(value) || (typeof value === 'object' && ('x' in value || 'X' in value)))) {
+            return value;
         }
 
         // Handle categorical mapping directly (keeps string values)

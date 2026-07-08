@@ -1,0 +1,140 @@
+{
+  "system": "Test 105 Build 3 Hierarchisch",
+  "metadata": {
+    "schemaVersion": "3.0",
+    "description": "Testdatei mit hierarchischer Gravitation"
+  },
+  "dataModel": {
+    "properties": {
+      "gravitation": {
+        "type": "continuous",
+        "description": "Gruppen-Eigenschaft für physikalische Kräfte"
+      }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "node": {
+        "attraction": {
+          "source": "gravitation.anziehungskraft",
+          "function": "linear",
+          "domain": [0, 1],
+          "range": [0, 200]
+        },
+        "repulsion": {
+          "source": "gravitation.abstossungskraft",
+          "function": "linear",
+          "domain": [0, 1],
+          "range": [0, 300]
+        },
+        "color": {
+          "source": "gravitation.anziehungskraft",
+          "function": "heatmap",
+          "palette": "blue-red",
+          "domain": [0, 1]
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "nodeA",
+        "type": "node",
+        "label": "Node A",
+        "stateVector": {
+          "gravitation": {
+            "anziehungskraft": 1.0,
+            "abstossungskraft": 0.0,
+            "masse": 1.0
+          }
+        }
+      },
+      {
+        "id": "nodeB",
+        "type": "node",
+        "label": "Node B",
+        "stateVector": {
+          "gravitation": {
+            "anziehungskraft": 0.0,
+            "abstossungskraft": 1.0,
+            "masse": 1.0
+          }
+        }
+      },
+      {
+        "id": "nodeC",
+        "type": "node",
+        "label": "Node C",
+        "stateVector": {
+          "gravitation": {
+            "anziehungskraft": 1.0,
+            "abstossungskraft": 1.0,
+            "masse": 5.0
+          }
+        }
+      },
+      {
+        "id": "nodeD",
+        "type": "node",
+        "label": "Node D",
+        "stateVector": {
+          "gravitation": {
+            "anziehungskraft": 0.0,
+            "abstossungskraft": 0.0,
+            "masse": 1.0
+          }
+        }
+      },
+      {
+        "id": "nodeE",
+        "type": "node",
+        "label": "Node E",
+        "stateVector": {
+          "gravitation": {
+            "anziehungskraft": 0.0,
+            "abstossungskraft": 0.0,
+            "masse": 1.0
+          }
+        }
+      },
+      {
+        "id": "nodeF",
+        "type": "node",
+        "label": "Node F",
+        "stateVector": {
+          "gravitation": {
+            "anziehungskraft": 0.0,
+            "abstossungskraft": 0.0,
+            "masse": 1.0
+          }
+        }
+      },
+      {
+        "id": "nodeG",
+        "type": "node",
+        "label": "Node G",
+        "stateVector": {
+          "gravitation": {
+            "anziehungskraft": 0.0,
+            "abstossungskraft": 0.0,
+            "masse": 1.0
+          }
+        }
+      },
+      {
+        "id": "nodeH",
+        "type": "node",
+        "label": "Node H",
+        "stateVector": {
+          "gravitation": {
+            "anziehungskraft": 0.0,
+            "abstossungskraft": 0.0,
+            "masse": 1.0
+          }
+        }
+      }
+    ],
+    "relationships": []
+  }
+}

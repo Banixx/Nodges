@@ -196,7 +196,7 @@ export class FileHandler {
             system: 'Nodges',
             metadata: {
                 ...networkData.metadata,
-                schemaVersion: networkData.metadata?.schemaVersion || '1'
+                schemaVersion: networkData.metadata?.schemaVersion || '3.0'
             },
             data: {
                 entities: entities,

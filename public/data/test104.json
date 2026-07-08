@@ -1,212 +1,82 @@
 {
-  "system": "Automotive_Industry_Complex",
+  "system": "Nodges Test",
   "metadata": {
-    "version": "1.1",
-    "schemaVersion": "3.0",
-    "engine": "Nodges_Thermodynamic_Simulation",
-    "timestamp": "2026-06-26T17:17:00Z"
+    "schemaVersion": "2.0"
   },
   "dataModel": {
     "properties": {
-      "category": {
-        "type": "categorical",
-        "values": ["brand", "model", "component", "supplier"]
-      },
-      "market_cap": {
-        "type": "continuous",
-        "range": [10, 1000]
-      },
-      "weight": {
-        "type": "continuous",
-        "range": [0, 5000]
-      },
-      "price": {
-        "type": "continuous",
-        "range": [10, 150000]
-      }
-    }
-  },
-  "visualMappings": {
-    "defaultPresets": {
-      "brand": {
-        "geometry": { "source": "constant", "function": "constant", "params": { "value": "sphere" } },
-        "attraction": { "source": "constant", "function": "constant", "params": { "value": 0.5 } },
-        "repulsion": { "source": "constant", "function": "constant", "params": { "value": 300 } },
-        "inertia": { "source": "constant", "function": "constant", "params": { "value": 0.9 } },
-        "size": { "source": "constant", "function": "constant", "params": { "value": 4.0 } },
-        "color": { "source": "constant", "function": "constant", "params": { "color": "#ff3333" } }
-      },
-      "model": {
-        "geometry": { "source": "constant", "function": "constant", "params": { "value": "cube" } },
-        "attraction": { "source": "constant", "function": "constant", "params": { "value": 1.5 } },
-        "repulsion": { "source": "constant", "function": "constant", "params": { "value": 80 } },
-        "size": { "source": "constant", "function": "constant", "params": { "value": 2.0 } },
-        "color": { "source": "constant", "function": "constant", "params": { "color": "#33ff33" } }
-      },
-      "component": {
-        "geometry": { "source": "constant", "function": "constant", "params": { "value": "tetrahedron" } },
-        "attraction": { "source": "constant", "function": "constant", "params": { "value": 2.5 } },
-        "repulsion": { "source": "constant", "function": "constant", "params": { "value": 30 } },
-        "size": { "source": "constant", "function": "constant", "params": { "value": 1.0 } },
-        "color": { "source": "constant", "function": "constant", "params": { "color": "#3333ff" } }
-      },
-      "supplier": {
-        "geometry": { "source": "constant", "function": "constant", "params": { "value": "icosahedron" } },
-        "attraction": { "source": "constant", "function": "constant", "params": { "value": 1.2 } },
-        "repulsion": { "source": "constant", "function": "constant", "params": { "value": 100 } },
-        "size": { "source": "constant", "function": "constant", "params": { "value": 2.5 } },
-        "color": { "source": "constant", "function": "constant", "params": { "color": "#ffaa00" } }
+      "gravitation": {
+        "type": "categorical"
       }
     }
   },
   "data": {
     "entities": [
-      { "id": "brand_tesla", "type": "brand", "label": "Tesla", "stateVector": { "category": "brand", "market_cap": 800 } },
-      { "id": "brand_vw", "type": "brand", "label": "Volkswagen", "stateVector": { "category": "brand", "market_cap": 120 } },
-      { "id": "brand_toyota", "type": "brand", "label": "Toyota", "stateVector": { "category": "brand", "market_cap": 250 } },
-      { "id": "brand_ford", "type": "brand", "label": "Ford", "stateVector": { "category": "brand", "market_cap": 60 } },
-      { "id": "brand_bmw", "type": "brand", "label": "BMW", "stateVector": { "category": "brand", "market_cap": 70 } },
-      
-      { "id": "model_model3", "type": "model", "label": "Model 3", "stateVector": { "category": "model", "weight": 1600, "price": 40000 } },
-      { "id": "model_modely", "type": "model", "label": "Model Y", "stateVector": { "category": "model", "weight": 1900, "price": 45000 } },
-      { "id": "model_cybertruck", "type": "model", "label": "Cybertruck", "stateVector": { "category": "model", "weight": 3000, "price": 80000 } },
-      
-      { "id": "model_golf", "type": "model", "label": "Golf", "stateVector": { "category": "model", "weight": 1300, "price": 25000 } },
-      { "id": "model_passat", "type": "model", "label": "Passat", "stateVector": { "category": "model", "weight": 1500, "price": 30000 } },
-      { "id": "model_id4", "type": "model", "label": "ID.4", "stateVector": { "category": "model", "weight": 2100, "price": 42000 } },
-      
-      { "id": "model_corolla", "type": "model", "label": "Corolla", "stateVector": { "category": "model", "weight": 1350, "price": 22000 } },
-      { "id": "model_camry", "type": "model", "label": "Camry", "stateVector": { "category": "model", "weight": 1500, "price": 27000 } },
-      { "id": "model_rav4", "type": "model", "label": "RAV4", "stateVector": { "category": "model", "weight": 1600, "price": 30000 } },
-      
-      { "id": "model_mustang", "type": "model", "label": "Mustang", "stateVector": { "category": "model", "weight": 1700, "price": 35000 } },
-      { "id": "model_f150", "type": "model", "label": "F-150", "stateVector": { "category": "model", "weight": 2200, "price": 45000 } },
-      { "id": "model_mach_e", "type": "model", "label": "Mustang Mach-E", "stateVector": { "category": "model", "weight": 2000, "price": 48000 } },
-      
-      { "id": "model_3series", "type": "model", "label": "3 Series", "stateVector": { "category": "model", "weight": 1600, "price": 45000 } },
-      { "id": "model_x5", "type": "model", "label": "X5", "stateVector": { "category": "model", "weight": 2200, "price": 65000 } },
-      { "id": "model_i4", "type": "model", "label": "i4", "stateVector": { "category": "model", "weight": 2100, "price": 55000 } },
-
-      { "id": "comp_battery_lithium", "type": "component", "label": "Lithium Battery", "stateVector": { "category": "component", "weight": 500, "price": 8000 } },
-      { "id": "comp_battery_solid", "type": "component", "label": "Solid State Battery", "stateVector": { "category": "component", "weight": 400, "price": 12000 } },
-      { "id": "comp_motor_v4", "type": "component", "label": "V4 Engine", "stateVector": { "category": "component", "weight": 150, "price": 2000 } },
-      { "id": "comp_motor_v6", "type": "component", "label": "V6 Engine", "stateVector": { "category": "component", "weight": 200, "price": 3500 } },
-      { "id": "comp_motor_v8", "type": "component", "label": "V8 Engine", "stateVector": { "category": "component", "weight": 280, "price": 5500 } },
-      { "id": "comp_motor_electric_f", "type": "component", "label": "Electric Motor (Front)", "stateVector": { "category": "component", "weight": 80, "price": 1500 } },
-      { "id": "comp_motor_electric_r", "type": "component", "label": "Electric Motor (Rear)", "stateVector": { "category": "component", "weight": 90, "price": 1800 } },
-      { "id": "comp_tires_all", "type": "component", "label": "All-Season Tires", "stateVector": { "category": "component", "weight": 40, "price": 400 } },
-      { "id": "comp_tires_perf", "type": "component", "label": "Performance Tires", "stateVector": { "category": "component", "weight": 45, "price": 1200 } },
-      { "id": "comp_tires_offroad", "type": "component", "label": "Off-Road Tires", "stateVector": { "category": "component", "weight": 60, "price": 1000 } },
-      { "id": "comp_info_basic", "type": "component", "label": "Basic Infotainment", "stateVector": { "category": "component", "weight": 5, "price": 500 } },
-      { "id": "comp_info_premium", "type": "component", "label": "Premium Infotainment", "stateVector": { "category": "component", "weight": 8, "price": 2000 } },
-      { "id": "comp_ecu_autopilot", "type": "component", "label": "Autopilot ECU", "stateVector": { "category": "component", "weight": 3, "price": 3000 } },
-      { "id": "comp_seats_cloth", "type": "component", "label": "Cloth Seats", "stateVector": { "category": "component", "weight": 60, "price": 800 } },
-      { "id": "comp_seats_leather", "type": "component", "label": "Leather Seats", "stateVector": { "category": "component", "weight": 70, "price": 2500 } },
-      { "id": "comp_chassis_steel", "type": "component", "label": "Steel Chassis", "stateVector": { "category": "component", "weight": 400, "price": 1500 } },
-      { "id": "comp_chassis_alum", "type": "component", "label": "Aluminum Chassis", "stateVector": { "category": "component", "weight": 250, "price": 3500 } },
-      
-      { "id": "supp_panasonic", "type": "supplier", "label": "Panasonic", "stateVector": { "category": "supplier" } },
-      { "id": "supp_bosch", "type": "supplier", "label": "Bosch", "stateVector": { "category": "supplier" } },
-      { "id": "supp_michelin", "type": "supplier", "label": "Michelin", "stateVector": { "category": "supplier" } },
-      { "id": "supp_continental", "type": "supplier", "label": "Continental", "stateVector": { "category": "supplier" } },
-      { "id": "supp_nvidia", "type": "supplier", "label": "Nvidia", "stateVector": { "category": "supplier" } }
+      {
+        "id": "nodeA",
+        "type": "node",
+        "label": "Node A",
+        "stateVector": {
+          "gravitation": "anziehung"
+        }
+      },
+      {
+        "id": "nodeB",
+        "type": "node",
+        "label": "Node B",
+        "stateVector": {
+          "gravitation": "abstossung"
+        }
+      },
+      {
+        "id": "nodeC",
+        "type": "node",
+        "label": "Node C",
+        "stateVector": {
+          "gravitation": "beides"
+        }
+      },
+      {
+        "id": "nodeD",
+        "type": "node",
+        "label": "Node D",
+        "stateVector": {
+          "gravitation": "neutral"
+        }
+      },
+      {
+        "id": "nodeE",
+        "type": "node",
+        "label": "Node E",
+        "stateVector": {
+          "gravitation": "neutral"
+        }
+      },
+      {
+        "id": "nodeF",
+        "type": "node",
+        "label": "Node F",
+        "stateVector": {
+          "gravitation": "neutral"
+        }
+      },
+      {
+        "id": "nodeG",
+        "type": "node",
+        "label": "Node G",
+        "stateVector": {
+          "gravitation": "neutral"
+        }
+      },
+      {
+        "id": "nodeH",
+        "type": "node",
+        "label": "Node H",
+        "stateVector": {
+          "gravitation": "neutral"
+        }
+      }
     ],
-    "relationships": [
-      { "source": "brand_tesla", "target": "model_model3", "type": "produces" },
-      { "source": "brand_tesla", "target": "model_modely", "type": "produces" },
-      { "source": "brand_tesla", "target": "model_cybertruck", "type": "produces" },
-      { "source": "brand_vw", "target": "model_golf", "type": "produces" },
-      { "source": "brand_vw", "target": "model_passat", "type": "produces" },
-      { "source": "brand_vw", "target": "model_id4", "type": "produces" },
-      { "source": "brand_toyota", "target": "model_corolla", "type": "produces" },
-      { "source": "brand_toyota", "target": "model_camry", "type": "produces" },
-      { "source": "brand_toyota", "target": "model_rav4", "type": "produces" },
-      { "source": "brand_ford", "target": "model_mustang", "type": "produces" },
-      { "source": "brand_ford", "target": "model_f150", "type": "produces" },
-      { "source": "brand_ford", "target": "model_mach_e", "type": "produces" },
-      { "source": "brand_bmw", "target": "model_3series", "type": "produces" },
-      { "source": "brand_bmw", "target": "model_x5", "type": "produces" },
-      { "source": "brand_bmw", "target": "model_i4", "type": "produces" },
-
-      { "source": "model_model3", "target": "comp_battery_lithium", "type": "uses" },
-      { "source": "model_model3", "target": "comp_motor_electric_r", "type": "uses" },
-      { "source": "model_model3", "target": "comp_info_premium", "type": "uses" },
-      { "source": "model_model3", "target": "comp_ecu_autopilot", "type": "uses" },
-      { "source": "model_model3", "target": "comp_tires_all", "type": "uses" },
-      { "source": "model_model3", "target": "comp_chassis_alum", "type": "uses" },
-      
-      { "source": "model_modely", "target": "comp_battery_lithium", "type": "uses" },
-      { "source": "model_modely", "target": "comp_motor_electric_f", "type": "uses" },
-      { "source": "model_modely", "target": "comp_motor_electric_r", "type": "uses" },
-      { "source": "model_modely", "target": "comp_info_premium", "type": "uses" },
-      { "source": "model_modely", "target": "comp_seats_leather", "type": "uses" },
-      
-      { "source": "model_cybertruck", "target": "comp_battery_solid", "type": "uses" },
-      { "source": "model_cybertruck", "target": "comp_motor_electric_f", "type": "uses" },
-      { "source": "model_cybertruck", "target": "comp_motor_electric_r", "type": "uses" },
-      { "source": "model_cybertruck", "target": "comp_tires_offroad", "type": "uses" },
-      { "source": "model_cybertruck", "target": "comp_ecu_autopilot", "type": "uses" },
-      { "source": "model_cybertruck", "target": "comp_chassis_steel", "type": "uses" },
-      
-      { "source": "model_golf", "target": "comp_motor_v4", "type": "uses" },
-      { "source": "model_golf", "target": "comp_info_basic", "type": "uses" },
-      { "source": "model_golf", "target": "comp_tires_all", "type": "uses" },
-      { "source": "model_golf", "target": "comp_seats_cloth", "type": "uses" },
-      { "source": "model_golf", "target": "comp_chassis_steel", "type": "uses" },
-      
-      { "source": "model_passat", "target": "comp_motor_v6", "type": "uses" },
-      { "source": "model_passat", "target": "comp_info_premium", "type": "uses" },
-      { "source": "model_passat", "target": "comp_seats_leather", "type": "uses" },
-      { "source": "model_passat", "target": "comp_chassis_steel", "type": "uses" },
-
-      { "source": "model_id4", "target": "comp_battery_lithium", "type": "uses" },
-      { "source": "model_id4", "target": "comp_motor_electric_r", "type": "uses" },
-      { "source": "model_id4", "target": "comp_info_premium", "type": "uses" },
-      
-      { "source": "model_corolla", "target": "comp_motor_v4", "type": "uses" },
-      { "source": "model_corolla", "target": "comp_seats_cloth", "type": "uses" },
-      { "source": "model_corolla", "target": "comp_tires_all", "type": "uses" },
-      { "source": "model_corolla", "target": "comp_chassis_steel", "type": "uses" },
-
-      { "source": "model_camry", "target": "comp_motor_v6", "type": "uses" },
-      { "source": "model_camry", "target": "comp_seats_leather", "type": "uses" },
-
-      { "source": "model_rav4", "target": "comp_motor_v4", "type": "uses" },
-      { "source": "model_rav4", "target": "comp_tires_offroad", "type": "uses" },
-
-      { "source": "model_mustang", "target": "comp_motor_v8", "type": "uses" },
-      { "source": "model_mustang", "target": "comp_tires_perf", "type": "uses" },
-      { "source": "model_mustang", "target": "comp_seats_leather", "type": "uses" },
-      
-      { "source": "model_f150", "target": "comp_motor_v6", "type": "uses" },
-      { "source": "model_f150", "target": "comp_motor_v8", "type": "uses" },
-      { "source": "model_f150", "target": "comp_tires_offroad", "type": "uses" },
-      { "source": "model_f150", "target": "comp_chassis_steel", "type": "uses" },
-      
-      { "source": "model_mach_e", "target": "comp_battery_lithium", "type": "uses" },
-      { "source": "model_mach_e", "target": "comp_motor_electric_r", "type": "uses" },
-      
-      { "source": "model_3series", "target": "comp_motor_v6", "type": "uses" },
-      { "source": "model_3series", "target": "comp_tires_perf", "type": "uses" },
-      { "source": "model_3series", "target": "comp_seats_leather", "type": "uses" },
-
-      { "source": "model_x5", "target": "comp_motor_v8", "type": "uses" },
-      { "source": "model_x5", "target": "comp_tires_all", "type": "uses" },
-      { "source": "model_x5", "target": "comp_info_premium", "type": "uses" },
-
-      { "source": "model_i4", "target": "comp_battery_lithium", "type": "uses" },
-      { "source": "model_i4", "target": "comp_motor_electric_r", "type": "uses" },
-
-      { "source": "comp_battery_lithium", "target": "supp_panasonic", "type": "supplied_by" },
-      { "source": "comp_battery_solid", "target": "supp_panasonic", "type": "supplied_by" },
-      { "source": "comp_motor_electric_f", "target": "supp_bosch", "type": "supplied_by" },
-      { "source": "comp_motor_electric_r", "target": "supp_bosch", "type": "supplied_by" },
-      { "source": "comp_info_basic", "target": "supp_bosch", "type": "supplied_by" },
-      { "source": "comp_tires_all", "target": "supp_michelin", "type": "supplied_by" },
-      { "source": "comp_tires_perf", "target": "supp_michelin", "type": "supplied_by" },
-      { "source": "comp_tires_offroad", "target": "supp_continental", "type": "supplied_by" },
-      { "source": "comp_ecu_autopilot", "target": "supp_nvidia", "type": "supplied_by" },
-      { "source": "comp_info_premium", "target": "supp_nvidia", "type": "supplied_by" }
-    ]
+    "relationships": []
   }
 }

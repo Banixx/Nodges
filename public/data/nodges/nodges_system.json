@@ -1,0 +1,111 @@
+{
+  "system": "Nodges_Architecture",
+  "metadata": {
+    "schemaVersion": "4.0",
+    "description": "Die Architektur von Nodges, abgebildet als interaktiver 3D-Graph in Nodges selbst.",
+    "author": "Antigravity AI"
+  },
+  "dataModel": {
+    "entities": {
+      "module": {
+        "properties": {
+          "layer": {
+            "type": "categorical",
+            "values": ["Core", "Engine", "UI", "Data"]
+          },
+          "importance": {
+            "type": "continuous",
+            "range": [1, 10]
+          }
+        }
+      },
+      "component": {
+        "properties": {
+          "layer": {
+            "type": "categorical",
+            "values": ["Core", "Engine", "UI", "Data"]
+          },
+          "importance": {
+            "type": "continuous",
+            "range": [1, 10]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "contains": { "properties": {} },
+      "depends_on": { "properties": {} }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "module": {
+        "color": { "source": "layer", "function": "categorical" },
+        "size": { "source": "importance", "function": "linear", "range": [1.5, 3.0] }
+      },
+      "component": {
+        "color": { "source": "layer", "function": "categorical" },
+        "size": { "source": "importance", "function": "linear", "range": [0.8, 1.5] },
+        "geometry": "box"
+      },
+      "contains": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#ffffff" } },
+        "thickness": { "source": "constant", "function": "constant", "range": [0.1, 0.1] }
+      },
+      "depends_on": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#ffaa00" } },
+        "thickness": { "source": "constant", "function": "constant", "range": [0.05, 0.05] }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      { "id": "m_core", "type": "module", "label": "Core Architecture", "layer": "Core", "importance": 10, "position": { "x": 0, "y": 20, "z": 0 } },
+      { "id": "m_engine", "type": "module", "label": "Engines (Processing)", "layer": "Engine", "importance": 9, "position": { "x": -15, "y": 10, "z": 0 } },
+      { "id": "m_ui", "type": "module", "label": "UI Components", "layer": "UI", "importance": 8, "position": { "x": 15, "y": 10, "z": 0 } },
+      { "id": "m_data", "type": "module", "label": "Data & Schemas", "layer": "Data", "importance": 9, "position": { "x": 0, "y": 0, "z": 0 } },
+
+      { "id": "c_llm", "type": "component", "label": "LLM Service", "layer": "Core", "importance": 8, "position": { "x": 0, "y": 25, "z": 5 } },
+      { "id": "c_parser", "type": "component", "label": "Data Parser", "layer": "Core", "importance": 7, "position": { "x": 0, "y": 15, "z": 5 } },
+
+      { "id": "c_visual", "type": "component", "label": "Visual Mapping", "layer": "Engine", "importance": 9, "position": { "x": -20, "y": 15, "z": -5 } },
+      { "id": "c_scale", "type": "component", "label": "Scale Engine", "layer": "Engine", "importance": 8, "position": { "x": -25, "y": 10, "z": -5 } },
+      { "id": "c_physics", "type": "component", "label": "Physics Engine", "layer": "Engine", "importance": 8, "position": { "x": -15, "y": 5, "z": -5 } },
+      { "id": "c_renderer", "type": "component", "label": "Three.js Renderer", "layer": "Engine", "importance": 10, "position": { "x": -10, "y": 15, "z": 5 } },
+
+      { "id": "c_map_panel", "type": "component", "label": "Mapping Panel", "layer": "UI", "importance": 7, "position": { "x": 20, "y": 15, "z": -5 } },
+      { "id": "c_time_player", "type": "component", "label": "Time Player", "layer": "UI", "importance": 6, "position": { "x": 10, "y": 15, "z": -5 } },
+      { "id": "c_sugg_panel", "type": "component", "label": "Suggestion Panel", "layer": "UI", "importance": 5, "position": { "x": 20, "y": 5, "z": 5 } },
+
+      { "id": "c_build3", "type": "component", "label": "Schema Build 3", "layer": "Data", "importance": 7, "position": { "x": -5, "y": -5, "z": 5 } },
+      { "id": "c_build4", "type": "component", "label": "Schema Build 4", "layer": "Data", "importance": 8, "position": { "x": 5, "y": -5, "z": 5 } },
+      { "id": "c_temporal", "type": "component", "label": "Temporal Logic", "layer": "Data", "importance": 7, "position": { "x": 10, "y": -10, "z": 0 } }
+    ],
+    "relationships": [
+      { "id": "r1", "type": "contains", "source": "m_core", "target": "c_llm" },
+      { "id": "r2", "type": "contains", "source": "m_core", "target": "c_parser" },
+      
+      { "id": "r3", "type": "contains", "source": "m_engine", "target": "c_visual" },
+      { "id": "r4", "type": "contains", "source": "m_engine", "target": "c_scale" },
+      { "id": "r5", "type": "contains", "source": "m_engine", "target": "c_physics" },
+      { "id": "r6", "type": "contains", "source": "m_engine", "target": "c_renderer" },
+
+      { "id": "r7", "type": "contains", "source": "m_ui", "target": "c_map_panel" },
+      { "id": "r8", "type": "contains", "source": "m_ui", "target": "c_time_player" },
+      { "id": "r9", "type": "contains", "source": "m_ui", "target": "c_sugg_panel" },
+
+      { "id": "r10", "type": "contains", "source": "m_data", "target": "c_build3" },
+      { "id": "r11", "type": "contains", "source": "m_data", "target": "c_build4" },
+      { "id": "r12", "type": "contains", "source": "m_data", "target": "c_temporal" },
+
+      { "id": "r13", "type": "depends_on", "source": "c_llm", "target": "m_data", "label": "Generiert Daten" },
+      { "id": "r14", "type": "depends_on", "source": "c_parser", "target": "m_data", "label": "Validiert Struktur" },
+      { "id": "r15", "type": "depends_on", "source": "c_visual", "target": "c_scale", "label": "Nutzt Scales" },
+      { "id": "r16", "type": "depends_on", "source": "c_map_panel", "target": "c_visual", "label": "Steuert Mapping" },
+      { "id": "r17", "type": "depends_on", "source": "c_physics", "target": "c_visual", "label": "Liest Node-Groessen" },
+      { "id": "r18", "type": "depends_on", "source": "c_renderer", "target": "c_physics", "label": "Rendert Positionen" },
+      { "id": "r19", "type": "depends_on", "source": "c_time_player", "target": "c_temporal", "label": "Spielt Keyframes" },
+      { "id": "r20", "type": "depends_on", "source": "c_build4", "target": "c_build3", "label": "Erweitert" }
+    ]
+  }
+}

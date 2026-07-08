@@ -9,10 +9,15 @@ import { LLMService, LLMProvider, LLMModel } from '../utils/LLMService';
 export class CreatePanel {
     private container: HTMLElement;
     private app: App;
+    private stateManager: IStateManager;
 
     private providerSelect!: HTMLSelectElement;
     private keyInput!: HTMLInputElement;
     private modelSelect!: HTMLSelectElement;
+    private formatSelect!: HTMLSelectElement;
+    private pipelineSelect!: HTMLSelectElement;
+    private ragTextarea!: HTMLTextAreaElement;
+    private urlInput!: HTMLInputElement;
     private promptTextarea!: HTMLTextAreaElement;
     private generateBtn!: HTMLButtonElement;
     private statusText!: HTMLElement;
@@ -26,6 +31,7 @@ export class CreatePanel {
             this.container = el;
         }
 
+        this.stateManager = _stateManager;
         this.app = app;
         this.render();
     }
@@ -194,6 +200,38 @@ export class CreatePanel {
             LLMService.setActiveModel(provider, this.modelSelect.value);
         };
 
+        // Pipeline Select (Ersetzt die alte Format-Version komplett)
+        const pipelineLabel = document.createElement('label');
+        pipelineLabel.textContent = 'Generierungs-Modus:';
+        pipelineLabel.style.display = 'block';
+        pipelineLabel.style.marginBottom = '5px';
+        pipelineLabel.style.color = 'var(--text-muted)';
+        genSection.appendChild(pipelineLabel);
+
+        this.pipelineSelect = document.createElement('select');
+        this.pipelineSelect.className = 'form-control';
+        this.pipelineSelect.style.width = '100%';
+        this.pipelineSelect.style.marginBottom = '15px';
+        this.pipelineSelect.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+        this.pipelineSelect.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+        this.pipelineSelect.style.color = 'var(--text-color)';
+        this.pipelineSelect.style.padding = '6px';
+        this.pipelineSelect.style.borderRadius = '4px';
+        this.pipelineSelect.style.fontFamily = 'inherit';
+
+        const pipelines = [
+            { value: 'build5', label: 'Neu: Build 5 (3-stufig: Ontologie -> Daten -> Mapping)' },
+            { value: 'refine', label: 'Update: Iterativ (Bestehendes Netzwerk anpassen)' }
+        ];
+
+        pipelines.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p.value;
+            opt.textContent = p.label;
+            this.pipelineSelect.appendChild(opt);
+        });
+        genSection.appendChild(this.pipelineSelect);
+
         const promptLabel = document.createElement('label');
         promptLabel.textContent = 'Dein Prompt:';
         promptLabel.style.display = 'block';
@@ -216,9 +254,109 @@ export class CreatePanel {
         this.promptTextarea.style.fontFamily = 'inherit';
         genSection.appendChild(this.promptTextarea);
 
+        // --- RAG SECTION ---
+        const ragLabel = document.createElement('label');
+        ragLabel.textContent = 'Kontext / Rohdaten (RAG):';
+        ragLabel.style.display = 'block';
+        ragLabel.style.marginBottom = '5px';
+        ragLabel.style.color = 'var(--text-muted)';
+        
+        const ragHeader = document.createElement('div');
+        ragHeader.style.display = 'flex';
+        ragHeader.style.justifyContent = 'space-between';
+        ragHeader.style.alignItems = 'center';
+        ragHeader.appendChild(ragLabel);
+        
+        const pasteBtn = document.createElement('button');
+        pasteBtn.className = 'action-button secondary';
+        pasteBtn.style.padding = '2px 8px';
+        pasteBtn.style.fontSize = '11px';
+        pasteBtn.style.marginBottom = '5px';
+        pasteBtn.textContent = '📋 Paste';
+        pasteBtn.onclick = async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                this.ragTextarea.value = (this.ragTextarea.value ? this.ragTextarea.value + '\n' : '') + text;
+                this.setStatus('Aus Zwischenablage eingefügt.', 'success');
+            } catch (err) {
+                this.setStatus('Konnte nicht aus Zwischenablage lesen (Berechtigung?).', 'error');
+            }
+        };
+        ragHeader.appendChild(pasteBtn);
+        genSection.appendChild(ragHeader);
+
+        // URL Loader
+        const urlContainer = document.createElement('div');
+        urlContainer.style.display = 'flex';
+        urlContainer.style.gap = '8px';
+        urlContainer.style.marginBottom = '10px';
+        urlContainer.style.width = '100%';
+
+        this.urlInput = document.createElement('input');
+        this.urlInput.type = 'text';
+        this.urlInput.className = 'form-control';
+        this.urlInput.placeholder = 'Website URL laden...';
+        this.urlInput.style.flex = '1 1 auto';
+        this.urlInput.style.minWidth = '0';
+        this.urlInput.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+        this.urlInput.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+        this.urlInput.style.color = 'var(--text-color)';
+        this.urlInput.style.padding = '6px';
+        this.urlInput.style.borderRadius = '4px';
+        
+        const loadUrlBtn = document.createElement('button');
+        loadUrlBtn.className = 'action-button secondary';
+        loadUrlBtn.textContent = '🌐 Laden';
+        loadUrlBtn.style.padding = '4px 10px';
+        loadUrlBtn.onclick = async () => {
+            const url = this.urlInput.value.trim();
+            if (!url) return;
+            try {
+                this.setStatus('Lade Website-Inhalt...', 'info');
+                // Use corsproxy to bypass browser restrictions
+                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+                const res = await fetch(proxyUrl);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const html = await res.text();
+                
+                // Very basic HTML to Text extraction
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const text = doc.body.textContent || '';
+                // Clean up excessive whitespace
+                const cleanText = text.replace(/\s+/g, ' ').trim();
+                
+                // Cut at 20000 chars to avoid extreme token limits
+                const truncated = cleanText.substring(0, 20000);
+                this.ragTextarea.value = (this.ragTextarea.value ? this.ragTextarea.value + '\n\n' : '') + `[Quelle: ${url}]\n${truncated}`;
+                this.urlInput.value = '';
+                this.setStatus('Website geladen und in Kontext eingefügt.', 'success');
+            } catch (err) {
+                this.setStatus('Fehler beim Laden der URL (CORS / Netzwerk).', 'error');
+            }
+        };
+        
+        urlContainer.appendChild(this.urlInput);
+        urlContainer.appendChild(loadUrlBtn);
+        genSection.appendChild(urlContainer);
+
+        this.ragTextarea = document.createElement('textarea');
+        this.ragTextarea.placeholder = 'Hier manuell CSV-Listen, Notizen oder Rohdaten einfügen...';
+        this.ragTextarea.style.width = '100%';
+        this.ragTextarea.style.minHeight = '80px';
+        this.ragTextarea.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+        this.ragTextarea.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+        this.ragTextarea.style.borderRadius = '4px';
+        this.ragTextarea.style.color = 'var(--text-color)';
+        this.ragTextarea.style.padding = '8px';
+        this.ragTextarea.style.marginBottom = '15px';
+        this.ragTextarea.style.resize = 'vertical';
+        this.ragTextarea.style.boxSizing = 'border-box';
+        this.ragTextarea.style.fontFamily = 'inherit';
+        genSection.appendChild(this.ragTextarea);
+
         this.generateBtn = document.createElement('button');
         this.generateBtn.className = 'action-button';
-        this.generateBtn.textContent = '✨ Generieren & Hinzufügen';
+        this.generateBtn.textContent = ' Generieren & Hinzufügen';
         this.generateBtn.onclick = this.handleGenerate.bind(this);
         genSection.appendChild(this.generateBtn);
 
@@ -316,14 +454,20 @@ export class CreatePanel {
     }
 
     private async handleGenerate(): Promise<void> {
-        const prompt = this.promptTextarea.value.trim();
+        let prompt = this.promptTextarea.value.trim();
         if (!prompt) {
             this.setStatus('Bitte gib ein Prompt ein.', 'error');
             return;
         }
 
+        const ragText = this.ragTextarea?.value.trim();
+        if (ragText) {
+            prompt += `\n\n=== VERFUEGBARER KONTEXT / ROHDATEN (RAG) ===\n${ragText}\n==============================================\nNutze ZWINGEND diese Rohdaten als Faktenbasis fuer die Generierung der Knoten und Kanten.`;
+        }
+
         const provider = this.providerSelect.value as LLMProvider;
         const model = this.modelSelect.value;
+        const pipeline = this.pipelineSelect.value;
 
         if (!LLMService.getApiKey(provider)) {
             this.setStatus(`Bitte hinterlege zuerst deinen API-Key für ${provider}.`, 'error');
@@ -331,19 +475,62 @@ export class CreatePanel {
         }
 
         this.setLoading(true);
-        this.setStatus('Generiere Graph-Daten... (Das kann einige Sekunden dauern)', 'info');
+        this.setStatus('Bereite Generierung vor...', 'info');
 
         try {
-            const graphData = await LLMService.generateGraphData(prompt, provider, model);
+            let graphData: any;
 
-            // Append data to existing graph
-            const sourceName = 'AI_Generation_' + Date.now();
-            await this.app.loadGraphData(graphData, sourceName, true);
+            if (pipeline === 'build5') {
+                graphData = await LLMService.generateGraphDataMultiStepBuild5(prompt, provider, model, (msg) => {
+                    this.setStatus(msg, 'info');
+                });
+            } else if (pipeline === 'refine') {
+                const existingData = {
+                    metadata: { schemaVersion: "5.0" },
+                    dataModel: this.app.currentGraphData?.dataModel || { entities: {}, relationships: {} },
+                    visualMappings: this.app.currentGraphData?.visualMappings || { defaultPresets: {} },
+                    data: {
+                        entities: this.stateManager.getEntities(),
+                        relationships: this.stateManager.getRelationships()
+                    }
+                };
+                graphData = await LLMService.refineGraphData(existingData as any, prompt, provider, model, '/prompts/build_5_data_prompt.md', (msg) => {
+                    this.setStatus(msg, 'info');
+                });
+            }
+
+            this.setStatus('Graph generiert! Lade in Visualizer...', 'info');
+
+            // Load data into graph
+            if (pipeline === 'refine') {
+                const sourceName = 'AI_Refined_' + Date.now();
+                await this.app.loadGraphData(graphData, sourceName, false);
+            } else {
+                const sourceName = 'AI_Generation_' + Date.now();
+                await this.app.loadGraphData(graphData, sourceName, true);
+            }
+
+            // --- Auto-Save Feature ---
+            try {
+                if (this.app.currentGraphData && this.app.exportManager) {
+                    this.setStatus('Graph geladen! Speichere Backup-Datei...', 'info');
+                    const exportOptions: any = { 
+                        currentEntities: this.app.currentEntities,
+                        activeVisualMappings: this.app.visualMappingEngine?.getVisualMappings() || null,
+                        activeDataModel: this.app.currentGraphData.dataModel || null
+                    };
+                    const jsonStr = this.app.exportManager.exportNodgesJSON(this.app.currentGraphData, exportOptions);
+                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                    this.app.exportManager.downloadFile(jsonStr, `Nodges_AutoSave_${timestamp}.json`, 'application/json');
+                }
+            } catch (e) {
+                console.warn('Auto-save failed:', e);
+            }
 
             const nodeCount = graphData.data.entities?.length || 0;
             const edgeCount = graphData.data.relationships?.length || 0;
 
-            this.setStatus(`Erfolgreich hinzugefügt: ${nodeCount} Knoten, ${edgeCount} Kanten.`, 'success');
+            this.setStatus(`Erfolgreich generiert: ${nodeCount} Knoten, ${edgeCount} Kanten. Auto-Save durchgeführt!`, 'success');
 
         } catch (error: any) {
             this.setStatus(error.message || 'Ein unbekannter Fehler ist aufgetreten.', 'error');

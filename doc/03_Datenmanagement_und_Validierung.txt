@@ -1,121 +1,121 @@
 # 03 Datenmanagement und Validierung
 
-Ein robustes, typ-sicheres Datenmanagement ist das Rückgrat von Nodges. Da die Anwendung Graphen aus völlig unterschiedlichen Quellen (APIs, Dateien, User-Input) verarbeiten muss, ist eine strikte Validierungsstrategie unerlässlich, um die Stabilität der 3D-Engine zu gewährleisten.
+Ein robustes, typ-sicheres Datenmanagement ist das Rückgrat von Nodges. Da die Anwendung Graphen aus völlig unterschiedlichen Quellen verarbeiten muss, ist eine strikte Validierungsstrategie unerlässlich, um die Stabilität der 3D-Engine zu gewährleisten.
 
-## 03.1 Das Datenmodell: Strategie "Evolution"
+## 03.1 Das Datenmodell: Standardisierung auf Build 3
 
-Das Projekt befindet sich in einer geordneten Migration von einem simplen "Legacy-Format" hin zu einem semantisch reichen "Future-Format". Die Architektur ist **dual-fähig**: Sie kann beide Formate lesen, normalisiert intern aber alles auf gemeinsame Strukturen.
+Um die Codebasis sauber und performant zu halten, wurde das Datenmodell von Nodges vollständig standardisiert. Alle Legacy-Formate (Build 1 und Build 2) wurden komplett aus dem System entfernt.
 
-### Das Legacy-Format (Historisch / Veraltet)
+### Der Build 3 Standard (Modern Semantic Graph)
 
-Dieses Format war ursprünglich für schnelle Prototypen gedacht.
-
-* **Status**: In aktuellen Versionen erwartet der `DataParser` primär das strukturierte "Future-Format". Legacy-Dateien müssen ggf. konvertiert werden.
-* **Struktur**: Flache Listen.
-
-```json
-{
-  "nodes": [
-    { "id": "router_01", "x": 10, "y": 0, "z": 5, "label": "Router" }
-  ],
-  "edges": [
-    { "start": "router_01", "end": "pc_02", "type": "lan_cable" }
-  ]
-}
-```
-
-*Nachteil*: Metadaten (z.B. "Was bedeutet die Farbe Rot?") fehlen. Die Semantik ist implizit.
-
-### Das Future-Format (Der "Semantic Graph")
-
-Das neue Format trennt **Strukturdaten** (Topologie), **Metadaten** (Semantik) und **Visuelle Mappings** (Style). Es orientiert sich an modernen Standards wie GEXF oder GraphML.
+Nodges unterstützt ausschließlich das Schema "Build 3" (schemaVersion "3.0"). Es erzwingt eine klare Trennung zwischen Strukturdaten (Topologie), Metadaten (Semantik) und Visuellen Mappings (Style).
 
 **Komponenten:**
 
-1. **System/Metadata**: Wer hat den Graphen erstellt? Welche Version?
-2. **Data**: Die reinen Entitäten (`entities`) und Beziehungen (`relationships`). Hier stehen *keine* Farben oder Größen, sondern Daten (z.B. `traffic: 500mbps`, `role: 'Server'`).
-3. **VisualMappings**: Ein Regelwerk, das Daten in Grafik übersetzt.
+1. **System/Metadata**: Beinhaltet Systemidentifikation ("Nodges") und zwingend die `schemaVersion: "3.0"`.
+2. **Data Model**: Deklariert die verfügbaren Attribute global unter `properties`. Jedes Attribut wird mit Typ (z.B. `categorical` oder `continuous`) beschrieben.
+3. **Data**: Kapselt die konkreten Objekte.
+   * `entities` (Knoten): Jede Entity besitzt eine eindeutige `id`, einen `type`, optionale `position`-Koordinaten (x, y, z) und einen `stateVector` (für dynamische Attribute).
+   * `relationships` (Kanten): Jede Relationship besitzt einen `type`, eine Quelle (`source` oder `start`), ein Ziel (`target` oder `end`) und einen optionalen `stateVector` (für Kantenattribute).
+4. **VisualMappings**: Ein Regelwerk, das Datenattribute via vordefinierte Presets (`defaultPresets`) in Grafik-Eigenschaften (z.B. Farben, Größen, Linienstärken) übersetzt.
+
+Beispiel für ein valides Build 3 JSON:
 
 ```json
 {
-  "system": "NetworkAnalytics V2",
+  "system": "Nodges",
+  "metadata": {
+    "created": "2026-07-01",
+    "schemaVersion": "3.0"
+  },
+  "dataModel": {
+    "properties": {
+      "status": { "type": "categorical", "description": "Status des Knotens" },
+      "load": { "type": "continuous", "description": "Aktuelle Systemlast" }
+    }
+  },
   "data": {
     "entities": [
-      { "id": "n1", "type": "server", "attributes": { "cpu_load": 0.85, "region": "eu-central" } }
+      {
+        "id": "node_01",
+        "type": "server",
+        "stateVector": {
+          "status": "online",
+          "load": 82.5
+        }
+      }
     ],
     "relationships": [
-      { "source": "n1", "target": "n2", "type": "connection", "attributes": { "latency": 20 } }
+      {
+        "type": "connection",
+        "source": "node_01",
+        "target": "node_02"
+      }
     ]
   },
   "visualMappings": {
-    "nodes": {
-      "color": { "field": "cpu_load", "mapping": "heatmap", "range": [0, 1], "colors": ["green", "red"] },
-      "size": { "field": "attributes.region", "mapping": "categorical", "values": { "eu-central": 2.0, "us-east": 1.0 } }
+    "defaultPresets": {
+      "global_node": {
+        "color": { "source": "categorical", "function": "categorical", "field": "status", "palette": "category10" },
+        "size": { "source": "continuous", "function": "linear", "field": "load", "range": [0.5, 3.0] }
+      }
     }
   }
 }
 ```
 
-*Vorteil*: Totale Flexibilität. Man kann denselben Datensatz visualisieren, um CPU-Last zu zeigen (Rot=Hoch), oder um Regionen zu zeigen (Blau=EU), indem man nur das Mapping ändert, nicht die Daten.
-
 ## 03.2 Schema-Validierung mit Zod (The Gatekeeper)
 
-Nodges vertraut keinen externen Daten. Um Laufzeitfehler der Rendering-Engine (z.B. Absturz durch Zugriff auf `undefined` bei Koordinaten) zu verhindern, wird **Zod** eingesetzt. Zod ist eine Schema-Validierungs-Bibliothek für TypeScript.
+Nodges vertraut keinen externen Daten. Um Laufzeitfehler der Rendering-Engine zu verhindern, wird **Zod** eingesetzt. Zod ist eine Schema-Validierungs-Bibliothek für TypeScript.
 
 ### Warum Zod?
 
-In reinem TypeScript sind Typen (`interface Node`) zur Laufzeit weg. Ein `JSON.parse()` liefert `any`. Wenn das JSON fehlerhaft ist, merkt man es erst, wenn die App crasht.
-Zod prüft die Daten *zur Laufzeit* Byte für Byte gegen den Plan.
+In reinem TypeScript sind Typen zur Laufzeit nicht mehr vorhanden. Ein `JSON.parse()` liefert `any`. Wenn das JSON fehlerhaft ist, merkt man es erst, wenn die App abstürzt. Zod prüft die Daten zur Laufzeit Byte für Byte gegen das Build 3 Schema.
 
-### Schema-Definition & Type Interference
+### Schema-Definition & Type Inference
 
-Ein mächtiges Feature von Zod ist, dass wir den TypeScript-Typ aus dem Schema ableiten können. Das verhindert, dass Validierungscode und Type-Interfaces asynchron werden.
+Die TypeScript-Typen werden in `types.ts` direkt aus dem Zod-Schema abgeleitet. Das verhindert, dass Validierungscode und Type-Interfaces asynchron werden.
 
 *(Ausschnitt aus `types.ts`)*
 
 ```typescript
-import { z } from 'zod';
+export const PropertySchema = z.object({
+    type: z.enum(['categorical', 'continuous']),
+    description: z.string().optional()
+});
 
-// 1. Definition des Schemas
-export const NodeSchema = z.object({
-  id: z.coerce.string(), // Erzwingt String (konvertiert Numbers)
-  x: z.number().default(0), // Fills in default Werte
-  y: z.number().default(0),
-  z: z.number().default(0),
-  label: z.string().optional(),
-  // .passthrough() erlaubt unbekannte Zusatz-Properties für Flexibilität
+export const DataModelSchema = z.object({
+    properties: z.record(PropertySchema).optional()
+});
+
+export const EntitySchema = z.object({
+    id: z.coerce.string(),
+    type: z.string(),
+    label: z.string().optional(),
+    position: z.object({
+        x: z.number().default(0),
+        y: z.number().default(0),
+        z: z.number().default(0)
+    }).optional(),
+    stateVector: z.record(z.any()).optional()
 }).passthrough();
-
-// 2. Ableitung des Typs
-export type NodeData = z.infer<typeof NodeSchema>;
 ```
 
-### Error-Handling & User Feedback
+### Error-Handling
 
-Wenn Zod einen Fehler findet, ist dieser extrem präzise. Nodges fängt diese `ZodError` Objekte ab und generiert lesbare Fehlermeldungen für den Benutzer, statt kryptischer Stacktraces.
-
-* *Schlecht*: `Cannot read x of undefined`
-* *Nodges*: `Validation Error in 'nodes[42]': Required field 'x' is missing.`
+Wenn Zod einen Fehler findet, fängt Nodges dieses `ZodError`-Objekt ab und generiert lesbare Fehlermeldungen für den Benutzer, anstatt kryptische Stacktraces im Browser anzuzeigen.
 
 ## 03.3 Der `DataParser` & Normalisierung
 
-Der `DataParser.ts` ist die zentrale "Waschmaschine" für Daten.
+Der `DataParser.ts` ist die zentrale Validierungsklasse.
 
 ### Pipeline-Schritte
 
-Siehe Diagramm zur Format-Erkennung: [mermaid_04.mmd](mermaid_04.mmd)
+1. **Schema-Verifikation**: Der Parser prüft explizit die `schemaVersion` in den Metadaten. Entspricht diese nicht exakt `"3.0"`, wird die Datei sofort abgelehnt.
+2. **Validierung**: Das Build 3 Zod-Schema wird auf den Datensatz angewendet.
+3. **Normalisierung**: Fehlende oder unvollständige Felder werden normalisiert (z.B. Fallbacks für Metadaten gesetzt, IDs in Strings konvertiert).
+4. **Indexing**: Um den Zugriff in O(1) zu ermöglichen, werden Arrays in Maps umgewandelt.
 
-1. **Format-Erkennung**: Der Parser scannt die Struktur ("Heuristik") und entscheidet: Legacy oder Future?
-2. **Validierung**: Das entsprechende Zod-Schema wird angewendet. Ungültige Dateien werden abgelehnt.
-3. **Normalisierung**: Egal was reinkommt, es wird in eine interne Intermediär-Struktur konvertiert.
-    * IDs werden zu Strings normalisiert.
-    * Fehlende Koordinaten werden (optional) randomisiert oder auf (0,0,0) gesetzt.
-    * Dangling Edges (Kanten zu nicht existierenden Knoten) werden bereinigt oder gemeldet.
-4. **Indexing**: Um den Zugriff in O(1) zu ermöglichen, werden Arrays in Maps (`Map<string, Node>`) umgewandelt.
+## 03.4 Zukünftige Entwürfe (Build 4)
 
-### Spezialfall: Visuelle Vorberechnung
-
-Im Schritt der Normalisierung bereitet der Parser oft schon Daten für die GPU vor. Beispielsweise werden Hex-Farbcodes (`#ff0000`) bereits in Three.js `Color`-Objekte oder normalisierte Float-Arrays (`[1.0, 0.0, 0.0]`) umgerechnet, um dies nicht in jedem Render-Frame tun zu müssen.
-
----
-*Ende Kapitel 03*
+Entwürfe für ein zukünftiges temporales Format ("Build 4") werden getrennt gepflegt und dienen als Richtlinie für künftige Erweiterungen (z.B. zur Verwaltung historischer Zustände und Zeitachsen-Visualisierungen), haben jedoch keinen Einfluss auf das aktive Build 3 System.
