@@ -472,7 +472,7 @@ export class LayoutManager {
         // 3. Check active presets
         if (this.visualMappingEngine) {
             const activeMappings = this.visualMappingEngine.getVisualMappings();
-            const activePreset = activeMappings?.defaultPresets?.[node.type];
+            const activePreset = node.type !== undefined ? activeMappings?.defaultPresets?.[node.type] : undefined;
             if (activePreset) {
                 if (attraction === undefined && activePreset.attraction) {
                     attraction = Number(this.visualMappingEngine.applyMapping(activePreset.attraction as any, node, 'attraction'));
@@ -488,7 +488,7 @@ export class LayoutManager {
             // 4. Check original mappings if not resolved
             const app = typeof window !== 'undefined' ? (window as any).app : null;
             const originalMappings = app?.originalVisualMappings;
-            const originalPreset = originalMappings?.defaultPresets?.[node.type];
+            const originalPreset = node.type !== undefined ? originalMappings?.defaultPresets?.[node.type] : undefined;
             if (originalPreset) {
                 if (attraction === undefined && originalPreset.attraction) {
                     attraction = Number(this.visualMappingEngine.applyMapping(originalPreset.attraction as any, node, 'attraction'));

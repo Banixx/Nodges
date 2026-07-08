@@ -40,6 +40,13 @@ export class VisualMappingEngine {
     }
 
     /**
+     * Get original (suggested) visual mappings
+     */
+    getOriginalVisualMappings(): VisualMappings | undefined {
+        return this.originalVisualMappings;
+    }
+
+    /**
      * Get current visual mappings
      */
     getVisualMappings(): VisualMappings | undefined {

@@ -266,7 +266,7 @@ export class DataParser {
      * Get all entity types in the graph
      */
     static getEntityTypes(graphData: GraphData): string[] {
-        const types = new Set(graphData.data.entities.map(e => e.type));
+        const types = new Set(graphData.data.entities.map(e => e.type).filter((t): t is string => t !== undefined));
         return Array.from(types);
     }
 
@@ -274,7 +274,7 @@ export class DataParser {
      * Get all relationship types in the graph
      */
     static getRelationshipTypes(graphData: GraphData): string[] {
-        const types = new Set(graphData.data.relationships.map(r => r.type));
+        const types = new Set(graphData.data.relationships.map(r => r.type).filter((t): t is string => t !== undefined));
         return Array.from(types);
     }
 

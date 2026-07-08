@@ -19,7 +19,13 @@ export type PropertySchema = z.infer<typeof PropertySchemaSchema>;
 
 export const DataModelSchema = z.object({
     properties: z.record(PropertySchemaSchema).optional().default({}),
-});
+    entities: z.record(z.object({
+        properties: z.record(PropertySchemaSchema).optional()
+    }).passthrough()).optional(),
+    relationships: z.record(z.object({
+        properties: z.record(PropertySchemaSchema).optional()
+    }).passthrough()).optional()
+}).passthrough();
 export type DataModel = z.infer<typeof DataModelSchema>;
 
 // Visual Mappings

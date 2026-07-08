@@ -41,8 +41,6 @@ export class LLMService {
         ]
     };
 
-    private static cachedOpenRouterModels: LLMModel[] | null = null;
-
     /**
      * Get the active provider from localStorage (defaults to 'openrouter')
      */

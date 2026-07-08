@@ -14,7 +14,6 @@ export class CreatePanel {
     private providerSelect!: HTMLSelectElement;
     private keyInput!: HTMLInputElement;
     private modelSelect!: HTMLSelectElement;
-    private formatSelect!: HTMLSelectElement;
     private pipelineSelect!: HTMLSelectElement;
     private ragTextarea!: HTMLTextAreaElement;
     private urlInput!: HTMLInputElement;
