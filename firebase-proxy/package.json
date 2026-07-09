@@ -1,0 +1,13 @@
+{
+  "name": "nodges-proxy",
+  "description": "Firebase Cloud Function to proxy OpenRouter requests for Nodges",
+  "dependencies": {
+    "firebase-functions": "^6.0.1",
+    "firebase-admin": "^12.6.0",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js"
+}

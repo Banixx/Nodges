@@ -8,6 +8,9 @@ export interface LLMModel {
 }
 
 export class LLMService {
+    // Trage hier nach dem Deployment in Firebase die URL deiner Funktion ein:
+    public static readonly PROXY_URL = 'https://us-central1-dein-firebase-projekt.cloudfunctions.net/nodgesProxy';
+
     public static readonly PROVIDERS: { id: LLMProvider; name: string }[] = [
         { id: 'openrouter', name: 'OpenRouter' },
         { id: 'openai', name: 'OpenAI' },
@@ -136,35 +139,63 @@ export class LLMService {
         model: string
     ): Promise<GraphData> {
         const apiKey = this.getApiKey(provider);
+        let useProxy = false;
+
         if (!apiKey) {
-            throw new Error(`Kein API-Key für ${provider} gefunden. Bitte gib deinen API-Key ein.`);
+            if (provider === 'openrouter') {
+                useProxy = true; // Fallback auf Proxy, wenn kein Key da ist
+            } else {
+                throw new Error(`Kein API-Key für ${provider} gefunden. Bitte gib deinen API-Key ein.`);
+            }
         }
 
         let responseText = '';
 
         if (provider === 'openrouter') {
-            const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'HTTP-Referer': window.location.href,
-                    'X-Title': 'Nodges 3D Graph',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    model: model,
-                    provider: { data_collection: 'deny' },
-                    messages: [
-                        { role: 'system', content: systemPrompt },
-                        { role: 'user', content: userPrompt }
-                    ],
-                    response_format: { type: 'json_object' }
-                })
-            });
+            let response;
+            
+            if (useProxy) {
+                // Sende Anfrage an den eigenen Firebase Proxy
+                response = await fetch(this.PROXY_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: model,
+                        provider: { data_collection: 'deny' },
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: userPrompt }
+                        ],
+                        response_format: { type: 'json_object' }
+                    })
+                });
+            } else {
+                // Standard BYOK Direktaufruf
+                response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'HTTP-Referer': window.location.href,
+                        'X-Title': 'Nodges 3D Graph',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: model,
+                        provider: { data_collection: 'deny' },
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: userPrompt }
+                        ],
+                        response_format: { type: 'json_object' }
+                    })
+                });
+            }
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(`OpenRouter API Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
+                throw new Error(`OpenRouter/Proxy Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
             }
 
             const data = await response.json();
