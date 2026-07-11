@@ -32,10 +32,6 @@ build/
 .env
 .env.local
 
-# Markdown files (except README.md)
-/*.md
-!README.md
-
 # AI and Tooling
 .agent/
 .agents/
@@ -46,10 +42,10 @@ build/
 doc/
 
 # Local scripts
-/*.cjs
+scripts/
 start_dev.bat
 Ndrive/
 
 # Grosse Dateien und Rohdaten
 /Switzerland.jpg
-/*.csv
+Griech_V3.csv
