@@ -145,23 +145,16 @@ export class EdgeObjectsManager {
                     // Apply Visual Mapping
                     const visual = this.visualMappingEngine.applyToRelationship(edgeData as RelationshipData);
 
-                    // Determine color: priority to visual mapping, then direct color property, then default
+                    // Determine color: strictly from visual mapping
                     let colorHex = 0xaaaaaa;
                     let baseColor = new THREE.Color(0xaaaaaa);
 
-                    const directColor = (edgeData as any).color || (edgeData as any).visualColor;
-                    if (visual.color && visual.color instanceof THREE.Color && visual.color.getHex() !== 0xb498db) {
-                        // Mapped color (different from default)
-                        baseColor.copy(visual.color);
-                        colorHex = baseColor.getHex();
-                    } else if (directColor) {
-                        // Direct color from JSON
-                        baseColor.set(directColor);
-                        colorHex = baseColor.getHex();
-                    } else if (visual.color) {
-                        // Default mapped color
-                        if (visual.color instanceof THREE.Color) baseColor.copy(visual.color);
-                        else baseColor.set(visual.color);
+                    if (visual.color) {
+                        if (visual.color instanceof THREE.Color) {
+                            baseColor.copy(visual.color);
+                        } else {
+                            baseColor.set(visual.color);
+                        }
                         colorHex = baseColor.getHex();
                     }
 
@@ -211,8 +204,8 @@ export class EdgeObjectsManager {
                     if (visual.animation_pulse !== undefined) { animConfig.pulse = visual.animation_pulse; hasAnimation = true; }
                     if (visual.animation_segments !== undefined) { animConfig.segments = visual.animation_segments; hasAnimation = true; }
 
-                    // Legacy / Manual data mapping fallback
-                    let legacyAnim = (edgeData as any).pulse || visual.animation;
+                    // Legacy / Manual data mapping fallback removed to enforce decoupling
+                    let legacyAnim = visual.animation;
                     if (legacyAnim) {
                         if (typeof legacyAnim === 'object' && !legacyAnim.type) {
                             legacyAnim = { ...legacyAnim, type: 'pulse' };

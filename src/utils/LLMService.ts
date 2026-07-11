@@ -135,6 +135,36 @@ export class LLMService {
     }
 
     /**
+     * Converts a permissive JSON schema into a strict schema required by OpenAI/OpenRouter (strict: true).
+     * This recursively removes any invalid constraints and sets additionalProperties: false.
+     */
+    private static makeSchemaStrict(schema: any): any {
+        if (typeof schema !== 'object' || schema === null) return schema;
+        const newSchema = { ...schema };
+        
+        // Remove properties that cause errors with strict schema
+        delete newSchema.default;
+        
+        if (newSchema.type === 'object') {
+            newSchema.additionalProperties = false;
+            if (newSchema.properties) {
+                for (const key in newSchema.properties) {
+                    newSchema.properties[key] = this.makeSchemaStrict(newSchema.properties[key]);
+                }
+            }
+        } else if (newSchema.type === 'array' && newSchema.items) {
+            newSchema.items = this.makeSchemaStrict(newSchema.items);
+        } else if (newSchema.anyOf) {
+            newSchema.anyOf = newSchema.anyOf.map((s: any) => this.makeSchemaStrict(s));
+        } else if (newSchema.allOf) {
+            newSchema.allOf = newSchema.allOf.map((s: any) => this.makeSchemaStrict(s));
+        } else if (newSchema.oneOf) {
+            newSchema.oneOf = newSchema.oneOf.map((s: any) => this.makeSchemaStrict(s));
+        }
+        return newSchema;
+    }
+
+    /**
      * Sends a prompt to the LLM and parses the JSON response into GraphData.
      */
     private static async _executeLLMCall(
@@ -171,7 +201,7 @@ export class LLMService {
                         { role: 'user', content: userPrompt }
                     ],
                     response_format: jsonSchema 
-                        ? { type: 'json_schema', json_schema: { name: 'GraphData', strict: false, schema: jsonSchema } }
+                        ? { type: 'json_schema', json_schema: { name: 'GraphData', strict: true, schema: jsonSchema } }
                         : { type: 'json_object' }
                 })
             });
@@ -226,7 +256,7 @@ export class LLMService {
                         { role: 'user', content: userPrompt }
                     ],
                     response_format: jsonSchema 
-                        ? { type: 'json_schema', json_schema: { name: 'GraphData', strict: false, schema: jsonSchema } }
+                        ? { type: 'json_schema', json_schema: { name: 'GraphData', strict: true, schema: jsonSchema } }
                         : { type: 'json_object' }
                 })
             });
@@ -274,15 +304,20 @@ export class LLMService {
         let cleanResponse = responseText.trim();
         
         // Extract JSON block if wrapped in markdown
-        const jsonMatch = cleanResponse.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-        if (jsonMatch && jsonMatch[1]) {
-            cleanResponse = jsonMatch[1].trim();
+        const markdownMatch = cleanResponse.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+        if (markdownMatch && markdownMatch[1]) {
+            cleanResponse = markdownMatch[1].trim();
         } else {
-            // Fallback: Try to find the first { and last }
-            const firstBrace = cleanResponse.indexOf('{');
-            const lastBrace = cleanResponse.lastIndexOf('}');
-            if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-                cleanResponse = cleanResponse.substring(firstBrace, lastBrace + 1);
+            // Intelligent Regex Extractor for JSON
+            // Finds the first { and the corresponding } even with nested braces
+            try {
+                const firstBrace = cleanResponse.indexOf('{');
+                const lastBrace = cleanResponse.lastIndexOf('}');
+                if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+                    cleanResponse = cleanResponse.substring(firstBrace, lastBrace + 1);
+                }
+            } catch (regexError) {
+                console.warn("[LLMService] Fallback Regex extraction failed, using raw response");
             }
         }
 
@@ -492,9 +527,12 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         // Erzeuge das strukturierte JSON-Schema fuer OpenRouter/OpenAI API
         const jsonSchema = zodToJsonSchema(GraphDataSchema, 'GraphDataSchema');
         // Zod packt das Schema oft in ein definitions-Objekt, wir wollen das eigentliche Schema uebergeben
-        const schemaToPass = (jsonSchema as any).definitions?.GraphDataSchema || jsonSchema;
+        let schemaToPass = (jsonSchema as any).definitions?.GraphDataSchema || jsonSchema;
         // APIs (wie OpenAI) akzeptieren das $schema Feld nicht
         delete schemaToPass.$schema;
+        
+        // Mache das Schema "strict: true" kompatibel (additionalProperties: false)
+        schemaToPass = this.makeSchemaStrict(schemaToPass);
 
         return this._executeLLMCall(systemPrompt, prompt, provider, model, schemaToPass);
     }

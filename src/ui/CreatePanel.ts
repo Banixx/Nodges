@@ -614,34 +614,38 @@ export class CreatePanel {
             generationLog.status = 'success';
 
             // --- Inject generation metadata directly into the JSON graphData ---
-            if (!graphData.metadata) graphData.metadata = {};
-            graphData.metadata.generationDetails = {
-                prompt: prompt,
-                context: ragText || null,
-                provider: provider,
-                model: model,
-                pipeline: pipeline,
-                durationMs: generationLog.durationMs,
-                timestamp: generationLog.timestampEnd
-            };
+            if (graphData) {
+                if (!graphData.metadata) graphData.metadata = {};
+                graphData.metadata.generationDetails = {
+                    prompt: prompt,
+                    context: ragText || null,
+                    provider: provider,
+                    model: model,
+                    pipeline: pipeline,
+                    durationMs: generationLog.durationMs,
+                    timestamp: generationLog.timestampEnd
+                };
+            }
 
             this.setStatus('Graph generiert! Lade in Visualizer...', 'info');
 
             // Load data into graph
-            if (pipeline === 'refine') {
-                const sourceName = 'AI_Refined_' + Date.now();
-                await this.app.loadGraphData(graphData, sourceName, false);
-            } else {
-                const sourceName = 'AI_Generation_' + Date.now();
-                await this.app.loadGraphData(graphData, sourceName, true);
+            if (graphData) {
+                if (pipeline === 'refine') {
+                    const sourceName = 'AI_Refined_' + Date.now();
+                    await this.app.loadGraphData(graphData, sourceName, false);
+                } else {
+                    const sourceName = 'AI_Generation_' + Date.now();
+                    await this.app.loadGraphData(graphData, sourceName, true);
+                }
             }
 
             // --- Auto-Save & Logging Feature ---
             try {
-                if (this.app.currentGraphData && this.app.exportManager) {
+                if (graphData && this.app?.currentGraphData && this.app?.exportManager) {
                     this.setStatus('Graph geladen! Speichere in Projekt-Dateien...', 'info');
                     const exportOptions: any = { 
-                        currentEntities: this.app.currentEntities,
+                        currentEntities: this.app.currentEntities || [],
                         activeVisualMappings: this.app.visualMappingEngine?.getVisualMappings() || null,
                         activeDataModel: this.app.currentGraphData.dataModel || null
                     };
@@ -677,9 +681,9 @@ export class CreatePanel {
                     }
                     
                     // Log JSON
-                    generationLog.generatedNodes = graphData.data?.entities?.length || 0;
-                    generationLog.generatedEdges = graphData.data?.relationships?.length || 0;
-                    generationLog.responsePayloadSizeKB = (JSON.stringify(graphData).length / 1024).toFixed(2);
+                    generationLog.generatedNodes = graphData?.data?.entities?.length || 0;
+                    generationLog.generatedEdges = graphData?.data?.relationships?.length || 0;
+                    generationLog.responsePayloadSizeKB = graphData ? (JSON.stringify(graphData).length / 1024).toFixed(2) : "0";
                     
                     const logStr = JSON.stringify(generationLog, null, 2);
                     
@@ -703,8 +707,8 @@ export class CreatePanel {
                 console.warn('Auto-save or logging failed:', e);
             }
 
-            const nodeCount = graphData.data?.entities?.length || 0;
-            const edgeCount = graphData.data?.relationships?.length || 0;
+            const nodeCount = graphData?.data?.entities?.length || 0;
+            const edgeCount = graphData?.data?.relationships?.length || 0;
 
             this.setStatus(`Erfolgreich generiert: ${nodeCount} Knoten, ${edgeCount} Kanten. Dauer: ${generationLog.durationSec}s. Gespeichert!`, 'success');
 
