@@ -41,6 +41,8 @@ build/
 # Documentation
 doc/
 
+download/
+
 # Local scripts
 scripts/
 start_dev.bat

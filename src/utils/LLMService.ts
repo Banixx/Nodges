@@ -213,118 +213,147 @@ export class LLMService {
         let responseText = '';
         let rawApiData: any = null;
 
-        if (provider === 'openrouter') {
-            // First attempt: multi-turn (system + user)
-            let response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'HTTP-Referer': window.location.href,
-                    'X-Title': 'Nodges 3D Graph',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    model: model,
-                    provider: { data_collection: 'deny' },
-                    messages: [
-                        { role: 'system', content: systemPrompt },
-                        { role: 'user', content: userPrompt }
-                    ],
-                    response_format: jsonSchema 
-                        ? { type: 'json_schema', json_schema: { name: 'GraphData', strict: true, schema: jsonSchema } }
-                        : { type: 'json_object' }
-                })
-            });
+        try {
+            if (provider === 'openrouter') {
+                // First attempt: multi-turn (system + user)
+                let response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'HTTP-Referer': window.location.href,
+                        'X-Title': 'Nodges 3D Graph',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: model,
+                        provider: { data_collection: 'deny' },
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: userPrompt }
+                        ],
+                        response_format: jsonSchema 
+                            ? { type: 'json_schema', json_schema: { name: 'GraphData', strict: true, schema: jsonSchema } }
+                            : { type: 'json_object' }
+                    })
+                });
 
-            // Fallback: If model doesn't support multi-turn, retry with single message
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                const errMsg = errorData.error?.message || response.statusText;
-                if (response.status === 400) {
-                    console.warn(`[LLMService] Model ${model} returned 400. Retrying with single message and standard json_object fallback...`);
-                    const combinedPrompt = `${systemPrompt}\n\n---\nUSER REQUEST:\n${userPrompt}`;
-                    response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${apiKey}`,
-                            'HTTP-Referer': window.location.href,
-                            'X-Title': 'Nodges 3D Graph',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            model: model,
-                            provider: { data_collection: 'deny' },
-                            messages: [
-                                { role: 'user', content: combinedPrompt }
-                            ],
-                            response_format: { type: 'json_object' }
-                        })
-                    });
-                    if (!response.ok) {
-                        const retryError = await response.json().catch(() => ({}));
-                        throw new Error(`OpenRouter Fehler: ${response.status} - ${retryError.error?.message || response.statusText}`);
+                // Fallback: If model doesn't support multi-turn, retry with single message
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    const errMsg = errorData.error?.message || response.statusText;
+                    
+                    if (response.status === 429) {
+                        throw new Error(`Rate-Limit erreicht (429). Das Modell ist aktuell überlastet oder dein Limit ist erschöpft. Bitte wechsle das Modell oder warte einen Moment.`);
                     }
-                } else {
-                    throw new Error(`OpenRouter Fehler: ${response.status} - ${errMsg}`);
+                    
+                    if (response.status === 400) {
+                        console.warn(`[LLMService] Model ${model} returned 400. Retrying with single message and standard json_object fallback...`);
+                        const combinedPrompt = `${systemPrompt}\n\n---\nUSER REQUEST:\n${userPrompt}`;
+                        response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${apiKey}`,
+                                'HTTP-Referer': window.location.href,
+                                'X-Title': 'Nodges 3D Graph',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                model: model,
+                                provider: { data_collection: 'deny' },
+                                messages: [
+                                    { role: 'user', content: combinedPrompt }
+                                ],
+                                response_format: { type: 'json_object' }
+                            })
+                        });
+                        if (!response.ok) {
+                            const retryError = await response.json().catch(() => ({}));
+                            throw new Error(`OpenRouter Fehler: ${response.status} - ${retryError.error?.message || response.statusText}`);
+                        }
+                    } else {
+                        throw new Error(`OpenRouter Fehler: ${response.status} - ${errMsg}`);
+                    }
+                }
+
+                rawApiData = await response.json();
+                responseText = rawApiData?.choices?.[0]?.message?.content;
+                if (!responseText) {
+                    throw new Error(`Die API hat keine gültigen 'choices' zurückgegeben. Antwort-Struktur: ${JSON.stringify(rawApiData).substring(0, 200)}...`);
+                }
+
+            } else if (provider === 'openai') {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: model,
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: userPrompt }
+                        ],
+                        response_format: jsonSchema 
+                            ? { type: 'json_schema', json_schema: { name: 'GraphData', strict: true, schema: jsonSchema } }
+                            : { type: 'json_object' }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    if (response.status === 429) {
+                        throw new Error(`Rate-Limit erreicht (429). Das OpenAI Modell ist überlastet oder dein Kontingent ist erschöpft.`);
+                    }
+                    throw new Error(`OpenAI API Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
+                }
+
+                rawApiData = await response.json();
+                responseText = rawApiData?.choices?.[0]?.message?.content;
+                if (!responseText) {
+                    throw new Error(`Die API hat keine gültigen 'choices' zurückgegeben.`);
+                }
+
+            } else if (provider === 'anthropic') {
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'x-api-key': apiKey,
+                        'anthropic-version': '2023-06-01',
+                        'content-type': 'application/json',
+                        'anthropic-dangerous-direct-browser-access': 'true'
+                    },
+                    body: JSON.stringify({
+                        model: model,
+                        max_tokens: 8000,
+                        system: systemPrompt,
+                        messages: [
+                            { role: 'user', content: userPrompt }
+                        ]
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    if (response.status === 429) {
+                        throw new Error(`Rate-Limit erreicht (429). Das Anthropic Modell ist überlastet oder dein Kontingent ist erschöpft.`);
+                    }
+                    throw new Error(`Anthropic API Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
+                }
+
+                rawApiData = await response.json();
+                responseText = rawApiData?.content?.[0]?.text;
+                if (!responseText) {
+                    throw new Error(`Die API hat keine gültigen 'content' Blöcke zurückgegeben.`);
                 }
             }
-
-            rawApiData = await response.json();
-            responseText = rawApiData.choices[0]?.message?.content;
-
-        } else if (provider === 'openai') {
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    model: model,
-                    messages: [
-                        { role: 'system', content: systemPrompt },
-                        { role: 'user', content: userPrompt }
-                    ],
-                    response_format: jsonSchema 
-                        ? { type: 'json_schema', json_schema: { name: 'GraphData', strict: true, schema: jsonSchema } }
-                        : { type: 'json_object' }
-                })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(`OpenAI API Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
+        } catch (error: any) {
+            // Fange explizit AbortErrors (Timeouts) und gebe eine nutzerfreundliche Meldung
+            if (error.name === 'AbortError' || (error.message && error.message.toLowerCase().includes('aborted'))) {
+                throw new Error('Die Anfrage an die KI hat zu lange gedauert und wurde abgebrochen (Timeout). Bitte versuche ein anderes Modell oder eine kürzere Anfrage.');
             }
-
-            rawApiData = await response.json();
-            responseText = rawApiData.choices[0]?.message?.content;
-
-        } else if (provider === 'anthropic') {
-            const response = await fetch('https://api.anthropic.com/v1/messages', {
-                method: 'POST',
-                headers: {
-                    'x-api-key': apiKey,
-                    'anthropic-version': '2023-06-01',
-                    'content-type': 'application/json',
-                    'anthropic-dangerous-direct-browser-access': 'true'
-                },
-                body: JSON.stringify({
-                    model: model,
-                    max_tokens: 8000,
-                    system: systemPrompt,
-                    messages: [
-                        { role: 'user', content: userPrompt }
-                    ]
-                })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(`Anthropic API Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
-            }
-
-            rawApiData = await response.json();
-            responseText = rawApiData.content[0]?.text;
+            // Ansonsten den Fehler weiterwerfen
+            throw error;
         }
 
         if (!responseText) {

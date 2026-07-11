@@ -1,0 +1,22 @@
+{
+  "timestampStart": "2026-07-11T13:39:43.227Z",
+  "prompt": "sonnensystem",
+  "ragText": null,
+  "provider": "openrouter",
+  "model": "qwen/qwen3.6-plus",
+  "pipeline": "build6",
+  "steps": [
+    {
+      "time": "2026-07-11T13:39:43.236Z",
+      "offsetMs": 9,
+      "message": "Generiere Netzwerk (Ontologie, Daten & Visuals in einem Schritt)..."
+    }
+  ],
+  "timestampEnd": "2026-07-11T13:43:16.776Z",
+  "durationMs": 213548,
+  "durationSec": "213.55",
+  "status": "success",
+  "generatedNodes": 20,
+  "generatedEdges": 22,
+  "responsePayloadSizeKB": "12.04"
+}
