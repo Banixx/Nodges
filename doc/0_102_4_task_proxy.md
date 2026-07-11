@@ -1,9 +1,0 @@
-- [x] Architektur klären (BYOK vs Proxy).
-- [x] Erstellung der Firebase-Ordnerstruktur (`firebase-proxy`).
-- [x] `package.json` für Firebase Cloud Functions generieren.
-- [x] `index.js` (Serverless-Proxy-Code) mit CORS (nur für `banixx.github.io` und `localhost`) und Secret-Manager-Integration erstellen.
-- [x] Anpassung von `src/utils/LLMService.ts`:
-  - Einbau der `PROXY_URL` Variable.
-  - Implementierung der Weiche in `_executeLLMCall`: Bei OpenRouter und fehlendem API-Key wird ein Fetch an den eigenen Proxy abgesetzt, statt direkt an OpenRouter.
-  - Fehlerbehandlung für Proxy-Antworten.
-- [x] Erstellung einer Schritt-für-Schritt Deployment-Anleitung (`doc/0_102_4_firebase_deploy.md`).

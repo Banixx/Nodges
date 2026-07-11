@@ -1,0 +1,22 @@
+{
+  "timestampStart": "2026-07-10T12:53:50.349Z",
+  "prompt": "sonnensystem",
+  "ragText": null,
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v4-pro",
+  "pipeline": "build6",
+  "steps": [
+    {
+      "time": "2026-07-10T12:53:50.457Z",
+      "offsetMs": 108,
+      "message": "Generiere Netzwerk (Ontologie, Daten & Visuals in einem Schritt)..."
+    }
+  ],
+  "timestampEnd": "2026-07-10T12:55:35.982Z",
+  "durationMs": 105633,
+  "durationSec": "105.63",
+  "status": "success",
+  "generatedNodes": 19,
+  "generatedEdges": 26,
+  "responsePayloadSizeKB": "12.79"
+}

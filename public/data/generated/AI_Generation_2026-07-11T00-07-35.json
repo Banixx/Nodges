@@ -1,0 +1,629 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Ein Netzwerk des Sonnensystems, das Sterne, Planeten, Monde und Asteroidenguertel sowie ihre Umlaufbahnen und Eigenschaften darstellt.",
+    "competencyQuestions": [
+      "Welche Himmelskoerper umkreisen die Sonne direkt?",
+      "Welche Monde gehoeren zu welchem Planeten?",
+      "Wie unterscheiden sich die Planeten in ihrer Masse und ihrem Durchmesser?",
+      "In welcher Entfernung zur Sonne befinden sich die Asteroidenguertel?",
+      "Wie lang sind die Umlaufzeiten der verschiedenen Himmelskoerper?"
+    ],
+    "apiResponse": {
+      "id": "gen-1783728370-5B4dIU6J3YSGED9hSU38",
+      "created": 1783728370,
+      "model": "z-ai/glm-5.2-20260616",
+      "usage": {
+        "prompt_tokens": 3255,
+        "completion_tokens": 6128,
+        "total_tokens": 9383,
+        "cost": 0.02197031,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.02197031,
+          "upstream_inference_prompt_cost": 0.00315735,
+          "upstream_inference_completions_cost": 0.01881296
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 2891,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    },
+    "generationDetails": {
+      "prompt": "sonnensystem",
+      "context": null,
+      "provider": "openrouter",
+      "model": "z-ai/glm-5.2",
+      "pipeline": "build6",
+      "durationMs": 83805,
+      "timestamp": "2026-07-11T00:07:34.034Z"
+    },
+    "exportedAt": "2026-07-11T00:07:35.613Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1783728454034_sonne",
+        "type": "Stern",
+        "label": "Sonne",
+        "masse_kg": 1989000,
+        "temperatur_kelvin": 5778,
+        "stateVector": {
+          "degree": 10,
+          "inbound": 10,
+          "outbound": 0
+        },
+        "inDegree": 10,
+        "outDegree": 0,
+        "position": {
+          "x": -0.4586453354128984,
+          "y": -2.829118151809286,
+          "z": -2.293618821327574
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_merkur",
+        "type": "Planet",
+        "label": "Merkur",
+        "masse_kg": 0.33,
+        "durchmesser_km": 4879,
+        "entfernung_sonne_mio_km": 57.9,
+        "kategorie": "Gesteinsplanet",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 3.652896896139628,
+          "y": -1.3765567608270497,
+          "z": 0.3607973843356641
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_venus",
+        "type": "Planet",
+        "label": "Venus",
+        "masse_kg": 4.87,
+        "durchmesser_km": 12104,
+        "entfernung_sonne_mio_km": 108.2,
+        "kategorie": "Gesteinsplanet",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.4479668693288495,
+          "y": -1.8360871445078282,
+          "z": 0.8725039818373578
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_erde",
+        "type": "Planet",
+        "label": "Erde",
+        "masse_kg": 5.97,
+        "durchmesser_km": 12742,
+        "entfernung_sonne_mio_km": 149.6,
+        "kategorie": "Gesteinsplanet",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1,
+        "position": {
+          "x": -1.9013694057425303,
+          "y": -0.7388437323873065,
+          "z": 0.03158622877856607
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_mars",
+        "type": "Planet",
+        "label": "Mars",
+        "masse_kg": 0.642,
+        "durchmesser_km": 6779,
+        "entfernung_sonne_mio_km": 227.9,
+        "kategorie": "Gesteinsplanet",
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "inDegree": 2,
+        "outDegree": 1,
+        "position": {
+          "x": 2.6283103423369307,
+          "y": -3.0461255034597663,
+          "z": 3.2680421457217643
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_jupiter",
+        "type": "Planet",
+        "label": "Jupiter",
+        "masse_kg": 1898,
+        "durchmesser_km": 139820,
+        "entfernung_sonne_mio_km": 778.5,
+        "kategorie": "Gasriese",
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "inDegree": 2,
+        "outDegree": 1,
+        "position": {
+          "x": 1.1385606905886299,
+          "y": 3.2890436723143917,
+          "z": -1.5075516811643515
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_saturn",
+        "type": "Planet",
+        "label": "Saturn",
+        "masse_kg": 568,
+        "durchmesser_km": 116460,
+        "entfernung_sonne_mio_km": 1434,
+        "kategorie": "Gasriese",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1,
+        "position": {
+          "x": 3.5008970939130686,
+          "y": -1.9125470482908267,
+          "z": -3.138837912218868
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_uranus",
+        "type": "Planet",
+        "label": "Uranus",
+        "masse_kg": 86.8,
+        "durchmesser_km": 50724,
+        "entfernung_sonne_mio_km": 2871,
+        "kategorie": "Eisriese",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.5241711568796253,
+          "y": -0.4605920945497188,
+          "z": -2.012777200299951
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_neptun",
+        "type": "Planet",
+        "label": "Neptun",
+        "masse_kg": 102,
+        "durchmesser_km": 49244,
+        "entfernung_sonne_mio_km": 4495,
+        "kategorie": "Eisriese",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.6837301122608372,
+          "y": -3.0869446919448,
+          "z": -0.8940079908565711
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_mond",
+        "type": "Mond",
+        "label": "Mond",
+        "masse_kg": 0.073,
+        "durchmesser_km": 3474,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -4.4910347987326995,
+          "y": -0.9158542019930116,
+          "z": 0.14455519135855746
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_phobos",
+        "type": "Mond",
+        "label": "Phobos",
+        "masse_kg": 0.00001,
+        "durchmesser_km": 22,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 3.7548850481308778,
+          "y": -4.810990579808986,
+          "z": 3.6918470499140352
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_deimos",
+        "type": "Mond",
+        "label": "Deimos",
+        "masse_kg": 0.000001,
+        "durchmesser_km": 12,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.710030679184623,
+          "y": -3.736172004350389,
+          "z": 5
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_europa",
+        "type": "Mond",
+        "label": "Europa",
+        "masse_kg": 0.048,
+        "durchmesser_km": 3121,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.58307446252751,
+          "y": 4.408358755683135,
+          "z": -3.2691618830898332
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_ganymed",
+        "type": "Mond",
+        "label": "Ganymed",
+        "masse_kg": 0.148,
+        "durchmesser_km": 5268,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.2587932199007892,
+          "y": 4.810990579808986,
+          "z": -1.4066714765556676
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_titan",
+        "type": "Mond",
+        "label": "Titan",
+        "masse_kg": 0.135,
+        "durchmesser_km": 5149,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 4.4910347987326995,
+          "y": -2.797442245967719,
+          "z": -5
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_hauptguertel",
+        "type": "Asteroidenguertel",
+        "label": "Hauptguertel",
+        "entfernung_sonne_mio_km": 329,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.9844111466251978,
+          "y": 0.6125137810990523,
+          "z": 1.2856801421102322
+        }
+      },
+      {
+        "id": "AI_Generation_1783728454034_kuiperguertel",
+        "type": "Asteroidenguertel",
+        "label": "Kuiperguertel",
+        "entfernung_sonne_mio_km": 4400,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.9570523766468733,
+          "y": 0.47249971736653,
+          "z": -1.0698699163298508
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1783728454034_rel_1",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_merkur",
+        "target": "AI_Generation_1783728454034_sonne",
+        "label": "umkreist",
+        "dauer_tage": 88
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_2",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_venus",
+        "target": "AI_Generation_1783728454034_sonne",
+        "label": "umkreist",
+        "dauer_tage": 225
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_3",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_erde",
+        "target": "AI_Generation_1783728454034_sonne",
+        "label": "umkreist",
+        "dauer_tage": 365
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_4",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_mars",
+        "target": "AI_Generation_1783728454034_sonne",
+        "label": "umkreist",
+        "dauer_tage": 687
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_5",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_jupiter",
+        "target": "AI_Generation_1783728454034_sonne",
+        "label": "umkreist",
+        "dauer_tage": 4333
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_6",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_saturn",
+        "target": "AI_Generation_1783728454034_sonne",
+        "label": "umkreist",
+        "dauer_tage": 10759
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_7",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_uranus",
+        "target": "AI_Generation_1783728454034_sonne",
+        "label": "umkreist",
+        "dauer_tage": 30687
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_8",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_neptun",
+        "target": "AI_Generation_1783728454034_sonne",
+        "label": "umkreist",
+        "dauer_tage": 60190
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_9",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_mond",
+        "target": "AI_Generation_1783728454034_erde",
+        "label": "umkreist",
+        "dauer_tage": 27
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_10",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_phobos",
+        "target": "AI_Generation_1783728454034_mars",
+        "label": "umkreist",
+        "dauer_tage": 0.3
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_11",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_deimos",
+        "target": "AI_Generation_1783728454034_mars",
+        "label": "umkreist",
+        "dauer_tage": 1.2
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_12",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_europa",
+        "target": "AI_Generation_1783728454034_jupiter",
+        "label": "umkreist",
+        "dauer_tage": 3.5
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_13",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_ganymed",
+        "target": "AI_Generation_1783728454034_jupiter",
+        "label": "umkreist",
+        "dauer_tage": 7.1
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_14",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_titan",
+        "target": "AI_Generation_1783728454034_saturn",
+        "label": "umkreist",
+        "dauer_tage": 16
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_15",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_hauptguertel",
+        "target": "AI_Generation_1783728454034_sonne",
+        "label": "umkreist",
+        "dauer_tage": 1680
+      },
+      {
+        "id": "AI_Generation_1783728454034_rel_16",
+        "type": "umkreist",
+        "source": "AI_Generation_1783728454034_kuiperguertel",
+        "target": "AI_Generation_1783728454034_sonne",
+        "label": "umkreist",
+        "dauer_tage": 90520
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Stern": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 3
+          }
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Planet": {
+        "size": {
+          "source": "masse_kg",
+          "function": "logarithmic",
+          "range": [
+            0.5,
+            2.5
+          ]
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "octahedron"
+          }
+        }
+      },
+      "Mond": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.3
+          }
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "tetrahedron"
+          }
+        }
+      },
+      "Asteroidenguertel": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "dodecahedron"
+          }
+        }
+      },
+      "umkreist": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#FFD700"
+          }
+        },
+        "thickness": {
+          "source": "dauer_tage",
+          "function": "logarithmic",
+          "range": [
+            0.05,
+            0.5
+          ]
+        }
+      }
+    }
+  }
+}

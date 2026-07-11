@@ -403,12 +403,16 @@ export class EdgeObjectsManager {
         const midPoint = new THREE.Vector3().lerpVectors(startPosition, endPosition, 0.5);
 
         // Berechne die Richtung der Verbindung
-        const direction = new THREE.Vector3().subVectors(endPosition, startPosition).normalize();
+        const direction = new THREE.Vector3().subVectors(endPosition, startPosition);
+        if (direction.lengthSq() < 0.000001) {
+            direction.set(0, 1, 0); // Fake direction to prevent NaN
+        }
+        direction.normalize();
 
         // Berechne senkrechte Richtung für den Bogen
         let perpendicular = new THREE.Vector3(1, 0, 0).cross(direction);
         if (perpendicular.length() < 0.0001) {
-            perpendicular.set(0, 1, 0).cross(direction);
+            perpendicular.set(0, 0, 1).cross(direction);
         }
         perpendicular.normalize();
 
@@ -500,11 +504,15 @@ export class EdgeObjectsManager {
             updatePositions: (newStartPos: THREE.Vector3, newEndPos: THREE.Vector3) => {
                 // Berechne neue Kurve
                 const newMidPoint = new THREE.Vector3().lerpVectors(newStartPos, newEndPos, 0.5);
-                const newDirection = new THREE.Vector3().subVectors(newEndPos, newStartPos).normalize();
+                const newDirection = new THREE.Vector3().subVectors(newEndPos, newStartPos);
+                if (newDirection.lengthSq() < 0.000001) {
+                    newDirection.set(0, 1, 0); // Fake direction to prevent NaN
+                }
+                newDirection.normalize();
 
                 let newPerpendicular = new THREE.Vector3(1, 0, 0).cross(newDirection);
                 if (newPerpendicular.length() < 0.0001) {
-                    newPerpendicular.set(0, 1, 0).cross(newDirection);
+                    newPerpendicular.set(0, 0, 1).cross(newDirection);
                 }
                 newPerpendicular.normalize();
 

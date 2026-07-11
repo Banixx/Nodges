@@ -1,0 +1,22 @@
+{
+  "timestampStart": "2026-07-10T12:58:01.180Z",
+  "prompt": "sonnenstystem",
+  "ragText": null,
+  "provider": "openrouter",
+  "model": "z-ai/glm-5.2",
+  "pipeline": "build6",
+  "steps": [
+    {
+      "time": "2026-07-10T12:58:01.189Z",
+      "offsetMs": 9,
+      "message": "Generiere Netzwerk (Ontologie, Daten & Visuals in einem Schritt)..."
+    }
+  ],
+  "timestampEnd": "2026-07-10T12:59:08.460Z",
+  "durationMs": 67280,
+  "durationSec": "67.28",
+  "status": "success",
+  "generatedNodes": 19,
+  "generatedEdges": 25,
+  "responsePayloadSizeKB": "10.21"
+}

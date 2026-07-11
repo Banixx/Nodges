@@ -1,0 +1,1160 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Ontologie des Sonnensystems mit Himmelskörpern, deren physikalischen Eigenschaften und gravitativen Beziehungen",
+    "author": "AI",
+    "competencyQuestions": [
+      "Welche Planeten, Zwergplaneten und Monde gehören zum Sonnensystem?",
+      "Wie unterscheiden sich die Himmelskörper hinsichtlich Masse, Radius und Umlaufzeit?",
+      "In welcher Reihenfolge umkreisen die Planeten die Sonne?",
+      "Welche Monde gehören zu welchem Planeten oder Zwergplaneten?"
+    ],
+    "map": {
+      "image": "Map.jpg",
+      "referenceWidth": 1000,
+      "referenceHeight": 1000
+    },
+    "exportedAt": "2026-07-10T22:45:31.225Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1783723531150_sonne",
+        "type": "Stern",
+        "label": "Sonne",
+        "name": "Sonne",
+        "masse_kg": 1.989e+30,
+        "radius_km": 696340,
+        "position": {
+          "x": 0,
+          "y": 20,
+          "z": 0
+        },
+        "mapX": 500,
+        "mapY": 500,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 13,
+          "inbound": 13,
+          "outbound": 0
+        },
+        "inDegree": 13,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783723531150_merkur",
+        "type": "Planet",
+        "label": "Merkur",
+        "name": "Merkur",
+        "masse_kg": 3.285e+23,
+        "radius_km": 2440,
+        "anzahl_monde": 0,
+        "entfernung_sonne_mio_km": 57.9,
+        "umlaufzeit_jahre": 0.24,
+        "position": {
+          "x": 2,
+          "y": 15,
+          "z": 0
+        },
+        "mapX": 600,
+        "mapY": 400,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783723531150_venus",
+        "type": "Planet",
+        "label": "Venus",
+        "name": "Venus",
+        "masse_kg": 4.867e+24,
+        "radius_km": 6052,
+        "anzahl_monde": 0,
+        "entfernung_sonne_mio_km": 108.2,
+        "umlaufzeit_jahre": 0.615,
+        "position": {
+          "x": 4,
+          "y": 14,
+          "z": 0
+        },
+        "mapX": 650,
+        "mapY": 430,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783723531150_erde",
+        "type": "Planet",
+        "label": "Erde",
+        "name": "Erde",
+        "masse_kg": 5.972e+24,
+        "radius_km": 6371,
+        "anzahl_monde": 1,
+        "entfernung_sonne_mio_km": 149.6,
+        "umlaufzeit_jahre": 1,
+        "position": {
+          "x": 6,
+          "y": 12,
+          "z": 0
+        },
+        "mapX": 700,
+        "mapY": 450,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783723531150_mars",
+        "type": "Planet",
+        "label": "Mars",
+        "name": "Mars",
+        "masse_kg": 6.39e+23,
+        "radius_km": 3390,
+        "anzahl_monde": 2,
+        "entfernung_sonne_mio_km": 227.9,
+        "umlaufzeit_jahre": 1.88,
+        "position": {
+          "x": 8,
+          "y": 10,
+          "z": 0
+        },
+        "mapX": 740,
+        "mapY": 480,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 3,
+          "inbound": 0,
+          "outbound": 3
+        },
+        "inDegree": 0,
+        "outDegree": 3
+      },
+      {
+        "id": "AI_Generation_1783723531150_jupiter",
+        "type": "Planet",
+        "label": "Jupiter",
+        "name": "Jupiter",
+        "masse_kg": 1.898e+27,
+        "radius_km": 69911,
+        "anzahl_monde": 95,
+        "entfernung_sonne_mio_km": 778.5,
+        "umlaufzeit_jahre": 11.86,
+        "position": {
+          "x": 12,
+          "y": 8,
+          "z": 0
+        },
+        "mapX": 800,
+        "mapY": 520,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 5,
+          "inbound": 0,
+          "outbound": 5
+        },
+        "inDegree": 0,
+        "outDegree": 5
+      },
+      {
+        "id": "AI_Generation_1783723531150_saturn",
+        "type": "Planet",
+        "label": "Saturn",
+        "name": "Saturn",
+        "masse_kg": 5.683e+26,
+        "radius_km": 58232,
+        "anzahl_monde": 146,
+        "entfernung_sonne_mio_km": 1433.5,
+        "umlaufzeit_jahre": 29.46,
+        "position": {
+          "x": 16,
+          "y": 6,
+          "z": 0
+        },
+        "mapX": 850,
+        "mapY": 560,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 3,
+          "inbound": 0,
+          "outbound": 3
+        },
+        "inDegree": 0,
+        "outDegree": 3
+      },
+      {
+        "id": "AI_Generation_1783723531150_uranus",
+        "type": "Planet",
+        "label": "Uranus",
+        "name": "Uranus",
+        "masse_kg": 8.681e+25,
+        "radius_km": 25362,
+        "anzahl_monde": 27,
+        "entfernung_sonne_mio_km": 2872.5,
+        "umlaufzeit_jahre": 84.01,
+        "position": {
+          "x": 20,
+          "y": 4,
+          "z": 0
+        },
+        "mapX": 900,
+        "mapY": 600,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783723531150_neptun",
+        "type": "Planet",
+        "label": "Neptun",
+        "name": "Neptun",
+        "masse_kg": 1.024e+26,
+        "radius_km": 24622,
+        "anzahl_monde": 16,
+        "entfernung_sonne_mio_km": 4495.1,
+        "umlaufzeit_jahre": 164.8,
+        "position": {
+          "x": 24,
+          "y": 2,
+          "z": 0
+        },
+        "mapX": 950,
+        "mapY": 640,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783723531150_ceres",
+        "type": "Zwergplanet",
+        "label": "Ceres",
+        "name": "Ceres",
+        "masse_kg": 939000000000000000000,
+        "radius_km": 475,
+        "entfernung_sonne_mio_km": 414,
+        "umlaufzeit_jahre": 4.6,
+        "position": {
+          "x": 10,
+          "y": 9,
+          "z": 0
+        },
+        "mapX": 750,
+        "mapY": 500,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783723531150_pluto",
+        "type": "Zwergplanet",
+        "label": "Pluto",
+        "name": "Pluto",
+        "masse_kg": 1.303e+22,
+        "radius_km": 1188,
+        "entfernung_sonne_mio_km": 5906.4,
+        "umlaufzeit_jahre": 247.94,
+        "position": {
+          "x": 28,
+          "y": 1,
+          "z": 0
+        },
+        "mapX": 980,
+        "mapY": 700,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783723531150_eris",
+        "type": "Zwergplanet",
+        "label": "Eris",
+        "name": "Eris",
+        "masse_kg": 1.66e+22,
+        "radius_km": 1163,
+        "entfernung_sonne_mio_km": 10130,
+        "umlaufzeit_jahre": 557,
+        "position": {
+          "x": 32,
+          "y": -2,
+          "z": 0
+        },
+        "mapX": 990,
+        "mapY": 750,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783723531150_makemake",
+        "type": "Zwergplanet",
+        "label": "Makemake",
+        "name": "Makemake",
+        "masse_kg": 3e+21,
+        "radius_km": 715,
+        "entfernung_sonne_mio_km": 6810,
+        "umlaufzeit_jahre": 309.9,
+        "position": {
+          "x": 30,
+          "y": -1,
+          "z": 0
+        },
+        "mapX": 985,
+        "mapY": 720,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783723531150_haumea",
+        "type": "Zwergplanet",
+        "label": "Haumea",
+        "name": "Haumea",
+        "masse_kg": 4e+21,
+        "radius_km": 816,
+        "entfernung_sonne_mio_km": 6450,
+        "umlaufzeit_jahre": 285.4,
+        "position": {
+          "x": 31,
+          "y": -1,
+          "z": 0
+        },
+        "mapX": 982,
+        "mapY": 730,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783723531150_mond_erde",
+        "type": "Mond",
+        "label": "Mond",
+        "name": "Mond",
+        "masse_kg": 7.347e+22,
+        "radius_km": 1737,
+        "position": {
+          "x": 6,
+          "y": 11,
+          "z": 1
+        },
+        "mapX": 710,
+        "mapY": 440,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783723531150_phobos",
+        "type": "Mond",
+        "label": "Phobos",
+        "name": "Phobos",
+        "masse_kg": 10600000000000000,
+        "radius_km": 11.1,
+        "position": {
+          "x": 8,
+          "y": 9,
+          "z": 1
+        },
+        "mapX": 740,
+        "mapY": 470,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783723531150_deimos",
+        "type": "Mond",
+        "label": "Deimos",
+        "name": "Deimos",
+        "masse_kg": 1470000000000000,
+        "radius_km": 6.2,
+        "position": {
+          "x": 8,
+          "y": 9,
+          "z": -1
+        },
+        "mapX": 740,
+        "mapY": 470,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783723531150_io",
+        "type": "Mond",
+        "label": "Io",
+        "name": "Io",
+        "masse_kg": 8.932e+22,
+        "radius_km": 1821,
+        "position": {
+          "x": 12,
+          "y": 7,
+          "z": 1
+        },
+        "mapX": 800,
+        "mapY": 510,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783723531150_europa",
+        "type": "Mond",
+        "label": "Europa",
+        "name": "Europa",
+        "masse_kg": 4.799e+22,
+        "radius_km": 1561,
+        "position": {
+          "x": 12,
+          "y": 7,
+          "z": -1
+        },
+        "mapX": 800,
+        "mapY": 510,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783723531150_ganymed",
+        "type": "Mond",
+        "label": "Ganymed",
+        "name": "Ganymed",
+        "masse_kg": 1.4819e+23,
+        "radius_km": 2634,
+        "position": {
+          "x": 12,
+          "y": 7,
+          "z": 2
+        },
+        "mapX": 800,
+        "mapY": 510,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783723531150_kallisto",
+        "type": "Mond",
+        "label": "Kallisto",
+        "name": "Kallisto",
+        "masse_kg": 1.0759e+23,
+        "radius_km": 2410,
+        "position": {
+          "x": 12,
+          "y": 7,
+          "z": -2
+        },
+        "mapX": 800,
+        "mapY": 510,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783723531150_titan",
+        "type": "Mond",
+        "label": "Titan",
+        "name": "Titan",
+        "masse_kg": 1.3452e+23,
+        "radius_km": 2575,
+        "position": {
+          "x": 16,
+          "y": 5,
+          "z": 1
+        },
+        "mapX": 850,
+        "mapY": 550,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783723531150_enceladus",
+        "type": "Mond",
+        "label": "Enceladus",
+        "name": "Enceladus",
+        "masse_kg": 108000000000000000000,
+        "radius_km": 252,
+        "position": {
+          "x": 16,
+          "y": 5,
+          "z": -1
+        },
+        "mapX": 850,
+        "mapY": 550,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783723531150_triton",
+        "type": "Mond",
+        "label": "Triton",
+        "name": "Triton",
+        "masse_kg": 2.139e+22,
+        "radius_km": 1353,
+        "position": {
+          "x": 24,
+          "y": 1,
+          "z": 1
+        },
+        "mapX": 950,
+        "mapY": 640,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783723531150_charon",
+        "type": "Mond",
+        "label": "Charon",
+        "name": "Charon",
+        "masse_kg": 1.586e+21,
+        "radius_km": 606,
+        "position": {
+          "x": 28,
+          "y": 0,
+          "z": 1
+        },
+        "mapX": 980,
+        "mapY": 700,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null,
+          "history": []
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1783723531150_rel_sonne_merkur",
+        "type": "umkreist_zentralgestirn",
+        "source": "AI_Generation_1783723531150_merkur",
+        "target": "AI_Generation_1783723531150_sonne",
+        "label": "Merkur umkreist Sonne",
+        "bahnradius_mio_km": 57.9,
+        "umlaufdauer_tage": 88,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_sonne_venus",
+        "type": "umkreist_zentralgestirn",
+        "source": "AI_Generation_1783723531150_venus",
+        "target": "AI_Generation_1783723531150_sonne",
+        "label": "Venus umkreist Sonne",
+        "bahnradius_mio_km": 108.2,
+        "umlaufdauer_tage": 224.7,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_sonne_erde",
+        "type": "umkreist_zentralgestirn",
+        "source": "AI_Generation_1783723531150_erde",
+        "target": "AI_Generation_1783723531150_sonne",
+        "label": "Erde umkreist Sonne",
+        "bahnradius_mio_km": 149.6,
+        "umlaufdauer_tage": 365.25,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_sonne_mars",
+        "type": "umkreist_zentralgestirn",
+        "source": "AI_Generation_1783723531150_mars",
+        "target": "AI_Generation_1783723531150_sonne",
+        "label": "Mars umkreist Sonne",
+        "bahnradius_mio_km": 227.9,
+        "umlaufdauer_tage": 687,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_sonne_jupiter",
+        "type": "umkreist_zentralgestirn",
+        "source": "AI_Generation_1783723531150_jupiter",
+        "target": "AI_Generation_1783723531150_sonne",
+        "label": "Jupiter umkreist Sonne",
+        "bahnradius_mio_km": 778.5,
+        "umlaufdauer_tage": 4332.6,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_sonne_saturn",
+        "type": "umkreist_zentralgestirn",
+        "source": "AI_Generation_1783723531150_saturn",
+        "target": "AI_Generation_1783723531150_sonne",
+        "label": "Saturn umkreist Sonne",
+        "bahnradius_mio_km": 1433.5,
+        "umlaufdauer_tage": 10759,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_sonne_uranus",
+        "type": "umkreist_zentralgestirn",
+        "source": "AI_Generation_1783723531150_uranus",
+        "target": "AI_Generation_1783723531150_sonne",
+        "label": "Uranus umkreist Sonne",
+        "bahnradius_mio_km": 2872.5,
+        "umlaufdauer_tage": 30688.5,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_sonne_neptun",
+        "type": "umkreist_zentralgestirn",
+        "source": "AI_Generation_1783723531150_neptun",
+        "target": "AI_Generation_1783723531150_sonne",
+        "label": "Neptun umkreist Sonne",
+        "bahnradius_mio_km": 4495.1,
+        "umlaufdauer_tage": 60182,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_sonne_ceres",
+        "type": "umkreist_zentralgestirn",
+        "source": "AI_Generation_1783723531150_ceres",
+        "target": "AI_Generation_1783723531150_sonne",
+        "label": "Ceres umkreist Sonne",
+        "bahnradius_mio_km": 414,
+        "umlaufdauer_tage": 1680,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_sonne_pluto",
+        "type": "umkreist_zentralgestirn",
+        "source": "AI_Generation_1783723531150_pluto",
+        "target": "AI_Generation_1783723531150_sonne",
+        "label": "Pluto umkreist Sonne",
+        "bahnradius_mio_km": 5906.4,
+        "umlaufdauer_tage": 90560,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_sonne_eris",
+        "type": "umkreist_zentralgestirn",
+        "source": "AI_Generation_1783723531150_eris",
+        "target": "AI_Generation_1783723531150_sonne",
+        "label": "Eris umkreist Sonne",
+        "bahnradius_mio_km": 10130,
+        "umlaufdauer_tage": 203830,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_sonne_makemake",
+        "type": "umkreist_zentralgestirn",
+        "source": "AI_Generation_1783723531150_makemake",
+        "target": "AI_Generation_1783723531150_sonne",
+        "label": "Makemake umkreist Sonne",
+        "bahnradius_mio_km": 6810,
+        "umlaufdauer_tage": 113180,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_sonne_haumea",
+        "type": "umkreist_zentralgestirn",
+        "source": "AI_Generation_1783723531150_haumea",
+        "target": "AI_Generation_1783723531150_sonne",
+        "label": "Haumea umkreist Sonne",
+        "bahnradius_mio_km": 6450,
+        "umlaufdauer_tage": 104340,
+        "temporal": {
+          "validFrom": -4600000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_erde_mond",
+        "type": "hat_mond",
+        "source": "AI_Generation_1783723531150_erde",
+        "target": "AI_Generation_1783723531150_mond_erde",
+        "label": "Erde hat Mond",
+        "entdeckungsjahr": null,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_mars_phobos",
+        "type": "hat_mond",
+        "source": "AI_Generation_1783723531150_mars",
+        "target": "AI_Generation_1783723531150_phobos",
+        "label": "Mars hat Phobos",
+        "entdeckungsjahr": 1877,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_mars_deimos",
+        "type": "hat_mond",
+        "source": "AI_Generation_1783723531150_mars",
+        "target": "AI_Generation_1783723531150_deimos",
+        "label": "Mars hat Deimos",
+        "entdeckungsjahr": 1877,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_jupiter_io",
+        "type": "hat_mond",
+        "source": "AI_Generation_1783723531150_jupiter",
+        "target": "AI_Generation_1783723531150_io",
+        "label": "Jupiter hat Io",
+        "entdeckungsjahr": 1610,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_jupiter_europa",
+        "type": "hat_mond",
+        "source": "AI_Generation_1783723531150_jupiter",
+        "target": "AI_Generation_1783723531150_europa",
+        "label": "Jupiter hat Europa",
+        "entdeckungsjahr": 1610,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_jupiter_ganymed",
+        "type": "hat_mond",
+        "source": "AI_Generation_1783723531150_jupiter",
+        "target": "AI_Generation_1783723531150_ganymed",
+        "label": "Jupiter hat Ganymed",
+        "entdeckungsjahr": 1610,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_jupiter_kallisto",
+        "type": "hat_mond",
+        "source": "AI_Generation_1783723531150_jupiter",
+        "target": "AI_Generation_1783723531150_kallisto",
+        "label": "Jupiter hat Kallisto",
+        "entdeckungsjahr": 1610,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_saturn_titan",
+        "type": "hat_mond",
+        "source": "AI_Generation_1783723531150_saturn",
+        "target": "AI_Generation_1783723531150_titan",
+        "label": "Saturn hat Titan",
+        "entdeckungsjahr": 1655,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_saturn_enceladus",
+        "type": "hat_mond",
+        "source": "AI_Generation_1783723531150_saturn",
+        "target": "AI_Generation_1783723531150_enceladus",
+        "label": "Saturn hat Enceladus",
+        "entdeckungsjahr": 1789,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_neptun_triton",
+        "type": "hat_mond",
+        "source": "AI_Generation_1783723531150_neptun",
+        "target": "AI_Generation_1783723531150_triton",
+        "label": "Neptun hat Triton",
+        "entdeckungsjahr": 1846,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null
+        }
+      },
+      {
+        "id": "AI_Generation_1783723531150_rel_pluto_charon",
+        "type": "hat_mond",
+        "source": "AI_Generation_1783723531150_pluto",
+        "target": "AI_Generation_1783723531150_charon",
+        "label": "Pluto hat Charon",
+        "entdeckungsjahr": 1978,
+        "temporal": {
+          "validFrom": -4500000000,
+          "validTo": null
+        }
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Stern": {
+        "color": {
+          "source": "masse_kg",
+          "function": "linear"
+        },
+        "size": {
+          "source": "radius_km",
+          "function": "linear",
+          "range": [
+            0.5,
+            2.5
+          ]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Planet": {
+        "color": {
+          "source": "masse_kg",
+          "function": "linear"
+        },
+        "size": {
+          "source": "radius_km",
+          "function": "linear",
+          "range": [
+            0.5,
+            2.5
+          ]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "dodecahedron"
+          }
+        }
+      },
+      "Zwergplanet": {
+        "color": {
+          "source": "masse_kg",
+          "function": "linear"
+        },
+        "size": {
+          "source": "radius_km",
+          "function": "linear",
+          "range": [
+            0.5,
+            2.5
+          ]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "box"
+          }
+        }
+      },
+      "Mond": {
+        "color": {
+          "source": "masse_kg",
+          "function": "linear"
+        },
+        "size": {
+          "source": "radius_km",
+          "function": "linear",
+          "range": [
+            0.5,
+            2.5
+          ]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "icosahedron"
+          }
+        }
+      },
+      "umkreist_zentralgestirn": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#FFD700"
+          }
+        },
+        "thickness": {
+          "source": "bahnradius_mio_km",
+          "function": "linear",
+          "range": [
+            0.05,
+            0.5
+          ]
+        }
+      },
+      "hat_mond": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#4FC3F7"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.1
+          }
+        }
+      }
+    }
+  }
+}

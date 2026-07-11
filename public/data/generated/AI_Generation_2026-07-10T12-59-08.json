@@ -1,0 +1,808 @@
+{
+  "system": "Nodges",
+  "metadata": {
+    "created": "2023-10-25",
+    "version": "1.0",
+    "schemaVersion": "1.0",
+    "author": "AI Architect",
+    "description": "Netzwerk des Sonnensystems mit Stern, Planeten und Monden.",
+    "competencyQuestions": [
+      "Welche Himmelskörper umkreisen die Sonne?",
+      "Wie ist die Reihenfolge der Planeten im Sonnensystem?",
+      "Welche Monde gehören zu welchen Planeten?",
+      "Wie groß sind die Himmelskörper im Vergleich?"
+    ],
+    "exportedAt": "2026-07-10T12:59:08.528Z"
+  },
+  "dataModel": {
+    "properties": {
+      "name": {
+        "type": "categorical"
+      },
+      "radius": {
+        "type": "continuous",
+        "unit": "km",
+        "range": [
+          0,
+          700000
+        ]
+      },
+      "orderFromSun": {
+        "type": "continuous",
+        "range": [
+          0,
+          8
+        ]
+      },
+      "distance": {
+        "type": "continuous",
+        "unit": "million_km",
+        "range": [
+          0,
+          5000
+        ]
+      }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Star": {
+        "size": {
+          "source": "radius",
+          "function": "linear",
+          "domain": [
+            600000,
+            700000
+          ],
+          "range": [
+            12,
+            16
+          ]
+        },
+        "color": {
+          "function": "constant",
+          "palette": "#FFA500"
+        },
+        "geometry": {
+          "function": "constant",
+          "palette": "sphere"
+        },
+        "position": {
+          "function": "constant"
+        }
+      },
+      "Planet": {
+        "size": {
+          "source": "radius",
+          "function": "linear",
+          "domain": [
+            2000,
+            70000
+          ],
+          "range": [
+            3,
+            10
+          ]
+        },
+        "color": {
+          "function": "constant",
+          "palette": "#3366FF"
+        },
+        "geometry": {
+          "function": "constant",
+          "palette": "box"
+        },
+        "position": {
+          "function": "constant"
+        }
+      },
+      "Moon": {
+        "size": {
+          "source": "radius",
+          "function": "linear",
+          "domain": [
+            10,
+            3000
+          ],
+          "range": [
+            0.5,
+            2.5
+          ]
+        },
+        "color": {
+          "function": "constant",
+          "palette": "#CCCCCC"
+        },
+        "geometry": {
+          "function": "constant",
+          "palette": "dodecahedron"
+        },
+        "position": {
+          "function": "constant"
+        }
+      },
+      "orbits": {
+        "thickness": {
+          "source": "distance",
+          "function": "linear",
+          "domain": [
+            0,
+            4500
+          ],
+          "range": [
+            0.1,
+            2
+          ]
+        },
+        "color": {
+          "function": "constant",
+          "palette": "#FFFFFF"
+        },
+        "curvature": {
+          "function": "constant",
+          "palette": "0.2"
+        }
+      },
+      "neighbor": {
+        "thickness": {
+          "source": "distance",
+          "function": "linear",
+          "domain": [
+            0,
+            2000
+          ],
+          "range": [
+            0.1,
+            1.5
+          ]
+        },
+        "color": {
+          "function": "constant",
+          "palette": "#888888"
+        },
+        "curvature": {
+          "function": "constant",
+          "palette": "0"
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1783688348460_sun",
+        "type": "Star",
+        "label": "Sonne",
+        "properties": {
+          "name": "Sonne",
+          "radius": 696340
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 8,
+          "inbound": 8,
+          "outbound": 0
+        },
+        "inDegree": 8,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783688348460_mercury",
+        "type": "Planet",
+        "label": "Merkur",
+        "properties": {
+          "name": "Merkur",
+          "radius": 2439,
+          "orderFromSun": 1
+        },
+        "position": {
+          "x": 10,
+          "y": 0,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783688348460_venus",
+        "type": "Planet",
+        "label": "Venus",
+        "properties": {
+          "name": "Venus",
+          "radius": 6051,
+          "orderFromSun": 2
+        },
+        "position": {
+          "x": 18,
+          "y": 0,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 3,
+          "inbound": 1,
+          "outbound": 2
+        },
+        "inDegree": 1,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783688348460_earth",
+        "type": "Planet",
+        "label": "Erde",
+        "properties": {
+          "name": "Erde",
+          "radius": 6371,
+          "orderFromSun": 3
+        },
+        "position": {
+          "x": 26,
+          "y": 0,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 4,
+          "inbound": 2,
+          "outbound": 2
+        },
+        "inDegree": 2,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783688348460_mars",
+        "type": "Planet",
+        "label": "Mars",
+        "properties": {
+          "name": "Mars",
+          "radius": 3389,
+          "orderFromSun": 4
+        },
+        "position": {
+          "x": 34,
+          "y": 0,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 5,
+          "inbound": 3,
+          "outbound": 2
+        },
+        "inDegree": 3,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783688348460_jupiter",
+        "type": "Planet",
+        "label": "Jupiter",
+        "properties": {
+          "name": "Jupiter",
+          "radius": 69911,
+          "orderFromSun": 5
+        },
+        "position": {
+          "x": 45,
+          "y": 0,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 7,
+          "inbound": 5,
+          "outbound": 2
+        },
+        "inDegree": 5,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783688348460_saturn",
+        "type": "Planet",
+        "label": "Saturn",
+        "properties": {
+          "name": "Saturn",
+          "radius": 58232,
+          "orderFromSun": 6
+        },
+        "position": {
+          "x": 58,
+          "y": 0,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 5,
+          "inbound": 3,
+          "outbound": 2
+        },
+        "inDegree": 3,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783688348460_uranus",
+        "type": "Planet",
+        "label": "Uranus",
+        "properties": {
+          "name": "Uranus",
+          "radius": 25362,
+          "orderFromSun": 7
+        },
+        "position": {
+          "x": 70,
+          "y": 0,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 3,
+          "inbound": 1,
+          "outbound": 2
+        },
+        "inDegree": 1,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1783688348460_neptune",
+        "type": "Planet",
+        "label": "Neptun",
+        "properties": {
+          "name": "Neptun",
+          "radius": 24622,
+          "orderFromSun": 8
+        },
+        "position": {
+          "x": 82,
+          "y": 0,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "inDegree": 2,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688348460_moon_earth",
+        "type": "Moon",
+        "label": "Mond",
+        "properties": {
+          "name": "Mond",
+          "radius": 1737
+        },
+        "position": {
+          "x": 28,
+          "y": 2,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688348460_phobos_mars",
+        "type": "Moon",
+        "label": "Phobos",
+        "properties": {
+          "name": "Phobos",
+          "radius": 11
+        },
+        "position": {
+          "x": 35,
+          "y": 1,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688348460_deimos_mars",
+        "type": "Moon",
+        "label": "Deimos",
+        "properties": {
+          "name": "Deimos",
+          "radius": 6
+        },
+        "position": {
+          "x": 33,
+          "y": 2,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688348460_io_jupiter",
+        "type": "Moon",
+        "label": "Io",
+        "properties": {
+          "name": "Io",
+          "radius": 1821
+        },
+        "position": {
+          "x": 45,
+          "y": 3,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688348460_europa_jupiter",
+        "type": "Moon",
+        "label": "Europa",
+        "properties": {
+          "name": "Europa",
+          "radius": 1560
+        },
+        "position": {
+          "x": 47,
+          "y": 3,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688348460_ganymed_jupiter",
+        "type": "Moon",
+        "label": "Ganymed",
+        "properties": {
+          "name": "Ganymed",
+          "radius": 2634
+        },
+        "position": {
+          "x": 49,
+          "y": 3,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688348460_kallisto_jupiter",
+        "type": "Moon",
+        "label": "Kallisto",
+        "properties": {
+          "name": "Kallisto",
+          "radius": 2410
+        },
+        "position": {
+          "x": 51,
+          "y": 3,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688348460_titan_saturn",
+        "type": "Moon",
+        "label": "Titan",
+        "properties": {
+          "name": "Titan",
+          "radius": 2574
+        },
+        "position": {
+          "x": 58,
+          "y": 2,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688348460_enceladus_saturn",
+        "type": "Moon",
+        "label": "Enceladus",
+        "properties": {
+          "name": "Enceladus",
+          "radius": 252
+        },
+        "position": {
+          "x": 60,
+          "y": 2,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688348460_triton_neptune",
+        "type": "Moon",
+        "label": "Triton",
+        "properties": {
+          "name": "Triton",
+          "radius": 1353
+        },
+        "position": {
+          "x": 82,
+          "y": 2,
+          "z": 0
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1783688348460_rel_mercury_sun",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_mercury",
+        "target": "AI_Generation_1783688348460_sun",
+        "properties": {
+          "distance": 57.9
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_venus_sun",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_venus",
+        "target": "AI_Generation_1783688348460_sun",
+        "properties": {
+          "distance": 108.2
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_earth_sun",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_earth",
+        "target": "AI_Generation_1783688348460_sun",
+        "properties": {
+          "distance": 149.6
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_mars_sun",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_mars",
+        "target": "AI_Generation_1783688348460_sun",
+        "properties": {
+          "distance": 227.9
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_jupiter_sun",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_jupiter",
+        "target": "AI_Generation_1783688348460_sun",
+        "properties": {
+          "distance": 778.5
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_saturn_sun",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_saturn",
+        "target": "AI_Generation_1783688348460_sun",
+        "properties": {
+          "distance": 1434
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_uranus_sun",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_uranus",
+        "target": "AI_Generation_1783688348460_sun",
+        "properties": {
+          "distance": 2871
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_neptune_sun",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_neptune",
+        "target": "AI_Generation_1783688348460_sun",
+        "properties": {
+          "distance": 4495
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_moon_earth",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_moon_earth",
+        "target": "AI_Generation_1783688348460_earth",
+        "properties": {
+          "distance": 0.384
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_phobos_mars",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_phobos_mars",
+        "target": "AI_Generation_1783688348460_mars",
+        "properties": {
+          "distance": 0.009
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_deimos_mars",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_deimos_mars",
+        "target": "AI_Generation_1783688348460_mars",
+        "properties": {
+          "distance": 0.023
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_io_jupiter",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_io_jupiter",
+        "target": "AI_Generation_1783688348460_jupiter",
+        "properties": {
+          "distance": 0.421
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_europa_jupiter",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_europa_jupiter",
+        "target": "AI_Generation_1783688348460_jupiter",
+        "properties": {
+          "distance": 0.671
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_ganymed_jupiter",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_ganymed_jupiter",
+        "target": "AI_Generation_1783688348460_jupiter",
+        "properties": {
+          "distance": 1.07
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_kallisto_jupiter",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_kallisto_jupiter",
+        "target": "AI_Generation_1783688348460_jupiter",
+        "properties": {
+          "distance": 1.88
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_titan_saturn",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_titan_saturn",
+        "target": "AI_Generation_1783688348460_saturn",
+        "properties": {
+          "distance": 1.22
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_enceladus_saturn",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_enceladus_saturn",
+        "target": "AI_Generation_1783688348460_saturn",
+        "properties": {
+          "distance": 0.238
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_triton_neptune",
+        "type": "orbits",
+        "source": "AI_Generation_1783688348460_triton_neptune",
+        "target": "AI_Generation_1783688348460_neptune",
+        "properties": {
+          "distance": 0.354
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_neigh_mercury_venus",
+        "type": "neighbor",
+        "source": "AI_Generation_1783688348460_mercury",
+        "target": "AI_Generation_1783688348460_venus",
+        "properties": {
+          "distance": 50.3
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_neigh_venus_earth",
+        "type": "neighbor",
+        "source": "AI_Generation_1783688348460_venus",
+        "target": "AI_Generation_1783688348460_earth",
+        "properties": {
+          "distance": 41.4
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_neigh_earth_mars",
+        "type": "neighbor",
+        "source": "AI_Generation_1783688348460_earth",
+        "target": "AI_Generation_1783688348460_mars",
+        "properties": {
+          "distance": 78.3
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_neigh_mars_jupiter",
+        "type": "neighbor",
+        "source": "AI_Generation_1783688348460_mars",
+        "target": "AI_Generation_1783688348460_jupiter",
+        "properties": {
+          "distance": 550.6
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_neigh_jupiter_saturn",
+        "type": "neighbor",
+        "source": "AI_Generation_1783688348460_jupiter",
+        "target": "AI_Generation_1783688348460_saturn",
+        "properties": {
+          "distance": 655.5
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_neigh_saturn_uranus",
+        "type": "neighbor",
+        "source": "AI_Generation_1783688348460_saturn",
+        "target": "AI_Generation_1783688348460_uranus",
+        "properties": {
+          "distance": 1437
+        }
+      },
+      {
+        "id": "AI_Generation_1783688348460_rel_neigh_uranus_neptune",
+        "type": "neighbor",
+        "source": "AI_Generation_1783688348460_uranus",
+        "target": "AI_Generation_1783688348460_neptune",
+        "properties": {
+          "distance": 1624
+        }
+      }
+    ]
+  }
+}

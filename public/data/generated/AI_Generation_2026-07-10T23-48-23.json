@@ -1,0 +1,669 @@
+{
+  "system": "sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Eine interaktive Visualisierung des Sonnensystems unter Berücksichtigung physikalischer und topologischer Eigenschaften.",
+    "competencyQuestions": [
+      "Welche Planeten befinden sich innerhalb des Bereichs zwischen der Sonne und Mars?",
+      "Welche Planeten haben eine Masse unter 10^23 kg und welche über 10^24 kg?",
+      "Welche Planeten sind planetarisch im Einzelkontext braun?",
+      "Welche Planeten liegen näher an der Sonne als die übrigen?",
+      "Welche Planeten haben eine Masse größer als die Sonne und welche kleiner?",
+      "Welche Planeten befinden sich über den Medium-Bereich in Bezug auf ihre Masse?",
+      "Welche Planeten haben eine Position, die innerhalb des linearen Bereichs zwischen den Planeten liegt?",
+      "Welche Planeten sind über den Medium-Bereich in Bezug auf ihre Masse verteilt?",
+      "Welche Planeten haben eine Masse zwischen 10^19 kg und 10^23 kg?",
+      "Welche Planeten haben eine Masse zwischen 10^23 kg und 10^27 kg?",
+      "Welche Planeten haben eine Masse zwischen 10^24 kg und 10^30 kg?"
+    ],
+    "apiResponse": {
+      "id": "gen-1783727275-hDBSZKh3IeiUZdE6EMDV",
+      "created": 1783727275,
+      "model": "morph/morph-v3-large",
+      "usage": {
+        "prompt_tokens": 1528,
+        "completion_tokens": 4386,
+        "total_tokens": 5914,
+        "cost": 0.0097086,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0097086,
+          "upstream_inference_prompt_cost": 0.0013752,
+          "upstream_inference_completions_cost": 0.0083334
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    },
+    "generationDetails": {
+      "prompt": "sonnensystem",
+      "context": null,
+      "provider": "openrouter",
+      "model": "morph/morph-v3-large",
+      "pipeline": "build6",
+      "durationMs": 26398,
+      "timestamp": "2026-07-10T23:48:21.804Z"
+    },
+    "exportedAt": "2026-07-10T23:48:23.353Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1783727301804_Planet_1",
+        "type": "Planet",
+        "label": "Merkur",
+        "distance_km": 57910000,
+        "mass_kg": 3.3e+23,
+        "richest_element": "Silicium",
+        "richest_component": "Ocker",
+        "orange": true,
+        "brown": false,
+        "blue": false,
+        "white": false,
+        "yellow": false,
+        "red": false,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 5,
+          "y": -1.0357209752443843,
+          "z": -0.2509970854662162
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Planet_2",
+        "type": "Planet",
+        "label": "Venus",
+        "distance_km": 108200000,
+        "mass_kg": 4.87e+24,
+        "richest_element": "Silicium",
+        "richest_component": "Orange",
+        "orange": true,
+        "brown": false,
+        "blue": false,
+        "white": false,
+        "yellow": false,
+        "red": false,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -0.8947756762800583,
+          "y": 0.9651494613756876,
+          "z": 1.281184955071453
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Planet_3",
+        "type": "Planet",
+        "label": "Erde",
+        "distance_km": 149600000,
+        "mass_kg": 5.97e+24,
+        "richest_element": "Oxygen",
+        "richest_component": "Blue",
+        "orange": false,
+        "brown": false,
+        "blue": true,
+        "white": false,
+        "yellow": false,
+        "red": false,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 1.2863209327432454,
+          "y": -0.6867490930294392,
+          "z": -1.56856780067093
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Planet_4",
+        "type": "Planet",
+        "label": "Mars",
+        "distance_km": 227900000,
+        "mass_kg": 6.4e+23,
+        "richest_element": "Silicium",
+        "richest_component": "Red",
+        "orange": false,
+        "brown": false,
+        "blue": false,
+        "white": false,
+        "yellow": false,
+        "red": true,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -0.47508501389408087,
+          "y": 0.9441115690319103,
+          "z": 0.6686711000793886
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Planet_5",
+        "type": "Planet",
+        "label": "Jupiter",
+        "distance_km": 778600000,
+        "mass_kg": 1.9e+27,
+        "richest_element": "Wasserstoff",
+        "richest_component": "Orange",
+        "orange": true,
+        "brown": false,
+        "blue": false,
+        "white": false,
+        "yellow": false,
+        "red": false,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 0.016609335209220654,
+          "y": -1.1886806449413287,
+          "z": 0.8375743638025973
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Sonnen",
+        "type": "Sonnen",
+        "label": "Sonne",
+        "temperature_k": 5772,
+        "stateVector": {
+          "degree": 14,
+          "inbound": 0,
+          "outbound": 14
+        },
+        "inDegree": 0,
+        "outDegree": 14,
+        "position": {
+          "x": -5,
+          "y": 3.823833549742297,
+          "z": -3.6784295626399914
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Stern_1",
+        "type": "Stern",
+        "label": "Proxima Centauri",
+        "distance_km": 43668000000000,
+        "mass_kg": 2.063e+30,
+        "richest_element": "Wasserstoff",
+        "richest_component": "Offenes Orange",
+        "orange": true,
+        "brown": false,
+        "blue": false,
+        "white": false,
+        "yellow": false,
+        "red": false,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 2.4797820079058943,
+          "y": -2.424795683472606,
+          "z": 1.968072101699305
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Stern_2",
+        "type": "Stern",
+        "label": "Sirius",
+        "distance_km": 85659000000000,
+        "mass_kg": 1.989e+30,
+        "richest_element": "Silicium",
+        "richest_component": "Weiß",
+        "orange": false,
+        "brown": false,
+        "blue": false,
+        "white": true,
+        "yellow": false,
+        "red": false,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 0.0597600184528436,
+          "y": -2.0709817755298103,
+          "z": -0.406681208519913
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Stern_3",
+        "type": "Stern",
+        "label": "Altair",
+        "distance_km": 16683000000000,
+        "mass_kg": 1.989e+30,
+        "richest_element": "Oxygen",
+        "richest_component": "Weiß",
+        "orange": false,
+        "brown": false,
+        "blue": false,
+        "white": true,
+        "yellow": false,
+        "red": false,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -0.1778302173232739,
+          "y": -2.1757255741896238,
+          "z": -1.9150086673552185
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Mond_1",
+        "type": "Mond",
+        "label": "Ganymed",
+        "distance_km": 107040000,
+        "mass_kg": 1.481e+23,
+        "richest_element": "Silicium",
+        "richest_component": "Ocker",
+        "orange": true,
+        "brown": false,
+        "blue": false,
+        "white": false,
+        "yellow": false,
+        "red": false,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 0.960821614541568,
+          "y": -0.6545953682629257,
+          "z": 2.9432348646329665
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Mond_2",
+        "type": "Mond",
+        "label": "Titan",
+        "distance_km": 122187000,
+        "mass_kg": 1.346e+23,
+        "richest_element": "Kohlenstoff",
+        "richest_component": "Weiß",
+        "orange": false,
+        "brown": false,
+        "blue": false,
+        "white": true,
+        "yellow": false,
+        "red": false,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 2.150320857652574,
+          "y": 0.34313774488856513,
+          "z": 3.6784295626399914
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Mond_3",
+        "type": "Mond",
+        "label": "Iapetus",
+        "distance_km": 133586000,
+        "mass_kg": 1.856e+23,
+        "richest_element": "Silicium",
+        "richest_component": "Weiß",
+        "orange": false,
+        "brown": false,
+        "blue": false,
+        "white": true,
+        "yellow": false,
+        "red": false,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -1.8661390796792383,
+          "y": 2.517352851817417,
+          "z": -1.022869681842285
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Kiste_1",
+        "type": "Kiste",
+        "label": "Kiste_1",
+        "distance_km": 281998558,
+        "mass_kg": 1e+22,
+        "richest_element": "Silicium",
+        "richest_component": "Ocker",
+        "orange": true,
+        "brown": false,
+        "blue": false,
+        "white": false,
+        "yellow": false,
+        "red": false,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -3.8997586500341597,
+          "y": -3.823833549742297,
+          "z": 0.3892332044563303
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Camion_1",
+        "type": "Camion",
+        "label": "Camion_1",
+        "distance_km": 2147483647,
+        "mass_kg": 1e+21,
+        "richest_element": "Silicium",
+        "richest_component": "Ocker",
+        "orange": true,
+        "brown": false,
+        "blue": false,
+        "white": false,
+        "yellow": false,
+        "red": false,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 0.9584252195969346,
+          "y": 0.14156909914577168,
+          "z": 2.21753815604864
+        }
+      },
+      {
+        "id": "AI_Generation_1783727301804_Zirkel_1",
+        "type": "Zirkel",
+        "label": "Zirkel_1",
+        "distance_km": 603,
+        "mass_kg": 0.002,
+        "richest_element": "Silicium",
+        "richest_component": "Ocker",
+        "orange": true,
+        "brown": false,
+        "blue": false,
+        "white": false,
+        "yellow": false,
+        "red": false,
+        "green": false,
+        "grey": false,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 0.20748199349002616,
+          "y": -1.7786087971896964,
+          "z": -0.42797701176244207
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1783727301804_rel_1",
+        "type": "Sonnen-Planet",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Planet_1",
+        "label": "zwischen Sonne und Planet"
+      },
+      {
+        "id": "AI_Generation_1783727301804_rel_2",
+        "type": "Sonnen-Planet",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Planet_2",
+        "label": "zwischen Sonne und Planet"
+      },
+      {
+        "id": "AI_Generation_1783727301804_rel_3",
+        "type": "Sonnen-Planet",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Planet_3",
+        "label": "zwischen Sonne und Planet"
+      },
+      {
+        "id": "AI_Generation_1783727301804_rel_4",
+        "type": "Sonnen-Planet",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Planet_4",
+        "label": "zwischen Sonne und Planet"
+      },
+      {
+        "id": "AI_Generation_1783727301804_rel_5",
+        "type": "Sonnen-Planet",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Planet_5",
+        "label": "zwischen Sonne und Planet"
+      },
+      {
+        "id": "AI_Generation_1783727301804_rel_6",
+        "type": "Sonnen-Stern",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Stern_1",
+        "label": "zwischen Sonne und Stern"
+      },
+      {
+        "id": "AI_Generation_1783727301804_rel_7",
+        "type": "Sonnen-Stern",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Stern_2",
+        "label": "zwischen Sonne und Stern"
+      },
+      {
+        "id": "AI_Generation_1783727301804_rel_8",
+        "type": "Sonnen-Stern",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Stern_3",
+        "label": "zwischen Sonne und Stern"
+      },
+      {
+        "id": "AI_Generation_1783727301804_rel_9",
+        "type": "Sonnen-Mond",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Mond_1",
+        "label": "zwischen Sonne und Mond"
+      },
+      {
+        "id": "AI_Generation_1783727301804_rel_10",
+        "type": "Sonnen-Mond",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Mond_2",
+        "label": "zwischen Sonne und Mond"
+      },
+      {
+        "id": "AI_Generation_1783727301804_rel_11",
+        "type": "Sonnen-Mond",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Mond_3",
+        "label": "zwischen Sonne und Mond"
+      },
+      {
+        "id": "AI_Generation_1783727301804_rel_12",
+        "type": "Sonnen-Kiste",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Kiste_1",
+        "label": "zwischen Sonne und Kiste"
+      },
+      {
+        "id": "AI_Generation_1783727301804_rel_13",
+        "type": "Sonnen-Camion",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Camion_1",
+        "label": "zwischen Sonne und Camion"
+      },
+      {
+        "id": "AI_Generation_1783727301804_rel_14",
+        "type": "Sonnen-Zirkel",
+        "source": "AI_Generation_1783727301804_Sonnen",
+        "target": "AI_Generation_1783727301804_Zirkel_1",
+        "label": "zwischen Sonne und Zirkel"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Planet": {
+        "size": {
+          "source": "distance_km",
+          "function": "linear",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "color": {
+          "source": "orange",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Sonnen": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        }
+      },
+      "Stern": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        }
+      },
+      "Mond": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        }
+      },
+      "Kiste": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        }
+      },
+      "Camion": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        }
+      },
+      "Zirkel": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        }
+      }
+    }
+  }
+}

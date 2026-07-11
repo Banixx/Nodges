@@ -1,4 +1,5 @@
-import { GraphData } from '../types';
+import { GraphData, GraphDataSchema } from '../types';
+import { zodToJsonSchema } from 'zod-to-json-schema';
 
 export type LLMProvider = 'openrouter' | 'openai' | 'anthropic';
 
@@ -8,9 +9,6 @@ export interface LLMModel {
 }
 
 export class LLMService {
-    // Trage hier nach dem Deployment in Firebase die URL deiner Funktion ein:
-    public static readonly PROXY_URL = 'https://us-central1-dein-firebase-projekt.cloudfunctions.net/nodgesProxy';
-
     public static readonly PROVIDERS: { id: LLMProvider; name: string }[] = [
         { id: 'openrouter', name: 'OpenRouter' },
         { id: 'openai', name: 'OpenAI' },
@@ -19,10 +17,12 @@ export class LLMService {
 
     public static readonly PROVIDER_MODELS: Record<LLMProvider, LLMModel[]> = {
         openrouter: [
+            { id: 'deepseek/deepseek-v4-flash', name: 'DeepSeek V4 Flash' },
+            { id: 'meta-llama/llama-3.3-70b-instruct', name: 'Llama 3.3 70B (Meta)' },
+            { id: 'anthropic/claude-4.5-haiku', name: 'Claude 4.5 Haiku (Anthropic)' },
             { id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini (OpenAI)' },
             { id: 'google/gemini-2.5-flash', name: 'Gemini 2.5 Flash (Google)' },
             { id: 'google/gemini-2.5-pro', name: 'Gemini 2.5 Pro (Google)' },
-            { id: 'anthropic/claude-3-haiku', name: 'Claude 3 Haiku (Anthropic)' },
             { id: 'qwen/qwen3-coder:free', name: 'Qwen 3 Coder (Free)' },
             { id: 'qwen/qwen-2.5-72b-instruct', name: 'Qwen 2.5 72B (Alibaba)' },
             { id: 'zhipu/glm-4', name: 'GLM 4 (Zhipu)' },
@@ -30,8 +30,13 @@ export class LLMService {
             { id: 'z-ai/glm-5.2', name: 'GLM 5.2 (Zhipu)' },
             { id: 'deepseek/deepseek-v4-pro', name: 'DeepSeek V4 Pro' },
             { id: 'mistralai/mistral-nemo', name: 'Mistral Nemo' },
-            { id: 'tencent/hy3m', name: 'Tencent HY3M' },
-            { id: 'moonshotai/kimi-k2.7-code', name: 'Kimi K2.7 Code (Moonshot)' }
+            { id: 'tencent/hunyuan-pro', name: 'Hunyuan Pro (Tencent)' },
+            { id: 'moonshotai/kimi-k2.7-code', name: 'Kimi K2.7 Code (Moonshot)' },
+            { id: 'x-ai/grok-4.20-multi-agent', name: 'Grok 4.20 Multi-Agent (xAI)' },
+            { id: 'morph/morph-v3-large', name: 'Morph V3 Large' },
+            { id: 'openai/gpt-oss-safeguard-20b', name: 'GPT OSS Safeguard 20B (OpenAI)' },
+            { id: 'inception/mercury-2', name: 'Mercury 2 (Inception)' },
+            { id: 'qwen/qwen3.7-plus', name: 'Qwen 3.7 Plus (Alibaba)' }
         ],
         openai: [
             { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
@@ -39,8 +44,8 @@ export class LLMService {
             { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo' }
         ],
         anthropic: [
+            { id: 'claude-4-5-haiku-2026', name: 'Claude 4.5 Haiku' },
             { id: 'claude-3-5-sonnet-20241022', name: 'Claude 3.5 Sonnet' },
-            { id: 'claude-3-5-haiku-20241022', name: 'Claude 3.5 Haiku' },
             { id: 'claude-3-opus-20240229', name: 'Claude 3 Opus' }
         ]
     };
@@ -136,70 +141,76 @@ export class LLMService {
         systemPrompt: string,
         userPrompt: string,
         provider: LLMProvider,
-        model: string
+        model: string,
+        jsonSchema?: any
     ): Promise<GraphData> {
         const apiKey = this.getApiKey(provider);
-        let useProxy = false;
 
         if (!apiKey) {
-            if (provider === 'openrouter') {
-                useProxy = true; // Fallback auf Proxy, wenn kein Key da ist
-            } else {
-                throw new Error(`Kein API-Key für ${provider} gefunden. Bitte gib deinen API-Key ein.`);
-            }
+            throw new Error(`Kein API-Key für ${provider} gefunden. Bitte gib deinen API-Key ein.`);
         }
 
         let responseText = '';
+        let rawApiData: any = null;
 
         if (provider === 'openrouter') {
-            let response;
-            
-            if (useProxy) {
-                // Sende Anfrage an den eigenen Firebase Proxy
-                response = await fetch(this.PROXY_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: model,
-                        provider: { data_collection: 'deny' },
-                        messages: [
-                            { role: 'system', content: systemPrompt },
-                            { role: 'user', content: userPrompt }
-                        ],
-                        response_format: { type: 'json_object' }
-                    })
-                });
-            } else {
-                // Standard BYOK Direktaufruf
-                response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'HTTP-Referer': window.location.href,
-                        'X-Title': 'Nodges 3D Graph',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: model,
-                        provider: { data_collection: 'deny' },
-                        messages: [
-                            { role: 'system', content: systemPrompt },
-                            { role: 'user', content: userPrompt }
-                        ],
-                        response_format: { type: 'json_object' }
-                    })
-                });
-            }
+            // First attempt: multi-turn (system + user)
+            let response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'HTTP-Referer': window.location.href,
+                    'X-Title': 'Nodges 3D Graph',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: model,
+                    provider: { data_collection: 'deny' },
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: userPrompt }
+                    ],
+                    response_format: jsonSchema 
+                        ? { type: 'json_schema', json_schema: { name: 'GraphData', strict: false, schema: jsonSchema } }
+                        : { type: 'json_object' }
+                })
+            });
 
+            // Fallback: If model doesn't support multi-turn, retry with single message
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(`OpenRouter/Proxy Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
+                const errMsg = errorData.error?.message || response.statusText;
+                if (response.status === 400) {
+                    console.warn(`[LLMService] Model ${model} returned 400. Retrying with single message and standard json_object fallback...`);
+                    const combinedPrompt = `${systemPrompt}\n\n---\nUSER REQUEST:\n${userPrompt}`;
+                    response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${apiKey}`,
+                            'HTTP-Referer': window.location.href,
+                            'X-Title': 'Nodges 3D Graph',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            model: model,
+                            provider: { data_collection: 'deny' },
+                            messages: [
+                                { role: 'user', content: combinedPrompt }
+                            ],
+                            response_format: { type: 'json_object' }
+                        })
+                    });
+                    if (!response.ok) {
+                        const retryError = await response.json().catch(() => ({}));
+                        throw new Error(`OpenRouter Fehler: ${response.status} - ${retryError.error?.message || response.statusText}`);
+                    }
+                } else {
+                    throw new Error(`OpenRouter Fehler: ${response.status} - ${errMsg}`);
+                }
             }
 
-            const data = await response.json();
-            responseText = data.choices[0]?.message?.content;
+            rawApiData = await response.json();
+            responseText = rawApiData.choices[0]?.message?.content;
 
         } else if (provider === 'openai') {
             const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -214,7 +225,9 @@ export class LLMService {
                         { role: 'system', content: systemPrompt },
                         { role: 'user', content: userPrompt }
                     ],
-                    response_format: { type: 'json_object' }
+                    response_format: jsonSchema 
+                        ? { type: 'json_schema', json_schema: { name: 'GraphData', strict: false, schema: jsonSchema } }
+                        : { type: 'json_object' }
                 })
             });
 
@@ -223,8 +236,8 @@ export class LLMService {
                 throw new Error(`OpenAI API Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
             }
 
-            const data = await response.json();
-            responseText = data.choices[0]?.message?.content;
+            rawApiData = await response.json();
+            responseText = rawApiData.choices[0]?.message?.content;
 
         } else if (provider === 'anthropic') {
             const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -250,8 +263,8 @@ export class LLMService {
                 throw new Error(`Anthropic API Fehler: ${response.status} - ${errorData.error?.message || response.statusText}`);
             }
 
-            const data = await response.json();
-            responseText = data.content[0]?.text;
+            rawApiData = await response.json();
+            responseText = rawApiData.content[0]?.text;
         }
 
         if (!responseText) {
@@ -259,8 +272,18 @@ export class LLMService {
         }
 
         let cleanResponse = responseText.trim();
-        if (cleanResponse.startsWith('```')) {
-            cleanResponse = cleanResponse.replace(/^```json\s*/, '').replace(/```$/, '').trim();
+        
+        // Extract JSON block if wrapped in markdown
+        const jsonMatch = cleanResponse.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+        if (jsonMatch && jsonMatch[1]) {
+            cleanResponse = jsonMatch[1].trim();
+        } else {
+            // Fallback: Try to find the first { and last }
+            const firstBrace = cleanResponse.indexOf('{');
+            const lastBrace = cleanResponse.lastIndexOf('}');
+            if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+                cleanResponse = cleanResponse.substring(firstBrace, lastBrace + 1);
+            }
         }
 
         let parsedData: any;
@@ -271,6 +294,11 @@ export class LLMService {
             throw new Error('Das Modell hat kein gültiges JSON zurückgegeben.');
         }
 
+        // Fix common LLM issue where it wraps output in the schema name
+        if (parsedData.GraphDataSchema && typeof parsedData.GraphDataSchema === 'object') {
+            parsedData = parsedData.GraphDataSchema;
+        }
+
         // Flexiblere Validierung: Es muss ENTWEDER data.entities/relationships geben ODER ein dataModel ODER visualMappings (fuer Multi-Step)
         const hasData = parsedData.data && Array.isArray(parsedData.data.entities) && Array.isArray(parsedData.data.relationships);
         const hasDataModel = parsedData.dataModel && typeof parsedData.dataModel === 'object';
@@ -279,6 +307,36 @@ export class LLMService {
         if (!hasData && !hasDataModel && !hasVisualMappings) {
             console.error("Invalid JSON structure:", parsedData);
             throw new Error('Das generierte JSON hat nicht die erwartete Struktur (weder Daten, noch Schema, noch Visual Mappings gefunden).');
+        }
+
+        // Guarantee data.entities and data.relationships always exist
+        if (!parsedData.data) {
+            parsedData.data = { entities: [], relationships: [] };
+        }
+        if (!Array.isArray(parsedData.data.entities)) {
+            parsedData.data.entities = [];
+        }
+        if (!Array.isArray(parsedData.data.relationships)) {
+            parsedData.data.relationships = [];
+        }
+
+        // --- Inject API metadata (Usage, tokens, etc.) ---
+        if (!parsedData.metadata) {
+            parsedData.metadata = {};
+        }
+        if (rawApiData) {
+            parsedData.metadata.apiResponse = {
+                id: rawApiData.id || null,
+                created: rawApiData.created || null,
+                model: rawApiData.model || null,
+                usage: rawApiData.usage || null,
+                system_fingerprint: rawApiData.system_fingerprint || null
+            };
+            
+            // For Anthropic specifically
+            if (rawApiData.usage && !rawApiData.usage.total_tokens) {
+                 rawApiData.usage.total_tokens = (rawApiData.usage.input_tokens || 0) + (rawApiData.usage.output_tokens || 0);
+            }
         }
 
         return parsedData as GraphData;
@@ -366,6 +424,79 @@ export class LLMService {
         
         // Final Merge
         return { ...mergedData, ...step3Data };
+    }
+
+    public static async generateGraphDataBuild6(
+        prompt: string, 
+        provider: LLMProvider, 
+        model: string,
+        onProgress?: (msg: string) => void
+    ): Promise<GraphData> {
+        const promptFile = '/prompts/build_6_prompt.md';
+        let systemPrompt = '';
+        try {
+            const res = await fetch(promptFile);
+            if (!res.ok) throw new Error();
+            systemPrompt = await res.text();
+        } catch {
+            throw new Error(`Konnte Prompt-Datei nicht laden: ${promptFile}`);
+        }
+
+        if (onProgress) onProgress('Generiere Netzwerk (Ontologie, Daten & Visuals in einem Schritt)...');
+
+        // Kompaktes Beispiel-JSON statt vollem Zod-Schema (verstaendlicher fuer alle Modelle)
+        const exampleStructure = `
+=== ZIEL-STRUKTUR (Beispiel) ===
+Dein JSON MUSS exakt diese Top-Level-Struktur haben:
+{
+  "system": "<Thema>",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "...",
+    "competencyQuestions": ["...", "..."]
+  },
+  "dataModel": {
+    "entities": {
+      "<TypName>": { "properties": { "<propName>": { "type": "continuous", "range": [0, 100] } } }
+    },
+    "relationships": {
+      "<KantenTyp>": { "properties": {} }
+    }
+  },
+  "data": {
+    "entities": [
+      { "id": "unique_id", "type": "<TypName>", "label": "...", "<propName>": 42 }
+    ],
+    "relationships": [
+      { "id": "rel_1", "type": "<KantenTyp>", "source": "id_a", "target": "id_b", "label": "..." }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "<TypName>": {
+        "size": { "source": "<propName>", "function": "linear", "range": [0.5, 3] },
+        "color": { "source": "type", "function": "categorical" },
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "sphere" } }
+      },
+      "<KantenTyp>": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#FFD700" } },
+        "thickness": { "source": "constant", "function": "constant", "params": { "size": 0.1 } }
+      }
+    }
+  }
+}
+WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "visualMappings" sind PFLICHT-Felder!
+=================================`;
+        systemPrompt += exampleStructure;
+
+        // Erzeuge das strukturierte JSON-Schema fuer OpenRouter/OpenAI API
+        const jsonSchema = zodToJsonSchema(GraphDataSchema, 'GraphDataSchema');
+        // Zod packt das Schema oft in ein definitions-Objekt, wir wollen das eigentliche Schema uebergeben
+        const schemaToPass = (jsonSchema as any).definitions?.GraphDataSchema || jsonSchema;
+        // APIs (wie OpenAI) akzeptieren das $schema Feld nicht
+        delete schemaToPass.$schema;
+
+        return this._executeLLMCall(systemPrompt, prompt, provider, model, schemaToPass);
     }
 
     public static async generateGraphDataMultiStep(

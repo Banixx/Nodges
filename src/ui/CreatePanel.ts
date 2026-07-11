@@ -13,7 +13,11 @@ export class CreatePanel {
 
     private providerSelect!: HTMLSelectElement;
     private keyInput!: HTMLInputElement;
-    private modelSelect!: HTMLSelectElement;
+    private modelContainer!: HTMLElement;
+    private modelInput!: HTMLInputElement;
+    private modelDropdown!: HTMLElement;
+    private selectedModelId: string = '';
+    private currentModelsList: { id: string, name: string, isRecommended: boolean }[] = [];
     private pipelineSelect!: HTMLSelectElement;
     private ragTextarea!: HTMLTextAreaElement;
     private urlInput!: HTMLInputElement;
@@ -171,20 +175,68 @@ export class CreatePanel {
         modelLabel.style.color = 'var(--text-muted)';
         genSection.appendChild(modelLabel);
 
-        this.modelSelect = document.createElement('select');
-        this.modelSelect.className = 'form-control';
-        this.modelSelect.style.width = '100%';
-        this.modelSelect.style.marginBottom = '15px';
-        this.modelSelect.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
-        this.modelSelect.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-        this.modelSelect.style.color = 'var(--text-color)';
-        this.modelSelect.style.padding = '6px';
-        this.modelSelect.style.borderRadius = '4px';
-        this.modelSelect.style.fontFamily = 'inherit';
-        genSection.appendChild(this.modelSelect);
+        this.modelContainer = document.createElement('div');
+        this.modelContainer.style.position = 'relative';
+        this.modelContainer.style.width = '100%';
+        this.modelContainer.style.marginBottom = '15px';
+
+        this.modelInput = document.createElement('input');
+        this.modelInput.type = 'text';
+        this.modelInput.className = 'form-control';
+        this.modelInput.placeholder = 'Modell suchen...';
+        this.modelInput.style.width = '100%';
+        this.modelInput.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+        this.modelInput.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+        this.modelInput.style.color = 'var(--text-color)';
+        this.modelInput.style.padding = '6px';
+        this.modelInput.style.borderRadius = '4px';
+        this.modelInput.style.fontFamily = 'inherit';
+        this.modelInput.style.boxSizing = 'border-box';
+
+        this.modelDropdown = document.createElement('div');
+        this.modelDropdown.style.position = 'absolute';
+        this.modelDropdown.style.top = '100%';
+        this.modelDropdown.style.left = '0';
+        this.modelDropdown.style.right = '0';
+        this.modelDropdown.style.maxHeight = '250px';
+        this.modelDropdown.style.overflowY = 'auto';
+        this.modelDropdown.style.backgroundColor = '#1e1e1e';
+        this.modelDropdown.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+        this.modelDropdown.style.borderRadius = '4px';
+        this.modelDropdown.style.zIndex = '1000';
+        this.modelDropdown.style.display = 'none';
+        this.modelDropdown.style.boxShadow = '0 4px 12px rgba(0,0,0,0.5)';
+
+        this.modelContainer.appendChild(this.modelInput);
+        this.modelContainer.appendChild(this.modelDropdown);
+        genSection.appendChild(this.modelContainer);
 
         // Populate models initially
         this.updateModelOptions(activeProvider);
+
+        // Search/Filter logic
+        this.modelInput.addEventListener('input', () => {
+            this.modelDropdown.style.display = 'block';
+            this.renderModelDropdown(this.modelInput.value);
+        });
+        
+        this.modelInput.addEventListener('focus', () => {
+            this.modelDropdown.style.display = 'block';
+            this.modelInput.select();
+            this.renderModelDropdown('');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!this.modelContainer.contains(e.target as Node)) {
+                this.modelDropdown.style.display = 'none';
+                // Reset input to selected model name if needed
+                const model = this.currentModelsList.find(m => m.id === this.selectedModelId);
+                if (model) {
+                    this.modelInput.value = model.name;
+                }
+            }
+        });
 
         // Event listeners
         this.providerSelect.onchange = () => {
@@ -193,11 +245,6 @@ export class CreatePanel {
             const key = LLMService.getApiKey(provider);
             this.keyInput.value = key || '';
             this.updateModelOptions(provider);
-        };
-
-        this.modelSelect.onchange = () => {
-            const provider = this.providerSelect.value as LLMProvider;
-            LLMService.setActiveModel(provider, this.modelSelect.value);
         };
 
         // Pipeline Select (Ersetzt die alte Format-Version komplett)
@@ -220,7 +267,8 @@ export class CreatePanel {
         this.pipelineSelect.style.fontFamily = 'inherit';
 
         const pipelines = [
-            { value: 'build5', label: 'Neu: Build 5 (3-stufig: Ontologie -> Daten -> Mapping)' },
+            { value: 'build6', label: 'Build 6 (Schnelle Single-Step Zod Pipeline)' },
+            { value: 'build5', label: 'Legacy: Build 5 (3-stufig: Ontologie -> Daten -> Mapping)' },
             { value: 'refine', label: 'Update: Iterativ (Bestehendes Netzwerk anpassen)' }
         ];
 
@@ -369,87 +417,110 @@ export class CreatePanel {
         this.container.appendChild(genSection);
     }
 
-    private async updateModelOptions(provider: LLMProvider): Promise<void> {
-        this.modelSelect.innerHTML = '';
-        this.modelSelect.disabled = true;
+    private renderModelDropdown(filterText: string = '') {
+        this.modelDropdown.innerHTML = '';
+        const lowerFilter = filterText.toLowerCase();
+        
+        const filteredModels = this.currentModelsList.filter(m => 
+            m.name.toLowerCase().includes(lowerFilter) || m.id.toLowerCase().includes(lowerFilter)
+        );
 
-        const loadingOpt = document.createElement('option');
-        loadingOpt.textContent = 'Lade Modelle...';
-        loadingOpt.disabled = true;
-        loadingOpt.selected = true;
-        this.modelSelect.appendChild(loadingOpt);
+        if (filteredModels.length === 0) {
+            const empty = document.createElement('div');
+            empty.textContent = 'Keine Modelle gefunden';
+            empty.style.padding = '8px';
+            empty.style.color = 'var(--text-muted)';
+            empty.style.fontSize = '12px';
+            this.modelDropdown.appendChild(empty);
+            return;
+        }
+
+        const renderGroup = (title: string, models: typeof this.currentModelsList) => {
+            if (models.length === 0) return;
+            if (title) {
+                const groupHeader = document.createElement('div');
+                groupHeader.textContent = title;
+                groupHeader.style.padding = '4px 8px';
+                groupHeader.style.fontSize = '10px';
+                groupHeader.style.textTransform = 'uppercase';
+                groupHeader.style.color = 'var(--text-muted)';
+                groupHeader.style.backgroundColor = 'rgba(0,0,0,0.2)';
+                groupHeader.style.fontWeight = 'bold';
+                this.modelDropdown.appendChild(groupHeader);
+            }
+
+            models.forEach(model => {
+                const opt = document.createElement('div');
+                opt.textContent = model.name;
+                opt.style.padding = '6px 8px';
+                opt.style.cursor = 'pointer';
+                opt.style.fontSize = '13px';
+                opt.style.color = model.id === this.selectedModelId ? '#fff' : 'var(--text-color)';
+                opt.style.backgroundColor = model.id === this.selectedModelId ? 'rgba(52, 152, 219, 0.3)' : 'transparent';
+                
+                opt.addEventListener('mouseenter', () => {
+                    opt.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                });
+                opt.addEventListener('mouseleave', () => {
+                    opt.style.backgroundColor = model.id === this.selectedModelId ? 'rgba(52, 152, 219, 0.3)' : 'transparent';
+                });
+                
+                opt.addEventListener('click', () => {
+                    this.selectedModelId = model.id;
+                    this.modelInput.value = model.name;
+                    this.modelDropdown.style.display = 'none';
+                    const provider = this.providerSelect.value as LLMProvider;
+                    LLMService.setActiveModel(provider, model.id);
+                });
+                this.modelDropdown.appendChild(opt);
+            });
+        };
+
+        const recommended = filteredModels.filter(m => m.isRecommended);
+        const others = filteredModels.filter(m => !m.isRecommended);
+
+        if (recommended.length > 0) {
+            renderGroup('Empfohlen', recommended);
+        }
+        if (others.length > 0) {
+            renderGroup(recommended.length > 0 ? 'Alle Modelle' : '', others);
+        }
+    }
+
+    private async updateModelOptions(provider: LLMProvider): Promise<void> {
+        this.modelInput.value = 'Lade Modelle...';
+        this.modelInput.disabled = true;
 
         let models: LLMModel[] = [];
         let recommendedModels: LLMModel[] = [];
         const activeModel = LLMService.getActiveModel(provider);
 
         if (provider === 'openrouter') {
-            // Fetch models from OpenRouter dynamically
             models = await LLMService.fetchOpenRouterModels();
             recommendedModels = LLMService.PROVIDER_MODELS.openrouter;
         } else {
-            // Use static lists for OpenAI/Anthropic
             models = LLMService.PROVIDER_MODELS[provider] || [];
             recommendedModels = [];
         }
 
-        // Guard: If provider changed while fetching, ignore the result
         if (this.providerSelect.value !== provider) {
             return;
         }
 
-        this.modelSelect.innerHTML = '';
-        this.modelSelect.disabled = false;
+        this.currentModelsList = models.map(m => ({
+            id: m.id,
+            name: m.name,
+            isRecommended: recommendedModels.some(r => r.id === m.id)
+        }));
 
-        if (recommendedModels.length > 0) {
-            // Group recommended models
-            const recGroup = document.createElement('optgroup');
-            recGroup.label = 'Empfohlen';
-            recommendedModels.forEach(model => {
-                const opt = document.createElement('option');
-                opt.value = model.id;
-                opt.textContent = model.name;
-                if (model.id === activeModel) {
-                    opt.selected = true;
-                }
-                recGroup.appendChild(opt);
-            });
-            this.modelSelect.appendChild(recGroup);
+        this.modelInput.disabled = false;
+        
+        this.selectedModelId = activeModel || (models.length > 0 ? models[0].id : '');
+        const selectedModel = this.currentModelsList.find(m => m.id === this.selectedModelId);
+        this.modelInput.value = selectedModel ? selectedModel.name : '';
 
-            // Group all other models
-            const allGroup = document.createElement('optgroup');
-            allGroup.label = 'Alle OpenRouter Modelle';
-            models.forEach(model => {
-                // Skip if already in recommended
-                if (recommendedModels.some(r => r.id === model.id)) {
-                    return;
-                }
-                const opt = document.createElement('option');
-                opt.value = model.id;
-                opt.textContent = model.name;
-                if (model.id === activeModel) {
-                    opt.selected = true;
-                }
-                allGroup.appendChild(opt);
-            });
-            this.modelSelect.appendChild(allGroup);
-        } else {
-            // Just populate list directly
-            models.forEach(model => {
-                const opt = document.createElement('option');
-                opt.value = model.id;
-                opt.textContent = model.name;
-                if (model.id === activeModel) {
-                    opt.selected = true;
-                }
-                this.modelSelect.appendChild(opt);
-            });
-        }
-
-        // Ensure active model is selected, or fallback to first option
-        if (this.modelSelect.value === '' && this.modelSelect.options.length > 0) {
-            this.modelSelect.selectedIndex = 0;
-            LLMService.setActiveModel(provider, this.modelSelect.value);
+        if (!activeModel && this.selectedModelId) {
+            LLMService.setActiveModel(provider, this.selectedModelId);
         }
     }
 
@@ -485,7 +556,7 @@ export class CreatePanel {
         }
 
         const provider = this.providerSelect.value as LLMProvider;
-        const model = this.modelSelect.value;
+        const model = this.selectedModelId;
         const pipeline = this.pipelineSelect.value;
 
         if (!LLMService.getApiKey(provider)) {
@@ -496,13 +567,33 @@ export class CreatePanel {
         this.setLoading(true);
         this.setStatus('Bereite Generierung vor...', 'info');
 
+        const generationLog: any = {
+            timestampStart: new Date().toISOString(),
+            prompt: prompt,
+            ragText: ragText || null,
+            provider: provider,
+            model: model,
+            pipeline: pipeline,
+            steps: []
+        };
+        const startTime = performance.now();
+
+        const onProgressWithLog = (msg: string) => {
+            generationLog.steps.push({
+                time: new Date().toISOString(),
+                offsetMs: Math.round(performance.now() - startTime),
+                message: msg
+            });
+            this.setStatus(msg, 'info');
+        };
+
         try {
             let graphData: any;
 
-            if (pipeline === 'build5') {
-                graphData = await LLMService.generateGraphDataMultiStepBuild5(prompt, provider, model, (msg) => {
-                    this.setStatus(msg, 'info');
-                });
+            if (pipeline === 'build6') {
+                graphData = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog);
+            } else if (pipeline === 'build5') {
+                graphData = await LLMService.generateGraphDataMultiStepBuild5(prompt, provider, model, onProgressWithLog);
             } else if (pipeline === 'refine') {
                 const existingData = {
                     metadata: { schemaVersion: "5.0" },
@@ -513,10 +604,26 @@ export class CreatePanel {
                         relationships: this.stateManager.getRelationships()
                     }
                 };
-                graphData = await LLMService.refineGraphData(existingData as any, prompt, provider, model, '/prompts/build_5_data_prompt.md', (msg) => {
-                    this.setStatus(msg, 'info');
-                });
+                graphData = await LLMService.refineGraphData(existingData as any, prompt, provider, model, '/prompts/build_5_data_prompt.md', onProgressWithLog);
             }
+
+            const endTime = performance.now();
+            generationLog.timestampEnd = new Date().toISOString();
+            generationLog.durationMs = Math.round(endTime - startTime);
+            generationLog.durationSec = (generationLog.durationMs / 1000).toFixed(2);
+            generationLog.status = 'success';
+
+            // --- Inject generation metadata directly into the JSON graphData ---
+            if (!graphData.metadata) graphData.metadata = {};
+            graphData.metadata.generationDetails = {
+                prompt: prompt,
+                context: ragText || null,
+                provider: provider,
+                model: model,
+                pipeline: pipeline,
+                durationMs: generationLog.durationMs,
+                timestamp: generationLog.timestampEnd
+            };
 
             this.setStatus('Graph generiert! Lade in Visualizer...', 'info');
 
@@ -529,10 +636,10 @@ export class CreatePanel {
                 await this.app.loadGraphData(graphData, sourceName, true);
             }
 
-            // --- Auto-Save Feature ---
+            // --- Auto-Save & Logging Feature ---
             try {
                 if (this.app.currentGraphData && this.app.exportManager) {
-                    this.setStatus('Graph geladen! Speichere Backup-Datei...', 'info');
+                    this.setStatus('Graph geladen! Speichere in Projekt-Dateien...', 'info');
                     const exportOptions: any = { 
                         currentEntities: this.app.currentEntities,
                         activeVisualMappings: this.app.visualMappingEngine?.getVisualMappings() || null,
@@ -540,18 +647,80 @@ export class CreatePanel {
                     };
                     const jsonStr = this.app.exportManager.exportNodgesJSON(this.app.currentGraphData, exportOptions);
                     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-                    this.app.exportManager.downloadFile(jsonStr, `Nodges_AutoSave_${timestamp}.json`, 'application/json');
+                    
+                    const filename = `AI_Generation_${timestamp}.json`;
+                    
+                    try {
+                        const response = await fetch('/api/save_graph', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ filename, content: jsonStr })
+                        });
+                        const responseText = await response.text();
+                        if (!response.ok || responseText.includes('<!DOCTYPE html>')) {
+                            console.warn("Failed to save to server", responseText);
+                            // Fallback to download if server save fails
+                            this.app.exportManager.downloadFile(jsonStr, `Nodges_AutoSave_${timestamp}.json`, 'application/json');
+                        } else {
+                            // Automatically add to available files list in UI without reload if possible
+                            const filePanel = (this.app as any).uiManager?.panels?.get('file');
+                            if (filePanel && filePanel.availableFiles) {
+                                filePanel.availableFiles.push(`generated/${filename}`);
+                                // Trigger a re-render of the file panel
+                                const currentFiles = this.app.stateManager.state.loadedFiles || [];
+                                this.app.stateManager.setLoadedFiles([...currentFiles]);
+                            }
+                        }
+                    } catch (e) {
+                         // Fallback to download
+                         this.app.exportManager.downloadFile(jsonStr, `Nodges_AutoSave_${timestamp}.json`, 'application/json');
+                    }
+                    
+                    // Log JSON
+                    generationLog.generatedNodes = graphData.data?.entities?.length || 0;
+                    generationLog.generatedEdges = graphData.data?.relationships?.length || 0;
+                    generationLog.responsePayloadSizeKB = (JSON.stringify(graphData).length / 1024).toFixed(2);
+                    
+                    const logStr = JSON.stringify(generationLog, null, 2);
+                    
+                    // Save Log to server as well
+                    try {
+                        const logFilename = `AI_GenerationLog_${timestamp}.json`;
+                        const logResponse = await fetch('/api/save_graph', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ filename: logFilename, content: logStr })
+                        });
+                        const logResponseText = await logResponse.text();
+                        if (!logResponse.ok || logResponseText.includes('<!DOCTYPE html>')) {
+                            this.app.exportManager.downloadFile(logStr, logFilename, 'application/json');
+                        }
+                    } catch(e) {
+                        this.app.exportManager.downloadFile(logStr, `AI_GenerationLog_${timestamp}.json`, 'application/json');
+                    }
                 }
             } catch (e) {
-                console.warn('Auto-save failed:', e);
+                console.warn('Auto-save or logging failed:', e);
             }
 
-            const nodeCount = graphData.data.entities?.length || 0;
-            const edgeCount = graphData.data.relationships?.length || 0;
+            const nodeCount = graphData.data?.entities?.length || 0;
+            const edgeCount = graphData.data?.relationships?.length || 0;
 
-            this.setStatus(`Erfolgreich generiert: ${nodeCount} Knoten, ${edgeCount} Kanten. Auto-Save durchgeführt!`, 'success');
+            this.setStatus(`Erfolgreich generiert: ${nodeCount} Knoten, ${edgeCount} Kanten. Dauer: ${generationLog.durationSec}s. Gespeichert!`, 'success');
 
         } catch (error: any) {
+            generationLog.timestampEnd = new Date().toISOString();
+            generationLog.durationMs = Math.round(performance.now() - startTime);
+            generationLog.durationSec = (generationLog.durationMs / 1000).toFixed(2);
+            generationLog.status = 'error';
+            generationLog.errorMessage = error.message || String(error);
+            
+            try {
+                const logStr = JSON.stringify(generationLog, null, 2);
+                const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                this.app.exportManager?.downloadFile(logStr, `Nodges_ErrorLog_${timestamp}.json`, 'application/json');
+            } catch(e) {}
+
             this.setStatus(error.message || 'Ein unbekannter Fehler ist aufgetreten.', 'error');
         } finally {
             this.setLoading(false);

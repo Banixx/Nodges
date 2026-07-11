@@ -821,8 +821,21 @@ export class App {
             }
 
             if (this.layoutManager) {
-                // Auto-layout is now disabled by default. Layout must be explicitly mapped via algorithms.
-                this.layoutManager.stopAnimation();
+                if (!this.hasExplicitPositions) {
+                    // For AI generated data (or any data without positions), run the force-directed layout
+                    await this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships, graphData.fields || []);
+                    // Update state to reflect new positions
+                    this.stateManager.setGraphData(this.currentEntities, this.currentRelationships);
+                    
+                    if (this.nodeManager) {
+                        this.nodeManager.updateNodePositions(this.currentEntities);
+                    }
+                    if (this.edgeObjectsManager) {
+                        this.edgeObjectsManager.updateEdgePositions(this.currentEntities);
+                    }
+                } else {
+                    this.layoutManager.stopAnimation();
+                }
             }
 
             // Create labels for nodes
@@ -1577,7 +1590,9 @@ export class App {
         if (result.coordinateScaleFactor !== 1.0 && this.stateManager.state.normalizeCoordinatesEnabled && !this.hasExplicitPositions) {
             VisualOptimizer.normalizeCoordinates(this.currentEntities, result.coordinateScaleFactor);
             // Need to update actual THREE.js objects positions
-            this.updateNodePositions();
+            if (this.nodeManager) {
+                this.nodeManager.updateNodePositions(this.currentEntities);
+            }
         }
 
 

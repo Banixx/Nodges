@@ -1,0 +1,831 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "created": "2025-04-08T10:00:00Z",
+    "version": "1.0",
+    "schemaVersion": "1.0.0",
+    "author": "Data Architect",
+    "description": "Graph des Sonnensystems mit Planeten, Monden, Zwergplaneten und der Sonne, basierend auf Orbitalbeziehungen und physikalischen Eigenschaften.",
+    "map": {
+      "image": "",
+      "referenceWidth": 0,
+      "referenceHeight": 0
+    },
+    "exportedAt": "2026-07-10T13:05:29.418Z"
+  },
+  "dataModel": {
+    "properties": {
+      "distanceFromSun": {
+        "type": "continuous",
+        "range": [
+          0,
+          100
+        ],
+        "unit": "scaled AE"
+      },
+      "radius": {
+        "type": "continuous",
+        "range": [
+          0,
+          70000
+        ],
+        "unit": "km"
+      },
+      "mass": {
+        "type": "continuous",
+        "range": [
+          0,
+          2e+30
+        ],
+        "unit": "kg"
+      },
+      "composition": {
+        "type": "categorical",
+        "values": [
+          "star",
+          "terrestrial",
+          "gas giant",
+          "ice giant",
+          "dwarf",
+          "rocky",
+          "icy"
+        ]
+      },
+      "hasRings": {
+        "type": "boolean"
+      },
+      "numberOfMoons": {
+        "type": "continuous",
+        "range": [
+          0,
+          100
+        ]
+      },
+      "orbitalPeriod": {
+        "type": "continuous",
+        "range": [
+          0,
+          100000
+        ],
+        "unit": "days"
+      }
+    }
+  },
+  "fields": [],
+  "visualMappings": {
+    "defaultPresets": {
+      "Star": {
+        "size": {
+          "source": "property",
+          "field": "radius",
+          "function": "linear",
+          "domain": [
+            0,
+            700000
+          ],
+          "range": [
+            1,
+            10
+          ]
+        },
+        "color": {
+          "source": "property",
+          "field": "composition",
+          "function": "categorical",
+          "palette": "set1"
+        },
+        "geometry": {
+          "source": "property",
+          "field": "type",
+          "function": "constant",
+          "domain": [
+            0,
+            0
+          ],
+          "range": [
+            0,
+            0
+          ],
+          "palette": "sphere"
+        }
+      },
+      "Planet": {
+        "size": {
+          "source": "property",
+          "field": "radius",
+          "function": "linear",
+          "domain": [
+            0,
+            70000
+          ],
+          "range": [
+            0.5,
+            5
+          ]
+        },
+        "color": {
+          "source": "property",
+          "field": "composition",
+          "function": "categorical",
+          "palette": "set1"
+        },
+        "geometry": {
+          "source": "property",
+          "field": "type",
+          "function": "constant",
+          "domain": [
+            0,
+            0
+          ],
+          "range": [
+            0,
+            0
+          ],
+          "palette": "sphere"
+        }
+      },
+      "DwarfPlanet": {
+        "size": {
+          "source": "property",
+          "field": "radius",
+          "function": "linear",
+          "domain": [
+            0,
+            2000
+          ],
+          "range": [
+            0.3,
+            1.5
+          ]
+        },
+        "color": {
+          "source": "property",
+          "field": "composition",
+          "function": "categorical",
+          "palette": "set1"
+        },
+        "geometry": {
+          "source": "property",
+          "field": "type",
+          "function": "constant",
+          "domain": [
+            0,
+            0
+          ],
+          "range": [
+            0,
+            0
+          ],
+          "palette": "sphere"
+        }
+      },
+      "Moon": {
+        "size": {
+          "source": "property",
+          "field": "radius",
+          "function": "linear",
+          "domain": [
+            0,
+            3000
+          ],
+          "range": [
+            0.2,
+            1.2
+          ]
+        },
+        "color": {
+          "source": "property",
+          "field": "composition",
+          "function": "categorical",
+          "palette": "set1"
+        },
+        "geometry": {
+          "source": "property",
+          "field": "type",
+          "function": "constant",
+          "domain": [
+            0,
+            0
+          ],
+          "range": [
+            0,
+            0
+          ],
+          "palette": "sphere"
+        }
+      },
+      "orbits": {
+        "thickness": {
+          "source": "property",
+          "field": "orbitalDistance",
+          "function": "linear",
+          "domain": [
+            0,
+            100
+          ],
+          "range": [
+            0.1,
+            2
+          ]
+        },
+        "color": {
+          "source": "constant",
+          "field": "",
+          "function": "constant",
+          "domain": [
+            0,
+            0
+          ],
+          "range": [
+            0,
+            0
+          ],
+          "palette": "#888888"
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1783688729363_sun",
+        "type": "Star",
+        "label": "Sonne",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "distanceFromSun": 0,
+        "radius": 696340,
+        "mass": 1.989e+30,
+        "composition": "star",
+        "stateVector": {
+          "degree": 9,
+          "inbound": 9,
+          "outbound": 0
+        },
+        "inDegree": 9,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1783688729363_mercury",
+        "type": "Planet",
+        "label": "Merkur",
+        "position": {
+          "x": 10,
+          "y": 0.5,
+          "z": -0.3
+        },
+        "distanceFromSun": 10,
+        "radius": 2440,
+        "mass": 3.301e+23,
+        "composition": "terrestrial",
+        "hasRings": false,
+        "numberOfMoons": 0,
+        "orbitalPeriod": 88,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_venus",
+        "type": "Planet",
+        "label": "Venus",
+        "position": {
+          "x": 15,
+          "y": -0.8,
+          "z": 0.2
+        },
+        "distanceFromSun": 15,
+        "radius": 6052,
+        "mass": 4.867e+24,
+        "composition": "terrestrial",
+        "hasRings": false,
+        "numberOfMoons": 0,
+        "orbitalPeriod": 225,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_earth",
+        "type": "Planet",
+        "label": "Erde",
+        "position": {
+          "x": 20,
+          "y": 0,
+          "z": 0
+        },
+        "distanceFromSun": 20,
+        "radius": 6371,
+        "mass": 5.972e+24,
+        "composition": "terrestrial",
+        "hasRings": false,
+        "numberOfMoons": 1,
+        "orbitalPeriod": 365,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_mars",
+        "type": "Planet",
+        "label": "Mars",
+        "position": {
+          "x": 25,
+          "y": 0.3,
+          "z": -0.5
+        },
+        "distanceFromSun": 25,
+        "radius": 3390,
+        "mass": 6.417e+23,
+        "composition": "terrestrial",
+        "hasRings": false,
+        "numberOfMoons": 2,
+        "orbitalPeriod": 687,
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "inDegree": 2,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_jupiter",
+        "type": "Planet",
+        "label": "Jupiter",
+        "position": {
+          "x": 40,
+          "y": -0.2,
+          "z": 0.1
+        },
+        "distanceFromSun": 40,
+        "radius": 69911,
+        "mass": 1.898e+27,
+        "composition": "gas giant",
+        "hasRings": true,
+        "numberOfMoons": 95,
+        "orbitalPeriod": 4333,
+        "stateVector": {
+          "degree": 5,
+          "inbound": 4,
+          "outbound": 1
+        },
+        "inDegree": 4,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_saturn",
+        "type": "Planet",
+        "label": "Saturn",
+        "position": {
+          "x": 55,
+          "y": 0.1,
+          "z": -0.4
+        },
+        "distanceFromSun": 55,
+        "radius": 58232,
+        "mass": 5.683e+26,
+        "composition": "gas giant",
+        "hasRings": true,
+        "numberOfMoons": 146,
+        "orbitalPeriod": 10759,
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "inDegree": 2,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_uranus",
+        "type": "Planet",
+        "label": "Uranus",
+        "position": {
+          "x": 70,
+          "y": -0.5,
+          "z": 0.3
+        },
+        "distanceFromSun": 70,
+        "radius": 25362,
+        "mass": 8.681e+25,
+        "composition": "ice giant",
+        "hasRings": true,
+        "numberOfMoons": 27,
+        "orbitalPeriod": 30687,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_neptune",
+        "type": "Planet",
+        "label": "Neptun",
+        "position": {
+          "x": 85,
+          "y": 0.2,
+          "z": -0.1
+        },
+        "distanceFromSun": 85,
+        "radius": 24622,
+        "mass": 1.024e+26,
+        "composition": "ice giant",
+        "hasRings": true,
+        "numberOfMoons": 16,
+        "orbitalPeriod": 60190,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_pluto",
+        "type": "DwarfPlanet",
+        "label": "Pluto",
+        "position": {
+          "x": 95,
+          "y": -0.3,
+          "z": 0.5
+        },
+        "distanceFromSun": 95,
+        "radius": 1188,
+        "mass": 1.309e+22,
+        "composition": "dwarf",
+        "orbitalPeriod": 90560,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_moon",
+        "type": "Moon",
+        "label": "Mond",
+        "position": {
+          "x": 20,
+          "y": 5,
+          "z": 3
+        },
+        "distanceFromSun": 20,
+        "radius": 1737,
+        "mass": 7.342e+22,
+        "composition": "rocky",
+        "orbitalPeriod": 27,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_phobos",
+        "type": "Moon",
+        "label": "Phobos",
+        "position": {
+          "x": 25,
+          "y": 2.5,
+          "z": -1
+        },
+        "distanceFromSun": 25,
+        "radius": 11,
+        "mass": 10600000000000000,
+        "composition": "rocky",
+        "orbitalPeriod": 0.32,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_deimos",
+        "type": "Moon",
+        "label": "Deimos",
+        "position": {
+          "x": 25,
+          "y": -2,
+          "z": 0.8
+        },
+        "distanceFromSun": 25,
+        "radius": 6,
+        "mass": 1480000000000000,
+        "composition": "rocky",
+        "orbitalPeriod": 1.26,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_io",
+        "type": "Moon",
+        "label": "Io",
+        "position": {
+          "x": 40,
+          "y": 3,
+          "z": 2
+        },
+        "distanceFromSun": 40,
+        "radius": 1821,
+        "mass": 8.932e+22,
+        "composition": "rocky",
+        "orbitalPeriod": 1.77,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_europa",
+        "type": "Moon",
+        "label": "Europa",
+        "position": {
+          "x": 40,
+          "y": -2.5,
+          "z": 1.5
+        },
+        "distanceFromSun": 40,
+        "radius": 1560,
+        "mass": 4.799e+22,
+        "composition": "icy",
+        "orbitalPeriod": 3.55,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_ganymede",
+        "type": "Moon",
+        "label": "Ganymed",
+        "position": {
+          "x": 40,
+          "y": 1,
+          "z": -3
+        },
+        "distanceFromSun": 40,
+        "radius": 2634,
+        "mass": 1.482e+23,
+        "composition": "icy",
+        "orbitalPeriod": 7.15,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_callisto",
+        "type": "Moon",
+        "label": "Kallisto",
+        "position": {
+          "x": 40,
+          "y": -1,
+          "z": 4
+        },
+        "distanceFromSun": 40,
+        "radius": 2410,
+        "mass": 1.076e+23,
+        "composition": "icy",
+        "orbitalPeriod": 16.69,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_titan",
+        "type": "Moon",
+        "label": "Titan",
+        "position": {
+          "x": 55,
+          "y": 4,
+          "z": -2
+        },
+        "distanceFromSun": 55,
+        "radius": 2575,
+        "mass": 1.345e+23,
+        "composition": "rocky",
+        "orbitalPeriod": 15.95,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1783688729363_rhea",
+        "type": "Moon",
+        "label": "Rhea",
+        "position": {
+          "x": 55,
+          "y": -3,
+          "z": 1.5
+        },
+        "distanceFromSun": 55,
+        "radius": 764,
+        "mass": 2.306e+21,
+        "composition": "icy",
+        "orbitalPeriod": 4.52,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1783688729363_r1",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_mercury",
+        "target": "AI_Generation_1783688729363_sun",
+        "label": "Merkur umkreist Sonne",
+        "orbitalDistance": 10
+      },
+      {
+        "id": "AI_Generation_1783688729363_r2",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_venus",
+        "target": "AI_Generation_1783688729363_sun",
+        "label": "Venus umkreist Sonne",
+        "orbitalDistance": 15
+      },
+      {
+        "id": "AI_Generation_1783688729363_r3",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_earth",
+        "target": "AI_Generation_1783688729363_sun",
+        "label": "Erde umkreist Sonne",
+        "orbitalDistance": 20
+      },
+      {
+        "id": "AI_Generation_1783688729363_r4",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_mars",
+        "target": "AI_Generation_1783688729363_sun",
+        "label": "Mars umkreist Sonne",
+        "orbitalDistance": 25
+      },
+      {
+        "id": "AI_Generation_1783688729363_r5",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_jupiter",
+        "target": "AI_Generation_1783688729363_sun",
+        "label": "Jupiter umkreist Sonne",
+        "orbitalDistance": 40
+      },
+      {
+        "id": "AI_Generation_1783688729363_r6",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_saturn",
+        "target": "AI_Generation_1783688729363_sun",
+        "label": "Saturn umkreist Sonne",
+        "orbitalDistance": 55
+      },
+      {
+        "id": "AI_Generation_1783688729363_r7",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_uranus",
+        "target": "AI_Generation_1783688729363_sun",
+        "label": "Uranus umkreist Sonne",
+        "orbitalDistance": 70
+      },
+      {
+        "id": "AI_Generation_1783688729363_r8",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_neptune",
+        "target": "AI_Generation_1783688729363_sun",
+        "label": "Neptun umkreist Sonne",
+        "orbitalDistance": 85
+      },
+      {
+        "id": "AI_Generation_1783688729363_r9",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_pluto",
+        "target": "AI_Generation_1783688729363_sun",
+        "label": "Pluto umkreist Sonne",
+        "orbitalDistance": 95
+      },
+      {
+        "id": "AI_Generation_1783688729363_r10",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_moon",
+        "target": "AI_Generation_1783688729363_earth",
+        "label": "Mond umkreist Erde",
+        "orbitalDistance": 0.384
+      },
+      {
+        "id": "AI_Generation_1783688729363_r11",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_phobos",
+        "target": "AI_Generation_1783688729363_mars",
+        "label": "Phobos umkreist Mars",
+        "orbitalDistance": 0.0009
+      },
+      {
+        "id": "AI_Generation_1783688729363_r12",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_deimos",
+        "target": "AI_Generation_1783688729363_mars",
+        "label": "Deimos umkreist Mars",
+        "orbitalDistance": 0.0023
+      },
+      {
+        "id": "AI_Generation_1783688729363_r13",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_io",
+        "target": "AI_Generation_1783688729363_jupiter",
+        "label": "Io umkreist Jupiter",
+        "orbitalDistance": 0.042
+      },
+      {
+        "id": "AI_Generation_1783688729363_r14",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_europa",
+        "target": "AI_Generation_1783688729363_jupiter",
+        "label": "Europa umkreist Jupiter",
+        "orbitalDistance": 0.067
+      },
+      {
+        "id": "AI_Generation_1783688729363_r15",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_ganymede",
+        "target": "AI_Generation_1783688729363_jupiter",
+        "label": "Ganymed umkreist Jupiter",
+        "orbitalDistance": 0.107
+      },
+      {
+        "id": "AI_Generation_1783688729363_r16",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_callisto",
+        "target": "AI_Generation_1783688729363_jupiter",
+        "label": "Kallisto umkreist Jupiter",
+        "orbitalDistance": 0.188
+      },
+      {
+        "id": "AI_Generation_1783688729363_r17",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_titan",
+        "target": "AI_Generation_1783688729363_saturn",
+        "label": "Titan umkreist Saturn",
+        "orbitalDistance": 0.122
+      },
+      {
+        "id": "AI_Generation_1783688729363_r18",
+        "type": "orbits",
+        "source": "AI_Generation_1783688729363_rhea",
+        "target": "AI_Generation_1783688729363_saturn",
+        "label": "Rhea umkreist Saturn",
+        "orbitalDistance": 0.0527
+      }
+    ]
+  }
+}
