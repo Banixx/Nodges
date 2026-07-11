@@ -17,26 +17,28 @@ export class LLMService {
 
     public static readonly PROVIDER_MODELS: Record<LLMProvider, LLMModel[]> = {
         openrouter: [
-            { id: 'deepseek/deepseek-v4-flash', name: 'DeepSeek V4 Flash' },
-            { id: 'meta-llama/llama-3.3-70b-instruct', name: 'Llama 3.3 70B (Meta)' },
-            { id: 'anthropic/claude-4.5-haiku', name: 'Claude 4.5 Haiku (Anthropic)' },
-            { id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini (OpenAI)' },
-            { id: 'google/gemini-2.5-flash', name: 'Gemini 2.5 Flash (Google)' },
-            { id: 'google/gemini-2.5-pro', name: 'Gemini 2.5 Pro (Google)' },
-            { id: 'qwen/qwen3-coder:free', name: 'Qwen 3 Coder (Free)' },
-            { id: 'qwen/qwen-2.5-72b-instruct', name: 'Qwen 2.5 72B (Alibaba)' },
-            { id: 'zhipu/glm-4', name: 'GLM 4 (Zhipu)' },
-            { id: 'qwen/qwen3.6-plus', name: 'Qwen 3.6 Plus (Alibaba)' },
-            { id: 'z-ai/glm-5.2', name: 'GLM 5.2 (Zhipu)' },
-            { id: 'deepseek/deepseek-v4-pro', name: 'DeepSeek V4 Pro' },
-            { id: 'mistralai/mistral-nemo', name: 'Mistral Nemo' },
-            { id: 'tencent/hunyuan-pro', name: 'Hunyuan Pro (Tencent)' },
-            { id: 'moonshotai/kimi-k2.7-code', name: 'Kimi K2.7 Code (Moonshot)' },
-            { id: 'x-ai/grok-4.20-multi-agent', name: 'Grok 4.20 Multi-Agent (xAI)' },
-            { id: 'morph/morph-v3-large', name: 'Morph V3 Large' },
-            { id: 'openai/gpt-oss-safeguard-20b', name: 'GPT OSS Safeguard 20B (OpenAI)' },
-            { id: 'inception/mercury-2', name: 'Mercury 2 (Inception)' },
-            { id: 'qwen/qwen3.7-plus', name: 'Qwen 3.7 Plus (Alibaba)' }
+            { id: 'meta-llama/llama-3.3-70b-instruct:free', name: 'Meta: Llama 3.3 70B Instruct (free)' },
+            { id: 'qwen/qwen3-coder:free', name: 'Qwen: Qwen3 Coder (free)' },
+            { id: 'openai/gpt-oss-120b:free', name: 'OpenAI: gpt-oss-120b (free)' },
+            { id: 'google/gemma-4-31b-it:free', name: 'Google: Gemma 4 31B (free)' },
+            { id: 'nousresearch/hermes-3-llama-3.1-405b:free', name: 'Nous: Hermes 3 405B Instruct (free)' },
+            { id: 'deepseek/deepseek-v4-flash', name: 'DeepSeek: DeepSeek V4 Flash' },
+            { id: 'mistralai/mistral-small-3.2-24b-instruct', name: 'Mistral: Mistral Small 3.2 24B' },
+            { id: 'meta-llama/llama-3.3-70b-instruct', name: 'Meta: Llama 3.3 70B Instruct' },
+            { id: 'openai/gpt-4o-mini', name: 'OpenAI: GPT-4o-mini' },
+            { id: 'deepseek/deepseek-chat', name: 'DeepSeek: DeepSeek V3' },
+            { id: 'deepseek/deepseek-v4-pro', name: 'DeepSeek: DeepSeek V4 Pro' },
+            { id: 'qwen/qwen3.7-plus', name: 'Qwen: Qwen3.7 Plus' },
+            { id: 'mistralai/mistral-large-2512', name: 'Mistral: Mistral Large 3 2512' },
+            { id: 'google/gemini-3.1-flash-lite', name: 'Google: Gemini 3.1 Flash Lite' },
+            { id: 'openai/gpt-4.1-mini', name: 'OpenAI: GPT-4.1 Mini' },
+            { id: 'x-ai/grok-4.20', name: 'xAI: Grok 4.20' },
+            { id: 'google/gemini-2.5-flash', name: 'Google: Gemini 2.5 Flash' },
+            { id: 'deepseek/deepseek-r1', name: 'DeepSeek: R1' },
+            { id: 'qwen/qwen3-max', name: 'Qwen: Qwen3 Max' },
+            { id: 'openai/o3-mini', name: 'OpenAI: o3 Mini' },
+            { id: 'openai/o4-mini', name: 'OpenAI: o4 Mini' },
+            { id: 'anthropic/claude-haiku-4.5', name: 'Anthropic: Claude Haiku 4.5' }
         ],
         openai: [
             { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
@@ -440,7 +442,7 @@ export class LLMService {
         prompt: string, 
         provider: LLMProvider, 
         model: string,
-        formatFile: string = '/nodges_build_4.md'
+        formatFile: string = import.meta.env.BASE_URL + 'nodges_build_4.md'
     ): Promise<GraphData> {
         let systemPrompt = '';
         try {
@@ -464,7 +466,7 @@ export class LLMService {
         onProgress?: (msg: string) => void
     ): Promise<GraphData> {
         // Step 1: Schema / Ontologie
-        const schemaPromptFile = '/prompts/build_5_ontology_prompt.md';
+        const schemaPromptFile = import.meta.env.BASE_URL + 'prompts/build_5_ontology_prompt.md';
         let schemaSystemPrompt = '';
         try {
             const res = await fetch(schemaPromptFile);
@@ -482,7 +484,7 @@ export class LLMService {
         // Step 2: Data
         if (onProgress) onProgress('Schritt 2/3: Datenpunkte werden generiert...');
         
-        const dataPromptFile = '/prompts/build_5_data_prompt.md';
+        const dataPromptFile = import.meta.env.BASE_URL + 'prompts/build_5_data_prompt.md';
         let dataSystemPrompt = '';
         try {
             const res = await fetch(dataPromptFile);
@@ -502,7 +504,7 @@ export class LLMService {
         // Step 3: Visual Mappings
         if (onProgress) onProgress('Schritt 3/3: Visuelles Mapping (Build 5) wird berechnet...');
         
-        const visualPromptFile = '/prompts/build_5_visual_prompt.md';
+        const visualPromptFile = import.meta.env.BASE_URL + 'prompts/build_5_visual_prompt.md';
         let visualSystemPrompt = '';
         try {
             const res = await fetch(visualPromptFile);
@@ -526,7 +528,7 @@ export class LLMService {
         model: string,
         onProgress?: (msg: string) => void
     ): Promise<GraphData> {
-        const promptFile = '/prompts/build_6_prompt.md';
+        const promptFile = import.meta.env.BASE_URL + 'prompts/build_6_prompt.md';
         let systemPrompt = '';
         try {
             const res = await fetch(promptFile);
@@ -602,7 +604,7 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         model: string,
         onProgress?: (msg: string) => void
     ): Promise<GraphData> {
-        const ontologyPromptFile = '/prompts/ontology_prompt.md';
+        const ontologyPromptFile = import.meta.env.BASE_URL + 'prompts/ontology_prompt.md';
         let ontologySystemPrompt = '';
         try {
             const res = await fetch(ontologyPromptFile);
@@ -619,7 +621,7 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         
         if (onProgress) onProgress('Schritt 2/2: Datenpunkte werden basierend auf Schema generiert...');
         
-        const dataPromptFile = '/prompts/build_4_prompt.md';
+        const dataPromptFile = import.meta.env.BASE_URL + 'prompts/build_4_prompt.md';
         let dataSystemPrompt = '';
         try {
             const res = await fetch(dataPromptFile);
@@ -649,7 +651,7 @@ USER PROMPT (Thema): ${prompt}
         prompt: string, 
         provider: LLMProvider, 
         model: string,
-        formatFile: string = '/prompts/build_4_prompt.md',
+        formatFile: string = import.meta.env.BASE_URL + 'prompts/build_4_prompt.md',
         onProgress?: (msg: string) => void
     ): Promise<GraphData> {
         let systemPrompt = '';

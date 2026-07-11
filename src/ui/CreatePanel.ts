@@ -594,6 +594,13 @@ export class CreatePanel {
             provider: provider,
             model: model,
             pipeline: pipeline,
+            systemInfo: {
+                userAgent: navigator.userAgent,
+                language: navigator.language,
+                screenResolution: `${window.screen.width}x${window.screen.height}`,
+                viewport: `${window.innerWidth}x${window.innerHeight}`,
+                appVersion: 'Nodges Build 6'
+            },
             steps: []
         };
         const startTime = performance.now();
