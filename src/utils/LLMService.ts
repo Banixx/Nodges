@@ -90,9 +90,6 @@ export class LLMService {
         localStorage.setItem(`llm_model_${provider}`, model);
     }
 
-    /**
-     * Retrieves the API key for a specific provider from localStorage.
-     */
     public static getApiKey(provider: LLMProvider): string | null {
         // Migration of old openrouter key if needed
         if (provider === 'openrouter') {
@@ -103,10 +100,29 @@ export class LLMService {
                 localStorage.removeItem('openrouter_api_key');
                 return oldKey;
             }
+            
+            const localKey = localStorage.getItem('llm_key_openrouter');
+            if (localKey) return localKey;
+            
+            if (import.meta.env && import.meta.env.VITE_OPENROUTER_API_KEY) {
+                return import.meta.env.VITE_OPENROUTER_API_KEY;
+            }
+            
             // Temporaerer Key fuer öffentliche Nutzung ohne eigene Eingabe
-            return localStorage.getItem('llm_key_openrouter') || '';
+            return '';
         }
-        return localStorage.getItem(`llm_key_${provider}`);
+        
+        const localKey = localStorage.getItem(`llm_key_${provider}`);
+        if (localKey) return localKey;
+        
+        if (provider === 'openai' && import.meta.env && import.meta.env.VITE_OPENAI_API_KEY) {
+            return import.meta.env.VITE_OPENAI_API_KEY;
+        }
+        if (provider === 'anthropic' && import.meta.env && import.meta.env.VITE_ANTHROPIC_API_KEY) {
+            return import.meta.env.VITE_ANTHROPIC_API_KEY;
+        }
+        
+        return null;
     }
 
     /**
@@ -174,7 +190,21 @@ export class LLMService {
         model: string,
         jsonSchema?: any
     ): Promise<GraphData> {
-        const apiKey = this.getApiKey(provider);
+        let apiKey = this.getApiKey(provider);
+        let apiUrl = '';
+
+        if (provider === 'openrouter') {
+            if (!apiKey) {
+                apiUrl = 'https://pure-peacock-1215.banixx.deno.net/';
+                apiKey = 'proxy-mode'; // Deno Deploy Proxy benötigt keinen Client-Key
+            } else {
+                apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
+            }
+        } else if (provider === 'openai') {
+            apiUrl = 'https://api.openai.com/v1/chat/completions';
+        } else if (provider === 'anthropic') {
+            apiUrl = 'https://api.anthropic.com/v1/messages';
+        }
 
         if (!apiKey) {
             throw new Error(`Kein API-Key für ${provider} gefunden. Bitte gib deinen API-Key ein.`);
@@ -185,7 +215,7 @@ export class LLMService {
 
         if (provider === 'openrouter') {
             // First attempt: multi-turn (system + user)
-            let response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            let response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${apiKey}`,
@@ -213,7 +243,7 @@ export class LLMService {
                 if (response.status === 400) {
                     console.warn(`[LLMService] Model ${model} returned 400. Retrying with single message and standard json_object fallback...`);
                     const combinedPrompt = `${systemPrompt}\n\n---\nUSER REQUEST:\n${userPrompt}`;
-                    response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                    response = await fetch(apiUrl, {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${apiKey}`,

@@ -79,7 +79,27 @@ export class CreatePanel {
         keyDesc.style.fontSize = '11px';
         keyDesc.style.color = 'var(--text-muted)';
         keyDesc.style.marginBottom = '8px';
-        keyDesc.textContent = 'Dein Key wird im LocalStorage des Browsers gespeichert. Du bist dort verantwortlich. Ich empfehle grundsätzlich limitierte Keys zu verwenden.';
+        keyDesc.textContent = 'Dein Key wird im LocalStorage des Browsers gespeichert. Du bist dort verantwortlich. Ich empfehle grundsätzlich limitierte Keys zu verwenden. ';
+        
+        const freeBtn = document.createElement('button');
+        freeBtn.textContent = 'Free';
+        freeBtn.className = 'action-button secondary';
+        freeBtn.style.padding = '2px 6px';
+        freeBtn.style.fontSize = '10px';
+        freeBtn.style.marginLeft = '5px';
+        freeBtn.onclick = () => {
+            this.providerSelect.value = 'openrouter';
+            LLMService.setActiveProvider('openrouter');
+            this.keyInput.value = '';
+            LLMService.clearApiKey('openrouter');
+            this.updateModelOptions('openrouter');
+            
+            keyContent.style.display = 'none';
+            keyToggle.textContent = '▾';
+            this.setStatus('Free-Modus aktiviert (Nutze Deno Proxy).', 'info');
+        };
+        keyDesc.appendChild(freeBtn);
+        
         keyContent.appendChild(keyDesc);
 
         // Provider Select
@@ -559,7 +579,7 @@ export class CreatePanel {
         const model = this.selectedModelId;
         const pipeline = this.pipelineSelect.value;
 
-        if (!LLMService.getApiKey(provider)) {
+        if (!LLMService.getApiKey(provider) && provider !== 'openrouter') {
             this.setStatus(`Bitte hinterlege zuerst deinen API-Key für ${provider}.`, 'error');
             return;
         }

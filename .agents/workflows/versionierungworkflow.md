@@ -8,4 +8,4 @@ Mit dem Command "Versionierung minor" als Prompt, löst der User die Erhöhung d
 
 Ohne angabe von "minor" wird automatisch der hinterste Zähler erhöht.
 
-Die Versionsangabe wird in index.html und package.json angepasst.
+Die Versionsangabe wird in package.json angepasst.
