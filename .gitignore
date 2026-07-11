@@ -49,3 +49,7 @@ doc/
 *.cjs
 start_dev.bat
 Ndrive/
+
+# Grosse Dateien und Rohdaten
+Switzerland.jpg
+*.csv
