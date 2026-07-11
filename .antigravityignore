@@ -1,9 +1,0 @@
-node_modules/
-venv/
-.venv/
-build/
-dist/
-.git/
-*.so
-*.dat
-.devcontainer

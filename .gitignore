@@ -33,7 +33,19 @@ build/
 .env.local
 
 # Markdown files (except README.md)
-
+*.md
 !README.md
-Ndrive/
 
+# AI and Tooling
+.agent/
+.agents/
+.clinerules
+.antigravityignore
+
+# Documentation
+doc/
+
+# Local scripts
+*.cjs
+start_dev.bat
+Ndrive/
