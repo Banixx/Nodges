@@ -1,0 +1,154 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "apiResponse": {
+      "id": "gen-1783790816-h0pD4W6DOUMuftMr4c6H",
+      "created": 1783790816,
+      "model": "deepseek/deepseek-v4-flash-20260423",
+      "usage": {
+        "prompt_tokens": 6801,
+        "completion_tokens": 555,
+        "total_tokens": 7356,
+        "cost": 0.001099629,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.001099629,
+          "upstream_inference_prompt_cost": 0.000945339,
+          "upstream_inference_completions_cost": 0.00015429
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    },
+    "generationDetails": {
+      "prompt": "sonnensystem",
+      "context": null,
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-v4-flash",
+      "pipeline": "build5",
+      "durationMs": 186052,
+      "timestamp": "2026-07-11T17:27:04.929Z"
+    },
+    "exportedAt": "2026-07-11T17:27:06.196Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "data": {
+    "entities": [],
+    "relationships": []
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Stern": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#FFD700"
+          }
+        },
+        "size": {
+          "source": "durchmesser_km",
+          "function": "linear",
+          "range": [
+            1,
+            3
+          ]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "dodecahedron"
+          }
+        }
+      },
+      "Planet": {
+        "color": {
+          "source": "hat_atmosphaere",
+          "function": "categorical"
+        },
+        "size": {
+          "source": "durchmesser_km",
+          "function": "linear",
+          "range": [
+            0.5,
+            2.5
+          ]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Mond": {
+        "color": {
+          "source": "gehoert_zu_planet",
+          "function": "categorical"
+        },
+        "size": {
+          "source": "durchmesser_km",
+          "function": "linear",
+          "range": [
+            0.3,
+            1.5
+          ]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "box"
+          }
+        }
+      },
+      "umkreist": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#4A90D9"
+          }
+        },
+        "thickness": {
+          "source": "umlaufdauer_jahre",
+          "function": "linear",
+          "range": [
+            0.03,
+            0.4
+          ]
+        }
+      },
+      "ist_mond_von": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#9B59B6"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "thickness": 0.1
+          }
+        }
+      }
+    }
+  }
+}

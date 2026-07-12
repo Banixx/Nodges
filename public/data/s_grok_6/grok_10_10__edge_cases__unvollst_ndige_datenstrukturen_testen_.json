@@ -1,0 +1,509 @@
+{
+  "_testMeta": {
+    "iteration": "10. Edge Cases (Unvollständige Datenstrukturen testen)",
+    "prompt": "Ein magisches Universum mit Knoten ohne Kanten, oder Kanten ohne Eigenschaften, und völlig ungewöhnlichen, extrem extrem langen Typnamen.",
+    "model": "x-ai/grok-4.20",
+    "durationMs": 98909,
+    "durationSec": 98.91,
+    "entityCount": 17,
+    "relationshipCount": 18,
+    "timestamp": "2026-07-11T17:34:59.196Z"
+  },
+  "system": "Ein magisches Universum mit Knoten ohne Kanten, oder Kanten ohne Eigenschaften, und völlig ungewöhnlichen, extrem extrem langen Typnamen.",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Ein magisches Universum-Netzwerk mit extrem langen Entity-Typnamen und strikter Einhaltung der diversen Kanal-Regeln. Es enthält sowohl Knoten als auch Kanten trotz der widersprüchlichen Anfrage.",
+    "competencyQuestions": [
+      "Welche magischen Entitäten haben die höchste arkane Resonanz und in welcher magischen Domäne liegen sie?",
+      "Welche Verbindungen existieren zwischen arkanen Wesen und wie stark ist ihre symbiotische Harmonie?",
+      "Welche zeitlosen Artefakte sind mit welchen magischen Wesen verbunden und welchen Einfluss üben sie aus?",
+      "Wie verteilen sich die elementaren Affinitäten über das magische Universum hinweg?"
+    ],
+    "apiResponse": {
+      "id": "gen-1783791192-N15C6pTFjM50qSwlVZuU",
+      "created": 1783791192,
+      "model": "x-ai/grok-4.20-20260309",
+      "usage": {
+        "prompt_tokens": 1611,
+        "completion_tokens": 3530,
+        "total_tokens": 5141,
+        "cost": 0.00915875,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 1600,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00915875,
+          "upstream_inference_prompt_cost": 0.00033375,
+          "upstream_inference_completions_cost": 0.008825
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "UebernatuerlichArkaneAstralProjektionsWesenheit": {
+        "properties": {
+          "arkaneResonanz": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "magischeDomäne": {
+            "type": "categorical",
+            "values": [
+              "Astral",
+              "Nekromantie",
+              "Illusion",
+              "Elementar",
+              "Chronal"
+            ]
+          }
+        }
+      },
+      "ZeitlosesMystischesElementarverbundenesArtefakt": {
+        "properties": {
+          "zeitloserEinfluss": {
+            "type": "continuous",
+            "range": [
+              10,
+              95
+            ]
+          },
+          "elementareAffinität": {
+            "type": "categorical",
+            "values": [
+              "Feuer",
+              "Wasser",
+              "Luft",
+              "Erde",
+              "Äther"
+            ]
+          }
+        }
+      },
+      "SymbiotischHarmonisierterMystischerWächtergeist": {
+        "properties": {
+          "harmonieStärke": {
+            "type": "continuous",
+            "range": [
+              15,
+              85
+            ]
+          },
+          "wächterRolle": {
+            "type": "categorical",
+            "values": [
+              "Beschützer",
+              "Wanderer",
+              "Bewahrer",
+              "Rufer"
+            ]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "ArkaneSymbiotischeResonanzVerbindung": {
+        "properties": {
+          "verbindungsIntensität": {
+            "type": "continuous",
+            "range": [
+              0.1,
+              1
+            ]
+          }
+        }
+      },
+      "MystischeArtefaktBindungsBeziehung": {
+        "properties": {
+          "bindungsDauer": {
+            "type": "continuous",
+            "range": [
+              50,
+              500
+            ]
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "w1",
+        "type": "UebernatuerlichArkaneAstralProjektionsWesenheit",
+        "label": "Astralithor",
+        "arkaneResonanz": 87,
+        "magischeDomäne": "Astral"
+      },
+      {
+        "id": "w2",
+        "type": "UebernatuerlichArkaneAstralProjektionsWesenheit",
+        "label": "Nekronyx",
+        "arkaneResonanz": 64,
+        "magischeDomäne": "Nekromantie"
+      },
+      {
+        "id": "w3",
+        "type": "UebernatuerlichArkaneAstralProjektionsWesenheit",
+        "label": "Illusara",
+        "arkaneResonanz": 92,
+        "magischeDomäne": "Illusion"
+      },
+      {
+        "id": "w4",
+        "type": "UebernatuerlichArkaneAstralProjektionsWesenheit",
+        "label": "Chronovex",
+        "arkaneResonanz": 45,
+        "magischeDomäne": "Chronal"
+      },
+      {
+        "id": "a1",
+        "type": "ZeitlosesMystischesElementarverbundenesArtefakt",
+        "label": "Feuerherz Kristall",
+        "zeitloserEinfluss": 78,
+        "elementareAffinität": "Feuer"
+      },
+      {
+        "id": "a2",
+        "type": "ZeitlosesMystischesElementarverbundenesArtefakt",
+        "label": "Ätherfluss Orb",
+        "zeitloserEinfluss": 95,
+        "elementareAffinität": "Äther"
+      },
+      {
+        "id": "a3",
+        "type": "ZeitlosesMystischesElementarverbundenesArtefakt",
+        "label": "Erdwurzel Amulett",
+        "zeitloserEinfluss": 33,
+        "elementareAffinität": "Erde"
+      },
+      {
+        "id": "g1",
+        "type": "SymbiotischHarmonisierterMystischerWächtergeist",
+        "label": "Luminara",
+        "harmonieStärke": 72,
+        "wächterRolle": "Beschützer"
+      },
+      {
+        "id": "g2",
+        "type": "SymbiotischHarmonisierterMystischerWächtergeist",
+        "label": "Voidwalker",
+        "harmonieStärke": 51,
+        "wächterRolle": "Wanderer"
+      },
+      {
+        "id": "g3",
+        "type": "SymbiotischHarmonisierterMystischerWächtergeist",
+        "label": "Echoryn",
+        "harmonieStärke": 83,
+        "wächterRolle": "Bewahrer"
+      },
+      {
+        "id": "g4",
+        "type": "SymbiotischHarmonisierterMystischerWächtergeist",
+        "label": "Sylphara",
+        "harmonieStärke": 29,
+        "wächterRolle": "Rufer"
+      },
+      {
+        "id": "w5",
+        "type": "UebernatuerlichArkaneAstralProjektionsWesenheit",
+        "label": "Elementhys",
+        "arkaneResonanz": 76,
+        "magischeDomäne": "Elementar"
+      },
+      {
+        "id": "a4",
+        "type": "ZeitlosesMystischesElementarverbundenesArtefakt",
+        "label": "Wasserflüstern Kelch",
+        "zeitloserEinfluss": 62,
+        "elementareAffinität": "Wasser"
+      },
+      {
+        "id": "a5",
+        "type": "ZeitlosesMystischesElementarverbundenesArtefakt",
+        "label": "Luftschwingungs Harfe",
+        "zeitloserEinfluss": 49,
+        "elementareAffinität": "Luft"
+      },
+      {
+        "id": "g5",
+        "type": "SymbiotischHarmonisierterMystischerWächtergeist",
+        "label": "Temporath",
+        "harmonieStärke": 68,
+        "wächterRolle": "Bewahrer"
+      },
+      {
+        "id": "w6",
+        "type": "UebernatuerlichArkaneAstralProjektionsWesenheit",
+        "label": "Mythralis",
+        "arkaneResonanz": 55,
+        "magischeDomäne": "Astral"
+      },
+      {
+        "id": "g6",
+        "type": "SymbiotischHarmonisierterMystischerWächtergeist",
+        "label": "Nethervoid",
+        "harmonieStärke": 41,
+        "wächterRolle": "Wanderer"
+      }
+    ],
+    "relationships": [
+      {
+        "id": "r1",
+        "type": "ArkaneSymbiotischeResonanzVerbindung",
+        "source": "w1",
+        "target": "g1",
+        "label": "Astralbindung",
+        "verbindungsIntensität": 0.92
+      },
+      {
+        "id": "r2",
+        "type": "MystischeArtefaktBindungsBeziehung",
+        "source": "a1",
+        "target": "w5",
+        "label": "Feuererweckung",
+        "bindungsDauer": 320
+      },
+      {
+        "id": "r3",
+        "type": "ArkaneSymbiotischeResonanzVerbindung",
+        "source": "g3",
+        "target": "w3",
+        "label": "Illusionsschutz",
+        "verbindungsIntensität": 0.85
+      },
+      {
+        "id": "r4",
+        "type": "MystischeArtefaktBindungsBeziehung",
+        "source": "a2",
+        "target": "g5",
+        "label": "Ätherharmonie",
+        "bindungsDauer": 475
+      },
+      {
+        "id": "r5",
+        "type": "ArkaneSymbiotischeResonanzVerbindung",
+        "source": "w2",
+        "target": "g2",
+        "label": "Schattenbund",
+        "verbindungsIntensität": 0.67
+      },
+      {
+        "id": "r6",
+        "type": "MystischeArtefaktBindungsBeziehung",
+        "source": "a3",
+        "target": "w4",
+        "label": "Zeitanker",
+        "bindungsDauer": 180
+      },
+      {
+        "id": "r7",
+        "type": "ArkaneSymbiotischeResonanzVerbindung",
+        "source": "g4",
+        "target": "a4",
+        "label": "Flüsteranruf",
+        "verbindungsIntensität": 0.44
+      },
+      {
+        "id": "r8",
+        "type": "MystischeArtefaktBindungsBeziehung",
+        "source": "a5",
+        "target": "w6",
+        "label": "Windgesang",
+        "bindungsDauer": 95
+      },
+      {
+        "id": "r9",
+        "type": "ArkaneSymbiotischeResonanzVerbindung",
+        "source": "w5",
+        "target": "g6",
+        "label": "Elementarwächter",
+        "verbindungsIntensität": 0.78
+      },
+      {
+        "id": "r10",
+        "type": "MystischeArtefaktBindungsBeziehung",
+        "source": "a1",
+        "target": "g1",
+        "label": "Herzfeuer",
+        "bindungsDauer": 210
+      },
+      {
+        "id": "r11",
+        "type": "ArkaneSymbiotischeResonanzVerbindung",
+        "source": "w3",
+        "target": "a2",
+        "label": "Illusionsspiegel",
+        "verbindungsIntensität": 0.81
+      },
+      {
+        "id": "r12",
+        "type": "MystischeArtefaktBindungsBeziehung",
+        "source": "a4",
+        "target": "g3",
+        "label": "Tiefenbund",
+        "bindungsDauer": 390
+      },
+      {
+        "id": "r13",
+        "type": "ArkaneSymbiotischeResonanzVerbindung",
+        "source": "w4",
+        "target": "g5",
+        "label": "Zeitschleife",
+        "verbindungsIntensität": 0.59
+      },
+      {
+        "id": "r14",
+        "type": "MystischeArtefaktBindungsBeziehung",
+        "source": "a3",
+        "target": "w1",
+        "label": "Wurzelankrung",
+        "bindungsDauer": 275
+      },
+      {
+        "id": "r15",
+        "type": "ArkaneSymbiotischeResonanzVerbindung",
+        "source": "g2",
+        "target": "a5",
+        "label": "Leerewehen",
+        "verbindungsIntensität": 0.36
+      },
+      {
+        "id": "r16",
+        "type": "MystischeArtefaktBindungsBeziehung",
+        "source": "a2",
+        "target": "w2",
+        "label": "Nekrosphären",
+        "bindungsDauer": 145
+      },
+      {
+        "id": "r17",
+        "type": "ArkaneSymbiotischeResonanzVerbindung",
+        "source": "w6",
+        "target": "g4",
+        "label": "Sternenruf",
+        "verbindungsIntensität": 0.73
+      },
+      {
+        "id": "r18",
+        "type": "MystischeArtefaktBindungsBeziehung",
+        "source": "a5",
+        "target": "g6",
+        "label": "Himmelsband",
+        "bindungsDauer": 260
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "UebernatuerlichArkaneAstralProjektionsWesenheit": {
+        "size": {
+          "source": "arkaneResonanz",
+          "function": "linear",
+          "range": [
+            0.8,
+            2.8
+          ]
+        },
+        "color": {
+          "source": "magischeDomäne",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "dodecahedron"
+          }
+        }
+      },
+      "ZeitlosesMystischesElementarverbundenesArtefakt": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1.4
+          }
+        },
+        "color": {
+          "source": "elementareAffinität",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "SymbiotischHarmonisierterMystischerWächtergeist": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1.1
+          }
+        },
+        "color": {
+          "source": "wächterRolle",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "box"
+          }
+        }
+      },
+      "ArkaneSymbiotischeResonanzVerbindung": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#A020F0"
+          }
+        },
+        "thickness": {
+          "source": "verbindungsIntensität",
+          "function": "linear",
+          "range": [
+            0.05,
+            0.45
+          ]
+        }
+      },
+      "MystischeArtefaktBindungsBeziehung": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#00CED1"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.2
+          }
+        }
+      }
+    }
+  }
+}

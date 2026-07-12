@@ -1,0 +1,858 @@
+{
+  "_testMeta": {
+    "iteration": "3. Temporale Objekte",
+    "prompt": "Die Geschichte Roms. Nutze explizit temporale Eigenschaften (Startjahr, Endjahr) für die Knoten und Kanten, um Epochen abzubilden.",
+    "model": "x-ai/grok-4.20",
+    "durationMs": 22322,
+    "durationSec": 22.32,
+    "entityCount": 25,
+    "relationshipCount": 25,
+    "timestamp": "2026-07-11T17:30:18.797Z"
+  },
+  "system": "Die Geschichte Roms",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Temporal network modeling the history of Rome with dynasties, emperors, events, and conflicts across eras from Republic to Empire",
+    "competencyQuestions": [
+      "Welche Kaiser regierten während welcher Epochen und in welcher Reihenfolge?",
+      "Welche militärischen oder politischen Ereignisse markieren den Übergang zwischen Epochen?",
+      "Welche Dynastien oder Herrscherfolgen bestanden in einer bestimmten Zeitspanne und welche Konflikte waren damit verbunden?",
+      "Welche Beziehungen existierten zwischen historischen Ereignissen, Herrschern und Epochen in der römischen Geschichte?"
+    ],
+    "apiResponse": {
+      "id": "gen-1783790989-eKHaP4la2c9Cqd123Knn",
+      "created": 1783790989,
+      "model": "x-ai/grok-4.20-20260309",
+      "usage": {
+        "prompt_tokens": 1618,
+        "completion_tokens": 4291,
+        "total_tokens": 5909,
+        "cost": 0.01107,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 1600,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.01107,
+          "upstream_inference_prompt_cost": 0.0003425,
+          "upstream_inference_completions_cost": 0.0107275
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Epoch": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          },
+          "endYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          },
+          "significance": {
+            "type": "continuous",
+            "range": [
+              1,
+              10
+            ]
+          }
+        }
+      },
+      "Emperor": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -100,
+              500
+            ]
+          },
+          "endYear": {
+            "type": "continuous",
+            "range": [
+              -100,
+              500
+            ]
+          },
+          "reignLength": {
+            "type": "continuous",
+            "range": [
+              0,
+              50
+            ]
+          },
+          "region": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Dynasty": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          },
+          "endYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          },
+          "influence": {
+            "type": "continuous",
+            "range": [
+              1,
+              10
+            ]
+          }
+        }
+      },
+      "Event": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          },
+          "endYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          },
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              1,
+              10
+            ]
+          }
+        }
+      },
+      "Conflict": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          },
+          "endYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          },
+          "casualties": {
+            "type": "continuous",
+            "range": [
+              1000,
+              1000000
+            ]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "RuledDuring": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          },
+          "endYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          }
+        }
+      },
+      "BelongsTo": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          }
+        }
+      },
+      "Triggered": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          }
+        }
+      },
+      "Succeeded": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -100,
+              500
+            ]
+          }
+        }
+      },
+      "ParticipatedIn": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "epoch_kings",
+        "type": "Epoch",
+        "label": "Königszeit",
+        "startYear": -753,
+        "endYear": -509,
+        "significance": 7
+      },
+      {
+        "id": "epoch_republic",
+        "type": "Epoch",
+        "label": "Römische Republik",
+        "startYear": -509,
+        "endYear": -27,
+        "significance": 9
+      },
+      {
+        "id": "epoch_principate",
+        "type": "Epoch",
+        "label": "Principat",
+        "startYear": -27,
+        "endYear": 284,
+        "significance": 10
+      },
+      {
+        "id": "epoch_dominate",
+        "type": "Epoch",
+        "label": "Dominat",
+        "startYear": 284,
+        "endYear": 476,
+        "significance": 8
+      },
+      {
+        "id": "emperor_augustus",
+        "type": "Emperor",
+        "label": "Augustus",
+        "startYear": -27,
+        "endYear": 14,
+        "reignLength": 41,
+        "region": "Italian"
+      },
+      {
+        "id": "emperor_tiberius",
+        "type": "Emperor",
+        "label": "Tiberius",
+        "startYear": 14,
+        "endYear": 37,
+        "reignLength": 23,
+        "region": "Italian"
+      },
+      {
+        "id": "emperor_caligula",
+        "type": "Emperor",
+        "label": "Caligula",
+        "startYear": 37,
+        "endYear": 41,
+        "reignLength": 4,
+        "region": "Italian"
+      },
+      {
+        "id": "emperor_claudius",
+        "type": "Emperor",
+        "label": "Claudius",
+        "startYear": 41,
+        "endYear": 54,
+        "reignLength": 13,
+        "region": "Italian"
+      },
+      {
+        "id": "emperor_nero",
+        "type": "Emperor",
+        "label": "Nero",
+        "startYear": 54,
+        "endYear": 68,
+        "reignLength": 14,
+        "region": "Italian"
+      },
+      {
+        "id": "emperor_vespasian",
+        "type": "Emperor",
+        "label": "Vespasian",
+        "startYear": 69,
+        "endYear": 79,
+        "reignLength": 10,
+        "region": "Italian"
+      },
+      {
+        "id": "emperor_trajan",
+        "type": "Emperor",
+        "label": "Trajan",
+        "startYear": 98,
+        "endYear": 117,
+        "reignLength": 19,
+        "region": "Hispanic"
+      },
+      {
+        "id": "emperor_hadrian",
+        "type": "Emperor",
+        "label": "Hadrian",
+        "startYear": 117,
+        "endYear": 138,
+        "reignLength": 21,
+        "region": "Hispanic"
+      },
+      {
+        "id": "emperor_constantine",
+        "type": "Emperor",
+        "label": "Constantine I",
+        "startYear": 306,
+        "endYear": 337,
+        "reignLength": 31,
+        "region": "Illyrian"
+      },
+      {
+        "id": "dynasty_julio_claudian",
+        "type": "Dynasty",
+        "label": "Julisch-Claudisches Haus",
+        "startYear": -27,
+        "endYear": 68,
+        "influence": 9
+      },
+      {
+        "id": "dynasty_flavian",
+        "type": "Dynasty",
+        "label": "Flavisches Haus",
+        "startYear": 69,
+        "endYear": 96,
+        "influence": 7
+      },
+      {
+        "id": "dynasty_nerva_antonine",
+        "type": "Dynasty",
+        "label": "Nervisch-Antoninische Dynastie",
+        "startYear": 96,
+        "endYear": 192,
+        "influence": 8
+      },
+      {
+        "id": "event_founding",
+        "type": "Event",
+        "label": "Gründung Roms",
+        "startYear": -753,
+        "endYear": -753,
+        "intensity": 10
+      },
+      {
+        "id": "event_gallic_sack",
+        "type": "Event",
+        "label": "Gallischer Katastrophe",
+        "startYear": -390,
+        "endYear": -390,
+        "intensity": 6
+      },
+      {
+        "id": "event_punic_wars",
+        "type": "Event",
+        "label": "Punische Kriege",
+        "startYear": -264,
+        "endYear": -146,
+        "intensity": 9
+      },
+      {
+        "id": "event_caesar_crossing",
+        "type": "Event",
+        "label": "Caesar überschreitet den Rubikon",
+        "startYear": -49,
+        "endYear": -49,
+        "intensity": 8
+      },
+      {
+        "id": "event_fire_rome",
+        "type": "Event",
+        "label": "Großer Brand Roms",
+        "startYear": 64,
+        "endYear": 64,
+        "intensity": 7
+      },
+      {
+        "id": "event_edict_milan",
+        "type": "Event",
+        "label": "Edikt von Mailand",
+        "startYear": 313,
+        "endYear": 313,
+        "intensity": 8
+      },
+      {
+        "id": "conflict_civil_war_caesar",
+        "type": "Conflict",
+        "label": "Caesars Bürgerkrieg",
+        "startYear": -49,
+        "endYear": -45,
+        "casualties": 500000
+      },
+      {
+        "id": "conflict_year_of_four",
+        "type": "Conflict",
+        "label": "Vierkaiserjahr",
+        "startYear": 69,
+        "endYear": 69,
+        "casualties": 50000
+      },
+      {
+        "id": "conflict_battle_teutoburg",
+        "type": "Conflict",
+        "label": "Schlacht im Teutoburger Wald",
+        "startYear": 9,
+        "endYear": 9,
+        "casualties": 20000
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel1",
+        "type": "RuledDuring",
+        "source": "emperor_augustus",
+        "target": "epoch_principate",
+        "label": "regierte in",
+        "startYear": -27,
+        "endYear": 14
+      },
+      {
+        "id": "rel2",
+        "type": "RuledDuring",
+        "source": "emperor_tiberius",
+        "target": "epoch_principate",
+        "label": "regierte in",
+        "startYear": 14,
+        "endYear": 37
+      },
+      {
+        "id": "rel3",
+        "type": "RuledDuring",
+        "source": "emperor_caligula",
+        "target": "epoch_principate",
+        "label": "regierte in",
+        "startYear": 37,
+        "endYear": 41
+      },
+      {
+        "id": "rel4",
+        "type": "RuledDuring",
+        "source": "emperor_claudius",
+        "target": "epoch_principate",
+        "label": "regierte in",
+        "startYear": 41,
+        "endYear": 54
+      },
+      {
+        "id": "rel5",
+        "type": "RuledDuring",
+        "source": "emperor_nero",
+        "target": "epoch_principate",
+        "label": "regierte in",
+        "startYear": 54,
+        "endYear": 68
+      },
+      {
+        "id": "rel6",
+        "type": "RuledDuring",
+        "source": "emperor_vespasian",
+        "target": "epoch_principate",
+        "label": "regierte in",
+        "startYear": 69,
+        "endYear": 79
+      },
+      {
+        "id": "rel7",
+        "type": "RuledDuring",
+        "source": "emperor_trajan",
+        "target": "epoch_principate",
+        "label": "regierte in",
+        "startYear": 98,
+        "endYear": 117
+      },
+      {
+        "id": "rel8",
+        "type": "RuledDuring",
+        "source": "emperor_hadrian",
+        "target": "epoch_principate",
+        "label": "regierte in",
+        "startYear": 117,
+        "endYear": 138
+      },
+      {
+        "id": "rel9",
+        "type": "RuledDuring",
+        "source": "emperor_constantine",
+        "target": "epoch_dominate",
+        "label": "regierte in",
+        "startYear": 306,
+        "endYear": 337
+      },
+      {
+        "id": "rel10",
+        "type": "BelongsTo",
+        "source": "emperor_augustus",
+        "target": "dynasty_julio_claudian",
+        "label": "gehörte zu",
+        "startYear": -27
+      },
+      {
+        "id": "rel11",
+        "type": "BelongsTo",
+        "source": "emperor_tiberius",
+        "target": "dynasty_julio_claudian",
+        "label": "gehörte zu",
+        "startYear": 14
+      },
+      {
+        "id": "rel12",
+        "type": "BelongsTo",
+        "source": "emperor_caligula",
+        "target": "dynasty_julio_claudian",
+        "label": "gehörte zu",
+        "startYear": 37
+      },
+      {
+        "id": "rel13",
+        "type": "BelongsTo",
+        "source": "emperor_vespasian",
+        "target": "dynasty_flavian",
+        "label": "gehörte zu",
+        "startYear": 69
+      },
+      {
+        "id": "rel14",
+        "type": "BelongsTo",
+        "source": "emperor_trajan",
+        "target": "dynasty_nerva_antonine",
+        "label": "gehörte zu",
+        "startYear": 98
+      },
+      {
+        "id": "rel15",
+        "type": "Triggered",
+        "source": "event_caesar_crossing",
+        "target": "conflict_civil_war_caesar",
+        "label": "löste aus",
+        "startYear": -49
+      },
+      {
+        "id": "rel16",
+        "type": "Triggered",
+        "source": "event_fire_rome",
+        "target": "emperor_nero",
+        "label": "fiel in Regierungszeit",
+        "startYear": 64
+      },
+      {
+        "id": "rel17",
+        "type": "Succeeded",
+        "source": "emperor_augustus",
+        "target": "emperor_tiberius",
+        "label": "wurde nachgefolgt von",
+        "startYear": 14
+      },
+      {
+        "id": "rel18",
+        "type": "Succeeded",
+        "source": "emperor_tiberius",
+        "target": "emperor_caligula",
+        "label": "wurde nachgefolgt von",
+        "startYear": 37
+      },
+      {
+        "id": "rel19",
+        "type": "Succeeded",
+        "source": "emperor_claudius",
+        "target": "emperor_nero",
+        "label": "wurde nachgefolgt von",
+        "startYear": 54
+      },
+      {
+        "id": "rel20",
+        "type": "Succeeded",
+        "source": "emperor_nero",
+        "target": "emperor_vespasian",
+        "label": "wurde nachgefolgt von",
+        "startYear": 69
+      },
+      {
+        "id": "rel21",
+        "type": "ParticipatedIn",
+        "source": "emperor_trajan",
+        "target": "conflict_battle_teutoburg",
+        "label": "folgte den Folgen von",
+        "startYear": 98
+      },
+      {
+        "id": "rel22",
+        "type": "Triggered",
+        "source": "event_edict_milan",
+        "target": "epoch_dominate",
+        "label": "leitete ein",
+        "startYear": 313
+      },
+      {
+        "id": "rel23",
+        "type": "ParticipatedIn",
+        "source": "emperor_constantine",
+        "target": "event_edict_milan",
+        "label": "erließ",
+        "startYear": 313
+      },
+      {
+        "id": "rel24",
+        "type": "Triggered",
+        "source": "event_punic_wars",
+        "target": "epoch_republic",
+        "label": "prägte",
+        "startYear": -264
+      },
+      {
+        "id": "rel25",
+        "type": "Triggered",
+        "source": "event_gallic_sack",
+        "target": "epoch_republic",
+        "label": "beeinflusste frühe",
+        "startYear": -390
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Epoch": {
+        "size": {
+          "source": "significance",
+          "function": "linear",
+          "range": [
+            1.8,
+            4.2
+          ]
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "dodecahedron"
+          }
+        }
+      },
+      "Emperor": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1.6
+          }
+        },
+        "color": {
+          "source": "region",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Dynasty": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 2.2
+          }
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "box"
+          }
+        }
+      },
+      "Event": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Conflict": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1.4
+          }
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "RuledDuring": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#4A90E2"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.08
+          }
+        }
+      },
+      "BelongsTo": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#27AE60"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.12
+          }
+        }
+      },
+      "Triggered": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#E67E22"
+          }
+        },
+        "thickness": {
+          "source": "intensity",
+          "function": "linear",
+          "range": [
+            0.05,
+            0.25
+          ]
+        }
+      },
+      "Succeeded": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#9B59B6"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.1
+          }
+        }
+      },
+      "ParticipatedIn": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#E74C3C"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.09
+          }
+        }
+      }
+    }
+  }
+}

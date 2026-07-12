@@ -254,7 +254,7 @@ export class LayoutManager {
                 algorithm: layoutId,
                 nodes: nodes.map(node => {
                     const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(node) : {};
-                    const physics = this.getNodePhysics(node);
+                    const physics = this.getNodePhysics(node, nodes.length);
                     
                     // Temporale Exklusion: Wenn currentTimestamp aktiv ist und Node nicht sichtbar ist, fixiere ihn (sodass er die Physik nicht stört)
                     let isTemporalVisible = true;
@@ -450,7 +450,7 @@ export class LayoutManager {
         });
     }
 
-    private getNodePhysics(node: EntityData): { attraction: number, repulsion: number, inertia: number } {
+    private getNodePhysics(node: EntityData, totalNodes: number = 0): { attraction: number, repulsion: number, inertia: number } {
         // 1. Check direct properties
         let attraction = node.attraction !== undefined ? Number(node.attraction) : undefined;
         let repulsion = node.repulsion !== undefined ? Number(node.repulsion) : undefined;
@@ -502,9 +502,11 @@ export class LayoutManager {
             }
         }
 
+        const baseRepulsion = Math.max(50, totalNodes * 0.8);
+
         return {
             attraction: attraction !== undefined && !isNaN(attraction) ? attraction : 0,
-            repulsion: repulsion !== undefined && !isNaN(repulsion) ? repulsion : 50,
+            repulsion: repulsion !== undefined && !isNaN(repulsion) ? repulsion : baseRepulsion,
             inertia: inertia !== undefined && !isNaN(inertia) ? inertia : 1.0
         };
     }

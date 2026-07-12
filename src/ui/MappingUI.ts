@@ -1036,8 +1036,8 @@ export class MappingUI {
                                 const categories: Record<string, number> = {};
                                 const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(baseProp);
                                 const defaultRange = isPosition ? [-50, 50] : [0.1, 3.0];
-                                const rangeMin = mapping.range ? mapping.range[0] : defaultRange[0];
-                                const rangeMax = mapping.range ? mapping.range[1] : defaultRange[1];
+                                const rangeMin = Number(mapping.range ? mapping.range[0] : defaultRange[0]);
+                                const rangeMax = Number(mapping.range ? mapping.range[1] : defaultRange[1]);
                                 
                                 const count = uniqueValues.length;
                                 uniqueValues.forEach((val, idx) => {
@@ -2508,8 +2508,8 @@ export class MappingUI {
         const [absMin, absMax] = this.getAttributeDataBounds(mapping.source || mapping.field || '');
         let domMin = mapping.domain ? mapping.domain[0] : absMin;
         let domMax = mapping.domain ? mapping.domain[1] : absMax;
-        let rngMin = mapping.range ? mapping.range[0] : 0.1;
-        let rngMax = mapping.range ? mapping.range[1] : 3.0;
+        let rngMin = Number(mapping.range ? mapping.range[0] : 0.1);
+        let rngMax = Number(mapping.range ? mapping.range[1] : 3.0);
         
         const visualMin = 0.0;
         const visualMax = 5.0;

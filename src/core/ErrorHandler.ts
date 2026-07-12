@@ -19,7 +19,9 @@ export type ErrorCategory =
     | 'worker'
     | 'initialization'
     | 'interaction'
-    | 'general';
+    | 'general'
+    | 'llm_pipeline'
+    | 'network';
 
 /** Schweregrad des Fehlers */
 export type ErrorSeverity = 'fatal' | 'error' | 'warning' | 'info';
@@ -171,6 +173,10 @@ export class ErrorHandler {
                 return 'Die Anwendung konnte nicht vollstaendig initialisiert werden.';
             case 'interaction':
                 return 'Bei der Interaktion ist ein Fehler aufgetreten.';
+            case 'llm_pipeline':
+                return `Fehler bei der KI-Generierung: ${technicalMessage}`;
+            case 'network':
+                return `Netzwerkfehler: ${technicalMessage}`;
             default:
                 return `Ein Fehler ist aufgetreten: ${technicalMessage}`;
         }
@@ -186,8 +192,10 @@ export class ErrorHandler {
             initialization: 'Initialisierungsfehler',
             interaction: 'Interaktionsfehler',
             general: 'Fehler',
+            llm_pipeline: 'KI-Pipeline Fehler',
+            network: 'Netzwerk-Fehler',
         };
-        return titles[category];
+        return titles[category] || 'Fehler';
     }
 
     private severityToNotificationType(severity: ErrorSeverity): NotificationType {

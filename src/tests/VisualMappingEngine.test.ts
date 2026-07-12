@@ -169,7 +169,7 @@ describe('VisualMappingEngine', () => {
                         size: {
                             source: 'value',
                             function: 'linear',
-                            range: [10, 20],
+                            range: [1.0, 2.0],
                         },
                     },
                 },
@@ -181,9 +181,9 @@ describe('VisualMappingEngine', () => {
             const entity05: EntityData = { id: '2', type: 'test', value: 0.5 };
             const entity1: EntityData = { id: '3', type: 'test', value: 1.0 };
 
-            expect(engine.applyToEntity(entity0).size).toBe(10);
-            expect(engine.applyToEntity(entity05).size).toBe(15);
-            expect(engine.applyToEntity(entity1).size).toBe(20);
+            expect(engine.applyToEntity(entity0).size).toBe(1.0);
+            expect(engine.applyToEntity(entity05).size).toBe(1.5);
+            expect(engine.applyToEntity(entity1).size).toBe(2.0);
         });
 
         it('sollte exponential mapping korrekt berechnen', () => {

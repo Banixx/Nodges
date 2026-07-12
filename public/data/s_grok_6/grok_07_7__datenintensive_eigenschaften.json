@@ -1,0 +1,544 @@
+{
+  "_testMeta": {
+    "iteration": "7. Datenintensive Eigenschaften",
+    "prompt": "Eine Datenbank mit 5 Büchern. Jedes Buch hat mindestens 5 verschiedene Attribute in den Properties (Preis, Seiten, Autor, Genre, Bewertung).",
+    "model": "x-ai/grok-4.20",
+    "durationMs": 14941,
+    "durationSec": 14.94,
+    "entityCount": 15,
+    "relationshipCount": 22,
+    "timestamp": "2026-07-11T17:32:10.945Z"
+  },
+  "system": "Buchdatenbank",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Interaktive 3D-Netzwerkvisualisierung einer Buchdatenbank mit Büchern, Autoren und Genres",
+    "competencyQuestions": [
+      "Welche Bücher hat ein bestimmter Autor geschrieben und wie sind sie bewertet?",
+      "Welche Genres existieren und wie viele Bücher gehören zu jedem Genre?",
+      "Welche Bücher haben eine Bewertung über 4.0 und wie hoch ist ihr Preis?",
+      "Welche Autoren haben Bücher in mehreren Genres verfasst und was ist die durchschnittliche Seitenzahl?",
+      "Wie hängen Genres, Autoren und Bücher über Preis und Bewertung zusammen?"
+    ],
+    "apiResponse": {
+      "id": "gen-1783791108-slAF0HqiTE2WYAtcNMUC",
+      "created": 1783791108,
+      "model": "x-ai/grok-4.20-20260309",
+      "usage": {
+        "prompt_tokens": 1616,
+        "completion_tokens": 2610,
+        "total_tokens": 4226,
+        "cost": 0.006865,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 1600,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.006865,
+          "upstream_inference_prompt_cost": 0.00034,
+          "upstream_inference_completions_cost": 0.006525
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Book": {
+        "properties": {
+          "price": {
+            "type": "continuous",
+            "range": [
+              5,
+              35
+            ]
+          },
+          "pages": {
+            "type": "continuous",
+            "range": [
+              150,
+              650
+            ]
+          },
+          "rating": {
+            "type": "continuous",
+            "range": [
+              2.8,
+              4.9
+            ]
+          },
+          "publicationYear": {
+            "type": "continuous",
+            "range": [
+              1995,
+              2024
+            ]
+          }
+        }
+      },
+      "Author": {
+        "properties": {
+          "age": {
+            "type": "continuous",
+            "range": [
+              32,
+              68
+            ]
+          },
+          "booksWritten": {
+            "type": "continuous",
+            "range": [
+              1,
+              12
+            ]
+          }
+        }
+      },
+      "Genre": {
+        "properties": {
+          "popularity": {
+            "type": "continuous",
+            "range": [
+              40,
+              95
+            ]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "WRITTEN_BY": {
+        "properties": {
+          "collaboration": {
+            "type": "categorical",
+            "categories": [
+              "solo",
+              "co-authored"
+            ]
+          }
+        }
+      },
+      "BELONGS_TO": {
+        "properties": {
+          "relevance": {
+            "type": "continuous",
+            "range": [
+              0.6,
+              1
+            ]
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "book1",
+        "type": "Book",
+        "label": "Dune",
+        "price": 14.99,
+        "pages": 412,
+        "rating": 4.7,
+        "publicationYear": 1965
+      },
+      {
+        "id": "book2",
+        "type": "Book",
+        "label": "Neuromancer",
+        "price": 11.5,
+        "pages": 271,
+        "rating": 4.3,
+        "publicationYear": 1984
+      },
+      {
+        "id": "book3",
+        "type": "Book",
+        "label": "The Left Hand of Darkness",
+        "price": 9.99,
+        "pages": 304,
+        "rating": 4.5,
+        "publicationYear": 1969
+      },
+      {
+        "id": "book4",
+        "type": "Book",
+        "label": "Foundation",
+        "price": 12.75,
+        "pages": 255,
+        "rating": 4.6,
+        "publicationYear": 1951
+      },
+      {
+        "id": "book5",
+        "type": "Book",
+        "label": "Hyperion",
+        "price": 13.5,
+        "pages": 482,
+        "rating": 4.4,
+        "publicationYear": 1989
+      },
+      {
+        "id": "author1",
+        "type": "Author",
+        "label": "Frank Herbert",
+        "age": 65,
+        "booksWritten": 8
+      },
+      {
+        "id": "author2",
+        "type": "Author",
+        "label": "William Gibson",
+        "age": 76,
+        "booksWritten": 12
+      },
+      {
+        "id": "author3",
+        "type": "Author",
+        "label": "Ursula K. Le Guin",
+        "age": 88,
+        "booksWritten": 22
+      },
+      {
+        "id": "author4",
+        "type": "Author",
+        "label": "Isaac Asimov",
+        "age": 72,
+        "booksWritten": 9
+      },
+      {
+        "id": "author5",
+        "type": "Author",
+        "label": "Dan Simmons",
+        "age": 55,
+        "booksWritten": 6
+      },
+      {
+        "id": "genre1",
+        "type": "Genre",
+        "label": "Science Fiction",
+        "popularity": 92
+      },
+      {
+        "id": "genre2",
+        "type": "Genre",
+        "label": "Cyberpunk",
+        "popularity": 68
+      },
+      {
+        "id": "genre3",
+        "type": "Genre",
+        "label": "Space Opera",
+        "popularity": 81
+      },
+      {
+        "id": "genre4",
+        "type": "Genre",
+        "label": "Speculative Fiction",
+        "popularity": 74
+      },
+      {
+        "id": "genre5",
+        "type": "Genre",
+        "label": "Dystopian",
+        "popularity": 85
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel1",
+        "type": "WRITTEN_BY",
+        "source": "book1",
+        "target": "author1",
+        "label": "written by",
+        "collaboration": "solo"
+      },
+      {
+        "id": "rel2",
+        "type": "WRITTEN_BY",
+        "source": "book2",
+        "target": "author2",
+        "label": "written by",
+        "collaboration": "solo"
+      },
+      {
+        "id": "rel3",
+        "type": "WRITTEN_BY",
+        "source": "book3",
+        "target": "author3",
+        "label": "written by",
+        "collaboration": "solo"
+      },
+      {
+        "id": "rel4",
+        "type": "WRITTEN_BY",
+        "source": "book4",
+        "target": "author4",
+        "label": "written by",
+        "collaboration": "solo"
+      },
+      {
+        "id": "rel5",
+        "type": "WRITTEN_BY",
+        "source": "book5",
+        "target": "author5",
+        "label": "written by",
+        "collaboration": "solo"
+      },
+      {
+        "id": "rel6",
+        "type": "BELONGS_TO",
+        "source": "book1",
+        "target": "genre1",
+        "label": "belongs to",
+        "relevance": 0.95
+      },
+      {
+        "id": "rel7",
+        "type": "BELONGS_TO",
+        "source": "book1",
+        "target": "genre3",
+        "label": "belongs to",
+        "relevance": 0.85
+      },
+      {
+        "id": "rel8",
+        "type": "BELONGS_TO",
+        "source": "book2",
+        "target": "genre2",
+        "label": "belongs to",
+        "relevance": 0.98
+      },
+      {
+        "id": "rel9",
+        "type": "BELONGS_TO",
+        "source": "book2",
+        "target": "genre1",
+        "label": "belongs to",
+        "relevance": 0.75
+      },
+      {
+        "id": "rel10",
+        "type": "BELONGS_TO",
+        "source": "book3",
+        "target": "genre4",
+        "label": "belongs to",
+        "relevance": 0.92
+      },
+      {
+        "id": "rel11",
+        "type": "BELONGS_TO",
+        "source": "book3",
+        "target": "genre1",
+        "label": "belongs to",
+        "relevance": 0.8
+      },
+      {
+        "id": "rel12",
+        "type": "BELONGS_TO",
+        "source": "book4",
+        "target": "genre1",
+        "label": "belongs to",
+        "relevance": 0.9
+      },
+      {
+        "id": "rel13",
+        "type": "BELONGS_TO",
+        "source": "book4",
+        "target": "genre3",
+        "label": "belongs to",
+        "relevance": 0.88
+      },
+      {
+        "id": "rel14",
+        "type": "BELONGS_TO",
+        "source": "book5",
+        "target": "genre1",
+        "label": "belongs to",
+        "relevance": 0.93
+      },
+      {
+        "id": "rel15",
+        "type": "BELONGS_TO",
+        "source": "book5",
+        "target": "genre5",
+        "label": "belongs to",
+        "relevance": 0.7
+      },
+      {
+        "id": "rel16",
+        "type": "BELONGS_TO",
+        "source": "author1",
+        "target": "genre1",
+        "label": "associated with",
+        "relevance": 0.85
+      },
+      {
+        "id": "rel17",
+        "type": "BELONGS_TO",
+        "source": "author2",
+        "target": "genre2",
+        "label": "associated with",
+        "relevance": 0.97
+      },
+      {
+        "id": "rel18",
+        "type": "BELONGS_TO",
+        "source": "author3",
+        "target": "genre4",
+        "label": "associated with",
+        "relevance": 0.89
+      },
+      {
+        "id": "rel19",
+        "type": "BELONGS_TO",
+        "source": "author4",
+        "target": "genre3",
+        "label": "associated with",
+        "relevance": 0.82
+      },
+      {
+        "id": "rel20",
+        "type": "BELONGS_TO",
+        "source": "author5",
+        "target": "genre5",
+        "label": "associated with",
+        "relevance": 0.91
+      },
+      {
+        "id": "rel21",
+        "type": "WRITTEN_BY",
+        "source": "book3",
+        "target": "author3",
+        "label": "written by",
+        "collaboration": "solo"
+      },
+      {
+        "id": "rel22",
+        "type": "WRITTEN_BY",
+        "source": "book4",
+        "target": "author4",
+        "label": "written by",
+        "collaboration": "solo"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Book": {
+        "size": {
+          "source": "pages",
+          "function": "linear",
+          "range": [
+            0.8,
+            2.8
+          ]
+        },
+        "color": {
+          "source": "rating",
+          "function": "continuous",
+          "range": [
+            "#a0c4ff",
+            "#f72585"
+          ]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "dodecahedron"
+          }
+        }
+      },
+      "Author": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1.4
+          }
+        },
+        "color": {
+          "source": "booksWritten",
+          "function": "continuous",
+          "range": [
+            "#4cc9f0",
+            "#4361ee"
+          ]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "box"
+          }
+        }
+      },
+      "Genre": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1.1
+          }
+        },
+        "color": {
+          "source": "popularity",
+          "function": "continuous",
+          "range": [
+            "#9d4edd",
+            "#7209b7"
+          ]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "WRITTEN_BY": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#4ea8de"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.12
+          }
+        }
+      },
+      "BELONGS_TO": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#f4a261"
+          }
+        },
+        "thickness": {
+          "source": "relevance",
+          "function": "linear",
+          "range": [
+            0.05,
+            0.45
+          ]
+        }
+      }
+    }
+  }
+}

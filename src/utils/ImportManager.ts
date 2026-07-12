@@ -625,8 +625,15 @@ export class ImportManager {
         }
 
         // Extract nodes and edges supporting multiple schema versions
-        const rawNodes = data.nodes || (data.dataModel && data.dataModel.entities) || (data.data && data.data.entities) || data.entities || [];
-        const rawEdges = data.edges || (data.dataModel && data.dataModel.relationships) || (data.data && data.data.relationships) || data.relationships || [];
+        let rawNodes = [];
+        if (data.nodes && Array.isArray(data.nodes)) rawNodes = data.nodes;
+        else if (data.data && Array.isArray(data.data.entities)) rawNodes = data.data.entities;
+        else if (data.entities && Array.isArray(data.entities)) rawNodes = data.entities;
+        
+        let rawEdges = [];
+        if (data.edges && Array.isArray(data.edges)) rawEdges = data.edges;
+        else if (data.data && Array.isArray(data.data.relationships)) rawEdges = data.data.relationships;
+        else if (data.relationships && Array.isArray(data.relationships)) rawEdges = data.relationships;
 
         // Ensure required structure
         const normalized: ImportedData = {

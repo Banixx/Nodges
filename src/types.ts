@@ -41,7 +41,11 @@ export const VisualMappingSchema = z.object({
     field: z.string().optional(),
     function: MappingFunctionSchema,
     domain: z.tuple([z.number(), z.number()]).optional(),
-    range: z.tuple([z.number(), z.number()]).optional(),
+    range: z.union([
+        z.tuple([z.number(), z.number()]),
+        z.array(z.string()),
+        z.array(z.number())
+    ]).optional(),
     palette: z.string().optional(),
     params: z.record(z.any()).optional(),
 });

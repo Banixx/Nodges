@@ -18,26 +18,33 @@ export class LLMService {
     public static readonly PROVIDER_MODELS: Record<LLMProvider, LLMModel[]> = {
         openrouter: [
             { id: 'meta-llama/llama-3.3-70b-instruct:free', name: 'Meta: Llama 3.3 70B Instruct (free)' },
-            { id: 'qwen/qwen3-coder:free', name: 'Qwen: Qwen3 Coder (free)' },
-            { id: 'openai/gpt-oss-120b:free', name: 'OpenAI: gpt-oss-120b (free)' },
+            { id: 'qwen/qwen3-coder:free', name: 'Qwen: Qwen3 Coder 480B A35B (free)' },
             { id: 'google/gemma-4-31b-it:free', name: 'Google: Gemma 4 31B (free)' },
             { id: 'nousresearch/hermes-3-llama-3.1-405b:free', name: 'Nous: Hermes 3 405B Instruct (free)' },
+            { id: 'qwen/qwen3-next-80b-a3b-instruct:free', name: 'Qwen: Qwen3 Next 80B A3B Instruct (free)' },
             { id: 'deepseek/deepseek-v4-flash', name: 'DeepSeek: DeepSeek V4 Flash' },
-            { id: 'mistralai/mistral-small-3.2-24b-instruct', name: 'Mistral: Mistral Small 3.2 24B' },
-            { id: 'meta-llama/llama-3.3-70b-instruct', name: 'Meta: Llama 3.3 70B Instruct' },
+            { id: 'qwen/qwen-2.5-72b-instruct', name: 'Qwen2.5 72B Instruct' },
+            { id: 'nvidia/llama-3.3-nemotron-super-49b-v1.5', name: 'NVIDIA: Llama 3.3 Nemotron Super 49B V1.5' },
+            { id: 'qwen/qwen3-vl-32b-instruct', name: 'Qwen: Qwen3 VL 32B Instruct' },
+            { id: 'tencent/hunyuan-a13b-instruct', name: 'Tencent: Hunyuan A13B Instruct' },
             { id: 'openai/gpt-4o-mini', name: 'OpenAI: GPT-4o-mini' },
+            { id: 'qwen/qwen-plus', name: 'Qwen: Qwen-Plus' },
             { id: 'deepseek/deepseek-chat', name: 'DeepSeek: DeepSeek V3' },
             { id: 'deepseek/deepseek-v4-pro', name: 'DeepSeek: DeepSeek V4 Pro' },
+            { id: 'qwen/qwen3.5-35b-a3b', name: 'Qwen: Qwen3.5-35B-A3B' },
             { id: 'qwen/qwen3.7-plus', name: 'Qwen: Qwen3.7 Plus' },
+            { id: 'aion-labs/aion-3.0-mini', name: 'AionLabs: Aion-3.0-Mini' },
             { id: 'mistralai/mistral-large-2512', name: 'Mistral: Mistral Large 3 2512' },
             { id: 'google/gemini-3.1-flash-lite', name: 'Google: Gemini 3.1 Flash Lite' },
             { id: 'openai/gpt-4.1-mini', name: 'OpenAI: GPT-4.1 Mini' },
-            { id: 'x-ai/grok-4.20', name: 'xAI: Grok 4.20' },
+            { id: 'morph/morph-v3-large', name: 'Morph: Morph V3 Large' },
+            { id: 'moonshotai/kimi-k2.5', name: 'MoonshotAI: Kimi K2.5' },
             { id: 'google/gemini-2.5-flash', name: 'Google: Gemini 2.5 Flash' },
+            { id: 'x-ai/grok-4.20', name: 'xAI: Grok 4.20' },
             { id: 'deepseek/deepseek-r1', name: 'DeepSeek: R1' },
+            { id: 'qwen/qwen3-coder-plus', name: 'Qwen: Qwen3 Coder Plus' },
+            { id: 'qwen/qwen3.7-max', name: 'Qwen: Qwen3.7 Max' },
             { id: 'qwen/qwen3-max', name: 'Qwen: Qwen3 Max' },
-            { id: 'openai/o3-mini', name: 'OpenAI: o3 Mini' },
-            { id: 'openai/o4-mini', name: 'OpenAI: o4 Mini' },
             { id: 'anthropic/claude-haiku-4.5', name: 'Anthropic: Claude Haiku 4.5' }
         ],
         openai: [
@@ -150,6 +157,22 @@ export class LLMService {
     public static async fetchOpenRouterModels(): Promise<LLMModel[]> {
         // Testweise auf 5 Mittelklasse-Modelle eingeschränkt
         return this.PROVIDER_MODELS.openrouter;
+    }
+
+    /**
+     * Saves a debug file to the local filesystem via the Vite dev server plugin.
+     */
+    private static async _saveDebugFile(filename: string, content: string | object): Promise<void> {
+        try {
+            const fileContent = typeof content === 'string' ? content : JSON.stringify(content, null, 2);
+            await fetch('/api/save_graph', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename, content: fileContent })
+            });
+        } catch (e) {
+            console.warn('[LLMService] Failed to save debug file:', filename, e);
+        }
     }
 
     /**
@@ -479,7 +502,9 @@ export class LLMService {
         if (onProgress) onProgress('Schritt 1/3: Ontologie (Schema) wird entworfen...');
         
         const step1UserPrompt = `Erstelle ein dataModel (Ontologie) basierend auf der folgenden Anfrage:\n\n${prompt}`;
+        await this._saveDebugFile(`debug_build5_step1_prompt_${Date.now()}.md`, `SYSTEM:\n${schemaSystemPrompt}\n\nUSER:\n${step1UserPrompt}`);
         const step1Data = await this._executeLLMCall(schemaSystemPrompt, step1UserPrompt, provider, model);
+        await this._saveDebugFile(`debug_build5_step1_result_${Date.now()}.json`, step1Data);
         
         // Step 2: Data
         if (onProgress) onProgress('Schritt 2/3: Datenpunkte werden generiert...');
@@ -495,8 +520,9 @@ export class LLMService {
         }
 
         const step2UserPrompt = `Nutze EXAKT das folgende Schema (Ontologie), um die Daten zu generieren:\n\n${JSON.stringify(step1Data, null, 2)}\n\nBefuelle nun die data.entities und data.relationships Arrays basierend auf der Originalanfrage:\n${prompt}`;
-        
+        await this._saveDebugFile(`debug_build5_step2_prompt_${Date.now()}.md`, `SYSTEM:\n${dataSystemPrompt}\n\nUSER:\n${step2UserPrompt}`);
         const step2Data = await this._executeLLMCall(dataSystemPrompt, step2UserPrompt, provider, model);
+        await this._saveDebugFile(`debug_build5_step2_result_${Date.now()}.json`, step2Data);
         
         // Merge Step 1 and Step 2
         const mergedData = { ...step1Data, ...step2Data };
@@ -515,8 +541,9 @@ export class LLMService {
         }
 
         const step3UserPrompt = `Erstelle die visuellen Mappings fuer diesen Datensatz:\n\n${JSON.stringify(mergedData, null, 2)}`;
-        
+        await this._saveDebugFile(`debug_build5_step3_prompt_${Date.now()}.md`, `SYSTEM:\n${visualSystemPrompt}\n\nUSER:\n${step3UserPrompt}`);
         const step3Data = await this._executeLLMCall(visualSystemPrompt, step3UserPrompt, provider, model);
+        await this._saveDebugFile(`debug_build5_step3_result_${Date.now()}.json`, step3Data);
         
         // Final Merge
         return { ...mergedData, ...step3Data };
@@ -617,7 +644,9 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         if (onProgress) onProgress('Schritt 1/2: Ontologie (Schema) wird entworfen...');
         
         // Call 1: Generate Ontology
+        await this._saveDebugFile(`debug_build4_step1_prompt_${Date.now()}.md`, `SYSTEM:\n${ontologySystemPrompt}\n\nUSER:\n${prompt}`);
         const ontologyData = await this._executeLLMCall(ontologySystemPrompt, prompt, provider, model);
+        await this._saveDebugFile(`debug_build4_step1_result_${Date.now()}.json`, ontologyData);
         
         if (onProgress) onProgress('Schritt 2/2: Datenpunkte werden basierend auf Schema generiert...');
         
@@ -643,7 +672,10 @@ USER PROMPT (Thema): ${prompt}
 `;
         
         // Call 2: Generate Data
-        return this._executeLLMCall(dataSystemPrompt, step2UserPrompt, provider, model);
+        await this._saveDebugFile(`debug_build4_step2_prompt_${Date.now()}.md`, `SYSTEM:\n${dataSystemPrompt}\n\nUSER:\n${step2UserPrompt}`);
+        const step2Data = await this._executeLLMCall(dataSystemPrompt, step2UserPrompt, provider, model);
+        await this._saveDebugFile(`debug_build4_step2_result_${Date.now()}.json`, step2Data);
+        return step2Data;
     }
 
     public static async refineGraphData(

@@ -25,8 +25,10 @@ KANAL-REGELN (STRENG):
 - DIVERSITAET: `color` und `size` bei Knoten muessen IMMER VERSCHIEDENE Properties zeigen! Wenn `size` die Masse zeigt, darf `color` NICHT auch die Masse zeigen. Nutze fuer `color` bevorzugt ein KATEGORISCHES Property (z.B. "type" oder "region"), und fuer `size` ein NUMERISCHES/KONTINUIERLICHES Property.
 - GLOBALE EINDEUTIGKEIT: Ein visueller Kanal (z.B. `size`) darf im GESAMTEN Netzwerk nur durch EIN EINZIGES Property gesteuert werden!
 - SPARSAMKEIT: Nur EINER der Knotentypen (der mit dem breitesten Wertebereich) bekommt ein dynamisches `size`-Mapping. Alle anderen Typen erhalten fuer `size` ein `constant`-Mapping.
+- LIMITIERUNG: Bei dynamischen Size-Mappings darf die maximale Groesse maximal das 3-fache der minimalen Groesse betragen (z.B. min: 1.0, max: 3.0). Bei Kanten-Dicke (`thickness`) halte dich strikt an Werte zwischen 0.03 und 0.25.
+- RAEUMLICHKEIT & ZEITLICHKEIT: Gibt es in der Ontologie raeumliche Konzepte (z.B. geografische Koordinaten), mappe diese auf die `position.x` und `position.z` Eigenschaften. Gibt es zeitliche Entwicklungen (z.B. Epochen, Zeitstempel, Lebensdauer), ziehe diese fuer die `animation` Eigenschaften in Betracht.
 - Beispiel: Wenn `size` bei Typ "Planet" von "masse_kg" gesteuert wird, dann muessen Typ "Mond" und "Stern" `size: { source: "constant", function: "constant", params: { size: 1.0 } }` verwenden.
 - KNOTEN: Nutze `geometry` (konstant), um Typen unterscheidbar zu machen (z.B. sphere, box, dodecahedron).
-- KANTEN: Setze `color` konstant pro Kantentyp. Falls es ein durchgehendes numerisches Property (z.B. "Intensitaet") gibt, mappe `thickness` darauf.
+- KANTEN: Setze `color` konstant pro Kantentyp. Falls es ein durchgehendes numerisches Property (z.B. "Intensitaet") gibt, mappe `thickness` darauf (limitiert auf 0.03 - 0.25).
 
 GIB AUSSCHLIESSLICH DAS GEFORDERTE JSON-OBJEKT ZURUECK, DAS EXAKT GEGEN DAS SCHEMA VALIDIERT. Keine Kommentare, keine Erklaerungen.

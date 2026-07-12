@@ -471,12 +471,42 @@ export class CreatePanel {
 
             models.forEach(model => {
                 const opt = document.createElement('div');
-                opt.textContent = model.name;
+                opt.style.display = 'flex';
+                opt.style.justifyContent = 'space-between';
+                opt.style.alignItems = 'center';
                 opt.style.padding = '6px 8px';
                 opt.style.cursor = 'pointer';
                 opt.style.fontSize = '13px';
                 opt.style.color = model.id === this.selectedModelId ? '#fff' : 'var(--text-color)';
                 opt.style.backgroundColor = model.id === this.selectedModelId ? 'rgba(52, 152, 219, 0.3)' : 'transparent';
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = model.name;
+                opt.appendChild(nameSpan);
+
+                const provider = this.providerSelect.value as LLMProvider;
+                if (provider === 'openrouter') {
+                    const link = document.createElement('a');
+                    link.href = `https://openrouter.ai/${model.id}`;
+                    link.target = '_blank';
+                    link.textContent = '↗';
+                    link.title = 'Auf OpenRouter ansehen';
+                    link.style.textDecoration = 'none';
+                    link.style.fontSize = '14px';
+                    link.style.color = 'var(--text-muted)';
+                    link.style.padding = '0 4px';
+                    
+                    link.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                    });
+                    link.addEventListener('mouseenter', () => {
+                        link.style.color = '#3498db';
+                    });
+                    link.addEventListener('mouseleave', () => {
+                        link.style.color = 'var(--text-muted)';
+                    });
+                    opt.appendChild(link);
+                }
                 
                 opt.addEventListener('mouseenter', () => {
                     opt.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
@@ -489,7 +519,6 @@ export class CreatePanel {
                     this.selectedModelId = model.id;
                     this.modelInput.value = model.name;
                     this.modelDropdown.style.display = 'none';
-                    const provider = this.providerSelect.value as LLMProvider;
                     LLMService.setActiveModel(provider, model.id);
                 });
                 this.modelDropdown.appendChild(opt);

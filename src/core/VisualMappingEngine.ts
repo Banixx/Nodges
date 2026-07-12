@@ -108,6 +108,9 @@ export class VisualMappingEngine {
         // Apply size mapping
         if (preset.size) {
             visual.size = this.applyMapping(preset.size, entity, 'size');
+            if (typeof visual.size === 'number') {
+                visual.size = Math.max(0.3, Math.min(3.0, visual.size));
+            }
         }
 
         // Apply color mapping
@@ -159,6 +162,9 @@ export class VisualMappingEngine {
         // Apply thickness mapping
         if (preset.thickness) {
             visual.thickness = this.applyMapping(preset.thickness, relationship, 'thickness');
+            if (typeof visual.thickness === 'number') {
+                visual.thickness = Math.max(0.01, Math.min(0.3, visual.thickness));
+            }
         }
 
         // Apply color mapping
@@ -241,7 +247,7 @@ export class VisualMappingEngine {
 
         if (value === undefined || value === null) {
             // Return middle of range or default
-            return mapping.range ? (mapping.range[0] + mapping.range[1]) / 2 : 1;
+            return mapping.range ? (Number(mapping.range[0]) + Number(mapping.range[1])) / 2 : 1;
         }
 
         // Pass through raw position arrays/objects
@@ -348,7 +354,8 @@ export class VisualMappingEngine {
      */
     private linearMapping(value: number, mapping: VisualMapping): number {
         if (!mapping.range) return value;
-        const [outMin, outMax] = mapping.range;
+        const outMin = Number(mapping.range[0]);
+        const outMax = Number(mapping.range[1]);
         // Assume input is normalized 0-1 unless we know the input range
         return outMin + value * (outMax - outMin);
     }
@@ -358,7 +365,8 @@ export class VisualMappingEngine {
      */
     private exponentialMapping(value: number, mapping: VisualMapping): number {
         if (!mapping.range) return value;
-        const [outMin, outMax] = mapping.range;
+        const outMin = Number(mapping.range[0]);
+        const outMax = Number(mapping.range[1]);
         const base = mapping.params?.base || 2;
 
         // Normalize and apply exponential
@@ -371,7 +379,8 @@ export class VisualMappingEngine {
      */
     private logarithmicMapping(value: number, mapping: VisualMapping): number {
         if (!mapping.range) return value;
-        const [outMin, outMax] = mapping.range;
+        const outMin = Number(mapping.range[0]);
+        const outMax = Number(mapping.range[1]);
 
         // If domain was provided, value is already log-normalized [0-1] in applyMapping
         if (mapping.domain) {

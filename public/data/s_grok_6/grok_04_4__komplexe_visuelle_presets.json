@@ -1,0 +1,602 @@
+{
+  "_testMeta": {
+    "iteration": "4. Komplexe visuelle Presets",
+    "prompt": "Ein Computernetzwerk. Nutze verschiedene visuelle Presets (Geometrie, Farbe, Größe), um Router, Server und Clients zu unterscheiden.",
+    "model": "x-ai/grok-4.20",
+    "durationMs": 17754,
+    "durationSec": 17.75,
+    "entityCount": 16,
+    "relationshipCount": 22,
+    "timestamp": "2026-07-11T17:30:44.562Z"
+  },
+  "system": "Computernetzwerke",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Interaktives 3D/4D-Netzwerk-Modell eines Computernetzwerks mit Routern, Servern und Clients",
+    "competencyQuestions": [
+      "Welche Geräte sind im Netzwerk vorhanden und welche Typen haben sie?",
+      "Wie sind die Geräte miteinander verbunden und welche Verbindungsart besteht?",
+      "Welche Bandbreite und Latenz haben die Verbindungen zwischen den Komponenten?",
+      "Welche Server haben kritische Auslastung und wie ist die Client-Verteilung?",
+      "Welche Standorte und Regionen sind im Netzwerk repräsentiert?"
+    ],
+    "apiResponse": {
+      "id": "gen-1783791019-ynMm5lDwn8Jz27WA0vwK",
+      "created": 1783791019,
+      "model": "x-ai/grok-4.20-20260309",
+      "usage": {
+        "prompt_tokens": 1613,
+        "completion_tokens": 3403,
+        "total_tokens": 5016,
+        "cost": 0.00884375,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 1600,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00884375,
+          "upstream_inference_prompt_cost": 0.00033625,
+          "upstream_inference_completions_cost": 0.0085075
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Router": {
+        "properties": {
+          "region": {
+            "type": "categorical",
+            "values": [
+              "EU",
+              "NA",
+              "AS"
+            ]
+          },
+          "throughput_mbps": {
+            "type": "continuous",
+            "range": [
+              100,
+              10000
+            ]
+          },
+          "uptime_pct": {
+            "type": "continuous",
+            "range": [
+              70,
+              100
+            ]
+          }
+        }
+      },
+      "Server": {
+        "properties": {
+          "role": {
+            "type": "categorical",
+            "values": [
+              "Web",
+              "Database",
+              "Application",
+              "Storage"
+            ]
+          },
+          "load_pct": {
+            "type": "continuous",
+            "range": [
+              5,
+              95
+            ]
+          },
+          "cpu_cores": {
+            "type": "continuous",
+            "range": [
+              4,
+              64
+            ]
+          }
+        }
+      },
+      "Client": {
+        "properties": {
+          "device_type": {
+            "type": "categorical",
+            "values": [
+              "Workstation",
+              "Laptop",
+              "Mobile",
+              "IoT"
+            ]
+          },
+          "active_connections": {
+            "type": "continuous",
+            "range": [
+              1,
+              25
+            ]
+          },
+          "last_seen": {
+            "type": "continuous",
+            "range": [
+              0,
+              48
+            ]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "Connection": {
+        "properties": {
+          "bandwidth_mbps": {
+            "type": "continuous",
+            "range": [
+              10,
+              1000
+            ]
+          },
+          "latency_ms": {
+            "type": "continuous",
+            "range": [
+              1,
+              120
+            ]
+          },
+          "protocol": {
+            "type": "categorical",
+            "values": [
+              "TCP",
+              "UDP",
+              "HTTP",
+              "FTP"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "r1",
+        "type": "Router",
+        "label": "Core-Router-EU",
+        "region": "EU",
+        "throughput_mbps": 8500,
+        "uptime_pct": 99.8
+      },
+      {
+        "id": "r2",
+        "type": "Router",
+        "label": "Edge-Router-NA",
+        "region": "NA",
+        "throughput_mbps": 4200,
+        "uptime_pct": 98.2
+      },
+      {
+        "id": "r3",
+        "type": "Router",
+        "label": "Access-Router-AS",
+        "region": "AS",
+        "throughput_mbps": 1800,
+        "uptime_pct": 95.4
+      },
+      {
+        "id": "s1",
+        "type": "Server",
+        "label": "Web-Server-01",
+        "role": "Web",
+        "load_pct": 42,
+        "cpu_cores": 16
+      },
+      {
+        "id": "s2",
+        "type": "Server",
+        "label": "Database-Cluster",
+        "role": "Database",
+        "load_pct": 87,
+        "cpu_cores": 32
+      },
+      {
+        "id": "s3",
+        "type": "Server",
+        "label": "App-Server-Prod",
+        "role": "Application",
+        "load_pct": 65,
+        "cpu_cores": 24
+      },
+      {
+        "id": "s4",
+        "type": "Server",
+        "label": "Storage-Array",
+        "role": "Storage",
+        "load_pct": 31,
+        "cpu_cores": 8
+      },
+      {
+        "id": "c1",
+        "type": "Client",
+        "label": "WS-Engineering",
+        "device_type": "Workstation",
+        "active_connections": 12,
+        "last_seen": 2
+      },
+      {
+        "id": "c2",
+        "type": "Client",
+        "label": "Laptop-Sales",
+        "device_type": "Laptop",
+        "active_connections": 5,
+        "last_seen": 8
+      },
+      {
+        "id": "c3",
+        "type": "Client",
+        "label": "Mobile-Field-01",
+        "device_type": "Mobile",
+        "active_connections": 18,
+        "last_seen": 1
+      },
+      {
+        "id": "c4",
+        "type": "Client",
+        "label": "IoT-Sensor-Cluster",
+        "device_type": "IoT",
+        "active_connections": 24,
+        "last_seen": 0.5
+      },
+      {
+        "id": "c5",
+        "type": "Client",
+        "label": "WS-Design",
+        "device_type": "Workstation",
+        "active_connections": 7,
+        "last_seen": 15
+      },
+      {
+        "id": "c6",
+        "type": "Client",
+        "label": "Laptop-Admin",
+        "device_type": "Laptop",
+        "active_connections": 3,
+        "last_seen": 4
+      },
+      {
+        "id": "s5",
+        "type": "Server",
+        "label": "Backup-Server",
+        "role": "Storage",
+        "load_pct": 19,
+        "cpu_cores": 12
+      },
+      {
+        "id": "c7",
+        "type": "Client",
+        "label": "Mobile-Dev-Team",
+        "device_type": "Mobile",
+        "active_connections": 9,
+        "last_seen": 3
+      },
+      {
+        "id": "r4",
+        "type": "Router",
+        "label": "Distribution-Router",
+        "region": "EU",
+        "throughput_mbps": 6200,
+        "uptime_pct": 97.5
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel_1",
+        "type": "Connection",
+        "source": "r1",
+        "target": "s1",
+        "label": "Web uplink",
+        "bandwidth_mbps": 850,
+        "latency_ms": 4,
+        "protocol": "TCP"
+      },
+      {
+        "id": "rel_2",
+        "type": "Connection",
+        "source": "r1",
+        "target": "s2",
+        "label": "DB connection",
+        "bandwidth_mbps": 620,
+        "latency_ms": 2,
+        "protocol": "TCP"
+      },
+      {
+        "id": "rel_3",
+        "type": "Connection",
+        "source": "r1",
+        "target": "s3",
+        "label": "App link",
+        "bandwidth_mbps": 430,
+        "latency_ms": 6,
+        "protocol": "HTTP"
+      },
+      {
+        "id": "rel_4",
+        "type": "Connection",
+        "source": "r2",
+        "target": "s4",
+        "label": "NA storage",
+        "bandwidth_mbps": 310,
+        "latency_ms": 18,
+        "protocol": "FTP"
+      },
+      {
+        "id": "rel_5",
+        "type": "Connection",
+        "source": "r3",
+        "target": "s1",
+        "label": "AS web access",
+        "bandwidth_mbps": 180,
+        "latency_ms": 45,
+        "protocol": "HTTP"
+      },
+      {
+        "id": "rel_6",
+        "type": "Connection",
+        "source": "r1",
+        "target": "r4",
+        "label": "Internal backbone",
+        "bandwidth_mbps": 1000,
+        "latency_ms": 1,
+        "protocol": "TCP"
+      },
+      {
+        "id": "rel_7",
+        "type": "Connection",
+        "source": "r4",
+        "target": "c1",
+        "label": "Workstation link",
+        "bandwidth_mbps": 120,
+        "latency_ms": 12,
+        "protocol": "TCP"
+      },
+      {
+        "id": "rel_8",
+        "type": "Connection",
+        "source": "r2",
+        "target": "c2",
+        "label": "Laptop NA",
+        "bandwidth_mbps": 85,
+        "latency_ms": 28,
+        "protocol": "TCP"
+      },
+      {
+        "id": "rel_9",
+        "type": "Connection",
+        "source": "r3",
+        "target": "c3",
+        "label": "Mobile AS",
+        "bandwidth_mbps": 45,
+        "latency_ms": 62,
+        "protocol": "UDP"
+      },
+      {
+        "id": "rel_10",
+        "type": "Connection",
+        "source": "r1",
+        "target": "c4",
+        "label": "IoT gateway",
+        "bandwidth_mbps": 35,
+        "latency_ms": 9,
+        "protocol": "UDP"
+      },
+      {
+        "id": "rel_11",
+        "type": "Connection",
+        "source": "s2",
+        "target": "s3",
+        "label": "App-DB sync",
+        "bandwidth_mbps": 550,
+        "latency_ms": 3,
+        "protocol": "TCP"
+      },
+      {
+        "id": "rel_12",
+        "type": "Connection",
+        "source": "s4",
+        "target": "s5",
+        "label": "Backup mirror",
+        "bandwidth_mbps": 210,
+        "latency_ms": 15,
+        "protocol": "FTP"
+      },
+      {
+        "id": "rel_13",
+        "type": "Connection",
+        "source": "r4",
+        "target": "c5",
+        "label": "Design station",
+        "bandwidth_mbps": 95,
+        "latency_ms": 7,
+        "protocol": "TCP"
+      },
+      {
+        "id": "rel_14",
+        "type": "Connection",
+        "source": "r2",
+        "target": "c6",
+        "label": "Admin laptop",
+        "bandwidth_mbps": 65,
+        "latency_ms": 22,
+        "protocol": "TCP"
+      },
+      {
+        "id": "rel_15",
+        "type": "Connection",
+        "source": "s1",
+        "target": "c7",
+        "label": "Mobile web",
+        "bandwidth_mbps": 140,
+        "latency_ms": 38,
+        "protocol": "HTTP"
+      },
+      {
+        "id": "rel_16",
+        "type": "Connection",
+        "source": "s3",
+        "target": "c1",
+        "label": "App service",
+        "bandwidth_mbps": 310,
+        "latency_ms": 5,
+        "protocol": "HTTP"
+      },
+      {
+        "id": "rel_17",
+        "type": "Connection",
+        "source": "r3",
+        "target": "s5",
+        "label": "Storage sync AS",
+        "bandwidth_mbps": 95,
+        "latency_ms": 52,
+        "protocol": "FTP"
+      },
+      {
+        "id": "rel_18",
+        "type": "Connection",
+        "source": "r4",
+        "target": "s2",
+        "label": "DB distribution",
+        "bandwidth_mbps": 720,
+        "latency_ms": 4,
+        "protocol": "TCP"
+      },
+      {
+        "id": "rel_19",
+        "type": "Connection",
+        "source": "c4",
+        "target": "s4",
+        "label": "IoT data ingest",
+        "bandwidth_mbps": 28,
+        "latency_ms": 19,
+        "protocol": "UDP"
+      },
+      {
+        "id": "rel_20",
+        "type": "Connection",
+        "source": "c3",
+        "target": "s1",
+        "label": "Mobile frontend",
+        "bandwidth_mbps": 52,
+        "latency_ms": 41,
+        "protocol": "HTTP"
+      },
+      {
+        "id": "rel_21",
+        "type": "Connection",
+        "source": "r1",
+        "target": "r3",
+        "label": "Inter-region peering",
+        "bandwidth_mbps": 510,
+        "latency_ms": 68,
+        "protocol": "TCP"
+      },
+      {
+        "id": "rel_22",
+        "type": "Connection",
+        "source": "s5",
+        "target": "c5",
+        "label": "Backup retrieval",
+        "bandwidth_mbps": 180,
+        "latency_ms": 11,
+        "protocol": "FTP"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Router": {
+        "size": {
+          "source": "throughput_mbps",
+          "function": "linear",
+          "range": [
+            1.8,
+            4.2
+          ]
+        },
+        "color": {
+          "source": "region",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "dodecahedron"
+          }
+        }
+      },
+      "Server": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 2
+          }
+        },
+        "color": {
+          "source": "role",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "box"
+          }
+        }
+      },
+      "Client": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.9
+          }
+        },
+        "color": {
+          "source": "device_type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Connection": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#00BFFF"
+          }
+        },
+        "thickness": {
+          "source": "bandwidth_mbps",
+          "function": "linear",
+          "range": [
+            0.8,
+            4
+          ]
+        }
+      }
+    }
+  }
+}
