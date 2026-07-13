@@ -54,6 +54,7 @@ export default defineConfig({
     watch: {
       usePolling: true,
       interval: 500,
+      ignored: ['**/public/data/generated/**'],
     },
   },
   

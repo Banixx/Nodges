@@ -660,7 +660,7 @@ export class CreatePanel {
                         relationships: this.stateManager.getRelationships()
                     }
                 };
-                graphData = await LLMService.refineGraphData(existingData as any, prompt, provider, model, '/prompts/build_5_data_prompt.md', onProgressWithLog);
+                graphData = await LLMService.refineGraphData(existingData as any, prompt, provider, model, import.meta.env.BASE_URL + 'prompts/refine_prompt.md', onProgressWithLog);
             }
 
             const endTime = performance.now();

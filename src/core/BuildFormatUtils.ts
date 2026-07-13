@@ -75,8 +75,15 @@ export function getAvailableProperties(dm: DataModel | undefined, entityType: st
         const reservedKeys = ['id', 'label', 'temporal', 'stateVector']; // 'position' entfernt aus Reservierungen, da wir es mappen wollen
         Object.keys(entity).forEach(k => {
             if (!reservedKeys.includes(k)) {
-                if (typeof (entity as any)[k] !== 'object' || Array.isArray((entity as any)[k])) {
-                    props.add(k);
+                // Erlaube Objekte (wie 'position'), damit MappingUI.ts diese als verschachtelte Gruppe rendern kann
+                if (typeof (entity as any)[k] !== 'function') {
+                    if (k === 'position' && (entity as any)[k] !== null && typeof (entity as any)[k] === 'object') {
+                        if ('x' in (entity as any)[k]) props.add('position.x');
+                        if ('y' in (entity as any)[k]) props.add('position.y');
+                        if ('z' in (entity as any)[k]) props.add('position.z');
+                    } else {
+                        props.add(k);
+                    }
                 }
             }
         });
@@ -90,8 +97,20 @@ export function getAvailableProperties(dm: DataModel | undefined, entityType: st
  */
 export function getEntityAttributeValue(entity: EntityData, attrName: string): any {
     // 1. Zuerst schauen wir, ob das Attribut direkt auf der Entity liegt (Build 5)
-    if (attrName in entity && attrName !== 'stateVector') {
-        return (entity as any)[attrName];
+    if (attrName.includes('.')) {
+        const parts = attrName.split('.');
+        if (parts[0] in entity && parts[0] !== 'stateVector') {
+            let current: any = entity;
+            for (const part of parts) {
+                if (current === null || current === undefined) return undefined;
+                current = current[part];
+            }
+            if (current !== undefined) return current;
+        }
+    } else {
+        if (attrName in entity && attrName !== 'stateVector') {
+            return (entity as any)[attrName];
+        }
     }
 
     // 2. Fallback auf stateVector (Build 3/4)

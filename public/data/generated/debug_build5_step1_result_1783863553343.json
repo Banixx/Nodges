@@ -1,0 +1,153 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Ontologie zur Modellierung des Sonnensystems mit Himmelskörpern, Umlaufbahnen und physikalischen Beziehungen",
+    "author": "AI",
+    "competencyQuestions": [
+      "Welche Himmelskörper existieren im Sonnensystem und welche physikalischen Eigenschaften (Masse, Durchmesser, Temperatur) besitzen sie?",
+      "Welche Planeten, Monde und anderen Objekte umkreisen welche zentralen Körper und mit welchen Bahnparametern?",
+      "Welche Beziehungen (Umlaufbahnen, Gravitation, Satelliten) bestehen zwischen den verschiedenen Himmelskörpern?",
+      "Welche Klassifikationen (Stern, Planet, Zwergplanet, Mond, Asteroid, Komet) haben die Objekte und welche Zusammensetzung besitzen sie?"
+    ],
+    "map": {
+      "image": "Map.jpg",
+      "referenceWidth": 1000,
+      "referenceHeight": 1000
+    },
+    "apiResponse": {
+      "id": "gen-1783863549-EKELmZyRUStfhBRFP0KL",
+      "created": 1783863549,
+      "model": "x-ai/grok-4.20-20260309",
+      "usage": {
+        "prompt_tokens": 1255,
+        "completion_tokens": 626,
+        "total_tokens": 1881,
+        "cost": 0.00299935,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 128,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00299935,
+          "upstream_inference_prompt_cost": 0.00143435,
+          "upstream_inference_completions_cost": 0.001565
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "CelestialBody": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "categorical",
+            "values": [
+              "Star",
+              "Planet",
+              "DwarfPlanet",
+              "Moon",
+              "Asteroid",
+              "Comet"
+            ]
+          },
+          "mass": {
+            "type": "continuous",
+            "range": [
+              0,
+              2000000
+            ]
+          },
+          "diameter": {
+            "type": "continuous",
+            "range": [
+              0,
+              1500000
+            ]
+          },
+          "surfaceTemperature": {
+            "type": "continuous",
+            "range": [
+              -273,
+              6000
+            ]
+          },
+          "composition": {
+            "type": "categorical",
+            "values": [
+              "Rocky",
+              "Gaseous",
+              "Icy",
+              "Metallic",
+              "Mixed"
+            ]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "Orbits": {
+        "properties": {
+          "semiMajorAxis": {
+            "type": "continuous",
+            "range": [
+              0,
+              50000000000
+            ]
+          },
+          "orbitalPeriod": {
+            "type": "continuous",
+            "range": [
+              0,
+              1000000
+            ]
+          },
+          "eccentricity": {
+            "type": "continuous",
+            "range": [
+              0,
+              1
+            ]
+          },
+          "inclination": {
+            "type": "continuous",
+            "range": [
+              0,
+              180
+            ]
+          }
+        }
+      },
+      "SatelliteOf": {
+        "properties": {}
+      },
+      "DiscoveredBy": {
+        "properties": {
+          "discoveryYear": {
+            "type": "continuous",
+            "range": [
+              1500,
+              2025
+            ]
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [],
+    "relationships": []
+  }
+}

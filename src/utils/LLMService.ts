@@ -622,68 +622,20 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         // Mache das Schema "strict: true" kompatibel (additionalProperties: false)
         schemaToPass = this.makeSchemaStrict(schemaToPass);
 
-        return this._executeLLMCall(systemPrompt, prompt, provider, model, schemaToPass);
+        await this._saveDebugFile(`debug_build6_prompt_${Date.now()}.md`, `SYSTEM:\n${systemPrompt}\n\nUSER:\n${prompt}`);
+        const resultData = await this._executeLLMCall(systemPrompt, prompt, provider, model, schemaToPass);
+        await this._saveDebugFile(`debug_build6_result_${Date.now()}.json`, resultData);
+        
+        return resultData;
     }
 
-    public static async generateGraphDataMultiStep(
-        prompt: string, 
-        provider: LLMProvider, 
-        model: string,
-        onProgress?: (msg: string) => void
-    ): Promise<GraphData> {
-        const ontologyPromptFile = import.meta.env.BASE_URL + 'prompts/ontology_prompt.md';
-        let ontologySystemPrompt = '';
-        try {
-            const res = await fetch(ontologyPromptFile);
-            if (!res.ok) throw new Error();
-            ontologySystemPrompt = await res.text();
-        } catch {
-            throw new Error(`Konnte Ontology-Format-Datei nicht laden: ${ontologyPromptFile}`);
-        }
-        
-        if (onProgress) onProgress('Schritt 1/2: Ontologie (Schema) wird entworfen...');
-        
-        // Call 1: Generate Ontology
-        await this._saveDebugFile(`debug_build4_step1_prompt_${Date.now()}.md`, `SYSTEM:\n${ontologySystemPrompt}\n\nUSER:\n${prompt}`);
-        const ontologyData = await this._executeLLMCall(ontologySystemPrompt, prompt, provider, model);
-        await this._saveDebugFile(`debug_build4_step1_result_${Date.now()}.json`, ontologyData);
-        
-        if (onProgress) onProgress('Schritt 2/2: Datenpunkte werden basierend auf Schema generiert...');
-        
-        const dataPromptFile = import.meta.env.BASE_URL + 'prompts/build_4_prompt.md';
-        let dataSystemPrompt = '';
-        try {
-            const res = await fetch(dataPromptFile);
-            if (!res.ok) throw new Error();
-            dataSystemPrompt = await res.text();
-        } catch {
-            throw new Error(`Konnte Data-Format-Datei nicht laden: ${dataPromptFile}`);
-        }
-
-        const step2UserPrompt = `
-Nutze EXAKT das folgende Schema (Ontologie), um die Daten zu generieren. Erfinde keine neuen Entity-Typen oder Attribute, die nicht im Schema stehen!
-Befuelle nun die data.entities und data.relationships Arrays basierend auf der Originalanfrage.
-
-=== ONTOLOGIE ===
-${JSON.stringify(ontologyData, null, 2)}
-=================
-
-USER PROMPT (Thema): ${prompt}
-`;
-        
-        // Call 2: Generate Data
-        await this._saveDebugFile(`debug_build4_step2_prompt_${Date.now()}.md`, `SYSTEM:\n${dataSystemPrompt}\n\nUSER:\n${step2UserPrompt}`);
-        const step2Data = await this._executeLLMCall(dataSystemPrompt, step2UserPrompt, provider, model);
-        await this._saveDebugFile(`debug_build4_step2_result_${Date.now()}.json`, step2Data);
-        return step2Data;
-    }
 
     public static async refineGraphData(
         existingData: GraphData,
         prompt: string, 
         provider: LLMProvider, 
         model: string,
-        formatFile: string = import.meta.env.BASE_URL + 'prompts/build_4_prompt.md',
+        formatFile: string = import.meta.env.BASE_URL + 'prompts/refine_prompt.md',
         onProgress?: (msg: string) => void
     ): Promise<GraphData> {
         let systemPrompt = '';
@@ -708,6 +660,9 @@ ${JSON.stringify(existingData, null, 2)}
 USER ANWEISUNG: ${prompt}
 `;
 
-        return this._executeLLMCall(systemPrompt, refineUserPrompt, provider, model);
+        await this._saveDebugFile(`debug_refine_prompt_${Date.now()}.md`, `SYSTEM:\n${systemPrompt}\n\nUSER:\n${refineUserPrompt}`);
+        const resultData = await this._executeLLMCall(systemPrompt, refineUserPrompt, provider, model);
+        await this._saveDebugFile(`debug_refine_result_${Date.now()}.json`, resultData);
+        return resultData;
     }
 }

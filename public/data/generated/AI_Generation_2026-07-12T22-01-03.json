@@ -1,0 +1,1025 @@
+{
+  "system": "Tech-Unternehmensstruktur",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Vollstaendige Ontologie, Instanzdaten und visuelles Mapping fuer die hierarchische und kollaborative Struktur eines grossen Tech-Unternehmens",
+    "competencyQuestions": [
+      "Welche Mitarbeiter arbeiten in welchen Teams und Abteilungen?",
+      "Welche Teams und Abteilungen existieren und wie sind sie hierarchisch verbunden?",
+      "Welche Fuehrungskraefte leiten welche Einheiten und wie hoch ist der Personalschluessel?",
+      "Welche Mitarbeiter haben spezifische Rollen und in welchen Projekten sind sie involviert?",
+      "Wie ist die Verteilung der Erfahrungsjahre ueber Abteilungen und Teams hinweg?"
+    ],
+    "apiResponse": {
+      "id": "gen-1783893636-gYCWtpWmuKVzuQmqczVs",
+      "created": 1783893636,
+      "model": "x-ai/grok-4.20-20260309",
+      "usage": {
+        "prompt_tokens": 1862,
+        "completion_tokens": 4165,
+        "total_tokens": 6027,
+        "cost": 0.0126056,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 128,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0126056,
+          "upstream_inference_prompt_cost": 0.0021931,
+          "upstream_inference_completions_cost": 0.0104125
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    },
+    "generationDetails": {
+      "prompt": "Die Struktur eines großen Tech-Unternehmens mit Abteilungen, Teams und Mitarbeitern.",
+      "context": null,
+      "provider": "openrouter",
+      "model": "x-ai/grok-4.20",
+      "pipeline": "build6",
+      "durationMs": 26659,
+      "timestamp": "2026-07-12T22:01:01.568Z"
+    },
+    "exportedAt": "2026-07-12T22:01:03.224Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1783893661568_co_1",
+        "type": "company",
+        "label": "Nodges Inc.",
+        "name": "Nodges Inc.",
+        "founded_year": 2012,
+        "stateVector": {
+          "degree": 4,
+          "inbound": 0,
+          "outbound": 4
+        },
+        "inDegree": 0,
+        "outDegree": 4,
+        "position": {
+          "x": -0.4695437716453396,
+          "y": 1.7029147971704093,
+          "z": 0.6384773831277184
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_dep_1",
+        "type": "department",
+        "label": "Engineering",
+        "name": "Engineering",
+        "budget_million": 185,
+        "region": "North America",
+        "stateVector": {
+          "degree": 6,
+          "inbound": 2,
+          "outbound": 4
+        },
+        "inDegree": 2,
+        "outDegree": 4,
+        "position": {
+          "x": -0.6012867849528764,
+          "y": -0.5992171575675312,
+          "z": -0.3472836289011317
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_dep_2",
+        "type": "department",
+        "label": "Product",
+        "name": "Product",
+        "budget_million": 92,
+        "region": "Europe",
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "inDegree": 2,
+        "outDegree": 1,
+        "position": {
+          "x": -1.7483428341709661,
+          "y": 2.7848087145735265,
+          "z": 0.25288823768372
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_dep_3",
+        "type": "department",
+        "label": "Marketing",
+        "name": "Marketing",
+        "budget_million": 45,
+        "region": "Asia",
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "inDegree": 2,
+        "outDegree": 1,
+        "position": {
+          "x": 0.5284446207758191,
+          "y": 3.055462157370328,
+          "z": 1.6545623629477033
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_dep_4",
+        "type": "department",
+        "label": "Research",
+        "name": "Research",
+        "budget_million": 67,
+        "region": "North America",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": 0.021205512253184105,
+          "y": 0.8931336061537809,
+          "z": 1.034150516254772
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_team_1",
+        "type": "team",
+        "label": "Backend Platform",
+        "name": "Backend Platform",
+        "focus_area": "Infrastructure",
+        "headcount": 18,
+        "stateVector": {
+          "degree": 4,
+          "inbound": 3,
+          "outbound": 1
+        },
+        "inDegree": 3,
+        "outDegree": 1,
+        "position": {
+          "x": -2.0546578199514296,
+          "y": -0.6086585809608586,
+          "z": -1.0626753568506577
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_team_2",
+        "type": "team",
+        "label": "Frontend Experiences",
+        "name": "Frontend Experiences",
+        "focus_area": "UI/UX",
+        "headcount": 14,
+        "stateVector": {
+          "degree": 3,
+          "inbound": 3,
+          "outbound": 0
+        },
+        "inDegree": 3,
+        "outDegree": 0,
+        "position": {
+          "x": 0.02057767130629397,
+          "y": -1.4032390481490542,
+          "z": -1.4091571398578389
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_team_3",
+        "type": "team",
+        "label": "Data Science",
+        "name": "Data Science",
+        "focus_area": "Analytics",
+        "headcount": 12,
+        "stateVector": {
+          "degree": 4,
+          "inbound": 3,
+          "outbound": 1
+        },
+        "inDegree": 3,
+        "outDegree": 1,
+        "position": {
+          "x": 0.9068327445395867,
+          "y": -1.8005540859968483,
+          "z": -0.7911214224106435
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_team_4",
+        "type": "team",
+        "label": "DevOps & SRE",
+        "name": "DevOps & SRE",
+        "focus_area": "Reliability",
+        "headcount": 9,
+        "stateVector": {
+          "degree": 4,
+          "inbound": 4,
+          "outbound": 0
+        },
+        "inDegree": 4,
+        "outDegree": 0,
+        "position": {
+          "x": -2.0441533334456383,
+          "y": -1.413038530458708,
+          "z": -0.04615438377308731
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_team_5",
+        "type": "team",
+        "label": "Product Strategy",
+        "name": "Product Strategy",
+        "focus_area": "Roadmapping",
+        "headcount": 7,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": -2.8246466434789923,
+          "y": 2.558299016228131,
+          "z": -0.4189630869777837
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_team_6",
+        "type": "team",
+        "label": "Growth Marketing",
+        "name": "Growth Marketing",
+        "focus_area": "Acquisition",
+        "headcount": 11,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 1.5862190969167553,
+          "y": 3.202762807638945,
+          "z": 1.7183221349648425
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_emp_1",
+        "type": "employee",
+        "label": "Elena Voss",
+        "name": "Elena Voss",
+        "role": "CTO",
+        "experience_years": 18,
+        "performance_score": 4.9,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": -0.06254156676876138,
+          "y": -0.02572515620609118,
+          "z": 0.5806905388394834
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_emp_2",
+        "type": "employee",
+        "label": "Marcus Hale",
+        "name": "Marcus Hale",
+        "role": "VP Engineering",
+        "experience_years": 15,
+        "performance_score": 4.7,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -2.0435013064461893,
+          "y": 3.8665400934036085,
+          "z": 0.4153879040897141
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_emp_3",
+        "type": "employee",
+        "label": "Priya Sharma",
+        "name": "Priya Sharma",
+        "role": "Engineering Manager",
+        "experience_years": 11,
+        "performance_score": 4.5,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": -3.0246646770171446,
+          "y": 0.5463618272395944,
+          "z": -1.1927182904352525
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_emp_4",
+        "type": "employee",
+        "label": "Liam Dubois",
+        "name": "Liam Dubois",
+        "role": "Senior Backend Engineer",
+        "experience_years": 9,
+        "performance_score": 4.3,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": -2.111137911536846,
+          "y": -1.1080300985587392,
+          "z": -2.399484273758849
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_emp_5",
+        "type": "employee",
+        "label": "Aisha Khan",
+        "name": "Aisha Khan",
+        "role": "Frontend Architect",
+        "experience_years": 7,
+        "performance_score": 4.6,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": -0.43147159220834114,
+          "y": -1.6992052267138247,
+          "z": -2.656472845710341
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_emp_6",
+        "type": "employee",
+        "label": "Javier Morales",
+        "name": "Javier Morales",
+        "role": "Data Scientist",
+        "experience_years": 6,
+        "performance_score": 4.4,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": 1.8959868498318908,
+          "y": -3.1954583184456675,
+          "z": -0.7365699964303131
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_emp_7",
+        "type": "employee",
+        "label": "Fatou Ndiaye",
+        "name": "Fatou Ndiaye",
+        "role": "Site Reliability Engineer",
+        "experience_years": 8,
+        "performance_score": 4.8,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -2.8210691672157644,
+          "y": -2.40348925361888,
+          "z": -0.09983830216764793
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_emp_8",
+        "type": "employee",
+        "label": "Thomas Berg",
+        "name": "Thomas Berg",
+        "role": "Product Director",
+        "experience_years": 14,
+        "performance_score": 4.2,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1,
+        "position": {
+          "x": -3.3563398984746597,
+          "y": 1.7061944058282554,
+          "z": -0.9922855039959017
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_emp_9",
+        "type": "employee",
+        "label": "Mei Lin",
+        "name": "Mei Lin",
+        "role": "Marketing Lead",
+        "experience_years": 10,
+        "performance_score": 4.1,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": 0.6846397234744754,
+          "y": 4.169231586746109,
+          "z": 2.5156824055638825
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_emp_10",
+        "type": "employee",
+        "label": "Omar Khalil",
+        "name": "Omar Khalil",
+        "role": "Research Scientist",
+        "experience_years": 12,
+        "performance_score": 4.9,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 3.3563398984746597,
+          "y": -5,
+          "z": -0.7280990532363214
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_emp_11",
+        "type": "employee",
+        "label": "Sara Novak",
+        "name": "Sara Novak",
+        "role": "Junior Data Analyst",
+        "experience_years": 3,
+        "performance_score": 4,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.9961737244590965,
+          "y": -1.5839321416792562,
+          "z": -0.9337319774885312
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_emp_12",
+        "type": "employee",
+        "label": "Kwame Mensah",
+        "name": "Kwame Mensah",
+        "role": "DevOps Engineer",
+        "experience_years": 5,
+        "performance_score": 4.5,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -2.516149580513999,
+          "y": -1.7634418931880083,
+          "z": 1.040168032994737
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_proj_1",
+        "type": "project",
+        "label": "Nexus Cloud Migration",
+        "name": "Nexus Cloud Migration",
+        "priority": "High",
+        "progress_percent": 75,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": -1.4107072243890186,
+          "y": -1.5890435021918763,
+          "z": -3.1386145930608453
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_proj_2",
+        "type": "project",
+        "label": "AI Recommendation Engine",
+        "name": "AI Recommendation Engine",
+        "priority": "Critical",
+        "progress_percent": 40,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": 2.7052605792236357,
+          "y": -4.200851245105448,
+          "z": -0.7241282709681117
+        }
+      },
+      {
+        "id": "AI_Generation_1783893661568_proj_3",
+        "type": "project",
+        "label": "Global Brand Refresh",
+        "name": "Global Brand Refresh",
+        "priority": "Medium",
+        "progress_percent": 90,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 0.8814603587413999,
+          "y": 5,
+          "z": 3.1386145930608453
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1783893661568_rel_1",
+        "type": "owns",
+        "source": "AI_Generation_1783893661568_co_1",
+        "target": "AI_Generation_1783893661568_dep_1",
+        "label": "owns"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_2",
+        "type": "owns",
+        "source": "AI_Generation_1783893661568_co_1",
+        "target": "AI_Generation_1783893661568_dep_2",
+        "label": "owns"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_3",
+        "type": "owns",
+        "source": "AI_Generation_1783893661568_co_1",
+        "target": "AI_Generation_1783893661568_dep_3",
+        "label": "owns"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_4",
+        "type": "owns",
+        "source": "AI_Generation_1783893661568_co_1",
+        "target": "AI_Generation_1783893661568_dep_4",
+        "label": "owns"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_5",
+        "type": "contains",
+        "source": "AI_Generation_1783893661568_dep_1",
+        "target": "AI_Generation_1783893661568_team_1",
+        "label": "contains"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_6",
+        "type": "contains",
+        "source": "AI_Generation_1783893661568_dep_1",
+        "target": "AI_Generation_1783893661568_team_2",
+        "label": "contains"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_7",
+        "type": "contains",
+        "source": "AI_Generation_1783893661568_dep_1",
+        "target": "AI_Generation_1783893661568_team_3",
+        "label": "contains"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_8",
+        "type": "contains",
+        "source": "AI_Generation_1783893661568_dep_1",
+        "target": "AI_Generation_1783893661568_team_4",
+        "label": "contains"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_9",
+        "type": "contains",
+        "source": "AI_Generation_1783893661568_dep_2",
+        "target": "AI_Generation_1783893661568_team_5",
+        "label": "contains"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_10",
+        "type": "contains",
+        "source": "AI_Generation_1783893661568_dep_3",
+        "target": "AI_Generation_1783893661568_team_6",
+        "label": "contains"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_11",
+        "type": "leads",
+        "source": "AI_Generation_1783893661568_emp_1",
+        "target": "AI_Generation_1783893661568_dep_1",
+        "label": "leads",
+        "since_year": 2020
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_12",
+        "type": "leads",
+        "source": "AI_Generation_1783893661568_emp_2",
+        "target": "AI_Generation_1783893661568_dep_2",
+        "label": "leads",
+        "since_year": 2021
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_13",
+        "type": "leads",
+        "source": "AI_Generation_1783893661568_emp_8",
+        "target": "AI_Generation_1783893661568_team_5",
+        "label": "leads",
+        "since_year": 2022
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_14",
+        "type": "leads",
+        "source": "AI_Generation_1783893661568_emp_3",
+        "target": "AI_Generation_1783893661568_team_1",
+        "label": "leads",
+        "since_year": 2023
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_15",
+        "type": "leads",
+        "source": "AI_Generation_1783893661568_emp_9",
+        "target": "AI_Generation_1783893661568_dep_3",
+        "label": "leads",
+        "since_year": 2019
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_16",
+        "type": "belongs_to",
+        "source": "AI_Generation_1783893661568_emp_4",
+        "target": "AI_Generation_1783893661568_team_1",
+        "label": "belongs_to"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_17",
+        "type": "belongs_to",
+        "source": "AI_Generation_1783893661568_emp_5",
+        "target": "AI_Generation_1783893661568_team_2",
+        "label": "belongs_to"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_18",
+        "type": "belongs_to",
+        "source": "AI_Generation_1783893661568_emp_6",
+        "target": "AI_Generation_1783893661568_team_3",
+        "label": "belongs_to"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_19",
+        "type": "belongs_to",
+        "source": "AI_Generation_1783893661568_emp_7",
+        "target": "AI_Generation_1783893661568_team_4",
+        "label": "belongs_to"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_20",
+        "type": "belongs_to",
+        "source": "AI_Generation_1783893661568_emp_11",
+        "target": "AI_Generation_1783893661568_team_3",
+        "label": "belongs_to"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_21",
+        "type": "belongs_to",
+        "source": "AI_Generation_1783893661568_emp_12",
+        "target": "AI_Generation_1783893661568_team_4",
+        "label": "belongs_to"
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_22",
+        "type": "works_on",
+        "source": "AI_Generation_1783893661568_emp_4",
+        "target": "AI_Generation_1783893661568_proj_1",
+        "label": "works_on",
+        "contribution_level": 5
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_23",
+        "type": "works_on",
+        "source": "AI_Generation_1783893661568_emp_5",
+        "target": "AI_Generation_1783893661568_proj_1",
+        "label": "works_on",
+        "contribution_level": 4
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_24",
+        "type": "works_on",
+        "source": "AI_Generation_1783893661568_emp_6",
+        "target": "AI_Generation_1783893661568_proj_2",
+        "label": "works_on",
+        "contribution_level": 5
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_25",
+        "type": "works_on",
+        "source": "AI_Generation_1783893661568_emp_10",
+        "target": "AI_Generation_1783893661568_proj_2",
+        "label": "works_on",
+        "contribution_level": 3
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_26",
+        "type": "works_on",
+        "source": "AI_Generation_1783893661568_emp_9",
+        "target": "AI_Generation_1783893661568_proj_3",
+        "label": "works_on",
+        "contribution_level": 4
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_27",
+        "type": "collaborates_with",
+        "source": "AI_Generation_1783893661568_team_1",
+        "target": "AI_Generation_1783893661568_team_4",
+        "label": "collaborates_with",
+        "intensity": 8
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_28",
+        "type": "collaborates_with",
+        "source": "AI_Generation_1783893661568_team_3",
+        "target": "AI_Generation_1783893661568_team_2",
+        "label": "collaborates_with",
+        "intensity": 6
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_29",
+        "type": "collaborates_with",
+        "source": "AI_Generation_1783893661568_emp_3",
+        "target": "AI_Generation_1783893661568_emp_8",
+        "label": "collaborates_with",
+        "intensity": 7
+      },
+      {
+        "id": "AI_Generation_1783893661568_rel_30",
+        "type": "belongs_to",
+        "source": "AI_Generation_1783893661568_emp_1",
+        "target": "AI_Generation_1783893661568_dep_4",
+        "label": "belongs_to"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "company": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 2.8
+          }
+        },
+        "color": {
+          "source": "founded_year",
+          "function": "linear",
+          "range": [
+            "#1E3A8A",
+            "#3B82F6"
+          ]
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "dodecahedron"
+          }
+        }
+      },
+      "department": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 2.2
+          }
+        },
+        "color": {
+          "source": "region",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "box"
+          }
+        }
+      },
+      "team": {
+        "size": {
+          "source": "headcount",
+          "function": "linear",
+          "range": [
+            1,
+            2.5
+          ]
+        },
+        "color": {
+          "source": "focus_area",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "employee": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.9
+          }
+        },
+        "color": {
+          "source": "role",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "octahedron"
+          }
+        }
+      },
+      "project": {
+        "size": {
+          "source": "progress_percent",
+          "function": "linear",
+          "range": [
+            0.8,
+            1.8
+          ]
+        },
+        "color": {
+          "source": "priority",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "cone"
+          }
+        }
+      },
+      "owns": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#4ADE80"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.09
+          }
+        }
+      },
+      "contains": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#60A5FA"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.12
+          }
+        }
+      },
+      "leads": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#F472B6"
+          }
+        },
+        "thickness": {
+          "source": "since_year",
+          "function": "linear",
+          "range": [
+            0.08,
+            0.18
+          ]
+        }
+      },
+      "belongs_to": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#A78BFA"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.07
+          }
+        }
+      },
+      "works_on": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#FBBF24"
+          }
+        },
+        "thickness": {
+          "source": "contribution_level",
+          "function": "linear",
+          "range": [
+            0.06,
+            0.22
+          ]
+        }
+      },
+      "collaborates_with": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#34D399"
+          }
+        },
+        "thickness": {
+          "source": "intensity",
+          "function": "linear",
+          "range": [
+            0.05,
+            0.19
+          ]
+        }
+      }
+    }
+  }
+}

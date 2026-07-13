@@ -79,13 +79,21 @@ export class NodeManager {
         this.geometryCache.set('cylinder', cylinderGeo);
         this.geometryCache.set('cone', coneGeo);
         this.geometryCache.set('torus', torusGeo);
+        this.geometryCache.set('cloud', sphereGeo); // Cloud nutzt eine Sphere als Basis
     }
-
     private initializeMaterials() {
         this.materialCache.set('default', new THREE.MeshPhongMaterial({
             color: 0xffffff,
             shininess: 30,
             vertexColors: false
+        }));
+        this.materialCache.set('cloud', new THREE.MeshPhongMaterial({
+            color: 0x64ffda,
+            shininess: 50,
+            transparent: true,
+            opacity: 0.2,
+            depthWrite: false,
+            side: THREE.DoubleSide
         }));
     }
 
@@ -244,11 +252,11 @@ export class NodeManager {
                 
                 group.forEach(({ entity, visual }, index) => {
                     entityList.push(entity);
-                    let baseMaterial = this.materialCache.get('default');
+                    let baseMaterial = type === 'cloud' || type === 'group' ? this.materialCache.get('cloud') : this.materialCache.get('default');
                     if (!baseMaterial) {
-                        console.warn('[NodeManager] Default material missing, re-initializing.');
+                        console.warn('[NodeManager] Material missing, re-initializing.');
                         this.initializeMaterials();
-                        baseMaterial = this.materialCache.get('default')!;
+                        baseMaterial = type === 'cloud' || type === 'group' ? this.materialCache.get('cloud')! : this.materialCache.get('default')!;
                     }
                     const material = baseMaterial.clone() as THREE.MeshPhongMaterial;
                     const mesh = new THREE.Mesh(geometry, material);
@@ -660,5 +668,71 @@ export class NodeManager {
             res.size = changes.size;
         }
         return res;
+    }
+
+    // --- Dynamic Cloud Positioning ---
+    public updateCloudPositions(relationships: any[], allEntities: any[]) {
+        const cloudEntities = this.entityDataMap.get('cloud') || [];
+        const groupEntities = this.entityDataMap.get('group') || [];
+        const combinedClouds = [...cloudEntities, ...groupEntities];
+        
+        if (combinedClouds.length === 0) return;
+
+        const entityMap = new Map<string, any>();
+        allEntities.forEach(e => entityMap.set(String(e.id), e));
+
+        combinedClouds.forEach(cloudEnt => {
+            const cloudId = String(cloudEnt.id);
+            const mesh = this.individualMeshes.get(cloudId);
+            if (!mesh) return;
+
+            // Finde alle Kind-Nodes dieser Cloud (wo Cloud target oder source ist)
+            const childIds = new Set<string>();
+            relationships.forEach(rel => {
+                if (String(rel.source) === cloudId && rel.target) childIds.add(String(rel.target));
+                if (String(rel.target) === cloudId && rel.source) childIds.add(String(rel.source));
+            });
+
+            if (childIds.size === 0) return;
+
+            // Berechne Schwerpunkt
+            let sumX = 0, sumY = 0, sumZ = 0;
+            let validChildren = 0;
+            const childPositions: THREE.Vector3[] = [];
+
+            childIds.forEach(id => {
+                const ent = entityMap.get(id);
+                if (ent && ent.position) {
+                    sumX += ent.position.x;
+                    sumY += ent.position.y;
+                    sumZ += ent.position.z;
+                    childPositions.push(new THREE.Vector3(ent.position.x, ent.position.y, ent.position.z));
+                    validChildren++;
+                }
+            });
+
+            if (validChildren > 0) {
+                const centerX = sumX / validChildren;
+                const centerY = sumY / validChildren;
+                const centerZ = sumZ / validChildren;
+                const centerPos = new THREE.Vector3(centerX, centerY, centerZ);
+
+                // Update Position
+                mesh.position.copy(centerPos);
+                cloudEnt.position = { x: centerX, y: centerY, z: centerZ };
+
+                // Berechne max Distanz fuer Radius
+                let maxDist = NodeManager.MIN_NODE_RADIUS;
+                childPositions.forEach(pos => {
+                    const d = centerPos.distanceTo(pos);
+                    if (d > maxDist) maxDist = d;
+                });
+
+                // Setze Skalierung (Radius) + 20% Padding
+                const padding = maxDist * 0.20;
+                const finalRadius = Math.max(NodeManager.MIN_NODE_RADIUS * 2, maxDist + padding);
+                mesh.scale.set(finalRadius, finalRadius, finalRadius);
+            }
+        });
     }
 }

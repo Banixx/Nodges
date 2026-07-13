@@ -1,0 +1,29 @@
+{
+  "timestampStart": "2026-07-12T13:06:19.432Z",
+  "prompt": "sonnensysstem",
+  "ragText": null,
+  "provider": "openrouter",
+  "model": "x-ai/grok-4.20",
+  "pipeline": "build6",
+  "systemInfo": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0",
+    "language": "de",
+    "screenResolution": "1920x1080",
+    "viewport": "1920x921",
+    "appVersion": "Nodges Build 6"
+  },
+  "steps": [
+    {
+      "time": "2026-07-12T13:06:19.443Z",
+      "offsetMs": 13,
+      "message": "Generiere Netzwerk (Ontologie, Daten & Visuals in einem Schritt)..."
+    }
+  ],
+  "timestampEnd": "2026-07-12T13:06:49.125Z",
+  "durationMs": 29694,
+  "durationSec": "29.69",
+  "status": "success",
+  "generatedNodes": 20,
+  "generatedEdges": 28,
+  "responsePayloadSizeKB": "13.89"
+}

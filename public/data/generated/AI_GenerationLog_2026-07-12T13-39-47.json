@@ -1,0 +1,39 @@
+{
+  "timestampStart": "2026-07-12T13:39:09.289Z",
+  "prompt": "sonnensystem",
+  "ragText": null,
+  "provider": "openrouter",
+  "model": "x-ai/grok-4.20",
+  "pipeline": "build5",
+  "systemInfo": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0",
+    "language": "de",
+    "screenResolution": "1920x1080",
+    "viewport": "1920x921",
+    "appVersion": "Nodges Build 6"
+  },
+  "steps": [
+    {
+      "time": "2026-07-12T13:39:09.376Z",
+      "offsetMs": 87,
+      "message": "Schritt 1/3: Ontologie (Schema) wird entworfen..."
+    },
+    {
+      "time": "2026-07-12T13:39:13.353Z",
+      "offsetMs": 4064,
+      "message": "Schritt 2/3: Datenpunkte werden generiert..."
+    },
+    {
+      "time": "2026-07-12T13:39:43.058Z",
+      "offsetMs": 33769,
+      "message": "Schritt 3/3: Visuelles Mapping (Build 5) wird berechnet..."
+    }
+  ],
+  "timestampEnd": "2026-07-12T13:39:45.825Z",
+  "durationMs": 36536,
+  "durationSec": "36.54",
+  "status": "success",
+  "generatedNodes": 0,
+  "generatedEdges": 0,
+  "responsePayloadSizeKB": "0.90"
+}

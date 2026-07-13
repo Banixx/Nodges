@@ -10,7 +10,6 @@ import { ViewPanel } from '../ui/ViewPanel';
 import { StatsUI } from '../ui/StatsUI';
 
 import { DevPanel } from '../ui/DevPanel';
-import { LayersPanel } from '../ui/LayersPanel';
 import { LegendPanel } from '../ui/LegendPanel';
 import { CreatePanel } from '../ui/CreatePanel';
 import { FilePanelUI } from '../ui/FilePanelUI';
@@ -71,9 +70,6 @@ export class UIManager {
 
         // Initialize DevPanel
         new DevPanel('devPanelContent', this.stateManager);
-
-        // Initialize LayersPanel
-        new LayersPanel('tab-layers', this.stateManager);
 
         // Initialize Legend Panel
         this.legendPanel = new LegendPanel('legendContainer', this.stateManager);

@@ -1436,6 +1436,10 @@ export class App {
 
         if (this.nodeManager) {
             this.nodeManager.updateTemporalState(this.stateManager.state.currentTimestamp);
+            this.nodeManager.updateCloudPositions(
+                this.stateManager.getRelationships(),
+                this.stateManager.getEntities()
+            );
         }
         if (this.edgeObjectsManager && (this.edgeObjectsManager as any).updateTemporalState) {
             (this.edgeObjectsManager as any).updateTemporalState(this.stateManager.state.currentTimestamp);
