@@ -24,6 +24,9 @@ export class CreatePanel {
     private promptTextarea!: HTMLTextAreaElement;
     private generateBtn!: HTMLButtonElement;
     private statusText!: HTMLElement;
+    private interactionModeSelect!: HTMLSelectElement;
+    private chatLog!: HTMLDivElement;
+    private clarificationHistory: {role: 'user'|'assistant', content: string}[] = [];
 
     constructor(containerId: string, _stateManager: IStateManager, app: App) {
         const el = document.getElementById(containerId);
@@ -37,6 +40,44 @@ export class CreatePanel {
         this.stateManager = _stateManager;
         this.app = app;
         this.render();
+    }
+
+    private resetChatState() {
+        this.clarificationHistory = [];
+        if (this.chatLog) {
+            this.chatLog.style.display = 'none';
+            this.chatLog.innerHTML = '';
+        }
+        if (this.generateBtn) {
+            this.generateBtn.textContent = 'Netzwerk Generieren';
+        }
+    }
+
+    private updateChatUI() {
+        if (this.clarificationHistory.length === 0) {
+            this.chatLog.style.display = 'none';
+            return;
+        }
+        this.chatLog.style.display = 'flex';
+        this.chatLog.innerHTML = '';
+        this.clarificationHistory.forEach(msg => {
+            const bubble = document.createElement('div');
+            bubble.style.padding = '8px';
+            bubble.style.borderRadius = '4px';
+            bubble.style.marginBottom = '4px';
+            bubble.style.maxWidth = '90%';
+            if (msg.role === 'user') {
+                bubble.style.backgroundColor = 'rgba(0, 120, 255, 0.2)';
+                bubble.style.alignSelf = 'flex-end';
+                bubble.textContent = `Du: ${msg.content}`;
+            } else {
+                bubble.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                bubble.style.alignSelf = 'flex-start';
+                bubble.textContent = `KI: ${msg.content}`;
+            }
+            this.chatLog.appendChild(bubble);
+        });
+        this.chatLog.scrollTop = this.chatLog.scrollHeight;
     }
 
     private render(): void {
@@ -287,6 +328,7 @@ export class CreatePanel {
         this.pipelineSelect.style.fontFamily = 'inherit';
 
         const pipelines = [
+            { value: 'build7', label: 'Build 7 (Semantic Web / Wikidata)' },
             { value: 'build6', label: 'Build 6 (Schnelle Single-Step Zod Pipeline)' },
             { value: 'build5', label: 'Legacy: Build 5 (3-stufig: Ontologie -> Daten -> Mapping)' },
             { value: 'refine', label: 'Update: Iterativ (Bestehendes Netzwerk anpassen)' }
@@ -300,12 +342,62 @@ export class CreatePanel {
         });
         genSection.appendChild(this.pipelineSelect);
 
+        // --- Interaction Mode Select ---
+        const modeLabel = document.createElement('label');
+        modeLabel.textContent = 'KI-Interaktion:';
+        modeLabel.style.display = 'block';
+        modeLabel.style.marginBottom = '5px';
+        modeLabel.style.color = 'var(--text-muted)';
+        genSection.appendChild(modeLabel);
+
+        this.interactionModeSelect = document.createElement('select');
+        this.interactionModeSelect.className = 'form-control';
+        this.interactionModeSelect.style.width = '100%';
+        this.interactionModeSelect.style.marginBottom = '15px';
+        this.interactionModeSelect.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+        this.interactionModeSelect.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+        this.interactionModeSelect.style.color = 'var(--text-color)';
+        this.interactionModeSelect.style.padding = '6px';
+        this.interactionModeSelect.style.borderRadius = '4px';
+        this.interactionModeSelect.style.fontFamily = 'inherit';
+        
+        const modeOptions = [
+            { value: 'auto', label: 'Modus: Auto (Autonome Expansion)' },
+            { value: 'chat', label: 'Modus: Chat (Interaktive Rückfragen)' }
+        ];
+        
+        modeOptions.forEach(opt => {
+            const option = document.createElement('option');
+            option.value = opt.value;
+            option.textContent = opt.label;
+            this.interactionModeSelect.appendChild(option);
+        });
+
+        this.interactionModeSelect.onchange = () => {
+            this.resetChatState();
+        };
+
+        genSection.appendChild(this.interactionModeSelect);
+
         const promptLabel = document.createElement('label');
         promptLabel.textContent = 'Dein Prompt:';
         promptLabel.style.display = 'block';
         promptLabel.style.marginBottom = '5px';
         promptLabel.style.color = 'var(--text-muted)';
         genSection.appendChild(promptLabel);
+
+        // --- Chat Log UI ---
+        this.chatLog = document.createElement('div');
+        this.chatLog.style.display = 'none';
+        this.chatLog.style.flexDirection = 'column';
+        this.chatLog.style.gap = '8px';
+        this.chatLog.style.marginBottom = '10px';
+        this.chatLog.style.maxHeight = '200px';
+        this.chatLog.style.overflowY = 'auto';
+        this.chatLog.style.padding = '10px';
+        this.chatLog.style.backgroundColor = 'rgba(0,0,0,0.2)';
+        this.chatLog.style.borderRadius = '4px';
+        genSection.appendChild(this.chatLog);
 
         this.promptTextarea = document.createElement('textarea');
         this.promptTextarea.placeholder = 'z.B. Erstelle ein Netzwerk aus 5 miteinander verbundenen Konzepten aus der Quantenphysik...';
@@ -580,6 +672,46 @@ export class CreatePanel {
             return;
         }
 
+        const mode = this.interactionModeSelect.value;
+        const provider = this.providerSelect.value as LLMProvider;
+        const model = this.selectedModelId;
+        const pipeline = this.pipelineSelect.value;
+
+        if (mode === 'chat') {
+            if (this.clarificationHistory.length === 0) {
+                // Erster Klick: KI fragt nach
+                this.clarificationHistory.push({ role: 'user', content: prompt });
+                this.updateChatUI();
+                
+                this.setStatus('Generiere Rückfrage...', 'info');
+                this.generateBtn.disabled = true;
+                
+                try {
+                    const question = await LLMService.askClarification(this.clarificationHistory, provider, model);
+                    this.clarificationHistory.push({ role: 'assistant', content: question });
+                    this.promptTextarea.value = ''; 
+                    this.generateBtn.textContent = 'Antworten & Generieren';
+                    this.updateChatUI();
+                    this.setStatus('Bitte beantworte die Rückfrage.', 'info');
+                } catch (error: any) {
+                    this.setStatus(`Fehler bei Rückfrage: ${error.message}`, 'error');
+                } finally {
+                    this.generateBtn.disabled = false;
+                }
+                return;
+            } else {
+                // Zweiter Klick: User hat geantwortet, wir bauen den finalen Prompt zusammen
+                this.clarificationHistory.push({ role: 'user', content: prompt });
+                this.updateChatUI();
+                this.generateBtn.textContent = 'Netzwerk Generieren';
+                
+                prompt = this.clarificationHistory.map(msg => `${msg.role === 'user' ? 'USER' : 'KI'}: ${msg.content}`).join('\n\n');
+                
+                // Wir resetten den Chat noch NICHT, damit der User sieht, was er generiert hat.
+                // Er wird erst resettet, wenn er den Modus wechselt oder neu lädt.
+            }
+        }
+
         // --- Frontend NSFW Filter (mittelstreng) ---
         const nsfwKeywords = [
             'porn', 'sex', 'nude', 'nsfw', 'gore', 'murder', 'rape', 'pedophile', 
@@ -604,9 +736,7 @@ export class CreatePanel {
             prompt += `\n\n=== VERFUEGBARER KONTEXT / ROHDATEN (RAG) ===\n${ragText}\n==============================================\nNutze ZWINGEND diese Rohdaten als Faktenbasis fuer die Generierung der Knoten und Kanten.`;
         }
 
-        const provider = this.providerSelect.value as LLMProvider;
-        const model = this.selectedModelId;
-        const pipeline = this.pipelineSelect.value;
+
 
         if (!LLMService.getApiKey(provider) && provider !== 'openrouter') {
             this.setStatus(`Bitte hinterlege zuerst deinen API-Key für ${provider}.`, 'error');
@@ -646,7 +776,19 @@ export class CreatePanel {
         try {
             let graphData: any;
 
-            if (pipeline === 'build6') {
+            if (pipeline === 'build7') {
+                graphData = await LLMService.generateGraphDataBuild7(
+                    prompt, 
+                    provider, 
+                    model, 
+                    onProgressWithLog, 
+                    (step: number, name: string, content: string, ext: string) => {
+                        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                        const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
+                        this.app.exportManager?.downloadFile(content, `${step}_${name}_${timestamp}.${ext}`, mime);
+                    }
+                );
+            } else if (pipeline === 'build6') {
                 graphData = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog);
             } else if (pipeline === 'build5') {
                 graphData = await LLMService.generateGraphDataMultiStepBuild5(prompt, provider, model, onProgressWithLog);

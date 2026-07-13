@@ -211,6 +211,7 @@ export class UIManager {
 
         const allNodeAttrs = new Set<string>([
             'constant', 'type', 'id', 
+            'position',
             'algo:force-directed', 'algo:fruchterman-reingold', 'algo:spring-embedder', 
             'algo:hierarchical', 'algo:tree', 'algo:circular', 'algo:grid', 'algo:random'
         ]);
@@ -253,12 +254,17 @@ export class UIManager {
 
             const entityOfThisType = entities.find((e: any) => e.type === type);
             if (entityOfThisType) {
+                keys.add('position');
                 getAvailableProperties(dataModel, type, entityOfThisType).forEach(k => keys.add(k));
             } else {
                 const relOfThisType = relationships.find((r: any) => r.type === type);
                 if (relOfThisType) {
                     getAvailableProperties(dataModel, type, relOfThisType).forEach(k => keys.add(k));
                 } else {
+                    const isNode = dataModel?.entities?.[type];
+                    if (isNode) {
+                        keys.add('position');
+                    }
                     getAvailableProperties(dataModel, type).forEach(k => keys.add(k));
                 }
             }

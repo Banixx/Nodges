@@ -82,28 +82,31 @@ export class VisualMappingEngine {
 
         const visual: VisualProperties = {};
 
-        // Apply position mappings
-        if (preset.position && preset.position.source !== 'constant') {
-            const posVal = this.applyMapping(preset.position, entity, 'position');
-            if (Array.isArray(posVal) && posVal.length >= 3) {
-                visual.positionX = Number(posVal[0]);
-                visual.positionY = Number(posVal[1]);
-                visual.positionZ = Number(posVal[2]);
-            } else if (posVal && typeof posVal === 'object') {
-                visual.positionX = Number(posVal.x) || 0;
-                visual.positionY = Number(posVal.y) || 0;
-                visual.positionZ = Number(posVal.z) || 0;
+        // Apply position mappings (handle all position_X variants as well)
+        Object.keys(preset).forEach(key => {
+            if (key.startsWith('position') && preset[key].source !== 'constant') {
+                const posVal = this.applyMapping(preset[key], entity, 'position');
+                const axis = preset[key].params?.axis || 'xyz';
+                
+                if (axis === 'x') {
+                    visual.positionX = Number(posVal) || 0;
+                } else if (axis === 'y') {
+                    visual.positionY = Number(posVal) || 0;
+                } else if (axis === 'z') {
+                    visual.positionZ = Number(posVal) || 0;
+                } else {
+                    if (Array.isArray(posVal) && posVal.length >= 3) {
+                        visual.positionX = Number(posVal[0]);
+                        visual.positionY = Number(posVal[1]);
+                        visual.positionZ = Number(posVal[2]);
+                    } else if (posVal && typeof posVal === 'object') {
+                        visual.positionX = Number(posVal.x) || 0;
+                        visual.positionY = Number(posVal.y) || 0;
+                        visual.positionZ = Number(posVal.z) || 0;
+                    }
+                }
             }
-        }
-        if (preset.positionX && preset.positionX.source !== 'constant') {
-            visual.positionX = this.applyMapping(preset.positionX, entity, 'positionX');
-        }
-        if (preset.positionY && preset.positionY.source !== 'constant') {
-            visual.positionY = this.applyMapping(preset.positionY, entity, 'positionY');
-        }
-        if (preset.positionZ && preset.positionZ.source !== 'constant') {
-            visual.positionZ = this.applyMapping(preset.positionZ, entity, 'positionZ');
-        }
+        });
 
         // Apply size mapping
         if (preset.size) {

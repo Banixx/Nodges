@@ -1,0 +1,38 @@
+{
+  "query": "SELECT ?person ?personLabel ?language ?languageLabel WHERE { ?person wdt:P106 wd:Q16134115; wdt:P1416 ?language. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,de\". } } LIMIT 50",
+  "data": {
+    "entities": [],
+    "relationships": []
+  },
+  "metadata": {
+    "apiResponse": {
+      "id": "gen-1783927662-TnHPspe5aZrcmFLn6HRQ",
+      "created": 1783927662,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 335,
+        "completion_tokens": 79,
+        "total_tokens": 414,
+        "cost": 0.000055216,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000055216,
+          "upstream_inference_prompt_cost": 0.00003752,
+          "upstream_inference_completions_cost": 0.000017696
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "head": {
+    "vars": [
+      "person",
+      "personLabel",
+      "language",
+      "languageLabel"
+    ]
+  },
+  "results": {
+    "bindings": []
+  }
+}

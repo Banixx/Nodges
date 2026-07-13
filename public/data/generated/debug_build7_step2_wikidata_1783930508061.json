@@ -1,0 +1,2006 @@
+{
+  "head": {
+    "vars": [
+      "breed",
+      "breedLabel",
+      "country",
+      "countryLabel"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962905"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q38"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Cavallo Romano della Maremma Laziale"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Italy"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962916"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q142"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Corsican horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "France"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962919"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q30"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "American creme and white horse registry"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "United States"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962921"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q142"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Auvergne horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "France"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962930"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q38"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Catria horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Italy"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962932"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q148"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nangchen horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "People's Republic of China"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962933"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q38"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pentro horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Italy"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962944"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q31"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Belgian Sport Horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Belgium"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962948"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q142"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Cheval des Marquises"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "France"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962951"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q30"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nez Perce Horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "United States"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962952"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q155"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Brazilian Sport Horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Brazil"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962953"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q142"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Cheval du Morvan"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "France"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962956"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q38"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Ventasso horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Italy"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962962"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q31"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Flemish Horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Belgium"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962963"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q142"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Limousin horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "France"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962966"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q142"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Cheval lorrain"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "France"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2962973"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q142"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Navarrin horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "France"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2963620"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q298"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Chilean horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Chile"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2964310"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q30"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Choctaw Horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "United States"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2981825"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q408"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Coffin Bay Pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Australia"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2987038"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q159"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Vyatka horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Russia"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3021600"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q252"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Deli pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Indonesia"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3030340"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q21"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Norfolk Trotter"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "England"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3030606"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Taishuh"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Japan"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3030767"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q836"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Burmese Pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Myanmar"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3031152"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q27"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Kerry Bog Pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Ireland"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3031304"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q184"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Byelorussian Harness"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Belarus"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3034120"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Noma pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Japan"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3036272"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1049"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Dongola horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sudan"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3040564"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q27"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Irish Hobby"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Ireland"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3044064"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q20"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nordlandshest/Lyngshest"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Norway"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3047733"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q29"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Galician Pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Spain"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3062589"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q668"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Zaniskari"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "India"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3063148"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q36"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Malopolski"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Poland"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3099678"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q252"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Gayoe"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Indonesia"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3112880"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q21"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Hackney pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "England"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3114092"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q213"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Czech warm blood"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Czech Republic"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3133284"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q142"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Henson horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "France"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3157059"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q29"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Jaca Navarra"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Spain"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3191969"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q664"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Kaimanawa horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "New Zealand"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3192903"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q43"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Karacabey horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Turkey"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3192919"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q219"
+        },
+        "breedLabel": {
+          "type": "literal",
+          "value": "Q3192919"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Bulgaria"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3197329"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q813"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Kyrgyz Horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Kyrgyzstan"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3259807"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q29"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Losino horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Spain"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3287434"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q155"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Marajoara (horse breed)"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Brazil"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3322423"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q30"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Montana Traveler"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "United States"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3327025"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q30"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Moyle horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "United States"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3328902"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Spanish Mustang"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Canada"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3328902"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q30"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Spanish Mustang"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "United States"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3336123"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q30"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Narragansett Pacer"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "United States"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3336163"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q159"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Narym Pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Russia"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3336940"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q30"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "National Show Horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "United States"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3342285"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q142"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nivernais horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "France"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3343392"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q258"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nooitgedacht pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "South Africa"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3345528"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q813"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Novokirghiz"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Kyrgyzstan"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3347900"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q159"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Ob pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Russia"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3347946"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q183"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Oberlander horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Germany"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3350189"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q145"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Old English Black"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "United Kingdom"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3360318"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q252"
+        },
+        "breedLabel": {
+          "type": "literal",
+          "value": "Q3360318"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Indonesia"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3362455"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q155"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pantaneiro"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Brazil"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3367777"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q800"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Costa Rican Saddle Horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Costa Rica"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3377024"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q414"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Petiso Argentino"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Argentina"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3396189"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Kiso"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Japan"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3396193"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q948"
+        },
+        "breedLabel": {
+          "type": "literal",
+          "value": "Q3396193"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Tunisia"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3396198"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q45"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pónei da Terceira"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Portugal"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3396200"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q408"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Australian Pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Australia"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3396201"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1033"
+        },
+        "breedLabel": {
+          "type": "literal",
+          "value": "Q3396201"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nigeria"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3396202"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1049"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Western Sudan pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sudan"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3396204"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q142"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "French Saddle Pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "France"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3396205"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Lac La Croix Indian Pony"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Canada"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3412447"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q889"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Qatgani"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Afghanistan"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3416037"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q142"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Half-bred horses of Dombes"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "France"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3478173"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q414"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Argentinian Warmblood"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Argentina"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3494202"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q30"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Spotted Saddle horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "United States"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3516595"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q794"
+        },
+        "breedLabel": {
+          "type": "literal",
+          "value": "Q3516595"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Iran"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3528307"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q30"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Tiger horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "United States"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3530581"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q38"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Tolfetano"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Italy"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3536621"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q408"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Australian Draught Horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Australia"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3536627"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q224"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Croatian Coldblood"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Croatia"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3536637"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q258"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Cape Harness"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "South Africa"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3540808"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q38"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Italian trotter"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Italy"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3551917"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q843"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Unmol Horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pakistan"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3552821"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q43"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Uzunyayla"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Turkey"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3560695"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q30"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Virginia Highlander"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "United States"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3565394"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q30"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Walkaloosa"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "United States"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3617386"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q29"
+        },
+        "breedLabel": {
+          "type": "literal",
+          "value": "Q3617386"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Spain"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3620866"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q38"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Cavallo Appenninico"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Italy"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3621189"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q142"
+        },
+        "breedLabel": {
+          "type": "literal",
+          "value": "Q3621189"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "France"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3622878"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q219"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pleven horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Bulgaria"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3658161"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q219"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "East Bulgarian"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Bulgaria"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3663935"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q38"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sarcidano horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Italy"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3751412"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q29"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Monchino"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Spain"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3754249"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q29"
+        },
+        "breedLabel": {
+          "type": "literal",
+          "value": "Q3754249"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Spain"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3816660"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q29"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Hispano-Bretón"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Spain"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3887213"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q36"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Silesian horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Poland"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3900138"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q38"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Persano horse"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Italy"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3925977"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q38"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Purosangue Orientale"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Italy"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q4068833"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q668"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Indian Half-Bred"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "India"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q4087547"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q159"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Voronej"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Russia"
+        }
+      },
+      {
+        "breed": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q4160688"
+        },
+        "country": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q232"
+        },
+        "breedLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Dzhab"
+        },
+        "countryLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Kazakhstan"
+        }
+      }
+    ]
+  }
+}

@@ -766,7 +766,7 @@ export class MappingUI {
         
         const isEntity = this.currentCategory === 'entities';
         const baseVisualProps = isEntity
-            ? ['position', 'positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation', 'attraction', 'repulsion', 'inertia']
+            ? ['position', 'size', 'color', 'geometry', 'glow', 'animation', 'attraction', 'repulsion', 'inertia']
             : ['thickness', 'color', 'curvature', 'glow', 'opacity', 'animation_flow', 'animation_sequential', 'animation_pulse', 'animation_segments'];
 
         const visualProps: string[] = [];
@@ -792,9 +792,6 @@ export class MappingUI {
 
             const propTranslations: Record<string, string> = {
                 position: 'Position',
-                positionX: 'Position X',
-                positionY: 'Position Y',
-                positionZ: 'Position Z',
                 size: 'Größe',
                 color: 'Farbe',
                 geometry: 'Geometrie',
@@ -900,6 +897,34 @@ export class MappingUI {
                     if (hasValue) {
                         labelContainer.appendChild(valBadge);
                     }
+                }
+                
+                if (isConnected && baseProp === 'position') {
+                    const axisSelect = document.createElement('select');
+                    axisSelect.className = 'axis-select';
+                    axisSelect.style.cssText = 'background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 4px; font-size: 10px; padding: 1px 4px; cursor: pointer; outline: none; margin-left: 6px;';
+                    
+                    const currentAxis = mapping.params?.axis || 'xyz';
+                    
+                    axisSelect.innerHTML = `
+                        <option value="xyz" ${currentAxis === 'xyz' ? 'selected' : ''}>Alle Achsen (XYZ)</option>
+                        <option value="x" ${currentAxis === 'x' ? 'selected' : ''}>Nur X Achse</option>
+                        <option value="y" ${currentAxis === 'y' ? 'selected' : ''}>Nur Y Achse</option>
+                        <option value="z" ${currentAxis === 'z' ? 'selected' : ''}>Nur Z Achse</option>
+                    `;
+                    
+                    axisSelect.addEventListener('change', (e) => {
+                        e.stopPropagation();
+                        if (this.mappings?.defaultPresets?.[this.currentType]?.[prop]) {
+                            const preset = this.mappings.defaultPresets[this.currentType][prop];
+                            if (!preset.params) preset.params = {};
+                            preset.params.axis = (e.target as HTMLSelectElement).value;
+                            if (this.onUpdate) this.onUpdate(this.mappings);
+                        }
+                    });
+                    
+                    axisSelect.addEventListener('click', e => e.stopPropagation());
+                    labelContainer.appendChild(axisSelect);
                 }
                 
                 header.appendChild(labelContainer);
@@ -2254,6 +2279,24 @@ export class MappingUI {
 
         const preset = this.mappings.defaultPresets[this.currentType] as any;
 
+        // Wenn ein Sub-Attribut von 'position' (z.B. position.x) verbunden wird, hebe alle Verbindungen auf, 
+        // die das gesamte 'position'-Attribut nutzen. Umgekehrt genauso.
+        let axis = 'xyz';
+        if (sourceAttr === 'position') {
+            Object.keys(preset).forEach(k => {
+                if (preset[k] && preset[k].source && preset[k].source.startsWith('position.')) {
+                    delete preset[k];
+                }
+            });
+        } else if (sourceAttr.startsWith('position.')) {
+            axis = sourceAttr.split('.')[1];
+            Object.keys(preset).forEach(k => {
+                if (preset[k] && preset[k].source === 'position') {
+                    delete preset[k];
+                }
+            });
+        }
+
         let defaultFunc: any = 'linear';
         const basePropName = propName.replace(/_\d+$/, '');
         const isCategoricalSource = ['type', 'id', 'category', 'label', 'domain'].includes(sourceAttr);
@@ -2295,6 +2338,11 @@ export class MappingUI {
             domain: existingMapping.domain || newDomain,
             range: existingMapping.range || defaultRange
         };
+
+        if (axis !== 'xyz') {
+            if (!updates.params) updates.params = {};
+            updates.params.axis = axis;
+        }
 
         if (defaultFunc === 'categorical') {
             const uniqueValues = this.getAttributeUniqueValues(sourceAttr);

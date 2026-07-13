@@ -418,14 +418,17 @@ export class LLMService {
             parsedData = parsedData.GraphDataSchema;
         }
 
-        // Flexiblere Validierung: Es muss ENTWEDER data.entities/relationships geben ODER ein dataModel ODER visualMappings (fuer Multi-Step)
+        // Flexiblere Validierung: Es muss ENTWEDER data.entities/relationships geben ODER ein dataModel ODER visualMappings (fuer Multi-Step) ODER eine SPARQL query ODER Keywords
         const hasData = parsedData.data && Array.isArray(parsedData.data.entities) && Array.isArray(parsedData.data.relationships);
         const hasDataModel = parsedData.dataModel && typeof parsedData.dataModel === 'object';
         const hasVisualMappings = parsedData.visualMappings && typeof parsedData.visualMappings === 'object';
+        const hasQuery = typeof parsedData.query === 'string';
+        const hasKeywords = Array.isArray(parsedData.entities) || Array.isArray(parsedData.properties);
+        const hasQuestion = typeof parsedData.question === 'string';
 
-        if (!hasData && !hasDataModel && !hasVisualMappings) {
+        if (!hasData && !hasDataModel && !hasVisualMappings && !hasQuery && !hasKeywords && !hasQuestion) {
             console.error("Invalid JSON structure:", parsedData);
-            throw new Error('Das generierte JSON hat nicht die erwartete Struktur (weder Daten, noch Schema, noch Visual Mappings gefunden).');
+            throw new Error('Das generierte JSON hat nicht die erwartete Struktur (weder Daten, noch Schema, noch Visual Mappings, noch SPARQL-Query, noch Keywords, noch Frage gefunden).');
         }
 
         // Guarantee data.entities and data.relationships always exist
@@ -628,7 +631,164 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         
         return resultData;
     }
+    public static async askClarification(
+        history: {role: 'user'|'assistant', content: string}[],
+        provider: LLMProvider,
+        model: string
+    ): Promise<string> {
+        let systemPrompt = "Du bist ein erfahrener Datenarchitekt für Nodges. Der Nutzer möchte einen 3D-Graphen generieren lassen.\n";
+        systemPrompt += "Lies den bisherigen Verlauf. Wenn die Nutzeranfrage abstrakt, vage oder zu generisch ist (z.B. 'Politik', 'Wirtschaft'), stelle EINE gezielte, kurze Rückfrage, um herauszufinden, welche KONKRETEN Instanzen (z.B. Politiker, Parteien, Firmen) er visualisieren möchte.\n";
+        systemPrompt += "Stelle nur eine kurze, freundliche Gegenfrage. Max 2 Sätze.\n";
+        systemPrompt += "Gib deine Antwort zwingend im JSON Format zurück: { \"question\": \"Deine Frage...\" }";
 
+        const userPrompt = history.map(h => `${h.role === 'user' ? 'USER' : 'ASSISTANT'}: ${h.content}`).join('\n\n');
+        
+        const res: any = await this._executeLLMCall(systemPrompt, userPrompt, provider, model);
+        if (res && res.question) return res.question;
+        return "Kannst du das etwas genauer spezifizieren?";
+    }
+
+    public static async generateGraphDataBuild7(
+        prompt: string, 
+        provider: LLMProvider, 
+        model: string,
+        onProgress?: (msg: string) => void,
+        onStepComplete?: (stepNumber: number, stepName: string, content: string, extension: string) => void
+    ): Promise<GraphData> {
+        // Schritt 1: Keywords extrahieren
+        if (onProgress) onProgress('Schritt 1/5: Analysiere Anfrage für Wikidata-Faktencheck...');
+        
+        const keywordPromptFile = import.meta.env.BASE_URL + 'prompts/build_7_keyword_prompt.md';
+        let keywordSystemPrompt = 'Extrahiere Entitäten und Properties als JSON {"entities":[], "properties":[]}. Übersetze auf Englisch.';
+        try {
+            const res = await fetch(keywordPromptFile);
+            if (res.ok) keywordSystemPrompt = await res.text();
+        } catch (e) { console.warn(e); }
+
+        const keywordData: any = await this._executeLLMCall(keywordSystemPrompt, `Anfrage: ${prompt}`, provider, model);
+        await this._saveDebugFile(`debug_build7_step1_keywords_${Date.now()}.json`, keywordData);
+        if (onStepComplete) onStepComplete(1, "Keywords", JSON.stringify(keywordData, null, 2), "json");
+
+        // Schritt 2: Wikidata Search API
+        if (onProgress) onProgress('Schritt 2/5: Suche exakte Wikidata-IDs...');
+        const contextLines: string[] = [];
+        
+        const searchWikidata = async (term: string, type: 'item' | 'property') => {
+            try {
+                const url = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(term)}&language=en&type=${type}&limit=4&format=json&origin=*`;
+                const res = await fetch(url);
+                const json = await res.json();
+                if (json.search && json.search.length > 0) {
+                    const hits = json.search.map((s: any) => `${s.id} (${s.label}: ${s.description || ''})`).join(' | ');
+                    contextLines.push(`- ${type.toUpperCase()} "${term}": ${hits}`);
+                }
+            } catch (e) { console.warn("Wikidata search error", e); }
+        };
+
+        const entities = Array.isArray(keywordData.entities) ? keywordData.entities : [];
+        const properties = Array.isArray(keywordData.properties) ? keywordData.properties : [];
+        
+        await Promise.all([
+            ...entities.map((e: string) => searchWikidata(e, 'item')),
+            ...properties.map((p: string) => searchWikidata(p, 'property'))
+        ]);
+        
+        const wikidataContext = contextLines.join('\n');
+        await this._saveDebugFile(`debug_build7_step2_context_${Date.now()}.txt`, wikidataContext);
+        if (onStepComplete) onStepComplete(2, "Faktencheck_Live_Suche", wikidataContext, "txt");
+
+        // Schritt 3: Text zu SPARQL
+        if (onProgress) onProgress('Schritt 3/5: Generiere exakte SPARQL-Abfrage...');
+        
+        const sparqlPromptFile = import.meta.env.BASE_URL + 'prompts/build_7_sparql_prompt.md';
+        let sparqlSystemPrompt = '';
+        try {
+            const res = await fetch(sparqlPromptFile);
+            if (!res.ok) throw new Error();
+            sparqlSystemPrompt = await res.text();
+        } catch {
+            throw new Error(`Konnte SPARQL-Prompt nicht laden: ${sparqlPromptFile}`);
+        }
+
+        const sparqlUserPrompt = `Nutzeranfrage: ${prompt}\n\n=== GEFUNDENE WIKIDATA-IDs (FAKTENCHECK) ===\nHier sind die echten IDs für diese Anfrage aus der Live-Suche. Nutze ZWINGEND diese Q-IDs und P-IDs für den Aufbau der SPARQL-Query. Rate keine IDs!\n\n${wikidataContext}`;
+        await this._saveDebugFile(`debug_build7_step3_prompt_${Date.now()}.md`, `SYSTEM:\n${sparqlSystemPrompt}\n\nUSER:\n${sparqlUserPrompt}`);
+        
+        const sparqlData: any = await this._executeLLMCall(sparqlSystemPrompt, sparqlUserPrompt, provider, model);
+        await this._saveDebugFile(`debug_build7_step1_result_${Date.now()}.json`, sparqlData);
+        
+        const sparqlQuery = sparqlData.query || sparqlData.sparql;
+        if (!sparqlQuery) {
+            throw new Error('Das LLM hat keine valide SPARQL-Abfrage (Feld "query") zurückgegeben.');
+        }
+
+        if (onStepComplete) {
+            onStepComplete(3, "Generierte_SPARQL_Abfrage", sparqlQuery, "sparql");
+        }
+
+        // Schritt 4: Wikidata Abfrage
+        if (onProgress) onProgress('Schritt 4/5: Frage Live-Daten von Wikidata ab...');
+        const WIKIDATA_ENDPOINT = 'https://query.wikidata.org/sparql';
+        let rawWikidataResponse = null;
+        try {
+            const response = await fetch(WIKIDATA_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Accept': 'application/sparql-results+json',
+                    'User-Agent': 'Nodges/Build-7 (localhost)'
+                },
+                body: new URLSearchParams({ query: sparqlQuery })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Wikidata HTTP Error: ${response.status}`);
+            }
+
+            rawWikidataResponse = await response.json();
+            await this._saveDebugFile(`debug_build7_step4_wikidata_${Date.now()}.json`, rawWikidataResponse);
+
+            if (onStepComplete) onStepComplete(4, "Wikidata_Rohdaten", JSON.stringify(rawWikidataResponse, null, 2), "json");
+        } catch (error: any) {
+            throw new Error(`Fehler bei der Wikidata-Abfrage: ${error.message}`);
+        }
+
+        if (!rawWikidataResponse || !rawWikidataResponse.results || !rawWikidataResponse.results.bindings || rawWikidataResponse.results.bindings.length === 0) {
+            throw new Error('Wikidata hat für diese Abfrage keine Ergebnisse gefunden. Bitte versuche einen anderen Suchbegriff.');
+        }
+
+        // Schritt 5: Tabellendaten in Nodges JSON mappen
+        if (onProgress) onProgress('Schritt 5/5: Transformiere Wikidata-Rohdaten in Nodges 3D-Graph...');
+        
+        const mappingPromptFile = import.meta.env.BASE_URL + 'prompts/build_7_mapping_prompt.md';
+        let mappingSystemPrompt = '';
+        try {
+            const res = await fetch(mappingPromptFile);
+            if (!res.ok) throw new Error();
+            mappingSystemPrompt = await res.text();
+        } catch {
+            throw new Error(`Konnte Mapping-Prompt nicht laden: ${mappingPromptFile}`);
+        }
+
+        // Komprimiere und reduziere Bindings, um Token-Limits und Endlos-Ladezeiten zu verhindern
+        const limitedBindings = rawWikidataResponse.results.bindings.slice(0, 40).map((b: any) => {
+            const clean: any = {};
+            for (const key in b) {
+                clean[key] = b[key].value;
+            }
+            return clean;
+        });
+        const mappingUserPrompt = `Ursprüngliche Anfrage: ${prompt}\n\nHier sind die abgerufenen Wikidata-Ergebnisse (JSON):\n${JSON.stringify(limitedBindings, null, 2)}`;
+        
+        const fullPromptLog = `=== SYSTEM PROMPT ===\n${mappingSystemPrompt}\n\n=== USER PROMPT ===\n${mappingUserPrompt}`;
+        if (onStepComplete) onStepComplete(5, "Mapping_Prompt_an_LLM", fullPromptLog, "md");
+
+        await this._saveDebugFile(`debug_build7_step5_prompt_${Date.now()}.md`, `SYSTEM:\n${mappingSystemPrompt}\n\nUSER:\n${mappingUserPrompt}`);
+        
+        const finalGraphData = await this._executeLLMCall(mappingSystemPrompt, mappingUserPrompt, provider, model);
+        await this._saveDebugFile(`debug_build7_step3_result_${Date.now()}.json`, finalGraphData);
+        
+        return finalGraphData;
+    }
 
     public static async refineGraphData(
         existingData: GraphData,

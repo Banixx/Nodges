@@ -1,0 +1,38 @@
+{
+  "query": "SELECT ?breed ?breedLabel ?country ?countryLabel WHERE { ?breed wdt:P31 wd:Q1160573; wdt:P495 ?country. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,de\". } } LIMIT 100",
+  "data": {
+    "entities": [],
+    "relationships": []
+  },
+  "metadata": {
+    "apiResponse": {
+      "id": "gen-1783930495-IWkxJTP5qfGmIeZzfm1P",
+      "created": 1783930495,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 580,
+        "completion_tokens": 81,
+        "total_tokens": 661,
+        "cost": 0.000072716,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000072716,
+          "upstream_inference_prompt_cost": 0.00005684,
+          "upstream_inference_completions_cost": 0.000015876
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": "vllm-0.23.0-dp8-ep-b9eaea4e"
+    }
+  }
+}

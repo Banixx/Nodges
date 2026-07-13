@@ -1,0 +1,124 @@
+{
+  "head": {
+    "vars": [
+      "switzerland",
+      "switzerlandLabel",
+      "politicalSystem",
+      "politicalSystemLabel"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "politicalSystem": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q150"
+        },
+        "politicalSystemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "French"
+        }
+      },
+      {
+        "politicalSystem": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q188"
+        },
+        "politicalSystemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "German"
+        }
+      },
+      {
+        "politicalSystem": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q652"
+        },
+        "politicalSystemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Italian"
+        }
+      },
+      {
+        "politicalSystem": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q13199"
+        },
+        "politicalSystemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Romansh"
+        }
+      },
+      {
+        "politicalSystem": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q15087"
+        },
+        "politicalSystemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Franco-Provençal language"
+        }
+      },
+      {
+        "politicalSystem": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q33754"
+        },
+        "politicalSystemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Lombard"
+        }
+      },
+      {
+        "politicalSystem": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q35150"
+        },
+        "politicalSystemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Swiss-German Sign Language"
+        }
+      },
+      {
+        "politicalSystem": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q131339"
+        },
+        "politicalSystemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Alemannic"
+        }
+      },
+      {
+        "politicalSystem": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q387066"
+        },
+        "politicalSystemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Swiss German"
+        }
+      },
+      {
+        "politicalSystem": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q672147"
+        },
+        "politicalSystemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Swiss Italian"
+        }
+      }
+    ]
+  }
+}

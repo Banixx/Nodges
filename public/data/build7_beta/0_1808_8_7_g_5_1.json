@@ -1,0 +1,1449 @@
+{
+  "system": "Pferde, Rassen und Herkunft",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Generiert aus Wikidata",
+    "apiResponse": {
+      "id": "gen-1783931184-QsGiqwd7W9Wu15EYKPAg",
+      "created": 1783931184,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 3307,
+        "completion_tokens": 4956,
+        "total_tokens": 8263,
+        "cost": 0.001017863,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.001017863,
+          "upstream_inference_prompt_cost": 0.000254639,
+          "upstream_inference_completions_cost": 0.000763224
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1136,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    },
+    "generationDetails": {
+      "prompt": "Pferde, ihre Rassen und Herkunft",
+      "context": null,
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-v4-flash",
+      "pipeline": "build7",
+      "durationMs": 158713,
+      "timestamp": "2026-07-13T08:28:45.810Z"
+    },
+    "exportedAt": "2026-07-13T08:29:24.985Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1783931325810_Q2962905",
+        "type": "HorseBreed",
+        "label": "Cavallo Romano della Maremma Laziale",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.061220930727609965,
+          "y": -1.4907022189152621,
+          "z": 2.3082920609984985
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962916",
+        "type": "HorseBreed",
+        "label": "Corsican horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.2636721727444393,
+          "y": 0.9147833408316125,
+          "z": -0.9838261087911766
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962919",
+        "type": "HorseBreed",
+        "label": "American creme and white horse registry",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.7823542048528106,
+          "y": -0.5884229974512827,
+          "z": -3.261700175864957
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962921",
+        "type": "HorseBreed",
+        "label": "Auvergne horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.243244971129234,
+          "y": 1.1660112977416968,
+          "z": -1.0549857374754743
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962930",
+        "type": "HorseBreed",
+        "label": "Catria horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.012318212512654487,
+          "y": -1.5176603752191138,
+          "z": 2.1957505094212166
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962932",
+        "type": "HorseBreed",
+        "label": "Nangchen horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -3.196517781091141,
+          "y": 3.5774361888598882,
+          "z": 0.6271700901533436
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962933",
+        "type": "HorseBreed",
+        "label": "Pentro horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.03884445087189804,
+          "y": -1.391195392483643,
+          "z": 2.209970211801878
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962944",
+        "type": "HorseBreed",
+        "label": "Belgian Sport Horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -2.2341659989452327,
+          "y": -3.8479359791643026,
+          "z": -0.12986955576475653
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962948",
+        "type": "HorseBreed",
+        "label": "Cheval des Marquises",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.4595119935668164,
+          "y": 1.0761594774278547,
+          "z": -0.9955270427509639
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962951",
+        "type": "HorseBreed",
+        "label": "Nez Perce Horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.6645942737233184,
+          "y": -0.2804238987925537,
+          "z": -3.374916524656863
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962952",
+        "type": "HorseBreed",
+        "label": "Brazilian Sport Horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.9187109547029935,
+          "y": -2.355060292738164,
+          "z": -0.847225435715106
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962953",
+        "type": "HorseBreed",
+        "label": "Cheval du Morvan",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.128934369004048,
+          "y": 0.9738196384152256,
+          "z": -1.1698190810177627
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962956",
+        "type": "HorseBreed",
+        "label": "Ventasso horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.095825553058437,
+          "y": -1.3821283965637867,
+          "z": 2.3230865625876898
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962962",
+        "type": "HorseBreed",
+        "label": "Flemish Horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -2.2107268503334674,
+          "y": -3.8613208728782276,
+          "z": 0.20432359582550833
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962963",
+        "type": "HorseBreed",
+        "label": "Limousin horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.3892075894331897,
+          "y": 1.3299251301247097,
+          "z": -0.9333490306844016
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962966",
+        "type": "HorseBreed",
+        "label": "Cheval lorrain",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.0389724136569853,
+          "y": 1.0934187273494977,
+          "z": -1.1356634367018956
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2962973",
+        "type": "HorseBreed",
+        "label": "Navarrin horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.024947741685368,
+          "y": 0.8483107190549121,
+          "z": -0.9587237178699765
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2963620",
+        "type": "HorseBreed",
+        "label": "Chilean horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.9955793474065799,
+          "y": 4.441204189667143,
+          "z": 1.4705939098387253
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2964310",
+        "type": "HorseBreed",
+        "label": "Choctaw Horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.9095300449867953,
+          "y": -0.3732418409682295,
+          "z": -3.5276305984579026
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2981825",
+        "type": "HorseBreed",
+        "label": "Coffin Bay Pony",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.74009008713588,
+          "y": -2.95692533663177,
+          "z": -3.4608921655665656
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q2987038",
+        "type": "HorseBreed",
+        "label": "Vyatka horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -5,
+          "y": -0.2543207619156591,
+          "z": 0.8596666946300296
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3021600",
+        "type": "HorseBreed",
+        "label": "Deli pony",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -1.480830750874135,
+          "y": 1.4223005261563697,
+          "z": -1.77874253835776
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3030340",
+        "type": "HorseBreed",
+        "label": "Norfolk Trotter",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -4.516484268855359,
+          "y": 1.1116386696659601,
+          "z": -1.49958026787711
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3030606",
+        "type": "HorseBreed",
+        "label": "Taishuh",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -1.0572567389758314,
+          "y": 2.579518988859963,
+          "z": 2.39403103983443
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3030767",
+        "type": "HorseBreed",
+        "label": "Burmese Pony",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -2.8854501339461964,
+          "y": -1.3036178210054492,
+          "z": 4.183705593989904
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3031152",
+        "type": "HorseBreed",
+        "label": "Kerry Bog Pony",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.1084175998846613,
+          "y": -3.837695376878373,
+          "z": 1.3895622699660017
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3031304",
+        "type": "HorseBreed",
+        "label": "Byelorussian Harness",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.804937090024579,
+          "y": -4.469723871746997,
+          "z": -1.5920792995889308
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3034120",
+        "type": "HorseBreed",
+        "label": "Noma pony",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -1.367220165467497,
+          "y": 2.4560975562291016,
+          "z": 2.428246514372422
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3036272",
+        "type": "HorseBreed",
+        "label": "Dongola horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -1.3508139272035729,
+          "y": -2.1481148709072935,
+          "z": -4.448259658644477
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3040564",
+        "type": "HorseBreed",
+        "label": "Irish Hobby",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.9329925550777085,
+          "y": -4.490831430667337,
+          "z": 1.2084766894940122
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3044064",
+        "type": "HorseBreed",
+        "label": "Nordlandshest/Lyngshest",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.5867382142895948,
+          "y": 3.8908413779378757,
+          "z": -1.2955648125386272
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3047733",
+        "type": "HorseBreed",
+        "label": "Galician Pony",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -3.409233192238878,
+          "y": -1.8084661718553843,
+          "z": -2.0772595542852708
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3062589",
+        "type": "HorseBreed",
+        "label": "Zaniskari",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -4.392461790127832,
+          "y": -1.7941140665854323,
+          "z": 2.4458819654191806
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3063148",
+        "type": "HorseBreed",
+        "label": "Malopolski",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.6279408886075449,
+          "y": 0.4889094353801241,
+          "z": 4.379315878756063
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3099678",
+        "type": "HorseBreed",
+        "label": "Gayoe",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -1.5746002686006324,
+          "y": 1.556209442213212,
+          "z": -1.726829982193056
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3112880",
+        "type": "HorseBreed",
+        "label": "Hackney pony",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -4.567677765967834,
+          "y": 0.9124954884904299,
+          "z": -1.7644306307980302
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3114092",
+        "type": "HorseBreed",
+        "label": "Czech warm blood",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.7269904482537977,
+          "y": 1.6568150764126466,
+          "z": 0.5135744642059963
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3133284",
+        "type": "HorseBreed",
+        "label": "Henson horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.0667222436403474,
+          "y": 1.1840637248520374,
+          "z": -1.3071037268048957
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3157059",
+        "type": "HorseBreed",
+        "label": "Jaca Navarra",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -3.718011492834781,
+          "y": -1.962529735053608,
+          "z": -2.4006900956300554
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q3191969",
+        "type": "HorseBreed",
+        "label": "Kaimanawa horse",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 5,
+          "y": 0.5374340125905492,
+          "z": 0.5243861645217517
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q38",
+        "type": "Country",
+        "label": "Italy",
+        "stateVector": {
+          "degree": 4,
+          "inbound": 4,
+          "outbound": 0
+        },
+        "inDegree": 4,
+        "outDegree": 0,
+        "position": {
+          "x": -0.36022448104665883,
+          "y": -1.4951572556834387,
+          "z": 2.052975479487899
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q142",
+        "type": "Country",
+        "label": "France",
+        "stateVector": {
+          "degree": 8,
+          "inbound": 8,
+          "outbound": 0
+        },
+        "inDegree": 8,
+        "outDegree": 0,
+        "position": {
+          "x": 1.819995216414134,
+          "y": 0.8230251907371322,
+          "z": -1.1574251355291465
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q30",
+        "type": "Country",
+        "label": "United States",
+        "stateVector": {
+          "degree": 3,
+          "inbound": 3,
+          "outbound": 0
+        },
+        "inDegree": 3,
+        "outDegree": 0,
+        "position": {
+          "x": -0.7344164193908549,
+          "y": -0.4145999025098368,
+          "z": -3.353237069855189
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q148",
+        "type": "Country",
+        "label": "People's Republic of China",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -3.0172608436477617,
+          "y": 3.654092960765302,
+          "z": 0.8070041648299442
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q31",
+        "type": "Country",
+        "label": "Belgium",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": -2.2224479899294223,
+          "y": -3.8546137533434197,
+          "z": 0.03722516599318569
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q155",
+        "type": "Country",
+        "label": "Brazil",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 2.0539091636932336,
+          "y": -2.3626688955065314,
+          "z": -0.7718413791005373
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q298",
+        "type": "Country",
+        "label": "Chile",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 1.087632210317086,
+          "y": 4.490831430667337,
+          "z": 1.584908029939543
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q408",
+        "type": "Country",
+        "label": "Australia",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 2.606641257935906,
+          "y": -3.0248133384156053,
+          "z": -3.5009029301183303
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q159",
+        "type": "Country",
+        "label": "Russia",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -4.976630821197693,
+          "y": -0.36403381371027765,
+          "z": 0.7527232101314537
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q252",
+        "type": "Country",
+        "label": "Indonesia",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": -1.3729459843442218,
+          "y": 1.5385838676090173,
+          "z": -1.6239326644476533
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q21",
+        "type": "Country",
+        "label": "England",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": -4.542071120502746,
+          "y": 1.0120594861909489,
+          "z": -1.6320138044674186
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q17",
+        "type": "Country",
+        "label": "Japan",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": -1.2122503175196053,
+          "y": 2.5178350220985015,
+          "z": 2.4111586061512704
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q836",
+        "type": "Country",
+        "label": "Myanmar",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -2.7795283103963633,
+          "y": -1.4127792230209968,
+          "z": 4.153992240901082
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q27",
+        "type": "Country",
+        "label": "Ireland",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": 2.128453214532768,
+          "y": -4.078804093595808,
+          "z": 1.4668110109456813
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q184",
+        "type": "Country",
+        "label": "Belarus",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 0.7494974511994711,
+          "y": -4.4740086366691365,
+          "z": -1.636545469286259
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q1049",
+        "type": "Country",
+        "label": "Sudan",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -1.4890815136795408,
+          "y": -2.2134453165852532,
+          "z": -4.423220087717979
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q20",
+        "type": "Country",
+        "label": "Norway",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 0.40723440072577466,
+          "y": 3.974639099371769,
+          "z": -1.0654651102304002
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q29",
+        "type": "Country",
+        "label": "Spain",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": -3.607598998691425,
+          "y": -1.9125386329366854,
+          "z": -2.1171655527946456
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q668",
+        "type": "Country",
+        "label": "India",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -4.42745776602594,
+          "y": -1.643677588168948,
+          "z": 2.4585982873979058
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q36",
+        "type": "Country",
+        "label": "Poland",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -0.5120821513965625,
+          "y": 0.562988316846158,
+          "z": 4.448259658644477
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q213",
+        "type": "Country",
+        "label": "Czech Republic",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -0.6698111246867154,
+          "y": 1.7655969996259413,
+          "z": 0.4191493048913252
+        }
+      },
+      {
+        "id": "AI_Generation_1783931325810_Q664",
+        "type": "Country",
+        "label": "New Zealand",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 4.966165605229553,
+          "y": 0.6409059567410152,
+          "z": 0.6346916482630972
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1783931325810_rel_1",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962905",
+        "target": "AI_Generation_1783931325810_Q38",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_2",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962916",
+        "target": "AI_Generation_1783931325810_Q142",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_3",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962919",
+        "target": "AI_Generation_1783931325810_Q30",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_4",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962921",
+        "target": "AI_Generation_1783931325810_Q142",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_5",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962930",
+        "target": "AI_Generation_1783931325810_Q38",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_6",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962932",
+        "target": "AI_Generation_1783931325810_Q148",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_7",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962933",
+        "target": "AI_Generation_1783931325810_Q38",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_8",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962944",
+        "target": "AI_Generation_1783931325810_Q31",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_9",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962948",
+        "target": "AI_Generation_1783931325810_Q142",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_10",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962951",
+        "target": "AI_Generation_1783931325810_Q30",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_11",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962952",
+        "target": "AI_Generation_1783931325810_Q155",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_12",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962953",
+        "target": "AI_Generation_1783931325810_Q142",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_13",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962956",
+        "target": "AI_Generation_1783931325810_Q38",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_14",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962962",
+        "target": "AI_Generation_1783931325810_Q31",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_15",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962963",
+        "target": "AI_Generation_1783931325810_Q142",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_16",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962966",
+        "target": "AI_Generation_1783931325810_Q142",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_17",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2962973",
+        "target": "AI_Generation_1783931325810_Q142",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_18",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2963620",
+        "target": "AI_Generation_1783931325810_Q298",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_19",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2964310",
+        "target": "AI_Generation_1783931325810_Q30",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_20",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2981825",
+        "target": "AI_Generation_1783931325810_Q408",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_21",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q2987038",
+        "target": "AI_Generation_1783931325810_Q159",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_22",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3021600",
+        "target": "AI_Generation_1783931325810_Q252",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_23",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3030340",
+        "target": "AI_Generation_1783931325810_Q21",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_24",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3030606",
+        "target": "AI_Generation_1783931325810_Q17",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_25",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3030767",
+        "target": "AI_Generation_1783931325810_Q836",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_26",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3031152",
+        "target": "AI_Generation_1783931325810_Q27",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_27",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3031304",
+        "target": "AI_Generation_1783931325810_Q184",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_28",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3034120",
+        "target": "AI_Generation_1783931325810_Q17",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_29",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3036272",
+        "target": "AI_Generation_1783931325810_Q1049",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_30",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3040564",
+        "target": "AI_Generation_1783931325810_Q27",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_31",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3044064",
+        "target": "AI_Generation_1783931325810_Q20",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_32",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3047733",
+        "target": "AI_Generation_1783931325810_Q29",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_33",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3062589",
+        "target": "AI_Generation_1783931325810_Q668",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_34",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3063148",
+        "target": "AI_Generation_1783931325810_Q36",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_35",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3099678",
+        "target": "AI_Generation_1783931325810_Q252",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_36",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3112880",
+        "target": "AI_Generation_1783931325810_Q21",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_37",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3114092",
+        "target": "AI_Generation_1783931325810_Q213",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_38",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3133284",
+        "target": "AI_Generation_1783931325810_Q142",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_39",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3157059",
+        "target": "AI_Generation_1783931325810_Q29",
+        "label": "originates from"
+      },
+      {
+        "id": "AI_Generation_1783931325810_rel_40",
+        "type": "originates_from",
+        "source": "AI_Generation_1783931325810_Q3191969",
+        "target": "AI_Generation_1783931325810_Q664",
+        "label": "originates from"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "HorseBreed": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "box"
+          }
+        }
+      },
+      "Country": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "originates_from": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#aaaaaa"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.1
+          }
+        }
+      }
+    }
+  }
+}

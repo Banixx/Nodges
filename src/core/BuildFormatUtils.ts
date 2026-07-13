@@ -77,13 +77,7 @@ export function getAvailableProperties(dm: DataModel | undefined, entityType: st
             if (!reservedKeys.includes(k)) {
                 // Erlaube Objekte (wie 'position'), damit MappingUI.ts diese als verschachtelte Gruppe rendern kann
                 if (typeof (entity as any)[k] !== 'function') {
-                    if (k === 'position' && (entity as any)[k] !== null && typeof (entity as any)[k] === 'object') {
-                        if ('x' in (entity as any)[k]) props.add('position.x');
-                        if ('y' in (entity as any)[k]) props.add('position.y');
-                        if ('z' in (entity as any)[k]) props.add('position.z');
-                    } else {
-                        props.add(k);
-                    }
+                    props.add(k);
                 }
             }
         });
