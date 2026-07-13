@@ -84,9 +84,10 @@ export class VisualMappingEngine {
 
         // Apply position mappings (handle all position_X variants as well)
         Object.keys(preset).forEach(key => {
-            if (key.startsWith('position') && preset[key].source !== 'constant') {
-                const posVal = this.applyMapping(preset[key], entity, 'position');
-                const axis = preset[key].params?.axis || 'xyz';
+            const mapping = (preset as any)[key] as VisualMapping;
+            if (key.startsWith('position') && mapping && mapping.source !== 'constant') {
+                const posVal = this.applyMapping(mapping, entity, 'position');
+                const axis = mapping.params?.axis || 'xyz';
                 
                 if (axis === 'x') {
                     visual.positionX = Number(posVal) || 0;

@@ -916,7 +916,7 @@ export class MappingUI {
                     axisSelect.addEventListener('change', (e) => {
                         e.stopPropagation();
                         if (this.mappings?.defaultPresets?.[this.currentType]?.[prop]) {
-                            const preset = this.mappings.defaultPresets[this.currentType][prop];
+                            const preset = this.mappings.defaultPresets[this.currentType][prop] as any;
                             if (!preset.params) preset.params = {};
                             preset.params.axis = (e.target as HTMLSelectElement).value;
                             if (this.onUpdate) this.onUpdate(this.mappings);
