@@ -1,6 +1,6 @@
 {
     "name": "nodges",
-    "version": "0.102.9",
+    "version": "0.102.10",
     "description": "3D Network Visualization with Three.js",
     "type": "module",
     "scripts": {
@@ -10,7 +10,8 @@
         "gen:data": "node scripts/generate-test-data.cjs",
         "test": "vitest",
         "test:ui": "vitest --ui",
-        "test:coverage": "vitest --coverage"
+        "test:coverage": "vitest --coverage",
+        "export:schema": "vitest run src/tests/exportSchema.test.ts"
     },
     "dependencies": {
         "@tweenjs/tween.js": "^18.6.4",

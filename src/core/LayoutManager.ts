@@ -278,7 +278,6 @@ export class LayoutManager {
                         fixedX: forceFixed || visual.positionX !== undefined,
                         fixedY: forceFixed || visual.positionY !== undefined,
                         fixedZ: forceFixed || visual.positionZ !== undefined,
-                        type: node.type,
                         behavior: node.behavior
                     };
                 }),
@@ -472,7 +471,7 @@ export class LayoutManager {
         // 3. Check active presets
         if (this.visualMappingEngine) {
             const activeMappings = this.visualMappingEngine.getVisualMappings();
-            const activePreset = node.type !== undefined ? activeMappings?.defaultPresets?.[node.type] : undefined;
+            const activePreset = activeMappings?.defaultPresets?.['global_node'];
             if (activePreset) {
                 if (attraction === undefined && activePreset.attraction) {
                     attraction = Number(this.visualMappingEngine.applyMapping(activePreset.attraction as any, node, 'attraction'));
@@ -488,7 +487,7 @@ export class LayoutManager {
             // 4. Check original mappings if not resolved
             const app = typeof window !== 'undefined' ? (window as any).app : null;
             const originalMappings = app?.originalVisualMappings;
-            const originalPreset = node.type !== undefined ? originalMappings?.defaultPresets?.[node.type] : undefined;
+            const originalPreset = originalMappings?.defaultPresets?.['global_node'];
             if (originalPreset) {
                 if (attraction === undefined && originalPreset.attraction) {
                     attraction = Number(this.visualMappingEngine.applyMapping(originalPreset.attraction as any, node, 'attraction'));
@@ -591,7 +590,7 @@ export class LayoutManager {
                         // Or if no behavior is specified, apply to all.
                         if (field.behavior) {
                             if (!node.behavior || !field.behavior.includes(node.behavior)) {
-                                if (node.type && !field.behavior.includes(node.type)) {
+                                if (node.kategorie && !field.behavior.includes(node.kategorie as string)) {
                                     return; // skip if behavior doesn't match
                                 }
                             }

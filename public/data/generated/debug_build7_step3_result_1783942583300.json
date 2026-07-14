@@ -1,0 +1,78 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Generiert aus Wikidata",
+    "apiResponse": {
+      "id": "gen-1783942567-De559WpwEp9ha82UxHR8",
+      "created": 1783942567,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 1067,
+        "completion_tokens": 240,
+        "total_tokens": 1307,
+        "cost": 0.000151606,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000151606,
+          "upstream_inference_prompt_cost": 0.000104566,
+          "upstream_inference_completions_cost": 0.00004704
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Star": {
+        "properties": {}
+      }
+    },
+    "relationships": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "Q525",
+        "type": "Star",
+        "label": "Sun"
+      }
+    ],
+    "relationships": []
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Star": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "box"
+          }
+        }
+      }
+    }
+  }
+}

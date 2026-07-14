@@ -1,0 +1,124 @@
+{
+  "system": "NetworkVisualization",
+  "metadata": {
+    "created": "2026-07-14T08:40:00Z",
+    "version": "1.0.0",
+    "schemaVersion": "draft-07",
+    "author": "Gemini",
+    "description": "Ein Beispiel-Graph, der strikt nach dem vorgegebenen GraphDataSchema strukturiert ist.",
+    "map": {
+      "image": "background_map.png",
+      "referenceWidth": 1920,
+      "referenceHeight": 1080
+    }
+  },
+  "dataModel": {
+    "properties": {
+      "status": {
+        "type": "categorical",
+        "values": ["active", "inactive", "maintenance"]
+      },
+      "load": {
+        "type": "continuous",
+        "range": [0, 100],
+        "unit": "percent"
+      }
+    }
+  },
+  "fields": [
+    {
+      "id": "gravity_center",
+      "center": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "strength": 9.81,
+      "influenceRadius": 100,
+      "behavior": "attract"
+    }
+  ],
+  "visualMappings": {
+    "defaultPresets": {
+      "main_view": {
+        "color": {
+          "source": "stateVector",
+          "field": "status",
+          "function": "categorical",
+          "range": ["#00ff00", "#ff0000", "#ffff00"]
+        },
+        "size": {
+          "source": "stateVector",
+          "field": "load",
+          "function": "linear",
+          "domain": [0, 100],
+          "range": [2, 15]
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "node-001",
+        "label": "Server Alpha",
+        "position": {
+          "x": 15.5,
+          "y": -10.2,
+          "z": 0.0
+        },
+        "stateVector": {
+          "status": "active",
+          "load": 45.5
+        },
+        "behavior": "static",
+        "mapX": 450,
+        "mapY": 320
+      },
+      {
+        "id": "node-002",
+        "label": "Server Beta",
+        "position": {
+          "x": -20.1,
+          "y": 5.0,
+          "z": 2.5
+        },
+        "stateVector": {
+          "status": "maintenance",
+          "load": 0.0
+        },
+        "temporal": {
+          "validFrom": 1672531200,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1672531200,
+              "changes": {
+                "status": "active"
+              }
+            },
+            {
+              "timestamp": 1675209600,
+              "changes": {
+                "status": "maintenance"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "edge-001",
+        "source": "node-001",
+        "target": "node-002",
+        "label": "data_sync",
+        "temporal": {
+          "validFrom": 1672531200,
+          "validTo": null,
+          "history": []
+        }
+      }
+    ]
+  }
+}

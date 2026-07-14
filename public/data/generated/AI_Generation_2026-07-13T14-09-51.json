@@ -1,0 +1,775 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Generiert aus Wikidata",
+    "apiResponse": {
+      "id": "gen-1783951745-HZqyyUFj5rbnaPSd54Ti",
+      "created": 1783951745,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 3436,
+        "completion_tokens": 1604,
+        "total_tokens": 5040,
+        "cost": 0.000923516,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000923516,
+          "upstream_inference_prompt_cost": 0.000477604,
+          "upstream_inference_completions_cost": 0.000445912
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    },
+    "generationDetails": {
+      "prompt": "sonnensystem",
+      "context": null,
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-v4-flash",
+      "pipeline": "build7",
+      "durationMs": 90824,
+      "timestamp": "2026-07-13T14:09:49.869Z"
+    },
+    "exportedAt": "2026-07-13T14:09:51.266Z"
+  },
+  "dataModel": {
+    "properties": {
+      "kategorie": {
+        "type": "categorical"
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1783951789869_Q136161",
+        "label": "(1119) Euboea",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -1.3654279665374707,
+          "y": 2.410643479622911,
+          "z": 4.763056308592885
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136178",
+        "label": "(1120) Cannonia",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 2.0124658690813644,
+          "y": 2.0144965774021166,
+          "z": -3.7913883093099607
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136191",
+        "label": "(1121) Natascha",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -3.8441806355364205,
+          "y": 1.1297451995748538,
+          "z": -1.0171305346262163
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136203",
+        "label": "(1123) Shapleya",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 2.4021743403356792,
+          "y": -4.883088589153061,
+          "z": -4.180670150346396
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136204",
+        "label": "(1124) Stroobantia",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -2.8723304082629517,
+          "y": -4.658118736527651,
+          "z": -1.8878854246497057
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136212",
+        "label": "(1126) Otero",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 4.302031263798101,
+          "y": -4.472449860129698,
+          "z": 3.4074857794856417
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136222",
+        "label": "(1127) Mimi",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 4.136176190879624,
+          "y": 3.8305239699436346,
+          "z": 3.8572256718634756
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136226",
+        "label": "(1128) Astrid",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -3.4134239223094442,
+          "y": -0.44223539467727835,
+          "z": -4.763056308592885
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136179",
+        "label": "112 Iphigenia",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -2.2279408983526356,
+          "y": 4.883088589153061,
+          "z": 2.0282945811178412
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136194",
+        "label": "1122 Neith",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 4.329218030279489,
+          "y": 0.8637514854791389,
+          "z": -0.39623030449615454
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136211",
+        "label": "1125 China",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 4.825692345928744,
+          "y": -1.702921733902567,
+          "z": 3.093013141632497
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136476",
+        "label": "1149 Volga",
+        "kategorie": "small Solar System body",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -4.53516462051627,
+          "y": -3.964628974608487,
+          "z": -4.205010796217988
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136265",
+        "label": "(1130) Skuld",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 0.4469805092289533,
+          "y": 4.535485942029789,
+          "z": 2.9668696237796284
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136275",
+        "label": "(11311) Peleus",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -0.0025590379033839047,
+          "y": -0.2735454428590005,
+          "z": -4.5178271848564515
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136276",
+        "label": "(1131) Porzia",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 0.8843280565086299,
+          "y": -4.191735361390505,
+          "z": -1.0138842249857014
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136299",
+        "label": "(1133) Lugduna",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 1.3239127249498392,
+          "y": -2.428881238937506,
+          "z": -3.9894815111583735
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136240",
+        "label": "1129 Neujmina",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -1.7236054652497053,
+          "y": -4.092092223666854,
+          "z": 1.13699204881034
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136256",
+        "label": "113 Amalthea",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 4.469364890527814,
+          "y": -4.2273092238733945,
+          "z": -1.1757353326071143
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136300",
+        "label": "1132 Hollandia",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 4.412782037894494,
+          "y": 4.155993931026963,
+          "z": -1.4826636858389974
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136308",
+        "label": "(113390) Helvetia",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 3.2536395502024438,
+          "y": 4.348679785051972,
+          "z": 0.8082132640186441
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136319",
+        "label": "(11341) Babbage",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -4.243818564828466,
+          "y": 1.7080254646894235,
+          "z": 4.634366976268976
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136323",
+        "label": "(1134) Kepler",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -1.970467044108304,
+          "y": 1.8976357374325292,
+          "z": 0.6544759756675183
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136343",
+        "label": "1135 Colchis",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 4.993061642901848,
+          "y": -3.109948928601521,
+          "z": -4.20376996572693
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136350",
+        "label": "(1136) Mercedes",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -0.32928215378592024,
+          "y": -4.350527067800037,
+          "z": 4.085276977127326
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136379",
+        "label": "(1139) Atami",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 5,
+          "y": 1.5927029884449757,
+          "z": -4.3146743092936415
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136362",
+        "label": "1137 Raïssa",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -1.437410800811373,
+          "y": -3.08752526627336,
+          "z": -4.2478206176515565
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136370",
+        "label": "1138 Attica",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 1.6144394190650602,
+          "y": -3.3760746988542456,
+          "z": 3.8179660656976626
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136402",
+        "label": "114 Kassandra",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -5,
+          "y": -3.7778783593057788,
+          "z": 4.320124482374098
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136400",
+        "label": "1140 Crimea",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -2.5385441600580343,
+          "y": -4.122850947468453,
+          "z": 4.222334761306079
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136418",
+        "label": "(1141) Bohmia",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -4.62930314202927,
+          "y": -1.18897234710717,
+          "z": -2.035548191049022
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136419",
+        "label": "(1142) Aetolia",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -4.868091426797852,
+          "y": 4.558985755075002,
+          "z": 2.440523097221641
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136427",
+        "label": "(1144) Oda",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 1.923880777498751,
+          "y": 1.8513528174470415,
+          "z": 3.9247163784862042
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136437",
+        "label": "(11450) Shearer",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -1.4221787296254333,
+          "y": 4.269218783315715,
+          "z": -2.723179325925171
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136442",
+        "label": "(1145) Robelmonte",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -4.04090007024905,
+          "y": -1.8681314345026117,
+          "z": 2.8019841459035835
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136447",
+        "label": "(11451) Aarongolden",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -3.7948702446728104,
+          "y": 4.780834837623911,
+          "z": -3.820569431066835
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136455",
+        "label": "(1146) Biarmia",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -4.463987187030628,
+          "y": 0.16191968750967284,
+          "z": 1.7769208172764488
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136468",
+        "label": "(1148) Rarahu",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -3.916569907174623,
+          "y": 2.0746384037421786,
+          "z": -4.355776780654954
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136430",
+        "label": "1143 Odysseus",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 4.018299518011859,
+          "y": -0.7352083638001988,
+          "z": -3.4323680526232634
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136458",
+        "label": "1147 Stavropolis",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 2.379379485355504,
+          "y": -0.7699703568436554,
+          "z": 4.406706820268654
+        }
+      },
+      {
+        "id": "AI_Generation_1783951789869_Q136479",
+        "label": "(11496) Grass",
+        "kategorie": "asteroid",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 3.2068058271760442,
+          "y": 4.79020508419245,
+          "z": -4.0985079318054805
+        }
+      }
+    ],
+    "relationships": []
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        },
+        "color": {
+          "source": "kategorie",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "kategorie",
+          "function": "categorical"
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#aaaaaa"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.1
+          }
+        }
+      }
+    }
+  }
+}

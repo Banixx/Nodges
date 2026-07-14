@@ -1,0 +1,52 @@
+{
+  "entities": [
+    "planet",
+    "dwarf planet",
+    "moon",
+    "asteroid",
+    "comet",
+    "star",
+    "sun"
+  ],
+  "properties": [
+    "part of",
+    "orbits",
+    "instance of",
+    "parent body"
+  ],
+  "data": {
+    "entities": [],
+    "relationships": []
+  },
+  "metadata": {
+    "apiResponse": {
+      "id": "gen-1783953818-QxBQo21WagEV72HUWbRd",
+      "created": 1783953818,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 340,
+        "completion_tokens": 209,
+        "total_tokens": 549,
+        "cost": 0.000074284,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000074284,
+          "upstream_inference_prompt_cost": 0.00003332,
+          "upstream_inference_completions_cost": 0.000040964
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 155,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  }
+}

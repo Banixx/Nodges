@@ -1,0 +1,38 @@
+{
+  "query": "SELECT ?body ?bodyLabel ?type ?planet ?planetLabel WHERE { { BIND(wd:Q525 AS ?body) BIND(\"Sonne\" AS ?type) } UNION { ?body wdt:P31 wd:Q634 ; wdt:P397 wd:Q525 . BIND(\"Planet\" AS ?type) } UNION { ?body wdt:P31 wd:Q10920 ; wdt:P397 ?planet . ?planet wdt:P31 wd:Q634 ; wdt:P397 wd:Q525 . BIND(\"Mond\" AS ?type) } SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\" } } LIMIT 100",
+  "data": {
+    "entities": [],
+    "relationships": []
+  },
+  "metadata": {
+    "apiResponse": {
+      "id": "gen-1783942529-TkprtL2cXg8K2CXtNJCa",
+      "created": 1783942529,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 872,
+        "completion_tokens": 3769,
+        "total_tokens": 4641,
+        "cost": 0.00112694,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00112694,
+          "upstream_inference_prompt_cost": 0.000116848,
+          "upstream_inference_completions_cost": 0.001010092
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 3596,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "timestampStart": "2026-07-13T13:14:13.053Z",
+  "prompt": "USER: sonnensystem\n\nKI: Möchtest du die Planeten unseres Sonnensystems als Knoten visualisieren, mit Verbindungen wie Umlaufbahnen oder Gravitationsbeziehungen?\n\nUSER: ja.",
+  "ragText": null,
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v4-flash",
+  "pipeline": "build7",
+  "systemInfo": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0",
+    "language": "de",
+    "screenResolution": "1920x1080",
+    "viewport": "1304x871",
+    "appVersion": "Nodges Build 6"
+  },
+  "steps": [
+    {
+      "time": "2026-07-13T13:14:13.053Z",
+      "offsetMs": 0,
+      "message": "Schritt 1/5: Analysiere Anfrage für Wikidata-Faktencheck..."
+    },
+    {
+      "time": "2026-07-13T13:15:39.694Z",
+      "offsetMs": 86641,
+      "message": "Schritt 2/5: Suche exakte Wikidata-IDs..."
+    },
+    {
+      "time": "2026-07-13T13:15:40.367Z",
+      "offsetMs": 87314,
+      "message": "Schritt 3/5: Generiere exakte SPARQL-Abfrage..."
+    },
+    {
+      "time": "2026-07-13T13:16:04.998Z",
+      "offsetMs": 111945,
+      "message": "Schritt 4/5: Frage Live-Daten von Wikidata ab..."
+    },
+    {
+      "time": "2026-07-13T13:16:14.157Z",
+      "offsetMs": 121104,
+      "message": "Schritt 5/5: Transformiere Wikidata-Rohdaten in Nodges 3D-Graph..."
+    }
+  ],
+  "timestampEnd": "2026-07-13T13:17:00.518Z",
+  "durationMs": 167464,
+  "durationSec": "167.46",
+  "status": "success",
+  "generatedNodes": 40,
+  "generatedEdges": 39,
+  "responsePayloadSizeKB": "18.41"
+}

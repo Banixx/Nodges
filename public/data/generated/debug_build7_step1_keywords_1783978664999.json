@@ -1,0 +1,52 @@
+{
+  "entities": [
+    "council",
+    "politician",
+    "political party",
+    "parliament",
+    "legislature",
+    "executive"
+  ],
+  "properties": [
+    "member of political party",
+    "member of",
+    "position held",
+    "part of",
+    "instance of"
+  ],
+  "data": {
+    "entities": [],
+    "relationships": []
+  },
+  "metadata": {
+    "apiResponse": {
+      "id": "gen-1783978639-xJzivqGPzMgt9ouJGlHu",
+      "created": 1783978639,
+      "model": "deepseek/deepseek-v4-pro",
+      "usage": {
+        "prompt_tokens": 415,
+        "completion_tokens": 1021,
+        "total_tokens": 1436,
+        "cost": 0.0017528238,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0017528238,
+          "upstream_inference_prompt_cost": 0.000296061,
+          "upstream_inference_completions_cost": 0.0014567628
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 962,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  }
+}

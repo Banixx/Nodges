@@ -17,11 +17,8 @@ export class LLMService {
 
     public static readonly PROVIDER_MODELS: Record<LLMProvider, LLMModel[]> = {
         openrouter: [
-            { id: 'meta-llama/llama-3.3-70b-instruct:free', name: 'Meta: Llama 3.3 70B Instruct (free)' },
-            { id: 'qwen/qwen3-coder:free', name: 'Qwen: Qwen3 Coder 480B A35B (free)' },
-            { id: 'google/gemma-4-31b-it:free', name: 'Google: Gemma 4 31B (free)' },
-            { id: 'nousresearch/hermes-3-llama-3.1-405b:free', name: 'Nous: Hermes 3 405B Instruct (free)' },
-            { id: 'qwen/qwen3-next-80b-a3b-instruct:free', name: 'Qwen: Qwen3 Next 80B A3B Instruct (free)' },
+            { id: 'kwaipilot/kat-coder-pro-v2.5', name: 'kwaipilot: Kat Coder Pro V2.5' },
+            { id: 'openai/gpt-5.6-luna', name: 'OpenAI: GPT-5.6 Luna' },
             { id: 'deepseek/deepseek-v4-flash', name: 'DeepSeek: DeepSeek V4 Flash' },
             { id: 'qwen/qwen-2.5-72b-instruct', name: 'Qwen2.5 72B Instruct' },
             { id: 'nvidia/llama-3.3-nemotron-super-49b-v1.5', name: 'NVIDIA: Llama 3.3 Nemotron Super 49B V1.5' },
@@ -410,7 +407,8 @@ export class LLMService {
             parsedData = JSON.parse(cleanResponse);
         } catch (e) {
             console.error("Failed to parse JSON:", responseText);
-            throw new Error('Das Modell hat kein gültiges JSON zurückgegeben.');
+            this._saveDebugFile(`LLM_ERROR_RAW_${Date.now()}.txt`, responseText).catch(() => {});
+            throw new Error('Das Modell hat kein gültiges JSON zurückgegeben. Die Roheingabe wurde als LLM_ERROR_RAW gespeichert.');
         }
 
         // Fix common LLM issue where it wraps output in the schema name
@@ -428,7 +426,8 @@ export class LLMService {
 
         if (!hasData && !hasDataModel && !hasVisualMappings && !hasQuery && !hasKeywords && !hasQuestion) {
             console.error("Invalid JSON structure:", parsedData);
-            throw new Error('Das generierte JSON hat nicht die erwartete Struktur (weder Daten, noch Schema, noch Visual Mappings, noch SPARQL-Query, noch Keywords, noch Frage gefunden).');
+            this._saveDebugFile(`LLM_ERROR_STRUCTURE_${Date.now()}.json`, parsedData).catch(() => {});
+            throw new Error('Das generierte JSON hat nicht die erwartete Struktur. Es wurde als LLM_ERROR_STRUCTURE gespeichert.');
         }
 
         // Guarantee data.entities and data.relationships always exist
@@ -599,14 +598,14 @@ Dein JSON MUSS exakt diese Top-Level-Struktur haben:
   },
   "visualMappings": {
     "defaultPresets": {
-      "<TypName>": {
+      "global_node": {
         "size": { "source": "<propName>", "function": "linear", "range": [0.5, 3] },
-        "color": { "source": "type", "function": "categorical" },
+        "color": { "source": "kategorie", "function": "categorical" },
         "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "sphere" } }
       },
-      "<KantenTyp>": {
+      "global_edge": {
         "color": { "source": "constant", "function": "constant", "params": { "color": "#FFD700" } },
-        "thickness": { "source": "constant", "function": "constant", "params": { "size": 0.1 } }
+        "thickness": { "source": "constant", "function": "constant", "params": { "value": 0.1 } }
       }
     }
   }
@@ -648,7 +647,7 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         return "Kannst du das etwas genauer spezifizieren?";
     }
 
-    public static async generateGraphDataBuild7(
+    public static async generateGraphDataBuild8(
         prompt: string, 
         provider: LLMProvider, 
         model: string,
@@ -658,7 +657,7 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         // Schritt 1: Keywords extrahieren
         if (onProgress) onProgress('Schritt 1/5: Analysiere Anfrage für Wikidata-Faktencheck...');
         
-        const keywordPromptFile = import.meta.env.BASE_URL + 'prompts/build_7_keyword_prompt.md';
+        const keywordPromptFile = import.meta.env.BASE_URL + 'prompts/build_8_keyword_prompt.md';
         let keywordSystemPrompt = 'Extrahiere Entitäten und Properties als JSON {"entities":[], "properties":[]}. Übersetze auf Englisch.';
         try {
             const res = await fetch(keywordPromptFile);
@@ -700,7 +699,7 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         // Schritt 3: Text zu SPARQL
         if (onProgress) onProgress('Schritt 3/5: Generiere exakte SPARQL-Abfrage...');
         
-        const sparqlPromptFile = import.meta.env.BASE_URL + 'prompts/build_7_sparql_prompt.md';
+        const sparqlPromptFile = import.meta.env.BASE_URL + 'prompts/build_8_sparql_prompt.md';
         let sparqlSystemPrompt = '';
         try {
             const res = await fetch(sparqlPromptFile);
@@ -735,7 +734,7 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Accept': 'application/sparql-results+json',
-                    'User-Agent': 'Nodges/Build-7 (localhost)'
+                    'User-Agent': 'Nodges/Build-8 (localhost)'
                 },
                 body: new URLSearchParams({ query: sparqlQuery })
             });
@@ -759,7 +758,7 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         // Schritt 5: Tabellendaten in Nodges JSON mappen
         if (onProgress) onProgress('Schritt 5/5: Transformiere Wikidata-Rohdaten in Nodges 3D-Graph...');
         
-        const mappingPromptFile = import.meta.env.BASE_URL + 'prompts/build_7_mapping_prompt.md';
+        const mappingPromptFile = import.meta.env.BASE_URL + 'prompts/build_8_mapping_prompt.md';
         let mappingSystemPrompt = '';
         try {
             const res = await fetch(mappingPromptFile);
@@ -785,7 +784,9 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         await this._saveDebugFile(`debug_build7_step5_prompt_${Date.now()}.md`, `SYSTEM:\n${mappingSystemPrompt}\n\nUSER:\n${mappingUserPrompt}`);
         
         const finalGraphData = await this._executeLLMCall(mappingSystemPrompt, mappingUserPrompt, provider, model);
-        await this._saveDebugFile(`debug_build7_step3_result_${Date.now()}.json`, finalGraphData);
+        await this._saveDebugFile(`debug_build7_step5_result_${Date.now()}.json`, finalGraphData);
+        
+        if (onStepComplete) onStepComplete(6, "Generiertes_Graph_JSON", JSON.stringify(finalGraphData, null, 2), "json");
         
         return finalGraphData;
     }
@@ -825,4 +826,66 @@ USER ANWEISUNG: ${prompt}
         await this._saveDebugFile(`debug_refine_result_${Date.now()}.json`, resultData);
         return resultData;
     }
+
+    /**
+     * Generates a vector embedding for a given text using the specified provider and model.
+     */
+    public static async generateEmbedding(
+        text: string,
+        provider: LLMProvider,
+        model: string = 'google/gemini-embedding-2'
+    ): Promise<number[]> {
+        let apiKey = this.getApiKey(provider);
+        let apiUrl = '';
+
+        if (provider === 'openrouter') {
+            if (!apiKey) {
+                apiUrl = 'https://pure-peacock-1215.banixx.deno.net/';
+                apiKey = 'proxy-mode';
+            } else {
+                apiUrl = 'https://openrouter.ai/api/v1/embeddings';
+            }
+        } else if (provider === 'openai') {
+            apiUrl = 'https://api.openai.com/v1/embeddings';
+            if (!model || model === 'google/gemini-embedding-2') {
+                model = 'text-embedding-3-small';
+            }
+        } else {
+            throw new Error(`Embedding-Generierung fuer Provider '${provider}' wird nicht unterstuetzt.`);
+        }
+
+        const headers: Record<string, string> = {
+            'Content-Type': 'application/json'
+        };
+
+        if (provider === 'openrouter') {
+            headers['Authorization'] = `Bearer ${apiKey}`;
+            headers['HTTP-Referer'] = window.location.href;
+            headers['X-Title'] = 'Nodges 3D Graph';
+        } else if (provider === 'openai') {
+            headers['Authorization'] = `Bearer ${apiKey}`;
+        }
+
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({
+                model: model,
+                input: text
+            })
+        });
+
+        if (!response.ok) {
+            const errData = await response.json().catch(() => ({}));
+            const errMsg = errData.error?.message || response.statusText;
+            throw new Error(`Embedding API Fehler (${response.status}): ${errMsg}`);
+        }
+
+        const result = await response.json();
+        if (result.data && result.data[0] && result.data[0].embedding) {
+            return result.data[0].embedding;
+        }
+        throw new Error('Ungueltige Antwort von der Embedding API erhalten.');
+    }
 }
+

@@ -1,0 +1,13 @@
+{
+  "head": {
+    "vars": [
+      "body",
+      "bodyLabel",
+      "type",
+      "typeLabel"
+    ]
+  },
+  "results": {
+    "bindings": []
+  }
+}

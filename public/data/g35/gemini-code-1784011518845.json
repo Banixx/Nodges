@@ -1,0 +1,364 @@
+{
+  "system": "NetworkVisualization",
+  "metadata": {
+    "created": "2026-07-14T08:44:35Z",
+    "version": "1.2.0",
+    "schemaVersion": "draft-07",
+    "author": "Gemini",
+    "description": "Ein stark erweiterter Graph mit Microservices, Caching, Auth und Monitoring, der strikt nach dem vorgegebenen GraphDataSchema strukturiert ist.",
+    "map": {
+      "image": "background_map.png",
+      "referenceWidth": 1920,
+      "referenceHeight": 1080
+    }
+  },
+  "dataModel": {
+    "properties": {
+      "status": {
+        "type": "categorical",
+        "values": ["active", "inactive", "maintenance"]
+      },
+      "load": {
+        "type": "continuous",
+        "range": [0, 100],
+        "unit": "percent"
+      }
+    }
+  },
+  "fields": [
+    {
+      "id": "gravity_center",
+      "center": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "strength": 9.81,
+      "influenceRadius": 100,
+      "behavior": "attract"
+    }
+  ],
+  "visualMappings": {
+    "defaultPresets": {
+      "main_view": {
+        "color": {
+          "source": "stateVector",
+          "field": "status",
+          "function": "categorical",
+          "range": ["#00ff00", "#ff0000", "#ffff00"]
+        },
+        "size": {
+          "source": "stateVector",
+          "field": "load",
+          "function": "linear",
+          "domain": [0, 100],
+          "range": [2, 15]
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "node-001",
+        "label": "Server Alpha",
+        "position": {
+          "x": 15.5,
+          "y": -10.2,
+          "z": 0.0
+        },
+        "stateVector": {
+          "status": "active",
+          "load": 45.5
+        },
+        "behavior": "static",
+        "mapX": 450,
+        "mapY": 320
+      },
+      {
+        "id": "node-002",
+        "label": "Server Beta",
+        "position": {
+          "x": -20.1,
+          "y": 5.0,
+          "z": 2.5
+        },
+        "stateVector": {
+          "status": "maintenance",
+          "load": 0.0
+        },
+        "temporal": {
+          "validFrom": 1672531200,
+          "validTo": null,
+          "history": [
+            {
+              "timestamp": 1672531200,
+              "changes": {
+                "status": "active"
+              }
+            },
+            {
+              "timestamp": 1675209600,
+              "changes": {
+                "status": "maintenance"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "node-003",
+        "label": "Database Master",
+        "position": {
+          "x": 0.0,
+          "y": 20.0,
+          "z": 5.0
+        },
+        "stateVector": {
+          "status": "active",
+          "load": 85.0
+        },
+        "behavior": "static",
+        "mapX": 960,
+        "mapY": 200
+      },
+      {
+        "id": "node-004",
+        "label": "Database Replica",
+        "position": {
+          "x": 10.0,
+          "y": 25.0,
+          "z": 5.0
+        },
+        "stateVector": {
+          "status": "active",
+          "load": 30.5
+        },
+        "mapX": 1100,
+        "mapY": 150
+      },
+      {
+        "id": "node-005",
+        "label": "Load Balancer",
+        "position": {
+          "x": 0.0,
+          "y": -20.0,
+          "z": 0.0
+        },
+        "stateVector": {
+          "status": "active",
+          "load": 60.0
+        },
+        "mapX": 960,
+        "mapY": 700
+      },
+      {
+        "id": "node-006",
+        "label": "Gateway",
+        "position": {
+          "x": -15.0,
+          "y": -25.0,
+          "z": 0.0
+        },
+        "stateVector": {
+          "status": "inactive",
+          "load": 0.0
+        },
+        "mapX": 800,
+        "mapY": 950
+      },
+      {
+        "id": "node-007",
+        "label": "Cache Server",
+        "position": {
+          "x": 25.0,
+          "y": 0.0,
+          "z": -2.0
+        },
+        "stateVector": {
+          "status": "active",
+          "load": 15.2
+        },
+        "mapX": 1400,
+        "mapY": 450
+      },
+      {
+        "id": "node-008",
+        "label": "Auth Service",
+        "position": {
+          "x": -5.0,
+          "y": -22.0,
+          "z": 0.0
+        },
+        "stateVector": {
+          "status": "active",
+          "load": 40.2
+        },
+        "mapX": 880,
+        "mapY": 850
+      },
+      {
+        "id": "node-009",
+        "label": "Payment API",
+        "position": {
+          "x": 35.0,
+          "y": -15.0,
+          "z": 10.0
+        },
+        "stateVector": {
+          "status": "active",
+          "load": 5.5
+        },
+        "mapX": 1700,
+        "mapY": 250
+      },
+      {
+        "id": "node-010",
+        "label": "Monitoring",
+        "position": {
+          "x": -30.0,
+          "y": 30.0,
+          "z": 20.0
+        },
+        "stateVector": {
+          "status": "active",
+          "load": 22.0
+        },
+        "mapX": 150,
+        "mapY": 100
+      },
+      {
+        "id": "node-011",
+        "label": "Worker Node 1",
+        "position": {
+          "x": -35.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "stateVector": {
+          "status": "active",
+          "load": 95.0
+        },
+        "mapX": 200,
+        "mapY": 500
+      },
+      {
+        "id": "node-012",
+        "label": "Worker Node 2",
+        "position": {
+          "x": -35.0,
+          "y": -5.0,
+          "z": 0.0
+        },
+        "stateVector": {
+          "status": "maintenance",
+          "load": 0.0
+        },
+        "mapX": 200,
+        "mapY": 580
+      }
+    ],
+    "relationships": [
+      {
+        "id": "edge-001",
+        "source": "node-001",
+        "target": "node-002",
+        "label": "data_sync",
+        "temporal": {
+          "validFrom": 1672531200,
+          "validTo": null,
+          "history": []
+        }
+      },
+      {
+        "id": "edge-002",
+        "source": "node-005",
+        "target": "node-001",
+        "label": "traffic_routing"
+      },
+      {
+        "id": "edge-003",
+        "source": "node-005",
+        "target": "node-002",
+        "label": "traffic_routing"
+      },
+      {
+        "id": "edge-004",
+        "source": "node-001",
+        "target": "node-003",
+        "label": "db_query"
+      },
+      {
+        "id": "edge-005",
+        "source": "node-002",
+        "target": "node-003",
+        "label": "db_query"
+      },
+      {
+        "id": "edge-006",
+        "source": "node-003",
+        "target": "node-004",
+        "label": "replication",
+        "temporal": {
+          "validFrom": 1672531200,
+          "validTo": null,
+          "history": []
+        }
+      },
+      {
+        "id": "edge-007",
+        "source": "node-006",
+        "target": "node-008",
+        "label": "auth_check"
+      },
+      {
+        "id": "edge-008",
+        "source": "node-008",
+        "target": "node-005",
+        "label": "auth_success"
+      },
+      {
+        "id": "edge-009",
+        "source": "node-001",
+        "target": "node-007",
+        "label": "cache_read_write"
+      },
+      {
+        "id": "edge-010",
+        "source": "node-002",
+        "target": "node-007",
+        "label": "cache_read_write"
+      },
+      {
+        "id": "edge-011",
+        "source": "node-001",
+        "target": "node-009",
+        "label": "api_call"
+      },
+      {
+        "id": "edge-012",
+        "source": "node-002",
+        "target": "node-011",
+        "label": "job_dispatch"
+      },
+      {
+        "id": "edge-013",
+        "source": "node-002",
+        "target": "node-012",
+        "label": "job_dispatch"
+      },
+      {
+        "id": "edge-014",
+        "source": "node-010",
+        "target": "node-006",
+        "label": "health_check"
+      },
+      {
+        "id": "edge-015",
+        "source": "node-010",
+        "target": "node-003",
+        "label": "health_check"
+      }
+    ]
+  }
+}

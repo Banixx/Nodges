@@ -1,0 +1,569 @@
+{
+  "system": "Sonnen- und Exoplanetsysteme",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Generiert aus Wikidata",
+    "apiResponse": {
+      "id": "gen-1783981895-mUqqEvTY7sr87Ltt3JoA",
+      "created": 1783981895,
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "usage": {
+        "prompt_tokens": 3588,
+        "completion_tokens": 3532,
+        "total_tokens": 7120,
+        "cost": 0.00270448,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00270448,
+          "upstream_inference_prompt_cost": 0.00129168,
+          "upstream_inference_completions_cost": 0.0014128
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "properties": {
+      "kategorie": {
+        "type": "categorical"
+      },
+      "label": {
+        "type": "categorical"
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "Q193",
+        "label": "Saturn",
+        "kategorie": "planet"
+      },
+      {
+        "id": "Q30014",
+        "label": "outer planet",
+        "kategorie": "planet_type"
+      },
+      {
+        "id": "Q121750",
+        "label": "gas giant",
+        "kategorie": "planet_type"
+      },
+      {
+        "id": "Q319",
+        "label": "Jupiter",
+        "kategorie": "planet"
+      },
+      {
+        "id": "Q324",
+        "label": "Uranus",
+        "kategorie": "planet"
+      },
+      {
+        "id": "Q1319599",
+        "label": "ice giant",
+        "kategorie": "planet_type"
+      },
+      {
+        "id": "Q332",
+        "label": "Neptune",
+        "kategorie": "planet"
+      },
+      {
+        "id": "Q47268",
+        "label": "Q47268",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q47304",
+        "label": "Kepler-22 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q47519",
+        "label": "Kepler-9 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q50663",
+        "label": "55 Cancri f",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q50665",
+        "label": "55 Cancri b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q50666",
+        "label": "55 Cancri c",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q50667",
+        "label": "55 Cancri d",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q50668",
+        "label": "55 Cancri e",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q52992",
+        "label": "HD 121504 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q53725",
+        "label": "Kepler-11 c",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q73307",
+        "label": "HD 75289 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q73313",
+        "label": "61 Virginis b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q73561",
+        "label": "PSR B1257+12 c",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q74002",
+        "label": "Gliese 163 c",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q74181",
+        "label": "PSR B1257+12 d",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q74199",
+        "label": "Gliese 176 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q81254",
+        "label": "HD 92788 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q81260",
+        "label": "61 Virginis d",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q81278",
+        "label": "HD 89744 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q81281",
+        "label": "HD 187123 c",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q81282",
+        "label": "HD 187123 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q81347",
+        "label": "Cayahuanca",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q81698",
+        "label": "Eyeke",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q83770",
+        "label": "HD 82943 c",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q83773",
+        "label": "HD 82943 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q83778",
+        "label": "HD 169830 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q115626",
+        "label": "HD 114386 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q115885",
+        "label": "HD 114783 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q128200",
+        "label": "HD 213240 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q128833",
+        "label": "HD 81040 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q129189",
+        "label": "HD 178911 Bb",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q129220",
+        "label": "HD 212301 b",
+        "kategorie": "exoplanet"
+      },
+      {
+        "id": "Q44559",
+        "label": "exoplanet",
+        "kategorie": "planet_type"
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel_1",
+        "source": "Q193",
+        "target": "Q30014",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_2",
+        "source": "Q193",
+        "target": "Q121750",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_3",
+        "source": "Q319",
+        "target": "Q30014",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_4",
+        "source": "Q319",
+        "target": "Q121750",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_5",
+        "source": "Q324",
+        "target": "Q30014",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_6",
+        "source": "Q324",
+        "target": "Q1319599",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_7",
+        "source": "Q332",
+        "target": "Q30014",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_8",
+        "source": "Q332",
+        "target": "Q1319599",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_9",
+        "source": "Q47268",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_10",
+        "source": "Q47304",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_11",
+        "source": "Q47519",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_12",
+        "source": "Q50663",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_13",
+        "source": "Q50665",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_14",
+        "source": "Q50666",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_15",
+        "source": "Q50667",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_16",
+        "source": "Q50668",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_17",
+        "source": "Q52992",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_18",
+        "source": "Q53725",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_19",
+        "source": "Q73307",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_20",
+        "source": "Q73313",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_21",
+        "source": "Q73561",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_22",
+        "source": "Q74002",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_23",
+        "source": "Q74181",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_24",
+        "source": "Q74199",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_25",
+        "source": "Q81254",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_26",
+        "source": "Q81260",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_27",
+        "source": "Q81278",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_28",
+        "source": "Q81281",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_29",
+        "source": "Q81282",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_30",
+        "source": "Q81347",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_31",
+        "source": "Q81698",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_32",
+        "source": "Q83770",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_33",
+        "source": "Q83773",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_34",
+        "source": "Q83778",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_35",
+        "source": "Q115626",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_36",
+        "source": "Q115885",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_37",
+        "source": "Q128200",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_38",
+        "source": "Q128833",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_39",
+        "source": "Q129189",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      },
+      {
+        "id": "rel_40",
+        "source": "Q129220",
+        "target": "Q44559",
+        "label": "classified as",
+        "kategorie": "classification"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        },
+        "color": {
+          "source": "kategorie",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "kategorie",
+          "function": "categorical"
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#aaaaaa"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.1
+          }
+        }
+      }
+    }
+  }
+}

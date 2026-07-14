@@ -1,0 +1,1073 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Generiert aus Wikidata",
+    "apiResponse": {
+      "id": "gen-1783943098-ndcH0hP8IWjmgXSBp4N4",
+      "created": 1783943098,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 3261,
+        "completion_tokens": 4954,
+        "total_tokens": 8215,
+        "cost": 0.001014013,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.001014013,
+          "upstream_inference_prompt_cost": 0.000251097,
+          "upstream_inference_completions_cost": 0.000762916
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1806,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    },
+    "generationDetails": {
+      "prompt": "sonnensysstem",
+      "context": null,
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-v4-flash",
+      "pipeline": "build7",
+      "durationMs": 84816,
+      "timestamp": "2026-07-13T11:45:40.283Z"
+    },
+    "exportedAt": "2026-07-13T11:45:41.892Z"
+  },
+  "dataModel": {
+    "properties": {
+      "kategorie": {
+        "type": "categorical"
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1783943140284_Q596",
+        "label": "Ceres",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.917459797731113,
+          "y": -0.8852985432463226,
+          "z": -3.8053432183216245
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q2640",
+        "label": "10 Hygiea",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 3.2118958499017096,
+          "y": 3.7045108056424456,
+          "z": 0.7720202317830812
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q3002",
+        "label": "2 Pallas",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -1.372615241633562,
+          "y": 4.661797914079983,
+          "z": -1.8924727495368658
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q3009",
+        "label": "3 Juno",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 4.070815456805737,
+          "y": 1.956049746486967,
+          "z": -1.9302874372476744
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q3030",
+        "label": "Vesta",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.8161868150092402,
+          "y": 4.373626927070908,
+          "z": -2.0182440301789573
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q3311",
+        "label": "10427 Klinkenberg",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 4.75821566647236,
+          "y": -1.155949104030805,
+          "z": -1.3400691610416506
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q4475",
+        "label": "10018 Lykawka",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -4.579517968985493,
+          "y": -1.0577934048786448,
+          "z": -1.6385578319453133
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q4477",
+        "label": "10003 Caryhuang",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -3.0876297697554063,
+          "y": 0.35619453469942447,
+          "z": 3.9951126034087956
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q4483",
+        "label": "10019 Wesleyfraser",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.5520505175373942,
+          "y": -3.737479966002864,
+          "z": 3.510866957628264
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q4486",
+        "label": "10020 Bagenal",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 3.4556920367984074,
+          "y": 1.3967959054011088,
+          "z": 3.4364933648713647
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q4911",
+        "label": "(6427) 1995 FY",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.3323260871582565,
+          "y": 3.675232197705929,
+          "z": 3.2764852363122134
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q8591",
+        "label": "7981 Katieoakman",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.735557409728558,
+          "y": 0.6709704650767506,
+          "z": 2.0740942273625667
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q8604",
+        "label": "(10537) 1991 RY16",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.911094295734017,
+          "y": -3.6279269400355076,
+          "z": -1.7459434950092134
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q8607",
+        "label": "(19308) 1996 TO66",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 4.366154585463903,
+          "y": -2.0065990655104877,
+          "z": 1.7488004245301336
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q8640",
+        "label": "2004 FH",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -1.840252336367651,
+          "y": 3.278033576505452,
+          "z": 3.350929444840618
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11054",
+        "label": "2008 LC₁₈",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -3.035270961871236,
+          "y": -2.8789397090072226,
+          "z": 2.996091544189615
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11057",
+        "label": "(614599) 2010 AB78",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.8958778309136685,
+          "y": -1.4513239639667015,
+          "z": 4.678576315411163
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11521",
+        "label": "100 Hekate",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.7613449330957223,
+          "y": -1.9460353325535682,
+          "z": 0.9406665320011194
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11524",
+        "label": "(100027) Hannaharendt",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.6843928380289298,
+          "y": 1.9264618195033998,
+          "z": -0.7386914343068844
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11526",
+        "label": "100033 Taizé",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.3132190421267036,
+          "y": -1.1141807952209404,
+          "z": 4.473560225950435
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11527",
+        "label": "1002 Olbersia",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.03451274370482895,
+          "y": 1.3939573842635606,
+          "z": 5
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11528",
+        "label": "(1001) Gaussia",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.9066165965707522,
+          "y": -0.9118594930724369,
+          "z": -0.4430446899748035
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11530",
+        "label": "(1003) Lilofee",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.20823367050214464,
+          "y": -0.42007341717485563,
+          "z": -5
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11531",
+        "label": "1004 Belopolskya",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -4.75821566647236,
+          "y": -1.2259982968071543,
+          "z": 1.295705728787297
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11532",
+        "label": "(10057) L’Obel",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -3.2075950660912476,
+          "y": 0.30399287414585524,
+          "z": -4.03637027923753
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11533",
+        "label": "1005 Arago",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -4.687072976328035,
+          "y": 2.0378478556610893,
+          "z": -1.36239163831405
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11534",
+        "label": "(1006) Lagrangea",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.8444633337400557,
+          "y": 2.6564141319571086,
+          "z": -4.295952744226061
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11535",
+        "label": "(10069) Fontenelle",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.8224528998506385,
+          "y": -0.7443091273428899,
+          "z": -1.9167190229324738
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11536",
+        "label": "(10079) Meunier",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -1.189759176457847,
+          "y": -4.89904827188139,
+          "z": 1.221465496043211
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11537",
+        "label": "(1007) Pawlowia",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -2.905699827911759,
+          "y": 4.130150039556376,
+          "z": 0.6648137026180795
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11540",
+        "label": "(1008) La Paz",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.9608514884916846,
+          "y": 1.8576363425870188,
+          "z": -4.045848959221467
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11541",
+        "label": "(1009) Sirene",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.2772283664563745,
+          "y": -4.606099725831635,
+          "z": -1.5523324424994829
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11543",
+        "label": "(101) Helena",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -2.470161337323036,
+          "y": -2.9150810040454576,
+          "z": -3.3792789694557106
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11544",
+        "label": "(1010) Marlene",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.11922447040457662,
+          "y": 4.89904827188139,
+          "z": 0.9205957397179598
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11545",
+        "label": "(10101) Fourier",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.7100930921648464,
+          "y": -3.0543579145564115,
+          "z": -3.84256974657922
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11546",
+        "label": "(1011) Laodamia",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 4.6491573997391775,
+          "y": 1.0086582707262983,
+          "z": 0.9021668035451256
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11548",
+        "label": "(1012) Sarema",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -4.639084326491382,
+          "y": 1.7837822666834817,
+          "z": 1.8357887759846803
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11549",
+        "label": "(1013) Tombecka",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -2.0385746658395556,
+          "y": 0.8016451458879494,
+          "z": 0.6990517816622211
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11550",
+        "label": "(10149) Cavagna",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.1463697709399736,
+          "y": -4.428932712094158,
+          "z": 0.8944696697496222
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q11551",
+        "label": "(1014) Semphyra",
+        "kategorie": "Asteroid",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -3.434009806895661,
+          "y": -3.635909890057492,
+          "z": -0.4785522573982542
+        }
+      },
+      {
+        "id": "AI_Generation_1783943140284_Q525",
+        "label": "Sun",
+        "kategorie": "Stern",
+        "stateVector": {
+          "degree": 40,
+          "inbound": 40,
+          "outbound": 0
+        },
+        "inDegree": 40,
+        "outDegree": 0,
+        "position": {
+          "x": 2.173642321346236,
+          "y": -2.231393247026069,
+          "z": 2.315525400088294
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1783943140284_rel_1",
+        "source": "AI_Generation_1783943140284_Q596",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_2",
+        "source": "AI_Generation_1783943140284_Q2640",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_3",
+        "source": "AI_Generation_1783943140284_Q3002",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_4",
+        "source": "AI_Generation_1783943140284_Q3009",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_5",
+        "source": "AI_Generation_1783943140284_Q3030",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_6",
+        "source": "AI_Generation_1783943140284_Q3311",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_7",
+        "source": "AI_Generation_1783943140284_Q4475",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_8",
+        "source": "AI_Generation_1783943140284_Q4477",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_9",
+        "source": "AI_Generation_1783943140284_Q4483",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_10",
+        "source": "AI_Generation_1783943140284_Q4486",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_11",
+        "source": "AI_Generation_1783943140284_Q4911",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_12",
+        "source": "AI_Generation_1783943140284_Q8591",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_13",
+        "source": "AI_Generation_1783943140284_Q8604",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_14",
+        "source": "AI_Generation_1783943140284_Q8607",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_15",
+        "source": "AI_Generation_1783943140284_Q8640",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_16",
+        "source": "AI_Generation_1783943140284_Q11054",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_17",
+        "source": "AI_Generation_1783943140284_Q11057",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_18",
+        "source": "AI_Generation_1783943140284_Q11521",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_19",
+        "source": "AI_Generation_1783943140284_Q11524",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_20",
+        "source": "AI_Generation_1783943140284_Q11526",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_21",
+        "source": "AI_Generation_1783943140284_Q11527",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_22",
+        "source": "AI_Generation_1783943140284_Q11528",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_23",
+        "source": "AI_Generation_1783943140284_Q11530",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_24",
+        "source": "AI_Generation_1783943140284_Q11531",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_25",
+        "source": "AI_Generation_1783943140284_Q11532",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_26",
+        "source": "AI_Generation_1783943140284_Q11533",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_27",
+        "source": "AI_Generation_1783943140284_Q11534",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_28",
+        "source": "AI_Generation_1783943140284_Q11535",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_29",
+        "source": "AI_Generation_1783943140284_Q11536",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_30",
+        "source": "AI_Generation_1783943140284_Q11537",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_31",
+        "source": "AI_Generation_1783943140284_Q11540",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_32",
+        "source": "AI_Generation_1783943140284_Q11541",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_33",
+        "source": "AI_Generation_1783943140284_Q11543",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_34",
+        "source": "AI_Generation_1783943140284_Q11544",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_35",
+        "source": "AI_Generation_1783943140284_Q11545",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_36",
+        "source": "AI_Generation_1783943140284_Q11546",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_37",
+        "source": "AI_Generation_1783943140284_Q11548",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_38",
+        "source": "AI_Generation_1783943140284_Q11549",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_39",
+        "source": "AI_Generation_1783943140284_Q11550",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783943140284_rel_40",
+        "source": "AI_Generation_1783943140284_Q11551",
+        "target": "AI_Generation_1783943140284_Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        },
+        "color": {
+          "source": "kategorie",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "kategorie",
+          "function": "categorical"
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#aaaaaa"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.1
+          }
+        }
+      }
+    }
+  }
+}

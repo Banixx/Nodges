@@ -1,0 +1,1016 @@
+{
+  "head": {
+    "vars": [
+      "body",
+      "bodyLabel",
+      "type",
+      "typeLabel",
+      "orbits",
+      "orbitsLabel"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q596"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Ceres"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2640"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "10 Hygiea"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3002"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2 Pallas"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3009"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "3 Juno"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3030"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Vesta"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3311"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "10427 Klinkenberg"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q4475"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "10018 Lykawka"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q4477"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "10003 Caryhuang"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q4483"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "10019 Wesleyfraser"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q4486"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "10020 Bagenal"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q4911"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(6427) 1995 FY"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q8591"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "7981 Katieoakman"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q8604"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(10537) 1991 RY16"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q8607"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(19308) 1996 TO66"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q8640"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2004 FH"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11054"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "2008 LC₁₈"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11057"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(614599) 2010 AB78"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11521"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "100 Hekate"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11524"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(100027) Hannaharendt"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11526"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "100033 Taizé"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11527"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1002 Olbersia"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11528"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1001) Gaussia"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11530"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1003) Lilofee"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11531"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1004 Belopolskya"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11532"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(10057) L’Obel"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11533"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1005 Arago"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11534"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1006) Lagrangea"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11535"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(10069) Fontenelle"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11536"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(10079) Meunier"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11537"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1007) Pawlowia"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11540"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1008) La Paz"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11541"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1009) Sirene"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11543"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(101) Helena"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11544"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1010) Marlene"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11545"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(10101) Fourier"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11546"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1011) Laodamia"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11548"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1012) Sarema"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11549"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1013) Tombecka"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11550"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(10149) Cavagna"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11551"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1014) Semphyra"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11552"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1015) Christa"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11553"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1016) Anitra"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11554"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1017) Jacqueline"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11555"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1018) Arnolda"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11556"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(10195) Nebraska"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11557"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1019 Strackea"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11559"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "10199 Chariklo"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11560"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "102 Miriam"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11561"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1020) Arcadia"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q11562"
+        },
+        "orbits": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "bodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(10207) Comeniana"
+        },
+        "orbitsLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      }
+    ]
+  }
+}

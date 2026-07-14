@@ -12,7 +12,7 @@ describe('VisualMappingEngine', () => {
         });
 
         it('sollte Default-Properties fuer Entities zurueckgeben', () => {
-            const entity: EntityData = { id: '1', type: 'person' };
+            const entity: EntityData = { id: '1' };
             const visual = engine.applyToEntity(entity);
 
             expect(visual.size).toBe(1.0);
@@ -22,7 +22,7 @@ describe('VisualMappingEngine', () => {
         });
 
         it('sollte Default-Properties fuer Relationships zurueckgeben', () => {
-            const rel: RelationshipData = { type: 'knows', source: '1', target: '2' };
+            const rel: RelationshipData = { source: '1', target: '2' };
             const visual = engine.applyToRelationship(rel);
 
             expect(visual.thickness).toBe(0.1);
@@ -34,7 +34,7 @@ describe('VisualMappingEngine', () => {
         beforeEach(() => {
             const mappings: VisualMappings = {
                 defaultPresets: {
-                    person: {
+                    global_node: {
                         size: {
                             source: 'age',
                             function: 'linear',
@@ -46,7 +46,7 @@ describe('VisualMappingEngine', () => {
                             palette: 'blue-red',
                         },
                     },
-                    knows: {
+                    global_edge: {
                         thickness: {
                             source: 'trust',
                             function: 'linear',
@@ -68,7 +68,6 @@ describe('VisualMappingEngine', () => {
             it('sollte Size-Mapping anwenden', () => {
                 const entity: EntityData = {
                     id: '1',
-                    type: 'person',
                     age: 0.5, // Normalized value
                 };
 
@@ -81,7 +80,6 @@ describe('VisualMappingEngine', () => {
             it('sollte Color-Mapping mit Heatmap anwenden', () => {
                 const entity: EntityData = {
                     id: '1',
-                    type: 'person',
                     happiness: 0.5,
                 };
 
@@ -94,7 +92,6 @@ describe('VisualMappingEngine', () => {
             it('sollte mit fehlenden Properties umgehen (Fallback zu Mitte der Range)', () => {
                 const entity: EntityData = {
                     id: '1',
-                    type: 'person',
                     // age fehlt absichtlich
                 };
 
@@ -104,23 +101,26 @@ describe('VisualMappingEngine', () => {
                 expect(visual.size).toBe(1.25);
             });
 
-            it('sollte Default-Properties fuer unbekannten Entity-Type zurueckgeben', () => {
+            it('sollte Default-Properties fuer leere Mappings zurueckgeben', () => {
                 const entity: EntityData = {
                     id: '1',
-                    type: 'unknown_type',
                 };
+                // We overwrite global mappings temporarily to test fallback
+                const oldMappings = engine.getVisualMappings();
+                engine.setVisualMappings({ defaultPresets: {} });
 
                 const visual = engine.applyToEntity(entity);
 
                 expect(visual.size).toBe(1.0);
                 expect(visual.geometry).toBe('sphere');
+                
+                engine.setVisualMappings(oldMappings!);
             });
         });
 
         describe('applyToRelationship()', () => {
             it('sollte Thickness-Mapping anwenden', () => {
                 const rel: RelationshipData = {
-                    type: 'knows',
                     source: '1',
                     target: '2',
                     trust: 0.8,
@@ -134,7 +134,6 @@ describe('VisualMappingEngine', () => {
 
             it('sollte Constant-Mapping korrekt verarbeiten', () => {
                 const rel: RelationshipData = {
-                    type: 'knows',
                     source: '1',
                     target: '2',
                 };
@@ -145,18 +144,22 @@ describe('VisualMappingEngine', () => {
                 expect(visual.opacity).toBe(0.8);
             });
 
-            it('sollte Warning loggen fuer unbekannten Relationship-Type', () => {
+            it('sollte Default-Properties zurueckgeben wenn keine globalen Edges definiert', () => {
                 const rel: RelationshipData = {
-                    type: 'unknown_relationship',
                     source: '1',
                     target: '2',
                 };
+                
+                const oldMappings = engine.getVisualMappings();
+                engine.setVisualMappings({ defaultPresets: {} });
 
                 const visual = engine.applyToRelationship(rel);
 
                 // Should return defaults
                 expect(visual.thickness).toBe(0.1);
                 expect(visual.opacity).toBe(1.0);
+                
+                engine.setVisualMappings(oldMappings!);
             });
         });
     });
@@ -165,7 +168,7 @@ describe('VisualMappingEngine', () => {
         it('sollte linear mapping korrekt berechnen', () => {
             const mappings: VisualMappings = {
                 defaultPresets: {
-                    test: {
+                    global_node: {
                         size: {
                             source: 'value',
                             function: 'linear',
@@ -177,9 +180,9 @@ describe('VisualMappingEngine', () => {
 
             engine = new VisualMappingEngine(mappings);
 
-            const entity0: EntityData = { id: '1', type: 'test', value: 0 };
-            const entity05: EntityData = { id: '2', type: 'test', value: 0.5 };
-            const entity1: EntityData = { id: '3', type: 'test', value: 1.0 };
+            const entity0: EntityData = { id: '1', value: 0 };
+            const entity05: EntityData = { id: '2', value: 0.5 };
+            const entity1: EntityData = { id: '3', value: 1.0 };
 
             expect(engine.applyToEntity(entity0).size).toBe(1.0);
             expect(engine.applyToEntity(entity05).size).toBe(1.5);
@@ -189,7 +192,7 @@ describe('VisualMappingEngine', () => {
         it('sollte exponential mapping korrekt berechnen', () => {
             const mappings: VisualMappings = {
                 defaultPresets: {
-                    test: {
+                    global_node: {
                         size: {
                             source: 'value',
                             function: 'exponential',
@@ -202,7 +205,7 @@ describe('VisualMappingEngine', () => {
 
             engine = new VisualMappingEngine(mappings);
 
-            const entity: EntityData = { id: '1', type: 'test', value: 0.5 };
+            const entity: EntityData = { id: '1', value: 0.5 };
             const visual = engine.applyToEntity(entity);
 
             // Exponential: 0.5^2 = 0.25, then linear scale: 1 + 0.25 * (5-1) = 2.0
@@ -214,7 +217,7 @@ describe('VisualMappingEngine', () => {
         it('sollte Mappings zur Laufzeit aktualisieren koennen', () => {
             engine = new VisualMappingEngine();
 
-            const entity: EntityData = { id: '1', type: 'person' };
+            const entity: EntityData = { id: '1' };
 
             // Vor dem Setzen
             let visual = engine.applyToEntity(entity);
@@ -223,7 +226,7 @@ describe('VisualMappingEngine', () => {
             // Nach dem Setzen
             const newMappings: VisualMappings = {
                 defaultPresets: {
-                    person: {
+                    global_node: {
                         size: {
                             source: 'constant',
                             function: 'linear',

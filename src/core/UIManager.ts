@@ -168,7 +168,7 @@ export class UIManager {
 
     public updateFileInfo(filename: string, nodeCount: number, edgeCount: number, bounds: Bounds, schemaVersion?: string) {
         const elFilename = document.getElementById('fileFilename');
-        if (elFilename) elFilename.textContent = `Dateiname: ${filename}`;
+        if (elFilename) elFilename.textContent = filename;
 
         // Build-Label aus schemaVersion ableiten
         const sv = schemaVersion || '3.0';
@@ -207,70 +207,32 @@ export class UIManager {
         if (!graphData) return result;
 
         const dataModel = graphData.dataModel;
-        const presets = graphData.visualMappings?.defaultPresets || {};
 
         const allNodeAttrs = new Set<string>([
-            'constant', 'type', 'id', 
+            'constant', 'id', 
             'position',
             'algo:force-directed', 'algo:fruchterman-reingold', 'algo:spring-embedder', 
             'algo:hierarchical', 'algo:tree', 'algo:circular', 'algo:grid', 'algo:random'
         ]);
-        const allEdgeAttrs = new Set<string>(['constant', 'type', 'id', 'source', 'target']);
-
-        const allTypes = new Set<string>();
-        Object.keys(presets).forEach(t => allTypes.add(t));
-        
-        if (dataModel) {
-            if ('entities' in dataModel && dataModel.entities) Object.keys(dataModel.entities).forEach(t => allTypes.add(t));
-            if ('relationships' in dataModel && dataModel.relationships) Object.keys(dataModel.relationships).forEach(t => allTypes.add(t));
-        }
+        const allEdgeAttrs = new Set<string>(['constant', 'id', 'source', 'target']);
 
         const entities = graphData.data?.entities || [];
         entities.forEach((e: any) => {
-            if (e.type) allTypes.add(e.type);
-            getAvailableProperties(dataModel, e.type, e).forEach(k => {
+            getAvailableProperties(dataModel, undefined, e).forEach(k => {
                 allNodeAttrs.add(k);
             });
         });
 
         const relationships = graphData.data?.relationships || [];
         relationships.forEach((r: any) => {
-            if (r.type) allTypes.add(r.type);
-            getAvailableProperties(dataModel, r.type, r).forEach(k => {
+            getAvailableProperties(dataModel, undefined, r).forEach(k => {
                 if (k !== 'offset') allEdgeAttrs.add(k);
             });
         });
 
-        // Add global types
+        // Add global types only
         result['global_node'] = Array.from(allNodeAttrs);
         result['global_edge'] = Array.from(allEdgeAttrs);
-
-        allTypes.forEach(type => {
-            if (type === 'global_node' || type === 'global_edge') return;
-            
-            const keys = new Set<string>();
-            keys.add('constant'); // Always include constant
-            keys.add('type'); // Always include type
-
-            const entityOfThisType = entities.find((e: any) => e.type === type);
-            if (entityOfThisType) {
-                keys.add('position');
-                getAvailableProperties(dataModel, type, entityOfThisType).forEach(k => keys.add(k));
-            } else {
-                const relOfThisType = relationships.find((r: any) => r.type === type);
-                if (relOfThisType) {
-                    getAvailableProperties(dataModel, type, relOfThisType).forEach(k => keys.add(k));
-                } else {
-                    const isNode = dataModel?.entities?.[type];
-                    if (isNode) {
-                        keys.add('position');
-                    }
-                    getAvailableProperties(dataModel, type).forEach(k => keys.add(k));
-                }
-            }
-
-            result[type] = Array.from(keys);
-        });
 
         return result;
     }

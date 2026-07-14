@@ -1,0 +1,954 @@
+{
+  "head": {
+    "vars": [
+      "object",
+      "objectLabel",
+      "type",
+      "typeLabel",
+      "parent",
+      "parentLabel"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q111699345"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Kiwan"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q111723944"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Bil"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q111723945"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sin"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q111723946"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Shamish"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q111723947"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Libat"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q111723949"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nirig"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q111723950"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nbu"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q132859575"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "objectLabel": {
+          "type": "literal",
+          "value": "Q132859575"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q132859630"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "objectLabel": {
+          "type": "literal",
+          "value": "Q132859630"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136703964"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Planet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "TOI-4507 b"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Stern"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Stern"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q339"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pluto"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q596"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Ceres"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q601"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(136108) Haumea"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q611"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Eris"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q6587"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "objectLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "225088 Gonggong"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q15586"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Quaoar"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q15603"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Orcus"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q15610"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sedna"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136964"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Zwergplanet"
+        },
+        "objectLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(120347) Salacia"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q6604"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Charon"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q339"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pluto"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q102694"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nix"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q339"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pluto"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q102701"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Hydra"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q339"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pluto"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q105636"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Kerberos"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q339"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pluto"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q105713"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Styx"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q339"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pluto"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q184246"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "moon of Pluto"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q339"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pluto"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3884961"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "hadeocentric orbit"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q339"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pluto"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3884962"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "hadeosynchronous orbit"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q339"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pluto"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3884963"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "hadeostationary orbit"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q339"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pluto"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16664937"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "rings of Pluto"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q339"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pluto"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q141799"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Hiʻiaka"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q601"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(136108) Haumea"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q153893"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Namaka"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q601"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(136108) Haumea"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q848950"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "moon of Haumea"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q601"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(136108) Haumea"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q109358428"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "ring of Haumea"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q601"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(136108) Haumea"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q102656"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Dysnomia"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q611"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Eris"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q27496473"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Xiangliu"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q6587"
+        },
+        "parentLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "225088 Gonggong"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q83894"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Weywot"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q15586"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Quaoar"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q117066228"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "rings of 50000 Quaoar"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q15586"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Quaoar"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q603083"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Vanth"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q15603"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Orcus"
+        }
+      },
+      {
+        "object": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q343201"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "typeLabel": {
+          "type": "literal",
+          "value": "Mond"
+        },
+        "objectLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Actaea"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136964"
+        },
+        "parentLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(120347) Salacia"
+        }
+      }
+    ]
+  }
+}

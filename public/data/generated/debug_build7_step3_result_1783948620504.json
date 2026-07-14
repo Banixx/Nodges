@@ -1,0 +1,559 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Generiert aus Wikidata",
+    "apiResponse": {
+      "id": "gen-1783948574-u7eOSfcw7yEFQDFKQV7G",
+      "created": 1783948574,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 4334,
+        "completion_tokens": 3561,
+        "total_tokens": 7895,
+        "cost": 0.001592384,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.001592384,
+          "upstream_inference_prompt_cost": 0.000602426,
+          "upstream_inference_completions_cost": 0.000989958
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "properties": {
+      "kategorie": {
+        "type": "categorical"
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "Q525",
+        "label": "Sun",
+        "kategorie": "Star"
+      },
+      {
+        "id": "Q140151",
+        "label": "(1501) Baade",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140164",
+        "label": "(1502) Arenda",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140177",
+        "label": "(1503) Kuopio",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140190",
+        "label": "(1504) Lappeenranta",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140197",
+        "label": "(1505) Koranna",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140214",
+        "label": "(1506) Xosa",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140228",
+        "label": "(1507) Vaasa",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140237",
+        "label": "1508 Kemi",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140273",
+        "label": "(151) Abundantia",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140286",
+        "label": "1510 Charlois",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140297",
+        "label": "1511 Daléra",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140315",
+        "label": "1512 Oulu",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140322",
+        "label": "1513 Mátra",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140330",
+        "label": "(1514) Ricouxa",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140338",
+        "label": "(1515) Perrotin",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140346",
+        "label": "(1516) Henry",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140353",
+        "label": "(1517) Beograd",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140362",
+        "label": "(1518) Rovaniemi",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140363",
+        "label": "(15198) 1940 GJ",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140370",
+        "label": "(1519) Kajaani",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140380",
+        "label": "152 Atala",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140382",
+        "label": "1520 Imatra",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140397",
+        "label": "1521 Seinäjoki",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140399",
+        "label": "(1522) Kokkola",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140402",
+        "label": "(15239) Stenhammar",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140410",
+        "label": "1523 Pieksämäki",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140419",
+        "label": "(1524) Joensuu",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140426",
+        "label": "(1525) Savonlinna",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140433",
+        "label": "(15262) Abderhalden",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140434",
+        "label": "(1526) Mikkeli",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140440",
+        "label": "15265 Ernsting",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140449",
+        "label": "15278 Pâquet",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140452",
+        "label": "(1527) Malmquista",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140469",
+        "label": "(1528) Conrada",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140474",
+        "label": "(1529) Oterma",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140488",
+        "label": "1530 Rantaseppä",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140489",
+        "label": "153 Hilda",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140504",
+        "label": "(1531) Hartmut",
+        "kategorie": "asteroid"
+      },
+      {
+        "id": "Q140507",
+        "label": "(1532) Inari",
+        "kategorie": "asteroid"
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel_q140151_sun",
+        "source": "Q140151",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140164_sun",
+        "source": "Q140164",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140177_sun",
+        "source": "Q140177",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140190_sun",
+        "source": "Q140190",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140197_sun",
+        "source": "Q140197",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140214_sun",
+        "source": "Q140214",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140228_sun",
+        "source": "Q140228",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140237_sun",
+        "source": "Q140237",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140273_sun",
+        "source": "Q140273",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140286_sun",
+        "source": "Q140286",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140297_sun",
+        "source": "Q140297",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140315_sun",
+        "source": "Q140315",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140322_sun",
+        "source": "Q140322",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140330_sun",
+        "source": "Q140330",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140338_sun",
+        "source": "Q140338",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140346_sun",
+        "source": "Q140346",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140353_sun",
+        "source": "Q140353",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140362_sun",
+        "source": "Q140362",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140363_sun",
+        "source": "Q140363",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140370_sun",
+        "source": "Q140370",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140380_sun",
+        "source": "Q140380",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140382_sun",
+        "source": "Q140382",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140397_sun",
+        "source": "Q140397",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140399_sun",
+        "source": "Q140399",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140402_sun",
+        "source": "Q140402",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140410_sun",
+        "source": "Q140410",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140419_sun",
+        "source": "Q140419",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140426_sun",
+        "source": "Q140426",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140433_sun",
+        "source": "Q140433",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140434_sun",
+        "source": "Q140434",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140440_sun",
+        "source": "Q140440",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140449_sun",
+        "source": "Q140449",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140452_sun",
+        "source": "Q140452",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140469_sun",
+        "source": "Q140469",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140474_sun",
+        "source": "Q140474",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140488_sun",
+        "source": "Q140488",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140489_sun",
+        "source": "Q140489",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140504_sun",
+        "source": "Q140504",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_q140507_sun",
+        "source": "Q140507",
+        "target": "Q525",
+        "label": "orbits",
+        "kategorie": "orbits"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        },
+        "color": {
+          "source": "kategorie",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "kategorie",
+          "function": "categorical"
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#aaaaaa"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.1
+          }
+        }
+      }
+    }
+  }
+}

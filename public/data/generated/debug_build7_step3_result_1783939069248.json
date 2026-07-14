@@ -1,0 +1,419 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Generiert aus Wikidata: Sonne, Planeten, Monde und Zwergplaneten",
+    "apiResponse": {
+      "id": "gen-1783939023-NgPo4BlTAQk2FuqlijpL",
+      "created": 1783939023,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 3448,
+        "completion_tokens": 4991,
+        "total_tokens": 8439,
+        "cost": 0.0018802,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0018802,
+          "upstream_inference_prompt_cost": 0.00048272,
+          "upstream_inference_completions_cost": 0.00139748
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 3025,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Stern": {
+        "properties": {}
+      },
+      "Planet": {
+        "properties": {}
+      },
+      "Zwergplanet": {
+        "properties": {}
+      },
+      "Mond": {
+        "properties": {}
+      }
+    },
+    "relationships": {
+      "orbits": {
+        "properties": {}
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "Q525",
+        "type": "Stern",
+        "label": "Sun"
+      },
+      {
+        "id": "Q111699345",
+        "type": "Planet",
+        "label": "Kiwan"
+      },
+      {
+        "id": "Q111723944",
+        "type": "Planet",
+        "label": "Bil"
+      },
+      {
+        "id": "Q111723945",
+        "type": "Planet",
+        "label": "Sin"
+      },
+      {
+        "id": "Q111723946",
+        "type": "Planet",
+        "label": "Shamish"
+      },
+      {
+        "id": "Q111723947",
+        "type": "Planet",
+        "label": "Libat"
+      },
+      {
+        "id": "Q111723949",
+        "type": "Planet",
+        "label": "Nirig"
+      },
+      {
+        "id": "Q111723950",
+        "type": "Planet",
+        "label": "Nbu"
+      },
+      {
+        "id": "Q132859575",
+        "type": "Planet",
+        "label": "Q132859575"
+      },
+      {
+        "id": "Q132859630",
+        "type": "Planet",
+        "label": "Q132859630"
+      },
+      {
+        "id": "Q136703964",
+        "type": "Planet",
+        "label": "TOI-4507 b"
+      },
+      {
+        "id": "Q339",
+        "type": "Zwergplanet",
+        "label": "Pluto"
+      },
+      {
+        "id": "Q596",
+        "type": "Zwergplanet",
+        "label": "Ceres"
+      },
+      {
+        "id": "Q601",
+        "type": "Zwergplanet",
+        "label": "(136108) Haumea"
+      },
+      {
+        "id": "Q611",
+        "type": "Zwergplanet",
+        "label": "Eris"
+      },
+      {
+        "id": "Q6587",
+        "type": "Zwergplanet",
+        "label": "225088 Gonggong"
+      },
+      {
+        "id": "Q15586",
+        "type": "Zwergplanet",
+        "label": "Quaoar"
+      },
+      {
+        "id": "Q15603",
+        "type": "Zwergplanet",
+        "label": "Orcus"
+      },
+      {
+        "id": "Q15610",
+        "type": "Zwergplanet",
+        "label": "Sedna"
+      },
+      {
+        "id": "Q136964",
+        "type": "Zwergplanet",
+        "label": "(120347) Salacia"
+      },
+      {
+        "id": "Q6604",
+        "type": "Mond",
+        "label": "Charon"
+      },
+      {
+        "id": "Q102694",
+        "type": "Mond",
+        "label": "Nix"
+      },
+      {
+        "id": "Q102701",
+        "type": "Mond",
+        "label": "Hydra"
+      },
+      {
+        "id": "Q105636",
+        "type": "Mond",
+        "label": "Kerberos"
+      },
+      {
+        "id": "Q105713",
+        "type": "Mond",
+        "label": "Styx"
+      },
+      {
+        "id": "Q141799",
+        "type": "Mond",
+        "label": "Hiʻiaka"
+      },
+      {
+        "id": "Q153893",
+        "type": "Mond",
+        "label": "Namaka"
+      },
+      {
+        "id": "Q102656",
+        "type": "Mond",
+        "label": "Dysnomia"
+      },
+      {
+        "id": "Q27496473",
+        "type": "Mond",
+        "label": "Xiangliu"
+      },
+      {
+        "id": "Q83894",
+        "type": "Mond",
+        "label": "Weywot"
+      },
+      {
+        "id": "Q603083",
+        "type": "Mond",
+        "label": "Vanth"
+      },
+      {
+        "id": "Q343201",
+        "type": "Mond",
+        "label": "Actaea"
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel_1",
+        "type": "orbits",
+        "source": "Q6604",
+        "target": "Q339",
+        "label": "orbits"
+      },
+      {
+        "id": "rel_2",
+        "type": "orbits",
+        "source": "Q102694",
+        "target": "Q339",
+        "label": "orbits"
+      },
+      {
+        "id": "rel_3",
+        "type": "orbits",
+        "source": "Q102701",
+        "target": "Q339",
+        "label": "orbits"
+      },
+      {
+        "id": "rel_4",
+        "type": "orbits",
+        "source": "Q105636",
+        "target": "Q339",
+        "label": "orbits"
+      },
+      {
+        "id": "rel_5",
+        "type": "orbits",
+        "source": "Q105713",
+        "target": "Q339",
+        "label": "orbits"
+      },
+      {
+        "id": "rel_6",
+        "type": "orbits",
+        "source": "Q141799",
+        "target": "Q601",
+        "label": "orbits"
+      },
+      {
+        "id": "rel_7",
+        "type": "orbits",
+        "source": "Q153893",
+        "target": "Q601",
+        "label": "orbits"
+      },
+      {
+        "id": "rel_8",
+        "type": "orbits",
+        "source": "Q102656",
+        "target": "Q611",
+        "label": "orbits"
+      },
+      {
+        "id": "rel_9",
+        "type": "orbits",
+        "source": "Q27496473",
+        "target": "Q6587",
+        "label": "orbits"
+      },
+      {
+        "id": "rel_10",
+        "type": "orbits",
+        "source": "Q83894",
+        "target": "Q15586",
+        "label": "orbits"
+      },
+      {
+        "id": "rel_11",
+        "type": "orbits",
+        "source": "Q603083",
+        "target": "Q15603",
+        "label": "orbits"
+      },
+      {
+        "id": "rel_12",
+        "type": "orbits",
+        "source": "Q343201",
+        "target": "Q136964",
+        "label": "orbits"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Stern": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 2.5
+          }
+        },
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#FFD700"
+          }
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Planet": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        },
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#4169E1"
+          }
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Zwergplanet": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.7
+          }
+        },
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#FF8C00"
+          }
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Mond": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.4
+          }
+        },
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#A9A9A9"
+          }
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "orbits": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#888888"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.05
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2916 @@
+{
+  "head": {
+    "vars": [
+      "item",
+      "itemLabel",
+      "type",
+      "typeLabel",
+      "parent",
+      "parentLabel"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140151"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1501) Baade"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140164"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1502) Arenda"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140177"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1503) Kuopio"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140190"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1504) Lappeenranta"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140197"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1505) Koranna"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140214"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1506) Xosa"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140228"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1507) Vaasa"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140237"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1508 Kemi"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140237"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q777140"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1508 Kemi"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Mars-crossing asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140273"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(151) Abundantia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140286"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1510 Charlois"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140297"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1511 Daléra"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140315"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1512 Oulu"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140322"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1513 Mátra"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140330"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1514) Ricouxa"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140338"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1515) Perrotin"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140346"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1516) Henry"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140353"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1517) Beograd"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140362"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1518) Rovaniemi"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140363"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(15198) 1940 GJ"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140370"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1519) Kajaani"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140380"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "152 Atala"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140382"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1520 Imatra"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140397"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1521 Seinäjoki"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140399"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1522) Kokkola"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140402"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(15239) Stenhammar"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140410"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1523 Pieksämäki"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140419"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1524) Joensuu"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140426"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1525) Savonlinna"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140433"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(15262) Abderhalden"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140434"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1526) Mikkeli"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140440"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "15265 Ernsting"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140449"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "15278 Pâquet"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140452"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1527) Malmquista"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140469"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1528) Conrada"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140474"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1529) Oterma"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140488"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1530 Rantaseppä"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140489"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "153 Hilda"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140504"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1531) Hartmut"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140507"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1532) Inari"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140512"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(15329) Sabena"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140519"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1533) Saimaa"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140524"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1534 Näsi"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140530"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q217526"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(153591) 2001 SN263"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "near-Earth asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140530"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q265392"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(153591) 2001 SN263"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "near-Earth object"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140530"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q59423687"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(153591) 2001 SN263"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "potentially hazardous asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140539"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1535 Päijänne"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140548"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1536) Pielinen"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140553"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1537) Transylvania"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140556"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q217526"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(153814) 2001 WN5"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "near-Earth asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140556"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q265392"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(153814) 2001 WN5"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "near-Earth object"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140556"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q59423687"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(153814) 2001 WN5"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "potentially hazardous asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140558"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1538) Detre"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140576"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1539) Borrelly"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140586"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "154 Bertha"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140597"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1540 Kevola"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140610"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1541) Estonia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140622"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1542 Schalén"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140630"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1543) Bourgeois"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140639"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1544) Vinterhansenia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140647"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1545 Thernöe"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140655"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(15460) Manca"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140659"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1546 Izsák"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140674"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1547) Nele"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140677"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1548) Palomaa"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140689"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1549) Mikko"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140704"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "155 Scylla"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140708"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1550) Tito"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140710"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(15500) Anantpatel"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140716"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(15501) Pepawlowski"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140718"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(15506) Preygel"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140722"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(15507) Rengarajan"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140728"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(15510) Phoeberounds"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140730"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1551) Argelander"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140735"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(15512) Snyder"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140745"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1552) Bessel"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140748"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1553) Bauersfelda"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140763"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1554 Yugoslavia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140765"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1555 Dejan"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140777"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1556) Wingolfia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140780"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1557) Roehla"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140792"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1558 Järnefelt"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140794"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1559) Kustaanheimo"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140810"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1560) Strattonia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140814"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "156 Xanthippe"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140824"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1561 Fricke"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140827"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1562) Gondolatsch"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140843"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1563 Noël"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140852"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1564 Srbija"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140857"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(15651) Tlepolemos"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140859"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1565 Lemaître"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140864"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(15663) Periphas"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140874"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q217526"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1566 Icarus"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "near-Earth asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140874"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q265392"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1566 Icarus"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "near-Earth object"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140874"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q777140"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1566 Icarus"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Mars-crossing asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140874"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1185241"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1566 Icarus"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "list of Mercury-crossing minor planets"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140874"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q59423687"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1566 Icarus"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "potentially hazardous asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140876"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1567 Alikoski"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140888"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1568 Aisleen"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q140889"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "parent": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "itemLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1569 Evita"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        },
+        "parentLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      }
+    ]
+  }
+}

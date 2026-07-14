@@ -1,0 +1,2014 @@
+{
+  "head": {
+    "vars": [
+      "celestialBody",
+      "celestialBodyLabel",
+      "type",
+      "typeLabel"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136161"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1119) Euboea"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136178"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1120) Cannonia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136191"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1121) Natascha"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136203"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1123) Shapleya"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136204"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1124) Stroobantia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136212"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1126) Otero"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136222"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1127) Mimi"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136226"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1128) Astrid"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136179"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "112 Iphigenia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136194"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1122 Neith"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136211"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1125 China"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136476"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193275"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1149 Volga"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "small Solar System body"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136265"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1130) Skuld"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136275"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11311) Peleus"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136276"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1131) Porzia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136299"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1133) Lugduna"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136240"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1129 Neujmina"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136256"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "113 Amalthea"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136300"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1132 Hollandia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136308"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(113390) Helvetia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136319"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11341) Babbage"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136323"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1134) Kepler"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136343"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1135 Colchis"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136350"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1136) Mercedes"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136379"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1139) Atami"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136362"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1137 Raïssa"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136370"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1138 Attica"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136402"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "114 Kassandra"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136400"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1140 Crimea"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136418"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1141) Bohmia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136419"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1142) Aetolia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136427"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1144) Oda"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136437"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11450) Shearer"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136442"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1145) Robelmonte"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136447"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11451) Aarongolden"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136455"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1146) Biarmia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136468"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1148) Rarahu"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136430"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1143 Odysseus"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136458"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1147 Stavropolis"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136479"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11496) Grass"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136499"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1150) Achaia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136510"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11504) Kazo"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136531"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1151) Ithaka"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136476"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1149 Volga"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136508"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "115 Thyra"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136548"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1153) Wallenbergia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136557"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11545) Hashimoto"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136566"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11547) Griesser"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136572"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11554) Asios"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136582"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1157) Arabia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136554"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1154 Astronomia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136581"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1156 Kira"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136584"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "11578 Cimabue"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135986"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q265392"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "11066 Sigurd"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "near-Earth object"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135770"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(10878) Moriyama"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135773"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1087) Arabis"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135786"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1088) Mitaka"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135789"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1089 Tama"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136144"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "(1118) Hanskya"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135824"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1092) Lilium"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135833"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(10932) Rebentrost"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135840"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1093) Freda"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135805"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1090 Sumida"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135808"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "109 Felicitas"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135822"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1091 Spiraea"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135849"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1094 Siberia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135857"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1095 Tulipa"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136275"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q265392"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11311) Peleus"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "near-Earth object"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135870"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1096) Reunerta"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135875"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1097) Vicia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135890"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1098) Hakone"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135922"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11005) Waldtrudering"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135927"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1100) Arnica"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135934"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1101) Clematis"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135947"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1102) Pepita"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135957"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(110393) Rammstein"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135962"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11043) Pepping"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135963"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1104) Syringa"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135894"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1099 Figneria"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135916"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "110 Lydia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135954"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1103 Sequoia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136011"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1108) Demeter"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136036"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1109) Tata"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135979"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1105 Fragaria"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q135986"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "11066 Sigurd"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136010"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1107 Lictoria"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136047"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "111 Ate"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136057"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1110 Jaroslawa"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136070"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11112) Cagnoli"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136091"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1112) Polonia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136095"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1113) Katja"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136105"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(11145) Emanuelli"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136111"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1114) Lorraine"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136117"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1115) Sabauda"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136127"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1116) Catriona"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136140"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1117) Reginita"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136067"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1111 Reinmuthia"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136154"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3863"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "11193 Mérida"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "asteroid"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136468"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193275"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "de",
+          "type": "literal",
+          "value": "(1148) Rarahu"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "small Solar System body"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q136458"
+        },
+        "type": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193275"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1147 Stavropolis"
+        },
+        "typeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "small Solar System body"
+        }
+      }
+    ]
+  }
+}

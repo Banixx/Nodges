@@ -1,0 +1,38 @@
+{
+  "query": "SELECT ?object ?objectLabel ?type ?typeLabel ?parent ?parentLabel WHERE { { BIND(wd:Q525 AS ?object) BIND(\"Stern\" AS ?type) BIND(\"Stern\" AS ?typeLabel) } UNION { ?object wdt:P31 wd:Q634 . BIND(\"Planet\" AS ?type) BIND(\"Planet\" AS ?typeLabel) } UNION { ?object wdt:P31 wd:Q2199 . BIND(\"Zwergplanet\" AS ?type) BIND(\"Zwergplanet\" AS ?typeLabel) } UNION { ?object wdt:P397 ?parent . ?parent wdt:P31 ?parentType . FILTER(?parentType IN (wd:Q634, wd:Q2199)) BIND(\"Mond\" AS ?type) BIND(\"Mond\" AS ?typeLabel) } SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,de\" . } } LIMIT 100",
+  "data": {
+    "entities": [],
+    "relationships": []
+  },
+  "metadata": {
+    "apiResponse": {
+      "id": "gen-1783938986-w4SbGjMgKf42uTJ1pgvC",
+      "created": 1783938986,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 859,
+        "completion_tokens": 2329,
+        "total_tokens": 3188,
+        "cost": 0.00077238,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00077238,
+          "upstream_inference_prompt_cost": 0.00012026,
+          "upstream_inference_completions_cost": 0.00065212
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 2087,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  }
+}

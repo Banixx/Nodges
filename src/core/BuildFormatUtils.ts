@@ -10,19 +10,38 @@ import { DataModel, PropertySchema, EntityData } from '../types';
 /**
  * Retrieves the PropertySchema for a given attribute.
  */
-export function getPropertySchema(dm: DataModel | undefined, entityType: string, propName: string): PropertySchema | undefined {
-    if (!dm) return undefined;
+export function getPropertySchema(dm: DataModel | undefined, entityType?: string, propName?: string): PropertySchema | undefined {
+    if (!dm || !propName) return undefined;
     
     // Build 5 Schema: dm.entities[type].properties
-    if (dm.entities && dm.entities[entityType] && dm.entities[entityType].properties) {
-        const schema = dm.entities[entityType].properties[propName];
-        if (schema) return schema as PropertySchema;
-    }
-    
-    // Build 5 Schema für Relationships
-    if (dm.relationships && dm.relationships[entityType] && dm.relationships[entityType].properties) {
-        const schema = dm.relationships[entityType].properties[propName];
-        if (schema) return schema as PropertySchema;
+    if (entityType) {
+        if (dm.entities && dm.entities[entityType] && dm.entities[entityType].properties) {
+            const schema = dm.entities[entityType].properties[propName];
+            if (schema) return schema as PropertySchema;
+        }
+        
+        // Build 5 Schema für Relationships
+        if (dm.relationships && dm.relationships[entityType] && dm.relationships[entityType].properties) {
+            const schema = dm.relationships[entityType].properties[propName];
+            if (schema) return schema as PropertySchema;
+        }
+    } else {
+        // Search across all entities
+        if (dm.entities) {
+            for (const type in dm.entities) {
+                if (dm.entities[type].properties && dm.entities[type].properties[propName]) {
+                    return dm.entities[type].properties[propName] as PropertySchema;
+                }
+            }
+        }
+        // Search across all relationships
+        if (dm.relationships) {
+            for (const type in dm.relationships) {
+                if (dm.relationships[type].properties && dm.relationships[type].properties[propName]) {
+                    return dm.relationships[type].properties[propName] as PropertySchema;
+                }
+            }
+        }
     }
 
     // Build 4 Fallback: dm.properties
@@ -48,7 +67,7 @@ export function collectPaths(obj: any, prefix = ''): string[] {
     return paths;
 }
 
-export function getAvailableProperties(dm: DataModel | undefined, entityType: string, entity?: EntityData): string[] {
+export function getAvailableProperties(dm: DataModel | undefined, entityType?: string, entity?: EntityData): string[] {
     const props = new Set<string>();
 
     // Build 4: global properties
@@ -57,11 +76,24 @@ export function getAvailableProperties(dm: DataModel | undefined, entityType: st
     }
     
     // Build 5: type-specific properties
-    if (dm && dm.entities && dm.entities[entityType] && dm.entities[entityType].properties) {
-        Object.keys(dm.entities[entityType].properties).forEach(k => props.add(k));
-    }
-    if (dm && dm.relationships && dm.relationships[entityType] && dm.relationships[entityType].properties) {
-        Object.keys(dm.relationships[entityType].properties).forEach(k => props.add(k));
+    if (entityType) {
+        if (dm && dm.entities && dm.entities[entityType] && dm.entities[entityType].properties) {
+            Object.keys(dm.entities[entityType].properties).forEach(k => props.add(k));
+        }
+        if (dm && dm.relationships && dm.relationships[entityType] && dm.relationships[entityType].properties) {
+            Object.keys(dm.relationships[entityType].properties).forEach(k => props.add(k));
+        }
+    } else {
+        if (dm && dm.entities) {
+            Object.values(dm.entities).forEach(e => {
+                if (e.properties) Object.keys(e.properties).forEach(k => props.add(k));
+            });
+        }
+        if (dm && dm.relationships) {
+            Object.values(dm.relationships).forEach(r => {
+                if (r.properties) Object.keys(r.properties).forEach(k => props.add(k));
+            });
+        }
     }
 
     // Fallback/Erweiterung: Wenn eine Entity übergeben wurde, auch deren dynamische Keys scannen
@@ -72,7 +104,10 @@ export function getAvailableProperties(dm: DataModel | undefined, entityType: st
         }
         
         // In Build 5 koennen Eigenschaften auch direkt auf der Entity liegen (ausser den reservierten Keys)
-        const reservedKeys = ['id', 'label', 'temporal', 'stateVector']; // 'position' entfernt aus Reservierungen, da wir es mappen wollen
+        const isRelationship = ('source' in entity && 'target' in entity);
+        const reservedKeys = isRelationship
+            ? ['id', 'source', 'target', 'start', 'end', 'temporal', 'stateVector']
+            : ['id', 'label', 'temporal', 'stateVector']; // 'position' entfernt aus Reservierungen, da wir es mappen wollen
         Object.keys(entity).forEach(k => {
             if (!reservedKeys.includes(k)) {
                 // Erlaube Objekte (wie 'position'), damit MappingUI.ts diese als verschachtelte Gruppe rendern kann

@@ -1,0 +1,49 @@
+{
+  "timestampStart": "2026-07-13T22:30:42.770Z",
+  "prompt": "sonnensystem",
+  "ragText": null,
+  "provider": "openrouter",
+  "model": "qwen/qwen-2.5-72b-instruct",
+  "pipeline": "build8",
+  "systemInfo": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0",
+    "language": "de",
+    "screenResolution": "1920x1080",
+    "viewport": "1870x921",
+    "appVersion": "Nodges Build 6"
+  },
+  "steps": [
+    {
+      "time": "2026-07-13T22:30:42.770Z",
+      "offsetMs": 0,
+      "message": "Schritt 1/5: Analysiere Anfrage für Wikidata-Faktencheck..."
+    },
+    {
+      "time": "2026-07-13T22:30:46.648Z",
+      "offsetMs": 3879,
+      "message": "Schritt 2/5: Suche exakte Wikidata-IDs..."
+    },
+    {
+      "time": "2026-07-13T22:30:47.088Z",
+      "offsetMs": 4318,
+      "message": "Schritt 3/5: Generiere exakte SPARQL-Abfrage..."
+    },
+    {
+      "time": "2026-07-13T22:30:54.396Z",
+      "offsetMs": 11626,
+      "message": "Schritt 4/5: Frage Live-Daten von Wikidata ab..."
+    },
+    {
+      "time": "2026-07-13T22:31:35.773Z",
+      "offsetMs": 53003,
+      "message": "Schritt 5/5: Transformiere Wikidata-Rohdaten in Nodges 3D-Graph..."
+    }
+  ],
+  "timestampEnd": "2026-07-13T22:33:58.117Z",
+  "durationMs": 195347,
+  "durationSec": "195.35",
+  "status": "success",
+  "generatedNodes": 40,
+  "generatedEdges": 40,
+  "responsePayloadSizeKB": "18.60"
+}

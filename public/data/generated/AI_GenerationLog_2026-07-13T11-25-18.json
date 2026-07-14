@@ -1,0 +1,49 @@
+{
+  "timestampStart": "2026-07-13T11:23:47.161Z",
+  "prompt": "USER: sonnensystem\n\nKI: Magst du mir die Namen der konkreten Himmelskörper nennen, die du visualisieren möchtest (z.B. Sonne, Erde, Mars)?\n\nUSER: sonne, planeten, monde",
+  "ragText": null,
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v4-flash",
+  "pipeline": "build7",
+  "systemInfo": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0",
+    "language": "de",
+    "screenResolution": "1920x1080",
+    "viewport": "1304x871",
+    "appVersion": "Nodges Build 6"
+  },
+  "steps": [
+    {
+      "time": "2026-07-13T11:23:47.161Z",
+      "offsetMs": 0,
+      "message": "Schritt 1/5: Analysiere Anfrage für Wikidata-Faktencheck..."
+    },
+    {
+      "time": "2026-07-13T11:23:53.364Z",
+      "offsetMs": 6201,
+      "message": "Schritt 2/5: Suche exakte Wikidata-IDs..."
+    },
+    {
+      "time": "2026-07-13T11:23:53.844Z",
+      "offsetMs": 6681,
+      "message": "Schritt 3/5: Generiere exakte SPARQL-Abfrage..."
+    },
+    {
+      "time": "2026-07-13T11:24:27.382Z",
+      "offsetMs": 40220,
+      "message": "Schritt 4/5: Frage Live-Daten von Wikidata ab..."
+    },
+    {
+      "time": "2026-07-13T11:24:28.827Z",
+      "offsetMs": 41666,
+      "message": "Schritt 5/5: Transformiere Wikidata-Rohdaten in Nodges 3D-Graph..."
+    }
+  ],
+  "timestampEnd": "2026-07-13T11:25:17.478Z",
+  "durationMs": 90315,
+  "durationSec": "90.31",
+  "status": "success",
+  "generatedNodes": 11,
+  "generatedEdges": 0,
+  "responsePayloadSizeKB": "4.11"
+}

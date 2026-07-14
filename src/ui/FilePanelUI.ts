@@ -258,7 +258,7 @@ export class FilePanelUI {
         // Extract paths relative to public/data/
         const paths = Object.keys(dataFiles).map(path => {
             return path.replace('/public/data/', '');
-        }).filter(name => name !== '' && !name.includes('build7_beta') && !name.includes('debug_'));
+        }).filter(name => name !== '');
 
         return paths.sort(); // Sort alphabetically
     }

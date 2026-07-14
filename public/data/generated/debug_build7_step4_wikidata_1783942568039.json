@@ -1,0 +1,30 @@
+{
+  "head": {
+    "vars": [
+      "body",
+      "bodyLabel",
+      "type",
+      "planet",
+      "planetLabel"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "body": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q525"
+        },
+        "type": {
+          "type": "literal",
+          "value": "Sonne"
+        },
+        "bodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sun"
+        }
+      }
+    ]
+  }
+}

@@ -1,1 +1,0 @@
-SELECT ?breed ?breedLabel ?country ?countryLabel WHERE { ?breed wdt:P31 wd:Q1160573; wdt:P495 ?country. SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en,de". } } LIMIT 50

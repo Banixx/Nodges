@@ -1,0 +1,571 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Generiert aus Wikidata",
+    "apiResponse": {
+      "id": "gen-1783966981-baMse4Ha7vALnlILIryd",
+      "created": 1783966981,
+      "model": "openai/gpt-4o-mini",
+      "usage": {
+        "prompt_tokens": 3242,
+        "completion_tokens": 3022,
+        "total_tokens": 6264,
+        "cost": 0.0022995,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0022995,
+          "upstream_inference_prompt_cost": 0.0004863,
+          "upstream_inference_completions_cost": 0.0018132
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": "fp_e9323266c1"
+    }
+  },
+  "dataModel": {
+    "properties": {
+      "kategorie": {
+        "type": "categorical"
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "Q193",
+        "label": "Saturn",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q194",
+        "label": "rings of Saturn",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q2565",
+        "label": "Titan",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q3303",
+        "label": "Enceladus",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q15034",
+        "label": "Mimas",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q15037",
+        "label": "Hyperion",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q15040",
+        "label": "Dione",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q15047",
+        "label": "Tethys",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q15050",
+        "label": "Rhea",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17705",
+        "label": "Pan",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17706",
+        "label": "Daphnis",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17707",
+        "label": "Atlas",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17739",
+        "label": "Prometheus",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17746",
+        "label": "Pandora",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17751",
+        "label": "Epimetheus",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17754",
+        "label": "Janus",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17762",
+        "label": "Aegaeon",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17782",
+        "label": "Methone",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17788",
+        "label": "Anthe",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17850",
+        "label": "Pallene",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17857",
+        "label": "Telesto",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17869",
+        "label": "Calypso",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17875",
+        "label": "Helene",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17882",
+        "label": "Polydeuces",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17958",
+        "label": "Iapetus",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17965",
+        "label": "Kiviuq",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17971",
+        "label": "Ijiraq",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17975",
+        "label": "Phoebe",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17979",
+        "label": "Paaliaq",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17982",
+        "label": "Skathi",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17995",
+        "label": "Albiorix",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q17999",
+        "label": "Bebhionn",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q18001",
+        "label": "Skoll",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q18004",
+        "label": "Erriapus",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q18010",
+        "label": "Tarqeq",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q18016",
+        "label": "Greip",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q18024",
+        "label": "Siarnaq",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q18032",
+        "label": "Hyrrokkin",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q18039",
+        "label": "Tarvos",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q18047",
+        "label": "S/2004 S 13",
+        "kategorie": "CelestialBody"
+      },
+      {
+        "id": "Q18178",
+        "label": "Jarnsaxa",
+        "kategorie": "CelestialBody"
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel_1",
+        "source": "Q193",
+        "target": "Q194",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_2",
+        "source": "Q193",
+        "target": "Q2565",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_3",
+        "source": "Q193",
+        "target": "Q3303",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_4",
+        "source": "Q193",
+        "target": "Q15034",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_5",
+        "source": "Q193",
+        "target": "Q15037",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_6",
+        "source": "Q193",
+        "target": "Q15040",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_7",
+        "source": "Q193",
+        "target": "Q15047",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_8",
+        "source": "Q193",
+        "target": "Q15050",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_9",
+        "source": "Q193",
+        "target": "Q17705",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_10",
+        "source": "Q193",
+        "target": "Q17706",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_11",
+        "source": "Q193",
+        "target": "Q17707",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_12",
+        "source": "Q193",
+        "target": "Q17739",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_13",
+        "source": "Q193",
+        "target": "Q17746",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_14",
+        "source": "Q193",
+        "target": "Q17751",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_15",
+        "source": "Q193",
+        "target": "Q17754",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_16",
+        "source": "Q193",
+        "target": "Q17762",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_17",
+        "source": "Q193",
+        "target": "Q17782",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_18",
+        "source": "Q193",
+        "target": "Q17788",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_19",
+        "source": "Q193",
+        "target": "Q17850",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_20",
+        "source": "Q193",
+        "target": "Q17857",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_21",
+        "source": "Q193",
+        "target": "Q17869",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_22",
+        "source": "Q193",
+        "target": "Q17875",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_23",
+        "source": "Q193",
+        "target": "Q17882",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_24",
+        "source": "Q193",
+        "target": "Q17958",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_25",
+        "source": "Q193",
+        "target": "Q17965",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_26",
+        "source": "Q193",
+        "target": "Q17971",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_27",
+        "source": "Q193",
+        "target": "Q17975",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_28",
+        "source": "Q193",
+        "target": "Q17979",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_29",
+        "source": "Q193",
+        "target": "Q17982",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_30",
+        "source": "Q193",
+        "target": "Q17995",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_31",
+        "source": "Q193",
+        "target": "Q17999",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_32",
+        "source": "Q193",
+        "target": "Q18001",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_33",
+        "source": "Q193",
+        "target": "Q18004",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_34",
+        "source": "Q193",
+        "target": "Q18010",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_35",
+        "source": "Q193",
+        "target": "Q18016",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_36",
+        "source": "Q193",
+        "target": "Q18024",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_37",
+        "source": "Q193",
+        "target": "Q18032",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_38",
+        "source": "Q193",
+        "target": "Q18039",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_39",
+        "source": "Q193",
+        "target": "Q18047",
+        "label": "orbits",
+        "kategorie": "orbits"
+      },
+      {
+        "id": "rel_40",
+        "source": "Q193",
+        "target": "Q18178",
+        "label": "orbits",
+        "kategorie": "orbits"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        },
+        "color": {
+          "source": "kategorie",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "kategorie",
+          "function": "categorical"
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#aaaaaa"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.1
+          }
+        }
+      }
+    }
+  }
+}

@@ -60,13 +60,11 @@ export class VisualMappingEngine {
         this.dataModel = dataModel;
     }
 
-    private getEffectivePreset(isNode: boolean, type?: string): any {
+    private getEffectivePreset(isNode: boolean): any {
         const activeGlobal = this.visualMappings?.defaultPresets?.[isNode ? 'global_node' : 'global_edge'];
-        const typePreset = type && this.visualMappings?.defaultPresets?.[type];
 
         const preset = {};
         if (activeGlobal) Object.assign(preset, activeGlobal);
-        if (typePreset) Object.assign(preset, typePreset);
         
         return preset;
     }
@@ -75,7 +73,7 @@ export class VisualMappingEngine {
      * Apply visual mappings to an entity
      */
     applyToEntity(entity: EntityData): VisualProperties {
-        const preset = this.getEffectivePreset(true, entity.type) as EntityVisualPreset;
+        const preset = this.getEffectivePreset(true) as EntityVisualPreset;
         if (Object.keys(preset).length === 0) {
             return this.getDefaultVisualProperties();
         }
@@ -156,7 +154,7 @@ export class VisualMappingEngine {
      * Apply visual mappings to a relationship
      */
     applyToRelationship(relationship: RelationshipData): VisualProperties {
-        const preset = this.getEffectivePreset(false, relationship.type) as RelationshipVisualPreset;
+        const preset = this.getEffectivePreset(false) as RelationshipVisualPreset;
         if (Object.keys(preset).length === 0) {
             return this.getDefaultVisualProperties();
         }
@@ -297,9 +295,8 @@ export class VisualMappingEngine {
 
         // Apply domain normalization if provided or defined in dataModel
         let domain = mapping.domain;
-        if (!domain && this.dataModel && data.type) {
-            const entityType = data.type;
-            const propSchema = getPropertySchema(this.dataModel, entityType, sourceKey);
+        if (!domain && this.dataModel) {
+            const propSchema = getPropertySchema(this.dataModel, undefined, sourceKey);
             if (propSchema && propSchema.range) {
                 domain = propSchema.range;
             }

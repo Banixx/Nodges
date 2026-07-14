@@ -1,1 +1,0 @@
-SELECT ?developer ?developerLabel ?language ?languageLabel WHERE { ?language wdt:P31 wd:Q9143; wdt:P178 ?developer. ?developer wdt:P106 wd:Q105543609. SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". } } LIMIT 50

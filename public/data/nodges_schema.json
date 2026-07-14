@@ -1,0 +1,524 @@
+{
+  "$ref": "#/definitions/GraphDataSchema",
+  "definitions": {
+    "GraphDataSchema": {
+      "type": "object",
+      "properties": {
+        "system": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "created": {
+              "type": "string"
+            },
+            "version": {
+              "type": [
+                "string",
+                "number"
+              ]
+            },
+            "schemaVersion": {
+              "type": "string"
+            },
+            "author": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "map": {
+              "type": "object",
+              "properties": {
+                "image": {
+                  "type": "string"
+                },
+                "referenceWidth": {
+                  "type": "number"
+                },
+                "referenceHeight": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "image",
+                "referenceWidth",
+                "referenceHeight"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": true
+        },
+        "dataModel": {
+          "type": "object",
+          "properties": {
+            "properties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "continuous",
+                      "categorical",
+                      "vector",
+                      "spatial",
+                      "temporal",
+                      "boolean"
+                    ]
+                  },
+                  "range": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "unit": {
+                    "type": "string"
+                  },
+                  "dimensions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "coordinates": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "default": {}
+                },
+                "required": [
+                  "type"
+                ],
+                "additionalProperties": false
+              },
+              "default": {}
+            },
+            "entities": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "properties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/definitions/GraphDataSchema/properties/dataModel/properties/properties/additionalProperties"
+                    }
+                  }
+                },
+                "additionalProperties": true
+              }
+            },
+            "relationships": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "properties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/definitions/GraphDataSchema/properties/dataModel/properties/properties/additionalProperties"
+                    }
+                  }
+                },
+                "additionalProperties": true
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "center": {
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "type": "number"
+                  },
+                  "y": {
+                    "type": "number"
+                  },
+                  "z": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "x",
+                  "y",
+                  "z"
+                ],
+                "additionalProperties": false
+              },
+              "strength": {
+                "type": "number"
+              },
+              "influenceRadius": {
+                "type": "number"
+              },
+              "behavior": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "visualMappings": {
+          "type": "object",
+          "properties": {
+            "defaultPresets": {
+              "type": "object",
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "position": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string"
+                          },
+                          "field": {
+                            "type": "string"
+                          },
+                          "function": {
+                            "type": "string",
+                            "enum": [
+                              "linear",
+                              "exponential",
+                              "logarithmic",
+                              "heatmap",
+                              "bipolar",
+                              "pulse",
+                              "geographic",
+                              "sphereComplexity",
+                              "categorical",
+                              "constant"
+                            ]
+                          },
+                          "domain": {
+                            "type": "array",
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "range": {
+                            "anyOf": [
+                              {
+                                "type": "array",
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "items": [
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "type": "number"
+                                }
+                              }
+                            ]
+                          },
+                          "palette": {
+                            "type": "string"
+                          },
+                          "params": {
+                            "type": "object",
+                            "additionalProperties": {}
+                          }
+                        },
+                        "required": [
+                          "function"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "positionX": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "positionY": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "positionZ": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "size": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "color": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "geometry": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "glow": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "animation": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "attraction": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "repulsion": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "inertia": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      }
+                    },
+                    "additionalProperties": true
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "thickness": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "color": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "curvature": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "glow": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "opacity": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "animation": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "animation_flow": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "animation_sequential": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "animation_pulse": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      },
+                      "animation_segments": {
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                      }
+                    },
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            }
+          },
+          "required": [
+            "defaultPresets"
+          ],
+          "additionalProperties": false
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "entities": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "position": {
+                    "type": "object",
+                    "properties": {
+                      "x": {
+                        "type": "number"
+                      },
+                      "y": {
+                        "type": "number"
+                      },
+                      "z": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "x",
+                      "y",
+                      "z"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "stateVector": {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  "behavior": {
+                    "type": "string"
+                  },
+                  "temporal": {
+                    "type": "object",
+                    "properties": {
+                      "validFrom": {
+                        "anyOf": [
+                          {
+                            "anyOf": [
+                              {
+                                "not": {}
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "validTo": {
+                        "anyOf": [
+                          {
+                            "anyOf": [
+                              {
+                                "not": {}
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "history": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "timestamp": {
+                              "type": "number"
+                            },
+                            "changes": {
+                              "type": "object",
+                              "additionalProperties": {}
+                            }
+                          },
+                          "required": [
+                            "timestamp",
+                            "changes"
+                          ],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "mapX": {
+                    "type": "number"
+                  },
+                  "mapY": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "id"
+                ],
+                "additionalProperties": true
+              }
+            },
+            "relationships": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "type": "string"
+                  },
+                  "nodes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "temporal": {
+                    "$ref": "#/definitions/GraphDataSchema/properties/data/properties/entities/items/properties/temporal"
+                  }
+                },
+                "additionalProperties": true
+              }
+            }
+          },
+          "required": [
+            "entities",
+            "relationships"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "system",
+        "metadata",
+        "data"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

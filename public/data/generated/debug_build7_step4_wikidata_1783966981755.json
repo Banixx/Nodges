@@ -1,0 +1,2014 @@
+{
+  "head": {
+    "vars": [
+      "celestialBody",
+      "celestialBodyLabel",
+      "orbitedBody",
+      "orbitedBodyLabel"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q194"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "rings of Saturn"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2565"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Titan"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q3303"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Enceladus"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q15034"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Mimas"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q15037"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Hyperion"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q15040"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Dione"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q15047"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Tethys"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q15050"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Rhea"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17705"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pan"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17706"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Daphnis"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17707"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Atlas"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17739"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Prometheus"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17746"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pandora"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17751"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Epimetheus"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17754"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Janus"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17762"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Aegaeon"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17782"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Methone"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17788"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Anthe"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17850"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pallene"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17857"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Telesto"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17869"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Calypso"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17875"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Helene"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17882"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Polydeuces"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17958"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Iapetus"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17965"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Kiviuq"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17971"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Ijiraq"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17975"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Phoebe"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17979"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Paaliaq"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17982"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Skathi"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17995"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Albiorix"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q17999"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Bebhionn"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18001"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Skoll"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18004"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Erriapus"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18010"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Tarqeq"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18016"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Greip"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18024"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Siarnaq"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18032"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Hyrrokkin"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18039"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Tarvos"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18047"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2004 S 13"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18178"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Jarnsaxa"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18179"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2004 S 17"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18183"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Mundilfari"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18195"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Bergelmir"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18199"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2006 S 1"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18201"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Aegir"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18207"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Narvi"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18211"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2004 S 12"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18213"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Bestla"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18214"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Suttungr"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18217"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Farbauti"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18218"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2004 S 7"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18220"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Hati"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18223"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Thrymr"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18228"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2006 S 3"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18229"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Fenrir"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18234"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Fornjot"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18235"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Surtur"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18236"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Kari"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18238"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Ymir"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18239"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Loge"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18246"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2009 S 1"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18247"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2007 S 2"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18340"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2007 S 3"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18345"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2004 S 6"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18350"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2004 S 4"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18355"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2004 S 3"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1109971"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "E Ring"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1133273"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "G ring"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1753556"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Themis"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2257686"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "C ring"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2528985"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "F ring"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2738054"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "B ring"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2739023"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "A ring"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2851405"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "D ring"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q12072293"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/1995 S 8"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q12871985"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/1995 S 4"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q12871986"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/1995 S 6"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q12872515"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Earhart"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q12881327"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Blériot"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q12884260"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Santos-Dumont"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16327028"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/1995 S 1"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16327033"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/1995 S 3"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16327036"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/1995 S 5"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16327040"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/1995 S 7"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16545274"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Curtiss"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16641857"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Hinkler"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16648449"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Kingsford Smith"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16655961"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Lindbergh"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16670796"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Post"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16672766"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Richthofen"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16676807"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sikorsky"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q16683435"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Wright"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q19606402"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Phoebe ring"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q28491368"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Peggy"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q70012792"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Gridr"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q70072437"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2004 S 21"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q70072703"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Angrboda"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q70072804"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Skrymir"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q70072805"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "S/2004 S 24"
+        }
+      },
+      {
+        "celestialBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q193"
+        },
+        "orbitedBody": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q70072808"
+        },
+        "celestialBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saturn"
+        },
+        "orbitedBodyLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Gerd"
+        }
+      }
+    ]
+  }
+}

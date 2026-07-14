@@ -665,6 +665,15 @@ export class ImportManager {
             if (!node.metadata) {
                 node.metadata = {};
             }
+
+            // Migrate legacy type to kategorie for data neutrality
+            if (node.type) {
+                if (node.kategorie === undefined) {
+                    node.kategorie = node.type;
+                }
+                delete node.type;
+            }
+
             return node;
         });
 
@@ -679,6 +688,15 @@ export class ImportManager {
             if (!edge.metadata) {
                 edge.metadata = {};
             }
+
+            // Migrate legacy type to kategorie
+            if (edge.type) {
+                if (edge.kategorie === undefined) {
+                    edge.kategorie = edge.type;
+                }
+                delete edge.type;
+            }
+
             return edge;
         });
 

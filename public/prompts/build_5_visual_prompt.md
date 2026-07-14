@@ -15,23 +15,14 @@ PFLICHTSTRUKTUR (Visual Mapping Build 5):
 {
   "visualMappings": {
     "defaultPresets": {
-      "<Entity_Typ_A>": {
+      "global_node": {
         "color": { "source": "<kategorisches_attribut>", "function": "categorical" },
         "size": { "source": "<numerisches_attribut>", "function": "linear", "range": [0.5, 2.5] },
         "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "sphere" } }
       },
-      "<Entity_Typ_B>": {
-        "color": { "source": "<anderes_attribut>", "function": "categorical" },
-        "size": { "source": "constant", "function": "constant", "params": { "size": 1.0 } },
-        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "box" } }
-      },
-      "<Kanten_Typ_A>": {
-        "color": { "source": "constant", "function": "constant", "params": { "color": "#hexcode" } },
-        "thickness": { "source": "<kanten_attribut>", "function": "linear", "range": [0.05, 0.5] }
-      },
-      "<Kanten_Typ_B>": {
-        "color": { "source": "constant", "function": "constant", "params": { "color": "#hexcode" } },
-        "thickness": { "source": "constant", "function": "constant", "range": [0.05, 0.1] }
+      "global_edge": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#aaaaaa" } },
+        "thickness": { "source": "constant", "function": "constant", "params": { "value": 0.1 } }
       }
     }
   }
@@ -45,17 +36,17 @@ WICHTIGE REGELN FUER DAS VISUELLE MAPPING:
    - Beispiel: Wenn du entscheidest, dass `size` durch das Attribut `Populationsgroesse` gesteuert wird, dann darf `size` bei KEINEM ANDEREN Entity-Typ durch ein anderes Attribut (wie `Bedeckungsgrad`) gesteuert werden! Andere Typen erhalten stattdessen eine konstante Groesse (z.B. `size: 1.0`).
    - Waehle also maximal 5 Schluessel-Attribute aus dem gesamten Datensatz aus und weise jedem exakt EINEN visuellen Kanal zu.
 
-2. JEDER TYP BRAUCHT EIN PRESET:
-   - Erstelle fuer JEDEN Entity-Typ und JEDEN Relationship-Typ im `dataModel` ein Preset.
-   - Fehlende Presets fuehren zu unsichtbaren Elementen!
+2. NUR GLOBAL_NODE UND GLOBAL_EDGE PRESETS VERWENDEN:
+   - Definiere in `defaultPresets` ausschliesslich die beiden Keys `"global_node"` und `"global_edge"`.
+   - Erstelle KEINE typenspezifischen Keys. Alle Elementtypen werden global ueber diese beiden Keys gesteuert.
 
 3. KNOTEN-MAPPINGS (GEOMETRIE ALS TYP-INDIKATOR):
-   - Nutze `geometry`, um die Entity-Typen unterscheidbar zu machen. Jeder Typ MUSS eine andere, feste Geometrie erhalten (z.B. Typ A = `sphere`, Typ B = `box`, Typ C = `dodecahedron`). Mappe hier keine Daten.
-   - Wende deine ausgewaehlten globalen Daten-Attribute auf die passenden Kanaele (`color`, `size`, `positionX`, `positionY`, `positionZ`) an. Fehlt das Attribut bei einem Typ, nutze `constant`.
+   - Nutze `geometry` (kategorial), um die Entity-Typen unterscheidbar zu machen (z.B. "kategorie" als Source und Geometrien wie `sphere`, `box`, `dodecahedron` in params.categories).
+   - Wende deine ausgewaehlten globalen Daten-Attribute auf die passenden Kanaele (`color`, `size`, `positionX`, `positionY`, `positionZ`) an. Fehlt das Attribut, nutze `constant`.
 
 4. KANTEN-MAPPINGS:
-   - `color`: Verwende fuer jeden Kanten-Typ eine eigene, feste Farbe (z.B. #4CAF50 fuer positiv, #F44336 fuer negativ).
-   - `thickness`: Wenn du ein globales Kanten-Attribut hast (z.B. "Intensitaet" bei allen Kanten), kannst du es mappen. Ansonsten nutze `constant`.
+   - `color`: Verwende fuer Kanten standardmaessig ein konstantes Mapping (z.B. `"params": { "color": "#aaaaaa" }`).
+   - `thickness`: Nutze standardmaessig `"params": { "value": 0.1 }`. Wenn du ein globales Kanten-Attribut hast (z.B. "Intensitaet"), kannst du `thickness` darauf linear mappen (Bereich 0.03 bis 0.25).
 
 5. NUR `visualMappings` AUSGEBEN:
    - Gib NUR das `visualMappings`-Objekt zurueck, absolut kein anderes JSON und keine Erklaerungen.

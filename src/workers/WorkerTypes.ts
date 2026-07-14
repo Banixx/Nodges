@@ -30,7 +30,6 @@ export interface WorkerNode {
     fixedX?: boolean;
     fixedY?: boolean;
     fixedZ?: boolean;
-    type?: string;
     behavior?: string;
 }
 

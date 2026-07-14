@@ -1,0 +1,38 @@
+{
+  "query": "SELECT DISTINCT ?celestialBody ?celestialBodyLabel ?type ?typeLabel WHERE { { BIND(wd:Q525 AS ?celestialBody) ?celestialBody wdt:P31 ?type. } UNION { ?celestialBody wdt:P397 wd:Q525. ?celestialBody wdt:P31 ?type. } SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,de\". } } LIMIT 100",
+  "data": {
+    "entities": [],
+    "relationships": []
+  },
+  "metadata": {
+    "apiResponse": {
+      "id": "gen-1783951707-2yoqfD4din4FDYkYX5xX",
+      "created": 1783951707,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 1210,
+        "completion_tokens": 1482,
+        "total_tokens": 2692,
+        "cost": 0.0004103042,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0004103042,
+          "upstream_inference_prompt_cost": 0.000118943,
+          "upstream_inference_completions_cost": 0.0002913612
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1358,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  }
+}

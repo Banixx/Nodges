@@ -1,0 +1,795 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Generiert aus Wikidata: Sonne, Planeten, Monde und Zwergplaneten",
+    "apiResponse": {
+      "id": "gen-1783939023-NgPo4BlTAQk2FuqlijpL",
+      "created": 1783939023,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 3448,
+        "completion_tokens": 4991,
+        "total_tokens": 8439,
+        "cost": 0.0018802,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0018802,
+          "upstream_inference_prompt_cost": 0.00048272,
+          "upstream_inference_completions_cost": 0.00139748
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 3025,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    },
+    "generationDetails": {
+      "prompt": "USER: sonnensysstem\n\nKI: Möchtest du die Planeten des Sonnensystems, deren Monde oder auch Zwergplaneten und andere Himmelskörper wie Asteroiden visualisieren?\n\nUSER: sonne, planeten, momde und zwergplaneten ja, asteroiden nein.",
+      "context": null,
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-v4-flash",
+      "pipeline": "build7",
+      "durationMs": 91799,
+      "timestamp": "2026-07-13T10:37:49.276Z"
+    },
+    "exportedAt": "2026-07-13T10:37:50.781Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1783939069276_Q525",
+        "type": "Stern",
+        "label": "Sun",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -4.422472239374743,
+          "y": 3.4471501830176456,
+          "z": -3.9141393181925466
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q111699345",
+        "type": "Planet",
+        "label": "Kiwan",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 3.629088498750392,
+          "y": -2.748410042898816,
+          "z": 4.795321164753814
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q111723944",
+        "type": "Planet",
+        "label": "Bil",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 1.8981429557185747,
+          "y": -2.007111811933561,
+          "z": 2.304142712528922
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q111723945",
+        "type": "Planet",
+        "label": "Sin",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 4.552800864202563,
+          "y": -3.531643303759039,
+          "z": -4.523777414493393
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q111723946",
+        "type": "Planet",
+        "label": "Shamish",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -3.7079095816963856,
+          "y": -5,
+          "z": 1.2354242703427558
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q111723947",
+        "type": "Planet",
+        "label": "Libat",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 1.4875379943315734,
+          "y": -4.256768544958522,
+          "z": 3.4728136577133726
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q111723949",
+        "type": "Planet",
+        "label": "Nirig",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 1.6701920499502698,
+          "y": -4.512049661230156,
+          "z": -3.4103411505512717
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q111723950",
+        "type": "Planet",
+        "label": "Nbu",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -2.647024676006842,
+          "y": -4.472516079395401,
+          "z": -4.206308215407576
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q132859575",
+        "type": "Planet",
+        "label": "Q132859575",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -2.0429239395231,
+          "y": -3.8164905788108063,
+          "z": 3.7811163609227485
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q132859630",
+        "type": "Planet",
+        "label": "Q132859630",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -0.34572140028133885,
+          "y": 5,
+          "z": 2.524618339949078
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q136703964",
+        "type": "Planet",
+        "label": "TOI-4507 b",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": 4.0956356869871655,
+          "y": 1.007466591611292,
+          "z": 3.713229993725436
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q339",
+        "type": "Zwergplanet",
+        "label": "Pluto",
+        "stateVector": {
+          "degree": 5,
+          "inbound": 5,
+          "outbound": 0
+        },
+        "inDegree": 5,
+        "outDegree": 0,
+        "position": {
+          "x": 1.1886043217415962,
+          "y": 3.5122688777121054,
+          "z": -0.8184145411825363
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q596",
+        "type": "Zwergplanet",
+        "label": "Ceres",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -4.625146329332858,
+          "y": 1.2559638803890614,
+          "z": 2.7882986197898814
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q601",
+        "type": "Zwergplanet",
+        "label": "(136108) Haumea",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": -2.9161802795839438,
+          "y": 0.8159182912574151,
+          "z": -0.15804458725619536
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q611",
+        "type": "Zwergplanet",
+        "label": "Eris",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -4.44287013199177,
+          "y": -2.944840776858963,
+          "z": -0.9511386152942821
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q6587",
+        "type": "Zwergplanet",
+        "label": "225088 Gonggong",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": -0.43826341807265357,
+          "y": -0.6440121358540696,
+          "z": -3.0474733869057107
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q15586",
+        "type": "Zwergplanet",
+        "label": "Quaoar",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 2.189333752605798,
+          "y": -0.6029349128106967,
+          "z": 0.14438217913456808
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q15603",
+        "type": "Zwergplanet",
+        "label": "Orcus",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 3.173084001668225,
+          "y": -4.992812482735849,
+          "z": 0.4867194420102252
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q15610",
+        "type": "Zwergplanet",
+        "label": "Sedna",
+        "stateVector": {
+          "degree": 0,
+          "inbound": 0,
+          "outbound": 0
+        },
+        "inDegree": 0,
+        "outDegree": 0,
+        "position": {
+          "x": -1.6345714015682857,
+          "y": 3.17826597532256,
+          "z": -4.795321164753814
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q136964",
+        "type": "Zwergplanet",
+        "label": "(120347) Salacia",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 4.625146329332858,
+          "y": -1.8053600866621387,
+          "z": -2.2276683109722524
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q6604",
+        "type": "Mond",
+        "label": "Charon",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.1136451627993211,
+          "y": 3.7963735028377217,
+          "z": -0.8236816687213122
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q102694",
+        "type": "Mond",
+        "label": "Nix",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.2610417263945284,
+          "y": 3.230301654264353,
+          "z": -0.8137315518954258
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q102701",
+        "type": "Mond",
+        "label": "Hydra",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.3415391937534744,
+          "y": 3.5492197771837346,
+          "z": -1.0626916245874005
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q105636",
+        "type": "Mond",
+        "label": "Kerberos",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.3153226549330606,
+          "y": 3.5507999217274784,
+          "z": -0.559450874341572
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q105713",
+        "type": "Mond",
+        "label": "Styx",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.9066382175789717,
+          "y": 3.4398471237810835,
+          "z": -0.8331491818890783
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q141799",
+        "type": "Mond",
+        "label": "Hiʻiaka",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -2.984622121809919,
+          "y": 0.6285722421354886,
+          "z": -0.2860250000403551
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q153893",
+        "type": "Mond",
+        "label": "Namaka",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -2.847730256838075,
+          "y": 1.0032610405975928,
+          "z": -0.030032362330650226
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q102656",
+        "type": "Mond",
+        "label": "Dysnomia",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -4.3976070124043956,
+          "y": -2.7895411478593215,
+          "z": -0.5562249071862496
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q27496473",
+        "type": "Mond",
+        "label": "Xiangliu",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.7211441957016939,
+          "y": -0.8739007240158193,
+          "z": -3.2702956957696587
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q83894",
+        "type": "Mond",
+        "label": "Weywot",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 2.0194327596022474,
+          "y": -0.4368048219348204,
+          "z": 0.21310118961151386
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q603083",
+        "type": "Mond",
+        "label": "Vanth",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 3.368816729115619,
+          "y": -4.911350365511915,
+          "z": 0.5420692703957136
+        }
+      },
+      {
+        "id": "AI_Generation_1783939069276_Q343201",
+        "type": "Mond",
+        "label": "Actaea",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 4.512480008867519,
+          "y": -1.9726986847145511,
+          "z": -2.1421867386020947
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1783939069276_rel_1",
+        "type": "orbits",
+        "source": "AI_Generation_1783939069276_Q6604",
+        "target": "AI_Generation_1783939069276_Q339",
+        "label": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783939069276_rel_2",
+        "type": "orbits",
+        "source": "AI_Generation_1783939069276_Q102694",
+        "target": "AI_Generation_1783939069276_Q339",
+        "label": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783939069276_rel_3",
+        "type": "orbits",
+        "source": "AI_Generation_1783939069276_Q102701",
+        "target": "AI_Generation_1783939069276_Q339",
+        "label": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783939069276_rel_4",
+        "type": "orbits",
+        "source": "AI_Generation_1783939069276_Q105636",
+        "target": "AI_Generation_1783939069276_Q339",
+        "label": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783939069276_rel_5",
+        "type": "orbits",
+        "source": "AI_Generation_1783939069276_Q105713",
+        "target": "AI_Generation_1783939069276_Q339",
+        "label": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783939069276_rel_6",
+        "type": "orbits",
+        "source": "AI_Generation_1783939069276_Q141799",
+        "target": "AI_Generation_1783939069276_Q601",
+        "label": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783939069276_rel_7",
+        "type": "orbits",
+        "source": "AI_Generation_1783939069276_Q153893",
+        "target": "AI_Generation_1783939069276_Q601",
+        "label": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783939069276_rel_8",
+        "type": "orbits",
+        "source": "AI_Generation_1783939069276_Q102656",
+        "target": "AI_Generation_1783939069276_Q611",
+        "label": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783939069276_rel_9",
+        "type": "orbits",
+        "source": "AI_Generation_1783939069276_Q27496473",
+        "target": "AI_Generation_1783939069276_Q6587",
+        "label": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783939069276_rel_10",
+        "type": "orbits",
+        "source": "AI_Generation_1783939069276_Q83894",
+        "target": "AI_Generation_1783939069276_Q15586",
+        "label": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783939069276_rel_11",
+        "type": "orbits",
+        "source": "AI_Generation_1783939069276_Q603083",
+        "target": "AI_Generation_1783939069276_Q15603",
+        "label": "orbits"
+      },
+      {
+        "id": "AI_Generation_1783939069276_rel_12",
+        "type": "orbits",
+        "source": "AI_Generation_1783939069276_Q343201",
+        "target": "AI_Generation_1783939069276_Q136964",
+        "label": "orbits"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Stern": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 2.5
+          }
+        },
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#FFD700"
+          }
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Planet": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        },
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#4169E1"
+          }
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Zwergplanet": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.7
+          }
+        },
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#FF8C00"
+          }
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Mond": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.4
+          }
+        },
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#A9A9A9"
+          }
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "orbits": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#888888"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.05
+          }
+        }
+      }
+    }
+  }
+}

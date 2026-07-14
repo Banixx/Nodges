@@ -1,0 +1,341 @@
+{
+  "system": "NetworkVisualization",
+  "metadata": {
+    "created": "2026-07-14T08:50:00Z",
+    "version": "2.0.0",
+    "schemaVersion": "draft-07",
+    "author": "Gemini",
+    "description": "Ein massiv erweiterter Enterprise-Architektur-Graph, der strikt nach dem vorgegebenen originalen GraphDataSchema strukturiert ist.",
+    "map": {
+      "image": "background_map.png",
+      "referenceWidth": 1920,
+      "referenceHeight": 1080
+    }
+  },
+  "dataModel": {
+    "properties": {
+      "status": {
+        "type": "categorical",
+        "values": [
+          "active",
+          "inactive",
+          "maintenance"
+        ]
+      },
+      "load": {
+        "type": "continuous",
+        "range": [
+          0,
+          100
+        ],
+        "unit": "percent"
+      }
+    }
+  },
+  "fields": [
+    {
+      "id": "gravity_center",
+      "center": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "strength": 9.81,
+      "influenceRadius": 100,
+      "behavior": "attract"
+    }
+  ],
+  "visualMappings": {
+    "defaultPresets": {
+      "main_view": {
+        "color": {
+          "source": "stateVector",
+          "field": "status",
+          "function": "categorical",
+          "range": [
+            "#00ff00",
+            "#ff0000",
+            "#ffff00"
+          ]
+        },
+        "size": {
+          "source": "stateVector",
+          "field": "load",
+          "function": "linear",
+          "domain": [
+            0,
+            100
+          ],
+          "range": [
+            2,
+            15
+          ]
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "node-001",
+        "label": "API Gateway",
+        "position": { "x": 0.0, "y": -40.0, "z": 0.0 },
+        "stateVector": { "status": "active", "load": 78.5 },
+        "behavior": "static",
+        "mapX": 960, "mapY": 950
+      },
+      {
+        "id": "node-002",
+        "label": "Load Balancer Main",
+        "position": { "x": 0.0, "y": -30.0, "z": 0.0 },
+        "stateVector": { "status": "active", "load": 65.0 },
+        "mapX": 960, "mapY": 850
+      },
+      {
+        "id": "node-003",
+        "label": "Auth Service",
+        "position": { "x": -20.0, "y": -20.0, "z": 5.0 },
+        "stateVector": { "status": "active", "load": 32.1 },
+        "mapX": 700, "mapY": 750
+      },
+      {
+        "id": "node-004",
+        "label": "User Service",
+        "position": { "x": -10.0, "y": -15.0, "z": 0.0 },
+        "stateVector": { "status": "active", "load": 45.0 },
+        "mapX": 800, "mapY": 650
+      },
+      {
+        "id": "node-005",
+        "label": "Product Service",
+        "position": { "x": 10.0, "y": -15.0, "z": 0.0 },
+        "stateVector": { "status": "active", "load": 55.4 },
+        "mapX": 1120, "mapY": 650
+      },
+      {
+        "id": "node-006",
+        "label": "Order Service",
+        "position": { "x": 20.0, "y": -10.0, "z": 0.0 },
+        "stateVector": { "status": "active", "load": 88.2 },
+        "mapX": 1250, "mapY": 600
+      },
+      {
+        "id": "node-007",
+        "label": "Payment Service",
+        "position": { "x": 30.0, "y": -5.0, "z": 10.0 },
+        "stateVector": { "status": "maintenance", "load": 0.0 },
+        "mapX": 1400, "mapY": 550
+      },
+      {
+        "id": "node-008",
+        "label": "Inventory Service",
+        "position": { "x": 15.0, "y": 0.0, "z": -5.0 },
+        "stateVector": { "status": "active", "load": 41.0 },
+        "mapX": 1200, "mapY": 500
+      },
+      {
+        "id": "node-009",
+        "label": "Search Engine",
+        "position": { "x": -25.0, "y": -10.0, "z": -10.0 },
+        "stateVector": { "status": "active", "load": 92.5 },
+        "mapX": 500, "mapY": 600
+      },
+      {
+        "id": "node-010",
+        "label": "User DB (PostgreSQL)",
+        "position": { "x": -15.0, "y": 10.0, "z": 0.0 },
+        "stateVector": { "status": "active", "load": 25.0 },
+        "mapX": 750, "mapY": 400
+      },
+      {
+        "id": "node-011",
+        "label": "Product DB (MongoDB)",
+        "position": { "x": 5.0, "y": 15.0, "z": 0.0 },
+        "stateVector": { "status": "active", "load": 30.5 },
+        "mapX": 1050, "mapY": 380
+      },
+      {
+        "id": "node-012",
+        "label": "Order DB (Cassandra)",
+        "position": { "x": 25.0, "y": 15.0, "z": 0.0 },
+        "stateVector": { "status": "active", "load": 60.0 },
+        "mapX": 1300, "mapY": 350
+      },
+      {
+        "id": "node-013",
+        "label": "Redis Cluster Main",
+        "position": { "x": 0.0, "y": 5.0, "z": -15.0 },
+        "stateVector": { "status": "active", "load": 15.0 },
+        "mapX": 960, "mapY": 500
+      },
+      {
+        "id": "node-014",
+        "label": "Kafka Broker 1",
+        "position": { "x": -35.0, "y": 0.0, "z": 5.0 },
+        "stateVector": { "status": "active", "load": 75.2 },
+        "mapX": 300, "mapY": 500
+      },
+      {
+        "id": "node-015",
+        "label": "Kafka Broker 2",
+        "position": { "x": -35.0, "y": 5.0, "z": -5.0 },
+        "stateVector": { "status": "active", "load": 70.1 },
+        "mapX": 300, "mapY": 450
+      },
+      {
+        "id": "node-016",
+        "label": "Zookeeper",
+        "position": { "x": -45.0, "y": 2.5, "z": 0.0 },
+        "stateVector": { "status": "active", "load": 10.0 },
+        "mapX": 200, "mapY": 475
+      },
+      {
+        "id": "node-017",
+        "label": "ElasticSearch Master",
+        "position": { "x": -25.0, "y": 20.0, "z": -15.0 },
+        "stateVector": { "status": "active", "load": 40.0 },
+        "mapX": 450, "mapY": 300
+      },
+      {
+        "id": "node-018",
+        "label": "ES Data Node 1",
+        "position": { "x": -30.0, "y": 25.0, "z": -10.0 },
+        "stateVector": { "status": "active", "load": 55.5 },
+        "mapX": 400, "mapY": 250
+      },
+      {
+        "id": "node-019",
+        "label": "Logstash",
+        "position": { "x": -10.0, "y": 25.0, "z": -20.0 },
+        "stateVector": { "status": "active", "load": 35.0 },
+        "mapX": 600, "mapY": 250
+      },
+      {
+        "id": "node-020",
+        "label": "Kibana Dashboard",
+        "position": { "x": -20.0, "y": 35.0, "z": -15.0 },
+        "stateVector": { "status": "active", "load": 5.0 },
+        "mapX": 500, "mapY": 150
+      },
+      {
+        "id": "node-021",
+        "label": "Data Lake (S3)",
+        "position": { "x": 40.0, "y": 30.0, "z": 10.0 },
+        "stateVector": { "status": "active", "load": 20.0 },
+        "mapX": 1600, "mapY": 200
+      },
+      {
+        "id": "node-022",
+        "label": "Spark Master",
+        "position": { "x": 35.0, "y": 35.0, "z": 5.0 },
+        "stateVector": { "status": "inactive", "load": 0.0 },
+        "mapX": 1500, "mapY": 150
+      },
+      {
+        "id": "node-023",
+        "label": "Spark Worker 1",
+        "position": { "x": 30.0, "y": 40.0, "z": 0.0 },
+        "stateVector": { "status": "inactive", "load": 0.0 },
+        "mapX": 1450, "mapY": 100
+      },
+      {
+        "id": "node-024",
+        "label": "Prometheus",
+        "position": { "x": 0.0, "y": 45.0, "z": 20.0 },
+        "stateVector": { "status": "active", "load": 18.5 },
+        "mapX": 960, "mapY": 100
+      },
+      {
+        "id": "node-025",
+        "label": "Grafana Alerts",
+        "position": { "x": 5.0, "y": 48.0, "z": 25.0 },
+        "stateVector": { "status": "active", "load": 2.5 },
+        "mapX": 1050, "mapY": 80
+      },
+      {
+        "id": "node-026",
+        "label": "CDN North America",
+        "position": { "x": -40.0, "y": -45.0, "z": 30.0 },
+        "stateVector": { "status": "active", "load": 45.0 },
+        "mapX": 300, "mapY": 1000
+      },
+      {
+        "id": "node-027",
+        "label": "CDN Europe",
+        "position": { "x": 0.0, "y": -48.0, "z": 35.0 },
+        "stateVector": { "status": "active", "load": 65.2 },
+        "mapX": 960, "mapY": 1050
+      },
+      {
+        "id": "node-028",
+        "label": "CDN Asia",
+        "position": { "x": 40.0, "y": -45.0, "z": 30.0 },
+        "stateVector": { "status": "active", "load": 80.0 },
+        "mapX": 1600, "mapY": 1000
+      },
+      {
+        "id": "node-029",
+        "label": "External: Stripe API",
+        "position": { "x": 45.0, "y": -10.0, "z": 20.0 },
+        "stateVector": { "status": "active", "load": 10.0 },
+        "mapX": 1750, "mapY": 500
+      },
+      {
+        "id": "node-030",
+        "label": "External: SendGrid",
+        "position": { "x": 45.0, "y": 5.0, "z": 25.0 },
+        "stateVector": { "status": "active", "load": 5.0 },
+        "mapX": 1750, "mapY": 400
+      },
+      {
+        "id": "node-031",
+        "label": "Notification Service",
+        "position": { "x": 35.0, "y": 0.0, "z": 15.0 },
+        "stateVector": { "status": "active", "load": 22.4 },
+        "mapX": 1550, "mapY": 450
+      }
+    ],
+    "relationships": [
+      { "id": "edge-001", "source": "node-026", "target": "node-001", "label": "cdn_miss_routing" },
+      { "id": "edge-002", "source": "node-027", "target": "node-001", "label": "cdn_miss_routing" },
+      { "id": "edge-003", "source": "node-028", "target": "node-001", "label": "cdn_miss_routing" },
+      { "id": "edge-004", "source": "node-001", "target": "node-002", "label": "gateway_to_lb" },
+      { "id": "edge-005", "source": "node-002", "target": "node-003", "label": "lb_auth_check" },
+      { "id": "edge-006", "source": "node-002", "target": "node-004", "label": "route_user" },
+      { "id": "edge-007", "source": "node-002", "target": "node-005", "label": "route_product" },
+      { "id": "edge-008", "source": "node-002", "target": "node-006", "label": "route_order" },
+      { "id": "edge-009", "source": "node-006", "target": "node-007", "label": "process_payment" },
+      { "id": "edge-010", "source": "node-007", "target": "node-029", "label": "stripe_api_call" },
+      { "id": "edge-011", "source": "node-006", "target": "node-008", "label": "check_stock" },
+      { "id": "edge-012", "source": "node-004", "target": "node-010", "label": "db_read_write" },
+      { "id": "edge-013", "source": "node-005", "target": "node-011", "label": "db_read_write" },
+      { "id": "edge-014", "source": "node-006", "target": "node-012", "label": "db_read_write" },
+      { "id": "edge-015", "source": "node-004", "target": "node-013", "label": "cache_lookup" },
+      { "id": "edge-016", "source": "node-005", "target": "node-013", "label": "cache_lookup" },
+      { "id": "edge-017", "source": "node-009", "target": "node-011", "label": "index_products" },
+      { "id": "edge-018", "source": "node-009", "target": "node-017", "label": "search_query" },
+      { "id": "edge-019", "source": "node-017", "target": "node-018", "label": "cluster_sync" },
+      { "id": "edge-020", "source": "node-014", "target": "node-016", "label": "zookeeper_sync" },
+      { "id": "edge-021", "source": "node-015", "target": "node-016", "label": "zookeeper_sync" },
+      { "id": "edge-022", "source": "node-014", "target": "node-015", "label": "broker_replication" },
+      { "id": "edge-023", "source": "node-006", "target": "node-014", "label": "publish_order_event" },
+      { "id": "edge-024", "source": "node-004", "target": "node-014", "label": "publish_user_event" },
+      { "id": "edge-025", "source": "node-014", "target": "node-031", "label": "consume_notification" },
+      { "id": "edge-026", "source": "node-031", "target": "node-030", "label": "sendgrid_api_call" },
+      { "id": "edge-027", "source": "node-012", "target": "node-021", "label": "daily_etl_dump", "temporal": { "validFrom": 1672531200, "validTo": null, "history": [] } },
+      { "id": "edge-028", "source": "node-010", "target": "node-021", "label": "daily_etl_dump" },
+      { "id": "edge-029", "source": "node-022", "target": "node-021", "label": "analyze_data" },
+      { "id": "edge-030", "source": "node-022", "target": "node-023", "label": "assign_task" },
+      { "id": "edge-031", "source": "node-004", "target": "node-019", "label": "send_logs" },
+      { "id": "edge-032", "source": "node-005", "target": "node-019", "label": "send_logs" },
+      { "id": "edge-033", "source": "node-006", "target": "node-019", "label": "send_logs" },
+      { "id": "edge-034", "source": "node-019", "target": "node-017", "label": "ingest_logs" },
+      { "id": "edge-035", "source": "node-020", "target": "node-017", "label": "visualize_logs" },
+      { "id": "edge-036", "source": "node-024", "target": "node-001", "label": "scrape_metrics" },
+      { "id": "edge-037", "source": "node-024", "target": "node-002", "label": "scrape_metrics" },
+      { "id": "edge-038", "source": "node-024", "target": "node-010", "label": "scrape_metrics" },
+      { "id": "edge-039", "source": "node-024", "target": "node-014", "label": "scrape_metrics" },
+      { "id": "edge-040", "source": "node-024", "target": "node-025", "label": "trigger_alert" }
+    ]
+  }
+}

@@ -117,6 +117,10 @@ export class SuggestionUI {
                         [entityType]: {
                             color: { source: 'categorical', function: 'categorical', field: categoricalProp, palette: 'category10' },
                             size: { source: 'constant', function: 'constant', value: 1.5 }
+                        },
+                        'global_edge': {
+                            color: { source: 'constant', function: 'constant', params: { color: '#ffffff' } },
+                            thickness: { source: 'constant', function: 'constant', value: 0.2 }
                         }
                     }
                 };
@@ -145,6 +149,10 @@ export class SuggestionUI {
                         [entityType]: {
                             size: { source: 'continuous', function: 'linear', field: continuousProp, range: [0.5, 3.0] },
                             color: { source: 'continuous', function: 'heatmap', field: continuousProp, palette: 'viridis' }
+                        },
+                        'global_edge': {
+                            color: { source: 'constant', function: 'constant', params: { color: '#ffffff' } },
+                            thickness: { source: 'constant', function: 'constant', value: 0.2 }
                         }
                     }
                 };

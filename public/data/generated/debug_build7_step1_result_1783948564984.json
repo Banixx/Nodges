@@ -1,0 +1,38 @@
+{
+  "query": "SELECT ?item ?itemLabel ?type ?typeLabel ?parent ?parentLabel WHERE { { VALUES ?item { wd:Q525 } } UNION { ?item wdt:P397+ wd:Q525 . } ?item wdt:P31 ?type . OPTIONAL { ?item wdt:P397 ?parent . } SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,de\". } } LIMIT 100",
+  "data": {
+    "entities": [],
+    "relationships": []
+  },
+  "metadata": {
+    "apiResponse": {
+      "id": "gen-1783948540-QvkOiUgI8DQk65Fz91r9",
+      "created": 1783948540,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 1153,
+        "completion_tokens": 2396,
+        "total_tokens": 3549,
+        "cost": 0.00058261,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00058261,
+          "upstream_inference_prompt_cost": 0.000112994,
+          "upstream_inference_completions_cost": 0.000469616
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 2283,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  }
+}

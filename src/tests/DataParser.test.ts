@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { DataParser } from '../core/DataParser';
 import type { GraphData } from '../types';
+import { getAvailableProperties } from '../core/BuildFormatUtils';
 
 describe('DataParser', () => {
     describe('parse()', () => {
@@ -181,6 +182,105 @@ describe('DataParser', () => {
 
             const rels = DataParser.findRelationshipsForEntity(noConnections, 'isolated');
             expect(rels).toHaveLength(0);
+        });
+    });
+
+    describe('visualMappings-Normalisierung', () => {
+        it('sollte custom Preset-Keys wie main_view zu global_node/global_edge normalisieren', () => {
+            const rawData = {
+                system: 'TestSystem',
+                metadata: {
+                    schemaVersion: '5.0'
+                },
+                data: {
+                    entities: [],
+                    relationships: []
+                },
+                visualMappings: {
+                    defaultPresets: {
+                        main_view: {
+                            color: { function: 'constant', params: { color: '#ff0000' } },
+                            size: { function: 'constant', value: 2.0 }
+                        },
+                        edge_view: {
+                            thickness: { function: 'constant', value: 0.5 }
+                        }
+                    }
+                }
+            };
+
+            const result = DataParser.parse(rawData);
+
+            expect(result.visualMappings).toBeDefined();
+            expect(result.visualMappings?.defaultPresets.global_node).toBeDefined();
+            expect(result.visualMappings?.defaultPresets.global_edge).toBeDefined();
+            expect((result.visualMappings?.defaultPresets.global_node as any).color).toBeDefined();
+            expect((result.visualMappings?.defaultPresets.global_edge as any).thickness).toBeDefined();
+            expect(result.visualMappings?.defaultPresets.main_view).toBeUndefined();
+            expect(result.visualMappings?.defaultPresets.edge_view).toBeUndefined();
+        });
+
+        it('sollte params.categories automatisch aus range und dataModel generieren fuer kategoriale Mappings', () => {
+            const rawData = {
+                system: 'TestSystem',
+                metadata: {
+                    schemaVersion: '5.0'
+                },
+                dataModel: {
+                    properties: {
+                        status: {
+                            type: 'categorical',
+                            values: ['active', 'inactive', 'maintenance']
+                        }
+                    }
+                },
+                data: {
+                    entities: [],
+                    relationships: []
+                },
+                visualMappings: {
+                    defaultPresets: {
+                        global_node: {
+                            color: {
+                                source: 'stateVector',
+                                field: 'status',
+                                function: 'categorical',
+                                range: ['#00ff00', '#ff0000', '#ffff00']
+                            }
+                        }
+                    }
+                }
+            };
+
+            const result = DataParser.parse(rawData);
+
+            const preset = result.visualMappings?.defaultPresets.global_node as any;
+            expect(preset).toBeDefined();
+            expect(preset.color.params).toBeDefined();
+            expect(preset.color.params.categories).toBeDefined();
+            expect(preset.color.params.categories.active).toBe('#00ff00');
+            expect(preset.color.params.categories.inactive).toBe('#ff0000');
+            expect(preset.color.params.categories.maintenance).toBe('#ffff00');
+        });
+    });
+
+    describe('getAvailableProperties()', () => {
+        it('sollte label für relationships erlauben, aber für entities als reserved filtern', () => {
+            const node = { id: 'n1', label: 'My Node', customProp: 'hello' };
+            const rel = { id: 'r1', source: 'n1', target: 'n2', label: 'depends_on', customProp: 'world' };
+
+            const nodeProps = getAvailableProperties(undefined, undefined, node);
+            const relProps = getAvailableProperties(undefined, undefined, rel);
+
+            // 'label' sollte bei Knoten NICHT in den verfügbaren Properties sein (ist reserved)
+            expect(nodeProps).not.toContain('label');
+            expect(nodeProps).toContain('customProp');
+
+            // 'label' sollte bei Kanten / Beziehungen enthalten sein (nicht reserved)
+            expect(relProps).toContain('label');
+            expect(relProps).toContain('customProp');
+            expect(relProps).not.toContain('source');
+            expect(relProps).not.toContain('target');
         });
     });
 });

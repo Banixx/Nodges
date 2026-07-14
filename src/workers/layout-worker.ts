@@ -157,9 +157,7 @@ self.onmessage = function (event: MessageEvent<LayoutWorkerRequest>): void {
                             // Selektive Filterung nach Typ/Verhalten
                             if (field.behavior) {
                                 if (!nodeI.behavior || !field.behavior.includes(nodeI.behavior)) {
-                                    if (nodeI.type && !field.behavior.includes(nodeI.type)) {
-                                        continue; // skip if behavior doesn't match
-                                    }
+                                    continue; // skip if behavior doesn't match
                                 }
                             }
 

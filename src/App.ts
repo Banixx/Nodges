@@ -848,7 +848,7 @@ export class App {
                 const bounds = this.calculateBounds(this.currentEntities);
                 const schemaVersion = graphData.metadata?.schemaVersion || '3.0';
                 this.uiManager.updateFileInfo(
-                    sourceName,
+                    graphData.system || sourceName,
                     this.currentEntities.length,
                     this.currentRelationships.length,
                     bounds,
@@ -1399,7 +1399,6 @@ export class App {
             this.currentRelationships = state.graphData.relationships;
         }, 'data_changed');
     }
-
 
     fitCameraToScene() {
         if (this.currentEntities.length === 0) return;

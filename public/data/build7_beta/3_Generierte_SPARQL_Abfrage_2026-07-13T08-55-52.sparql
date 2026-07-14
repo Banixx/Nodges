@@ -1,1 +1,0 @@
-SELECT ?switzerland ?switzerlandLabel ?politicalSystem ?politicalSystemLabel WHERE { wd:Q39 wdt:P2936 ?politicalSystem . SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en,de". } } LIMIT 10

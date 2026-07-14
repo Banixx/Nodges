@@ -5,6 +5,9 @@
 import { IStateManager } from '../core/interfaces';
 import type { App } from '../App';
 import { LLMService, LLMProvider, LLMModel } from '../utils/LLMService';
+import { deduplicateGraph, getSemanticSearchMatches } from '../utils/VectorStoreManager';
+import * as THREE from 'three';
+
 
 export class CreatePanel {
     private container: HTMLElement;
@@ -24,7 +27,7 @@ export class CreatePanel {
     private promptTextarea!: HTMLTextAreaElement;
     private generateBtn!: HTMLButtonElement;
     private statusText!: HTMLElement;
-    private interactionModeSelect!: HTMLSelectElement;
+    private interactionModeCheckbox!: HTMLInputElement;
     private chatLog!: HTMLDivElement;
     private clarificationHistory: {role: 'user'|'assistant', content: string}[] = [];
 
@@ -328,7 +331,8 @@ export class CreatePanel {
         this.pipelineSelect.style.fontFamily = 'inherit';
 
         const pipelines = [
-            { value: 'build7', label: 'Build 7 (Semantic Web / Wikidata)' },
+            { value: 'build9', label: 'Build 9 (RAG & Vektorstore Deduplizierung)' },
+            { value: 'build8', label: 'Build 8 (Semantic Web / Wikidata)' },
             { value: 'build6', label: 'Build 6 (Schnelle Single-Step Zod Pipeline)' },
             { value: 'build5', label: 'Legacy: Build 5 (3-stufig: Ontologie -> Daten -> Mapping)' },
             { value: 'refine', label: 'Update: Iterativ (Bestehendes Netzwerk anpassen)' }
@@ -342,42 +346,36 @@ export class CreatePanel {
         });
         genSection.appendChild(this.pipelineSelect);
 
-        // --- Interaction Mode Select ---
+        // --- Interaction Mode Switch ---
         const modeLabel = document.createElement('label');
-        modeLabel.textContent = 'KI-Interaktion:';
-        modeLabel.style.display = 'block';
-        modeLabel.style.marginBottom = '5px';
-        modeLabel.style.color = 'var(--text-muted)';
-        genSection.appendChild(modeLabel);
+        modeLabel.style.display = 'flex';
+        modeLabel.style.alignItems = 'center';
+        modeLabel.style.marginBottom = '15px';
+        modeLabel.style.color = 'var(--text-color)';
+        modeLabel.style.cursor = 'pointer';
+        modeLabel.style.fontSize = '12px';
+        modeLabel.title = 'Wechsle zwischen Autonomen Modus und Chat Modus';
 
-        this.interactionModeSelect = document.createElement('select');
-        this.interactionModeSelect.className = 'form-control';
-        this.interactionModeSelect.style.width = '100%';
-        this.interactionModeSelect.style.marginBottom = '15px';
-        this.interactionModeSelect.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
-        this.interactionModeSelect.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-        this.interactionModeSelect.style.color = 'var(--text-color)';
-        this.interactionModeSelect.style.padding = '6px';
-        this.interactionModeSelect.style.borderRadius = '4px';
-        this.interactionModeSelect.style.fontFamily = 'inherit';
+        this.interactionModeCheckbox = document.createElement('input');
+        this.interactionModeCheckbox.type = 'checkbox';
+        this.interactionModeCheckbox.style.marginRight = '8px';
+        this.interactionModeCheckbox.style.accentColor = 'var(--accent-color)';
+        this.interactionModeCheckbox.style.cursor = 'pointer';
+        this.interactionModeCheckbox.style.width = '16px';
+        this.interactionModeCheckbox.style.height = '16px';
         
-        const modeOptions = [
-            { value: 'auto', label: 'Modus: Auto (Autonome Expansion)' },
-            { value: 'chat', label: 'Modus: Chat (Interaktive Rückfragen)' }
-        ];
+        const modeText = document.createElement('span');
+        modeText.textContent = 'Modus: Auto (Autonome Expansion)';
         
-        modeOptions.forEach(opt => {
-            const option = document.createElement('option');
-            option.value = opt.value;
-            option.textContent = opt.label;
-            this.interactionModeSelect.appendChild(option);
-        });
-
-        this.interactionModeSelect.onchange = () => {
+        this.interactionModeCheckbox.onchange = () => {
+            modeText.textContent = this.interactionModeCheckbox.checked ? 'Modus: Chat (Interaktive Rückfragen)' : 'Modus: Auto (Autonome Expansion)';
             this.resetChatState();
         };
 
-        genSection.appendChild(this.interactionModeSelect);
+        modeLabel.appendChild(this.interactionModeCheckbox);
+        modeLabel.appendChild(modeText);
+        
+        genSection.appendChild(modeLabel);
 
         const promptLabel = document.createElement('label');
         promptLabel.textContent = 'Dein Prompt:';
@@ -527,6 +525,185 @@ export class CreatePanel {
         genSection.appendChild(this.statusText);
 
         this.container.appendChild(genSection);
+
+        // --- SEMANTISCHE SUCHE SECTION ---
+        const searchSection = document.createElement('section');
+        searchSection.className = 'panel-section';
+        searchSection.style.borderTop = '1px solid rgba(255, 255, 255, 0.1)';
+        searchSection.style.paddingTop = '15px';
+        searchSection.style.marginTop = '15px';
+
+        const searchHeader = document.createElement('h4');
+        searchHeader.className = 'section-header';
+        searchHeader.textContent = 'Semantische Suche (Vektor)';
+        searchSection.appendChild(searchHeader);
+
+        const searchInput = document.createElement('input');
+        searchInput.type = 'text';
+        searchInput.className = 'form-control';
+        searchInput.placeholder = 'Begriff semantisch suchen...';
+        searchInput.style.width = '100%';
+        searchInput.style.marginBottom = '10px';
+        searchInput.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+        searchInput.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+        searchInput.style.color = 'var(--text-color)';
+        searchInput.style.padding = '6px';
+        searchInput.style.borderRadius = '4px';
+        searchInput.style.fontFamily = 'inherit';
+        searchInput.style.boxSizing = 'border-box';
+        searchSection.appendChild(searchInput);
+
+        // Threshold Slider
+        const thresholdContainer = document.createElement('div');
+        thresholdContainer.style.display = 'flex';
+        thresholdContainer.style.justifyContent = 'space-between';
+        thresholdContainer.style.alignItems = 'center';
+        thresholdContainer.style.marginBottom = '10px';
+        thresholdContainer.style.fontSize = '12px';
+
+        const thresholdLabel = document.createElement('span');
+        thresholdLabel.textContent = 'Minimale Aehnlichkeit: 0.50';
+        thresholdLabel.style.color = 'var(--text-muted)';
+
+        const thresholdSlider = document.createElement('input');
+        thresholdSlider.type = 'range';
+        thresholdSlider.min = '0';
+        thresholdSlider.max = '1';
+        thresholdSlider.step = '0.05';
+        thresholdSlider.value = '0.5';
+        thresholdSlider.style.width = '100px';
+        thresholdSlider.oninput = () => {
+            thresholdLabel.textContent = `Minimale Aehnlichkeit: ${parseFloat(thresholdSlider.value).toFixed(2)}`;
+        };
+
+        thresholdContainer.appendChild(thresholdLabel);
+        thresholdContainer.appendChild(thresholdSlider);
+        searchSection.appendChild(thresholdContainer);
+
+        const searchBtn = document.createElement('button');
+        searchBtn.className = 'action-button secondary';
+        searchBtn.textContent = '🔍 Suchen';
+        searchBtn.style.width = '100%';
+        searchBtn.style.marginBottom = '10px';
+        searchSection.appendChild(searchBtn);
+
+        // Results Container
+        const resultsContainer = document.createElement('div');
+        resultsContainer.style.maxHeight = '150px';
+        resultsContainer.style.overflowY = 'auto';
+        resultsContainer.style.backgroundColor = 'rgba(0,0,0,0.2)';
+        resultsContainer.style.borderRadius = '4px';
+        resultsContainer.style.padding = '5px';
+        resultsContainer.style.display = 'none';
+        searchSection.appendChild(resultsContainer);
+
+        searchBtn.onclick = async () => {
+            const query = searchInput.value.trim();
+            if (!query) {
+                this.setStatus('Bitte Suchbegriff eingeben.', 'error');
+                return;
+            }
+
+            const activeEntities = this.stateManager.getEntities();
+            if (activeEntities.length === 0) {
+                this.setStatus('Keine Knoten im Netzwerk vorhanden.', 'error');
+                return;
+            }
+
+            this.setStatus('Generiere Vektor fuer Suchanfrage...', 'info');
+            searchBtn.disabled = true;
+            try {
+                const queryVector = await LLMService.generateEmbedding(
+                    query,
+                    this.providerSelect.value as LLMProvider,
+                    'google/gemini-embedding-2'
+                );
+
+                this.setStatus('Berechne semantische Aehnlichkeiten...', 'info');
+                const matches = await getSemanticSearchMatches(
+                    queryVector,
+                    activeEntities,
+                    this.providerSelect.value as LLMProvider,
+                    'google/gemini-embedding-2',
+                    (msg) => this.setStatus(msg, 'info')
+                );
+
+                // Clear previous highlights
+                if (this.app.highlightManager) {
+                    this.app.highlightManager.clearAllHighlights();
+                }
+
+                resultsContainer.innerHTML = '';
+                resultsContainer.style.display = 'block';
+                const minSim = parseFloat(thresholdSlider.value);
+                let matchCount = 0;
+
+                matches.forEach(match => {
+                    const entity = activeEntities.find(e => e.id === match.id);
+                    if (!entity) return;
+
+                    // If above threshold, highlight in 3D scene
+                    if (match.similarity >= minSim) {
+                        matchCount++;
+                        // Find node in 3D scene
+                        this.app.scene.traverse((object) => {
+                            if (object.userData && object.userData.type === 'node' && object.userData.id === match.id) {
+                                this.app.highlightManager.applyHighlight(
+                                    object,
+                                    this.app.highlightManager.types.SEARCH,
+                                    { color: 0xffff00 }
+                                );
+                            }
+                        });
+                    }
+
+                    // Add item to results UI list
+                    const item = document.createElement('div');
+                    item.style.padding = '4px 6px';
+                    item.style.cursor = 'pointer';
+                    item.style.fontSize = '12px';
+                    item.style.display = 'flex';
+                    item.style.justifyContent = 'space-between';
+                    item.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+                    item.style.color = match.similarity >= minSim ? '#f1c40f' : 'var(--text-color)';
+                    
+                    const labelSpan = document.createElement('span');
+                    labelSpan.textContent = entity.label || (entity as any).name || entity.id;
+                    item.appendChild(labelSpan);
+
+                    const simSpan = document.createElement('span');
+                    simSpan.textContent = `${(match.similarity * 100).toFixed(0)}%`;
+                    simSpan.style.color = 'var(--text-muted)';
+                    item.appendChild(simSpan);
+
+                    item.onclick = () => {
+                        // Focus camera on node
+                        this.app.scene.traverse((object) => {
+                            if (object.userData && object.userData.type === 'node' && object.userData.id === match.id) {
+                                this.app.controls.target.copy(object.position);
+                                this.app.camera.position.copy(object.position).add(new THREE.Vector3(15, 15, 15));
+                                this.app.controls.update();
+                                
+                                // Select it
+                                if (this.app.selectionManager) {
+                                    this.app.selectionManager.setSingleSelection(object);
+                                }
+                            }
+                        });
+                    };
+
+                    resultsContainer.appendChild(item);
+                });
+
+                this.setStatus(`Suche beendet: ${matchCount} Knoten hervorgehoben.`, 'success');
+            } catch (e: any) {
+                this.setStatus(`Suche fehlgeschlagen: ${e.message}`, 'error');
+            } finally {
+                searchBtn.disabled = false;
+            }
+        };
+
+        this.container.appendChild(searchSection);
     }
 
     private renderModelDropdown(filterText: string = '') {
@@ -672,7 +849,7 @@ export class CreatePanel {
             return;
         }
 
-        const mode = this.interactionModeSelect.value;
+        const mode = this.interactionModeCheckbox.checked ? 'chat' : 'auto';
         const provider = this.providerSelect.value as LLMProvider;
         const model = this.selectedModelId;
         const pipeline = this.pipelineSelect.value;
@@ -776,8 +953,14 @@ export class CreatePanel {
         try {
             let graphData: any;
 
-            if (pipeline === 'build7') {
-                graphData = await LLMService.generateGraphDataBuild7(
+            if (pipeline === 'build9') {
+                onProgressWithLog('Schritt 1/2: Generiere Roh-Netzwerk via LLM...');
+                const rawGraph = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog);
+                
+                onProgressWithLog('Schritt 2/2: Führe semantische Deduplizierung (Entity Resolution) aus...');
+                graphData = await deduplicateGraph(rawGraph, provider, 'google/gemini-embedding-2', 0.85, onProgressWithLog);
+            } else if (pipeline === 'build8') {
+                graphData = await LLMService.generateGraphDataBuild8(
                     prompt, 
                     provider, 
                     model, 
@@ -909,6 +1092,15 @@ export class CreatePanel {
             const edgeCount = graphData?.data?.relationships?.length || 0;
 
             this.setStatus(`Erfolgreich generiert: ${nodeCount} Knoten, ${edgeCount} Kanten. Dauer: ${generationLog.durationSec}s. Gespeichert!`, 'success');
+            
+            // Automatischer Tab-Wechsel entfernt, um den User nicht aus dem Workflow zu reißen
+            setTimeout(() => {
+                this.setStatus('', 'info');
+                // Optional: Fit camera, aber ohne den Tab zu wechseln
+                if (this.app && typeof this.app.fitCameraToScene === 'function') {
+                    this.app.fitCameraToScene();
+                }
+            }, 500);
 
         } catch (error: any) {
             generationLog.timestampEnd = new Date().toISOString();

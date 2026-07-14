@@ -28,10 +28,14 @@ export class DataParser {
      */
     private static normalizeData(data: any): GraphData {
         // Accept Build 3 and Build 4
-        const schemaVersion = data.metadata?.schemaVersion;
+        let schemaVersion = data.metadata?.schemaVersion;
         const SUPPORTED_VERSIONS = ['3.0', '4.0', '5.0'];
-        if (!SUPPORTED_VERSIONS.includes(schemaVersion)) {
-            throw new Error(`Data Validation Failed: Unsupported schema version "${schemaVersion || 'unknown'}". Supported: ${SUPPORTED_VERSIONS.join(', ')}`);
+        
+        if (!schemaVersion || !SUPPORTED_VERSIONS.includes(schemaVersion)) {
+            console.warn(`[DataParser] Unbekannte oder fehlende Schema-Version "${schemaVersion || 'unknown'}". Fallback auf "5.0".`);
+            schemaVersion = '5.0';
+            if (!data.metadata) data.metadata = {};
+            data.metadata.schemaVersion = schemaVersion;
         }
 
         // Preserve the original schemaVersion as build indicator
@@ -54,6 +58,72 @@ export class DataParser {
                     rel.end = rel.target;
                 }
             });
+        }
+
+        // Normalize visualMappings defaultPresets keys
+        if (data && data.visualMappings && data.visualMappings.defaultPresets) {
+            const presets = data.visualMappings.defaultPresets;
+            const newPresets: any = {};
+            
+            const nodeProps = ['position', 'positionX', 'positionY', 'positionZ', 'size', 'color', 'geometry', 'glow', 'animation', 'attraction', 'repulsion', 'inertia'];
+            const edgeProps = ['thickness', 'color', 'curvature', 'glow', 'opacity', 'animation_flow', 'animation_sequential', 'animation_pulse', 'animation_segments'];
+            
+            Object.entries(presets).forEach(([key, value]) => {
+                if (value && typeof value === 'object') {
+                    // Pre-process categorical mappings to build params.categories from range & dataModel.properties
+                    Object.values(value).forEach((mapping: any) => {
+                        if (mapping && typeof mapping === 'object' && mapping.function === 'categorical') {
+                            const field = mapping.field;
+                            if (field && (!mapping.params || !mapping.params.categories)) {
+                                // Find property in dataModel
+                                const propDef = data.dataModel?.properties?.[field];
+                                if (propDef && Array.isArray(propDef.values) && Array.isArray(mapping.range)) {
+                                    const categories: any = {};
+                                    propDef.values.forEach((val: string, index: number) => {
+                                        categories[val] = mapping.range[index % mapping.range.length];
+                                    });
+                                    mapping.params = {
+                                        ...(mapping.params || {}),
+                                        categories
+                                    };
+                                    console.log(`[DataParser] Built categories map for categorical field "${field}":`, categories);
+                                }
+                            }
+                        }
+                    });
+
+                    if (key === 'global_node' || key === 'global_edge') {
+                        newPresets[key] = value;
+                    } else {
+                        const keys = Object.keys(value);
+                        const isNodePreset = keys.some(k => nodeProps.includes(k) && !edgeProps.includes(k));
+                        const isEdgePreset = keys.some(k => edgeProps.includes(k) && !nodeProps.includes(k));
+                        
+                        if (isNodePreset || (keys.includes('size') && !keys.includes('thickness'))) {
+                            newPresets['global_node'] = {
+                                ...(newPresets['global_node'] || {}),
+                                ...value
+                            };
+                            console.log(`[DataParser] Custom Node-Preset "${key}" zu "global_node" normalisiert.`);
+                        } else if (isEdgePreset || (keys.includes('thickness') && !keys.includes('size'))) {
+                            newPresets['global_edge'] = {
+                                ...(newPresets['global_edge'] || {}),
+                                ...value
+                            };
+                            console.log(`[DataParser] Custom Edge-Preset "${key}" zu "global_edge" normalisiert.`);
+                        } else if (key === 'main_view' || key === 'default') {
+                            newPresets['global_node'] = {
+                                ...(newPresets['global_node'] || {}),
+                                ...value
+                            };
+                            console.log(`[DataParser] Generisches Preset "${key}" zu "global_node" normalisiert.`);
+                        } else {
+                            newPresets[key] = value;
+                        }
+                    }
+                }
+            });
+            data.visualMappings.defaultPresets = newPresets;
         }
 
         // 1. Zod Validation
