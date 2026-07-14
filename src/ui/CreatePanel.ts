@@ -37,6 +37,7 @@ export class CreatePanel {
     private b10GroundingSelect!: HTMLSelectElement;
     private b10QaSelect!: HTMLSelectElement;
     private b10RatingSelect!: HTMLSelectElement;
+    private saveStepsToggle!: HTMLInputElement;
 
     constructor(containerId: string, _stateManager: IStateManager, app: App) {
         const el = document.getElementById(containerId);
@@ -353,6 +354,30 @@ export class CreatePanel {
             this.pipelineSelect.appendChild(opt);
         });
         genSection.appendChild(this.pipelineSelect);
+
+        // Toggle für Zwischenschritte
+        const toggleContainer = document.createElement('div');
+        toggleContainer.style.display = 'flex';
+        toggleContainer.style.alignItems = 'center';
+        toggleContainer.style.marginBottom = '15px';
+        toggleContainer.style.gap = '8px';
+
+        this.saveStepsToggle = document.createElement('input');
+        this.saveStepsToggle.type = 'checkbox';
+        this.saveStepsToggle.id = 'saveStepsToggle';
+        this.saveStepsToggle.checked = false; // standardmäßig deaktiviert
+        this.saveStepsToggle.style.cursor = 'pointer';
+
+        const toggleLabel = document.createElement('label');
+        toggleLabel.htmlFor = 'saveStepsToggle';
+        toggleLabel.textContent = 'Zwischenschritte im Download-Ordner speichern';
+        toggleLabel.style.fontSize = '12px';
+        toggleLabel.style.cursor = 'pointer';
+        toggleLabel.style.color = 'var(--text-muted)';
+
+        toggleContainer.appendChild(this.saveStepsToggle);
+        toggleContainer.appendChild(toggleLabel);
+        genSection.appendChild(toggleContainer);
 
         // --- Build 10 Modulare Einstellungen ---
         this.build10Container = document.createElement('div');
@@ -989,6 +1014,7 @@ export class CreatePanel {
         const provider = this.providerSelect.value as LLMProvider;
         const model = this.selectedModelId;
         const pipeline = this.pipelineSelect.value;
+        const saveSteps = this.saveStepsToggle.checked;
 
         if (mode === 'chat') {
             if (this.clarificationHistory.length === 0) {
@@ -1102,17 +1128,27 @@ export class CreatePanel {
                     model,
                     onProgressWithLog,
                     (step: number, name: string, content: string, ext: string) => {
-                        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-                        const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
-                        this.app.exportManager?.downloadFile(content, `${step}_${name}_${timestamp}.${ext}`, mime);
+                        if (saveSteps) {
+                            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                            const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
+                            this.app.exportManager?.downloadFile(content, `${step}_${name}_${timestamp}.${ext}`, mime);
+                        }
                     }
                 );
             } else if (pipeline === 'build9') {
                 onProgressWithLog('Schritt 1/2: Generiere Roh-Netzwerk via LLM...');
                 const rawGraph = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog);
+                if (saveSteps) {
+                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                    this.app.exportManager?.downloadFile(JSON.stringify(rawGraph, null, 2), `1_Raw_Graph_${timestamp}.json`, 'application/json');
+                }
                 
                 onProgressWithLog('Schritt 2/2: Führe semantische Deduplizierung (Entity Resolution) aus...');
                 graphData = await deduplicateGraph(rawGraph, provider, 'google/gemini-embedding-2', 0.85, onProgressWithLog);
+                if (saveSteps) {
+                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `2_Deduplicated_Graph_${timestamp}.json`, 'application/json');
+                }
             } else if (pipeline === 'build8') {
                 graphData = await LLMService.generateGraphDataBuild8(
                     prompt, 
@@ -1120,15 +1156,33 @@ export class CreatePanel {
                     model, 
                     onProgressWithLog, 
                     (step: number, name: string, content: string, ext: string) => {
-                        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-                        const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
-                        this.app.exportManager?.downloadFile(content, `${step}_${name}_${timestamp}.${ext}`, mime);
+                        if (saveSteps) {
+                            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                            const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
+                            this.app.exportManager?.downloadFile(content, `${step}_${name}_${timestamp}.${ext}`, mime);
+                        }
                     }
                 );
             } else if (pipeline === 'build6') {
                 graphData = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog);
+                if (saveSteps) {
+                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `1_SingleStep_Graph_${timestamp}.json`, 'application/json');
+                }
             } else if (pipeline === 'build5') {
-                graphData = await LLMService.generateGraphDataMultiStepBuild5(prompt, provider, model, onProgressWithLog);
+                graphData = await LLMService.generateGraphDataMultiStepBuild5(
+                    prompt, 
+                    provider, 
+                    model, 
+                    onProgressWithLog,
+                    (step: number, name: string, content: string, ext: string) => {
+                        if (saveSteps) {
+                            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                            const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
+                            this.app.exportManager?.downloadFile(content, `${step}_${name}_${timestamp}.${ext}`, mime);
+                        }
+                    }
+                );
             } else if (pipeline === 'refine') {
                 const existingData = {
                     metadata: { schemaVersion: "5.0" },
@@ -1140,6 +1194,10 @@ export class CreatePanel {
                     }
                 };
                 graphData = await LLMService.refineGraphData(existingData as any, prompt, provider, model, import.meta.env.BASE_URL + 'prompts/refine_prompt.md', onProgressWithLog);
+                if (saveSteps) {
+                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `1_Refined_Graph_${timestamp}.json`, 'application/json');
+                }
             }
 
             const endTime = performance.now();

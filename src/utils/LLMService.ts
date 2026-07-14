@@ -582,7 +582,8 @@ export class LLMService {
         prompt: string, 
         provider: LLMProvider, 
         model: string,
-        onProgress?: (msg: string) => void
+        onProgress?: (msg: string) => void,
+        onStepComplete?: (stepNumber: number, stepName: string, content: string, extension: string) => void
     ): Promise<GraphData> {
         // Step 1: Schema / Ontologie
         const schemaPromptFile = import.meta.env.BASE_URL + 'prompts/build_5_ontology_prompt.md';
@@ -601,6 +602,9 @@ export class LLMService {
         await this._saveDebugFile(`debug_build5_step1_prompt_${Date.now()}.md`, `SYSTEM:\n${schemaSystemPrompt}\n\nUSER:\n${step1UserPrompt}`);
         const step1Data = await this._executeLLMCall(schemaSystemPrompt, step1UserPrompt, provider, model);
         await this._saveDebugFile(`debug_build5_step1_result_${Date.now()}.json`, step1Data);
+        if (onStepComplete) {
+            onStepComplete(1, "Build5_Ontology", JSON.stringify(step1Data, null, 2), "json");
+        }
         
         // Step 2: Data
         if (onProgress) onProgress('Schritt 2/3: Datenpunkte werden generiert...');
@@ -619,6 +623,9 @@ export class LLMService {
         await this._saveDebugFile(`debug_build5_step2_prompt_${Date.now()}.md`, `SYSTEM:\n${dataSystemPrompt}\n\nUSER:\n${step2UserPrompt}`);
         const step2Data = await this._executeLLMCall(dataSystemPrompt, step2UserPrompt, provider, model);
         await this._saveDebugFile(`debug_build5_step2_result_${Date.now()}.json`, step2Data);
+        if (onStepComplete) {
+            onStepComplete(2, "Build5_Data", JSON.stringify(step2Data, null, 2), "json");
+        }
         
         // Merge Step 1 and Step 2
         const mergedData = { ...step1Data, ...step2Data };
@@ -640,6 +647,9 @@ export class LLMService {
         await this._saveDebugFile(`debug_build5_step3_prompt_${Date.now()}.md`, `SYSTEM:\n${visualSystemPrompt}\n\nUSER:\n${step3UserPrompt}`);
         const step3Data = await this._executeLLMCall(visualSystemPrompt, step3UserPrompt, provider, model);
         await this._saveDebugFile(`debug_build5_step3_result_${Date.now()}.json`, step3Data);
+        if (onStepComplete) {
+            onStepComplete(3, "Build5_Visuals", JSON.stringify(step3Data, null, 2), "json");
+        }
         
         // Final Merge
         return { ...mergedData, ...step3Data };
