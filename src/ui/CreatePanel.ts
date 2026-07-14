@@ -7,6 +7,7 @@ import type { App } from '../App';
 import { LLMService, LLMProvider, LLMModel } from '../utils/LLMService';
 import { deduplicateGraph, getSemanticSearchMatches } from '../utils/VectorStoreManager';
 import * as THREE from 'three';
+import pkg from '../../package.json';
 
 
 export class CreatePanel {
@@ -30,6 +31,12 @@ export class CreatePanel {
     private interactionModeCheckbox!: HTMLInputElement;
     private chatLog!: HTMLDivElement;
     private clarificationHistory: {role: 'user'|'assistant', content: string}[] = [];
+
+    // Build 10 Properties
+    private build10Container!: HTMLElement;
+    private b10GroundingSelect!: HTMLSelectElement;
+    private b10QaSelect!: HTMLSelectElement;
+    private b10RatingSelect!: HTMLSelectElement;
 
     constructor(containerId: string, _stateManager: IStateManager, app: App) {
         const el = document.getElementById(containerId);
@@ -331,6 +338,7 @@ export class CreatePanel {
         this.pipelineSelect.style.fontFamily = 'inherit';
 
         const pipelines = [
+            { value: 'build10', label: 'Build 10 (Modulare Pipeline - Konfigurierbar)' },
             { value: 'build9', label: 'Build 9 (RAG & Vektorstore Deduplizierung)' },
             { value: 'build8', label: 'Build 8 (Semantic Web / Wikidata)' },
             { value: 'build6', label: 'Build 6 (Schnelle Single-Step Zod Pipeline)' },
@@ -345,6 +353,131 @@ export class CreatePanel {
             this.pipelineSelect.appendChild(opt);
         });
         genSection.appendChild(this.pipelineSelect);
+
+        // --- Build 10 Modulare Einstellungen ---
+        this.build10Container = document.createElement('div');
+        this.build10Container.style.display = 'none';
+        this.build10Container.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+        this.build10Container.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+        this.build10Container.style.borderRadius = '4px';
+        this.build10Container.style.padding = '10px';
+        this.build10Container.style.marginBottom = '15px';
+
+        const b10Title = document.createElement('h5');
+        b10Title.textContent = 'Build 10 Pipeline-Konfiguration:';
+        b10Title.style.marginTop = '0';
+        b10Title.style.marginBottom = '10px';
+        b10Title.style.color = 'var(--accent-color)';
+        b10Title.style.fontSize = '12px';
+        this.build10Container.appendChild(b10Title);
+
+        // Grounding Dropdown
+        const grLabel = document.createElement('label');
+        grLabel.textContent = 'Grounding / Wissensquelle:';
+        grLabel.style.display = 'block';
+        grLabel.style.fontSize = '11px';
+        grLabel.style.marginBottom = '4px';
+        grLabel.style.color = 'var(--text-muted)';
+        this.build10Container.appendChild(grLabel);
+
+        this.b10GroundingSelect = document.createElement('select');
+        this.b10GroundingSelect.className = 'form-control';
+        this.b10GroundingSelect.style.width = '100%';
+        this.b10GroundingSelect.style.marginBottom = '10px';
+        this.b10GroundingSelect.style.backgroundColor = 'rgba(0,0,0,0.3)';
+        this.b10GroundingSelect.style.border = '1px solid rgba(255,255,255,0.1)';
+        this.b10GroundingSelect.style.color = 'var(--text-color)';
+        this.b10GroundingSelect.style.fontSize = '11px';
+        this.b10GroundingSelect.style.padding = '4px';
+        this.b10GroundingSelect.style.borderRadius = '3px';
+
+        const grOptions = [
+            { value: 'none', label: 'Kein Grounding (Schema-Constrained)' },
+            { value: 'wikidata', label: 'Wikidata-Suche & SPARQL' },
+            { value: 'rag', label: 'RAG (Rohdaten aus Textfeld unten)' },
+            { value: 'dedup', label: 'Semantische Vektor-Deduplizierung' }
+        ];
+        grOptions.forEach(o => {
+            const opt = document.createElement('option');
+            opt.value = o.value;
+            opt.textContent = o.label;
+            this.b10GroundingSelect.appendChild(opt);
+        });
+        this.build10Container.appendChild(this.b10GroundingSelect);
+
+        // Quality Assurance Dropdown
+        const qaLabel = document.createElement('label');
+        qaLabel.textContent = 'Qualitätssicherung:';
+        qaLabel.style.display = 'block';
+        qaLabel.style.fontSize = '11px';
+        qaLabel.style.marginBottom = '4px';
+        qaLabel.style.color = 'var(--text-muted)';
+        this.build10Container.appendChild(qaLabel);
+
+        this.b10QaSelect = document.createElement('select');
+        this.b10QaSelect.className = 'form-control';
+        this.b10QaSelect.style.width = '100%';
+        this.b10QaSelect.style.marginBottom = '10px';
+        this.b10QaSelect.style.backgroundColor = 'rgba(0,0,0,0.3)';
+        this.b10QaSelect.style.border = '1px solid rgba(255,255,255,0.1)';
+        this.b10QaSelect.style.color = 'var(--text-color)';
+        this.b10QaSelect.style.fontSize = '11px';
+        this.b10QaSelect.style.padding = '4px';
+        this.b10QaSelect.style.borderRadius = '3px';
+
+        const qaOptions = [
+            { value: 'none', label: 'Keine zusätzliche Prüfung' },
+            { value: 'critic', label: 'Generator + Kritiker (Zwei-Agenten)' },
+            { value: 'human', label: 'Human-in-the-loop (Voransicht & Bearbeitung)' }
+        ];
+        qaOptions.forEach(o => {
+            const opt = document.createElement('option');
+            opt.value = o.value;
+            opt.textContent = o.label;
+            this.b10QaSelect.appendChild(opt);
+        });
+        this.build10Container.appendChild(this.b10QaSelect);
+
+        // Rating Method Dropdown
+        const rtLabel = document.createElement('label');
+        rtLabel.textContent = 'Bewertungsmethode (Beziehungsstärke):';
+        rtLabel.style.display = 'block';
+        rtLabel.style.fontSize = '11px';
+        rtLabel.style.marginBottom = '4px';
+        rtLabel.style.color = 'var(--text-muted)';
+        this.build10Container.appendChild(rtLabel);
+
+        this.b10RatingSelect = document.createElement('select');
+        this.b10RatingSelect.className = 'form-control';
+        this.b10RatingSelect.style.width = '100%';
+        this.b10RatingSelect.style.backgroundColor = 'rgba(0,0,0,0.3)';
+        this.b10RatingSelect.style.border = '1px solid rgba(255,255,255,0.1)';
+        this.b10RatingSelect.style.color = 'var(--text-color)';
+        this.b10RatingSelect.style.fontSize = '11px';
+        this.b10RatingSelect.style.padding = '4px';
+        this.b10RatingSelect.style.borderRadius = '3px';
+
+        const rtOptions = [
+            { value: 'llm', label: 'Freie LLM-Schätzung (0-100)' },
+            { value: 'taxonomy', label: 'Feste Taxonomie (Stärke 1-5, feste Kanten)' },
+            { value: 'embeddings', label: 'Embedding Kosinus-Ähnlichkeit' }
+        ];
+        rtOptions.forEach(o => {
+            const opt = document.createElement('option');
+            opt.value = o.value;
+            opt.textContent = o.label;
+            this.b10RatingSelect.appendChild(opt);
+        });
+        this.build10Container.appendChild(this.b10RatingSelect);
+
+        this.pipelineSelect.addEventListener('change', () => {
+            this.build10Container.style.display = this.pipelineSelect.value === 'build10' ? 'block' : 'none';
+        });
+
+        // Set initial visibility
+        this.build10Container.style.display = this.pipelineSelect.value === 'build10' ? 'block' : 'none';
+
+        genSection.appendChild(this.build10Container);
 
         // --- Interaction Mode Switch ---
         const modeLabel = document.createElement('label');
@@ -816,6 +949,9 @@ export class CreatePanel {
         if (provider === 'openrouter') {
             models = await LLMService.fetchOpenRouterModels();
             recommendedModels = LLMService.PROVIDER_MODELS.openrouter;
+        } else if (provider === 'ollama' || provider === 'lmstudio') {
+            models = await LLMService.fetchModelsForProvider(provider);
+            recommendedModels = [];
         } else {
             models = LLMService.PROVIDER_MODELS[provider] || [];
             recommendedModels = [];
@@ -953,7 +1089,25 @@ export class CreatePanel {
         try {
             let graphData: any;
 
-            if (pipeline === 'build9') {
+            if (pipeline === 'build10') {
+                const config = {
+                    grounding: this.b10GroundingSelect.value as any,
+                    qualityAssurance: this.b10QaSelect.value as any,
+                    ratingMethod: this.b10RatingSelect.value as any
+                };
+                graphData = await LLMService.generateGraphDataBuild10(
+                    prompt,
+                    config,
+                    provider,
+                    model,
+                    onProgressWithLog,
+                    (step: number, name: string, content: string, ext: string) => {
+                        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                        const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
+                        this.app.exportManager?.downloadFile(content, `${step}_${name}_${timestamp}.${ext}`, mime);
+                    }
+                );
+            } else if (pipeline === 'build9') {
                 onProgressWithLog('Schritt 1/2: Generiere Roh-Netzwerk via LLM...');
                 const rawGraph = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog);
                 
@@ -997,6 +1151,48 @@ export class CreatePanel {
             // --- Inject generation metadata directly into the JSON graphData ---
             if (graphData) {
                 if (!graphData.metadata) graphData.metadata = {};
+                
+                // 1. Schema-Version
+                graphData.metadata.schemaVersion = graphData.metadata.schemaVersion || "5.0";
+
+                // 2. Nodges-Version aus package.json
+                graphData.metadata.nodgesVersion = pkg.version;
+
+                // 3. Verwendeter Build (Pipeline)
+                graphData.metadata.build = pipeline;
+
+                // 4. Prompt
+                graphData.metadata.prompt = prompt;
+
+                // 5. Build-spezifische Parameter
+                const buildParams: Record<string, any> = {
+                    provider: provider,
+                    model: model,
+                    interactionMode: mode,
+                    hasRagContext: !!ragText
+                };
+
+                if (pipeline === 'build10') {
+                    buildParams.grounding = this.b10GroundingSelect.value;
+                    buildParams.qualityAssurance = this.b10QaSelect.value;
+                    buildParams.ratingMethod = this.b10RatingSelect.value;
+                } else if (pipeline === 'build9') {
+                    buildParams.deduplicationThreshold = 0.85;
+                    buildParams.embeddingModel = 'google/gemini-embedding-2';
+                } else if (pipeline === 'build8') {
+                    buildParams.wikidataGrounding = true;
+                    buildParams.sparqlPipeline = true;
+                } else if (pipeline === 'build5') {
+                    buildParams.multiStep = {
+                        ontology: 'build_5_ontology_prompt.md',
+                        data: 'build_5_data_prompt.md',
+                        visuals: 'build_5_visual_prompt.md'
+                    };
+                }
+
+                graphData.metadata.buildParameters = buildParams;
+
+                // Behalte das alte generationDetails zur Kompatibilität
                 graphData.metadata.generationDetails = {
                     prompt: prompt,
                     context: ragText || null,
@@ -1012,95 +1208,107 @@ export class CreatePanel {
 
             // Load data into graph
             if (graphData) {
-                if (pipeline === 'refine') {
-                    const sourceName = 'AI_Refined_' + Date.now();
-                    await this.app.loadGraphData(graphData, sourceName, false);
-                } else {
-                    const sourceName = 'AI_Generation_' + Date.now();
-                    await this.app.loadGraphData(graphData, sourceName, true);
-                }
-            }
+                const processLoadedGraph = async (dataToLoad: any) => {
+                    if (pipeline === 'refine') {
+                        const sourceName = 'AI_Refined_' + Date.now();
+                        await this.app.loadGraphData(dataToLoad, sourceName, false);
+                    } else {
+                        const sourceName = 'AI_Generation_' + Date.now();
+                        await this.app.loadGraphData(dataToLoad, sourceName, true);
+                    }
 
-            // --- Auto-Save & Logging Feature ---
-            try {
-                if (graphData && this.app?.currentGraphData && this.app?.exportManager) {
-                    this.setStatus('Graph geladen! Speichere in Projekt-Dateien...', 'info');
-                    const exportOptions: any = { 
-                        currentEntities: this.app.currentEntities || [],
-                        activeVisualMappings: this.app.visualMappingEngine?.getVisualMappings() || null,
-                        activeDataModel: this.app.currentGraphData.dataModel || null
-                    };
-                    const jsonStr = this.app.exportManager.exportNodgesJSON(this.app.currentGraphData, exportOptions);
-                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-                    
-                    const filename = `AI_Generation_${timestamp}.json`;
-                    
+                    // --- Auto-Save & Logging Feature ---
                     try {
-                        const response = await fetch('/api/save_graph', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ filename, content: jsonStr })
-                        });
-                        const responseText = await response.text();
-                        if (!response.ok || responseText.includes('<!DOCTYPE html>')) {
-                            console.warn("Failed to save to server", responseText);
-                            // Fallback to download if server save fails
-                            this.app.exportManager.downloadFile(jsonStr, `Nodges_AutoSave_${timestamp}.json`, 'application/json');
-                        } else {
-                            // Automatically add to available files list in UI without reload if possible
-                            const filePanel = (this.app as any).uiManager?.panels?.get('file');
-                            if (filePanel && filePanel.availableFiles) {
-                                filePanel.availableFiles.push(`generated/${filename}`);
-                                // Trigger a re-render of the file panel
-                                const currentFiles = this.app.stateManager.state.loadedFiles || [];
-                                this.app.stateManager.setLoadedFiles([...currentFiles]);
+                        if (dataToLoad && this.app?.currentGraphData && this.app?.exportManager) {
+                            this.setStatus('Graph geladen! Speichere in Projekt-Dateien...', 'info');
+                            const exportOptions: any = { 
+                                currentEntities: this.app.currentEntities || [],
+                                activeVisualMappings: this.app.visualMappingEngine?.getVisualMappings() || null,
+                                activeDataModel: this.app.currentGraphData.dataModel || null
+                            };
+                            const jsonStr = this.app.exportManager.exportNodgesJSON(this.app.currentGraphData, exportOptions);
+                            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                            
+                            const filename = `AI_Generation_${timestamp}.json`;
+                            
+                            try {
+                                const response = await fetch('/api/save_graph', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ filename, content: jsonStr })
+                                });
+                                const responseText = await response.text();
+                                if (!response.ok || responseText.includes('<!DOCTYPE html>')) {
+                                    console.warn("Failed to save to server", responseText);
+                                    // Fallback to download if server save fails
+                                    this.app.exportManager.downloadFile(jsonStr, `Nodges_AutoSave_${timestamp}.json`, 'application/json');
+                                } else {
+                                    // Automatically add to available files list in UI without reload if possible
+                                    const filePanel = (this.app as any).uiManager?.panels?.get('file');
+                                    if (filePanel && filePanel.availableFiles) {
+                                        filePanel.availableFiles.push(`generated/${filename}`);
+                                        // Trigger a re-render of the file panel
+                                        const currentFiles = this.app.stateManager.state.loadedFiles || [];
+                                        this.app.stateManager.setLoadedFiles([...currentFiles]);
+                                    }
+                                }
+                            } catch (e) {
+                                 // Fallback to download
+                                 this.app.exportManager.downloadFile(jsonStr, `Nodges_AutoSave_${timestamp}.json`, 'application/json');
+                            }
+                            
+                            // Log JSON
+                            generationLog.generatedNodes = dataToLoad?.data?.entities?.length || 0;
+                            generationLog.generatedEdges = dataToLoad?.data?.relationships?.length || 0;
+                            generationLog.responsePayloadSizeKB = dataToLoad ? (JSON.stringify(dataToLoad).length / 1024).toFixed(2) : "0";
+                            
+                            const logStr = JSON.stringify(generationLog, null, 2);
+                            
+                            // Save Log to server as well
+                            try {
+                                const logFilename = `AI_GenerationLog_${timestamp}.json`;
+                                const logResponse = await fetch('/api/save_graph', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ filename: logFilename, content: logStr })
+                                });
+                                const logResponseText = await logResponse.text();
+                                if (!logResponse.ok || logResponseText.includes('<!DOCTYPE html>')) {
+                                    this.app.exportManager.downloadFile(logStr, logFilename, 'application/json');
+                                }
+                            } catch(e) {
+                                this.app.exportManager.downloadFile(logStr, `AI_GenerationLog_${timestamp}.json`, 'application/json');
                             }
                         }
                     } catch (e) {
-                         // Fallback to download
-                         this.app.exportManager.downloadFile(jsonStr, `Nodges_AutoSave_${timestamp}.json`, 'application/json');
+                        console.warn('Auto-save or logging failed:', e);
                     }
+
+                    const nodeCount = dataToLoad?.data?.entities?.length || 0;
+                    const edgeCount = dataToLoad?.data?.relationships?.length || 0;
+
+                    this.setStatus(`Erfolgreich generiert: ${nodeCount} Knoten, ${edgeCount} Kanten. Dauer: ${generationLog.durationSec}s. Gespeichert!`, 'success');
                     
-                    // Log JSON
-                    generationLog.generatedNodes = graphData?.data?.entities?.length || 0;
-                    generationLog.generatedEdges = graphData?.data?.relationships?.length || 0;
-                    generationLog.responsePayloadSizeKB = graphData ? (JSON.stringify(graphData).length / 1024).toFixed(2) : "0";
-                    
-                    const logStr = JSON.stringify(generationLog, null, 2);
-                    
-                    // Save Log to server as well
-                    try {
-                        const logFilename = `AI_GenerationLog_${timestamp}.json`;
-                        const logResponse = await fetch('/api/save_graph', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ filename: logFilename, content: logStr })
-                        });
-                        const logResponseText = await logResponse.text();
-                        if (!logResponse.ok || logResponseText.includes('<!DOCTYPE html>')) {
-                            this.app.exportManager.downloadFile(logStr, logFilename, 'application/json');
+                    setTimeout(() => {
+                        this.setStatus('', 'info');
+                        if (this.app && typeof this.app.fitCameraToScene === 'function') {
+                            this.app.fitCameraToScene();
                         }
-                    } catch(e) {
-                        this.app.exportManager.downloadFile(logStr, `AI_GenerationLog_${timestamp}.json`, 'application/json');
-                    }
+                    }, 500);
+                };
+
+                if (pipeline === 'build10' && this.b10QaSelect.value === 'human') {
+                    this.setLoading(false);
+                    this.setStatus('Review erforderlich...', 'info');
+                    this.showHumanInTheLoopReview(graphData, (finalData) => {
+                        this.setLoading(true);
+                        this.setStatus('Lade korrigierten Graphen...', 'info');
+                        processLoadedGraph(finalData);
+                    });
+                } else {
+                    await processLoadedGraph(graphData);
                 }
-            } catch (e) {
-                console.warn('Auto-save or logging failed:', e);
             }
-
-            const nodeCount = graphData?.data?.entities?.length || 0;
-            const edgeCount = graphData?.data?.relationships?.length || 0;
-
-            this.setStatus(`Erfolgreich generiert: ${nodeCount} Knoten, ${edgeCount} Kanten. Dauer: ${generationLog.durationSec}s. Gespeichert!`, 'success');
-            
-            // Automatischer Tab-Wechsel entfernt, um den User nicht aus dem Workflow zu reißen
-            setTimeout(() => {
-                this.setStatus('', 'info');
-                // Optional: Fit camera, aber ohne den Tab zu wechseln
-                if (this.app && typeof this.app.fitCameraToScene === 'function') {
-                    this.app.fitCameraToScene();
-                }
-            }, 500);
 
         } catch (error: any) {
             generationLog.timestampEnd = new Date().toISOString();
@@ -1140,5 +1348,196 @@ export class CreatePanel {
                 this.statusText.style.color = '#e74c3c'; // Red
                 break;
         }
+    }
+    private showHumanInTheLoopReview(graphData: any, onSave: (finalData: any) => void) {
+        const modal = document.createElement('div');
+        modal.id = 'b10-review-modal';
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100vw';
+        modal.style.height = '100vh';
+        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        modal.style.backdropFilter = 'blur(10px)';
+        modal.style.zIndex = '99999';
+        modal.style.display = 'flex';
+        modal.style.justifyContent = 'center';
+        modal.style.alignItems = 'center';
+
+        const box = document.createElement('div');
+        box.style.backgroundColor = '#1a1a1a';
+        box.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+        box.style.borderRadius = '8px';
+        box.style.width = '80%';
+        box.style.maxWidth = '900px';
+        box.style.height = '80%';
+        box.style.display = 'flex';
+        box.style.flexDirection = 'column';
+        box.style.padding = '20px';
+        box.style.boxShadow = '0 20px 40px rgba(0,0,0,0.5)';
+
+        const header = document.createElement('h3');
+        header.textContent = 'Human-in-the-loop: Graph-Review';
+        header.style.marginTop = '0';
+        header.style.color = 'var(--accent-color)';
+        box.appendChild(header);
+
+        const content = document.createElement('div');
+        content.style.flex = '1';
+        content.style.overflowY = 'auto';
+        content.style.marginBottom = '20px';
+        content.style.display = 'grid';
+        content.style.gridTemplateColumns = '1fr 1fr';
+        content.style.gap = '20px';
+
+        // Entities Column
+        const entCol = document.createElement('div');
+        const entTitle = document.createElement('h4');
+        entTitle.textContent = `Knoten (Entities: ${graphData.data.entities.length})`;
+        entCol.appendChild(entTitle);
+
+        const entList = document.createElement('div');
+        entList.style.display = 'flex';
+        entList.style.flexDirection = 'column';
+        entList.style.gap = '8px';
+
+        const tempEntities = [...graphData.data.entities];
+        tempEntities.forEach((ent) => {
+            const item = document.createElement('div');
+            item.style.display = 'flex';
+            item.style.gap = '5px';
+            item.style.alignItems = 'center';
+            item.style.backgroundColor = 'rgba(255,255,255,0.05)';
+            item.style.padding = '5px';
+            item.style.borderRadius = '3px';
+
+            const idInput = document.createElement('input');
+            idInput.value = ent.id;
+            idInput.disabled = true;
+            idInput.style.width = '60px';
+            idInput.style.backgroundColor = 'transparent';
+            idInput.style.border = 'none';
+            idInput.style.color = 'var(--text-muted)';
+            
+            const labelInput = document.createElement('input');
+            labelInput.value = ent.label || '';
+            labelInput.className = 'form-control';
+            labelInput.style.flex = '1';
+            labelInput.style.fontSize = '12px';
+            labelInput.style.padding = '3px';
+            labelInput.style.backgroundColor = 'rgba(0,0,0,0.3)';
+            labelInput.style.border = '1px solid rgba(255,255,255,0.1)';
+            labelInput.style.color = 'var(--text-color)';
+            labelInput.addEventListener('input', () => {
+                ent.label = labelInput.value;
+            });
+
+            const delBtn = document.createElement('button');
+            delBtn.textContent = '❌';
+            delBtn.style.background = 'none';
+            delBtn.style.border = 'none';
+            delBtn.style.cursor = 'pointer';
+            delBtn.addEventListener('click', () => {
+                tempEntities.splice(tempEntities.indexOf(ent), 1);
+                item.remove();
+            });
+
+            item.appendChild(idInput);
+            item.appendChild(labelInput);
+            item.appendChild(delBtn);
+            entList.appendChild(item);
+        });
+        entCol.appendChild(entList);
+        content.appendChild(entCol);
+
+        // Relationships Column
+        const relCol = document.createElement('div');
+        const relTitle = document.createElement('h4');
+        relTitle.textContent = `Kanten (Relationships: ${graphData.data.relationships.length})`;
+        relCol.appendChild(relTitle);
+
+        const relList = document.createElement('div');
+        relList.style.display = 'flex';
+        relList.style.flexDirection = 'column';
+        relList.style.gap = '8px';
+
+        const tempRelationships = [...graphData.data.relationships];
+        tempRelationships.forEach((rel) => {
+            const item = document.createElement('div');
+            item.style.display = 'flex';
+            item.style.gap = '5px';
+            item.style.alignItems = 'center';
+            item.style.backgroundColor = 'rgba(255,255,255,0.05)';
+            item.style.padding = '5px';
+            item.style.borderRadius = '3px';
+
+            const connText = document.createElement('span');
+            connText.textContent = `${rel.source} ➔ ${rel.target}`;
+            connText.style.fontSize = '11px';
+            connText.style.color = 'var(--text-muted)';
+            connText.style.width = '100px';
+
+            const labelInput = document.createElement('input');
+            labelInput.value = rel.label || '';
+            labelInput.className = 'form-control';
+            labelInput.style.flex = '1';
+            labelInput.style.fontSize = '12px';
+            labelInput.style.padding = '3px';
+            labelInput.style.backgroundColor = 'rgba(0,0,0,0.3)';
+            labelInput.style.border = '1px solid rgba(255,255,255,0.1)';
+            labelInput.style.color = 'var(--text-color)';
+            labelInput.addEventListener('input', () => {
+                rel.label = labelInput.value;
+            });
+
+            const delBtn = document.createElement('button');
+            delBtn.textContent = '❌';
+            delBtn.style.background = 'none';
+            delBtn.style.border = 'none';
+            delBtn.style.cursor = 'pointer';
+            delBtn.addEventListener('click', () => {
+                tempRelationships.splice(tempRelationships.indexOf(rel), 1);
+                item.remove();
+            });
+
+            item.appendChild(connText);
+            item.appendChild(labelInput);
+            item.appendChild(delBtn);
+            relList.appendChild(item);
+        });
+        relCol.appendChild(relList);
+        content.appendChild(relCol);
+
+        box.appendChild(content);
+
+        // Footer buttons
+        const footer = document.createElement('div');
+        footer.style.display = 'flex';
+        footer.style.justifyContent = 'flex-end';
+        footer.style.gap = '10px';
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.textContent = 'Verwerfen';
+        cancelBtn.className = 'btn btn-secondary';
+        cancelBtn.addEventListener('click', () => {
+            modal.remove();
+        });
+
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = 'Visualisieren';
+        saveBtn.className = 'btn btn-primary';
+        saveBtn.addEventListener('click', () => {
+            graphData.data.entities = tempEntities;
+            graphData.data.relationships = tempRelationships;
+            onSave(graphData);
+            modal.remove();
+        });
+
+        footer.appendChild(cancelBtn);
+        footer.appendChild(saveBtn);
+        box.appendChild(footer);
+
+        modal.appendChild(box);
+        document.body.appendChild(modal);
     }
 }

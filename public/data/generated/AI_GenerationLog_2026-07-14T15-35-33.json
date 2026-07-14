@@ -1,0 +1,34 @@
+{
+  "timestampStart": "2026-07-14T15:32:58.093Z",
+  "prompt": "sonnensystem",
+  "ragText": null,
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-chat",
+  "pipeline": "build10",
+  "systemInfo": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0",
+    "language": "de",
+    "screenResolution": "1920x1080",
+    "viewport": "1920x921",
+    "appVersion": "Nodges Build 6"
+  },
+  "steps": [
+    {
+      "time": "2026-07-14T15:32:58.093Z",
+      "offsetMs": 0,
+      "message": "Schritt 2/4: Generiere Netzwerk-Struktur..."
+    },
+    {
+      "time": "2026-07-14T15:34:13.083Z",
+      "offsetMs": 75001,
+      "message": "Schritt 3/4: Kritiker-LLM prüft den Graphen auf Plausibilität..."
+    }
+  ],
+  "timestampEnd": "2026-07-14T15:35:31.948Z",
+  "durationMs": 153877,
+  "durationSec": "153.88",
+  "status": "success",
+  "generatedNodes": 15,
+  "generatedEdges": 23,
+  "responsePayloadSizeKB": "9.53"
+}

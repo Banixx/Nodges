@@ -1,0 +1,284 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Ein Netzwerkmodell des Sonnensystems, das Planeten, Monde, Asteroiden und ihre Beziehungen darstellt.",
+    "competencyQuestions": [
+      "Welche Planeten gehören zu welcher Gruppe (z.B. Gesteinsplaneten, Gasriesen)?",
+      "Welche Monde umkreisen welche Planeten?",
+      "Wie groß ist die Entfernung der Planeten zur Sonne?",
+      "Welche Asteroiden befinden sich im Asteroidengürtel?",
+      "Wie unterscheiden sich die Planeten in Masse und Temperatur?"
+    ],
+    "apiResponse": {
+      "id": "gen-1784041752-K6W16XroXsOg4clJZyKe",
+      "created": 1784041752,
+      "model": "deepseek/deepseek-chat",
+      "usage": {
+        "prompt_tokens": 1778,
+        "completion_tokens": 1476,
+        "total_tokens": 3254,
+        "cost": 0.0018826,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0018826,
+          "upstream_inference_prompt_cost": 0.00056896,
+          "upstream_inference_completions_cost": 0.00131364
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Himmelskörper": {
+        "properties": {
+          "kategorie": {
+            "type": "categorical"
+          },
+          "masse": {
+            "type": "continuous",
+            "range": [
+              0,
+              100000
+            ]
+          },
+          "temperatur": {
+            "type": "continuous",
+            "range": [
+              -273,
+              10000
+            ]
+          },
+          "entfernung_zur_sonne": {
+            "type": "continuous",
+            "range": [
+              0,
+              100000000
+            ]
+          },
+          "durchmesser": {
+            "type": "continuous",
+            "range": [
+              0,
+              100000
+            ]
+          }
+        }
+      },
+      "Gruppe": {
+        "properties": {
+          "name": {
+            "type": "categorical"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "gehoert_zu": {
+        "properties": {}
+      },
+      "umkreist": {
+        "properties": {
+          "entfernung": {
+            "type": "continuous",
+            "range": [
+              0,
+              100000
+            ]
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "sonne",
+        "type": "Himmelskörper",
+        "label": "Sonne",
+        "kategorie": "Stern",
+        "masse": 1989000,
+        "temperatur": 5500,
+        "durchmesser": 1392700
+      },
+      {
+        "id": "erde",
+        "type": "Himmelskörper",
+        "label": "Erde",
+        "kategorie": "Planet",
+        "masse": 5.972,
+        "temperatur": 15,
+        "entfernung_zur_sonne": 149.6,
+        "durchmesser": 12742
+      },
+      {
+        "id": "mars",
+        "type": "Himmelskörper",
+        "label": "Mars",
+        "kategorie": "Planet",
+        "maste": 0.641,
+        "temperatur": -63,
+        "entfernung_zur_sonne": 227.9,
+        "durchmesser": 6779
+      },
+      {
+        "id": "jupiter",
+        "type": "Himmelskörper",
+        "label": "Jupiter",
+        "kategorie": "Planet",
+        "masse": 1898,
+        "temperatur": -108,
+        "entfernung_zur_sonne": 778.3,
+        "durchmesser": 139822
+      },
+      {
+        "id": "mond",
+        "type": "Himmelskörper",
+        "label": "Mond",
+        "kategorie": "Mond",
+        "masse": 0.073,
+        "temperatur": -23,
+        "durchmesser": 3475
+      },
+      {
+        "id": "ceres",
+        "type": "Himmelskörper",
+        "label": "Ceres",
+        "kategorie": "Asteroid",
+        "masse": 0.00094,
+        "temperatur": -106,
+        "entfernung_zur_sonne": 413.7,
+        "durchmesser": 946
+      },
+      {
+        "id": "gesteinsplaneten",
+        "type": "Gruppe",
+        "label": "Gesteinsplaneten",
+        "name": "Gesteinsplaneten"
+      },
+      {
+        "id": "gasriesen",
+        "type": "Gruppe",
+        "label": "Gasriesen",
+        "name": "Gasriesen"
+      },
+      {
+        "id": "asteroidengürtel",
+        "type": "Gruppe",
+        "label": "Asteroidengürtel",
+        "name": "Asteroidengürtel"
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel_1",
+        "type": "gehoert_zu",
+        "source": "erde",
+        "target": "gesteinsplaneten"
+      },
+      {
+        "id": "rel_2",
+        "type": "gehoert_zu",
+        "source": "mars",
+        "target": "gesteinsplaneten"
+      },
+      {
+        "id": "rel_3",
+        "type": "gehoert_zu",
+        "source": "jupiter",
+        "target": "gasriesen"
+      },
+      {
+        "id": "rel_4",
+        "type": "gehoert_zu",
+        "source": "ceres",
+        "target": "asteroidengürtel"
+      },
+      {
+        "id": "rel_5",
+        "type": "umkreist",
+        "source": "mond",
+        "target": "erde",
+        "entfernung": 0.384
+      },
+      {
+        "id": "rel_6",
+        "type": "umkreist",
+        "source": "erde",
+        "target": "sonne",
+        "entfernung": 149.6
+      },
+      {
+        "id": "rel_7",
+        "type": "umkreist",
+        "source": "mars",
+        "target": "sonne",
+        "entfernung": 227.9
+      },
+      {
+        "id": "rel_8",
+        "type": "umkreist",
+        "source": "jupiter",
+        "target": "sonne",
+        "entfernung": 778.3
+      },
+      {
+        "id": "rel_9",
+        "type": "umkreist",
+        "source": "ceres",
+        "target": "sonne",
+        "entfernung": 413.7
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "masse",
+          "function": "linear",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "color": {
+          "source": "kategorie",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "value": 0.1
+          }
+        }
+      }
+    }
+  }
+}

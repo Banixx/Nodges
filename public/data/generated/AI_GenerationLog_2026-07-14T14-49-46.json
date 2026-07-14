@@ -1,0 +1,104 @@
+{
+  "timestampStart": "2026-07-14T14:48:17.704Z",
+  "prompt": "Sonnensystem",
+  "ragText": null,
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-chat",
+  "pipeline": "build9",
+  "systemInfo": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0",
+    "language": "de",
+    "screenResolution": "1920x1080",
+    "viewport": "1920x921",
+    "appVersion": "Nodges Build 6"
+  },
+  "steps": [
+    {
+      "time": "2026-07-14T14:48:17.704Z",
+      "offsetMs": 0,
+      "message": "Schritt 1/2: Generiere Roh-Netzwerk via LLM..."
+    },
+    {
+      "time": "2026-07-14T14:48:17.713Z",
+      "offsetMs": 9,
+      "message": "Generiere Netzwerk (Ontologie, Daten & Visuals in einem Schritt)..."
+    },
+    {
+      "time": "2026-07-14T14:49:43.109Z",
+      "offsetMs": 85405,
+      "message": "Schritt 2/2: Führe semantische Deduplizierung (Entity Resolution) aus..."
+    },
+    {
+      "time": "2026-07-14T14:49:43.109Z",
+      "offsetMs": 85406,
+      "message": "Berechne Embeddings fuer 11 Knoten..."
+    },
+    {
+      "time": "2026-07-14T14:49:43.109Z",
+      "offsetMs": 85406,
+      "message": "Embedding 1/11: \"Sonne\""
+    },
+    {
+      "time": "2026-07-14T14:49:43.110Z",
+      "offsetMs": 85406,
+      "message": "Embedding 2/11: \"Merkur\""
+    },
+    {
+      "time": "2026-07-14T14:49:43.110Z",
+      "offsetMs": 85407,
+      "message": "Embedding 3/11: \"Venus\""
+    },
+    {
+      "time": "2026-07-14T14:49:43.111Z",
+      "offsetMs": 85407,
+      "message": "Embedding 4/11: \"Erde\""
+    },
+    {
+      "time": "2026-07-14T14:49:43.111Z",
+      "offsetMs": 85408,
+      "message": "Embedding 5/11: \"Mars\""
+    },
+    {
+      "time": "2026-07-14T14:49:44.469Z",
+      "offsetMs": 86765,
+      "message": "Embedding 6/11: \"Jupiter\""
+    },
+    {
+      "time": "2026-07-14T14:49:44.469Z",
+      "offsetMs": 86766,
+      "message": "Embedding 7/11: \"Saturn\""
+    },
+    {
+      "time": "2026-07-14T14:49:44.470Z",
+      "offsetMs": 86766,
+      "message": "Embedding 8/11: \"Uranus\""
+    },
+    {
+      "time": "2026-07-14T14:49:44.470Z",
+      "offsetMs": 86766,
+      "message": "Embedding 9/11: \"Neptun\""
+    },
+    {
+      "time": "2026-07-14T14:49:44.470Z",
+      "offsetMs": 86767,
+      "message": "Embedding 10/11: \"Mond\""
+    },
+    {
+      "time": "2026-07-14T14:49:44.864Z",
+      "offsetMs": 87160,
+      "message": "Embedding 11/11: \"Ceres\""
+    },
+    {
+      "time": "2026-07-14T14:49:45.044Z",
+      "offsetMs": 87341,
+      "message": "Berechne Aehnlichkeiten und fuehre Knoten zusammen..."
+    }
+  ],
+  "timestampEnd": "2026-07-14T14:49:45.049Z",
+  "durationMs": 87345,
+  "durationSec": "87.34",
+  "status": "success",
+  "generatedNodes": 11,
+  "generatedEdges": 10,
+  "responsePayloadSizeKB": "6.31"
+}

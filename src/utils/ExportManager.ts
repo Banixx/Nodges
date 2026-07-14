@@ -1,4 +1,6 @@
 
+import pkg from '../../package.json';
+
 /**
  * ExportManager - Handles exporting network data to various formats
  * Supports: JSON (native), CSV, GEXF, GraphML, PNG/SVG (visualization)
@@ -65,7 +67,7 @@ export class ExportManager {
                 ...networkData.metadata,
                 schemaVersion: networkData.metadata?.schemaVersion || '3.0',
                 exportedAt: new Date().toISOString(),
-                exportedBy: 'Nodges 0.101.1',
+                exportedBy: 'Nodges ' + pkg.version,
                 format: 'nodges-json'
             },
             nodes: networkData.nodes || [],

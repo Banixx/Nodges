@@ -1,0 +1,583 @@
+{
+  "system": "sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "A detailed semantic network model of our solar system including planets, moons, and their relationships.",
+    "author": "AstroDataCollector",
+    "created": "2023-11-15",
+    "version": "1.0",
+    "apiResponse": {
+      "id": "gen-1784043253-pt9QtWt9Rc56HecBNB2N",
+      "created": 1784043253,
+      "model": "deepseek/deepseek-chat",
+      "usage": {
+        "prompt_tokens": 2035,
+        "completion_tokens": 1852,
+        "total_tokens": 3887,
+        "cost": 0.00229948,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00229948,
+          "upstream_inference_prompt_cost": 0.0006512,
+          "upstream_inference_completions_cost": 0.00164828
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    },
+    "generationDetails": {
+      "prompt": "sonnensystem",
+      "context": null,
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-chat",
+      "pipeline": "build10",
+      "durationMs": 153877,
+      "timestamp": "2026-07-14T15:35:31.948Z"
+    },
+    "exportedAt": "2026-07-14T15:35:33.601Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1784043331948_e1",
+        "label": "Sun",
+        "mass": 1000,
+        "diameter": 109,
+        "type": "Star",
+        "composition": "Gaseous",
+        "stateVector": {
+          "degree": 9,
+          "inbound": 9,
+          "outbound": 0
+        },
+        "inDegree": 9,
+        "outDegree": 0,
+        "position": {
+          "x": -0.4304216598481805,
+          "y": 0.9807738455763573,
+          "z": -0.19284866456696115
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e2",
+        "label": "Mercury",
+        "mass": 0.055,
+        "diameter": 0.38,
+        "distanceFromSun": 0.39,
+        "orbitalPeriod": 88,
+        "type": "Planet",
+        "composition": "Rocky",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": -1.8538245772878559,
+          "y": 1.9799509870272918,
+          "z": 0.2623921183793613
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e3",
+        "label": "Venus",
+        "mass": 0.815,
+        "diameter": 0.95,
+        "distanceFromSun": 0.72,
+        "orbitalPeriod": 225,
+        "type": "Planet",
+        "composition": "Rocky",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": 0.2777342411673494,
+          "y": -2.5954470987237657,
+          "z": -0.35986001918891475
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e4",
+        "label": "Earth",
+        "mass": 1,
+        "diameter": 1,
+        "distanceFromSun": 1,
+        "orbitalPeriod": 365,
+        "type": "Planet",
+        "composition": "Rocky",
+        "stateVector": {
+          "degree": 3,
+          "inbound": 1,
+          "outbound": 2
+        },
+        "inDegree": 1,
+        "outDegree": 2,
+        "position": {
+          "x": -2.0808588230657357,
+          "y": -2.3082925480014147,
+          "z": 0.5339304232533056
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e5",
+        "label": "Mars",
+        "mass": 0.107,
+        "diameter": 0.53,
+        "distanceFromSun": 1.52,
+        "orbitalPeriod": 687,
+        "type": "Planet",
+        "composition": "Rocky",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": -1.3488830454692355,
+          "y": -1.0420006775841502,
+          "z": 3.4188405106880273
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e6",
+        "label": "Jupiter",
+        "mass": 317.8,
+        "diameter": 11.2,
+        "distanceFromSun": 5.2,
+        "orbitalPeriod": 4333,
+        "type": "Planet",
+        "composition": "Gaseous",
+        "stateVector": {
+          "degree": 3,
+          "inbound": 0,
+          "outbound": 3
+        },
+        "inDegree": 0,
+        "outDegree": 3,
+        "position": {
+          "x": -0.23023915507075784,
+          "y": -1.795201947328853,
+          "z": 2.03478661813996
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e7",
+        "label": "Saturn",
+        "mass": 95.2,
+        "diameter": 9.45,
+        "distanceFromSun": 9.58,
+        "orbitalPeriod": 10759,
+        "type": "Planet",
+        "composition": "Gaseous",
+        "stateVector": {
+          "degree": 3,
+          "inbound": 0,
+          "outbound": 3
+        },
+        "inDegree": 0,
+        "outDegree": 3,
+        "position": {
+          "x": 5,
+          "y": -2.8082435624444666,
+          "z": 0.1832658458931381
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e8",
+        "label": "Uranus",
+        "mass": 14.5,
+        "diameter": 4.01,
+        "distanceFromSun": 19.22,
+        "orbitalPeriod": 30687,
+        "type": "Planet",
+        "composition": "Ice",
+        "stateVector": {
+          "degree": 3,
+          "inbound": 0,
+          "outbound": 3
+        },
+        "inDegree": 0,
+        "outDegree": 3,
+        "position": {
+          "x": 3.600134506719818,
+          "y": -1.5802115777662233,
+          "z": -1.3929715046076827
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e9",
+        "label": "Neptune",
+        "mass": 17.1,
+        "diameter": 3.88,
+        "distanceFromSun": 30.05,
+        "orbitalPeriod": 60190,
+        "type": "Planet",
+        "composition": "Ice",
+        "stateVector": {
+          "degree": 3,
+          "inbound": 0,
+          "outbound": 3
+        },
+        "inDegree": 0,
+        "outDegree": 3,
+        "position": {
+          "x": -0.127368903491148,
+          "y": -3.0289629955429027,
+          "z": -2.9476552586020506
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e10",
+        "label": "Pluto",
+        "mass": 0.0022,
+        "diameter": 0.19,
+        "distanceFromSun": 39.48,
+        "orbitalPeriod": 90560,
+        "type": "DwarfPlanet",
+        "composition": "Ice",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": 1.174000289649279,
+          "y": -1.7187069536219504,
+          "z": -1.0340900492735592
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e11",
+        "label": "Moon",
+        "mass": 0.0123,
+        "diameter": 0.27,
+        "distanceFromSun": 1,
+        "orbitalPeriod": 27.3,
+        "type": "Moon",
+        "composition": "Rocky",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -3.613455684745494,
+          "y": -4.024919220629954,
+          "z": -2.416365630804483
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e12",
+        "label": "Inner Planets",
+        "name": "InnerPlanets",
+        "stateVector": {
+          "degree": 4,
+          "inbound": 4,
+          "outbound": 0
+        },
+        "inDegree": 4,
+        "outDegree": 0,
+        "position": {
+          "x": -5,
+          "y": 4.024919220629954,
+          "z": 4.063961818226097
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e13",
+        "label": "Outer Planets",
+        "name": "OuterPlanets",
+        "stateVector": {
+          "degree": 5,
+          "inbound": 5,
+          "outbound": 0
+        },
+        "inDegree": 5,
+        "outDegree": 0,
+        "position": {
+          "x": 0.15471428183797126,
+          "y": -0.8422798235957294,
+          "z": 0.5832393864254066
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e14",
+        "label": "Gas Giants",
+        "name": "GasGiants",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": 4.195491884123451,
+          "y": 0.6069774458830387,
+          "z": 1.7857052354384115
+        }
+      },
+      {
+        "id": "AI_Generation_1784043331948_e15",
+        "label": "Ice Giants",
+        "name": "IceGiants",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": -2.833658997286667,
+          "y": 2.071155295245224,
+          "z": -4.0639618182260975
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1784043331948_r1",
+        "type": "orbits",
+        "source": "AI_Generation_1784043331948_e2",
+        "target": "AI_Generation_1784043331948_e1",
+        "distance": 0.39,
+        "period": 88,
+        "strength": 95
+      },
+      {
+        "id": "AI_Generation_1784043331948_r2",
+        "type": "orbits",
+        "source": "AI_Generation_1784043331948_e3",
+        "target": "AI_Generation_1784043331948_e1",
+        "distance": 0.72,
+        "period": 225,
+        "strength": 90
+      },
+      {
+        "id": "AI_Generation_1784043331948_r3",
+        "type": "orbits",
+        "source": "AI_Generation_1784043331948_e4",
+        "target": "AI_Generation_1784043331948_e1",
+        "distance": 1,
+        "period": 365,
+        "strength": 85
+      },
+      {
+        "id": "AI_Generation_1784043331948_r4",
+        "type": "orbits",
+        "source": "AI_Generation_1784043331948_e5",
+        "target": "AI_Generation_1784043331948_e1",
+        "distance": 1.52,
+        "period": 687,
+        "strength": 80
+      },
+      {
+        "id": "AI_Generation_1784043331948_r5",
+        "type": "orbits",
+        "source": "AI_Generation_1784043331948_e6",
+        "target": "AI_Generation_1784043331948_e1",
+        "distance": 5.2,
+        "period": 4333,
+        "strength": 75
+      },
+      {
+        "id": "AI_Generation_1784043331948_r6",
+        "type": "orbits",
+        "source": "AI_Generation_1784043331948_e7",
+        "target": "AI_Generation_1784043331948_e1",
+        "distance": 9.58,
+        "period": 10759,
+        "strength": 70
+      },
+      {
+        "id": "AI_Generation_1784043331948_r7",
+        "type": "orbits",
+        "source": "AI_Generation_1784043331948_e8",
+        "target": "AI_Generation_1784043331948_e1",
+        "distance": 19.22,
+        "period": 30687,
+        "strength": 65
+      },
+      {
+        "id": "AI_Generation_1784043331948_r8",
+        "type": "orbits",
+        "source": "AI_Generation_1784043331948_e9",
+        "target": "AI_Generation_1784043331948_e1",
+        "distance": 30.05,
+        "period": 60190,
+        "strength": 60
+      },
+      {
+        "id": "AI_Generation_1784043331948_r9",
+        "type": "orbits",
+        "source": "AI_Generation_1784043331948_e10",
+        "target": "AI_Generation_1784043331948_e1",
+        "distance": 39.48,
+        "period": 90560,
+        "strength": 55
+      },
+      {
+        "id": "AI_Generation_1784043331948_r10",
+        "type": "orbits",
+        "source": "AI_Generation_1784043331948_e11",
+        "target": "AI_Generation_1784043331948_e4",
+        "distance": 0.00257,
+        "period": 27.3,
+        "strength": 50
+      },
+      {
+        "id": "AI_Generation_1784043331948_r11",
+        "type": "belongs_to",
+        "source": "AI_Generation_1784043331948_e2",
+        "target": "AI_Generation_1784043331948_e12",
+        "strength": 100
+      },
+      {
+        "id": "AI_Generation_1784043331948_r12",
+        "type": "belongs_to",
+        "source": "AI_Generation_1784043331948_e3",
+        "target": "AI_Generation_1784043331948_e12",
+        "strength": 100
+      },
+      {
+        "id": "AI_Generation_1784043331948_r13",
+        "type": "belongs_to",
+        "source": "AI_Generation_1784043331948_e4",
+        "target": "AI_Generation_1784043331948_e12",
+        "strength": 100
+      },
+      {
+        "id": "AI_Generation_1784043331948_r14",
+        "type": "belongs_to",
+        "source": "AI_Generation_1784043331948_e5",
+        "target": "AI_Generation_1784043331948_e12",
+        "strength": 100
+      },
+      {
+        "id": "AI_Generation_1784043331948_r15",
+        "type": "belongs_to",
+        "source": "AI_Generation_1784043331948_e6",
+        "target": "AI_Generation_1784043331948_e13",
+        "strength": 100
+      },
+      {
+        "id": "AI_Generation_1784043331948_r16",
+        "type": "belongs_to",
+        "source": "AI_Generation_1784043331948_e7",
+        "target": "AI_Generation_1784043331948_e13",
+        "strength": 100
+      },
+      {
+        "id": "AI_Generation_1784043331948_r17",
+        "type": "belongs_to",
+        "source": "AI_Generation_1784043331948_e8",
+        "target": "AI_Generation_1784043331948_e13",
+        "strength": 100
+      },
+      {
+        "id": "AI_Generation_1784043331948_r18",
+        "type": "belongs_to",
+        "source": "AI_Generation_1784043331948_e9",
+        "target": "AI_Generation_1784043331948_e13",
+        "strength": 100
+      },
+      {
+        "id": "AI_Generation_1784043331948_r19",
+        "type": "belongs_to",
+        "source": "AI_Generation_1784043331948_e10",
+        "target": "AI_Generation_1784043331948_e13",
+        "strength": 100
+      },
+      {
+        "id": "AI_Generation_1784043331948_r20",
+        "type": "belongs_to",
+        "source": "AI_Generation_1784043331948_e6",
+        "target": "AI_Generation_1784043331948_e14",
+        "strength": 100
+      },
+      {
+        "id": "AI_Generation_1784043331948_r21",
+        "type": "belongs_to",
+        "source": "AI_Generation_1784043331948_e7",
+        "target": "AI_Generation_1784043331948_e14",
+        "strength": 100
+      },
+      {
+        "id": "AI_Generation_1784043331948_r22",
+        "type": "belongs_to",
+        "source": "AI_Generation_1784043331948_e8",
+        "target": "AI_Generation_1784043331948_e15",
+        "strength": 100
+      },
+      {
+        "id": "AI_Generation_1784043331948_r23",
+        "type": "belongs_to",
+        "source": "AI_Generation_1784043331948_e9",
+        "target": "AI_Generation_1784043331948_e15",
+        "strength": 100
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "size": {
+          "source": "mass",
+          "function": "linear",
+          "range": [
+            0.5,
+            5
+          ]
+        },
+        "geometry": {
+          "source": "type",
+          "function": "categorical"
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "thickness": {
+          "source": "strength",
+          "function": "linear",
+          "range": [
+            0.03,
+            0.25
+          ]
+        }
+      }
+    }
+  }
+}

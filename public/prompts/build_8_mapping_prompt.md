@@ -38,7 +38,7 @@ STRIKTE REGELN:
         "geometry": { "source": "kategorie", "function": "categorical" }
       },
       "global_edge": {
-        "color": { "source": "constant", "function": "constant", "params": { "color": "#aaaaaa" } },
+        "color": { "source": "kategorie", "function": "categorical" },
         "thickness": { "source": "constant", "function": "constant", "params": { "value": 0.1 } }
       }
     }

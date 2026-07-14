@@ -1,0 +1,343 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Ein Netzwerkmodell des Sonnensystems, das Planeten, Monde, Asteroiden und ihre Beziehungen darstellt.",
+    "competencyQuestions": [
+      "Welche Planeten gehören zu welcher Gruppe (z.B. Gesteinsplaneten, Gasriesen)?",
+      "Welche Monde umkreisen welche Planeten?",
+      "Wie groß ist die Entfernung der Planeten zur Sonne?",
+      "Welche Asteroiden befinden sich im Asteroidengürtel?",
+      "Wie unterscheiden sich die Planeten in Masse und Temperatur?"
+    ],
+    "apiResponse": {
+      "id": "gen-1784041752-K6W16XroXsOg4clJZyKe",
+      "created": 1784041752,
+      "model": "deepseek/deepseek-chat",
+      "usage": {
+        "prompt_tokens": 1778,
+        "completion_tokens": 1476,
+        "total_tokens": 3254,
+        "cost": 0.0018826,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0018826,
+          "upstream_inference_prompt_cost": 0.00056896,
+          "upstream_inference_completions_cost": 0.00131364
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    },
+    "generationDetails": {
+      "prompt": "Sonnensystem",
+      "context": null,
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-chat",
+      "pipeline": "build6",
+      "durationMs": 75761,
+      "timestamp": "2026-07-14T15:10:28.648Z"
+    },
+    "exportedAt": "2026-07-14T15:10:38.861Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1784041828648_sonne",
+        "type": "Himmelskörper",
+        "label": "Sonne",
+        "kategorie": "Stern",
+        "masse": 1989000,
+        "temperatur": 5500,
+        "durchmesser": 1392700,
+        "stateVector": {
+          "degree": 4,
+          "inbound": 4,
+          "outbound": 0
+        },
+        "inDegree": 4,
+        "outDegree": 0,
+        "position": {
+          "x": 1.102150897500707,
+          "y": -3.2987189795116376,
+          "z": -0.5620316939681297
+        }
+      },
+      {
+        "id": "AI_Generation_1784041828648_erde",
+        "type": "Himmelskörper",
+        "label": "Erde",
+        "kategorie": "Planet",
+        "masse": 5.972,
+        "temperatur": 15,
+        "entfernung_zur_sonne": 149.6,
+        "durchmesser": 12742,
+        "stateVector": {
+          "degree": 3,
+          "inbound": 1,
+          "outbound": 2
+        },
+        "inDegree": 1,
+        "outDegree": 2,
+        "position": {
+          "x": 0.725862148171646,
+          "y": 1.3138875363347267,
+          "z": -0.7696394333074527
+        }
+      },
+      {
+        "id": "AI_Generation_1784041828648_mars",
+        "type": "Himmelskörper",
+        "label": "Mars",
+        "kategorie": "Planet",
+        "maste": 0.641,
+        "temperatur": -63,
+        "entfernung_zur_sonne": 227.9,
+        "durchmesser": 6779,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": 3.3799534372721833,
+          "y": 3.2987189795116376,
+          "z": -0.9218812901305764
+        }
+      },
+      {
+        "id": "AI_Generation_1784041828648_jupiter",
+        "type": "Himmelskörper",
+        "label": "Jupiter",
+        "kategorie": "Planet",
+        "masse": 1898,
+        "temperatur": -108,
+        "entfernung_zur_sonne": 778.3,
+        "durchmesser": 139822,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": 1.1375156180957164,
+          "y": 0.023610122447829587,
+          "z": 3.801112618554094
+        }
+      },
+      {
+        "id": "AI_Generation_1784041828648_mond",
+        "type": "Himmelskörper",
+        "label": "Mond",
+        "kategorie": "Mond",
+        "masse": 0.073,
+        "temperatur": -23,
+        "durchmesser": 3475,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -5,
+          "y": 0.16467890070634855,
+          "z": -3.22566351227542
+        }
+      },
+      {
+        "id": "AI_Generation_1784041828648_ceres",
+        "type": "Himmelskörper",
+        "label": "Ceres",
+        "kategorie": "Asteroid",
+        "masse": 0.00094,
+        "temperatur": -106,
+        "entfernung_zur_sonne": 413.7,
+        "durchmesser": 946,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": 3.4734924508406433,
+          "y": 0.8480741584074086,
+          "z": -1.9671175254925337
+        }
+      },
+      {
+        "id": "AI_Generation_1784041828648_gesteinsplaneten",
+        "type": "Gruppe",
+        "label": "Gesteinsplaneten",
+        "name": "Gesteinsplaneten",
+        "stateVector": {
+          "degree": 2,
+          "inbound": 2,
+          "outbound": 0
+        },
+        "inDegree": 2,
+        "outDegree": 0,
+        "position": {
+          "x": -2.4516324186971197,
+          "y": -0.581688170100185,
+          "z": -3.7032241292057932
+        }
+      },
+      {
+        "id": "AI_Generation_1784041828648_gasriesen",
+        "type": "Gruppe",
+        "label": "Gasriesen",
+        "name": "Gasriesen",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 1.8315774406290843,
+          "y": -2.1087751343793393,
+          "z": 2.0236266561783975
+        }
+      },
+      {
+        "id": "AI_Generation_1784041828648_asteroidengürtel",
+        "type": "Gruppe",
+        "label": "Asteroidengürtel",
+        "name": "Asteroidengürtel",
+        "stateVector": {
+          "degree": 1,
+          "inbound": 1,
+          "outbound": 0
+        },
+        "inDegree": 1,
+        "outDegree": 0,
+        "position": {
+          "x": 5,
+          "y": -2.1958838396375273,
+          "z": -3.801112618554094
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1784041828648_rel_1",
+        "type": "gehoert_zu",
+        "source": "AI_Generation_1784041828648_erde",
+        "target": "AI_Generation_1784041828648_gesteinsplaneten"
+      },
+      {
+        "id": "AI_Generation_1784041828648_rel_2",
+        "type": "gehoert_zu",
+        "source": "AI_Generation_1784041828648_mars",
+        "target": "AI_Generation_1784041828648_gesteinsplaneten"
+      },
+      {
+        "id": "AI_Generation_1784041828648_rel_3",
+        "type": "gehoert_zu",
+        "source": "AI_Generation_1784041828648_jupiter",
+        "target": "AI_Generation_1784041828648_gasriesen"
+      },
+      {
+        "id": "AI_Generation_1784041828648_rel_4",
+        "type": "gehoert_zu",
+        "source": "AI_Generation_1784041828648_ceres",
+        "target": "AI_Generation_1784041828648_asteroidengürtel"
+      },
+      {
+        "id": "AI_Generation_1784041828648_rel_5",
+        "type": "umkreist",
+        "source": "AI_Generation_1784041828648_mond",
+        "target": "AI_Generation_1784041828648_erde",
+        "entfernung": 0.384
+      },
+      {
+        "id": "AI_Generation_1784041828648_rel_6",
+        "type": "umkreist",
+        "source": "AI_Generation_1784041828648_erde",
+        "target": "AI_Generation_1784041828648_sonne",
+        "entfernung": 149.6
+      },
+      {
+        "id": "AI_Generation_1784041828648_rel_7",
+        "type": "umkreist",
+        "source": "AI_Generation_1784041828648_mars",
+        "target": "AI_Generation_1784041828648_sonne",
+        "entfernung": 227.9
+      },
+      {
+        "id": "AI_Generation_1784041828648_rel_8",
+        "type": "umkreist",
+        "source": "AI_Generation_1784041828648_jupiter",
+        "target": "AI_Generation_1784041828648_sonne",
+        "entfernung": 778.3
+      },
+      {
+        "id": "AI_Generation_1784041828648_rel_9",
+        "type": "umkreist",
+        "source": "AI_Generation_1784041828648_ceres",
+        "target": "AI_Generation_1784041828648_sonne",
+        "entfernung": 413.7
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "masse",
+          "function": "linear",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "color": {
+          "source": "kategorie",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "value": 0.1
+          }
+        }
+      }
+    }
+  }
+}

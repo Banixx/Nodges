@@ -1,7 +1,14 @@
 import { GraphData, GraphDataSchema } from '../types';
 import { zodToJsonSchema } from 'zod-to-json-schema';
+import { deduplicateGraph } from './VectorStoreManager';
 
-export type LLMProvider = 'openrouter' | 'openai' | 'anthropic';
+export type LLMProvider = 'openrouter' | 'openai' | 'anthropic' | 'ollama' | 'lmstudio';
+
+export interface Build10Config {
+    grounding: 'none' | 'wikidata' | 'rag' | 'dedup';
+    qualityAssurance: 'none' | 'critic' | 'human';
+    ratingMethod: 'llm' | 'taxonomy' | 'embeddings';
+}
 
 export interface LLMModel {
     id: string;
@@ -12,7 +19,9 @@ export class LLMService {
     public static readonly PROVIDERS: { id: LLMProvider; name: string }[] = [
         { id: 'openrouter', name: 'OpenRouter' },
         { id: 'openai', name: 'OpenAI' },
-        { id: 'anthropic', name: 'Anthropic' }
+        { id: 'anthropic', name: 'Anthropic' },
+        { id: 'ollama', name: 'Ollama (Lokal)' },
+        { id: 'lmstudio', name: 'LM Studio (Lokal)' }
     ];
 
     public static readonly PROVIDER_MODELS: Record<LLMProvider, LLMModel[]> = {
@@ -53,6 +62,14 @@ export class LLMService {
             { id: 'claude-4-5-haiku-2026', name: 'Claude 4.5 Haiku' },
             { id: 'claude-3-5-sonnet-20241022', name: 'Claude 3.5 Sonnet' },
             { id: 'claude-3-opus-20240229', name: 'Claude 3 Opus' }
+        ],
+        ollama: [
+            { id: 'qwen2.5:14b', name: 'Qwen 2.5 14B' },
+            { id: 'llama3.1:8b', name: 'Llama 3.1 8B' },
+            { id: 'mistral-nemo:12b', name: 'Mistral Nemo 12B' }
+        ],
+        lmstudio: [
+            { id: 'local-model', name: 'LM Studio loaded model' }
         ]
     };
 
@@ -86,6 +103,8 @@ export class LLMService {
         if (provider === 'openrouter') return 'openai/gpt-4o-mini';
         if (provider === 'openai') return 'gpt-4o-mini';
         if (provider === 'anthropic') return 'claude-3-5-sonnet-20241022';
+        if (provider === 'ollama') return 'qwen2.5:14b';
+        if (provider === 'lmstudio') return 'local-model';
         return '';
     }
 
@@ -97,6 +116,9 @@ export class LLMService {
     }
 
     public static getApiKey(provider: LLMProvider): string | null {
+        if (provider === 'ollama' || provider === 'lmstudio') {
+            return 'local';
+        }
         // Migration of old openrouter key if needed
         if (provider === 'openrouter') {
             const oldKey = localStorage.getItem('openrouter_api_key');
@@ -154,6 +176,33 @@ export class LLMService {
     public static async fetchOpenRouterModels(): Promise<LLMModel[]> {
         // Testweise auf 5 Mittelklasse-Modelle eingeschränkt
         return this.PROVIDER_MODELS.openrouter;
+    }
+
+    /**
+     * Fetches models from the provider, supporting local Ollama/LM Studio endpoints.
+     */
+    public static async fetchModelsForProvider(provider: LLMProvider): Promise<LLMModel[]> {
+        if (provider === 'openrouter') {
+            return this.fetchOpenRouterModels();
+        }
+        if (provider === 'ollama' || provider === 'lmstudio') {
+            const port = provider === 'ollama' ? '11434' : '1234';
+            try {
+                const res = await fetch(`http://localhost:${port}/v1/models`);
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.data && Array.isArray(json.data)) {
+                        return json.data.map((m: any) => ({
+                            id: m.id,
+                            name: m.id
+                        }));
+                    }
+                }
+            } catch (e) {
+                console.warn(`[LLMService] Could not fetch local models from ${provider}, using fallbacks`);
+            }
+        }
+        return this.PROVIDER_MODELS[provider] || [];
     }
 
     /**
@@ -226,6 +275,10 @@ export class LLMService {
             apiUrl = 'https://api.openai.com/v1/chat/completions';
         } else if (provider === 'anthropic') {
             apiUrl = 'https://api.anthropic.com/v1/messages';
+        } else if (provider === 'ollama') {
+            apiUrl = 'http://localhost:11434/v1/chat/completions';
+        } else if (provider === 'lmstudio') {
+            apiUrl = 'http://localhost:1234/v1/chat/completions';
         }
 
         if (!apiKey) {
@@ -367,6 +420,47 @@ export class LLMService {
                 responseText = rawApiData?.content?.[0]?.text;
                 if (!responseText) {
                     throw new Error(`Die API hat keine gültigen 'content' Blöcke zurückgegeben.`);
+                }
+            } else if (provider === 'ollama' || provider === 'lmstudio') {
+                const bodyObj: any = {
+                    model: model,
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: userPrompt }
+                    ],
+                    temperature: 0.2
+                };
+                if (jsonSchema) {
+                    bodyObj.response_format = {
+                        type: 'json_schema',
+                        json_schema: {
+                            name: 'GraphData',
+                            strict: true,
+                            schema: jsonSchema
+                        }
+                    };
+                }
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(bodyObj)
+                });
+
+                if (!response.ok) {
+                    let errorMsg = response.statusText;
+                    try {
+                        const errorData = await response.json();
+                        errorMsg = errorData.error?.message || errorMsg;
+                    } catch (e) {}
+                    throw new Error(`${provider} API Fehler: ${response.status} - ${errorMsg}`);
+                }
+
+                rawApiData = await response.json();
+                responseText = rawApiData?.choices?.[0]?.message?.content;
+                if (!responseText) {
+                    throw new Error(`Die API hat keine gültigen 'choices' zurückgegeben.`);
                 }
             }
         } catch (error: any) {
@@ -604,7 +698,7 @@ Dein JSON MUSS exakt diese Top-Level-Struktur haben:
         "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "sphere" } }
       },
       "global_edge": {
-        "color": { "source": "constant", "function": "constant", "params": { "color": "#FFD700" } },
+        "color": { "source": "type", "function": "categorical" },
         "thickness": { "source": "constant", "function": "constant", "params": { "value": 0.1 } }
       }
     }
@@ -850,6 +944,16 @@ USER ANWEISUNG: ${prompt}
             if (!model || model === 'google/gemini-embedding-2') {
                 model = 'text-embedding-3-small';
             }
+        } else if (provider === 'ollama') {
+            apiUrl = 'http://localhost:11434/v1/embeddings';
+            if (!model || model === 'google/gemini-embedding-2') {
+                model = 'nomic-embed-text';
+            }
+        } else if (provider === 'lmstudio') {
+            apiUrl = 'http://localhost:1234/v1/embeddings';
+            if (!model || model === 'google/gemini-embedding-2') {
+                model = 'local-model';
+            }
         } else {
             throw new Error(`Embedding-Generierung fuer Provider '${provider}' wird nicht unterstuetzt.`);
         }
@@ -886,6 +990,301 @@ USER ANWEISUNG: ${prompt}
             return result.data[0].embedding;
         }
         throw new Error('Ungueltige Antwort von der Embedding API erhalten.');
+    }
+
+    /**
+     * Build 10: Generates graph data using a modular configurable pipeline.
+     */
+    public static async generateGraphDataBuild10(
+        prompt: string,
+        config: Build10Config,
+        provider: LLMProvider,
+        model: string,
+        onProgress?: (msg: string) => void,
+        onStepComplete?: (stepNumber: number, stepName: string, content: string, extension: string) => void
+    ): Promise<GraphData> {
+        let finalPrompt = prompt;
+
+        // Step 1: Grounding / Wissensquelle
+        let groundingContext = '';
+        if (config.grounding === 'wikidata') {
+            if (onProgress) onProgress('Schritt 1/4: Führe Wikidata-Faktencheck aus...');
+            try {
+                if (onProgress) onProgress('Wikidata Schritt 1: Extrahiere Suchbegriffe...');
+                const keywordPromptFile = import.meta.env.BASE_URL + 'prompts/build_8_keyword_prompt.md';
+                let keywordSystemPrompt = 'Extrahiere Entitäten und Properties als JSON {"entities":[], "properties":[]}. Übersetze auf Englisch.';
+                try {
+                    const res = await fetch(keywordPromptFile);
+                    if (res.ok) keywordSystemPrompt = await res.text();
+                } catch (e) { console.warn(e); }
+                const keywordData: any = await this._executeLLMCall(keywordSystemPrompt, `Anfrage: ${prompt}`, provider, model);
+                if (onStepComplete) onStepComplete(1, "Build10_Wikidata_Keywords", JSON.stringify(keywordData, null, 2), "json");
+
+                if (onProgress) onProgress('Wikidata Schritt 2: Suche Wikidata-IDs...');
+                const contextLines: string[] = [];
+                const searchWikidata = async (term: string, type: 'item' | 'property') => {
+                    try {
+                        const url = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(term)}&language=en&type=${type}&limit=4&format=json&origin=*`;
+                        const res = await fetch(url);
+                        const json = await res.json();
+                        if (json.search && json.search.length > 0) {
+                            const hits = json.search.map((s: any) => `${s.id} (${s.label}: ${s.description || ''})`).join(' | ');
+                            contextLines.push(`- ${type.toUpperCase()} "${term}": ${hits}`);
+                        }
+                    } catch (e) { console.warn("Wikidata search error", e); }
+                };
+                const entities = Array.isArray(keywordData.entities) ? keywordData.entities : [];
+                const properties = Array.isArray(keywordData.properties) ? keywordData.properties : [];
+                await Promise.all([
+                    ...entities.map((e: string) => searchWikidata(e, 'item')),
+                    ...properties.map((p: string) => searchWikidata(p, 'property'))
+                ]);
+                const wikidataContext = contextLines.join('\n');
+                if (onStepComplete) onStepComplete(2, "Build10_Wikidata_Suche", wikidataContext, "txt");
+
+                if (onProgress) onProgress('Wikidata Schritt 3: Generiere SPARQL...');
+                const sparqlPromptFile = import.meta.env.BASE_URL + 'prompts/build_8_sparql_prompt.md';
+                let sparqlSystemPrompt = '';
+                try {
+                    const res = await fetch(sparqlPromptFile);
+                    if (res.ok) sparqlSystemPrompt = await res.text();
+                } catch (e) { console.warn(e); }
+                const sparqlUserPrompt = `Nutzeranfrage: ${prompt}\n\n=== GEFUNDENE WIKIDATA-IDs ===\n${wikidataContext}`;
+                const sparqlData: any = await this._executeLLMCall(sparqlSystemPrompt, sparqlUserPrompt, provider, model);
+                const sparqlQuery = sparqlData.query || sparqlData.sparql;
+                if (sparqlQuery) {
+                    if (onStepComplete) onStepComplete(3, "Build10_Wikidata_SPARQL", sparqlQuery, "sparql");
+                    if (onProgress) onProgress('Wikidata Schritt 4: Rufe Live-Daten ab...');
+                    const WIKIDATA_ENDPOINT = 'https://query.wikidata.org/sparql';
+                    const response = await fetch(WIKIDATA_ENDPOINT, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Accept': 'application/sparql-results+json',
+                            'User-Agent': 'Nodges/Build-10 (localhost)'
+                        },
+                        body: new URLSearchParams({ query: sparqlQuery })
+                    });
+                    if (response.ok) {
+                        const rawWikidataResponse = await response.json();
+                        if (rawWikidataResponse.results && rawWikidataResponse.results.bindings) {
+                            const limitedBindings = rawWikidataResponse.results.bindings.slice(0, 30).map((b: any) => {
+                                const clean: any = {};
+                                for (const key in b) {
+                                    clean[key] = b[key].value;
+                                }
+                                return clean;
+                            });
+                            groundingContext = `=== WIKIDATA FAKTEN-BASIS ===\n${JSON.stringify(limitedBindings, null, 2)}`;
+                            if (onStepComplete) onStepComplete(4, "Build10_Wikidata_Rohdaten", JSON.stringify(rawWikidataResponse, null, 2), "json");
+                        }
+                    }
+                }
+            } catch (e: any) {
+                console.warn('Wikidata grounding failed, falling back to LLM-only', e);
+                if (onProgress) onProgress(`Wikidata-Grounding fehlgeschlagen: ${e.message}. Fahre ohne Grounding fort...`);
+            }
+        }
+
+        if (groundingContext) {
+            finalPrompt += `\n\n${groundingContext}\nNutze ZWINGEND diese Wikidata-Faktenbasis fuer die Erstellung des Graphen.`;
+        }
+
+        // Step 2: JSON Generierung
+        if (onProgress) onProgress('Schritt 2/4: Generiere Netzwerk-Struktur...');
+        const promptFile = import.meta.env.BASE_URL + 'prompts/build_6_prompt.md';
+        let systemPrompt = '';
+        try {
+            const res = await fetch(promptFile);
+            if (!res.ok) throw new Error();
+            systemPrompt = await res.text();
+        } catch {
+            throw new Error(`Konnte Prompt-Datei nicht laden: ${promptFile}`);
+        }
+
+        if (config.ratingMethod === 'taxonomy') {
+            systemPrompt += `\n\n=== ERZWUNGENE BEZIEHUNGS-TAXONOMIE ===
+Du MUSS fuer jede Kante in 'data.relationships' einen der folgenden Typen verwenden:
+- "influences"
+- "prevents"
+- "supports"
+- "competes_with"
+- "part_of"
+
+Jede Beziehung MUSS eine 'strength' Eigenschaft im Bereich 1 bis 5 (Ganzzahlen) haben.
+Definiere diese 'strength' Eigenschaft auch in der 'dataModel.relationships' fuer jeden Kanten-Typ (Typ: continuous, Bereich [1, 5]).
+======================================`;
+        } else if (config.ratingMethod === 'embeddings') {
+            systemPrompt += `\n\n=== HINWEIS ZUR BEZIEHUNGS-STAERKE ===
+Konzentriere dich auf das Finden korrekter Entitaeten und Verbindungen. Die Staerke/Intensitaet der Kanten wird spaeter automatisch ueber Vektor-Embeddings berechnet.
+Gib Kanten trotzdem ein 'strength' Feld im Schema und in den Daten mit, der Wert kann initial 50 sein.
+====================================`;
+        } else {
+            systemPrompt += `\n\n=== HINWEIS ZUR BEZIEHUNGS-STAERKE ===
+Schaetze die Beziehungsstaerken ('strength') frei auf einer Skala von 0 bis 100. Definiere diese Eigenschaft im dataModel.
+====================================`;
+        }
+
+        const exampleStructure = `
+=== ZIEL-STRUKTUR ===
+{
+  "system": "${prompt.substring(0, 30).replace(/"/g, '')}",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "..."
+  },
+  "dataModel": {
+    "entities": {
+      "Concept": { "properties": { "importance": { "type": "continuous", "range": [0, 100] } } }
+    },
+    "relationships": {
+      "related": { "properties": { "strength": { "type": "continuous", "range": [0, 100] } } }
+    }
+  },
+  "data": {
+    "entities": [
+      { "id": "e1", "type": "Concept", "label": "...", "importance": 80 }
+    ],
+    "relationships": [
+      { "id": "r1", "type": "related", "source": "e1", "target": "e2", "label": "...", "strength": 60 }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": { "source": "importance", "function": "linear", "range": [0.5, 3] }
+      },
+      "global_edge": {
+        "thickness": { "source": "strength", "function": "linear", "range": [0.1, 1.5] }
+      }
+    }
+  }
+}
+WICHTIG: "system", "metadata", "dataModel", "data", "visualMappings" sind Pflichtfelder!`;
+
+        systemPrompt += exampleStructure;
+
+        const jsonSchema = zodToJsonSchema(GraphDataSchema, 'GraphDataSchema');
+        let schemaToPass = (jsonSchema as any).definitions?.GraphDataSchema || jsonSchema;
+        delete schemaToPass.$schema;
+        schemaToPass = this.makeSchemaStrict(schemaToPass);
+
+        let graphData = await this._executeLLMCall(systemPrompt, finalPrompt, provider, model, schemaToPass);
+        if (onStepComplete) onStepComplete(5, "Build10_Raw_Graph", JSON.stringify(graphData, null, 2), "json");
+
+        // Step 3: Qualitätssicherung - Kritiker
+        if (config.qualityAssurance === 'critic') {
+            if (onProgress) onProgress('Schritt 3/4: Kritiker-LLM prüft den Graphen auf Plausibilität...');
+            const criticSystemPrompt = `Du bist ein erfahrener Datenarchitekt. Der Benutzer liefert dir ein JSON-Dokument, das ein Nodges-Netzwerk darstellt.
+Deine Aufgabe ist es:
+1. Pruefe, ob alle 'source' und 'target' Felder in 'data.relationships' auf existierende Entitaeten in 'data.entities' verweisen. Falls nicht, entferne die fehlerhafte Kante.
+2. Pruefe, ob die Werte fuer 'strength' oder andere kontinuierliche Eigenschaften plausibel sind und im angegebenen Range des dataModel liegen.
+3. Behebe etwaige Schema-Konformitaetsfehler.
+Gib ausschliesslich das korrigierte JSON-Objekt zurueck, ohne Erklaerungen oder Markdown-Formatierungen ausserhalb des JSON.`;
+
+            try {
+                const criticData = await this._executeLLMCall(criticSystemPrompt, JSON.stringify(graphData), provider, model, schemaToPass);
+                graphData = criticData;
+                if (onStepComplete) onStepComplete(6, "Build10_Critic_Corrected_Graph", JSON.stringify(graphData, null, 2), "json");
+            } catch (e: any) {
+                console.warn('Critic step failed, using raw graph', e);
+                if (onProgress) onProgress(`Kritiker-Schritt fehlgeschlagen: ${e.message}. Verwende rohen Graphen...`);
+            }
+        }
+
+        // Deduplizierung (Grounding: dedup)
+        if (config.grounding === 'dedup') {
+            if (onProgress) onProgress('Deduplizierung: Führe semantische Entity Resolution aus...');
+            try {
+                const deduped = await deduplicateGraph(graphData, provider, 'google/gemini-embedding-2', 0.85, onProgress);
+                graphData = deduped;
+                if (onStepComplete) onStepComplete(7, "Build10_Deduped_Graph", JSON.stringify(graphData, null, 2), "json");
+            } catch (e: any) {
+                console.warn('Deduplication failed', e);
+            }
+        }
+
+        // Step 4: Bewertungsmethode - Kosinus-Ähnlichkeit
+        if (config.ratingMethod === 'embeddings') {
+            if (onProgress) onProgress('Schritt 4/4: Berechne Kantenstärken über Kosinus-Ähnlichkeit...');
+            try {
+                const embeddingCache = new Map<string, number[]>();
+                const getEmbeddingCached = async (text: string): Promise<number[]> => {
+                    if (embeddingCache.has(text)) return embeddingCache.get(text)!;
+                    const embModel = provider === 'openai' ? 'text-embedding-3-small' : (provider === 'ollama' ? 'nomic-embed-text' : 'google/gemini-embedding-2');
+                    const emb = await this.generateEmbedding(text, provider, embModel);
+                    embeddingCache.set(text, emb);
+                    return emb;
+                };
+
+                const cosineSimilarity = (a: number[], b: number[]): number => {
+                    let dot = 0.0, normA = 0.0, normB = 0.0;
+                    for (let i = 0; i < a.length; i++) {
+                        dot += a[i] * b[i];
+                        normA += a[i] * a[i];
+                        normB += b[i] * b[i];
+                    }
+                    return normA === 0 || normB === 0 ? 0 : dot / (Math.sqrt(normA) * Math.sqrt(normB));
+                };
+
+                const entitiesMap = new Map<string, any>();
+                graphData.data.entities.forEach(e => entitiesMap.set(e.id, e));
+
+                for (const rel of graphData.data.relationships) {
+                    const sourceNode = entitiesMap.get(rel.source || '');
+                    const targetNode = entitiesMap.get(rel.target || '');
+                    if (sourceNode && targetNode) {
+                        const labelA = sourceNode.label || sourceNode.id;
+                        const labelB = targetNode.label || targetNode.id;
+                        if (onProgress) onProgress(`Berechne Ähnlichkeit: "${labelA}" <-> "${labelB}"...`);
+                        const embA = await getEmbeddingCached(labelA);
+                        const embB = await getEmbeddingCached(labelB);
+                        const sim = cosineSimilarity(embA, embB);
+                        const score = Math.max(0, Math.min(100, Math.round(sim * 100)));
+                        rel.strength = score;
+                    }
+                }
+                
+                const gd = graphData as any;
+                if (!gd.dataModel) gd.dataModel = {};
+                if (!gd.dataModel.relationships) gd.dataModel.relationships = {};
+                
+                const rels = gd.dataModel.relationships as any;
+                const relTypes = new Set(gd.data.relationships.map((r: any) => r.type));
+                relTypes.forEach((t: any) => {
+                    if (t) {
+                        if (!rels[t]) {
+                            rels[t] = { properties: {} };
+                        }
+                        if (!rels[t].properties) {
+                            rels[t].properties = {};
+                        }
+                        rels[t].properties.strength = {
+                            type: 'continuous',
+                            range: [0, 100]
+                        };
+                    }
+                });
+
+                if (!gd.visualMappings) gd.visualMappings = { defaultPresets: {} };
+                if (!gd.visualMappings.defaultPresets) gd.visualMappings.defaultPresets = {};
+                if (!gd.visualMappings.defaultPresets.global_edge) {
+                    gd.visualMappings.defaultPresets.global_edge = {};
+                }
+                gd.visualMappings.defaultPresets.global_edge.thickness = {
+                    source: 'strength',
+                    function: 'linear',
+                    range: [0.1, 1.5]
+                };
+
+                if (onStepComplete) onStepComplete(8, "Build10_Similarity_Scored_Graph", JSON.stringify(graphData, null, 2), "json");
+            } catch (e: any) {
+                console.warn('Similarity scoring failed', e);
+                if (onProgress) onProgress(`Ähnlichkeitsberechnung fehlgeschlagen: ${e.message}. Verwende LLM-Schätzung...`);
+            }
+        }
+
+        return graphData;
     }
 }
 

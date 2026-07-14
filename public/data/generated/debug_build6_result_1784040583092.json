@@ -1,0 +1,340 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Eine Visualisierung der Hauptbestandteile des Sonnensystems, einschließlich Planeten, Monde, und Asteroiden.",
+    "competencyQuestions": [
+      "Welche Planeten gehören zum Sonnensystem?",
+      "Welche Monde umkreisen die Planeten?",
+      "Welche Eigenschaften haben die Planeten?",
+      "Welche Asteroiden sind bekannt?",
+      "Wie sind die Objekte im Sonnensystem räumlich angeordnet?"
+    ],
+    "apiResponse": {
+      "id": "gen-1784040497-M3GIg4PoaTOhHzpRplAg",
+      "created": 1784040497,
+      "model": "deepseek/deepseek-chat",
+      "usage": {
+        "prompt_tokens": 1702,
+        "completion_tokens": 1658,
+        "total_tokens": 3360,
+        "cost": 0.00202026,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00202026,
+          "upstream_inference_prompt_cost": 0.00054464,
+          "upstream_inference_completions_cost": 0.00147562
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Stern": {
+        "properties": {
+          "Masse": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "Leuchtkraft": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "Temperatur": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      },
+      "Planet": {
+        "properties": {
+          "Masse": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "Durchmesser": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "Entfernung_zur_Sonne": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      },
+      "Mond": {
+        "properties": {
+          "Masse": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "Durchmesser": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      },
+      "Asteroid": {
+        "properties": {
+          "Masse": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "Entfernung_zur_Sonne": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "umkreist": {},
+      "enthaelt": {}
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "1",
+        "type": "Stern",
+        "label": "Sonne",
+        "Masse": 100,
+        "Leuchtkraft": 100,
+        "Temperatur": 100
+      },
+      {
+        "id": "2",
+        "type": "Planet",
+        "label": "Merkur",
+        "Masse": 0.05,
+        "Durchmesser": 0.38,
+        "Entfernung_zur_Sonne": 0.39
+      },
+      {
+        "id": "3",
+        "type": "Planet",
+        "label": "Venus",
+        "Masse": 0.82,
+        "Durchmesser": 0.95,
+        "Entfernung_zur_Sonne": 0.72
+      },
+      {
+        "id": "4",
+        "type": "Planet",
+        "label": "Erde",
+        "Masse": 1,
+        "Durchmesser": 1,
+        "Entfernung_zur_Sonne": 1
+      },
+      {
+        "id": "5",
+        "type": "Planet",
+        "label": "Mars",
+        "Masse": 0.11,
+        "Durchmesser": 0.53,
+        "Entfernung_zur_Sonne": 1.52
+      },
+      {
+        "id": "6",
+        "type": "Planet",
+        "label": "Jupiter",
+        "Masse": 317.8,
+        "Durchmesser": 11.2,
+        "Entfernung_zur_Sonne": 5.2
+      },
+      {
+        "id": "7",
+        "type": "Planet",
+        "label": "Saturn",
+        "Masse": 95.2,
+        "Durchmesser": 9.45,
+        "Entfernung_zur_Sonne": 9.58
+      },
+      {
+        "id": "8",
+        "type": "Planet",
+        "label": "Uranus",
+        "Masse": 14.5,
+        "Durchmesser": 4.01,
+        "Entfernung_zur_Sonne": 19.2
+      },
+      {
+        "id": "9",
+        "type": "Planet",
+        "label": "Neptun",
+        "Masse": 17.1,
+        "Durchmesser": 3.88,
+        "Entfernung_zur_Sonne": 30.1
+      },
+      {
+        "id": "10",
+        "type": "Mond",
+        "label": "Mond",
+        "Masse": 0.012,
+        "Durchmesser": 0.27
+      },
+      {
+        "id": "11",
+        "type": "Asteroid",
+        "label": "Ceres",
+        "Masse": 0.00016,
+        "Entfernung_zur_Sonne": 2.77
+      }
+    ],
+    "relationships": [
+      {
+        "id": "1",
+        "type": "umkreist",
+        "source": "2",
+        "target": "1",
+        "label": "Merkur umkreist Sonne"
+      },
+      {
+        "id": "2",
+        "type": "umkreist",
+        "source": "3",
+        "target": "1",
+        "label": "Venus umkreist Sonne"
+      },
+      {
+        "id": "3",
+        "type": "umkreist",
+        "source": "4",
+        "target": "1",
+        "label": "Erde umkreist Sonne"
+      },
+      {
+        "id": "4",
+        "type": "umkreist",
+        "source": "5",
+        "target": "1",
+        "label": "Mars umkreist Sonne"
+      },
+      {
+        "id": "5",
+        "type": "umkreist",
+        "source": "6",
+        "target": "1",
+        "label": "Jupiter umkreist Sonne"
+      },
+      {
+        "id": "6",
+        "type": "umkreist",
+        "source": "7",
+        "target": "1",
+        "label": "Saturn umkreist Sonne"
+      },
+      {
+        "id": "7",
+        "type": "umkreist",
+        "source": "8",
+        "target": "1",
+        "label": "Uranus umkreist Sonne"
+      },
+      {
+        "id": "8",
+        "type": "umkreist",
+        "source": "9",
+        "target": "1",
+        "label": "Neptun umkreist Sonne"
+      },
+      {
+        "id": "9",
+        "type": "enthaelt",
+        "source": "4",
+        "target": "10",
+        "label": "Erde enthält Mond"
+      },
+      {
+        "id": "10",
+        "type": "umkreist",
+        "source": "11",
+        "target": "1",
+        "label": "Ceres umkreist Sonne"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "Masse",
+          "function": "linear",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#FFD700"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "value": 0.1
+          }
+        }
+      }
+    }
+  }
+}
