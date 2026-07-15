@@ -444,19 +444,19 @@ export class VisualMappingEngine {
         } else if (mapping.function === 'heatmap') {
             // Heatmap color mapping (blue to red)
             if (typeof value === 'string' && isNaN(Number(value))) {
-                return this.getCategoricalColor(value, mapping.palette);
+                return this.getCategoricalColor(value, typeof mapping.palette === 'string' ? mapping.palette : undefined);
             }
-            return this.getHeatmapColor(Number(value), mapping.palette);
+            return this.getHeatmapColor(Number(value), typeof mapping.palette === 'string' ? mapping.palette : undefined);
         } else if (mapping.function === 'categorical') {
             // Categorical color mapping
             if (mapping.params && mapping.params.categories && mapping.params.categories[String(value)]) {
                 return new THREE.Color(mapping.params.categories[String(value)]);
             }
-            return this.getCategoricalColor(String(value), mapping.palette);
+            return this.getCategoricalColor(String(value), typeof mapping.palette === 'string' ? mapping.palette : undefined);
         } else {
             // Default: grayscale
             if (typeof value === 'string' && isNaN(Number(value))) {
-                return this.getCategoricalColor(value, mapping.palette);
+                return this.getCategoricalColor(value, typeof mapping.palette === 'string' ? mapping.palette : undefined);
             }
             const numValue = Number(value) || 0;
             return new THREE.Color(numValue, numValue, numValue);

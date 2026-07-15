@@ -1043,8 +1043,9 @@ export class MappingUI {
                             const currentCategories = mapping.params?.categories || {};
                             
                             if (baseProp === 'color') {
-                                const palette = mapping.palette || 'all';
-                                updates.palette = palette;
+                                const rawPalette = mapping.palette || 'all';
+                                const palette = typeof rawPalette === 'string' ? rawPalette : (Array.isArray(rawPalette) && rawPalette.length > 0 ? rawPalette[0] : 'all');
+                                updates.palette = rawPalette;
                                 updates.params = { 
                                     ...(mapping.params || {}), 
                                     categories: this.generateCategoricalColors(uniqueValues, palette) 
@@ -1204,7 +1205,7 @@ export class MappingUI {
                         bipRow.appendChild(posInput);
                         bipGroup.appendChild(bipRow);
                         details.appendChild(bipGroup);
-                    } else if ((['linear', 'exponential', 'logarithmic'].includes(mapping.function) || mapping.range) && !['categorical', 'pulse'].includes(mapping.function)) {
+                    } else if ((['linear', 'exponential', 'logarithmic'].includes(mapping.function || '') || mapping.range) && !['categorical', 'pulse'].includes(mapping.function || '')) {
                         const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(baseProp);
                         const rangeMinVal = mapping.range ? mapping.range[0] : (isPosition ? -100 : 0.1);
                         const rangeMaxVal = mapping.range ? mapping.range[1] : (isPosition ? 100 : 3.0);

@@ -3,8 +3,6 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import { deduplicateGraph } from './VectorStoreManager';
 
 import build6PromptRaw from '../prompts/build_6_prompt.md?raw';
-import build8KeywordPromptRaw from '../prompts/build_8_keyword_prompt.md?raw';
-import build8SparqlPromptRaw from '../prompts/build_8_sparql_prompt.md?raw';
 import build10KeywordPromptRaw from '../prompts/build_10_keyword_prompt.md?raw';
 import build10SparqlPromptRaw from '../prompts/build_10_sparql_prompt.md?raw';
 import build10ExpansionPromptRaw from '../prompts/build_10_expansion_prompt.md?raw';
@@ -1374,7 +1372,7 @@ Gib ausschliesslich das korrigierte JSON-Objekt zurueck, ohne Erklaerungen oder 
         nodeLabel: string,
         nodeQId: string,
         existingGraphData: GraphData,
-        provider: 'openai' | 'ollama' | 'openrouter' = 'openrouter',
+        provider: LLMProvider = 'openrouter',
         model: string = 'google/gemini-2.5-flash-001',
         onProgress?: (msg: string) => void
     ): Promise<GraphData> {
