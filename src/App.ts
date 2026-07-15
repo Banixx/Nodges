@@ -37,7 +37,7 @@ import { IStateManager, IEventManager } from './core/interfaces';
 import { GraphData, EntityData, RelationshipData, VisualMappings, DataModel } from './types';
 import { VisualOptimizer } from './utils/VisualOptimizer';
 import { notify } from './core/NotificationService';
-
+import { LLMService } from './utils/LLMService';
 
 import { ServiceContainer } from './core/di/ServiceContainer';
 import { errorHandler } from './core/ErrorHandler';
@@ -697,6 +697,22 @@ export class App {
         try {
             console.log(`[App] ${append ? 'Appending' : 'Loading'} GraphData from ${sourceName}...`);
             
+            // Assign random positions around (0,0,3) for nodes that lack position data.
+            // This maintains data neutrality without forcing a specific physics layout, 
+            // and prevents camera bugs where zoom distances evaluate to 0.
+            if (graphData.data && Array.isArray(graphData.data.entities)) {
+                graphData.data.entities.forEach((e: any) => {
+                    if (e.position === undefined) {
+                        e.position = {
+                            x: (Math.random() - 0.5) * 4,
+                            y: (Math.random() - 0.5) * 4,
+                            z: 3 + (Math.random() - 0.5) * 4,
+                            isRandomFallback: true
+                        };
+                    }
+                });
+            }
+
             if (!append) {
                 this.clearScene();
                 this.stateManager.setLoadedFiles([{ id: sourceName, name: sourceName }]);
@@ -719,7 +735,21 @@ export class App {
             });
 
             // Save original mappings for suggestions/preview
-            const originalMappings = graphData.visualMappings ? JSON.parse(JSON.stringify(graphData.visualMappings)) : null;
+            const originalMappings = graphData.visualMappings ? JSON.parse(JSON.stringify(graphData.visualMappings)) : { defaultPresets: {} };
+            
+            // Wenn echte Positionen existieren, füge ein Original-Mapping für position hinzu
+            const hasRealPositions = graphData.data && graphData.data.entities && graphData.data.entities.some((e: any) => e.position && !e.position.isRandomFallback);
+            if (hasRealPositions) {
+                if (!originalMappings.defaultPresets) originalMappings.defaultPresets = {};
+                if (!originalMappings.defaultPresets['global_node']) originalMappings.defaultPresets['global_node'] = {};
+                if (!originalMappings.defaultPresets['global_node'].position) {
+                    originalMappings.defaultPresets['global_node'].position = {
+                        source: 'position',
+                        function: 'linear'
+                    };
+                }
+            }
+
             this.originalVisualMappings = originalMappings;
             
             // Do not automatically apply the file's mappings to the active graph state.
@@ -1398,6 +1428,37 @@ export class App {
             this.currentEntities = state.graphData.entities;
             this.currentRelationships = state.graphData.relationships;
         }, 'data_changed');
+
+        // Deep Dive Listener (Build 10)
+        document.addEventListener('nodges-deep-dive', async (e: any) => {
+            const { label, qId } = e.detail;
+            if (!this.currentGraphData) {
+                notify.error('Fehler', 'Kein bestehender Graph für Deep Dive vorhanden.');
+                return;
+            }
+            
+            try {
+                notify.info('Deep Dive gestartet', `Erforsche ${label}...`);
+                const provider = LLMService.getActiveProvider();
+                const model = LLMService.getActiveModel(provider) || 'google/gemini-2.5-flash-001';
+                
+                const newGraphData = await LLMService.expandGraphNodeBuild10(
+                    label,
+                    qId,
+                    this.currentGraphData,
+                    provider,
+                    model,
+                    (msg) => console.log(`[DeepDive] ${msg}`)
+                );
+                
+                // Merge new data into the active graph
+                await this.loadGraphData(newGraphData, `DeepDive_${label}`, true);
+                notify.success('Deep Dive erfolgreich', `Neue Knoten für ${label} integriert.`);
+            } catch (error: any) {
+                console.error(error);
+                notify.error('Deep Dive fehlgeschlagen', error.message);
+            }
+        });
     }
 
     fitCameraToScene() {

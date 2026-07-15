@@ -86,10 +86,10 @@ export class UIManager {
     }
 
     private initModeSwitch() {
-        const buttons = document.querySelectorAll('.mode-btn');
-        buttons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const mode = btn.getAttribute('data-mode') as any;
+        const radios = document.querySelectorAll('input[name="mainUiMode"]');
+        radios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const mode = (e.target as HTMLInputElement).value as any;
                 if (mode) {
                     this.stateManager.update({ complexityMode: mode });
                 }
@@ -102,18 +102,17 @@ export class UIManager {
         document.body.classList.remove('ui-mode-simple', 'ui-mode-expert', 'ui-mode-dev');
         document.body.classList.add(`ui-mode-${mode}`);
 
-        // 2. Update active state of mode buttons
-        const buttons = document.querySelectorAll('.mode-btn');
-        buttons.forEach(btn => {
-            const btnMode = btn.getAttribute('data-mode');
-            if (btnMode === mode) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
+        // 2. Sync UI radio inputs (CSS takes care of the thumb and colors)
+        const inputs = document.querySelectorAll('.nodges-slide-toggle input[name="mainUiMode"]') as NodeListOf<HTMLInputElement>;
+        inputs.forEach(input => {
+            if (input.value === mode) {
+                input.checked = true;
             }
         });
 
         // 3. Check if currently active tab has been hidden
+
+        // 4. Update horizontal scrollbar for tabs
         const activeTabButton = document.querySelector('.sidebar-tab.active');
         if (activeTabButton) {
             const minMode = activeTabButton.getAttribute('data-min-mode') || 'simple';

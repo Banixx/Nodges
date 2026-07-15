@@ -15,6 +15,7 @@ DEIN VORGEHEN IN 3 GEDANKENSCHRITTEN (die du intern ausführst, bevor du das fin
 - Befuelle `data.entities` und `data.relationships` STRIKT nach der Ontologie aus Schritt 1.
 - Erfinde keine neuen Typen oder Properties, die nicht im `dataModel` stehen.
 - WICHTIG: Verwende NIEMALS das Feld `type` auf der obersten Ebene der Entities oder Relationships. Das Feld `type` ist verboten. Die Kategorisierung/Gruppierung (z.B. "Planet" oder "Stern") MUSS als ganz reguläres semantisches Property angelegt werden (z.B. `"kategorie": "Planet"`).
+- WICHTIG (WIKIDATA-IDs): Wenn die übergebenen Fakten Wikidata-URIs enthalten (z.B. "http://www.wikidata.org/entity/Q308"), dann extrahiere zwingend die Q-ID (hier "Q308") und speichere sie als Property `"wikidata_id": "Q308"` im jeweiligen Entity-Knoten. Definiere "wikidata_id" dafür in deiner Ontologie als "categorical".
 - Wenn eine Eigenschaft eines Knotens laut Ontologie exisitert, aber für eine Instanz unbekannt ist, nutze `null`.
 - Kanten verweisen zwingend per `source` und `target` auf existierende Entity IDs.
 - Erzeuge mindestens 10-20 Entities und 15-30 Relationships für ein interessantes, dichtes Netz.

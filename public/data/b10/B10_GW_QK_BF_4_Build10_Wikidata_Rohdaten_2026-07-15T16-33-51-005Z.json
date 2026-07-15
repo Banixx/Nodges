@@ -1,0 +1,13 @@
+{
+  "head": {
+    "vars": [
+      "sun",
+      "sunLabel",
+      "planet",
+      "planetLabel"
+    ]
+  },
+  "results": {
+    "bindings": []
+  }
+}

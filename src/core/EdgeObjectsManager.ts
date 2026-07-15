@@ -516,7 +516,7 @@ export class EdgeObjectsManager {
                     newPerpendicular.applyMatrix4(rotationMatrix);
                 }
 
-                const newCurveHeight = newDirection.length() * (this.edges[0]?.options.totalEdges === 1 ? this.stateManager.state.edgeCurveFactor : (2.8 + (edgeIndex * 0.5)));
+                const newCurveHeight = newDirection.length() * (totalEdges === 1 ? this.stateManager.state.edgeCurveFactor : (2.8 + (edgeIndex * 0.5)));
                 const newControlPoint = newMidPoint.clone().add(newPerpendicular.multiplyScalar(newCurveHeight));
 
                 const state = this.stateManager.state;

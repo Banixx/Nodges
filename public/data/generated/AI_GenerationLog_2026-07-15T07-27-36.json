@@ -1,0 +1,29 @@
+{
+  "timestampStart": "2026-07-15T07:25:55.666Z",
+  "prompt": "sonnensystem",
+  "ragText": null,
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v4-flash",
+  "pipeline": "build10",
+  "systemInfo": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0",
+    "language": "de",
+    "screenResolution": "1920x1080",
+    "viewport": "1920x921",
+    "appVersion": "Nodges Build 6"
+  },
+  "steps": [
+    {
+      "time": "2026-07-15T07:25:55.666Z",
+      "offsetMs": 0,
+      "message": "Schritt 2/4: Generiere Netzwerk-Struktur..."
+    }
+  ],
+  "timestampEnd": "2026-07-15T07:27:34.876Z",
+  "durationMs": 99209,
+  "durationSec": "99.21",
+  "status": "success",
+  "generatedNodes": 20,
+  "generatedEdges": 28,
+  "responsePayloadSizeKB": "13.95"
+}

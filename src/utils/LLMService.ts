@@ -2,6 +2,13 @@ import { GraphData, GraphDataSchema } from '../types';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { deduplicateGraph } from './VectorStoreManager';
 
+import build6PromptRaw from '../prompts/build_6_prompt.md?raw';
+import build8KeywordPromptRaw from '../prompts/build_8_keyword_prompt.md?raw';
+import build8SparqlPromptRaw from '../prompts/build_8_sparql_prompt.md?raw';
+import build10KeywordPromptRaw from '../prompts/build_10_keyword_prompt.md?raw';
+import build10SparqlPromptRaw from '../prompts/build_10_sparql_prompt.md?raw';
+import build10ExpansionPromptRaw from '../prompts/build_10_expansion_prompt.md?raw';
+
 export type LLMProvider = 'openrouter' | 'openai' | 'anthropic' | 'ollama' | 'lmstudio';
 
 export interface Build10Config {
@@ -33,7 +40,6 @@ export class LLMService {
             { id: 'nvidia/llama-3.3-nemotron-super-49b-v1.5', name: 'NVIDIA: Llama 3.3 Nemotron Super 49B V1.5' },
             { id: 'qwen/qwen3-vl-32b-instruct', name: 'Qwen: Qwen3 VL 32B Instruct' },
             { id: 'tencent/hunyuan-a13b-instruct', name: 'Tencent: Hunyuan A13B Instruct' },
-            { id: 'openai/gpt-4o-mini', name: 'OpenAI: GPT-4o-mini' },
             { id: 'qwen/qwen-plus', name: 'Qwen: Qwen-Plus' },
             { id: 'deepseek/deepseek-chat', name: 'DeepSeek: DeepSeek V3' },
             { id: 'deepseek/deepseek-v4-pro', name: 'DeepSeek: DeepSeek V4 Pro' },
@@ -51,7 +57,9 @@ export class LLMService {
             { id: 'qwen/qwen3-coder-plus', name: 'Qwen: Qwen3 Coder Plus' },
             { id: 'qwen/qwen3.7-max', name: 'Qwen: Qwen3.7 Max' },
             { id: 'qwen/qwen3-max', name: 'Qwen: Qwen3 Max' },
-            { id: 'anthropic/claude-haiku-4.5', name: 'Anthropic: Claude Haiku 4.5' }
+            { id: 'anthropic/claude-haiku-4.5', name: 'Anthropic: Claude Haiku 4.5' },
+            { id: 'openai/gpt-oss-safeguard-20b', name: 'OpenAI: GPT OSS Safeguard 20B' },
+            { id: 'inception/mercury-2', name: 'Inception: Mercury 2' }
         ],
         openai: [
             { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
@@ -352,8 +360,39 @@ export class LLMService {
 
                 rawApiData = await response.json();
                 responseText = rawApiData?.choices?.[0]?.message?.content;
+                
+                // Automatic retry if structured outputs (json_schema) failed silently (common with vLLM / OpenRouter)
+                if (!responseText && jsonSchema) {
+                    console.warn(`[LLMService] Model ${model} returned empty content with json_schema. Retrying with json_object fallback...`);
+                    const combinedPrompt = `${systemPrompt}\n\n---\nUSER REQUEST:\n${userPrompt}\n\nWICHTIG: Antworte AUSSCHLIESSLICH in validem JSON!`;
+                    response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${apiKey}`,
+                            'HTTP-Referer': window.location.href,
+                            'X-Title': 'Nodges 3D Graph',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            model: model,
+                            provider: { data_collection: 'deny' },
+                            messages: [
+                                { role: 'user', content: combinedPrompt }
+                            ],
+                            response_format: { type: 'json_object' }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        rawApiData = await response.json();
+                        responseText = rawApiData?.choices?.[0]?.message?.content;
+                    }
+                }
+
                 if (!responseText) {
-                    throw new Error(`Die API hat keine gültigen 'choices' zurückgegeben. Antwort-Struktur: ${JSON.stringify(rawApiData).substring(0, 200)}...`);
+                    const choice = rawApiData?.choices?.[0];
+                    this._saveDebugFile(`LLM_ERROR_NO_CHOICES_${Date.now()}.json`, rawApiData).catch(() => {});
+                    throw new Error(`Die API hat keine gültigen 'choices' zurückgegeben. Refusal: ${choice?.message?.refusal || 'none'}, Finish: ${choice?.finish_reason || 'unknown'}. (Details gespeichert in LLM_ERROR_NO_CHOICES)`);
                 }
 
             } else if (provider === 'openai') {
@@ -1010,10 +1049,21 @@ USER ANWEISUNG: ${prompt}
         config: Build10Config,
         provider: LLMProvider,
         model: string,
+        devPrefix: string | null,
         onProgress?: (msg: string) => void,
         onStepComplete?: (stepNumber: number, stepName: string, content: string, extension: string) => void
     ): Promise<GraphData> {
         let finalPrompt = prompt;
+        
+        const ts = new Date().toISOString().replace(/[:.]/g, '-');
+        const saveStep = async (stepNum: number, name: string, content: any, ext: string) => {
+            if (!devPrefix) return; // Wenn Dev Create inaktiv ist, GAR NICHTS speichern! Keine b10-Dateien, keine Downloads!
+            const filename = `../b10/${devPrefix}_${stepNum}_${name}_${ts}.${ext}`;
+            const isJson = typeof content !== 'string';
+            const strContent = isJson ? JSON.stringify(content, null, 2) : content;
+            await this._saveDebugFile(filename, isJson ? content : strContent);
+            if (onStepComplete) onStepComplete(stepNum, name, strContent, ext);
+        };
 
         // Step 1: Grounding / Wissensquelle
         let groundingContext = '';
@@ -1021,14 +1071,12 @@ USER ANWEISUNG: ${prompt}
             if (onProgress) onProgress('Schritt 1/4: Führe Wikidata-Faktencheck aus...');
             try {
                 if (onProgress) onProgress('Wikidata Schritt 1: Extrahiere Suchbegriffe...');
-                const keywordPromptFile = import.meta.env.BASE_URL + 'prompts/build_8_keyword_prompt.md';
                 let keywordSystemPrompt = 'Extrahiere Entitäten und Properties als JSON {"entities":[], "properties":[]}. Übersetze auf Englisch.';
-                try {
-                    const res = await fetch(keywordPromptFile);
-                    if (res.ok) keywordSystemPrompt = await res.text();
-                } catch (e) { console.warn(e); }
+                if (build10KeywordPromptRaw) {
+                    keywordSystemPrompt = build10KeywordPromptRaw;
+                }
                 const keywordData: any = await this._executeLLMCall(keywordSystemPrompt, `Anfrage: ${prompt}`, provider, model);
-                if (onStepComplete) onStepComplete(1, "Build10_Wikidata_Keywords", JSON.stringify(keywordData, null, 2), "json");
+                await saveStep(1, "Build10_Wikidata_Keywords", keywordData, "json");
 
                 if (onProgress) onProgress('Wikidata Schritt 2: Suche Wikidata-IDs...');
                 const contextLines: string[] = [];
@@ -1040,6 +1088,8 @@ USER ANWEISUNG: ${prompt}
                         if (json.search && json.search.length > 0) {
                             const hits = json.search.map((s: any) => `${s.id} (${s.label}: ${s.description || ''})`).join(' | ');
                             contextLines.push(`- ${type.toUpperCase()} "${term}": ${hits}`);
+                        } else {
+                            contextLines.push(`- ${type.toUpperCase()} "${term}": Keine direkten Treffer gefunden. Du kannst eine Standard-Property oder eine bekannte Q-ID erraten, falls du dir 100% sicher bist.`);
                         }
                     } catch (e) { console.warn("Wikidata search error", e); }
                 };
@@ -1050,21 +1100,32 @@ USER ANWEISUNG: ${prompt}
                     ...properties.map((p: string) => searchWikidata(p, 'property'))
                 ]);
                 const wikidataContext = contextLines.join('\n');
-                if (onStepComplete) onStepComplete(2, "Build10_Wikidata_Suche", wikidataContext, "txt");
+                await saveStep(2, "Build10_Wikidata_Suche", wikidataContext, "txt");
 
-                if (onProgress) onProgress('Wikidata Schritt 3: Generiere SPARQL...');
-                const sparqlPromptFile = import.meta.env.BASE_URL + 'prompts/build_8_sparql_prompt.md';
-                let sparqlSystemPrompt = '';
-                try {
-                    const res = await fetch(sparqlPromptFile);
-                    if (res.ok) sparqlSystemPrompt = await res.text();
-                } catch (e) { console.warn(e); }
-                const sparqlUserPrompt = `Nutzeranfrage: ${prompt}\n\n=== GEFUNDENE WIKIDATA-IDs ===\n${wikidataContext}`;
-                const sparqlData: any = await this._executeLLMCall(sparqlSystemPrompt, sparqlUserPrompt, provider, model);
-                const sparqlQuery = sparqlData.query || sparqlData.sparql;
-                if (sparqlQuery) {
-                    if (onStepComplete) onStepComplete(3, "Build10_Wikidata_SPARQL", sparqlQuery, "sparql");
-                    if (onProgress) onProgress('Wikidata Schritt 4: Rufe Live-Daten ab...');
+                let sparqlSystemPrompt = build10SparqlPromptRaw || '';
+                let currentSparqlUserPrompt = `Nutzeranfrage: ${prompt}\n\n=== GEFUNDENE WIKIDATA-IDs ===\n${wikidataContext}`;
+                let sparqlQuery = '';
+                
+                let maxRetries = 2;
+                let attempt = 0;
+                let success = false;
+                
+                while (attempt < maxRetries && !success) {
+                    attempt++;
+                    if (onProgress) onProgress(`Wikidata Schritt 3: Generiere SPARQL (Versuch ${attempt}/${maxRetries})...`);
+                    
+                    const sparqlData: any = await this._executeLLMCall(sparqlSystemPrompt, currentSparqlUserPrompt, provider, model);
+                    await saveStep(3, `Build10_Wikidata_SPARQL_Raw_v${attempt}`, sparqlData, "json");
+                    sparqlQuery = sparqlData.query || sparqlData.sparql;
+                    
+                    if (!sparqlQuery) {
+                        currentSparqlUserPrompt += `\n\nFEHLER: Du hast kein valides JSON mit dem Key "query" zurückgegeben. Bitte korrigiere dein Format.`;
+                        continue;
+                    }
+                    
+                    await saveStep(3, `Build10_Wikidata_SPARQL_v${attempt}`, sparqlQuery, "sparql");
+                    if (onProgress) onProgress(`Wikidata Schritt 4: Rufe Live-Daten ab (Versuch ${attempt})...`);
+                    
                     const WIKIDATA_ENDPOINT = 'https://query.wikidata.org/sparql';
                     const response = await fetch(WIKIDATA_ENDPOINT, {
                         method: 'POST',
@@ -1075,20 +1136,35 @@ USER ANWEISUNG: ${prompt}
                         },
                         body: new URLSearchParams({ query: sparqlQuery })
                     });
+                    
                     if (response.ok) {
                         const rawWikidataResponse = await response.json();
                         if (rawWikidataResponse.results && rawWikidataResponse.results.bindings) {
-                            const limitedBindings = rawWikidataResponse.results.bindings.slice(0, 30).map((b: any) => {
-                                const clean: any = {};
-                                for (const key in b) {
-                                    clean[key] = b[key].value;
-                                }
-                                return clean;
-                            });
-                            groundingContext = `=== WIKIDATA FAKTEN-BASIS ===\n${JSON.stringify(limitedBindings, null, 2)}`;
-                            if (onStepComplete) onStepComplete(4, "Build10_Wikidata_Rohdaten", JSON.stringify(rawWikidataResponse, null, 2), "json");
+                            if (rawWikidataResponse.results.bindings.length > 0) {
+                                const limitedBindings = rawWikidataResponse.results.bindings.slice(0, 30).map((b: any) => {
+                                    const clean: any = {};
+                                    for (const key in b) {
+                                        clean[key] = b[key].value;
+                                    }
+                                    return clean;
+                                });
+                                groundingContext = `=== WIKIDATA FAKTEN-BASIS ===\n${JSON.stringify(limitedBindings, null, 2)}`;
+                                await saveStep(4, `Build10_Wikidata_Rohdaten_v${attempt}`, rawWikidataResponse, "json");
+                                success = true;
+                            } else {
+                                if (onProgress) onProgress(`Wikidata Schritt 4: 0 Ergebnisse. Fordere Korrektur an...`);
+                                currentSparqlUserPrompt += `\n\n=== LETZTER VERSUCH ===\nDeine generierte Query lief zwar fehlerfrei, gab aber exakt 0 Ergebnisse von Wikidata zurück. Das bedeutet, deine Query ist logisch falsch oder zu spezifisch. Hast du möglicherweise die Subjekt/Objekt-Richtung vertauscht, falsche Q-IDs gewählt oder P31 bei einem Einzelobjekt verwendet? Überarbeite die Query grundlegend.`;
+                            }
                         }
+                    } else {
+                        const errorText = await response.text();
+                        if (onProgress) onProgress(`Wikidata Schritt 4: Syntax-Fehler. Fordere Korrektur an...`);
+                        currentSparqlUserPrompt += `\n\n=== LETZTER VERSUCH ===\nDeine generierte Query erzeugte einen Syntax-Fehler auf dem Server: ${errorText.substring(0, 200)}. Bitte korrigiere die Query.`;
                     }
+                }
+                
+                if (!success && !groundingContext) {
+                    throw new Error("Wikidata lieferte auch nach mehrfachen Versuchen keine validen Ergebnisse.");
                 }
             } catch (e: any) {
                 console.warn('Wikidata grounding failed, falling back to LLM-only', e);
@@ -1102,14 +1178,10 @@ USER ANWEISUNG: ${prompt}
 
         // Step 2: JSON Generierung
         if (onProgress) onProgress('Schritt 2/4: Generiere Netzwerk-Struktur...');
-        const promptFile = import.meta.env.BASE_URL + 'prompts/build_6_prompt.md';
-        let systemPrompt = '';
-        try {
-            const res = await fetch(promptFile);
-            if (!res.ok) throw new Error();
-            systemPrompt = await res.text();
-        } catch {
-            throw new Error(`Konnte Prompt-Datei nicht laden: ${promptFile}`);
+        let systemPrompt = build6PromptRaw;
+        
+        if (!systemPrompt) {
+            throw new Error(`Konnte Prompt-Datei nicht laden: public/prompts/build_6_prompt.md (Raw Import fehlgeschlagen)`);
         }
 
         if (config.ratingMethod === 'taxonomy') {
@@ -1180,7 +1252,7 @@ WICHTIG: "system", "metadata", "dataModel", "data", "visualMappings" sind Pflich
         schemaToPass = this.makeSchemaStrict(schemaToPass);
 
         let graphData = await this._executeLLMCall(systemPrompt, finalPrompt, provider, model, schemaToPass);
-        if (onStepComplete) onStepComplete(5, "Build10_Raw_Graph", JSON.stringify(graphData, null, 2), "json");
+        await saveStep(5, "Build10_Raw_Graph", graphData, "json");
 
         // Step 3: Qualitätssicherung - Kritiker
         if (config.qualityAssurance === 'critic') {
@@ -1195,7 +1267,7 @@ Gib ausschliesslich das korrigierte JSON-Objekt zurueck, ohne Erklaerungen oder 
             try {
                 const criticData = await this._executeLLMCall(criticSystemPrompt, JSON.stringify(graphData), provider, model, schemaToPass);
                 graphData = criticData;
-                if (onStepComplete) onStepComplete(6, "Build10_Critic_Corrected_Graph", JSON.stringify(graphData, null, 2), "json");
+                await saveStep(6, "Build10_Critic_Corrected_Graph", graphData, "json");
             } catch (e: any) {
                 console.warn('Critic step failed, using raw graph', e);
                 if (onProgress) onProgress(`Kritiker-Schritt fehlgeschlagen: ${e.message}. Verwende rohen Graphen...`);
@@ -1208,7 +1280,7 @@ Gib ausschliesslich das korrigierte JSON-Objekt zurueck, ohne Erklaerungen oder 
             try {
                 const deduped = await deduplicateGraph(graphData, provider, 'google/gemini-embedding-2', 0.85, onProgress);
                 graphData = deduped;
-                if (onStepComplete) onStepComplete(7, "Build10_Deduped_Graph", JSON.stringify(graphData, null, 2), "json");
+                await saveStep(7, "Build10_Deduped_Graph", graphData, "json");
             } catch (e: any) {
                 console.warn('Deduplication failed', e);
             }
@@ -1287,6 +1359,7 @@ Gib ausschliesslich das korrigierte JSON-Objekt zurueck, ohne Erklaerungen oder 
                     range: [0.1, 1.5]
                 };
 
+                await saveStep(9, "similarity_graph", graphData, "json");
                 if (onStepComplete) onStepComplete(8, "Build10_Similarity_Scored_Graph", JSON.stringify(graphData, null, 2), "json");
             } catch (e: any) {
                 console.warn('Similarity scoring failed', e);
@@ -1296,5 +1369,93 @@ Gib ausschliesslich das korrigierte JSON-Objekt zurueck, ohne Erklaerungen oder 
 
         return graphData;
     }
-}
 
+    public static async expandGraphNodeBuild10(
+        nodeLabel: string,
+        nodeQId: string,
+        existingGraphData: GraphData,
+        provider: 'openai' | 'ollama' | 'openrouter' = 'openrouter',
+        model: string = 'google/gemini-2.5-flash-001',
+        onProgress?: (msg: string) => void
+    ): Promise<GraphData> {
+        let qId = nodeQId;
+        if (!qId) {
+            if (onProgress) onProgress(`Wikidata: Suche Q-ID für "${nodeLabel}"...`);
+            try {
+                const url = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(nodeLabel)}&language=en&limit=1&format=json&origin=*`;
+                const res = await fetch(url);
+                const json = await res.json();
+                if (json.search && json.search.length > 0) {
+                    qId = json.search[0].id;
+                    if (onProgress) onProgress(`Wikidata: Q-ID gefunden -> ${qId}`);
+                } else {
+                    throw new Error(`Keine Wikidata-ID für "${nodeLabel}" gefunden.`);
+                }
+            } catch (e: any) {
+                throw new Error(`Fehler bei der ID-Suche: ${e.message}`);
+            }
+        }
+
+        if (onProgress) onProgress(`Schritt 1/2: Generiere SPARQL Deep-Dive für ${nodeLabel} (${qId})...`);
+        const expansionSystemPrompt = build10ExpansionPromptRaw || '';
+        
+        const sparqlUserPrompt = `Nutzer wünscht einen Deep Dive für den Knoten "${nodeLabel}" mit der ID ${qId}. Erstelle die Abfrage.`;
+        
+        const sparqlData: any = await this._executeLLMCall(expansionSystemPrompt, sparqlUserPrompt, provider, model);
+        const sparqlQuery = sparqlData.query || sparqlData.sparql;
+        
+        if (!sparqlQuery) {
+            throw new Error('Das LLM hat keinen validen SPARQL-Code generiert.');
+        }
+
+        if (onProgress) onProgress('Schritt 2/2: Lade Live-Daten für Deep Dive...');
+        const WIKIDATA_ENDPOINT = 'https://query.wikidata.org/sparql';
+        const response = await fetch(WIKIDATA_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/sparql-results+json',
+                'User-Agent': 'Nodges/Build-10 (localhost)'
+            },
+            body: new URLSearchParams({ query: sparqlQuery })
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Wikidata Server-Fehler: ${errorText.substring(0, 100)}`);
+        }
+
+        const rawWikidataResponse = await response.json();
+        let groundingContext = '';
+        if (rawWikidataResponse.results && rawWikidataResponse.results.bindings && rawWikidataResponse.results.bindings.length > 0) {
+            const limitedBindings = rawWikidataResponse.results.bindings.slice(0, 100).map((b: any) => {
+                const clean: any = {};
+                for (const key in b) {
+                    clean[key] = b[key].value;
+                }
+                return clean;
+            });
+            groundingContext = `=== WIKIDATA DEEP-DIVE FAKTEN FÜR ${nodeLabel} (${qId}) ===\n${JSON.stringify(limitedBindings, null, 2)}`;
+        } else {
+            throw new Error('Wikidata hat für diesen Knoten keine zusätzlichen Daten gefunden.');
+        }
+
+        if (onProgress) onProgress('Generiere neues Graph-JSON aus den Daten...');
+        const build6PromptRawStr = build6PromptRaw || '';
+        
+        const finalPrompt = `Wir machen einen Deep Dive für den Knoten "${nodeLabel}".
+${groundingContext}
+Erstelle die Entities und Relationships für diese neuen Daten. Halte dich an das mitgelieferte bestehende Datenmodell! Achte darauf, dass der Hauptknoten "${nodeLabel}" vorhanden ist und verknüpfe die neuen Fakten mit ihm. Falls die Fakten Wikidata-URIs enthalten, extrahiere die Q-ID und lege sie als "wikidata_id" an.
+
+Hier ist das bestehende Datenmodell deines Netzwerks:
+${JSON.stringify(existingGraphData.dataModel, null, 2)}`;
+
+        const nodgesDataSchema = zodToJsonSchema(GraphDataSchema);
+        let schemaToPass: any = JSON.parse(JSON.stringify(nodgesDataSchema));
+        delete schemaToPass.$schema;
+        
+        const newGraphData = await this._executeLLMCall(build6PromptRawStr, finalPrompt, provider, model, this.makeSchemaStrict(schemaToPass));
+        
+        return newGraphData;
+    }
+}

@@ -1,0 +1,39 @@
+{
+  "thought_process": "Der Nutzer fragt nach einem 'Sonnensystem'. Basierend auf der Liste ist Q544 die am besten passende Referenz für das Solar System als Klasse. Daraufhin suche ich nach Instanzen, die Teil von diesem System sind, mit 'part of' (P361). Die Property ist zu beachten, da sie vom Teil zum Ganzen verweist.",
+  "query": "SELECT ?item ?itemLabel WHERE { ?item wdt:P361 wd:Q544. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,de\". } } LIMIT 50",
+  "data": {
+    "entities": [],
+    "relationships": []
+  },
+  "metadata": {
+    "apiResponse": {
+      "id": "gen-1784136780-EIl6CaCbBcwZDWJVmOvV",
+      "created": 1784136780,
+      "model": "morph/morph-v3-large",
+      "usage": {
+        "prompt_tokens": 1203,
+        "completion_tokens": 148,
+        "total_tokens": 1351,
+        "cost": 0.0013639,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0013639,
+          "upstream_inference_prompt_cost": 0.0010827,
+          "upstream_inference_completions_cost": 0.0002812
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  }
+}

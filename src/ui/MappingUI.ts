@@ -1981,6 +1981,21 @@ export class MappingUI {
             }
         });
 
+        // 6. Check for missing visualization positions (Fallback warning)
+        const isEntityTab = this.currentType === 'global_node' || (this.entities.length > 0 && this.entities[0].type === this.currentType);
+        if (isEntityTab && !activeProps.has('position') && !activeProps.has('positionX') && !activeProps.has('positionY') && !activeProps.has('positionZ')) {
+            const positionItem = this.rightColumn.querySelector('.mapping-item.right[data-prop="position"]');
+            if (positionItem) {
+                positionItem.classList.add('warning-mapping');
+            }
+        } else {
+            // Remove warning if mapped
+            const positionItem = this.rightColumn.querySelector('.mapping-item.right[data-prop="position"]');
+            if (positionItem) {
+                positionItem.classList.remove('warning-mapping');
+            }
+        }
+
         // Takeover Button logic removed from here as it is now in SuggestionUI
     }
 

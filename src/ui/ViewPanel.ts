@@ -335,6 +335,7 @@ export class ViewPanel {
 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
+        checkbox.className = 'nodges-toggle';
         checkbox.checked = initialValue;
         checkbox.id = `checkbox-${stateKey}`;
 
@@ -560,6 +561,24 @@ export class ViewPanel {
         if (normalizeCheck && normalizeCheck.checked !== state.normalizeCoordinatesEnabled) {
             normalizeCheck.checked = state.normalizeCoordinatesEnabled;
         }
+
+        // --- UPDATE DEPENDENT CONTROLS STATE ---
+        const labelsEnabled = state.showLabelsAlways || state.showLabelsOnHover;
+        const labelControls = [
+            linesSlider?.closest('.slider-row') as HTMLElement,
+            attrSelect?.closest('.select-row') as HTMLElement,
+            modeSelect?.closest('.select-row') as HTMLElement,
+            thresholdSlider?.closest('.slider-row') as HTMLElement,
+            labelCountInfo as HTMLElement
+        ];
+
+        labelControls.forEach(ctrl => {
+            if (ctrl) {
+                ctrl.style.opacity = labelsEnabled ? '1' : '0.4';
+                ctrl.style.pointerEvents = labelsEnabled ? 'auto' : 'none';
+                ctrl.style.transition = 'opacity 0.2s ease';
+            }
+        });
     }
 
     private updateAvailableAttributes(entities: any[]): void {

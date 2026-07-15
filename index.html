@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <title>Nodges</title>
     <link rel="icon" type="image/png" href="favicon-32x32.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
     <!-- CSS is imported in App.ts -->
 </head>
 
@@ -19,7 +25,6 @@
         <header class="sidebar-header">
             <span class="sidebar-title">Nodges</span>
             <span id="sidebarVersion" class="sidebar-version"></span>
-            <span id="hmrTest" style="color: #00ff00; font-size: 0.7em; margin-left: 5px;">● LIVE-TEST</span>
         </header>
 
         <!-- Tab Navigation Container -->
@@ -43,10 +48,16 @@
             <div id="tab-system" class="tab-content active">
                 <section class="panel-section">
                     <h4 class="section-header">UI-Modus</h4>
-                    <div class="mode-switch-container">
-                        <button class="mode-btn" data-mode="simple">Simple</button>
-                        <button class="mode-btn" data-mode="expert">Expert</button>
-                        <button class="mode-btn" data-mode="dev">Dev</button>
+                    <div class="nodges-slide-toggle">
+                        <input type="radio" name="mainUiMode" id="uimode_simple" value="simple" checked>
+                        <input type="radio" name="mainUiMode" id="uimode_expert" value="expert">
+                        <input type="radio" name="mainUiMode" id="uimode_dev" value="dev">
+                        
+                        <label for="uimode_simple">Simple</label>
+                        <label for="uimode_expert">Expert</label>
+                        <label for="uimode_dev">Dev</label>
+                        
+                        <div class="nodges-slide-thumb"></div>
                     </div>
                 </section>
 
@@ -96,13 +107,7 @@
                 <!-- Ebene 1 -->
                 <div class="layer-control">
                     <div class="layer-header">
-                        <label class="toggle-switch">
-                            <input type="checkbox" class="toggle-switch-checkbox" id="layer1Toggle" checked>
-                            <span class="toggle-switch-label">
-                                <span class="toggle-switch-inner"></span>
-                                <span class="toggle-switch-switch"></span>
-                            </span>
-                        </label>
+                        <input type="checkbox" class="nodges-toggle" id="layer1Toggle" checked>
                         <span class="layer-name">Ebene 1</span>
                         <select id="layer1ValueSelect" class="layer-value-select" style="margin-left: auto; width: 50%; padding: 4px 8px; background: #1b2836; border: 1px solid #38444d; color: #fff; border-radius: 4px; font-size: 12px;"></select>
                     </div>
@@ -115,13 +120,7 @@
                 <!-- Ebene 2 -->
                 <div class="layer-control">
                     <div class="layer-header">
-                        <label class="toggle-switch">
-                            <input type="checkbox" class="toggle-switch-checkbox" id="layer2Toggle" checked>
-                            <span class="toggle-switch-label">
-                                <span class="toggle-switch-inner"></span>
-                                <span class="toggle-switch-switch"></span>
-                            </span>
-                        </label>
+                        <input type="checkbox" class="nodges-toggle" id="layer2Toggle" checked>
                         <span class="layer-name">Ebene 2</span>
                         <select id="layer2ValueSelect" class="layer-value-select" style="margin-left: auto; width: 50%; padding: 4px 8px; background: #1b2836; border: 1px solid #38444d; color: #fff; border-radius: 4px; font-size: 12px;"></select>
                     </div>
@@ -134,13 +133,7 @@
                 <!-- Ebene 3 -->
                 <div class="layer-control">
                     <div class="layer-header">
-                        <label class="toggle-switch">
-                            <input type="checkbox" class="toggle-switch-checkbox" id="layer3Toggle" checked>
-                            <span class="toggle-switch-label">
-                                <span class="toggle-switch-inner"></span>
-                                <span class="toggle-switch-switch"></span>
-                            </span>
-                        </label>
+                        <input type="checkbox" class="nodges-toggle" id="layer3Toggle" checked>
                         <span class="layer-name">Ebene 3</span>
                         <select id="layer3ValueSelect" class="layer-value-select" style="margin-left: auto; width: 50%; padding: 4px 8px; background: #1b2836; border: 1px solid #38444d; color: #fff; border-radius: 4px; font-size: 12px;"></select>
                     </div>
@@ -153,13 +146,7 @@
                 <!-- Ebene 4 -->
                 <div class="layer-control">
                     <div class="layer-header">
-                        <label class="toggle-switch">
-                            <input type="checkbox" class="toggle-switch-checkbox" id="layer4Toggle" checked>
-                            <span class="toggle-switch-label">
-                                <span class="toggle-switch-inner"></span>
-                                <span class="toggle-switch-switch"></span>
-                            </span>
-                        </label>
+                        <input type="checkbox" class="nodges-toggle" id="layer4Toggle" checked>
                         <span class="layer-name">Ebene 4</span>
                         <select id="layer4ValueSelect" class="layer-value-select" style="margin-left: auto; width: 50%; padding: 4px 8px; background: #1b2836; border: 1px solid #38444d; color: #fff; border-radius: 4px; font-size: 12px;"></select>
                     </div>

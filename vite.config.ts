@@ -27,11 +27,12 @@ export default defineConfig({
                 res.end('Missing filename or content');
                 return;
               }
-              const dir = path.resolve(__dirname, './public/data/generated');
-              if (!fs.existsSync(dir)) {
-                fs.mkdirSync(dir, { recursive: true });
+              const targetPath = path.resolve(__dirname, './public/data/generated', filename);
+              const targetDir = path.dirname(targetPath);
+              if (!fs.existsSync(targetDir)) {
+                fs.mkdirSync(targetDir, { recursive: true });
               }
-              fs.writeFileSync(path.resolve(dir, filename), content);
+              fs.writeFileSync(targetPath, content);
               res.statusCode = 200;
               res.end('File saved successfully');
             } catch (err) {
@@ -54,7 +55,7 @@ export default defineConfig({
     watch: {
       usePolling: true,
       interval: 500,
-      ignored: ['**/public/data/generated/**'],
+      ignored: ['**/public/data/generated/**', '**/public/data/b10/**'],
     },
   },
   

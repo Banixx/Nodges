@@ -339,7 +339,7 @@ export class FilePanelUI {
         checkboxRow.style.alignItems = 'center';
         checkboxRow.innerHTML = `
             <label for="includeVizStateCheckbox" style="font-size: 13px;">Visualisierungszustand einbeziehen</label>
-            <input type="checkbox" id="includeVizStateCheckbox" checked style="accent-color: var(--accent-color); cursor: pointer;">
+            <input type="checkbox" id="includeVizStateCheckbox" class="nodges-toggle" checked>
         `;
         optionsGroup.appendChild(checkboxRow);
         body.appendChild(optionsGroup);

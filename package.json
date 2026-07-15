@@ -1,6 +1,6 @@
 {
     "name": "nodges",
-    "version": "0.102.10",
+    "version": "0.102.11",
     "description": "3D Network Visualization with Three.js",
     "type": "module",
     "scripts": {

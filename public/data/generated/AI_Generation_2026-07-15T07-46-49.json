@@ -1,0 +1,369 @@
+{
+  "system": "sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Ein Netzwerk von Konzepten, das die wichtigsten Elemente und Beziehungen im Sonnensystem darstellt.",
+    "apiResponse": {
+      "id": "gen-1784101584-aWonfeGDuKqoS3VGb3Ur",
+      "created": 1784101584,
+      "model": "openai/gpt-4o-mini",
+      "usage": {
+        "prompt_tokens": 1631,
+        "completion_tokens": 1267,
+        "total_tokens": 2898,
+        "cost": 0.00100485,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00100485,
+          "upstream_inference_prompt_cost": 0.00024465,
+          "upstream_inference_completions_cost": 0.0007602
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": "fp_4e2e0e5f15"
+    },
+    "nodgesVersion": "0.102.10",
+    "build": "build10",
+    "prompt": "sonnensystem",
+    "buildParameters": {
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "interactionMode": "auto",
+      "hasRagContext": false,
+      "grounding": "none",
+      "qualityAssurance": "none",
+      "ratingMethod": "llm"
+    },
+    "generationDetails": {
+      "prompt": "sonnensystem",
+      "context": null,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "pipeline": "build10",
+      "durationMs": 23641,
+      "timestamp": "2026-07-15T07:46:47.804Z"
+    },
+    "exportedAt": "2026-07-15T07:46:49.376Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1784101607805_e1",
+        "label": "Merkur",
+        "kategorie": "Planet",
+        "durchmesser": 4879,
+        "entfernung": 57900000,
+        "masse": 0.33,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": -0.5210226232772642,
+          "y": -3.412063076870718,
+          "z": 1.9529398370038649
+        }
+      },
+      {
+        "id": "AI_Generation_1784101607805_e2",
+        "label": "Venus",
+        "kategorie": "Planet",
+        "durchmesser": 12104,
+        "entfernung": 108200000,
+        "masse": 4.87,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.9865436785784256,
+          "y": -1.2454310319325885,
+          "z": 0.19829131355332918
+        }
+      },
+      {
+        "id": "AI_Generation_1784101607805_e3",
+        "label": "Erde",
+        "kategorie": "Planet",
+        "durchmesser": 12742,
+        "entfernung": 149600000,
+        "masse": 5.97,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1,
+        "position": {
+          "x": 0.027097523097586278,
+          "y": 3.412063076870718,
+          "z": -3.2059062008677905
+        }
+      },
+      {
+        "id": "AI_Generation_1784101607805_e4",
+        "label": "Mars",
+        "kategorie": "Planet",
+        "durchmesser": 6779,
+        "entfernung": 227900000,
+        "masse": 0.642,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1,
+        "position": {
+          "x": -3.594102307096006,
+          "y": -2.583032580029138,
+          "z": -0.993268265674079
+        }
+      },
+      {
+        "id": "AI_Generation_1784101607805_e5",
+        "label": "Jupiter",
+        "kategorie": "Planet",
+        "durchmesser": 139822,
+        "entfernung": 778500000,
+        "masse": 1898,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.16438237011492482,
+          "y": -2.1877977118767458,
+          "z": 2.007410370424337
+        }
+      },
+      {
+        "id": "AI_Generation_1784101607805_e6",
+        "label": "Saturn",
+        "kategorie": "Planet",
+        "durchmesser": 116464,
+        "entfernung": 1429400000,
+        "masse": 568,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.3554659048160519,
+          "y": -2.5787903371895777,
+          "z": -1.1165079858529328
+        }
+      },
+      {
+        "id": "AI_Generation_1784101607805_e7",
+        "label": "Uranus",
+        "kategorie": "Planet",
+        "durchmesser": 50724,
+        "entfernung": 2871000000,
+        "masse": 86.8,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 1.0940052838296868,
+          "y": -1.8998845303591745,
+          "z": 1.823552681147803
+        }
+      },
+      {
+        "id": "AI_Generation_1784101607805_e8",
+        "label": "Neptun",
+        "kategorie": "Planet",
+        "durchmesser": 49244,
+        "entfernung": 4495000000,
+        "masse": 102,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1,
+        "position": {
+          "x": 0.21468022862864747,
+          "y": -1.6690273040714476,
+          "z": 0.9247582253253949
+        }
+      },
+      {
+        "id": "AI_Generation_1784101607805_e9",
+        "label": "Asteroid Belt",
+        "kategorie": "Asteroidengürtel",
+        "durchmesser": 300000,
+        "entfernung": 423000000,
+        "masse": null,
+        "stateVector": {
+          "degree": 8,
+          "inbound": 8,
+          "outbound": 0
+        },
+        "inDegree": 8,
+        "outDegree": 0,
+        "position": {
+          "x": -5,
+          "y": 2.8368867304665177,
+          "z": 3.2059062008677905
+        }
+      },
+      {
+        "id": "AI_Generation_1784101607805_e10",
+        "label": "Mond",
+        "kategorie": "Mond",
+        "durchmesser": 3475,
+        "entfernung": 384400,
+        "masse": 0.073,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2,
+        "position": {
+          "x": 5,
+          "y": -0.054617828929206705,
+          "z": 1.2112048575257968
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1784101607805_r1",
+        "source": "AI_Generation_1784101607805_e1",
+        "target": "AI_Generation_1784101607805_e9",
+        "label": "orbit",
+        "strength": 75
+      },
+      {
+        "id": "AI_Generation_1784101607805_r2",
+        "source": "AI_Generation_1784101607805_e2",
+        "target": "AI_Generation_1784101607805_e9",
+        "label": "orbit",
+        "strength": 80
+      },
+      {
+        "id": "AI_Generation_1784101607805_r3",
+        "source": "AI_Generation_1784101607805_e3",
+        "target": "AI_Generation_1784101607805_e9",
+        "label": "orbit",
+        "strength": 90
+      },
+      {
+        "id": "AI_Generation_1784101607805_r4",
+        "source": "AI_Generation_1784101607805_e4",
+        "target": "AI_Generation_1784101607805_e9",
+        "label": "orbit",
+        "strength": 60
+      },
+      {
+        "id": "AI_Generation_1784101607805_r5",
+        "source": "AI_Generation_1784101607805_e5",
+        "target": "AI_Generation_1784101607805_e9",
+        "label": "orbit",
+        "strength": 95
+      },
+      {
+        "id": "AI_Generation_1784101607805_r6",
+        "source": "AI_Generation_1784101607805_e6",
+        "target": "AI_Generation_1784101607805_e9",
+        "label": "orbit",
+        "strength": 90
+      },
+      {
+        "id": "AI_Generation_1784101607805_r7",
+        "source": "AI_Generation_1784101607805_e7",
+        "target": "AI_Generation_1784101607805_e9",
+        "label": "orbit",
+        "strength": 85
+      },
+      {
+        "id": "AI_Generation_1784101607805_r8",
+        "source": "AI_Generation_1784101607805_e8",
+        "target": "AI_Generation_1784101607805_e9",
+        "label": "orbit",
+        "strength": 80
+      },
+      {
+        "id": "AI_Generation_1784101607805_r9",
+        "source": "AI_Generation_1784101607805_e10",
+        "target": "AI_Generation_1784101607805_e3",
+        "label": "gehörtZu",
+        "strength": 99
+      },
+      {
+        "id": "AI_Generation_1784101607805_r10",
+        "source": "AI_Generation_1784101607805_e10",
+        "target": "AI_Generation_1784101607805_e4",
+        "label": "gehörtZu",
+        "strength": 40
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "masse",
+          "function": "linear",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "geometry": {
+          "source": "kategorie",
+          "function": "categorical"
+        }
+      },
+      "global_edge": {
+        "thickness": {
+          "source": "strength",
+          "function": "linear",
+          "range": [
+            0.1,
+            0.25
+          ]
+        },
+        "color": {
+          "source": "label",
+          "function": "categorical"
+        }
+      }
+    }
+  }
+}

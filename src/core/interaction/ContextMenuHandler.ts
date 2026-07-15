@@ -77,6 +77,21 @@ export class ContextMenuHandler {
                     this.selectionHandler.duplicateSelected();
                 }
             });
+            options.push({
+                label: 'Deep Dive',
+                action: () => {
+                    const data = object.userData.nodeData || object.userData.entity || {};
+                    const label = data.label || 'Unbekannt';
+                    const qId = data.wikidata_id || '';
+                    console.log(`Starte Deep Dive fuer: ${label} (${qId})`);
+                    
+                    // Wir feuern ein CustomEvent, das von der UI-Schicht (z.B. Sidebar/LLMService)
+                    // abgefangen werden kann, um die Pipeline zu starten
+                    document.dispatchEvent(new CustomEvent('nodges-deep-dive', {
+                        detail: { label, qId, data }
+                    }));
+                }
+            });
         } else if (object && object.userData.type === 'edge') {
             options.push({
                 label: 'Data',

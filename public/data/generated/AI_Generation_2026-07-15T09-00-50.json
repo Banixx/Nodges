@@ -1,0 +1,1195 @@
+{
+  "system": "sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Netzwerk des Sonnensystems mit Planeten, Monden und der Sonne, einschließlich Umlaufbahnen und Gravitationsbeziehungen.",
+    "competencyQuestions": [
+      "Welche Himmelskörper umkreisen die Sonne?",
+      "Welche Monde gehören zu welchem Planeten?",
+      "Welcher Himmelskörper hat die größte Masse?",
+      "Welche Beziehung besteht zwischen Planeten und der Sonne?",
+      "Welche Monde sind die größten im System?"
+    ],
+    "apiResponse": {
+      "id": "gen-1784100358-xJts3vKlj8AmWH74cBUM",
+      "created": 1784100358,
+      "model": "deepseek/deepseek-v4-flash",
+      "usage": {
+        "prompt_tokens": 1800,
+        "completion_tokens": 7853,
+        "total_tokens": 9653,
+        "cost": 0.001715588,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.001715588,
+          "upstream_inference_prompt_cost": 0.0001764,
+          "upstream_inference_completions_cost": 0.001539188
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 3929,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    },
+    "nodgesVersion": "0.102.10",
+    "build": "build10",
+    "prompt": "sonnensystem",
+    "buildParameters": {
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-v4-flash",
+      "interactionMode": "auto",
+      "hasRagContext": false,
+      "grounding": "none",
+      "qualityAssurance": "none",
+      "ratingMethod": "llm"
+    },
+    "generationDetails": {
+      "prompt": "sonnensystem",
+      "context": null,
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-v4-flash",
+      "pipeline": "build10",
+      "durationMs": 99209,
+      "timestamp": "2026-07-15T07:27:34.876Z"
+    },
+    "exportedAt": "2026-07-15T09:00:50.338Z"
+  },
+  "dataModel": {
+    "properties": {}
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "geometry": {
+          "source": "kategorie",
+          "function": "categorical",
+          "params": {
+            "Stern": "sphere",
+            "Planet": "icosahedron",
+            "Mond": "sphere",
+            "Gürtel": "torus"
+          }
+        },
+        "color": {
+          "source": "kategorie",
+          "function": "categorical",
+          "params": {
+            "Stern": "#FFD700",
+            "Planet": "#4A90D9",
+            "Mond": "#A9A9A9",
+            "Gürtel": "#8B4513"
+          }
+        },
+        "size": {
+          "source": "masse_rel",
+          "function": "logarithmic",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "opacity": {
+          "value": 1
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "label",
+          "function": "categorical",
+          "params": {
+            "umkreist": "#666666",
+            "benachbart": "#CCCCCC"
+          }
+        },
+        "thickness": {
+          "source": "strength",
+          "function": "linear",
+          "range": [
+            0.05,
+            0.25
+          ]
+        },
+        "animation": {
+          "source": "periode_jahre",
+          "function": "inverse_linear",
+          "params": {
+            "speed": 2,
+            "type": "flow"
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "AI_Generation_1784100454876_e1",
+        "label": "Sonne",
+        "position": {
+          "x": -2.3616200070400315,
+          "y": -1.6224219635543846,
+          "z": 0.9387417231745415
+        },
+        "stateVector": {
+          "degree": 13,
+          "inbound": 8,
+          "outbound": 5
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Stern",
+        "masse_relative": 1000,
+        "durchmesser_km": 1392700,
+        "umlaufdauer_tage": null,
+        "entfernung_sonne_ae": 0,
+        "inDegree": 8,
+        "outDegree": 5
+      },
+      {
+        "id": "AI_Generation_1784100454876_e2",
+        "label": "Merkur",
+        "position": {
+          "x": 0.3909708625060569,
+          "y": 0.7160170753945443,
+          "z": -1.5278431478065033
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Planet",
+        "masse_relative": 0.055,
+        "durchmesser_km": 4879,
+        "umlaufdauer_tage": 87.97,
+        "entfernung_sonne_ae": 0.387,
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e3",
+        "label": "Venus",
+        "position": {
+          "x": -0.5763900280727545,
+          "y": -0.14591699852397083,
+          "z": -0.3868355202574038
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Planet",
+        "masse_relative": 0.815,
+        "durchmesser_km": 12104,
+        "umlaufdauer_tage": 224.7,
+        "entfernung_sonne_ae": 0.723,
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e4",
+        "label": "Erde",
+        "position": {
+          "x": 0.12185859676582506,
+          "y": 1.632037571848733,
+          "z": -0.24803571802708746
+        },
+        "stateVector": {
+          "degree": 4,
+          "inbound": 2,
+          "outbound": 2
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Planet",
+        "masse_relative": 1,
+        "durchmesser_km": 12756,
+        "umlaufdauer_tage": 365.2,
+        "entfernung_sonne_ae": 1,
+        "inDegree": 2,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1784100454876_e5",
+        "label": "Mars",
+        "position": {
+          "x": -0.8040813417155399,
+          "y": 2.542569509070875,
+          "z": -2.139708947179834
+        },
+        "stateVector": {
+          "degree": 4,
+          "inbound": 3,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Planet",
+        "masse_relative": 0.107,
+        "durchmesser_km": 6792,
+        "umlaufdauer_tage": 687,
+        "entfernung_sonne_ae": 1.524,
+        "inDegree": 3,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e6",
+        "label": "Jupiter",
+        "position": {
+          "x": -0.3592020756429339,
+          "y": -0.4511419115309366,
+          "z": -4.645454110327691
+        },
+        "stateVector": {
+          "degree": 8,
+          "inbound": 5,
+          "outbound": 3
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Planet",
+        "masse_relative": 317.8,
+        "durchmesser_km": 142984,
+        "umlaufdauer_tage": 4331,
+        "entfernung_sonne_ae": 5.203,
+        "inDegree": 5,
+        "outDegree": 3
+      },
+      {
+        "id": "AI_Generation_1784100454876_e7",
+        "label": "Saturn",
+        "position": {
+          "x": 1.8003144006742615,
+          "y": 0.9540352214678427,
+          "z": 2.856985612321273
+        },
+        "stateVector": {
+          "degree": 4,
+          "inbound": 2,
+          "outbound": 2
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Planet",
+        "masse_relative": 95.16,
+        "durchmesser_km": 120536,
+        "umlaufdauer_tage": 10747,
+        "entfernung_sonne_ae": 9.537,
+        "inDegree": 2,
+        "outDegree": 2
+      },
+      {
+        "id": "AI_Generation_1784100454876_e8",
+        "label": "Uranus",
+        "position": {
+          "x": -2.574400255661674,
+          "y": 0.8071815639162591,
+          "z": 0.18726451135929378
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Planet",
+        "masse_relative": 14.54,
+        "durchmesser_km": 51118,
+        "umlaufdauer_tage": 30589,
+        "entfernung_sonne_ae": 19.19,
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e9",
+        "label": "Neptun",
+        "position": {
+          "x": 3.379895489099707,
+          "y": -0.8232414722737692,
+          "z": -1.1795443054617025
+        },
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Planet",
+        "masse_relative": 17.15,
+        "durchmesser_km": 49528,
+        "umlaufdauer_tage": 59800,
+        "entfernung_sonne_ae": 30.07,
+        "inDegree": 2,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e10",
+        "label": "Mond",
+        "position": {
+          "x": 0.6604138235328474,
+          "y": 2.5251279055602156,
+          "z": 0.5771582727374133
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Mond",
+        "masse_relative": 0.0123,
+        "durchmesser_km": 3474,
+        "umlaufdauer_tage": 27.3,
+        "entfernung_sonne_ae": 1,
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e11",
+        "label": "Phobos",
+        "position": {
+          "x": -5,
+          "y": 1.586834554746802,
+          "z": -1.918875671879976
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Mond",
+        "masse_relative": 0.000002,
+        "durchmesser_km": 22,
+        "umlaufdauer_tage": 0.319,
+        "entfernung_sonne_ae": 1.524,
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e12",
+        "label": "Deimos",
+        "position": {
+          "x": -2.7703754972568535,
+          "y": 4.215933140052135,
+          "z": -1.2509776212527364
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Mond",
+        "masse_relative": 0.000001,
+        "durchmesser_km": 12,
+        "umlaufdauer_tage": 1.262,
+        "entfernung_sonne_ae": 1.524,
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e13",
+        "label": "Io",
+        "position": {
+          "x": -2.6755787154245425,
+          "y": -3.3397663481070246,
+          "z": -2.194102951197587
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Mond",
+        "masse_relative": 0.015,
+        "durchmesser_km": 3643,
+        "umlaufdauer_tage": 1.769,
+        "entfernung_sonne_ae": 5.203,
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e14",
+        "label": "Europa",
+        "position": {
+          "x": -4.193860629887596,
+          "y": -2.8538256529320596,
+          "z": -4.109902824158908
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Mond",
+        "masse_relative": 0.008,
+        "durchmesser_km": 3122,
+        "umlaufdauer_tage": 3.551,
+        "entfernung_sonne_ae": 5.203,
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e15",
+        "label": "Ganymed",
+        "position": {
+          "x": -2.407568617550144,
+          "y": -2.1943650707822395,
+          "z": -3.403777286689673
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Mond",
+        "masse_relative": 0.025,
+        "durchmesser_km": 5268,
+        "umlaufdauer_tage": 7.155,
+        "entfernung_sonne_ae": 5.203,
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e16",
+        "label": "Kallisto",
+        "position": {
+          "x": -1.6916404957643179,
+          "y": -4.215933140052135,
+          "z": -4.337387310897197
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Mond",
+        "masse_relative": 0.018,
+        "durchmesser_km": 4821,
+        "umlaufdauer_tage": 16.689,
+        "entfernung_sonne_ae": 5.203,
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e17",
+        "label": "Titan",
+        "position": {
+          "x": -0.817339594863717,
+          "y": -2.1102292184634286,
+          "z": 4.4082446064817145
+        },
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Mond",
+        "masse_relative": 0.0225,
+        "durchmesser_km": 5150,
+        "umlaufdauer_tage": 15.945,
+        "entfernung_sonne_ae": 9.537,
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e18",
+        "label": "Rhea",
+        "position": {
+          "x": 1.8466632711852968,
+          "y": -0.7161365982368291,
+          "z": 4.645454110327691
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Mond",
+        "masse_relative": 0.0004,
+        "durchmesser_km": 1528,
+        "umlaufdauer_tage": 4.518,
+        "entfernung_sonne_ae": 9.537,
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e19",
+        "label": "Triton",
+        "position": {
+          "x": 5,
+          "y": -0.6137719953548262,
+          "z": -0.302217192729065
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Mond",
+        "masse_relative": 0.0036,
+        "durchmesser_km": 2707,
+        "umlaufdauer_tage": 5.877,
+        "entfernung_sonne_ae": 30.07,
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784100454876_e20",
+        "label": "Proteus",
+        "position": {
+          "x": 4.324796481695617,
+          "y": -2.5218227816664407,
+          "z": -1.5959880568472253
+        },
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "type": "Himmelskoerper",
+        "kategorie": "Mond",
+        "masse_relative": 0.00005,
+        "durchmesser_km": 420,
+        "umlaufdauer_tage": 1.122,
+        "entfernung_sonne_ae": 30.07,
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_sun",
+        "label": "Sonne",
+        "kategorie": "Stern",
+        "masse_rel": 333000,
+        "durchmesser_km": 1392700,
+        "entfernung_au": 0,
+        "stateVector": {
+          "degree": 8,
+          "inbound": 8,
+          "outbound": 0
+        },
+        "inDegree": 8,
+        "outDegree": 0
+      },
+      {
+        "id": "AI_Generation_1784106050249_mercury",
+        "label": "Merkur",
+        "kategorie": "Planet",
+        "masse_rel": 0.055,
+        "durchmesser_km": 4879,
+        "entfernung_au": 0.39,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_venus",
+        "label": "Venus",
+        "kategorie": "Planet",
+        "masse_rel": 0.815,
+        "durchmesser_km": 12104,
+        "entfernung_au": 0.72,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_earth",
+        "label": "Erde",
+        "kategorie": "Planet",
+        "masse_rel": 1,
+        "durchmesser_km": 12742,
+        "entfernung_au": 1,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_mars",
+        "label": "Mars",
+        "kategorie": "Planet",
+        "masse_rel": 0.107,
+        "durchmesser_km": 6779,
+        "entfernung_au": 1.52,
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "inDegree": 2,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_jupiter",
+        "label": "Jupiter",
+        "kategorie": "Planet",
+        "masse_rel": 317.8,
+        "durchmesser_km": 139820,
+        "entfernung_au": 5.2,
+        "stateVector": {
+          "degree": 3,
+          "inbound": 2,
+          "outbound": 1
+        },
+        "inDegree": 2,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_saturn",
+        "label": "Saturn",
+        "kategorie": "Planet",
+        "masse_rel": 95.2,
+        "durchmesser_km": 116460,
+        "entfernung_au": 9.58,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_uranus",
+        "label": "Uranus",
+        "kategorie": "Planet",
+        "masse_rel": 14.5,
+        "durchmesser_km": 50724,
+        "entfernung_au": 19.22,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_neptune",
+        "label": "Neptun",
+        "kategorie": "Planet",
+        "masse_rel": 17.1,
+        "durchmesser_km": 49244,
+        "entfernung_au": 30.05,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 1,
+          "outbound": 1
+        },
+        "inDegree": 1,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_moon",
+        "label": "Mond",
+        "kategorie": "Mond",
+        "masse_rel": 0.012,
+        "durchmesser_km": 3474,
+        "entfernung_au": 1,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_phobos",
+        "label": "Phobos",
+        "kategorie": "Mond",
+        "masse_rel": 1e-9,
+        "durchmesser_km": 22,
+        "entfernung_au": 1.52,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_europa",
+        "label": "Europa",
+        "kategorie": "Mond",
+        "masse_rel": 0.008,
+        "durchmesser_km": 3121,
+        "entfernung_au": 5.2,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_titan",
+        "label": "Titan",
+        "kategorie": "Mond",
+        "masse_rel": 0.022,
+        "durchmesser_km": 5149,
+        "entfernung_au": 9.58,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_triton",
+        "label": "Triton",
+        "kategorie": "Mond",
+        "masse_rel": 0.0035,
+        "durchmesser_km": 2706,
+        "entfernung_au": 30.05,
+        "stateVector": {
+          "degree": 1,
+          "inbound": 0,
+          "outbound": 1
+        },
+        "inDegree": 0,
+        "outDegree": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_asteroid_belt",
+        "label": "Asteroidengürtel",
+        "kategorie": "Gürtel",
+        "masse_rel": 0.0005,
+        "durchmesser_km": 1000000,
+        "entfernung_au": 2.7,
+        "stateVector": {
+          "degree": 2,
+          "inbound": 0,
+          "outbound": 2
+        },
+        "inDegree": 0,
+        "outDegree": 2
+      }
+    ],
+    "relationships": [
+      {
+        "id": "AI_Generation_1784100454876_r1",
+        "source": "AI_Generation_1784100454876_e2",
+        "target": "AI_Generation_1784100454876_e1",
+        "label": "umkreist Sonne",
+        "type": "umkreist",
+        "stärke": 100,
+        "start": "AI_Generation_1784100454876_e2",
+        "end": "AI_Generation_1784100454876_e1"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r2",
+        "source": "AI_Generation_1784100454876_e3",
+        "target": "AI_Generation_1784100454876_e1",
+        "label": "umkreist Sonne",
+        "type": "umkreist",
+        "stärke": 98,
+        "start": "AI_Generation_1784100454876_e3",
+        "end": "AI_Generation_1784100454876_e1"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r3",
+        "source": "AI_Generation_1784100454876_e4",
+        "target": "AI_Generation_1784100454876_e1",
+        "label": "umkreist Sonne",
+        "type": "umkreist",
+        "stärke": 95,
+        "start": "AI_Generation_1784100454876_e4",
+        "end": "AI_Generation_1784100454876_e1"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r4",
+        "source": "AI_Generation_1784100454876_e5",
+        "target": "AI_Generation_1784100454876_e1",
+        "label": "umkreist Sonne",
+        "type": "umkreist",
+        "stärke": 90,
+        "start": "AI_Generation_1784100454876_e5",
+        "end": "AI_Generation_1784100454876_e1"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r5",
+        "source": "AI_Generation_1784100454876_e6",
+        "target": "AI_Generation_1784100454876_e1",
+        "label": "umkreist Sonne",
+        "type": "umkreist",
+        "stärke": 80,
+        "start": "AI_Generation_1784100454876_e6",
+        "end": "AI_Generation_1784100454876_e1"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r6",
+        "source": "AI_Generation_1784100454876_e7",
+        "target": "AI_Generation_1784100454876_e1",
+        "label": "umkreist Sonne",
+        "type": "umkreist",
+        "stärke": 70,
+        "start": "AI_Generation_1784100454876_e7",
+        "end": "AI_Generation_1784100454876_e1"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r7",
+        "source": "AI_Generation_1784100454876_e8",
+        "target": "AI_Generation_1784100454876_e1",
+        "label": "umkreist Sonne",
+        "type": "umkreist",
+        "stärke": 60,
+        "start": "AI_Generation_1784100454876_e8",
+        "end": "AI_Generation_1784100454876_e1"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r8",
+        "source": "AI_Generation_1784100454876_e9",
+        "target": "AI_Generation_1784100454876_e1",
+        "label": "umkreist Sonne",
+        "type": "umkreist",
+        "stärke": 50,
+        "start": "AI_Generation_1784100454876_e9",
+        "end": "AI_Generation_1784100454876_e1"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r9",
+        "source": "AI_Generation_1784100454876_e10",
+        "target": "AI_Generation_1784100454876_e4",
+        "label": "Mond der Erde",
+        "type": "mond_von",
+        "stärke": 100,
+        "start": "AI_Generation_1784100454876_e10",
+        "end": "AI_Generation_1784100454876_e4"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r10",
+        "source": "AI_Generation_1784100454876_e11",
+        "target": "AI_Generation_1784100454876_e5",
+        "label": "Mond des Mars",
+        "type": "mond_von",
+        "stärke": 80,
+        "start": "AI_Generation_1784100454876_e11",
+        "end": "AI_Generation_1784100454876_e5"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r11",
+        "source": "AI_Generation_1784100454876_e12",
+        "target": "AI_Generation_1784100454876_e5",
+        "label": "Mond des Mars",
+        "type": "mond_von",
+        "stärke": 70,
+        "start": "AI_Generation_1784100454876_e12",
+        "end": "AI_Generation_1784100454876_e5"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r12",
+        "source": "AI_Generation_1784100454876_e13",
+        "target": "AI_Generation_1784100454876_e6",
+        "label": "Mond des Jupiter",
+        "type": "mond_von",
+        "stärke": 95,
+        "start": "AI_Generation_1784100454876_e13",
+        "end": "AI_Generation_1784100454876_e6"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r13",
+        "source": "AI_Generation_1784100454876_e14",
+        "target": "AI_Generation_1784100454876_e6",
+        "label": "Mond des Jupiter",
+        "type": "mond_von",
+        "stärke": 90,
+        "start": "AI_Generation_1784100454876_e14",
+        "end": "AI_Generation_1784100454876_e6"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r14",
+        "source": "AI_Generation_1784100454876_e15",
+        "target": "AI_Generation_1784100454876_e6",
+        "label": "Mond des Jupiter",
+        "type": "mond_von",
+        "stärke": 85,
+        "start": "AI_Generation_1784100454876_e15",
+        "end": "AI_Generation_1784100454876_e6"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r15",
+        "source": "AI_Generation_1784100454876_e16",
+        "target": "AI_Generation_1784100454876_e6",
+        "label": "Mond des Jupiter",
+        "type": "mond_von",
+        "stärke": 80,
+        "start": "AI_Generation_1784100454876_e16",
+        "end": "AI_Generation_1784100454876_e6"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r16",
+        "source": "AI_Generation_1784100454876_e17",
+        "target": "AI_Generation_1784100454876_e7",
+        "label": "Mond des Saturn",
+        "type": "mond_von",
+        "stärke": 88,
+        "start": "AI_Generation_1784100454876_e17",
+        "end": "AI_Generation_1784100454876_e7"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r17",
+        "source": "AI_Generation_1784100454876_e18",
+        "target": "AI_Generation_1784100454876_e7",
+        "label": "Mond des Saturn",
+        "type": "mond_von",
+        "stärke": 65,
+        "start": "AI_Generation_1784100454876_e18",
+        "end": "AI_Generation_1784100454876_e7"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r18",
+        "source": "AI_Generation_1784100454876_e19",
+        "target": "AI_Generation_1784100454876_e9",
+        "label": "Mond des Neptun",
+        "type": "mond_von",
+        "stärke": 75,
+        "start": "AI_Generation_1784100454876_e19",
+        "end": "AI_Generation_1784100454876_e9"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r19",
+        "source": "AI_Generation_1784100454876_e20",
+        "target": "AI_Generation_1784100454876_e9",
+        "label": "Mond des Neptun",
+        "type": "mond_von",
+        "stärke": 55,
+        "start": "AI_Generation_1784100454876_e20",
+        "end": "AI_Generation_1784100454876_e9"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r20",
+        "source": "AI_Generation_1784100454876_e1",
+        "target": "AI_Generation_1784100454876_e2",
+        "label": "Gravitation Sonne-Merkur",
+        "type": "gravitations_einfluss",
+        "stärke": 90,
+        "start": "AI_Generation_1784100454876_e1",
+        "end": "AI_Generation_1784100454876_e2"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r21",
+        "source": "AI_Generation_1784100454876_e1",
+        "target": "AI_Generation_1784100454876_e3",
+        "label": "Gravitation Sonne-Venus",
+        "type": "gravitations_einfluss",
+        "stärke": 85,
+        "start": "AI_Generation_1784100454876_e1",
+        "end": "AI_Generation_1784100454876_e3"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r22",
+        "source": "AI_Generation_1784100454876_e1",
+        "target": "AI_Generation_1784100454876_e4",
+        "label": "Gravitation Sonne-Erde",
+        "type": "gravitations_einfluss",
+        "stärke": 80,
+        "start": "AI_Generation_1784100454876_e1",
+        "end": "AI_Generation_1784100454876_e4"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r23",
+        "source": "AI_Generation_1784100454876_e1",
+        "target": "AI_Generation_1784100454876_e5",
+        "label": "Gravitation Sonne-Mars",
+        "type": "gravitations_einfluss",
+        "stärke": 75,
+        "start": "AI_Generation_1784100454876_e1",
+        "end": "AI_Generation_1784100454876_e5"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r24",
+        "source": "AI_Generation_1784100454876_e1",
+        "target": "AI_Generation_1784100454876_e6",
+        "label": "Gravitation Sonne-Jupiter",
+        "type": "gravitations_einfluss",
+        "stärke": 60,
+        "start": "AI_Generation_1784100454876_e1",
+        "end": "AI_Generation_1784100454876_e6"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r25",
+        "source": "AI_Generation_1784100454876_e6",
+        "target": "AI_Generation_1784100454876_e13",
+        "label": "Gravitation Jupiter-Io",
+        "type": "gravitations_einfluss",
+        "stärke": 95,
+        "start": "AI_Generation_1784100454876_e6",
+        "end": "AI_Generation_1784100454876_e13"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r26",
+        "source": "AI_Generation_1784100454876_e6",
+        "target": "AI_Generation_1784100454876_e15",
+        "label": "Gravitation Jupiter-Ganymed",
+        "type": "gravitations_einfluss",
+        "stärke": 90,
+        "start": "AI_Generation_1784100454876_e6",
+        "end": "AI_Generation_1784100454876_e15"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r27",
+        "source": "AI_Generation_1784100454876_e7",
+        "target": "AI_Generation_1784100454876_e17",
+        "label": "Gravitation Saturn-Titan",
+        "type": "gravitations_einfluss",
+        "stärke": 85,
+        "start": "AI_Generation_1784100454876_e7",
+        "end": "AI_Generation_1784100454876_e17"
+      },
+      {
+        "id": "AI_Generation_1784100454876_r28",
+        "source": "AI_Generation_1784100454876_e4",
+        "target": "AI_Generation_1784100454876_e10",
+        "label": "Gravitation Erde-Mond",
+        "type": "gravitations_einfluss",
+        "stärke": 98,
+        "start": "AI_Generation_1784100454876_e4",
+        "end": "AI_Generation_1784100454876_e10"
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_mercury_sun",
+        "source": "AI_Generation_1784106050249_mercury",
+        "target": "AI_Generation_1784106050249_sun",
+        "label": "umkreist",
+        "strength": 85,
+        "periode_jahre": 0.24
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_venus_sun",
+        "source": "AI_Generation_1784106050249_venus",
+        "target": "AI_Generation_1784106050249_sun",
+        "label": "umkreist",
+        "strength": 90,
+        "periode_jahre": 0.62
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_earth_sun",
+        "source": "AI_Generation_1784106050249_earth",
+        "target": "AI_Generation_1784106050249_sun",
+        "label": "umkreist",
+        "strength": 95,
+        "periode_jahre": 1
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_mars_sun",
+        "source": "AI_Generation_1784106050249_mars",
+        "target": "AI_Generation_1784106050249_sun",
+        "label": "umkreist",
+        "strength": 80,
+        "periode_jahre": 1.88
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_jupiter_sun",
+        "source": "AI_Generation_1784106050249_jupiter",
+        "target": "AI_Generation_1784106050249_sun",
+        "label": "umkreist",
+        "strength": 98,
+        "periode_jahre": 11.86
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_saturn_sun",
+        "source": "AI_Generation_1784106050249_saturn",
+        "target": "AI_Generation_1784106050249_sun",
+        "label": "umkreist",
+        "strength": 92,
+        "periode_jahre": 29.46
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_uranus_sun",
+        "source": "AI_Generation_1784106050249_uranus",
+        "target": "AI_Generation_1784106050249_sun",
+        "label": "umkreist",
+        "strength": 88,
+        "periode_jahre": 84.01
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_neptune_sun",
+        "source": "AI_Generation_1784106050249_neptune",
+        "target": "AI_Generation_1784106050249_sun",
+        "label": "umkreist",
+        "strength": 85,
+        "periode_jahre": 164.8
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_moon_earth",
+        "source": "AI_Generation_1784106050249_moon",
+        "target": "AI_Generation_1784106050249_earth",
+        "label": "umkreist",
+        "strength": 95
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_phobos_mars",
+        "source": "AI_Generation_1784106050249_phobos",
+        "target": "AI_Generation_1784106050249_mars",
+        "label": "umkreist",
+        "strength": 60
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_europa_jupiter",
+        "source": "AI_Generation_1784106050249_europa",
+        "target": "AI_Generation_1784106050249_jupiter",
+        "label": "umkreist",
+        "strength": 90
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_titan_saturn",
+        "source": "AI_Generation_1784106050249_titan",
+        "target": "AI_Generation_1784106050249_saturn",
+        "label": "umkreist",
+        "strength": 92
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_triton_neptune",
+        "source": "AI_Generation_1784106050249_triton",
+        "target": "AI_Generation_1784106050249_neptune",
+        "label": "umkreist",
+        "strength": 85
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_belt_mars",
+        "source": "AI_Generation_1784106050249_asteroid_belt",
+        "target": "AI_Generation_1784106050249_mars",
+        "label": "benachbart",
+        "strength": 40
+      },
+      {
+        "id": "AI_Generation_1784106050249_r_belt_jupiter",
+        "source": "AI_Generation_1784106050249_asteroid_belt",
+        "target": "AI_Generation_1784106050249_jupiter",
+        "label": "benachbart",
+        "strength": 50
+      }
+    ]
+  }
+}

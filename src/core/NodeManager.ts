@@ -176,10 +176,11 @@ export class NodeManager {
                 group.forEach(({ entity, visual }, index) => {
                     entityList.push(entity);
 
-                    // Position mapped override (fallback to entity.position)
-                    const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x !== undefined ? entity.position.x : 0);
-                    const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y !== undefined ? entity.position.y : 0);
-                    const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z !== undefined ? entity.position.z : 0);
+                    // Position mapped override (fallback to 0,0,5 if completely unmapped)
+                    const isPosMapped = visual.positionX !== undefined || visual.positionY !== undefined || visual.positionZ !== undefined;
+                    const x = visual.positionX !== undefined ? visual.positionX : (isPosMapped ? 0 : 0);
+                    const y = visual.positionY !== undefined ? visual.positionY : (isPosMapped ? 0 : 0);
+                    const z = visual.positionZ !== undefined ? visual.positionZ : (isPosMapped ? 0 : 5);
                     dummy.position.set(x, y, z);
 
                     // Scale / Size
@@ -261,10 +262,11 @@ export class NodeManager {
                     const material = baseMaterial.clone() as THREE.MeshPhongMaterial;
                     const mesh = new THREE.Mesh(geometry, material);
 
-                    // Position mapped override (fallback to entity.position)
-                    const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x !== undefined ? entity.position.x : 0);
-                    const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y !== undefined ? entity.position.y : 0);
-                    const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z !== undefined ? entity.position.z : 0);
+                    // Position mapped override (fallback to 0,0,5 if completely unmapped)
+                    const isPosMapped = visual.positionX !== undefined || visual.positionY !== undefined || visual.positionZ !== undefined;
+                    const x = visual.positionX !== undefined ? visual.positionX : (isPosMapped ? 0 : 0);
+                    const y = visual.positionY !== undefined ? visual.positionY : (isPosMapped ? 0 : 0);
+                    const z = visual.positionZ !== undefined ? visual.positionZ : (isPosMapped ? 0 : 5);
                     mesh.position.set(x, y, z);
 
                     // Scale / Size
@@ -338,14 +340,17 @@ export class NodeManager {
                 const mesh = this.meshes.get(map.type);
                 if (!mesh) return;
 
+                const visual = this.visualMappingEngine.applyToEntity(entity);
+                const isPosMapped = visual.positionX !== undefined || visual.positionY !== undefined || visual.positionZ !== undefined;
+
                 mesh.getMatrixAt(map.index, dummy.matrix);
                 dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
 
-                dummy.position.set(
-                    entity.position?.x || 0,
-                    entity.position?.y || 0,
-                    entity.position?.z || 0
-                );
+                const x = visual.positionX !== undefined ? visual.positionX : (isPosMapped ? 0 : 0);
+                const y = visual.positionY !== undefined ? visual.positionY : (isPosMapped ? 0 : 0);
+                const z = visual.positionZ !== undefined ? visual.positionZ : (isPosMapped ? 0 : 5);
+
+                dummy.position.set(x, y, z);
 
                 dummy.updateMatrix();
                 mesh.setMatrixAt(map.index, dummy.matrix);
@@ -358,11 +363,14 @@ export class NodeManager {
             entities.forEach(entity => {
                 const mesh = this.individualMeshes.get(String(entity.id));
                 if (mesh) {
-                    mesh.position.set(
-                        entity.position?.x || 0,
-                        entity.position?.y || 0,
-                        entity.position?.z || 0
-                    );
+                    const visual = this.visualMappingEngine.applyToEntity(entity);
+                    const isPosMapped = visual.positionX !== undefined || visual.positionY !== undefined || visual.positionZ !== undefined;
+                    
+                    const x = visual.positionX !== undefined ? visual.positionX : (isPosMapped ? 0 : 0);
+                    const y = visual.positionY !== undefined ? visual.positionY : (isPosMapped ? 0 : 0);
+                    const z = visual.positionZ !== undefined ? visual.positionZ : (isPosMapped ? 0 : 5);
+
+                    mesh.position.set(x, y, z);
                 }
             });
         }

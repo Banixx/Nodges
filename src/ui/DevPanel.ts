@@ -58,11 +58,17 @@ export class DevPanel {
                     <label title="high-performance prefers dedicated GPUs, low-power prefers internal GPUs.">
                         Power Preference (Restart required)
                     </label>
-                    <select id="devPowerPreferenceSelect">
-                        <option value="high-performance" ${powerPref === 'high-performance' ? 'selected' : ''}>High Performance (dGPU)</option>
-                        <option value="low-power" ${powerPref === 'low-power' ? 'selected' : ''}>Low Power (iGPU)</option>
-                        <option value="default" ${powerPref === 'default' ? 'selected' : ''}>Default</option>
-                    </select>
+                    <div class="power-state-toggle" style="display: flex; background: #2a2a2a; border-radius: 20px; position: relative; overflow: hidden; margin-top: 5px; height: 30px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);">
+                        <input type="radio" name="devPowerMode" id="pm_high" value="high-performance" ${powerPref === 'high-performance' ? 'checked' : ''} style="display: none;">
+                        <input type="radio" name="devPowerMode" id="pm_low" value="low-power" ${powerPref === 'low-power' ? 'checked' : ''} style="display: none;">
+                        <input type="radio" name="devPowerMode" id="pm_default" value="default" ${powerPref === 'default' ? 'checked' : ''} style="display: none;">
+                        
+                        <label for="pm_high" style="flex: 1; text-align: center; line-height: 30px; cursor: pointer; z-index: 2; color: #fff; font-size: 11px; font-weight: bold; margin:0; padding:0; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">High (dGPU)</label>
+                        <label for="pm_low" style="flex: 1; text-align: center; line-height: 30px; cursor: pointer; z-index: 2; color: #fff; font-size: 11px; font-weight: bold; margin:0; padding:0; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Low (iGPU)</label>
+                        <label for="pm_default" style="flex: 1; text-align: center; line-height: 30px; cursor: pointer; z-index: 2; color: #fff; font-size: 11px; font-weight: bold; margin:0; padding:0; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Default</label>
+                        
+                        <div class="thumb" style="position: absolute; top: 2px; left: 2px; width: calc(33.33% - 4px); height: calc(100% - 4px); background: linear-gradient(180deg, #e6a822, #b8860b); border-radius: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.4); z-index: 1; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);"></div>
+                    </div>
                 </div>
 
                 <div class="control-group">
@@ -79,7 +85,6 @@ export class DevPanel {
                         <label for="rm_instance" style="flex: 1; text-align: center; line-height: 30px; cursor: pointer; z-index: 2; color: #fff; font-size: 11px; font-weight: bold; margin:0; padding:0; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Instance</label>
                         
                         <div class="thumb" style="position: absolute; top: 2px; left: 2px; width: calc(33.33% - 4px); height: calc(100% - 4px); background: linear-gradient(180deg, #e6a822, #b8860b); border-radius: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.4); z-index: 1; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);">
-                            <div style="position: absolute; width: 22px; height: 22px; background: radial-gradient(circle, #e0e0e0 0%, #a0a0a0 100%); border-radius: 50%; top: 2px; left: 50%; transform: translateX(-50%); box-shadow: 0 1px 3px rgba(0,0,0,0.6), inset 0 -1px 2px rgba(0,0,0,0.3);"></div>
                         </div>
                     </div>
                 </div>
@@ -115,7 +120,9 @@ export class DevPanel {
     }
 
     private bindEvents() {
-        const powerSelect = this.container.querySelector('#devPowerPreferenceSelect') as HTMLSelectElement;
+        const powerRadios = this.container.querySelectorAll('input[name="devPowerMode"]');
+        const powerThumb = this.container.querySelector('.power-state-toggle .thumb') as HTMLElement;
+        const powerLabels = this.container.querySelectorAll('.power-state-toggle label');
         const pixelSlider = this.container.querySelector('#devPixelRatioSlider') as HTMLInputElement;
         const pixelValue = this.container.querySelector('#devPixelRatioValue') as HTMLSpanElement;
         const fpsSlider = this.container.querySelector('#devFpsLimitSlider') as HTMLInputElement;
@@ -134,9 +141,32 @@ export class DevPanel {
             this.stateManager.update({ devFpsLimit: val });
         });
 
-        powerSelect?.addEventListener('change', (e) => {
-            const val = (e.target as HTMLSelectElement).value as 'high-performance' | 'low-power' | 'default';
-            this.stateManager.update({ devPowerPreference: val });
+        const updatePowerThumb = (val: string) => {
+            if (!powerThumb) return;
+            if (val === 'high-performance') powerThumb.style.transform = 'translateX(0%)';
+            else if (val === 'low-power') powerThumb.style.transform = 'translateX(100%)';
+            else if (val === 'default') powerThumb.style.transform = 'translateX(200%)';
+            
+            powerLabels.forEach((label) => {
+                const inputId = label.getAttribute('for');
+                const input = this.container.querySelector('#' + inputId) as HTMLInputElement;
+                if (input && input.value === val) {
+                    (label as HTMLElement).style.color = '#fff';
+                } else {
+                    (label as HTMLElement).style.color = '#aaa';
+                }
+            });
+        };
+
+        const currentPower = this.stateManager.state.devPowerPreference || 'high-performance';
+        updatePowerThumb(currentPower);
+
+        powerRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const val = (e.target as HTMLInputElement).value as 'high-performance' | 'low-power' | 'default';
+                updatePowerThumb(val);
+                this.stateManager.update({ devPowerPreference: val });
+            });
         });
 
         applyBtn?.addEventListener('click', () => {

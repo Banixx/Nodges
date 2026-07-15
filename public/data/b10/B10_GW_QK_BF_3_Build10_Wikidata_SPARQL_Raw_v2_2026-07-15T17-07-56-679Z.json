@@ -1,0 +1,39 @@
+{
+  "thought_process": "Der Nutzer sucht nach Daten zum Sonnensystem. Q544 ist die Klasse für 'Solar System'. Da 'Solar System' eine Klasse ist, suche ich mit wdt:P31/wdt:P279* nach Instanzen. Die Richtung ist '?solarSystem ist-instanz-von Solar System'.",
+  "query": "SELECT ?solarSystem ?solarSystemLabel WHERE { ?solarSystem wdt:P31/wdt:P279* wd:Q544 . SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,de\". } } LIMIT 50",
+  "data": {
+    "entities": [],
+    "relationships": []
+  },
+  "metadata": {
+    "apiResponse": {
+      "id": "gen-1784135284-DGMkcyJbaJsSL7tgJ6rZ",
+      "created": 1784135284,
+      "model": "morph/morph-v3-large",
+      "usage": {
+        "prompt_tokens": 1469,
+        "completion_tokens": 150,
+        "total_tokens": 1619,
+        "cost": 0.0016071,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0016071,
+          "upstream_inference_prompt_cost": 0.0013221,
+          "upstream_inference_completions_cost": 0.000285
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  }
+}

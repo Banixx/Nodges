@@ -190,13 +190,9 @@ export class SuggestionUI {
             cards.forEach(c => {
                 const isActive = c.dataset.label === activeLabel;
                 if (isActive) {
-                    c.style.borderWidth = '2px';
-                    c.style.borderColor = 'var(--accent-color)';
-                    c.style.boxShadow = '0 0 8px rgba(160, 128, 96, 0.4)';
+                    c.classList.add('active');
                 } else {
-                    c.style.borderWidth = '1px';
-                    c.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                    c.style.boxShadow = 'none';
+                    c.classList.remove('active');
                 }
             });
         };
@@ -204,15 +200,7 @@ export class SuggestionUI {
         suggestions.forEach(s => {
             const card = document.createElement('div');
             card.dataset.label = s.label;
-            card.style.cssText = `
-                box-sizing: border-box;
-                background: rgba(255, 255, 255, 0.05);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                border-radius: 6px;
-                padding: 8px;
-                cursor: pointer;
-                transition: all 0.2s ease;
-            `;
+            card.className = 'suggestion-card';
 
             let cardHtml = `
                 <div style="font-weight: bold; font-size: 12px; color: #fff;">${s.label}</div>
@@ -220,7 +208,7 @@ export class SuggestionUI {
             `;
             if (s.isOriginal) {
                 cardHtml += `
-                <button class="takeover-btn" style="margin-top: 8px; width: 100%; background: var(--accent-color); color: #fff; border: none; padding: 6px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                <button class="takeover-btn action-button" style="margin-top: 8px; font-size: 11px;">
                     Mapping aus Vorlage übernehmen
                 </button>`;
             }
@@ -228,16 +216,10 @@ export class SuggestionUI {
 
             // Hover -> Preview
             card.addEventListener('mouseenter', () => {
-                if (card.style.borderWidth !== '2px') {
-                    card.style.background = 'rgba(255, 255, 255, 0.1)';
-                }
                 if (this.onPreviewMapping) this.onPreviewMapping(s.mapping);
             });
 
             card.addEventListener('mouseleave', () => {
-                if (card.style.borderWidth !== '2px') {
-                    card.style.background = 'rgba(255, 255, 255, 0.05)';
-                }
                 if (this.onPreviewMapping) this.onPreviewMapping(this.currentPreviewMapping);
             });
 
@@ -252,10 +234,9 @@ export class SuggestionUI {
                 setActiveCard(s.label);
                 
                 // Visual feedback
-                const origBg = card.style.background;
-                card.style.background = 'rgba(255, 165, 0, 0.2)'; // Orange tint for preview
+                card.classList.add('preview-pulse');
                 setTimeout(() => {
-                    card.style.background = origBg;
+                    card.classList.remove('preview-pulse');
                 }, 300);
             });
 

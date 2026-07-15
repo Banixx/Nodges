@@ -39,20 +39,21 @@ export type MappingFunction = z.infer<typeof MappingFunctionSchema>;
 export const VisualMappingSchema = z.object({
     source: z.string().optional(),
     field: z.string().optional(),
-    function: MappingFunctionSchema,
+    function: MappingFunctionSchema.optional(),
     domain: z.tuple([z.number(), z.number()]).optional(),
     range: z.union([
         z.tuple([z.number(), z.number()]),
         z.array(z.string()),
         z.array(z.number())
     ]).optional(),
-    palette: z.string().optional(),
+    palette: z.union([z.string(), z.array(z.string())]).optional(),
     params: z.record(z.any()).optional(),
-});
+    mapping: z.record(z.any()).optional(),
+}).passthrough();
 export type VisualMapping = z.infer<typeof VisualMappingSchema>;
 
 export const EntityVisualPresetSchema = z.object({
-    position: VisualMappingSchema.optional(),
+    position: z.any().optional(),
     positionX: VisualMappingSchema.optional(),
     positionY: VisualMappingSchema.optional(),
     positionZ: VisualMappingSchema.optional(),

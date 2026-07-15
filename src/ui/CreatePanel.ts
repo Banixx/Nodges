@@ -28,7 +28,6 @@ export class CreatePanel {
     private promptTextarea!: HTMLTextAreaElement;
     private generateBtn!: HTMLButtonElement;
     private statusText!: HTMLElement;
-    private interactionModeCheckbox!: HTMLInputElement;
     private chatLog!: HTMLDivElement;
     private clarificationHistory: {role: 'user'|'assistant', content: string}[] = [];
 
@@ -128,7 +127,6 @@ export class CreatePanel {
         }
 
         const keyDesc = document.createElement('p');
-        keyDesc.style.fontSize = '11px';
         keyDesc.style.color = 'var(--text-muted)';
         keyDesc.style.marginBottom = '8px';
         keyDesc.textContent = 'Dein Key wird im LocalStorage des Browsers gespeichert. Du bist dort verantwortlich. Ich empfehle grundsätzlich limitierte Keys zu verwenden. ';
@@ -137,7 +135,6 @@ export class CreatePanel {
         freeBtn.textContent = 'Free';
         freeBtn.className = 'action-button secondary';
         freeBtn.style.padding = '2px 6px';
-        freeBtn.style.fontSize = '10px';
         freeBtn.style.marginLeft = '5px';
         freeBtn.onclick = () => {
             this.providerSelect.value = 'openrouter';
@@ -158,7 +155,6 @@ export class CreatePanel {
         const providerLabel = document.createElement('label');
         providerLabel.textContent = 'Anbieter / Key-Herkunft:';
         providerLabel.style.display = 'block';
-        providerLabel.style.fontSize = '11px';
         providerLabel.style.color = 'var(--text-muted)';
         providerLabel.style.marginBottom = '4px';
         keyContent.appendChild(providerLabel);
@@ -172,7 +168,6 @@ export class CreatePanel {
         this.providerSelect.style.color = 'var(--text-color)';
         this.providerSelect.style.padding = '6px';
         this.providerSelect.style.borderRadius = '4px';
-        this.providerSelect.style.fontFamily = 'inherit';
 
         LLMService.PROVIDERS.forEach(provider => {
             const opt = document.createElement('option');
@@ -189,7 +184,6 @@ export class CreatePanel {
         const keyInputLabel = document.createElement('label');
         keyInputLabel.textContent = 'API Key:';
         keyInputLabel.style.display = 'block';
-        keyInputLabel.style.fontSize = '11px';
         keyInputLabel.style.color = 'var(--text-muted)';
         keyInputLabel.style.marginBottom = '4px';
         keyContent.appendChild(keyInputLabel);
@@ -262,7 +256,6 @@ export class CreatePanel {
         this.modelInput.style.color = 'var(--text-color)';
         this.modelInput.style.padding = '6px';
         this.modelInput.style.borderRadius = '4px';
-        this.modelInput.style.fontFamily = 'inherit';
         this.modelInput.style.boxSizing = 'border-box';
 
         this.modelDropdown = document.createElement('div');
@@ -336,7 +329,6 @@ export class CreatePanel {
         this.pipelineSelect.style.color = 'var(--text-color)';
         this.pipelineSelect.style.padding = '6px';
         this.pipelineSelect.style.borderRadius = '4px';
-        this.pipelineSelect.style.fontFamily = 'inherit';
 
         const pipelines = [
             { value: 'build10', label: 'Build 10 (Modulare Pipeline - Konfigurierbar)' },
@@ -364,16 +356,20 @@ export class CreatePanel {
 
         this.saveStepsToggle = document.createElement('input');
         this.saveStepsToggle.type = 'checkbox';
+        this.saveStepsToggle.className = 'nodges-toggle';
         this.saveStepsToggle.id = 'saveStepsToggle';
-        this.saveStepsToggle.checked = false; // standardmäßig deaktiviert
-        this.saveStepsToggle.style.cursor = 'pointer';
+        this.saveStepsToggle.checked = true; // standardmäßig aktiviert
 
         const toggleLabel = document.createElement('label');
         toggleLabel.htmlFor = 'saveStepsToggle';
-        toggleLabel.textContent = 'Zwischenschritte im Download-Ordner speichern';
-        toggleLabel.style.fontSize = '12px';
+        toggleLabel.textContent = 'Zwischenschritte speichern (Dev)';
         toggleLabel.style.cursor = 'pointer';
-        toggleLabel.style.color = 'var(--text-muted)';
+        toggleLabel.style.transition = 'color 0.2s';
+        toggleLabel.style.color = 'var(--text-color)'; // Init as checked
+
+        this.saveStepsToggle.addEventListener('change', () => {
+            toggleLabel.style.color = this.saveStepsToggle.checked ? 'var(--text-color)' : 'var(--text-muted)';
+        });
 
         toggleContainer.appendChild(this.saveStepsToggle);
         toggleContainer.appendChild(toggleLabel);
@@ -393,14 +389,12 @@ export class CreatePanel {
         b10Title.style.marginTop = '0';
         b10Title.style.marginBottom = '10px';
         b10Title.style.color = 'var(--accent-color)';
-        b10Title.style.fontSize = '12px';
         this.build10Container.appendChild(b10Title);
 
         // Grounding Dropdown
         const grLabel = document.createElement('label');
         grLabel.textContent = 'Grounding / Wissensquelle:';
         grLabel.style.display = 'block';
-        grLabel.style.fontSize = '11px';
         grLabel.style.marginBottom = '4px';
         grLabel.style.color = 'var(--text-muted)';
         this.build10Container.appendChild(grLabel);
@@ -412,7 +406,6 @@ export class CreatePanel {
         this.b10GroundingSelect.style.backgroundColor = 'rgba(0,0,0,0.3)';
         this.b10GroundingSelect.style.border = '1px solid rgba(255,255,255,0.1)';
         this.b10GroundingSelect.style.color = 'var(--text-color)';
-        this.b10GroundingSelect.style.fontSize = '11px';
         this.b10GroundingSelect.style.padding = '4px';
         this.b10GroundingSelect.style.borderRadius = '3px';
 
@@ -434,7 +427,6 @@ export class CreatePanel {
         const qaLabel = document.createElement('label');
         qaLabel.textContent = 'Qualitätssicherung:';
         qaLabel.style.display = 'block';
-        qaLabel.style.fontSize = '11px';
         qaLabel.style.marginBottom = '4px';
         qaLabel.style.color = 'var(--text-muted)';
         this.build10Container.appendChild(qaLabel);
@@ -446,7 +438,6 @@ export class CreatePanel {
         this.b10QaSelect.style.backgroundColor = 'rgba(0,0,0,0.3)';
         this.b10QaSelect.style.border = '1px solid rgba(255,255,255,0.1)';
         this.b10QaSelect.style.color = 'var(--text-color)';
-        this.b10QaSelect.style.fontSize = '11px';
         this.b10QaSelect.style.padding = '4px';
         this.b10QaSelect.style.borderRadius = '3px';
 
@@ -467,7 +458,6 @@ export class CreatePanel {
         const rtLabel = document.createElement('label');
         rtLabel.textContent = 'Bewertungsmethode (Beziehungsstärke):';
         rtLabel.style.display = 'block';
-        rtLabel.style.fontSize = '11px';
         rtLabel.style.marginBottom = '4px';
         rtLabel.style.color = 'var(--text-muted)';
         this.build10Container.appendChild(rtLabel);
@@ -478,7 +468,6 @@ export class CreatePanel {
         this.b10RatingSelect.style.backgroundColor = 'rgba(0,0,0,0.3)';
         this.b10RatingSelect.style.border = '1px solid rgba(255,255,255,0.1)';
         this.b10RatingSelect.style.color = 'var(--text-color)';
-        this.b10RatingSelect.style.fontSize = '11px';
         this.b10RatingSelect.style.padding = '4px';
         this.b10RatingSelect.style.borderRadius = '3px';
 
@@ -504,36 +493,36 @@ export class CreatePanel {
 
         genSection.appendChild(this.build10Container);
 
-        // --- Interaction Mode Switch ---
-        const modeLabel = document.createElement('label');
-        modeLabel.style.display = 'flex';
-        modeLabel.style.alignItems = 'center';
-        modeLabel.style.marginBottom = '15px';
-        modeLabel.style.color = 'var(--text-color)';
-        modeLabel.style.cursor = 'pointer';
-        modeLabel.style.fontSize = '12px';
-        modeLabel.title = 'Wechsle zwischen Autonomen Modus und Chat Modus';
+        // --- Interaction Mode Slidebutton ---
+        const genModeLabel = document.createElement('label');
+        genModeLabel.textContent = 'Interaktions-Modus (Generierung):';
+        genModeLabel.style.display = 'block';
+        genModeLabel.style.marginBottom = '5px';
+        genModeLabel.style.color = 'var(--text-muted)';
+        genSection.appendChild(genModeLabel);
 
-        this.interactionModeCheckbox = document.createElement('input');
-        this.interactionModeCheckbox.type = 'checkbox';
-        this.interactionModeCheckbox.style.marginRight = '8px';
-        this.interactionModeCheckbox.style.accentColor = 'var(--accent-color)';
-        this.interactionModeCheckbox.style.cursor = 'pointer';
-        this.interactionModeCheckbox.style.width = '16px';
-        this.interactionModeCheckbox.style.height = '16px';
-        
-        const modeText = document.createElement('span');
-        modeText.textContent = 'Modus: Auto (Autonome Expansion)';
-        
-        this.interactionModeCheckbox.onchange = () => {
-            modeText.textContent = this.interactionModeCheckbox.checked ? 'Modus: Chat (Interaktive Rückfragen)' : 'Modus: Auto (Autonome Expansion)';
-            this.resetChatState();
-        };
+        const interactionModeToggleContainer = document.createElement('div');
+        interactionModeToggleContainer.innerHTML = `
+            <div class="nodges-slide-toggle">
+                <input type="radio" name="createInteractionMode" id="cmode_auto" value="auto" checked>
+                <input type="radio" name="createInteractionMode" id="cmode_chat" value="chat">
+                <input type="radio" name="createInteractionMode" id="cmode_strict" value="strict">
+                
+                <label for="cmode_auto" title="Expandiert Ideen eigenständig">Auto-Pilot</label>
+                <label for="cmode_chat" title="Fragt bei Unklarheiten nach">Co-Pilot</label>
+                <label for="cmode_strict" title="Führt exakt nur Prompt aus">Strikt</label>
+                
+                <div class="nodges-slide-thumb"></div>
+            </div>
+        `;
+        genSection.appendChild(interactionModeToggleContainer);
 
-        modeLabel.appendChild(this.interactionModeCheckbox);
-        modeLabel.appendChild(modeText);
-        
-        genSection.appendChild(modeLabel);
+        const modeRadios = interactionModeToggleContainer.querySelectorAll('input[name="createInteractionMode"]');
+        modeRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                this.resetChatState();
+            });
+        });
 
         const promptLabel = document.createElement('label');
         promptLabel.textContent = 'Dein Prompt:';
@@ -567,7 +556,6 @@ export class CreatePanel {
         this.promptTextarea.style.marginBottom = '15px';
         this.promptTextarea.style.resize = 'vertical';
         this.promptTextarea.style.boxSizing = 'border-box';
-        this.promptTextarea.style.fontFamily = 'inherit';
         genSection.appendChild(this.promptTextarea);
 
         // --- RAG SECTION ---
@@ -585,10 +573,9 @@ export class CreatePanel {
         
         const pasteBtn = document.createElement('button');
         pasteBtn.className = 'action-button secondary';
-        pasteBtn.style.padding = '2px 8px';
-        pasteBtn.style.fontSize = '11px';
+        pasteBtn.style.padding = '4px 8px';
         pasteBtn.style.marginBottom = '5px';
-        pasteBtn.textContent = '📋 Paste';
+        pasteBtn.textContent = 'Paste';
         pasteBtn.onclick = async () => {
             try {
                 const text = await navigator.clipboard.readText();
@@ -622,8 +609,10 @@ export class CreatePanel {
         
         const loadUrlBtn = document.createElement('button');
         loadUrlBtn.className = 'action-button secondary';
-        loadUrlBtn.textContent = '🌐 Laden';
+        loadUrlBtn.textContent = 'Laden';
         loadUrlBtn.style.padding = '4px 10px';
+        loadUrlBtn.style.height = '30px';
+        this.urlInput.style.height = '30px';
         loadUrlBtn.onclick = async () => {
             const url = this.urlInput.value.trim();
             if (!url) return;
@@ -667,18 +656,18 @@ export class CreatePanel {
         this.ragTextarea.style.marginBottom = '15px';
         this.ragTextarea.style.resize = 'vertical';
         this.ragTextarea.style.boxSizing = 'border-box';
-        this.ragTextarea.style.fontFamily = 'inherit';
         genSection.appendChild(this.ragTextarea);
 
         this.generateBtn = document.createElement('button');
-        this.generateBtn.className = 'action-button';
-        this.generateBtn.textContent = ' Generieren & Hinzufügen';
+        this.generateBtn.className = 'action-button primary';
+        this.generateBtn.style.width = '100%';
+        this.generateBtn.style.padding = '8px';
+        this.generateBtn.textContent = 'Netzwerk Generieren';
         this.generateBtn.onclick = this.handleGenerate.bind(this);
         genSection.appendChild(this.generateBtn);
 
         this.statusText = document.createElement('div');
         this.statusText.style.marginTop = '15px';
-        this.statusText.style.fontSize = '12px';
         this.statusText.style.minHeight = '20px';
         genSection.appendChild(this.statusText);
 
@@ -707,7 +696,6 @@ export class CreatePanel {
         searchInput.style.color = 'var(--text-color)';
         searchInput.style.padding = '6px';
         searchInput.style.borderRadius = '4px';
-        searchInput.style.fontFamily = 'inherit';
         searchInput.style.boxSizing = 'border-box';
         searchSection.appendChild(searchInput);
 
@@ -717,7 +705,6 @@ export class CreatePanel {
         thresholdContainer.style.justifyContent = 'space-between';
         thresholdContainer.style.alignItems = 'center';
         thresholdContainer.style.marginBottom = '10px';
-        thresholdContainer.style.fontSize = '12px';
 
         const thresholdLabel = document.createElement('span');
         thresholdLabel.textContent = 'Minimale Aehnlichkeit: 0.50';
@@ -739,9 +726,10 @@ export class CreatePanel {
         searchSection.appendChild(thresholdContainer);
 
         const searchBtn = document.createElement('button');
-        searchBtn.className = 'action-button secondary';
-        searchBtn.textContent = '🔍 Suchen';
+        searchBtn.className = 'action-button primary';
+        searchBtn.textContent = 'Suchen';
         searchBtn.style.width = '100%';
+        searchBtn.style.padding = '8px';
         searchBtn.style.marginBottom = '10px';
         searchSection.appendChild(searchBtn);
 
@@ -819,7 +807,6 @@ export class CreatePanel {
                     const item = document.createElement('div');
                     item.style.padding = '4px 6px';
                     item.style.cursor = 'pointer';
-                    item.style.fontSize = '12px';
                     item.style.display = 'flex';
                     item.style.justifyContent = 'space-between';
                     item.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
@@ -877,7 +864,6 @@ export class CreatePanel {
             empty.textContent = 'Keine Modelle gefunden';
             empty.style.padding = '8px';
             empty.style.color = 'var(--text-muted)';
-            empty.style.fontSize = '12px';
             this.modelDropdown.appendChild(empty);
             return;
         }
@@ -888,7 +874,6 @@ export class CreatePanel {
                 const groupHeader = document.createElement('div');
                 groupHeader.textContent = title;
                 groupHeader.style.padding = '4px 8px';
-                groupHeader.style.fontSize = '10px';
                 groupHeader.style.textTransform = 'uppercase';
                 groupHeader.style.color = 'var(--text-muted)';
                 groupHeader.style.backgroundColor = 'rgba(0,0,0,0.2)';
@@ -903,7 +888,6 @@ export class CreatePanel {
                 opt.style.alignItems = 'center';
                 opt.style.padding = '6px 8px';
                 opt.style.cursor = 'pointer';
-                opt.style.fontSize = '13px';
                 opt.style.color = model.id === this.selectedModelId ? '#fff' : 'var(--text-color)';
                 opt.style.backgroundColor = model.id === this.selectedModelId ? 'rgba(52, 152, 219, 0.3)' : 'transparent';
                 
@@ -919,7 +903,6 @@ export class CreatePanel {
                     link.textContent = '↗';
                     link.title = 'Auf OpenRouter ansehen';
                     link.style.textDecoration = 'none';
-                    link.style.fontSize = '14px';
                     link.style.color = 'var(--text-muted)';
                     link.style.padding = '0 4px';
                     
@@ -1010,7 +993,8 @@ export class CreatePanel {
             return;
         }
 
-        const mode = this.interactionModeCheckbox.checked ? 'chat' : 'auto';
+        const modeRadio = document.querySelector('input[name="createInteractionMode"]:checked') as HTMLInputElement;
+        const mode = modeRadio ? modeRadio.value : 'auto';
         const provider = this.providerSelect.value as LLMProvider;
         const model = this.selectedModelId;
         const pipeline = this.pipelineSelect.value;
@@ -1121,17 +1105,35 @@ export class CreatePanel {
                     qualityAssurance: this.b10QaSelect.value as any,
                     ratingMethod: this.b10RatingSelect.value as any
                 };
+                
+                let gCode = 'K';
+                if (config.grounding === 'wikidata') gCode = 'W';
+                if (config.grounding === 'rag') gCode = 'R';
+                if (config.grounding === 'dedup') gCode = 'S';
+
+                let qCode = 'K';
+                if (config.qualityAssurance === 'critic') qCode = 'G';
+                if (config.qualityAssurance === 'human') qCode = 'H';
+
+                let bCode = 'F';
+                if (config.ratingMethod === 'taxonomy') bCode = 'T';
+                if (config.ratingMethod === 'embeddings') bCode = 'E';
+
+                const devPrefix = `B10_G${gCode}_Q${qCode}_B${bCode}`;
+
                 graphData = await LLMService.generateGraphDataBuild10(
                     prompt,
                     config,
                     provider,
                     model,
+                    saveSteps ? devPrefix : null,
                     onProgressWithLog,
                     (step: number, name: string, content: string, ext: string) => {
+                        // The download itself is triggered here ONLY if saveSteps is true, which is fine since the callback is only triggered if devPrefix is passed
                         if (saveSteps) {
                             const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
                             const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
-                            this.app.exportManager?.downloadFile(content, `${step}_${name}_${timestamp}.${ext}`, mime);
+                            this.app.exportManager?.downloadFile(content, `${devPrefix}_${step}_${name}_${timestamp}.${ext}`, mime);
                         }
                     }
                 );
@@ -1276,70 +1278,41 @@ export class CreatePanel {
                     }
 
                     // --- Auto-Save & Logging Feature ---
-                    try {
-                        if (dataToLoad && this.app?.currentGraphData && this.app?.exportManager) {
-                            this.setStatus('Graph geladen! Speichere in Projekt-Dateien...', 'info');
-                            const exportOptions: any = { 
-                                currentEntities: this.app.currentEntities || [],
-                                activeVisualMappings: this.app.visualMappingEngine?.getVisualMappings() || null,
-                                activeDataModel: this.app.currentGraphData.dataModel || null
-                            };
-                            const jsonStr = this.app.exportManager.exportNodgesJSON(this.app.currentGraphData, exportOptions);
-                            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-                            
-                            const filename = `AI_Generation_${timestamp}.json`;
-                            
-                            try {
-                                const response = await fetch('/api/save_graph', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ filename, content: jsonStr })
-                                });
-                                const responseText = await response.text();
-                                if (!response.ok || responseText.includes('<!DOCTYPE html>')) {
-                                    console.warn("Failed to save to server", responseText);
-                                    // Fallback to download if server save fails
-                                    this.app.exportManager.downloadFile(jsonStr, `Nodges_AutoSave_${timestamp}.json`, 'application/json');
-                                } else {
-                                    // Automatically add to available files list in UI without reload if possible
-                                    const filePanel = (this.app as any).uiManager?.panels?.get('file');
-                                    if (filePanel && filePanel.availableFiles) {
-                                        filePanel.availableFiles.push(`generated/${filename}`);
-                                        // Trigger a re-render of the file panel
-                                        const currentFiles = this.app.stateManager.state.loadedFiles || [];
-                                        this.app.stateManager.setLoadedFiles([...currentFiles]);
-                                    }
+                    if (!saveSteps) {
+                        // Wenn Dev Create DEAKTIVIERT ist: Nur ein normaler Download am Ende
+                        try {
+                            if (dataToLoad && this.app?.currentGraphData && this.app?.exportManager) {
+                                this.setStatus('Graph geladen! Speichere in Projekt-Dateien...', 'info');
+                                const exportOptions: any = { 
+                                    currentEntities: this.app.currentEntities || [],
+                                    activeVisualMappings: this.app.visualMappingEngine?.getVisualMappings() || null,
+                                    activeDataModel: this.app.currentGraphData.dataModel || null
+                                };
+                                const jsonStr = this.app.exportManager.exportNodgesJSON(this.app.currentGraphData, exportOptions);
+                                const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                                
+                                this.app.exportManager.downloadFile(jsonStr, `AI_Generation_${timestamp}.json`, 'application/json');
+                                
+                                // Optional: Update loaded files in UI panel (but no server save)
+                                const filePanel = (this.app as any).uiManager?.panels?.get('file');
+                                if (filePanel && filePanel.availableFiles) {
+                                    const currentFiles = this.app.stateManager.state.loadedFiles || [];
+                                    this.app.stateManager.setLoadedFiles([...currentFiles]);
                                 }
-                            } catch (e) {
-                                 // Fallback to download
-                                 this.app.exportManager.downloadFile(jsonStr, `Nodges_AutoSave_${timestamp}.json`, 'application/json');
-                            }
-                            
-                            // Log JSON
-                            generationLog.generatedNodes = dataToLoad?.data?.entities?.length || 0;
-                            generationLog.generatedEdges = dataToLoad?.data?.relationships?.length || 0;
-                            generationLog.responsePayloadSizeKB = dataToLoad ? (JSON.stringify(dataToLoad).length / 1024).toFixed(2) : "0";
-                            
-                            const logStr = JSON.stringify(generationLog, null, 2);
-                            
-                            // Save Log to server as well
-                            try {
-                                const logFilename = `AI_GenerationLog_${timestamp}.json`;
-                                const logResponse = await fetch('/api/save_graph', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ filename: logFilename, content: logStr })
-                                });
-                                const logResponseText = await logResponse.text();
-                                if (!logResponse.ok || logResponseText.includes('<!DOCTYPE html>')) {
-                                    this.app.exportManager.downloadFile(logStr, logFilename, 'application/json');
-                                }
-                            } catch(e) {
+                                
+                                // Log JSON export
+                                generationLog.generatedNodes = dataToLoad?.data?.entities?.length || 0;
+                                generationLog.generatedEdges = dataToLoad?.data?.relationships?.length || 0;
+                                generationLog.responsePayloadSizeKB = dataToLoad ? (JSON.stringify(dataToLoad).length / 1024).toFixed(2) : "0";
+                                const logStr = JSON.stringify(generationLog, null, 2);
                                 this.app.exportManager.downloadFile(logStr, `AI_GenerationLog_${timestamp}.json`, 'application/json');
                             }
+                        } catch (e) {
+                            console.warn('Auto-save or logging failed:', e);
                         }
-                    } catch (e) {
-                        console.warn('Auto-save or logging failed:', e);
+                    } else {
+                        // Wenn Dev Create AKTIV ist: Auto-Save wird übersprungen, da bereits alle Steps gedownloadet/gesaved wurden.
+                        this.setStatus('Graph geladen! (Auto-Save übersprungen wg. Dev Create)', 'info');
                     }
 
                     const nodeCount = dataToLoad?.data?.entities?.length || 0;
@@ -1481,7 +1454,6 @@ export class CreatePanel {
             labelInput.value = ent.label || '';
             labelInput.className = 'form-control';
             labelInput.style.flex = '1';
-            labelInput.style.fontSize = '12px';
             labelInput.style.padding = '3px';
             labelInput.style.backgroundColor = 'rgba(0,0,0,0.3)';
             labelInput.style.border = '1px solid rgba(255,255,255,0.1)';
@@ -1531,7 +1503,6 @@ export class CreatePanel {
 
             const connText = document.createElement('span');
             connText.textContent = `${rel.source} ➔ ${rel.target}`;
-            connText.style.fontSize = '11px';
             connText.style.color = 'var(--text-muted)';
             connText.style.width = '100px';
 
@@ -1539,7 +1510,6 @@ export class CreatePanel {
             labelInput.value = rel.label || '';
             labelInput.className = 'form-control';
             labelInput.style.flex = '1';
-            labelInput.style.fontSize = '12px';
             labelInput.style.padding = '3px';
             labelInput.style.backgroundColor = 'rgba(0,0,0,0.3)';
             labelInput.style.border = '1px solid rgba(255,255,255,0.1)';

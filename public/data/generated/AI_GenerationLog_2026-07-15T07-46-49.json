@@ -1,0 +1,29 @@
+{
+  "timestampStart": "2026-07-15T07:46:24.163Z",
+  "prompt": "sonnensystem",
+  "ragText": null,
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "pipeline": "build10",
+  "systemInfo": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0",
+    "language": "de",
+    "screenResolution": "1920x1080",
+    "viewport": "1920x921",
+    "appVersion": "Nodges Build 6"
+  },
+  "steps": [
+    {
+      "time": "2026-07-15T07:46:24.163Z",
+      "offsetMs": 1,
+      "message": "Schritt 2/4: Generiere Netzwerk-Struktur..."
+    }
+  ],
+  "timestampEnd": "2026-07-15T07:46:47.804Z",
+  "durationMs": 23641,
+  "durationSec": "23.64",
+  "status": "success",
+  "generatedNodes": 10,
+  "generatedEdges": 10,
+  "responsePayloadSizeKB": "5.78"
+}
