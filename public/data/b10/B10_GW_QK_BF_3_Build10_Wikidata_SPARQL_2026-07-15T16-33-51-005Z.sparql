@@ -1,1 +1,0 @@
-SELECT ?sun ?sunLabel ?planet ?planetLabel WHERE { ?sun wdt:P31 wd:Q544; wdt:P361 ?planet. SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en,de". } } LIMIT 50

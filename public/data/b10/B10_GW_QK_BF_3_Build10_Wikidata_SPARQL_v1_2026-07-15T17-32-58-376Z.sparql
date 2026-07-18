@@ -1,1 +1,0 @@
-SELECT ?item ?itemLabel WHERE { ?item wdt:P361 wd:Q544. SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en,de". } } LIMIT 50

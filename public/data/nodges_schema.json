@@ -200,7 +200,8 @@
                   {
                     "type": "object",
                     "properties": {
-                      "position": {
+                      "position": {},
+                      "positionX": {
                         "type": "object",
                         "properties": {
                           "source": {
@@ -267,50 +268,58 @@
                             ]
                           },
                           "palette": {
-                            "type": "string"
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            ]
                           },
                           "params": {
                             "type": "object",
                             "additionalProperties": {}
+                          },
+                          "mapping": {
+                            "type": "object",
+                            "additionalProperties": {}
                           }
                         },
-                        "required": [
-                          "function"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "positionX": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "additionalProperties": true
                       },
                       "positionY": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "positionZ": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "size": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "color": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "geometry": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "glow": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "animation": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "attraction": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "repulsion": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "inertia": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       }
                     },
                     "additionalProperties": true
@@ -319,34 +328,34 @@
                     "type": "object",
                     "properties": {
                       "thickness": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "color": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "curvature": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "glow": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "opacity": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "animation": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "animation_flow": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "animation_sequential": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "animation_pulse": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       },
                       "animation_segments": {
-                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/position"
+                        "$ref": "#/definitions/GraphDataSchema/properties/visualMappings/properties/defaultPresets/additionalProperties/anyOf/0/properties/positionX"
                       }
                     },
                     "additionalProperties": true

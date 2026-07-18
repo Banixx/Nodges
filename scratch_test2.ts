@@ -1,17 +1,3 @@
-import { z } from 'zod';
-import { zodToJsonSchema } from 'zod-to-json-schema';
-
-const PropertySchemaSchema = z.object({
-    type: z.enum(['continuous', 'categorical', 'vector', 'spatial', 'temporal', 'boolean'])
-});
-
-const DataModelSchema = z.object({
-    properties: z.record(PropertySchemaSchema).optional().default({}),
-    entities: z.record(z.object({
-        properties: z.record(PropertySchemaSchema).optional()
-    }).passthrough()).optional(),
-}).passthrough();
-
 function makeSchemaStrict(schema: any): any {
     if (typeof schema !== 'object' || schema === null) return schema;
     const newSchema = { ...schema };
@@ -19,7 +5,12 @@ function makeSchemaStrict(schema: any): any {
     delete newSchema.default;
     
     if (newSchema.type === 'object') {
-        newSchema.additionalProperties = false;
+        if (newSchema.additionalProperties === true || newSchema.additionalProperties === undefined) {
+            newSchema.additionalProperties = false;
+        } else if (typeof newSchema.additionalProperties === 'object') {
+            newSchema.additionalProperties = makeSchemaStrict(newSchema.additionalProperties);
+        }
+
         if (newSchema.properties) {
             for (const key in newSchema.properties) {
                 newSchema.properties[key] = makeSchemaStrict(newSchema.properties[key]);
@@ -37,8 +28,5 @@ function makeSchemaStrict(schema: any): any {
     return newSchema;
 }
 
-const originalSchema = zodToJsonSchema(DataModelSchema);
-console.log("Original additionalProperties on entities:", originalSchema.properties?.entities?.additionalProperties);
-
-const strictSchema = makeSchemaStrict(originalSchema);
-console.log("Strict additionalProperties on entities:", strictSchema.properties?.entities?.additionalProperties);
+const inputSchema = {"type":"object","properties":{"properties":{"type":"object","additionalProperties":{"type":"object","properties":{},"additionalProperties":false}}},"required":["properties"],"additionalProperties":false};
+console.log(JSON.stringify(makeSchemaStrict(inputSchema), null, 2));

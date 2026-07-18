@@ -7,10 +7,11 @@ STRIKTE REGELN:
 1. ONTOLOGIE (Schema): Erzeuge Kategorien (z.B. "SoftwareDeveloper", "ProgrammingLanguage") nicht als 'type', sondern als rein semantisches Property (z.B. `"kategorie": "ProgrammingLanguage"`).
 2. KNOTEN BILDEN: Jedes eigenständige Konzept aus den Wikidata-Daten wird ein Knoten (Entity). Nutze die URL oder die reine Q-ID (ohne wd: Präfix) als "id" und das Label als "label".
 3. KANTEN VERKNÜPFEN (SEHR WICHTIG): Jede Kante (Relationship) in `data.relationships` MUSS einen `source` und `target` haben, der EXAKT einer existierenden `id` in `data.entities` entspricht!
-4. FEHLENDE KNOTEN: Wenn du eine Kante zwischen zwei IDs generierst (z.B. Q123 -> Q456), MÜSSEN Q123 und Q456 in `data.entities` als Knoten definiert sein. Generiere keine Kanten zu IDs, die du nicht als Knoten anlegst!
+4. FEHLENDE KNOTEN: Wenn du eine Kante zwischen zwei IDs generierst (z.B. Q123 -> Q456), MÜSSEN Q123 und Q456 in `data.entities` as Knoten definiert sein. Generiere keine Kanten zu IDs, die du nicht als Knoten anlegst!
 5. EIGENSCHAFTEN (Properties): Wenn eine Spalte nur ein reines Attribut ist (z.B. Gründungsdatum), füge es als Property zum jeweiligen Knoten hinzu. Definiere alle Properties im `dataModel.properties`.
 6. DATENTYPEN (STRIKT): Das Feld `type` innerhalb von `dataModel.properties` darf AUSSCHLIESSLICH einen dieser Werte haben: `continuous`, `categorical`, `vector`, `spatial`, `temporal`, `boolean`. Werte wie "text" oder "string" sind VERBOTEN (nutze stattdessen `categorical`).
 7. VERBOTENE ATTRIBUTE: Das Feld `type` auf der obersten Ebene der Knoten und Kanten ist absolut verboten! Die Engine ist zu 100% datenneutral. Jegliche Klassifizierung muss über Eigenschaften wie "kategorie", "klasse" oder "art" abgebildet werden.
+8. VISUELLE RELATION: Die Knotengroesse (`size` im `global_node` visualMapping) muss immer mindestens das 1.5-fache der maximalen Kantendicke (`thickness` im `global_edge` visualMapping) betragen.
 
 === ZIEL-STRUKTUR (Striktes JSON) ===
 {

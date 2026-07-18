@@ -1,13 +1,11 @@
-import { readFileSync } from 'fs';
-import { GraphDataSchema } from './src/types.ts';
+import { DataParser } from './src/core/DataParser';
+import fs from 'fs';
 
-const fileContent = readFileSync('./public/data/b10/b10_none_none_llm_2026-07-15T07-25-55-666Z_06_raw_graph.json', 'utf8');
-const data = JSON.parse(fileContent);
+const data = JSON.parse(fs.readFileSync('./public/data/b6/1_SingleStep_Graph_2026-07-17T08-20-17.json', 'utf-8'));
 
-const result = GraphDataSchema.safeParse(data);
-if (!result.success) {
-    console.log("Validation failed:");
-    console.log(JSON.stringify(result.error.format(), null, 2));
-} else {
-    console.log("Validation successful!");
+try {
+    DataParser.parse(data);
+    console.log("Success");
+} catch (e: any) {
+    console.error("Error:", e.message);
 }

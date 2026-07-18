@@ -1,0 +1,450 @@
+{
+  "system": "sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Darstellung eines Sonnensystems",
+    "competencyQuestions": [
+      "Welche Planeten umkreisen die Sonne?",
+      "Welche Abstände haben die Planeten von der Sonne?"
+    ],
+    "apiResponse": {
+      "id": "gen-1784276398-u9XndO4T6ESJRwxcergt",
+      "created": 1784276398,
+      "model": "morph/morph-v3-large",
+      "usage": {
+        "prompt_tokens": 5433,
+        "completion_tokens": 2236,
+        "total_tokens": 7669,
+        "cost": 0.0091381,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0091381,
+          "upstream_inference_prompt_cost": 0.0048897,
+          "upstream_inference_completions_cost": 0.0042484
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "SonnenSystem": {
+        "properties": {
+          "planetCount": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "position": {
+            "type": "spatial"
+          }
+        }
+      },
+      "Planet": {
+        "properties": {
+          "distanceToSun": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "orbit": {
+            "type": "spatial"
+          },
+          "size": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "color": {
+            "type": "categorical"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      },
+      "Kern": {
+        "properties": {
+          "strength": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "color": {
+            "type": "categorical"
+          },
+          "position": {
+            "type": "spatial"
+          }
+        }
+      },
+      "Kant": {
+        "properties": {
+          "strength": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "color": {
+            "type": "categorical"
+          },
+          "type": {
+            "type": "categorical"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "orbit": {
+        "properties": {}
+      },
+      "KernOrbit": {
+        "properties": {}
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "unique_id_1",
+        "type": "SonnenSystem",
+        "label": "SonnenSystem_1",
+        "planetCount": 8,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "unique_id_2",
+        "type": "Planet",
+        "label": "Merkur",
+        "distanceToSun": 58,
+        "orbit": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "size": 5,
+        "color": "orange",
+        "position": {
+          "x": 0.11,
+          "y": 0.18,
+          "z": 0
+        }
+      },
+      {
+        "id": "unique_id_3",
+        "type": "Planet",
+        "label": "Venus",
+        "distanceToSun": 108,
+        "orbit": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "size": 8,
+        "color": "yellow",
+        "position": {
+          "x": -0.2,
+          "y": 0.34,
+          "z": 0
+        }
+      },
+      {
+        "id": "unique_id_4",
+        "type": "Planet",
+        "label": "Erde",
+        "distanceToSun": 150,
+        "orbit": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "size": 9,
+        "color": "blue",
+        "position": {
+          "x": -0.55,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "unique_id_5",
+        "type": "Planet",
+        "label": "Mars",
+        "distanceToSun": 228,
+        "orbit": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "size": 7,
+        "color": "red",
+        "position": {
+          "x": -0.41,
+          "y": -0.72,
+          "z": 0
+        }
+      },
+      {
+        "id": "unique_id_6",
+        "type": "Planet",
+        "label": "Jupiter",
+        "distanceToSun": 778,
+        "orbit": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "size": 11,
+        "color": "orange",
+        "position": {
+          "x": 1.41,
+          "y": -2.45,
+          "z": 0
+        }
+      },
+      {
+        "id": "unique_id_7",
+        "type": "Planet",
+        "label": "Saturn",
+        "distanceToSun": 1434,
+        "orbit": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "size": 10,
+        "color": "gold",
+        "position": {
+          "x": 5.21,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "unique_id_8",
+        "type": "Planet",
+        "label": "Uranus",
+        "distanceToSun": 2871,
+        "orbit": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "size": 8,
+        "color": "lightblue",
+        "position": {
+          "x": 5.22,
+          "y": 9.04,
+          "z": 0
+        }
+      },
+      {
+        "id": "unique_id_9",
+        "type": "Planet",
+        "label": "Neptun",
+        "distanceToSun": 4504,
+        "orbit": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "size": 7,
+        "color": "darkblue",
+        "position": {
+          "x": -8.19,
+          "y": 14.18,
+          "z": 0
+        }
+      },
+      {
+        "id": "unique_id_10",
+        "type": "Kern",
+        "label": "Kern",
+        "strength": 100,
+        "color": "proton",
+        "position": {
+          "x": -3.64,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "unique_id_11",
+        "type": "Kern",
+        "label": "Kern",
+        "strength": 50,
+        "color": "proton",
+        "position": {
+          "x": -2,
+          "y": -3.46,
+          "z": 0
+        }
+      },
+      {
+        "id": "unique_id_12",
+        "type": "simple",
+        "label": "Kant",
+        "strength": 20,
+        "color": "proton",
+        "position": {
+          "x": 10,
+          "y": -17.32,
+          "z": 5
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel_1",
+        "type": "orbit",
+        "source": "unique_id_2",
+        "target": "unique_id_1",
+        "label": "Merkur orbitiert um das System"
+      },
+      {
+        "id": "rel_2",
+        "type": "orbit",
+        "source": "unique_id_3",
+        "target": "unique_id_1",
+        "label": "Venus orbitiert um das System"
+      },
+      {
+        "id": "rel_3",
+        "type": "orbit",
+        "source": "unique_id_4",
+        "target": "unique_id_1",
+        "label": "Erde orbitiert um das System"
+      },
+      {
+        "id": "rel_4",
+        "type": "orbit",
+        "source": "unique_id_5",
+        "target": "unique_id_1",
+        "label": "Mars orbitiert um das System"
+      },
+      {
+        "id": "rel_5",
+        "type": "orbit",
+        "source": "unique_id_6",
+        "target": "unique_id_1",
+        "label": "Jupiter orbitiert um das System"
+      },
+      {
+        "id": "rel_6",
+        "type": "orbit",
+        "source": "unique_id_7",
+        "target": "unique_id_1",
+        "label": "Saturn orbitiert um das System"
+      },
+      {
+        "id": "rel_7",
+        "type": "orbit",
+        "source": "unique_id_8",
+        "target": "unique_id_1",
+        "label": "Uranus orbitiert um das System"
+      },
+      {
+        "id": "rel_8",
+        "type": "orbit",
+        "source": "unique_id_9",
+        "target": "unique_id_1",
+        "label": "Neptun orbitiert um das System"
+      },
+      {
+        "id": "rel_9",
+        "type": "KernOrbit",
+        "source": "unique_id_10",
+        "target": "unique_id_11",
+        "label": "KernOrbit"
+      },
+      {
+        "id": "rel_10",
+        "type": "KernOrbit",
+        "source": "unique_id_11",
+        "target": "unique_id_10",
+        "label": "KernOrbit"
+      },
+      {
+        "id": "rel_11",
+        "type": "KernOrbit",
+        "source": "unique_id_10",
+        "target": "unique_id_10",
+        "label": "KernOrbit"
+      },
+      {
+        "id": "rel_12",
+        "type": "KernOrbit",
+        "source": "unique_id_10",
+        "target": "unique_id_11",
+        "label": "KernOrbit"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "distanceToSun",
+          "function": "linear",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "color": {
+          "source": "kategorie",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        },
+        "position": {
+          "source": "position",
+          "function": "constant"
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "value": 0.1
+          }
+        }
+      }
+    }
+  }
+}

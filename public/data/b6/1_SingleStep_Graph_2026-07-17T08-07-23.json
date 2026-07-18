@@ -1,0 +1,51 @@
+{
+  "system": "sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "",
+    "competencyQuestions": [],
+    "apiResponse": {
+      "id": "gen-1784275639-B0bEThTeaXIvLXVNBVPS",
+      "created": 1784275639,
+      "model": "morph/morph-v3-large",
+      "usage": {
+        "prompt_tokens": 5433,
+        "completion_tokens": 127,
+        "total_tokens": 5560,
+        "cost": 0.005131,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.005131,
+          "upstream_inference_prompt_cost": 0.0048897,
+          "upstream_inference_completions_cost": 0.0002413
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {},
+    "relationships": {}
+  },
+  "data": {
+    "entities": [],
+    "relationships": []
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {},
+      "global_edge": {}
+    }
+  }
+}

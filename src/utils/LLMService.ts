@@ -3,6 +3,7 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import { deduplicateGraph } from './VectorStoreManager';
 
 import build6PromptRaw from '../prompts/build_6_prompt.md?raw';
+import build10PromptRaw from '../prompts/build_10_prompt.md?raw';
 import build10KeywordPromptRaw from '../prompts/build_10_keyword_prompt.md?raw';
 import build10SparqlPromptRaw from '../prompts/build_10_sparql_prompt.md?raw';
 import build10ExpansionPromptRaw from '../prompts/build_10_expansion_prompt.md?raw';
@@ -239,7 +240,13 @@ export class LLMService {
         delete newSchema.default;
         
         if (newSchema.type === 'object') {
-            newSchema.additionalProperties = false;
+            // Fix: Do not set additionalProperties to false if it's already an object (z.record)
+            if (newSchema.additionalProperties === true || newSchema.additionalProperties === undefined) {
+                newSchema.additionalProperties = false;
+            } else if (typeof newSchema.additionalProperties === 'object') {
+                newSchema.additionalProperties = this.makeSchemaStrict(newSchema.additionalProperties);
+            }
+
             if (newSchema.properties) {
                 for (const key in newSchema.properties) {
                     newSchema.properties[key] = this.makeSchemaStrict(newSchema.properties[key]);
@@ -312,9 +319,8 @@ export class LLMService {
                             { role: 'system', content: systemPrompt },
                             { role: 'user', content: userPrompt }
                         ],
-                        response_format: jsonSchema 
-                            ? { type: 'json_schema', json_schema: { name: 'GraphData', strict: true, schema: jsonSchema } }
-                            : { type: 'json_object' }
+                        // Use json_object because json_schema strictly forbids dynamic properties (which Nodges relies on)
+                        response_format: { type: 'json_object' }
                     })
                 });
 
@@ -406,9 +412,8 @@ export class LLMService {
                             { role: 'system', content: systemPrompt },
                             { role: 'user', content: userPrompt }
                         ],
-                        response_format: jsonSchema 
-                            ? { type: 'json_schema', json_schema: { name: 'GraphData', strict: true, schema: jsonSchema } }
-                            : { type: 'json_object' }
+                        // Use json_object because json_schema strictly forbids dynamic properties (which Nodges relies on)
+                        response_format: { type: 'json_object' }
                     })
                 });
 
@@ -723,7 +728,7 @@ Dein JSON MUSS exakt diese Top-Level-Struktur haben:
   },
   "dataModel": {
     "entities": {
-      "<TypName>": { "properties": { "<propName>": { "type": "continuous", "range": [0, 100] } } }
+      "<TypName>": { "properties": { "<propName>": { "type": "continuous", "range": [0, 100] }, "position": { "type": "spatial" } } }
     },
     "relationships": {
       "<KantenTyp>": { "properties": {} }
@@ -731,7 +736,7 @@ Dein JSON MUSS exakt diese Top-Level-Struktur haben:
   },
   "data": {
     "entities": [
-      { "id": "unique_id", "type": "<TypName>", "label": "...", "<propName>": 42 }
+      { "id": "unique_id", "type": "<TypName>", "label": "...", "<propName>": 42, "position": { "x": 0, "y": 0, "z": 0 } }
     ],
     "relationships": [
       { "id": "rel_1", "type": "<KantenTyp>", "source": "id_a", "target": "id_b", "label": "..." }
@@ -742,7 +747,8 @@ Dein JSON MUSS exakt diese Top-Level-Struktur haben:
       "global_node": {
         "size": { "source": "<propName>", "function": "linear", "range": [0.5, 3] },
         "color": { "source": "kategorie", "function": "categorical" },
-        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "sphere" } }
+        "geometry": { "source": "constant", "function": "constant", "params": { "geometry": "sphere" } },
+        "position": { "source": "position", "function": "constant" }
       },
       "global_edge": {
         "color": { "source": "type", "function": "categorical" },
@@ -925,6 +931,7 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         await this._saveDebugFile(`debug_build7_step5_prompt_${Date.now()}.md`, `SYSTEM:\n${mappingSystemPrompt}\n\nUSER:\n${mappingUserPrompt}`);
         
         const finalGraphData = await this._executeLLMCall(mappingSystemPrompt, mappingUserPrompt, provider, model);
+        
         await this._saveDebugFile(`debug_build7_step5_result_${Date.now()}.json`, finalGraphData);
         
         if (onStepComplete) onStepComplete(6, "Generiertes_Graph_JSON", JSON.stringify(finalGraphData, null, 2), "json");
@@ -1176,10 +1183,10 @@ USER ANWEISUNG: ${prompt}
 
         // Step 2: JSON Generierung
         if (onProgress) onProgress('Schritt 2/4: Generiere Netzwerk-Struktur...');
-        let systemPrompt = build6PromptRaw;
+        let systemPrompt = build10PromptRaw;
         
         if (!systemPrompt) {
-            throw new Error(`Konnte Prompt-Datei nicht laden: public/prompts/build_6_prompt.md (Raw Import fehlgeschlagen)`);
+            throw new Error(`Konnte Prompt-Datei nicht laden: public/prompts/build_10_prompt.md (Raw Import fehlgeschlagen)`);
         }
 
         if (config.ratingMethod === 'taxonomy') {
@@ -1215,7 +1222,7 @@ Schaetze die Beziehungsstaerken ('strength') frei auf einer Skala von 0 bis 100.
   },
   "dataModel": {
     "entities": {
-      "Concept": { "properties": { "importance": { "type": "continuous", "range": [0, 100] } } }
+      "Concept": { "properties": { "importance": { "type": "continuous", "range": [0, 100] }, "position": { "type": "spatial" } } }
     },
     "relationships": {
       "related": { "properties": { "strength": { "type": "continuous", "range": [0, 100] } } }
@@ -1223,7 +1230,7 @@ Schaetze die Beziehungsstaerken ('strength') frei auf einer Skala von 0 bis 100.
   },
   "data": {
     "entities": [
-      { "id": "e1", "type": "Concept", "label": "...", "importance": 80 }
+      { "id": "e1", "type": "Concept", "label": "...", "importance": 80, "position": { "x": 0, "y": 0, "z": 0 } }
     ],
     "relationships": [
       { "id": "r1", "type": "related", "source": "e1", "target": "e2", "label": "...", "strength": 60 }
@@ -1232,7 +1239,8 @@ Schaetze die Beziehungsstaerken ('strength') frei auf einer Skala von 0 bis 100.
   "visualMappings": {
     "defaultPresets": {
       "global_node": {
-        "size": { "source": "importance", "function": "linear", "range": [0.5, 3] }
+        "size": { "source": "importance", "function": "linear", "range": [0.5, 3] },
+        "position": { "source": "position", "function": "constant" }
       },
       "global_edge": {
         "thickness": { "source": "strength", "function": "linear", "range": [0.1, 1.5] }
@@ -1394,48 +1402,66 @@ Gib ausschliesslich das korrigierte JSON-Objekt zurueck, ohne Erklaerungen oder 
             }
         }
 
-        if (onProgress) onProgress(`Schritt 1/2: Generiere SPARQL Deep-Dive für ${nodeLabel} (${qId})...`);
         const expansionSystemPrompt = build10ExpansionPromptRaw || '';
+        let currentSparqlUserPrompt = `Nutzer wünscht einen Deep Dive für den Knoten "${nodeLabel}" mit der ID ${qId}. Erstelle die Abfrage.`;
         
-        const sparqlUserPrompt = `Nutzer wünscht einen Deep Dive für den Knoten "${nodeLabel}" mit der ID ${qId}. Erstelle die Abfrage.`;
-        
-        const sparqlData: any = await this._executeLLMCall(expansionSystemPrompt, sparqlUserPrompt, provider, model);
-        const sparqlQuery = sparqlData.query || sparqlData.sparql;
-        
-        if (!sparqlQuery) {
-            throw new Error('Das LLM hat keinen validen SPARQL-Code generiert.');
-        }
-
-        if (onProgress) onProgress('Schritt 2/2: Lade Live-Daten für Deep Dive...');
-        const WIKIDATA_ENDPOINT = 'https://query.wikidata.org/sparql';
-        const response = await fetch(WIKIDATA_ENDPOINT, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/sparql-results+json',
-                'User-Agent': 'Nodges/Build-10 (localhost)'
-            },
-            body: new URLSearchParams({ query: sparqlQuery })
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Wikidata Server-Fehler: ${errorText.substring(0, 100)}`);
-        }
-
-        const rawWikidataResponse = await response.json();
+        let sparqlQuery = '';
+        let maxRetries = 2;
+        let attempt = 0;
+        let success = false;
         let groundingContext = '';
-        if (rawWikidataResponse.results && rawWikidataResponse.results.bindings && rawWikidataResponse.results.bindings.length > 0) {
-            const limitedBindings = rawWikidataResponse.results.bindings.slice(0, 100).map((b: any) => {
-                const clean: any = {};
-                for (const key in b) {
-                    clean[key] = b[key].value;
-                }
-                return clean;
+
+        while (attempt < maxRetries && !success) {
+            attempt++;
+            if (onProgress) onProgress(`Schritt 1/2: Generiere SPARQL Deep-Dive für ${nodeLabel} (Versuch ${attempt}/${maxRetries})...`);
+            
+            const sparqlData: any = await this._executeLLMCall(expansionSystemPrompt, currentSparqlUserPrompt, provider, model);
+            sparqlQuery = sparqlData.query || sparqlData.sparql;
+            
+            if (!sparqlQuery) {
+                currentSparqlUserPrompt += `\n\nFEHLER: Du hast kein valides JSON mit dem Key "query" zurückgegeben. Bitte korrigiere dein Format.`;
+                continue;
+            }
+
+            if (onProgress) onProgress(`Schritt 2/2: Lade Live-Daten für Deep Dive (Versuch ${attempt})...`);
+            const WIKIDATA_ENDPOINT = 'https://query.wikidata.org/sparql';
+            const response = await fetch(WIKIDATA_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Accept': 'application/sparql-results+json',
+                    'User-Agent': 'Nodges/Build-10 (localhost)'
+                },
+                body: new URLSearchParams({ query: sparqlQuery })
             });
-            groundingContext = `=== WIKIDATA DEEP-DIVE FAKTEN FÜR ${nodeLabel} (${qId}) ===\n${JSON.stringify(limitedBindings, null, 2)}`;
-        } else {
-            throw new Error('Wikidata hat für diesen Knoten keine zusätzlichen Daten gefunden.');
+
+            if (response.ok) {
+                const rawWikidataResponse = await response.json();
+                if (rawWikidataResponse.results && rawWikidataResponse.results.bindings) {
+                    if (rawWikidataResponse.results.bindings.length > 0) {
+                        const limitedBindings = rawWikidataResponse.results.bindings.slice(0, 100).map((b: any) => {
+                            const clean: any = {};
+                            for (const key in b) {
+                                clean[key] = b[key].value;
+                            }
+                            return clean;
+                        });
+                        groundingContext = `=== WIKIDATA DEEP-DIVE FAKTEN FÜR ${nodeLabel} (${qId}) ===\n${JSON.stringify(limitedBindings, null, 2)}`;
+                        success = true;
+                    } else {
+                        if (onProgress) onProgress(`Wikidata: 0 Ergebnisse. Fordere Korrektur an...`);
+                        currentSparqlUserPrompt += `\n\n=== LETZTER VERSUCH ===\nDeine generierte Query lief zwar fehlerfrei, gab aber exakt 0 Ergebnisse zurück. Überprüfe die Query.`;
+                    }
+                }
+            } else {
+                const errorText = await response.text();
+                if (onProgress) onProgress(`Wikidata: Syntax-Fehler. Fordere Korrektur an...`);
+                currentSparqlUserPrompt += `\n\n=== LETZTER VERSUCH ===\nDeine generierte Query erzeugte einen Syntax-Fehler auf dem Server: ${errorText.substring(0, 200)}. Bitte korrigiere die Query. Stelle sicher, dass du keine überflüssigen Klammern benutzt.`;
+            }
+        }
+
+        if (!success && !groundingContext) {
+            throw new Error(`Wikidata Server-Fehler oder leere Ergebnisse nach ${maxRetries} Versuchen.`);
         }
 
         if (onProgress) onProgress('Generiere neues Graph-JSON aus den Daten...');

@@ -1620,36 +1620,7 @@ export class MappingUI {
         header.onmouseover = () => header.style.background = 'rgba(255, 255, 255, 0.06)';
         header.onmouseout = () => header.style.background = 'rgba(255, 255, 255, 0.03)';
 
-        // Toggle Switch
-        const toggle = document.createElement('input');
-        toggle.type = 'checkbox';
-        toggle.checked = this.layoutEnabled;
-        toggle.style.cssText = `
-            appearance: none; width: 28px; height: 14px;
-            background: ${this.layoutEnabled ? 'rgba(255, 165, 0, 0.6)' : 'rgba(255, 255, 255, 0.15)'};
-            border-radius: 7px; position: relative; cursor: pointer;
-            transition: background 0.2s ease; flex-shrink: 0;
-        `;
-        // Thumb via box-shadow trick
-        const updateToggleStyle = () => {
-            toggle.style.background = toggle.checked ? 'rgba(255, 165, 0, 0.6)' : 'rgba(255, 255, 255, 0.15)';
-            toggle.style.boxShadow = toggle.checked
-                ? 'inset 16px 0 0 -4px rgba(255, 165, 0, 1)'
-                : 'inset -16px 0 0 -4px rgba(255, 255, 255, 0.5)';
-        };
-        updateToggleStyle();
-        toggle.addEventListener('change', (e) => {
-            e.stopPropagation();
-            this.layoutEnabled = toggle.checked;
-            updateToggleStyle();
-            updateControlsState();
-            // Sync with StateManager via global app
-            const app = typeof window !== 'undefined' ? (window as any).app : null;
-            if (app?.stateManager) {
-                app.stateManager.update({ layoutEnabled: this.layoutEnabled });
-            }
-        });
-        toggle.addEventListener('click', (e) => e.stopPropagation());
+        // Toggle Switch wurde als redundant entfernt, da automatisches Layout in App.ts deaktiviert wurde.
 
         // Label
         const label = document.createElement('span');
@@ -1678,11 +1649,11 @@ export class MappingUI {
             display: flex; align-items: center; justify-content: center;
             transition: all 0.2s ease; flex-shrink: 0;
         `;
-        applyBtn.onmouseover = () => { if (this.layoutEnabled) applyBtn.style.background = 'rgba(255, 165, 0, 0.4)'; };
+        applyBtn.onmouseover = () => { applyBtn.style.background = 'rgba(255, 165, 0, 0.4)'; };
         applyBtn.onmouseout = () => { applyBtn.style.background = 'rgba(255, 165, 0, 0.2)'; };
         applyBtn.addEventListener('click', async (e) => {
             e.stopPropagation();
-            if (!this.layoutEnabled || !this.layoutCallback) return;
+            if (!this.layoutCallback) return;
             applyBtn.textContent = '⏳';
             applyBtn.style.pointerEvents = 'none';
             try {
@@ -1704,14 +1675,13 @@ export class MappingUI {
             display: flex; align-items: center; justify-content: center;
             transition: all 0.2s ease; flex-shrink: 0;
         `;
-        stopBtn.onmouseover = () => { if (this.layoutEnabled) stopBtn.style.background = 'rgba(255, 80, 80, 0.3)'; };
+        stopBtn.onmouseover = () => { stopBtn.style.background = 'rgba(255, 80, 80, 0.3)'; };
         stopBtn.onmouseout = () => { stopBtn.style.background = 'rgba(255, 80, 80, 0.15)'; };
         stopBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if (this.layoutStopCallback) this.layoutStopCallback();
         });
 
-        header.appendChild(toggle);
         header.appendChild(label);
         header.appendChild(arrow);
         header.appendChild(applyBtn);
@@ -1812,20 +1782,7 @@ export class MappingUI {
             arrow.textContent = this.layoutExpanded ? '▾' : '▸';
         });
 
-        // Enable/Disable helper
-        const updateControlsState = () => {
-            const opacity = this.layoutEnabled ? '1' : '0.4';
-            const events = this.layoutEnabled ? 'auto' : 'none';
-            applyBtn.style.opacity = opacity;
-            applyBtn.style.pointerEvents = events;
-            stopBtn.style.opacity = opacity;
-            stopBtn.style.pointerEvents = events;
-            algoSelect.style.opacity = opacity;
-            algoSelect.style.pointerEvents = events;
-            paramContainer.style.opacity = opacity;
-            paramContainer.style.pointerEvents = events;
-        };
-        updateControlsState();
+
 
         section.appendChild(header);
         section.appendChild(details);
@@ -1985,15 +1942,17 @@ export class MappingUI {
         // 6. Check for missing visualization positions (Fallback warning)
         const isEntityTab = this.currentType === 'global_node' || (this.entities.length > 0 && this.entities[0].type === this.currentType);
         if (isEntityTab && !activeProps.has('position') && !activeProps.has('positionX') && !activeProps.has('positionY') && !activeProps.has('positionZ')) {
-            const positionItem = this.rightColumn.querySelector('.mapping-item.right[data-prop="position"]');
+            const positionItem = this.rightColumn.querySelector('.mapping-item.right[data-prop="position"]') as HTMLElement;
             if (positionItem) {
-                positionItem.classList.add('warning-mapping');
+                positionItem.style.border = '1px solid rgba(255, 50, 50, 0.8)';
+                positionItem.style.boxShadow = '0 0 10px rgba(255, 50, 50, 0.4)';
             }
         } else {
             // Remove warning if mapped
-            const positionItem = this.rightColumn.querySelector('.mapping-item.right[data-prop="position"]');
+            const positionItem = this.rightColumn.querySelector('.mapping-item.right[data-prop="position"]') as HTMLElement;
             if (positionItem) {
-                positionItem.classList.remove('warning-mapping');
+                positionItem.style.border = '';
+                positionItem.style.boxShadow = '';
             }
         }
 

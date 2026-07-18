@@ -1,0 +1,580 @@
+{
+  "system": "sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Interaktive 3D/4D-Visualisierung des Sonnensystems: Beziehungen zwischen Himmelskörpern in Bezug auf Zugehörigkeit, physikalische Eigenschaften und Dynamik.",
+    "apiResponse": {
+      "id": "gen-1784301004-LAqu71aiT2PXQboFOAOT",
+      "created": 1784301004,
+      "model": "morph/morph-v3-large",
+      "usage": {
+        "prompt_tokens": 1988,
+        "completion_tokens": 3045,
+        "total_tokens": 5033,
+        "cost": 0.0075747,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0075747,
+          "upstream_inference_prompt_cost": 0.0017892,
+          "upstream_inference_completions_cost": 0.0057855
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "group": {
+        "properties": {
+          "gruppierung": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Concept": {
+        "properties": {
+          "importance": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "position": {
+            "type": "spatial"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "related": {
+        "properties": {
+          "strength": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e1",
+        "label": "Sonne",
+        "importance": 100,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "e2",
+        "label": "Erde",
+        "importance": 80,
+        "position": {
+          "x": 5,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "e3",
+        "label": "Mars",
+        "importance": 65,
+        "position": {
+          "x": 8,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "e4",
+        "label": "Jupiter",
+        "importance": 95,
+        "position": {
+          "x": 15,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "e5",
+        "label": "Saturn",
+        "importance": 90,
+        "position": {
+          "x": 20,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "e6",
+        "label": "Pluto",
+        "importance": 30,
+        "position": {
+          "x": 35,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "e7",
+        "label": "Mercurius",
+        "importance": 50,
+        "position": {
+          "x": 2.5,
+          "y": 0,
+          "z": -2.5
+        }
+      },
+      {
+        "id": "e8",
+        "label": "Venus",
+        "importance": 55,
+        "position": {
+          "x": 3.5,
+          "y": 0,
+          "z": 2.5
+        }
+      },
+      {
+        "id": "e9",
+        "label": "Neptun",
+        "importance": 80,
+        "position": {
+          "x": 30,
+          "y": 0,
+          "z": 5
+        }
+      },
+      {
+        "id": "e10",
+        "label": "Uranus",
+        "importance": 75,
+        "position": {
+          "x": 25,
+          "y": 0,
+          "z": 5
+        }
+      },
+      {
+        "id": "e11",
+        "label": "Mond",
+        "importance": 60,
+        "position": {
+          "x": 5,
+          "y": 0.1,
+          "z": 0
+        }
+      },
+      {
+        "id": "e12",
+        "label": "Europa",
+        "importance": 45,
+        "position": {
+          "x": 15,
+          "y": 0.2,
+          "z": -0.5
+        }
+      },
+      {
+        "id": "e13",
+        "label": "Titan",
+        "importance": 60,
+        "position": {
+          "x": 20.5,
+          "y": -0.1,
+          "z": 0.5
+        }
+      },
+      {
+        "id": "e14",
+        "label": "Deimos",
+        "importance": 35,
+        "position": {
+          "x": 8,
+          "y": 0.1,
+          "z": 0.1
+        }
+      },
+      {
+        "id": "e15",
+        "label": "Phobos",
+        "importance": 35,
+        "position": {
+          "x": 8,
+          "y": 0.1,
+          "z": -0.1
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "r1",
+        "source": "e1",
+        "target": "e2",
+        "label": "hat Mond",
+        "strength": 25
+      },
+      {
+        "id": "r2",
+        "source": "e1",
+        "target": "e3",
+        "label": "hat Mond",
+        "strength": 20
+      },
+      {
+        "id": "r3",
+        "source": "e1",
+        "target": "e4",
+        "label": "hat Mond",
+        "strength": 110
+      },
+      {
+        "id": "r4",
+        "source": "e1",
+        "target": "e5",
+        "label": "hat Mond",
+        "strength": 100
+      },
+      {
+        "id": "r5",
+        "source": "e1",
+        "target": "e6",
+        "label": "hat Mond",
+        "strength": 15
+      },
+      {
+        "id": "r6",
+        "source": "e1",
+        "target": "e7",
+        "label": "hat Mond",
+        "strength": 75
+      },
+      {
+        "id": "r7",
+        "source": "e1",
+        "target": "e8",
+        "label": "hat Mond",
+        "strength": 60
+      },
+      {
+        "id": "r8",
+        "source": "e1",
+        "target": "e9",
+        "label": "hat Mond",
+        "strength": 200
+      },
+      {
+        "id": "r9",
+        "source": "e1",
+        "target": "e10",
+        "label": "hat Mond",
+        "strength": 215
+      },
+      {
+        "id": "r10",
+        "source": "e2",
+        "target": "e11",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r11",
+        "source": "e4",
+        "target": "e12",
+        "label": "ist Mond von",
+        "strength": 80
+      },
+      {
+        "id": "r12",
+        "source": "e5",
+        "target": "e13",
+        "label": "ist Mond von",
+        "strength": 85
+      },
+      {
+        "id": "r13",
+        "source": "e3",
+        "target": "e14",
+        "label": "ist Mond von",
+        "strength": 45
+      },
+      {
+        "id": "r14",
+        "source": "e3",
+        "target": "e15",
+        "label": "ist Mond von",
+        "strength": 45
+      },
+      {
+        "id": "r15",
+        "source": "e1",
+        "target": "e1",
+        "label": "hat Masse",
+        "strength": 100
+      },
+      {
+        "id": "r16",
+        "source": "e2",
+        "target": "e2",
+        "label": "hat Masse",
+        "strength": 80
+      },
+      {
+        "id": "r17",
+        "source": "e3",
+        "target": "e3",
+        "label": "hat Masse",
+        "strength": 65
+      },
+      {
+        "id": "r18",
+        "source": "e12",
+        "target": "e4",
+        "label": "ist Mond von",
+        "strength": 60
+      },
+      {
+        "id": "r19",
+        "source": "e4",
+        "target": "e12",
+        "label": "ist Mond von",
+        "strength": 80
+      },
+      {
+        "id": "r20",
+        "source": "e2",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r21",
+        "source": "e3",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r22",
+        "source": "e12",
+        "target": "e4",
+        "label": "ist Mond von",
+        "strength": 60
+      },
+      {
+        "id": "r23",
+        "source": "e5",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r24",
+        "source": "e6",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r25",
+        "source": "e7",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r26",
+        "source": "e8",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r27",
+        "source": "e13",
+        "target": "e5",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r28",
+        "source": "e14",
+        "target": "e3",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r29",
+        "source": "e15",
+        "target": "e3",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r30",
+        "source": "e9",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r31",
+        "source": "e10",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r32",
+        "source": "e11",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r33",
+        "source": "e2",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r34",
+        "source": "e3",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r35",
+        "source": "e4",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r36",
+        "source": "e5",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r37",
+        "source": "e6",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r38",
+        "source": "e7",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r39",
+        "source": "e8",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r40",
+        "source": "e9",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r41",
+        "source": "e10",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r42",
+        "source": "e11",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r43",
+        "source": "e12",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r44",
+        "source": "e13",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r45",
+        "source": "e14",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      },
+      {
+        "id": "r46",
+        "source": "e15",
+        "target": "e1",
+        "label": "ist Mond von",
+        "strength": 100
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "importance",
+          "function": "linear",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "position": {
+          "source": "position",
+          "function": "constant"
+        }
+      },
+      "global_edge": {
+        "thickness": {
+          "source": "strength",
+          "function": "linear",
+          "range": [
+            0.1,
+            1.5
+          ]
+        }
+      }
+    }
+  }
+}

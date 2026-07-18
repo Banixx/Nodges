@@ -1,0 +1,129 @@
+{
+  "system": "sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "...",
+    "competencyQuestions": [
+      "...",
+      "..."
+    ],
+    "apiResponse": {
+      "id": "gen-1784276377-qQrWNYX7KfBDLfs8yWgW",
+      "created": 1784276377,
+      "model": "morph/morph-v3-large",
+      "usage": {
+        "prompt_tokens": 5433,
+        "completion_tokens": 458,
+        "total_tokens": 5891,
+        "cost": 0.0057599,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0057599,
+          "upstream_inference_prompt_cost": 0.0048897,
+          "upstream_inference_completions_cost": 0.0008702
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "<TypName>": {
+        "properties": {
+          "<propName>": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "position": {
+            "type": "spatial"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "<KantenTyp>": {
+        "properties": {}
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "unique_id",
+        "type": "<TypName>",
+        "label": "...",
+        "<propName>": 42,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel_1",
+        "type": "<KantenTyp>",
+        "source": "id_a",
+        "target": "id_b",
+        "label": "..."
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "<propName>",
+          "function": "linear",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "color": {
+          "source": "kategorie",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        },
+        "position": {
+          "source": "position",
+          "function": "constant"
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "value": 0.1
+          }
+        }
+      }
+    }
+  }
+}

@@ -176,11 +176,11 @@ export class NodeManager {
                 group.forEach(({ entity, visual }, index) => {
                     entityList.push(entity);
 
-                    // Position mapped override (fallback to 0,0,5 if completely unmapped)
+                    // Position mapped override (fallback to ~0,0,5 if completely unmapped)
                     const isPosMapped = visual.positionX !== undefined || visual.positionY !== undefined || visual.positionZ !== undefined;
-                    const x = visual.positionX !== undefined ? visual.positionX : (isPosMapped ? 0 : 0);
-                    const y = visual.positionY !== undefined ? visual.positionY : (isPosMapped ? 0 : 0);
-                    const z = visual.positionZ !== undefined ? visual.positionZ : (isPosMapped ? 0 : 5);
+                    const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x || 0);
+                    const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y || 0);
+                    const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z || 0);
                     dummy.position.set(x, y, z);
 
                     // Scale / Size
@@ -262,11 +262,11 @@ export class NodeManager {
                     const material = baseMaterial.clone() as THREE.MeshPhongMaterial;
                     const mesh = new THREE.Mesh(geometry, material);
 
-                    // Position mapped override (fallback to 0,0,5 if completely unmapped)
+                    // Position mapped override (fallback to ~0,0,5 if completely unmapped)
                     const isPosMapped = visual.positionX !== undefined || visual.positionY !== undefined || visual.positionZ !== undefined;
-                    const x = visual.positionX !== undefined ? visual.positionX : (isPosMapped ? 0 : 0);
-                    const y = visual.positionY !== undefined ? visual.positionY : (isPosMapped ? 0 : 0);
-                    const z = visual.positionZ !== undefined ? visual.positionZ : (isPosMapped ? 0 : 5);
+                    const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x || 0);
+                    const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y || 0);
+                    const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z || 0);
                     mesh.position.set(x, y, z);
 
                     // Scale / Size
@@ -346,9 +346,9 @@ export class NodeManager {
                 mesh.getMatrixAt(map.index, dummy.matrix);
                 dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
 
-                const x = visual.positionX !== undefined ? visual.positionX : (isPosMapped ? 0 : 0);
-                const y = visual.positionY !== undefined ? visual.positionY : (isPosMapped ? 0 : 0);
-                const z = visual.positionZ !== undefined ? visual.positionZ : (isPosMapped ? 0 : 5);
+                const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x || 0);
+                const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y || 0);
+                const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z || 0);
 
                 dummy.position.set(x, y, z);
 
@@ -363,12 +363,14 @@ export class NodeManager {
             entities.forEach(entity => {
                 const mesh = this.individualMeshes.get(String(entity.id));
                 if (mesh) {
+                    const map = this.entityIdMap.get(String(entity.id));
+                    const idx = map ? map.index : 0;
                     const visual = this.visualMappingEngine.applyToEntity(entity);
                     const isPosMapped = visual.positionX !== undefined || visual.positionY !== undefined || visual.positionZ !== undefined;
                     
-                    const x = visual.positionX !== undefined ? visual.positionX : (isPosMapped ? 0 : 0);
-                    const y = visual.positionY !== undefined ? visual.positionY : (isPosMapped ? 0 : 0);
-                    const z = visual.positionZ !== undefined ? visual.positionZ : (isPosMapped ? 0 : 5);
+                    const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x || 0);
+                    const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y || 0);
+                    const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z || 0);
 
                     mesh.position.set(x, y, z);
                 }

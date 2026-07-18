@@ -111,12 +111,24 @@ export class SuggestionUI {
                 }
             }
 
+            let spatialProp = '';
+            if (this.dataModel.properties) {
+                for (const [propName, propDef] of Object.entries(this.dataModel.properties)) {
+                    const pDef = propDef as any;
+                    if (pDef && pDef.type === 'spatial' || propName === 'position') {
+                        spatialProp = propName;
+                        break;
+                    }
+                }
+            }
+
             if (categoricalProp) {
                 const autoMap: VisualMappings = {
                     defaultPresets: {
                         [entityType]: {
                             color: { source: 'categorical', function: 'categorical', field: categoricalProp, palette: 'category10' },
-                            size: { source: 'constant', function: 'constant', value: 1.5 }
+                            size: { source: 'constant', function: 'constant', value: 1.5 },
+                            ...(spatialProp ? { position: { source: spatialProp, function: 'constant' } } : {})
                         },
                         'global_edge': {
                             color: { source: 'constant', function: 'constant', params: { color: '#ffffff' } },
@@ -148,7 +160,8 @@ export class SuggestionUI {
                     defaultPresets: {
                         [entityType]: {
                             size: { source: 'continuous', function: 'linear', field: continuousProp, range: [0.5, 3.0] },
-                            color: { source: 'continuous', function: 'heatmap', field: continuousProp, palette: 'viridis' }
+                            color: { source: 'continuous', function: 'heatmap', field: continuousProp, palette: 'viridis' },
+                            ...(spatialProp ? { position: { source: spatialProp, function: 'constant' } } : {})
                         },
                         'global_edge': {
                             color: { source: 'constant', function: 'constant', params: { color: '#ffffff' } },
@@ -165,11 +178,23 @@ export class SuggestionUI {
         }
 
         // 3. Fallback/Default suggestion
+        let spatialProp = '';
+        if (this.dataModel && this.dataModel.properties) {
+            for (const [propName, propDef] of Object.entries(this.dataModel.properties)) {
+                const pDef = propDef as any;
+                if (pDef && pDef.type === 'spatial' || propName === 'position') {
+                    spatialProp = propName;
+                    break;
+                }
+            }
+        }
+
         const defaultMap: VisualMappings = {
             defaultPresets: {
                 'global_node': {
                     color: { source: 'constant', function: 'constant', params: { color: '#00aaff' } },
-                    size: { source: 'constant', function: 'constant', value: 1.0 }
+                    size: { source: 'constant', function: 'constant', value: 1.0 },
+                    ...(spatialProp ? { position: { source: spatialProp, function: 'constant' } } : {})
                 },
                 'global_edge': {
                     color: { source: 'constant', function: 'constant', params: { color: '#ffffff' } },

@@ -1,1 +1,0 @@
-SELECT ?solarSystem ?solarSystemLabel WHERE { ?solarSystem wdt:P31/wdt:P279* wd:Q544. SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en,de". } } LIMIT 50

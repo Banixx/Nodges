@@ -74,13 +74,12 @@ export class VisualMappingEngine {
      */
     applyToEntity(entity: EntityData): VisualProperties {
         const preset = this.getEffectivePreset(true) as EntityVisualPreset;
+        let visual: VisualProperties = {};
+
         if (Object.keys(preset).length === 0) {
-            return this.getDefaultVisualProperties();
-        }
-
-        const visual: VisualProperties = {};
-
-        // Apply position mappings (handle all position_X variants as well)
+            visual = this.getDefaultVisualProperties();
+        } else {
+            // Apply position mappings (handle all position_X variants as well)
         Object.keys(preset).forEach(key => {
             const mapping = (preset as any)[key] as VisualMapping;
             if (key.startsWith('position') && mapping && mapping.source !== 'constant') {
@@ -88,11 +87,11 @@ export class VisualMappingEngine {
                 const axis = mapping.params?.axis || 'xyz';
                 
                 if (axis === 'x') {
-                    visual.positionX = Number(posVal) || 0;
+                    visual.positionX = (typeof posVal === 'object' && posVal !== null && 'x' in posVal) ? Number(posVal.x) || 0 : Number(posVal) || 0;
                 } else if (axis === 'y') {
-                    visual.positionY = Number(posVal) || 0;
+                    visual.positionY = (typeof posVal === 'object' && posVal !== null && 'y' in posVal) ? Number(posVal.y) || 0 : Number(posVal) || 0;
                 } else if (axis === 'z') {
-                    visual.positionZ = Number(posVal) || 0;
+                    visual.positionZ = (typeof posVal === 'object' && posVal !== null && 'z' in posVal) ? Number(posVal.z) || 0 : Number(posVal) || 0;
                 } else {
                     if (Array.isArray(posVal) && posVal.length >= 3) {
                         visual.positionX = Number(posVal[0]);
@@ -102,6 +101,10 @@ export class VisualMappingEngine {
                         visual.positionX = Number(posVal.x) || 0;
                         visual.positionY = Number(posVal.y) || 0;
                         visual.positionZ = Number(posVal.z) || 0;
+                    } else if (typeof posVal === 'number') {
+                        visual.positionX = posVal;
+                        visual.positionY = posVal;
+                        visual.positionZ = posVal;
                     }
                 }
             }
@@ -145,6 +148,7 @@ export class VisualMappingEngine {
         }
         if (preset.inertia) {
             visual.inertia = this.applyMapping(preset.inertia, entity, 'inertia');
+        }
         }
 
         return visual;
@@ -254,6 +258,30 @@ export class VisualMappingEngine {
 
         // Pass through raw position arrays/objects
         if (propName === 'position' && (Array.isArray(value) || (typeof value === 'object' && ('x' in value || 'X' in value)))) {
+            // Apply scaling if requested
+            if (mapping.function !== 'constant' && mapping.range && mapping.domain) {
+                const domainMin = Number(mapping.domain[0]);
+                const domainMax = Number(mapping.domain[1]);
+                const outMin = Number(mapping.range[0]);
+                const outMax = Number(mapping.range[1]);
+                const scale = (val: number) => {
+                    if (domainMax > domainMin) {
+                        const norm = Math.max(0, Math.min(1, (val - domainMin) / (domainMax - domainMin)));
+                        return outMin + norm * (outMax - outMin);
+                    }
+                    return val;
+                };
+                
+                if (Array.isArray(value)) {
+                    return value.map(v => scale(Number(v) || 0));
+                } else {
+                    return {
+                        x: scale(Number(value.x || value.X || 0)),
+                        y: scale(Number(value.y || value.Y || 0)),
+                        z: scale(Number(value.z || value.Z || 0))
+                    };
+                }
+            }
             return value;
         }
 

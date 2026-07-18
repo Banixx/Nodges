@@ -159,62 +159,58 @@ export class NotificationService {
         style.id = 'nodges-notification-styles';
         style.textContent = `
             @keyframes nodges-slide-in {
-                from { transform: translateX(120%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
+                from { transform: translateX(120%) scale(0.95); opacity: 0; }
+                to { transform: translateX(0) scale(1); opacity: 1; }
             }
             @keyframes nodges-slide-out {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(120%); opacity: 0; }
+                from { transform: translateX(0) scale(1); opacity: 1; }
+                to { transform: translateX(120%) scale(0.95); opacity: 0; }
             }
             .nodges-notification {
                 pointer-events: auto;
                 cursor: pointer;
                 padding: 14px 18px;
-                border-radius: 8px;
-                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-                font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-                animation: nodges-slide-in 0.3s ease forwards;
-                backdrop-filter: blur(8px);
+                border-radius: 12px;
+                background: rgba(35, 35, 35, 0.9);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.08);
                 border-left: 4px solid transparent;
-                transition: transform 0.15s ease;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+                font-family: var(--font-family, 'Inter', sans-serif);
+                animation: nodges-slide-in 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
             }
             .nodges-notification:hover {
-                transform: scale(1.02);
+                transform: translateY(-2px);
+                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15);
             }
             .nodges-notification--success {
-                background: rgba(46, 125, 50, 0.92);
-                border-left-color: #66bb6a;
+                background: linear-gradient(90deg, rgba(76, 175, 80, 0.15) 0%, rgba(35, 35, 35, 0.9) 20%);
+                border-left-color: #4caf50;
             }
             .nodges-notification--error {
-                background: rgba(198, 40, 40, 0.92);
+                background: linear-gradient(90deg, rgba(239, 83, 80, 0.15) 0%, rgba(35, 35, 35, 0.9) 20%);
                 border-left-color: #ef5350;
             }
             .nodges-notification--warning {
-                background: rgba(230, 150, 0, 0.92);
-                border-left-color: #ffa726;
-                color: #1a1a1a;
+                background: linear-gradient(90deg, rgba(160, 90, 80, 0.15) 0%, rgba(35, 35, 35, 0.9) 20%);
+                border-left-color: var(--warning-color, #a05a50);
             }
             .nodges-notification--info {
-                background: rgba(30, 90, 160, 0.92);
-                border-left-color: #42a5f5;
+                background: linear-gradient(90deg, rgba(160, 128, 96, 0.15) 0%, rgba(35, 35, 35, 0.9) 20%);
+                border-left-color: var(--accent-color, #a08060);
             }
             .nodges-notification__title {
                 font-weight: 600;
-                font-size: 14px;
+                font-size: 13px;
                 margin-bottom: 4px;
-                color: white;
-            }
-            .nodges-notification--warning .nodges-notification__title {
-                color: #1a1a1a;
+                color: #ffffff;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.8);
             }
             .nodges-notification__message {
-                font-size: 13px;
+                font-size: 12px;
                 line-height: 1.4;
-                opacity: 0.9;
-                color: white;
-            }
-            .nodges-notification--warning .nodges-notification__message {
-                color: #333;
+                color: var(--text-muted, #aaa);
             }
         `;
         document.head.appendChild(style);

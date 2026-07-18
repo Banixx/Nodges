@@ -86,7 +86,7 @@ export class EdgeLabelManager {
 
         // Set canvas size
         const fontSize = 24;
-        context.font = `${fontSize}px Arial`;
+        context.font = `${fontSize}px Inter, sans-serif`;
         const textMetrics = context.measureText(text);
         const textWidth = textMetrics.width;
         const padding = 8;
@@ -98,7 +98,7 @@ export class EdgeLabelManager {
         context.fillRect(0, 0, canvas.width, canvas.height);
 
         // Draw text
-        context.font = `${fontSize}px Arial`;
+        context.font = `${fontSize}px Inter, sans-serif`;
         context.fillStyle = '#000000';
         context.textAlign = 'center';
         context.textBaseline = 'middle';

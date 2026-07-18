@@ -728,12 +728,6 @@ export class App {
                 }
             }
 
-            // Save this file's schema
-            this.loadedSchemas.set(sourceName, {
-                dataModel: graphData.dataModel,
-                visualMappings: graphData.visualMappings
-            });
-
             // Save original mappings for suggestions/preview
             const originalMappings = graphData.visualMappings ? JSON.parse(JSON.stringify(graphData.visualMappings)) : { defaultPresets: {} };
             
@@ -751,6 +745,12 @@ export class App {
             }
 
             this.originalVisualMappings = originalMappings;
+
+            // Save this file's schema
+            this.loadedSchemas.set(sourceName, {
+                dataModel: graphData.dataModel,
+                visualMappings: originalMappings
+            });
             
             // Do not automatically apply the file's mappings to the active graph state.
             // They will be available as suggestions.
@@ -850,22 +850,11 @@ export class App {
                 this.hasExplicitPositions = this.hasExplicitPositions || hasPositions;
             }
 
+            // Das automatische Eingreifen des LayoutManagers wurde entfernt.
+            // Nodes bleiben nun strikt in ihrem Jitter-Fallback oder an ihren expliziten Positionen,
+            // bis der Nutzer explizit ein Layout über das UI anfordert.
             if (this.layoutManager) {
-                if (!this.hasExplicitPositions) {
-                    // For AI generated data (or any data without positions), run the force-directed layout
-                    await this.layoutManager.applyLayout('force-directed', this.currentEntities, this.currentRelationships, graphData.fields || []);
-                    // Update state to reflect new positions
-                    this.stateManager.setGraphData(this.currentEntities, this.currentRelationships);
-                    
-                    if (this.nodeManager) {
-                        this.nodeManager.updateNodePositions(this.currentEntities);
-                    }
-                    if (this.edgeObjectsManager) {
-                        this.edgeObjectsManager.updateEdgePositions(this.currentEntities);
-                    }
-                } else {
-                    this.layoutManager.stopAnimation();
-                }
+                this.layoutManager.stopAnimation();
             }
 
             // Create labels for nodes
@@ -1429,8 +1418,8 @@ export class App {
             this.currentRelationships = state.graphData.relationships;
         }, 'data_changed');
 
-        // Deep Dive Listener (Build 10)
-        document.addEventListener('nodges-deep-dive', async (e: any) => {
+        // Deep Dive Listener (Build 10) - HMR Safe
+        const handleDeepDive = async (e: any) => {
             const { label, qId } = e.detail;
             if (!this.currentGraphData) {
                 notify.error('Fehler', 'Kein bestehender Graph für Deep Dive vorhanden.');
@@ -1458,7 +1447,13 @@ export class App {
                 console.error(error);
                 notify.error('Deep Dive fehlgeschlagen', error.message);
             }
-        });
+        };
+
+        if ((window as any)._nodgesDeepDiveHandler) {
+            document.removeEventListener('nodges-deep-dive', (window as any)._nodgesDeepDiveHandler);
+        }
+        (window as any)._nodgesDeepDiveHandler = handleDeepDive;
+        document.addEventListener('nodges-deep-dive', handleDeepDive);
     }
 
     fitCameraToScene() {

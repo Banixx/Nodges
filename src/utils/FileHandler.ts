@@ -257,7 +257,7 @@ export class FileHandler {
             align-items: center;
             z-index: 10000;
             color: white;
-            font-family: Arial, sans-serif;
+            font-family: var(--font-family, 'Inter', sans-serif);
         `;
 
         const progressBox = document.createElement('div');

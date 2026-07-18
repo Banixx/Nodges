@@ -1,0 +1,661 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Interaktive 4D-Visualisierung des Sonnensystems mit Himmelskörpern, gravitativen Beziehungen und taxonomischen Gruppierungen",
+    "competencyQuestions": [
+      "Welche Himmelskörper gehören zum Sonnensystem und wie sind sie nach Sternen, Planeten, Zwergplaneten und Monden kategorisiert?",
+      "Welche Umlaufbahnen und gravitativen Beziehungen existieren zwischen den Objekten?",
+      "Wie korrelieren physikalische Eigenschaften wie Masse, Durchmesser und Temperatur mit der Position im Sonnensystem?",
+      "Welche Gruppierungen (innere/äußere Planeten, Gas-/Eisriesen) lassen sich identifizieren und welche Objekte gehören ihnen an?",
+      "Wie stark ist die gravitative Bindungskraft zwischen verschiedenen Himmelskörpern?"
+    ],
+    "apiResponse": {
+      "id": "gen-1784357079-8RFDWsCvOBStObcTLpHM",
+      "created": 1784357079,
+      "model": "moonshotai/kimi-k2.5",
+      "usage": {
+        "prompt_tokens": 2015,
+        "completion_tokens": 11265,
+        "total_tokens": 13280,
+        "cost": 0.035004,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.035004,
+          "upstream_inference_prompt_cost": 0.001209,
+          "upstream_inference_completions_cost": 0.033795
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 7188,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": "fpv0_1c3effa9"
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Himmelskoerper": {
+        "properties": {
+          "kategorie": {
+            "type": "categorical",
+            "values": [
+              "Stern",
+              "Planet",
+              "Zwergplanet",
+              "Mond",
+              "Gruppe"
+            ]
+          },
+          "unterkategorie": {
+            "type": "categorical",
+            "values": [
+              "felsig",
+              "gasfoermig",
+              "eisig",
+              null
+            ]
+          },
+          "masse": {
+            "type": "continuous",
+            "unit": "Erdmassen",
+            "range": [
+              0,
+              350000
+            ]
+          },
+          "durchmesser": {
+            "type": "continuous",
+            "unit": "km"
+          },
+          "temperatur": {
+            "type": "continuous",
+            "unit": "Celsius"
+          },
+          "entfernung_zur_sonne": {
+            "type": "continuous",
+            "unit": "AE"
+          },
+          "wikidata_id": {
+            "type": "categorical"
+          },
+          "position": {
+            "type": "spatial"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "orbits": {
+        "properties": {
+          "strength": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      },
+      "belongs_to": {
+        "properties": {
+          "strength": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      },
+      "gravitational_influence": {
+        "properties": {
+          "strength": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "sonne",
+        "label": "Sonne",
+        "kategorie": "Stern",
+        "unterkategorie": null,
+        "masse": 333000,
+        "durchmesser": 1392700,
+        "temperatur": 5500,
+        "entfernung_zur_sonne": 0,
+        "wikidata_id": "Q525",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "merkur",
+        "label": "Merkur",
+        "kategorie": "Planet",
+        "unterkategorie": "felsig",
+        "masse": 0.055,
+        "durchmesser": 4879,
+        "temperatur": 167,
+        "entfernung_zur_sonne": 0.39,
+        "wikidata_id": "Q308",
+        "position": {
+          "x": 0.39,
+          "y": 0.1,
+          "z": 0.05
+        }
+      },
+      {
+        "id": "venus",
+        "label": "Venus",
+        "kategorie": "Planet",
+        "unterkategorie": "felsig",
+        "masse": 0.815,
+        "durchmesser": 12104,
+        "temperatur": 464,
+        "entfernung_zur_sonne": 0.72,
+        "wikidata_id": "Q313",
+        "position": {
+          "x": 0.72,
+          "y": -0.2,
+          "z": 0.1
+        }
+      },
+      {
+        "id": "erde",
+        "label": "Erde",
+        "kategorie": "Planet",
+        "unterkategorie": "felsig",
+        "masse": 1,
+        "durchmesser": 12756,
+        "temperatur": 15,
+        "entfernung_zur_sonne": 1,
+        "wikidata_id": "Q2",
+        "position": {
+          "x": 1,
+          "y": 0.3,
+          "z": -0.1
+        }
+      },
+      {
+        "id": "mars",
+        "label": "Mars",
+        "kategorie": "Planet",
+        "unterkategorie": "felsig",
+        "masse": 0.107,
+        "durchmesser": 6792,
+        "temperatur": -65,
+        "entfernung_zur_sonne": 1.52,
+        "wikidata_id": "Q111",
+        "position": {
+          "x": 1.52,
+          "y": -0.1,
+          "z": 0.2
+        }
+      },
+      {
+        "id": "jupiter",
+        "label": "Jupiter",
+        "kategorie": "Planet",
+        "unterkategorie": "gasfoermig",
+        "masse": 317.8,
+        "durchmesser": 142984,
+        "temperatur": -110,
+        "entfernung_zur_sonne": 5.2,
+        "wikidata_id": "Q319",
+        "position": {
+          "x": 5.2,
+          "y": 0.5,
+          "z": -0.3
+        }
+      },
+      {
+        "id": "saturn",
+        "label": "Saturn",
+        "kategorie": "Planet",
+        "unterkategorie": "gasfoermig",
+        "masse": 95.2,
+        "durchmesser": 120536,
+        "temperatur": -140,
+        "entfernung_zur_sonne": 9.5,
+        "wikidata_id": "Q193",
+        "position": {
+          "x": 9.5,
+          "y": -0.8,
+          "z": 0.4
+        }
+      },
+      {
+        "id": "uranus",
+        "label": "Uranus",
+        "kategorie": "Planet",
+        "unterkategorie": "eisig",
+        "masse": 14.5,
+        "durchmesser": 51118,
+        "temperatur": -195,
+        "entfernung_zur_sonne": 19.2,
+        "wikidata_id": "Q324",
+        "position": {
+          "x": 19.2,
+          "y": 1.2,
+          "z": -0.6
+        }
+      },
+      {
+        "id": "neptun",
+        "label": "Neptun",
+        "kategorie": "Planet",
+        "unterkategorie": "eisig",
+        "masse": 17.1,
+        "durchmesser": 49528,
+        "temperatur": -200,
+        "entfernung_zur_sonne": 30.1,
+        "wikidata_id": "Q332",
+        "position": {
+          "x": 30.1,
+          "y": -1.5,
+          "z": 0.8
+        }
+      },
+      {
+        "id": "pluto",
+        "label": "Pluto",
+        "kategorie": "Zwergplanet",
+        "unterkategorie": "eisig",
+        "masse": 0.002,
+        "durchmesser": 2376,
+        "temperatur": -225,
+        "entfernung_zur_sonne": 39.5,
+        "wikidata_id": "Q339",
+        "position": {
+          "x": 39.5,
+          "y": 2,
+          "z": -1
+        }
+      },
+      {
+        "id": "luna",
+        "label": "Mond (Luna)",
+        "kategorie": "Mond",
+        "unterkategorie": "felsig",
+        "masse": 0.012,
+        "durchmesser": 3474,
+        "temperatur": -20,
+        "entfernung_zur_sonne": 1,
+        "wikidata_id": "Q405",
+        "position": {
+          "x": 1.0026,
+          "y": 0.3,
+          "z": -0.1
+        }
+      },
+      {
+        "id": "phobos",
+        "label": "Phobos",
+        "kategorie": "Mond",
+        "unterkategorie": "felsig",
+        "masse": 1.7e-8,
+        "durchmesser": 22,
+        "temperatur": -40,
+        "entfernung_zur_sonne": 1.52,
+        "wikidata_id": "Q15035",
+        "position": {
+          "x": 1.5201,
+          "y": -0.1,
+          "z": 0.2
+        }
+      },
+      {
+        "id": "io",
+        "label": "Io",
+        "kategorie": "Mond",
+        "unterkategorie": "felsig",
+        "masse": 0.015,
+        "durchmesser": 3643,
+        "temperatur": -130,
+        "entfernung_zur_sonne": 5.2,
+        "wikidata_id": "Q3123",
+        "position": {
+          "x": 5.203,
+          "y": 0.5,
+          "z": -0.3
+        }
+      },
+      {
+        "id": "titan",
+        "label": "Titan",
+        "kategorie": "Mond",
+        "unterkategorie": "felsig",
+        "masse": 0.022,
+        "durchmesser": 5149,
+        "temperatur": -180,
+        "entfernung_zur_sonne": 9.5,
+        "wikidata_id": "Q2565",
+        "position": {
+          "x": 9.508,
+          "y": -0.8,
+          "z": 0.4
+        }
+      },
+      {
+        "id": "innere_planeten",
+        "label": "Innere Planeten",
+        "kategorie": "Gruppe",
+        "unterkategorie": null,
+        "masse": null,
+        "durchmesser": null,
+        "temperatur": null,
+        "entfernung_zur_sonne": null,
+        "wikidata_id": null,
+        "position": {
+          "x": 0.8,
+          "y": 8,
+          "z": 0
+        }
+      },
+      {
+        "id": "aeussere_planeten",
+        "label": "Äußere Planeten",
+        "kategorie": "Gruppe",
+        "unterkategorie": null,
+        "masse": null,
+        "durchmesser": null,
+        "temperatur": null,
+        "entfernung_zur_sonne": null,
+        "wikidata_id": null,
+        "position": {
+          "x": 15,
+          "y": 8,
+          "z": 0
+        }
+      },
+      {
+        "id": "gasriesen",
+        "label": "Gasriesen",
+        "kategorie": "Gruppe",
+        "unterkategorie": null,
+        "masse": null,
+        "durchmesser": null,
+        "temperatur": null,
+        "entfernung_zur_sonne": null,
+        "wikidata_id": null,
+        "position": {
+          "x": 7,
+          "y": -8,
+          "z": 0
+        }
+      },
+      {
+        "id": "eisriesen",
+        "label": "Eisriesen",
+        "kategorie": "Gruppe",
+        "unterkategorie": null,
+        "masse": null,
+        "durchmesser": null,
+        "temperatur": null,
+        "entfernung_zur_sonne": null,
+        "wikidata_id": null,
+        "position": {
+          "x": 25,
+          "y": -8,
+          "z": 0
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "r1",
+        "source": "merkur",
+        "target": "sonne",
+        "label": "orbits",
+        "strength": 95
+      },
+      {
+        "id": "r2",
+        "source": "venus",
+        "target": "sonne",
+        "label": "orbits",
+        "strength": 94
+      },
+      {
+        "id": "r3",
+        "source": "erde",
+        "target": "sonne",
+        "label": "orbits",
+        "strength": 93
+      },
+      {
+        "id": "r4",
+        "source": "mars",
+        "target": "sonne",
+        "label": "orbits",
+        "strength": 92
+      },
+      {
+        "id": "r5",
+        "source": "jupiter",
+        "target": "sonne",
+        "label": "orbits",
+        "strength": 88
+      },
+      {
+        "id": "r6",
+        "source": "saturn",
+        "target": "sonne",
+        "label": "orbits",
+        "strength": 85
+      },
+      {
+        "id": "r7",
+        "source": "uranus",
+        "target": "sonne",
+        "label": "orbits",
+        "strength": 78
+      },
+      {
+        "id": "r8",
+        "source": "neptun",
+        "target": "sonne",
+        "label": "orbits",
+        "strength": 76
+      },
+      {
+        "id": "r9",
+        "source": "pluto",
+        "target": "sonne",
+        "label": "orbits",
+        "strength": 65
+      },
+      {
+        "id": "r10",
+        "source": "luna",
+        "target": "erde",
+        "label": "orbits",
+        "strength": 90
+      },
+      {
+        "id": "r11",
+        "source": "phobos",
+        "target": "mars",
+        "label": "orbits",
+        "strength": 75
+      },
+      {
+        "id": "r12",
+        "source": "io",
+        "target": "jupiter",
+        "label": "orbits",
+        "strength": 88
+      },
+      {
+        "id": "r13",
+        "source": "titan",
+        "target": "saturn",
+        "label": "orbits",
+        "strength": 85
+      },
+      {
+        "id": "r14",
+        "source": "merkur",
+        "target": "innere_planeten",
+        "label": "belongs_to",
+        "strength": 100
+      },
+      {
+        "id": "r15",
+        "source": "venus",
+        "target": "innere_planeten",
+        "label": "belongs_to",
+        "strength": 100
+      },
+      {
+        "id": "r16",
+        "source": "erde",
+        "target": "innere_planeten",
+        "label": "belongs_to",
+        "strength": 100
+      },
+      {
+        "id": "r17",
+        "source": "mars",
+        "target": "innere_planeten",
+        "label": "belongs_to",
+        "strength": 100
+      },
+      {
+        "id": "r18",
+        "source": "jupiter",
+        "target": "aeussere_planeten",
+        "label": "belongs_to",
+        "strength": 100
+      },
+      {
+        "id": "r19",
+        "source": "saturn",
+        "target": "aeussere_planeten",
+        "label": "belongs_to",
+        "strength": 100
+      },
+      {
+        "id": "r20",
+        "source": "uranus",
+        "target": "aeussere_planeten",
+        "label": "belongs_to",
+        "strength": 100
+      },
+      {
+        "id": "r21",
+        "source": "neptun",
+        "target": "aeussere_planeten",
+        "label": "belongs_to",
+        "strength": 100
+      },
+      {
+        "id": "r22",
+        "source": "jupiter",
+        "target": "gasriesen",
+        "label": "belongs_to",
+        "strength": 100
+      },
+      {
+        "id": "r23",
+        "source": "saturn",
+        "target": "gasriesen",
+        "label": "belongs_to",
+        "strength": 100
+      },
+      {
+        "id": "r24",
+        "source": "uranus",
+        "target": "eisriesen",
+        "label": "belongs_to",
+        "strength": 100
+      },
+      {
+        "id": "r25",
+        "source": "neptun",
+        "target": "eisriesen",
+        "label": "belongs_to",
+        "strength": 100
+      },
+      {
+        "id": "r26",
+        "source": "sonne",
+        "target": "erde",
+        "label": "gravitational_influence",
+        "strength": 100
+      },
+      {
+        "id": "r27",
+        "source": "erde",
+        "target": "luna",
+        "label": "gravitational_influence",
+        "strength": 95
+      },
+      {
+        "id": "r28",
+        "source": "jupiter",
+        "target": "mars",
+        "label": "gravitational_influence",
+        "strength": 45
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "color": {
+          "source": "kategorie",
+          "function": "categorical"
+        },
+        "size": {
+          "source": "masse",
+          "function": "logarithmic",
+          "range": [
+            1,
+            3
+          ]
+        },
+        "position": {
+          "source": "position",
+          "function": "constant"
+        },
+        "geometry": {
+          "source": "kategorie",
+          "function": "categorical"
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "label",
+          "function": "categorical"
+        },
+        "thickness": {
+          "source": "strength",
+          "function": "linear",
+          "range": [
+            0.03,
+            0.25
+          ]
+        }
+      }
+    }
+  }
+}

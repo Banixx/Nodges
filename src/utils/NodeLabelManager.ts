@@ -122,10 +122,10 @@ export class NodeLabelManager {
         const lineSpacing = 8;
         
         // Berechne maximale Breite
-        context.font = `bold ${fontSize}px Arial`;
+        context.font = `bold ${fontSize}px Inter, sans-serif`;
         let maxTextWidth = context.measureText(mainText).width;
 
-        context.font = `${subFontSize}px Arial`;
+        context.font = `${subFontSize}px Inter, sans-serif`;
         subTexts.forEach(sub => {
             const width = context.measureText(sub).width;
             if (width > maxTextWidth) maxTextWidth = width;
@@ -150,13 +150,13 @@ export class NodeLabelManager {
         context.textBaseline = 'top';
         let currentY = padding;
         
-        context.font = `bold ${fontSize}px Arial`;
+        context.font = `bold ${fontSize}px Inter, sans-serif`;
         context.fillStyle = '#ffffff';
         context.fillText(mainText, canvas.width / 2, currentY);
         currentY += fontSize + lineSpacing;
 
         // Draw subtexts
-        context.font = `${subFontSize}px Arial`;
+        context.font = `${subFontSize}px Inter, sans-serif`;
         context.fillStyle = '#b0bec5'; // hellgrau/blau
         subTexts.forEach(sub => {
             context.fillText(sub, canvas.width / 2, currentY);

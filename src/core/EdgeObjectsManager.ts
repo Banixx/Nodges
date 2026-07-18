@@ -369,6 +369,16 @@ export class EdgeObjectsManager {
     }
 
     private getNodePosition(node: any): { x: number, y: number, z: number } {
+        const visual = this.visualMappingEngine.applyToEntity(node);
+        const isPosMapped = visual.positionX !== undefined || visual.positionY !== undefined || visual.positionZ !== undefined;
+        
+        if (isPosMapped) {
+            const x = visual.positionX !== undefined ? visual.positionX : (node.position?.x || node.x || 0);
+            const y = visual.positionY !== undefined ? visual.positionY : (node.position?.y || node.y || 0);
+            const z = visual.positionZ !== undefined ? visual.positionZ : (node.position?.z || node.z || 0);
+            return { x, y, z };
+        }
+
         if (node.position) {
             return node.position;
         } else {
