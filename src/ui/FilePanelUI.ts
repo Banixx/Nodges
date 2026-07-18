@@ -251,16 +251,23 @@ export class FilePanelUI {
     }
 
     private async fetchDirectoryContents(): Promise<string[]> {
-        // Use Vite's import.meta.glob to dynamically discover all JSON files in public/data/
-        // including those in subdirectories
-        const dataFiles = import.meta.glob('/public/data/**/*.json');
+        try {
+            const response = await fetch('/api/list_files');
+            if (response.ok) {
+                const paths = await response.json();
+                return paths.sort();
+            }
+        } catch (e) {
+            console.warn('[FilePanelUI] Failed to fetch directory contents dynamically, falling back to glob:', e);
+        }
 
-        // Extract paths relative to public/data/
+        // Fallback to import.meta.glob for prod or if API fails
+        const dataFiles = import.meta.glob('/public/data/**/*.json');
         const paths = Object.keys(dataFiles).map(path => {
             return path.replace('/public/data/', '');
         }).filter(name => name !== '');
 
-        return paths.sort(); // Sort alphabetically
+        return paths.sort();
     }
 
     private createDisplayName(filename: string): string {

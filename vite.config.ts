@@ -44,6 +44,36 @@ export default defineConfig({
             res.end('Method not allowed');
           }
         });
+
+        server.middlewares.use('/api/list_files', (req: any, res: any) => {
+          if (req.method === 'GET') {
+            const getFiles = (dir: string, prefix = ''): string[] => {
+              let results: string[] = [];
+              if (!fs.existsSync(dir)) return results;
+              const list = fs.readdirSync(dir);
+              list.forEach(file => {
+                const filePath = path.resolve(dir, file);
+                const stat = fs.statSync(filePath);
+                if (stat && stat.isDirectory()) {
+                  results = results.concat(getFiles(filePath, prefix + file + '/'));
+                } else if (file.endsWith('.json')) {
+                  results.push(prefix + file);
+                }
+              });
+              return results;
+            };
+            try {
+              const dataDir = path.resolve(__dirname, './public/data');
+              const files = getFiles(dataDir);
+              res.statusCode = 200;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify(files));
+            } catch (err) {
+              res.statusCode = 500;
+              res.end('Error listing files: ' + String(err));
+            }
+          }
+        });
       }
     }
   ],

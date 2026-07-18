@@ -1483,11 +1483,31 @@ export class App {
         this.lastRenderTime = now;
 
         // Build 4: Playback Fortschritt
-        if (state.isPlaying && state.currentTimestamp !== null) {
-            const newTime = state.currentTimestamp + (deltaTime * state.playbackSpeed * 1000); 
+        if (state.isPlaying && state.currentTimestamp !== null && state.currentTimestamp !== undefined) {
+            let speed = state.playbackSpeed !== undefined ? state.playbackSpeed : 1.0;
+            const newTime = state.currentTimestamp + (deltaTime * speed * 1000); 
+            // console.log(`[TimePlayer Debug] old: ${state.currentTimestamp}, new: ${newTime}, delta: ${deltaTime}, speed: ${speed}`);
             // In einer vollständigen Lösung sollte TimePlayerUI die Max-Grenzen prüfen
             this.stateManager.setCurrentTimestamp(newTime);
         }
+
+        // VISUAL DEBUGGER FOR TEMPORAL PLAYBACK
+        let debugDiv = document.getElementById('debug-box-temporal');
+        if (!debugDiv) {
+            debugDiv = document.createElement('div');
+            debugDiv.id = 'debug-box-temporal';
+            debugDiv.style.position = 'fixed';
+            debugDiv.style.top = '10px';
+            debugDiv.style.right = '10px';
+            debugDiv.style.backgroundColor = 'rgba(0,0,0,0.8)';
+            debugDiv.style.color = '#0f0';
+            debugDiv.style.padding = '10px';
+            debugDiv.style.fontFamily = 'monospace';
+            debugDiv.style.zIndex = '9999';
+            debugDiv.style.pointerEvents = 'none';
+            document.body.appendChild(debugDiv);
+        }
+        debugDiv.innerText = `[Temporal Debug]\nisPlaying: ${state.isPlaying}\ncurrentTimestamp: ${state.currentTimestamp}\ndeltaTime: ${deltaTime}\nplaybackSpeed: ${state.playbackSpeed}`;
 
         if (this.nodeManager) {
             this.nodeManager.updateTemporalState(this.stateManager.state.currentTimestamp);

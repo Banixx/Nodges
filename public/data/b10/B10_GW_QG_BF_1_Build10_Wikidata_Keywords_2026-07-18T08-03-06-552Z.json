@@ -1,0 +1,62 @@
+{
+  "entities": [
+    "ancient Rome",
+    "Roman Empire",
+    "Roman Republic",
+    "Roman emperor",
+    "Roman consul",
+    "Roman Senate",
+    "Roman legion",
+    "gladiator",
+    "Colosseum",
+    "Roman province",
+    "Roman mythology"
+  ],
+  "properties": [
+    "inception",
+    "dissolved",
+    "date of birth",
+    "date of death",
+    "start time",
+    "end time",
+    "replaces",
+    "replaced by",
+    "part of",
+    "point in time"
+  ],
+  "data": {
+    "entities": [],
+    "relationships": []
+  },
+  "metadata": {
+    "apiResponse": {
+      "id": "gen-1784361785-HTMaTDRYong5dypoWIhh",
+      "created": 1784361785,
+      "model": "moonshotai/kimi-k2.5",
+      "usage": {
+        "prompt_tokens": 532,
+        "completion_tokens": 955,
+        "total_tokens": 1487,
+        "cost": 0.00286578,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00286578,
+          "upstream_inference_prompt_cost": 0.00028728,
+          "upstream_inference_completions_cost": 0.0025785
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 823,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": "fpv0_1c3effa9"
+    }
+  }
+}

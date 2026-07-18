@@ -736,10 +736,33 @@ Dein JSON MUSS exakt diese Top-Level-Struktur haben:
   },
   "data": {
     "entities": [
-      { "id": "unique_id", "type": "<TypName>", "label": "...", "<propName>": 42, "position": { "x": 0, "y": 0, "z": 0 } }
+      { 
+        "id": "unique_id", 
+        "type": "<TypName>", 
+        "label": "...", 
+        "<propName>": 42, 
+        "position": { "x": 0, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            { "timestamp": 1920, "changes": { "<propName>": 80 } }
+          ]
+        }
+      }
     ],
     "relationships": [
-      { "id": "rel_1", "type": "<KantenTyp>", "source": "id_a", "target": "id_b", "label": "..." }
+      { 
+        "id": "rel_1", 
+        "type": "<KantenTyp>", 
+        "source": "id_a", 
+        "target": "id_b", 
+        "label": "...",
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      }
     ]
   },
   "visualMappings": {
@@ -1230,10 +1253,34 @@ Schaetze die Beziehungsstaerken ('strength') frei auf einer Skala von 0 bis 100.
   },
   "data": {
     "entities": [
-      { "id": "e1", "type": "Concept", "label": "...", "importance": 80, "position": { "x": 0, "y": 0, "z": 0 } }
+      { 
+        "id": "e1", 
+        "type": "Concept", 
+        "label": "...", 
+        "importance": 80, 
+        "position": { "x": 0, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            { "timestamp": 1920, "changes": { "importance": 90 } }
+          ]
+        }
+      }
     ],
     "relationships": [
-      { "id": "r1", "type": "related", "source": "e1", "target": "e2", "label": "...", "strength": 60 }
+      { 
+        "id": "r1", 
+        "type": "related", 
+        "source": "e1", 
+        "target": "e2", 
+        "label": "...", 
+        "strength": 60,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      }
     ]
   },
   "visualMappings": {

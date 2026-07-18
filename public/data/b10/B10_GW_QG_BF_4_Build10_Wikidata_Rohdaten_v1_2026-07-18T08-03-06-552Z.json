@@ -1,0 +1,4039 @@
+{
+  "head": {
+    "vars": [
+      "entity",
+      "entityLabel",
+      "entityType",
+      "validFrom",
+      "validTo",
+      "history",
+      "connectedEntity",
+      "connectedEntityLabel",
+      "relationshipType"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q104475"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Gallienus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0253-10-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0268-09-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:253-268"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q114072"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Ingenuus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0258-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0260-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:258-260"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q131195"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Constantius Chlorus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0305-05-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0306-07-25T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:305-306"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1405"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Augustus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "-0026-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0014-08-17T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:-26-14"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1407"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Tiberius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0014-09-16T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0037-03-14T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:14-37"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1409"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Caligula"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0037-03-16T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0041-01-22T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:37-41"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1411"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Claudius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0041-01-23T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0054-10-11T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:41-54"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1413"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nero"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0054-10-11T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0068-06-07T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:54-68"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1414"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Galba"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0068-06-06T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0069-01-13T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:68-69"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1416"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Otho"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0069-01-13T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0069-04-14T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:69-69"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1417"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Vitellius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0069-04-15T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0069-12-18T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:69-69"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1419"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Vespasian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0069-12-19T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0079-06-22T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:69-79"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1421"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Titus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0079-06-22T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0081-09-11T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:79-81"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1423"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Domitian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0081-09-12T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0096-09-16T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:81-96"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1424"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nerva"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0096-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0098-01-25T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:96-98"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1425"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Trajan"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0098-01-26T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0117-08-06T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:98-117"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1427"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Hadrian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0117-08-10T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0138-07-09T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:117-138"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1429"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Antoninus Pius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0138-07-09T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0161-03-06T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:138-161"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1430"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Marcus Aurelius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0161-03-06T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0180-03-16T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:161-180"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1433"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Lucius Verus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0161-03-06T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0169-03-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:161-169"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1434"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Commodus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0177-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0192-12-30T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:177-192"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1436"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pertinax"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0192-12-31T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0193-03-27T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:192-193"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1440"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Didius Julianus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0193-03-27T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0193-05-31T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:193-193"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1442"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Septimius Severus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0193-04-08T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0211-02-04T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:193-211"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1446"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Caracalla"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0198-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0217-04-08T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:198-217"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q160353"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Theodosius II"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0402-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0450-07-28T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:402-450"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q171023"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Trebonianus Gallus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0251-06-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0253-08-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:251-253"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q172168"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Galerius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0305-05-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0311-05-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:305-311"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q172471"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Valens"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0364-03-28T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0378-08-09T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:364-378"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1752"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Macrinus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0217-04-11T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0218-06-08T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:217-218"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1762"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Elagabalus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0218-06-08T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0222-03-11T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:218-222"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1769"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Severus Alexander"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0222-03-13T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0235-03-18T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:222-235"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1777"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Maximinus Thrax"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0235-03-20T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0238-06-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:235-238"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q177980"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Aemilian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0253-08-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0253-10-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:253-253"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q177988"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Tacitus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0275-09-25T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0276-04-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:275-276"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1782"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Gordian I"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0238-03-22T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0238-04-12T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:238-238"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1797"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pupienus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0238-04-22T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0238-07-29T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:238-238"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1803"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Gordian II"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0238-03-22T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0238-04-12T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:238-238"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1805"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Balbinus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0238-04-22T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0238-07-29T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:238-238"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1812"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Gordian III"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0238-04-22T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0244-02-11T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:238-244"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1817"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Philip the Arab"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0244-02-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0249-09-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:244-249"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q182070"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Maxentius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0306-10-28T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0312-10-28T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:306-312"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1830"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Decius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0249-09-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0251-06-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:249-251"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q183089"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Geta"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0209-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0211-12-26T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:209-211"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q184549"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Licinius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0308-11-11T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0324-09-18T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:308-324"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q185538"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Constans"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0337-05-22T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0350-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:337-350"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q185844"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Quintillus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0270-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0270-10-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:270-270"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q185844"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Quintillus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0270-08-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0270-10-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:270-270"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q187004"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Carus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0282-09-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0283-07-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:282-283"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q187068"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Probus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0276-09-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0282-09-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:276-282"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q189095"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Maximinus Daza"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0311-05-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0313-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:311-313"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q189108"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Gratian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0367-08-04T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0383-08-25T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:367-383"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q190097"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Carinus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0283-07-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0285-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:283-285"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q199946"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Florian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0276-06-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0276-09-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:276-276"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q202222"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Volusian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0251-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0253-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:251-253"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q263444"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Pacatian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0248-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0248-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:248-248"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q268744"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Martinianus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0324-07-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0324-09-19T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:324-324"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q273253"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Herennius Etruscus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0251-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0251-06-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:251-251"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q297494"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Saloninus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0260-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0260-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:260-260"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q311274"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Valerius Valens"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0316-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0317-03-02T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:316-317"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q314828"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Vetranio"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0350-03-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0350-12-25T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:350-350"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q33941"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Julian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0360-02-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0363-06-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:360-363"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q34074"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Jovian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0363-06-26T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0364-02-17T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:363-364"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q378675"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Macrianus Major"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0260-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0261-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:260-261"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q43107"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Diocletian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0284-11-20T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0305-05-02T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:284-305"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q442570"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Silbannacus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0248-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0248-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:248-248"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q46418"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Constantius II"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0337-05-22T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0361-11-03T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:337-361"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q46696"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Theodosius I"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0379-01-20T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0395-01-18T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:379-395"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q46720"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Valentinian I"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0364-02-27T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0375-11-18T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:364-375"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q46734"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Constantine II"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0337-05-22T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0340-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:337-340"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q46750"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Valerian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0253-10-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0260-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:253-260"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q46762"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Claudius Gothicus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0268-09-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0270-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:268-270"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q46768"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Maximian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0286-04-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0305-05-02T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:286-305"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q46780"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Aurelian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0270-09-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0275-09-25T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:270-275"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q46814"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Severus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0306-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0307-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:306-307"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q46821"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Numerian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0283-07-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0284-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:283-284"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q46837"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Hostilian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0251-06-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0251-11-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:251-251"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q46840"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Diadumenian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0218-05-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0218-06-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:218-218"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q46846"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Valentinian II"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0375-11-17T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0392-05-15T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:375-392"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q507675"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Flavius Victor"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "edge"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0384-01-01T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0388-01-01T00:00:00Z"
+        },
+        "connectedEntity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q2277"
+        },
+        "connectedEntityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Roman Empire"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": "ruled"
+        },
+        "history": {
+          "type": "literal",
+          "value": "reign_period:384-388"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1405"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Augustus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "-0062-09-21T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0014-08-17T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:-62-14"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1407"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Tiberius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "-0041-11-14T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0037-03-14T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:-41-37"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1409"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Caligula"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0012-08-29T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0041-01-22T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:12-41"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1411"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Claudius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "-0009-07-30T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0054-10-11T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:-9-54"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1413"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nero"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0037-12-13T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0068-06-07T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:37-68"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1414"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Galba"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "-0002-12-22T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0069-01-13T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:-2-69"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1416"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Otho"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0032-04-26T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0069-04-14T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:32-69"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1417"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Vitellius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0015-09-05T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0069-12-20T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:15-69"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1417"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Vitellius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0015-09-22T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0069-12-20T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:15-69"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1419"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Vespasian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0009-11-15T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0079-06-02T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:9-79"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1421"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Titus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0039-12-28T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0081-09-11T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:39-81"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1423"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Domitian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0051-10-22T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0096-09-16T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:51-96"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1424"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nerva"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0030-11-06T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0098-01-25T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:30-98"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1425"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Trajan"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0053-09-16T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0117-08-06T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:53-117"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1425"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Trajan"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0053-09-16T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0117-08-07T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:53-117"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1425"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Trajan"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0053-09-16T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0117-08-08T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:53-117"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1427"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Hadrian"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0076-01-22T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0138-07-09T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:76-138"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1429"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Antoninus Pius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0086-09-17T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0161-03-06T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:86-161"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1430"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Marcus Aurelius"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0121-04-25T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0180-03-16T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:121-180"
+        }
+      },
+      {
+        "entity": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1433"
+        },
+        "entityLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Lucius Verus"
+        },
+        "entityType": {
+          "type": "literal",
+          "value": "node"
+        },
+        "validFrom": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0130-12-14T00:00:00Z"
+        },
+        "validTo": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "0169-01-22T00:00:00Z"
+        },
+        "relationshipType": {
+          "type": "literal",
+          "value": ""
+        },
+        "history": {
+          "type": "literal",
+          "value": "lifespan:130-169"
+        }
+      }
+    ]
+  }
+}

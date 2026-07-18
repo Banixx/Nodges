@@ -209,6 +209,7 @@ export class NodeManager {
                     
                     const finalScale = baseScale * layerOpacity;
                     dummy.scale.set(finalScale, finalScale, finalScale);
+                    (entity as any)._baseScale = finalScale; // Save for temporal restoration
 
                     dummy.updateMatrix();
                     mesh.setMatrixAt(index, dummy.matrix);
@@ -549,8 +550,9 @@ export class NodeManager {
                         }
                         continue; // Skip interpolation if hidden
                     } else if (dummy.scale.x < 0.001) {
-                         // Restore base scale if it was hidden (simple restore to 1, accurate restore needs original scale tracking)
-                         dummy.scale.set(1, 1, 1);
+                         // Restore base scale if it was hidden
+                         const targetScale = (entity as any)._baseScale !== undefined ? (entity as any)._baseScale : 1;
+                         dummy.scale.set(targetScale, targetScale, targetScale);
                          dummy.updateMatrix();
                          mesh.setMatrixAt(i, dummy.matrix);
                          matrixDirty = true;

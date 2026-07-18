@@ -46,7 +46,7 @@ WICHTIGE REGELN FUER DAS VISUELLE MAPPING:
 
 4. KANTEN-MAPPINGS:
    - `color`: Verwende fuer Kanten standardmaessig ein konstantes Mapping (z.B. `"params": { "color": "#aaaaaa" }`).
-   - `thickness`: Nutze standardmaessig `"params": { "value": 0.1 }`. Wenn du ein globales Kanten-Attribut hast (z.B. "Intensitaet"), kannst du `thickness` darauf linear mappen (Bereich 0.03 bis 0.25).
+   - `thickness`: Nutze standardmaessig `"params": { "value": 0.1 }`. Wenn du ein globales Kanten-Attribut hast (z.B. "Intensitaet"), kannst du `thickness` darauf linear mappen (Bereich 0.1 bis 0.45).
 
 5. NUR `visualMappings` AUSGEBEN:
    - Gib NUR das `visualMappings`-Objekt zurueck, absolut kein anderes JSON und keine Erklaerungen.

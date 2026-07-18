@@ -243,7 +243,7 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     layoutEnabled: [STATE_CATEGORIES.SYSTEM],
     renderMode: [STATE_CATEGORIES.SYSTEM],
     activeRenderMode: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.SYSTEM],
-    currentTimestamp: [STATE_CATEGORIES.SYSTEM, STATE_CATEGORIES.DATA],
+    currentTimestamp: [STATE_CATEGORIES.SYSTEM],
     isPlaying: [STATE_CATEGORIES.SYSTEM],
     playbackSpeed: [STATE_CATEGORIES.SYSTEM],
     mapActive: [STATE_CATEGORIES.SYSTEM],

@@ -58,6 +58,9 @@ export class TimePlayerUI {
 
         // Subscribe to state changes
         this.stateManager.subscribe(state => this.handleStateChange(state), 'system');
+        
+        // Force initial DOM sync in case state is already populated (e.g. HMR)
+        this.handleStateChange(this.stateManager.state);
         this.stateManager.subscribe(state => this.handleDataChange(state), 'data_changed');
     }
 
@@ -83,7 +86,7 @@ export class TimePlayerUI {
     }
 
     private handleStateChange(state: any) {
-        if (state.currentTimestamp !== null) {
+        if (state.currentTimestamp !== null && state.currentTimestamp !== undefined && !isNaN(state.currentTimestamp)) {
             this.container.style.display = 'flex';
             this.slider.value = state.currentTimestamp.toString();
             this.timeDisplay.textContent = this.formatTimestamp(state.currentTimestamp);

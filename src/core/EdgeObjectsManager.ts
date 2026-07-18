@@ -451,7 +451,7 @@ export class EdgeObjectsManager {
         }
 
         const visualThickness = options.thickness !== undefined ? options.thickness : 1.0;
-        const finalThickness = Math.pow(state.edgeThickness * visualThickness, state.visualScaleExponent) * state.visualScaleMultiplier;
+        const finalThickness = Math.pow(state.edgeThickness * visualThickness, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5;
 
         // TubeGeometry entlang der Kurve
         const tubeGeometry = new THREE.TubeGeometry(
@@ -536,7 +536,7 @@ export class EdgeObjectsManager {
                 }
 
                 const currentVisualThickness = options.thickness !== undefined ? options.thickness : 1.0;
-                const currentFinalThickness = Math.pow(state.edgeThickness * currentVisualThickness, state.visualScaleExponent) * state.visualScaleMultiplier;
+                const currentFinalThickness = Math.pow(state.edgeThickness * currentVisualThickness, state.visualScaleExponent) * state.visualScaleMultiplier * 0.5;
 
                 const newCurve = new THREE.QuadraticBezierCurve3(newStartPos.clone(), newControlPoint, newEndPos.clone());
                 const newGeometry = new THREE.TubeGeometry(

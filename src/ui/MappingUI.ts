@@ -1207,8 +1207,19 @@ export class MappingUI {
                         details.appendChild(bipGroup);
                     } else if ((['linear', 'exponential', 'logarithmic'].includes(mapping.function || '') || mapping.range) && !['categorical', 'pulse'].includes(mapping.function || '')) {
                         const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(baseProp);
-                        const rangeMinVal = mapping.range ? mapping.range[0] : (isPosition ? -100 : 0.1);
-                        const rangeMaxVal = mapping.range ? mapping.range[1] : (isPosition ? 100 : 3.0);
+                        let defaultRangeMin = 0.1;
+                        let defaultRangeMax = 3.0;
+                        if (!isPosition) {
+                            if (baseProp === 'thickness' || this.currentCategory === 'relationships') {
+                                defaultRangeMin = 0.1;
+                                defaultRangeMax = 0.45;
+                            } else if (baseProp === 'size' || this.currentCategory === 'entities') {
+                                defaultRangeMin = 0.5;
+                                defaultRangeMax = 3.0;
+                            }
+                        }
+                        const rangeMinVal = mapping.range ? mapping.range[0] : (isPosition ? -100 : defaultRangeMin);
+                        const rangeMaxVal = mapping.range ? mapping.range[1] : (isPosition ? 100 : defaultRangeMax);
 
                         const rangeGroup = document.createElement('div');
                         rangeGroup.className = 'mapping-control-group';
@@ -2301,7 +2312,14 @@ export class MappingUI {
         }
 
         const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(basePropName);
-        const defaultRange: [number, number] = isPosition ? [-100, 100] : [0.1, 3.0];
+        let defaultRange: [number, number] = isPosition ? [-100, 100] : [0.1, 3.0];
+        if (!isPosition) {
+            if (basePropName === 'thickness' || this.currentCategory === 'relationships') {
+                defaultRange = [0.1, 0.45];
+            } else if (basePropName === 'size' || this.currentCategory === 'entities') {
+                defaultRange = [0.5, 3.0];
+            }
+        }
 
         const existingMapping = preset[propName] || { source: 'constant', function: 'constant' };
 
@@ -2340,8 +2358,14 @@ export class MappingUI {
             } else {
                 // Numeric property
                 const categories: Record<string, number> = {};
-                const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(basePropName);
-                const defaultRange = isPosition ? [-50, 50] : [0.1, 3.0];
+                let defaultRange: [number, number] = isPosition ? [-50, 50] : [0.1, 3.0];
+                if (!isPosition) {
+                    if (basePropName === 'thickness' || this.currentCategory === 'relationships') {
+                        defaultRange = [0.1, 0.45];
+                    } else if (basePropName === 'size' || this.currentCategory === 'entities') {
+                        defaultRange = [0.5, 3.0];
+                    }
+                }
                 const rangeMin = existingMapping.range ? existingMapping.range[0] : defaultRange[0];
                 const rangeMax = existingMapping.range ? existingMapping.range[1] : defaultRange[1];
                 
@@ -2531,8 +2555,20 @@ export class MappingUI {
         const [absMin, absMax] = this.getAttributeDataBounds(mapping.source || mapping.field || '');
         let domMin = mapping.domain ? mapping.domain[0] : absMin;
         let domMax = mapping.domain ? mapping.domain[1] : absMax;
-        let rngMin = Number(mapping.range ? mapping.range[0] : 0.1);
-        let rngMax = Number(mapping.range ? mapping.range[1] : 3.0);
+        let defaultRangeMin = 0.1;
+        let defaultRangeMax = 3.0;
+        const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(prop);
+        if (!isPosition) {
+            if (prop === 'thickness' || this.currentCategory === 'relationships') {
+                defaultRangeMin = 0.1;
+                defaultRangeMax = 0.45;
+            } else if (prop === 'size' || this.currentCategory === 'entities') {
+                defaultRangeMin = 0.5;
+                defaultRangeMax = 3.0;
+            }
+        }
+        let rngMin = Number(mapping.range ? mapping.range[0] : defaultRangeMin);
+        let rngMax = Number(mapping.range ? mapping.range[1] : defaultRangeMax);
         
         const visualMin = 0.0;
         const visualMax = 5.0;
