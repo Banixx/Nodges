@@ -48,6 +48,36 @@ describe('DataParser', () => {
         it('sollte einen Fehler werfen bei komplett leerem Input', () => {
             expect(() => DataParser.parse({} as any)).toThrow();
         });
+
+        it('sollte flache temporale Eigenschaften (wie startYear/endYear) in ein standardisiertes temporal-Objekt synthetisieren', () => {
+            const rawData = {
+                system: 'TestSystem',
+                metadata: {
+                    schemaVersion: '5.0'
+                },
+                data: {
+                    entities: [
+                        { id: '1', type: 'person', label: 'Alice', startYear: 1950, endYear: 2020 },
+                        { id: '2', type: 'person', label: 'Bob' }
+                    ],
+                    relationships: [
+                        { id: 'r1', type: 'knows', source: '1', target: '2', startYear: 1980 }
+                    ]
+                }
+            };
+
+            const result = DataParser.parse(rawData);
+
+            expect(result.data.entities[0].temporal).toBeDefined();
+            expect(result.data.entities[0].temporal?.validFrom).toBe(1950);
+            expect(result.data.entities[0].temporal?.validTo).toBe(2020);
+
+            expect(result.data.entities[1].temporal).toBeUndefined();
+
+            expect(result.data.relationships[0].temporal).toBeDefined();
+            expect(result.data.relationships[0].temporal?.validFrom).toBe(1980);
+            expect(result.data.relationships[0].temporal?.validTo).toBeNull();
+        });
     });
 
     describe('getEntities()', () => {

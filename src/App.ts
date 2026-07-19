@@ -1485,9 +1485,16 @@ export class App {
         // Build 4: Playback Fortschritt
         if (state.isPlaying && state.currentTimestamp !== null && state.currentTimestamp !== undefined) {
             let speed = state.playbackSpeed !== undefined ? state.playbackSpeed : 1.0;
-            const newTime = state.currentTimestamp + (deltaTime * speed * 1000); 
-            // console.log(`[TimePlayer Debug] old: ${state.currentTimestamp}, new: ${newTime}, delta: ${deltaTime}, speed: ${speed}`);
-            // In einer vollständigen Lösung sollte TimePlayerUI die Max-Grenzen prüfen
+            let step = deltaTime * speed * 1000; // default/fallback
+            if (state.minTimestamp !== null && state.maxTimestamp !== null && state.minTimestamp !== undefined && state.maxTimestamp !== undefined) {
+                const range = state.maxTimestamp - state.minTimestamp;
+                if (range > 0) {
+                    // Let the animation take 15 seconds at 1x speed
+                    const baseDurationSeconds = 15;
+                    step = (range / baseDurationSeconds) * deltaTime * speed;
+                }
+            }
+            const newTime = state.currentTimestamp + step; 
             this.stateManager.setCurrentTimestamp(newTime);
         }
 
@@ -1516,8 +1523,8 @@ export class App {
                 this.stateManager.getEntities()
             );
         }
-        if (this.edgeObjectsManager && (this.edgeObjectsManager as any).updateTemporalState) {
-            (this.edgeObjectsManager as any).updateTemporalState(this.stateManager.state.currentTimestamp);
+        if (this.edgeObjectsManager && this.edgeObjectsManager.updateTemporalState) {
+            this.edgeObjectsManager.updateTemporalState(this.stateManager.state.currentTimestamp);
         }
         if (this.edgeObjectsManager && this.stateManager.state.currentTimestamp !== null) {
             this.edgeObjectsManager.updateEdgePositions(this.stateManager.getEntities());

@@ -1,3 +1,7 @@
+# Google Drive
+
+.tmp.driveupload/
+
 # Logs
 *.log
 server.log

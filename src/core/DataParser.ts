@@ -60,6 +60,65 @@ export class DataParser {
             });
         }
 
+        // Synthesize temporal object if flat fields exist but no temporal object
+        const synthesizeTemporal = (item: any) => {
+            if (!item) return;
+            if (item.temporal) return; // already has temporal structure
+
+            let validFrom: number | null = null;
+            let validTo: number | null = null;
+
+            // Check various common flat naming patterns
+            const fromKeys = ['startYear', 'startTime', 'validFrom', 'start'];
+            const toKeys = ['endYear', 'endTime', 'validTo', 'end'];
+
+            // We do not want to use 'start' or 'end' if they are relationships' node identifiers
+            const actualFromKeys = (item.source !== undefined || item.target !== undefined) 
+                ? fromKeys.filter(k => k !== 'start') 
+                : fromKeys;
+            const actualToKeys = (item.source !== undefined || item.target !== undefined) 
+                ? toKeys.filter(k => k !== 'end') 
+                : toKeys;
+
+            for (const key of actualFromKeys) {
+                if (item[key] !== undefined && item[key] !== null) {
+                    const parsed = parseFloat(item[key]);
+                    if (!isNaN(parsed)) {
+                        validFrom = parsed;
+                        break;
+                    }
+                }
+            }
+
+            for (const key of actualToKeys) {
+                if (item[key] !== undefined && item[key] !== null) {
+                    const parsed = parseFloat(item[key]);
+                    if (!isNaN(parsed)) {
+                        validTo = parsed;
+                        break;
+                    }
+                }
+            }
+
+            if (validFrom !== null || validTo !== null) {
+                item.temporal = {
+                    validFrom: validFrom,
+                    validTo: validTo,
+                    history: []
+                };
+            }
+        };
+
+        // Synthesize temporal objects for entities and relationships
+        if (data && data.data) {
+            if (Array.isArray(data.data.entities)) {
+                data.data.entities.forEach((entity: any) => synthesizeTemporal(entity));
+            }
+            if (Array.isArray(data.data.relationships)) {
+                data.data.relationships.forEach((rel: any) => synthesizeTemporal(rel));
+            }
+        }
+
         // Normalize visualMappings defaultPresets keys
         if (data && data.visualMappings && data.visualMappings.defaultPresets) {
             const presets = data.visualMappings.defaultPresets;

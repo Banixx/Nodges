@@ -82,4 +82,5 @@ export interface IEdgeManager {
     updateEdgePositions(entities: EntityData[]): void;
     getMeshes(): THREE.Object3D[];
     dispose(): void;
+    updateTemporalState?(timestamp: number | null): void;
 }

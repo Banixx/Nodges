@@ -188,6 +188,10 @@ export class TimePlayerUI {
             if (this.stateManager.state.currentTimestamp === null) {
                 this.stateManager.setCurrentTimestamp(this.minTime);
             }
+            this.stateManager.update({
+                minTimestamp: this.minTime,
+                maxTimestamp: this.maxTime
+            });
             this.container.style.display = 'flex';
 
             // Ticks rendern
@@ -195,6 +199,10 @@ export class TimePlayerUI {
         } else {
             // No temporal data in graph
             this.stateManager.setCurrentTimestamp(null);
+            this.stateManager.update({
+                minTimestamp: null,
+                maxTimestamp: null
+            });
             this.stateManager.setPlaying(false);
             this.container.style.display = 'none';
             this.ticksContainer.innerHTML = '';

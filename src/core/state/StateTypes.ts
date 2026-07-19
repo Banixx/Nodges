@@ -117,6 +117,8 @@ export interface SystemState {
     renderMode: 'auto' | 'mesh' | 'instance';
     activeRenderMode: 'mesh' | 'instance';
     currentTimestamp: number | null;
+    minTimestamp: number | null;
+    maxTimestamp: number | null;
     isPlaying: boolean;
     playbackSpeed: number;
     mapActive: boolean;
@@ -244,6 +246,8 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     renderMode: [STATE_CATEGORIES.SYSTEM],
     activeRenderMode: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.SYSTEM],
     currentTimestamp: [STATE_CATEGORIES.SYSTEM],
+    minTimestamp: [STATE_CATEGORIES.SYSTEM],
+    maxTimestamp: [STATE_CATEGORIES.SYSTEM],
     isPlaying: [STATE_CATEGORIES.SYSTEM],
     playbackSpeed: [STATE_CATEGORIES.SYSTEM],
     mapActive: [STATE_CATEGORIES.SYSTEM],

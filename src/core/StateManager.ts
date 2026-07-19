@@ -95,6 +95,8 @@ export interface State {
 
     // Build 4: Temporal & Geospatial State
     currentTimestamp: number | null;
+    minTimestamp: number | null;
+    maxTimestamp: number | null;
     isPlaying: boolean;
     playbackSpeed: number;
     mapActive: boolean;
@@ -218,6 +220,8 @@ export class StateManager implements IStateManager {
             
             // Build 4
             currentTimestamp: null,
+            minTimestamp: null,
+            maxTimestamp: null,
             isPlaying: false,
             playbackSpeed: 1.0,
             mapActive: false,
