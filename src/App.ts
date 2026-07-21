@@ -642,7 +642,13 @@ export class App {
             this.visualMappingEngine.setVisualMappings({ defaultPresets: {} });
         }
         if (this.stateManager) {
-            this.stateManager.update({ visualMappings: { defaultPresets: {} } });
+            this.stateManager.update({ 
+                visualMappings: { defaultPresets: {} },
+                currentTimestamp: null,
+                minTimestamp: null,
+                maxTimestamp: null,
+                isPlaying: false
+            });
         }
         if (this.uiManager && this.uiManager.mappingUI) {
             this.uiManager.mappingUI.bind(
@@ -1006,6 +1012,10 @@ export class App {
         }
         this.visualMappingEngine.setVisualMappings(mappings);
         this.stateManager.update({ visualMappings: mappings });
+        
+        if (this.suggestionUI) {
+            this.suggestionUI.clearPreview();
+        }
         
         // Update graphics
         this.updateNodePositions();
@@ -1498,23 +1508,7 @@ export class App {
             this.stateManager.setCurrentTimestamp(newTime);
         }
 
-        // VISUAL DEBUGGER FOR TEMPORAL PLAYBACK
-        let debugDiv = document.getElementById('debug-box-temporal');
-        if (!debugDiv) {
-            debugDiv = document.createElement('div');
-            debugDiv.id = 'debug-box-temporal';
-            debugDiv.style.position = 'fixed';
-            debugDiv.style.top = '10px';
-            debugDiv.style.right = '10px';
-            debugDiv.style.backgroundColor = 'rgba(0,0,0,0.8)';
-            debugDiv.style.color = '#0f0';
-            debugDiv.style.padding = '10px';
-            debugDiv.style.fontFamily = 'monospace';
-            debugDiv.style.zIndex = '9999';
-            debugDiv.style.pointerEvents = 'none';
-            document.body.appendChild(debugDiv);
-        }
-        debugDiv.innerText = `[Temporal Debug]\nisPlaying: ${state.isPlaying}\ncurrentTimestamp: ${state.currentTimestamp}\ndeltaTime: ${deltaTime}\nplaybackSpeed: ${state.playbackSpeed}`;
+
 
         if (this.nodeManager) {
             this.nodeManager.updateTemporalState(this.stateManager.state.currentTimestamp);

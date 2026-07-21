@@ -20,7 +20,8 @@
               ]
             },
             "schemaVersion": {
-              "type": "string"
+              "type": "string",
+              "default": "5.2"
             },
             "author": {
               "type": "string"
@@ -115,36 +116,6 @@
                 "additionalProperties": false
               },
               "default": {}
-            },
-            "entities": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "object",
-                "properties": {
-                  "properties": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "$ref": "#/definitions/GraphDataSchema/properties/dataModel/properties/properties/additionalProperties"
-                    }
-                  }
-                },
-                "additionalProperties": true
-              }
-            },
-            "relationships": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "object",
-                "properties": {
-                  "properties": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "$ref": "#/definitions/GraphDataSchema/properties/dataModel/properties/properties/additionalProperties"
-                    }
-                  }
-                },
-                "additionalProperties": true
-              }
             }
           },
           "additionalProperties": true

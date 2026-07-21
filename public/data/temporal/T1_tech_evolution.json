@@ -1,0 +1,396 @@
+{
+  "system": "Technologieunternehmen und ihre Innovations-Epochen 1975-2025. Jede Firma erscheint zu ihrem Gruendungsjahr. history-Deltas zeigen Marktwertverlauf ueber die Zeit.",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Netzwerk der grossen Technologiefirmen. Demonstriert history-Deltas und endende Entitaeten (validTo).",
+    "created": "2026-07-19",
+    "author": "handcrafted"
+  },
+  "dataModel": {
+    "properties": {
+      "label":            { "type": "text" },
+      "kategorie":        { "type": "categorical", "values": ["Plattform","Hardware","Software","Halbleiter","Startup","Zulieferer","Subunternehmen"] },
+      "importance":       { "type": "continuous", "range": [0, 100] },
+      "boersenwert_mrd":  { "type": "continuous", "range": [0, 4000] },
+      "position":         { "type": "spatial" },
+      "art":              { "type": "categorical", "values": ["konkurrenz","partnerschaft","uebernahme","investition","zulieferung","subunternehmer","lizenzierung","rechtsstreit"] },
+      "staerke":          { "type": "continuous", "range": [0, 100] }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e_apple", "label": "Apple", "kategorie": "Hardware",
+        "importance": 95, "boersenwert_mrd": 3500,
+        "position": { "x": 0, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1975, "validTo": null,
+          "history": [
+            { "timestamp": 1975, "changes": { "importance": 20, "boersenwert_mrd": 0 } },
+            { "timestamp": 1976, "changes": { "importance": 30 } },
+            { "timestamp": 1997, "changes": { "importance": 25, "boersenwert_mrd": 2 } },
+            { "timestamp": 2001, "changes": { "importance": 60, "boersenwert_mrd": 8 } },
+            { "timestamp": 2007, "changes": { "importance": 85, "boersenwert_mrd": 174 } },
+            { "timestamp": 2018, "changes": { "importance": 90, "boersenwert_mrd": 1000 } },
+            { "timestamp": 2023, "changes": { "importance": 95, "boersenwert_mrd": 3000 } }
+          ]
+        }
+      },
+      {
+        "id": "e_microsoft", "label": "Microsoft", "kategorie": "Software",
+        "importance": 93, "boersenwert_mrd": 3200,
+        "position": { "x": 4, "y": 0, "z": 1 },
+        "temporal": {
+          "validFrom": 1975, "validTo": null,
+          "history": [
+            { "timestamp": 1975, "changes": { "importance": 20, "boersenwert_mrd": 0 } },
+            { "timestamp": 1986, "changes": { "importance": 55, "boersenwert_mrd": 1 } },
+            { "timestamp": 1995, "changes": { "importance": 88, "boersenwert_mrd": 46 } },
+            { "timestamp": 2000, "changes": { "importance": 75, "boersenwert_mrd": 586 } },
+            { "timestamp": 2014, "changes": { "importance": 78, "boersenwert_mrd": 310 } },
+            { "timestamp": 2024, "changes": { "importance": 93, "boersenwert_mrd": 3200 } }
+          ]
+        }
+      },
+      {
+        "id": "e_google", "label": "Google / Alphabet", "kategorie": "Plattform",
+        "importance": 92, "boersenwert_mrd": 2100,
+        "position": { "x": 2, "y": 0, "z": -4 },
+        "temporal": {
+          "validFrom": 1998, "validTo": null,
+          "history": [
+            { "timestamp": 1998, "changes": { "importance": 5, "boersenwert_mrd": 0 } },
+            { "timestamp": 2004, "changes": { "importance": 55, "boersenwert_mrd": 23 } },
+            { "timestamp": 2012, "changes": { "importance": 80, "boersenwert_mrd": 250 } },
+            { "timestamp": 2024, "changes": { "importance": 92, "boersenwert_mrd": 2100 } }
+          ]
+        }
+      },
+      {
+        "id": "e_amazon", "label": "Amazon", "kategorie": "Plattform",
+        "importance": 91, "boersenwert_mrd": 1900,
+        "position": { "x": -3, "y": 0, "z": -3 },
+        "temporal": {
+          "validFrom": 1994, "validTo": null,
+          "history": [
+            { "timestamp": 1994, "changes": { "importance": 3, "boersenwert_mrd": 0 } },
+            { "timestamp": 2006, "changes": { "importance": 45, "boersenwert_mrd": 20 } },
+            { "timestamp": 2020, "changes": { "importance": 88, "boersenwert_mrd": 1600 } },
+            { "timestamp": 2024, "changes": { "importance": 91, "boersenwert_mrd": 1900 } }
+          ]
+        }
+      },
+      {
+        "id": "e_meta", "label": "Meta (Facebook)", "kategorie": "Plattform",
+        "importance": 85, "boersenwert_mrd": 1450,
+        "position": { "x": -1, "y": 0, "z": 4 },
+        "temporal": {
+          "validFrom": 2004, "validTo": null,
+          "history": [
+            { "timestamp": 2004, "changes": { "importance": 2, "boersenwert_mrd": 0 } },
+            { "timestamp": 2012, "changes": { "importance": 65, "boersenwert_mrd": 104 } },
+            { "timestamp": 2022, "changes": { "importance": 60, "boersenwert_mrd": 230 } },
+            { "timestamp": 2024, "changes": { "importance": 85, "boersenwert_mrd": 1450 } }
+          ]
+        }
+      },
+      {
+        "id": "e_ibm", "label": "IBM", "kategorie": "Hardware",
+        "importance": 55, "boersenwert_mrd": 135,
+        "position": { "x": 7, "y": 0, "z": 3 },
+        "temporal": {
+          "validFrom": 1975, "validTo": null,
+          "history": [
+            { "timestamp": 1975, "changes": { "importance": 90, "boersenwert_mrd": 15 } },
+            { "timestamp": 1993, "changes": { "importance": 60, "boersenwert_mrd": 28 } },
+            { "timestamp": 2000, "changes": { "importance": 65, "boersenwert_mrd": 168 } },
+            { "timestamp": 2024, "changes": { "importance": 55, "boersenwert_mrd": 135 } }
+          ]
+        }
+      },
+      {
+        "id": "e_intel", "label": "Intel", "kategorie": "Halbleiter",
+        "importance": 65, "boersenwert_mrd": 93,
+        "position": { "x": 5, "y": 0, "z": -2 },
+        "temporal": {
+          "validFrom": 1975, "validTo": null,
+          "history": [
+            { "timestamp": 1975, "changes": { "importance": 40, "boersenwert_mrd": 1 } },
+            { "timestamp": 2000, "changes": { "importance": 90, "boersenwert_mrd": 200 } },
+            { "timestamp": 2023, "changes": { "importance": 65, "boersenwert_mrd": 93 } }
+          ]
+        }
+      },
+      {
+        "id": "e_nvidia", "label": "NVIDIA", "kategorie": "Halbleiter",
+        "importance": 97, "boersenwert_mrd": 3400,
+        "position": { "x": 3, "y": 0, "z": -1 },
+        "temporal": {
+          "validFrom": 1993, "validTo": null,
+          "history": [
+            { "timestamp": 1993, "changes": { "importance": 8, "boersenwert_mrd": 0 } },
+            { "timestamp": 2020, "changes": { "importance": 75, "boersenwert_mrd": 330 } },
+            { "timestamp": 2023, "changes": { "importance": 95, "boersenwert_mrd": 1200 } },
+            { "timestamp": 2024, "changes": { "importance": 97, "boersenwert_mrd": 3400 } }
+          ]
+        }
+      },
+      {
+        "id": "e_amd", "label": "AMD", "kategorie": "Halbleiter",
+        "importance": 72, "boersenwert_mrd": 250,
+        "position": { "x": 4, "y": 0, "z": -3 },
+        "temporal": {
+          "validFrom": 1975, "validTo": null,
+          "history": [
+            { "timestamp": 1975, "changes": { "importance": 30, "boersenwert_mrd": 0 } },
+            { "timestamp": 2015, "changes": { "importance": 40, "boersenwert_mrd": 2 } },
+            { "timestamp": 2024, "changes": { "importance": 72, "boersenwert_mrd": 250 } }
+          ]
+        }
+      },
+      {
+        "id": "e_netscape", "label": "Netscape", "kategorie": "Software",
+        "importance": 50, "boersenwert_mrd": 3,
+        "position": { "x": 2, "y": 0, "z": 5 },
+        "temporal": {
+          "validFrom": 1994, "validTo": 2003,
+          "history": [
+            { "timestamp": 1994, "changes": { "importance": 10, "boersenwert_mrd": 0 } },
+            { "timestamp": 1995, "changes": { "importance": 70, "boersenwert_mrd": 3 } },
+            { "timestamp": 1999, "changes": { "importance": 40, "boersenwert_mrd": 1 } }
+          ]
+        }
+      },
+      {
+        "id": "e_openai", "label": "OpenAI", "kategorie": "Startup",
+        "importance": 90, "boersenwert_mrd": 150,
+        "position": { "x": 0, "y": 0, "z": -6 },
+        "temporal": {
+          "validFrom": 2015, "validTo": null,
+          "history": [
+            { "timestamp": 2015, "changes": { "importance": 5, "boersenwert_mrd": 0 } },
+            { "timestamp": 2022, "changes": { "importance": 75, "boersenwert_mrd": 30 } },
+            { "timestamp": 2024, "changes": { "importance": 90, "boersenwert_mrd": 150 } }
+          ]
+        }
+      },
+      {
+        "id": "e_tsmc", "label": "TSMC", "kategorie": "Zulieferer",
+        "importance": 92, "boersenwert_mrd": 800,
+        "position": { "x": 6, "y": 0, "z": -4 },
+        "temporal": {
+          "validFrom": 1987, "validTo": null,
+          "history": [
+            { "timestamp": 1987, "changes": { "importance": 10, "boersenwert_mrd": 0 } },
+            { "timestamp": 2010, "changes": { "importance": 70, "boersenwert_mrd": 50 } },
+            { "timestamp": 2024, "changes": { "importance": 92, "boersenwert_mrd": 800 } }
+          ]
+        }
+      },
+      {
+        "id": "e_foxconn", "label": "Foxconn", "kategorie": "Subunternehmen",
+        "importance": 75, "boersenwert_mrd": 45,
+        "position": { "x": 1, "y": 0, "z": -2 },
+        "temporal": {
+          "validFrom": 1974, "validTo": null,
+          "history": [
+            { "timestamp": 1974, "changes": { "importance": 5, "boersenwert_mrd": 0 } },
+            { "timestamp": 2001, "changes": { "importance": 40, "boersenwert_mrd": 5 } },
+            { "timestamp": 2024, "changes": { "importance": 75, "boersenwert_mrd": 45 } }
+          ]
+        }
+      },
+      {
+        "id": "e_asml", "label": "ASML", "kategorie": "Zulieferer",
+        "importance": 88, "boersenwert_mrd": 350,
+        "position": { "x": 7, "y": 0, "z": -5 },
+        "temporal": {
+          "validFrom": 1984, "validTo": null,
+          "history": [
+            { "timestamp": 1984, "changes": { "importance": 5, "boersenwert_mrd": 0 } },
+            { "timestamp": 2015, "changes": { "importance": 60, "boersenwert_mrd": 50 } },
+            { "timestamp": 2024, "changes": { "importance": 88, "boersenwert_mrd": 350 } }
+          ]
+        }
+      },
+      {
+        "id": "e_youtube", "label": "YouTube", "kategorie": "Startup",
+        "importance": 85, "boersenwert_mrd": 0,
+        "position": { "x": 2, "y": 0, "z": -6 },
+        "temporal": {
+          "validFrom": 2005, "validTo": null,
+          "history": [
+            { "timestamp": 2005, "changes": { "importance": 10 } },
+            { "timestamp": 2006, "changes": { "importance": 30 } },
+            { "timestamp": 2024, "changes": { "importance": 85 } }
+          ]
+        }
+      },
+      {
+        "id": "e_instagram", "label": "Instagram", "kategorie": "Startup",
+        "importance": 82, "boersenwert_mrd": 0,
+        "position": { "x": -2, "y": 0, "z": 5 },
+        "temporal": {
+          "validFrom": 2010, "validTo": null,
+          "history": [
+            { "timestamp": 2010, "changes": { "importance": 10 } },
+            { "timestamp": 2012, "changes": { "importance": 40 } },
+            { "timestamp": 2024, "changes": { "importance": 82 } }
+          ]
+        }
+      },
+      {
+        "id": "e_github", "label": "GitHub", "kategorie": "Startup",
+        "importance": 78, "boersenwert_mrd": 0,
+        "position": { "x": 5, "y": 0, "z": 2 },
+        "temporal": {
+          "validFrom": 2008, "validTo": null,
+          "history": [
+            { "timestamp": 2008, "changes": { "importance": 15 } },
+            { "timestamp": 2018, "changes": { "importance": 65 } },
+            { "timestamp": 2024, "changes": { "importance": 78 } }
+          ]
+        }
+      },
+      {
+        "id": "e_samsung", "label": "Samsung Electronics", "kategorie": "Hardware",
+        "importance": 94, "boersenwert_mrd": 400,
+        "position": { "x": 2, "y": 0, "z": -1 },
+        "temporal": {
+          "validFrom": 1969, "validTo": null,
+          "history": [
+            { "timestamp": 1969, "changes": { "importance": 10, "boersenwert_mrd": 0 } },
+            { "timestamp": 2012, "changes": { "importance": 85, "boersenwert_mrd": 150 } },
+            { "timestamp": 2024, "changes": { "importance": 94, "boersenwert_mrd": 400 } }
+          ]
+        }
+      },
+      {
+        "id": "e_arm", "label": "ARM", "kategorie": "Halbleiter",
+        "importance": 85, "boersenwert_mrd": 150,
+        "position": { "x": 4, "y": 0, "z": -5 },
+        "temporal": {
+          "validFrom": 1990, "validTo": null,
+          "history": [
+            { "timestamp": 1990, "changes": { "importance": 20, "boersenwert_mrd": 0 } },
+            { "timestamp": 2016, "changes": { "importance": 70, "boersenwert_mrd": 32 } },
+            { "timestamp": 2024, "changes": { "importance": 85, "boersenwert_mrd": 150 } }
+          ]
+        }
+      },
+      {
+        "id": "e_qualcomm", "label": "Qualcomm", "kategorie": "Halbleiter",
+        "importance": 82, "boersenwert_mrd": 180,
+        "position": { "x": 5, "y": 0, "z": -3 },
+        "temporal": {
+          "validFrom": 1985, "validTo": null,
+          "history": [
+            { "timestamp": 1985, "changes": { "importance": 10, "boersenwert_mrd": 0 } },
+            { "timestamp": 2007, "changes": { "importance": 60, "boersenwert_mrd": 70 } },
+            { "timestamp": 2024, "changes": { "importance": 82, "boersenwert_mrd": 180 } }
+          ]
+        }
+      },
+      {
+        "id": "e_android", "label": "Android", "kategorie": "Startup",
+        "importance": 95, "boersenwert_mrd": 0,
+        "position": { "x": 1, "y": 0, "z": -5 },
+        "temporal": {
+          "validFrom": 2003, "validTo": null,
+          "history": [
+            { "timestamp": 2003, "changes": { "importance": 5 } },
+            { "timestamp": 2005, "changes": { "importance": 20 } },
+            { "timestamp": 2010, "changes": { "importance": 80 } },
+            { "timestamp": 2024, "changes": { "importance": 95 } }
+          ]
+        }
+      },
+      {
+        "id": "e_whatsapp", "label": "WhatsApp", "kategorie": "Startup",
+        "importance": 88, "boersenwert_mrd": 0,
+        "position": { "x": -2, "y": 0, "z": 6 },
+        "temporal": {
+          "validFrom": 2009, "validTo": null,
+          "history": [
+            { "timestamp": 2009, "changes": { "importance": 10 } },
+            { "timestamp": 2014, "changes": { "importance": 60 } },
+            { "timestamp": 2024, "changes": { "importance": 88 } }
+          ]
+        }
+      },
+      {
+        "id": "e_linkedin", "label": "LinkedIn", "kategorie": "Startup",
+        "importance": 75, "boersenwert_mrd": 0,
+        "position": { "x": 5, "y": 0, "z": 4 },
+        "temporal": {
+          "validFrom": 2002, "validTo": null,
+          "history": [
+            { "timestamp": 2002, "changes": { "importance": 10 } },
+            { "timestamp": 2016, "changes": { "importance": 60 } },
+            { "timestamp": 2024, "changes": { "importance": 75 } }
+          ]
+        }
+      },
+      {
+        "id": "e_next", "label": "NeXT", "kategorie": "Startup",
+        "importance": 40, "boersenwert_mrd": 0,
+        "position": { "x": -1, "y": 0, "z": -1 },
+        "temporal": {
+          "validFrom": 1985, "validTo": 1997,
+          "history": [
+            { "timestamp": 1985, "changes": { "importance": 15 } },
+            { "timestamp": 1990, "changes": { "importance": 30 } },
+            { "timestamp": 1997, "changes": { "importance": 40 } }
+          ]
+        }
+      }
+    ],
+    "relationships": [
+      { "id": "r1", "source": "e_microsoft", "target": "e_apple", "label": "OS-Rivalitaet", "art": "konkurrenz", "staerke": 90, "temporal": { "validFrom": 1984, "validTo": 2005, "history": [] } },
+      { "id": "r2", "source": "e_microsoft", "target": "e_apple", "label": "MS investiert in Apple", "art": "investition", "staerke": 60, "temporal": { "validFrom": 1997, "validTo": 2003, "history": [] } },
+      { "id": "r3", "source": "e_ibm", "target": "e_microsoft", "label": "IBM-PC Partnerschaft", "art": "partnerschaft", "staerke": 80, "temporal": { "validFrom": 1981, "validTo": 1994, "history": [] } },
+      { "id": "r4", "source": "e_intel", "target": "e_ibm", "label": "x86-Prozessoren", "art": "partnerschaft", "staerke": 85, "temporal": { "validFrom": 1981, "validTo": 2000, "history": [] } },
+      { "id": "r5", "source": "e_intel", "target": "e_microsoft", "label": "Wintel-Allianz", "art": "partnerschaft", "staerke": 95, "temporal": { "validFrom": 1985, "validTo": 2010, "history": [] } },
+      { "id": "r6", "source": "e_google", "target": "e_microsoft", "label": "Suchmaschinenkonkurrenz", "art": "konkurrenz", "staerke": 80, "temporal": { "validFrom": 2005, "validTo": null, "history": [] } },
+      { "id": "r7", "source": "e_microsoft", "target": "e_netscape", "label": "Browserkrieg", "art": "konkurrenz", "staerke": 95, "temporal": { "validFrom": 1995, "validTo": 2003, "history": [] } },
+      { "id": "r8", "source": "e_amazon", "target": "e_microsoft", "label": "Cloud-Rivalitaet", "art": "konkurrenz", "staerke": 88, "temporal": { "validFrom": 2010, "validTo": null, "history": [] } },
+      { "id": "r9", "source": "e_nvidia", "target": "e_microsoft", "label": "KI-Partnerschaft", "art": "partnerschaft", "staerke": 90, "temporal": { "validFrom": 2022, "validTo": null, "history": [] } },
+      { "id": "r10", "source": "e_microsoft", "target": "e_openai", "label": "13 Mrd. Investition", "art": "investition", "staerke": 95, "temporal": { "validFrom": 2019, "validTo": null, "history": [] } },
+      { "id": "r11", "source": "e_nvidia", "target": "e_openai", "label": "GPU-Infrastruktur", "art": "partnerschaft", "staerke": 85, "temporal": { "validFrom": 2020, "validTo": null, "history": [] } },
+      { "id": "r12", "source": "e_amd", "target": "e_intel", "label": "CPU-Wettbewerb", "art": "konkurrenz", "staerke": 88, "temporal": { "validFrom": 1975, "validTo": null, "history": [] } },
+      { "id": "r13", "source": "e_google", "target": "e_meta", "label": "Werbemarkt-Rivalitaet", "art": "konkurrenz", "staerke": 75, "temporal": { "validFrom": 2010, "validTo": null, "history": [] } },
+      { "id": "r14", "source": "e_foxconn", "target": "e_apple", "label": "iPhone-Fertigung", "art": "subunternehmer", "staerke": 95, "temporal": { "validFrom": 2007, "validTo": null, "history": [] } },
+      { "id": "r15", "source": "e_tsmc", "target": "e_apple", "label": "Chip-Produktion (A-Serie)", "art": "zulieferung", "staerke": 90, "temporal": { "validFrom": 2014, "validTo": null, "history": [] } },
+      { "id": "r16", "source": "e_tsmc", "target": "e_nvidia", "label": "GPU-Fertigung", "art": "zulieferung", "staerke": 95, "temporal": { "validFrom": 1998, "validTo": null, "history": [] } },
+      { "id": "r17", "source": "e_asml", "target": "e_tsmc", "label": "EUV-Lithographie", "art": "zulieferung", "staerke": 100, "temporal": { "validFrom": 2010, "validTo": null, "history": [] } },
+      { "id": "r18", "source": "e_google", "target": "e_youtube", "label": "Uebernahme fuer 1,65 Mrd.", "art": "uebernahme", "staerke": 85, "temporal": { "validFrom": 2006, "validTo": null, "history": [] } },
+      { "id": "r19", "source": "e_meta", "target": "e_instagram", "label": "Uebernahme fuer 1 Mrd.", "art": "uebernahme", "staerke": 90, "temporal": { "validFrom": 2012, "validTo": null, "history": [] } },
+      { "id": "r20", "source": "e_microsoft", "target": "e_github", "label": "Uebernahme fuer 7,5 Mrd.", "art": "uebernahme", "staerke": 80, "temporal": { "validFrom": 2018, "validTo": null, "history": [] } },
+      { "id": "r21", "source": "e_samsung", "target": "e_apple", "label": "Display- und Chip-Zulieferung", "art": "zulieferung", "staerke": 85, "temporal": { "validFrom": 2007, "validTo": null, "history": [] } },
+      { "id": "r22", "source": "e_samsung", "target": "e_apple", "label": "Patentstreitigkeiten", "art": "rechtsstreit", "staerke": 70, "temporal": { "validFrom": 2011, "validTo": 2018, "history": [] } },
+      { "id": "r23", "source": "e_arm", "target": "e_apple", "label": "Architektur-Lizenzierung", "art": "lizenzierung", "staerke": 95, "temporal": { "validFrom": 1993, "validTo": null, "history": [] } },
+      { "id": "r24", "source": "e_arm", "target": "e_qualcomm", "label": "Core-Lizenzierung", "art": "lizenzierung", "staerke": 90, "temporal": { "validFrom": 2007, "validTo": null, "history": [] } },
+      { "id": "r25", "source": "e_qualcomm", "target": "e_apple", "label": "Modem-Chips", "art": "zulieferung", "staerke": 80, "temporal": { "validFrom": 2011, "validTo": null, "history": [] } },
+      { "id": "r26", "source": "e_qualcomm", "target": "e_apple", "label": "Lizenz- und Patentstreit", "art": "rechtsstreit", "staerke": 85, "temporal": { "validFrom": 2017, "validTo": 2019, "history": [] } },
+      { "id": "r27", "source": "e_google", "target": "e_android", "label": "Uebernahme (Grundstein fuer Mobile)", "art": "uebernahme", "staerke": 100, "temporal": { "validFrom": 2005, "validTo": null, "history": [] } },
+      { "id": "r28", "source": "e_meta", "target": "e_whatsapp", "label": "Uebernahme fuer 19 Mrd.", "art": "uebernahme", "staerke": 95, "temporal": { "validFrom": 2014, "validTo": null, "history": [] } },
+      { "id": "r29", "source": "e_microsoft", "target": "e_linkedin", "label": "Uebernahme fuer 26 Mrd.", "art": "uebernahme", "staerke": 85, "temporal": { "validFrom": 2016, "validTo": null, "history": [] } },
+      { "id": "r30", "source": "e_apple", "target": "e_next", "label": "Uebernahme (Steve Jobs Rueckkehr)", "art": "uebernahme", "staerke": 90, "temporal": { "validFrom": 1997, "validTo": null, "history": [] } }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "position": { "source": "position", "function": "linear" },
+        "size": { "source": "importance", "function": "linear", "domain": [0, 100], "range": [0.4, 3.5] },
+        "color": { "source": "kategorie", "function": "categorical" },
+        "geometry": { "source": "kategorie", "function": "categorical" },
+        "glow": { "source": "importance", "function": "linear", "domain": [0, 100], "range": [0, 1] }
+      },
+      "global_edge": {
+        "color": { "source": "art", "function": "categorical" },
+        "thickness": { "source": "staerke", "function": "linear", "domain": [0, 100], "range": [0.05, 0.4] }
+      }
+    }
+  }
+}

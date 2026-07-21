@@ -1,0 +1,168 @@
+{
+  "system": "Epidemie-Ausbreitung in einem Staedtenetzwerk. Zeitachse in Wochen (0 = Ausbruchswoche). Infektionszahl und Status aendern sich ueber die Zeit via history-Deltas. Kanten repraesentieren Uebertragungspfade die sich oeffnen und schliessen.",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Epidemie-Ausbreitungsnetzwerk. Schnelle Zeitskala (Wochen). Zustandsuebergaenge Healthy->Infected->Peak->Recovering->Recovered.",
+    "created": "2026-07-19",
+    "author": "handcrafted"
+  },
+  "dataModel": {
+    "properties": {
+      "label":             { "type": "text" },
+      "land":              { "type": "categorical", "values": ["Deutschland","Frankreich","UK","Italien","Spanien","USA","China"] },
+      "status":            { "type": "categorical", "values": ["healthy","infected","peak","recovering","recovered"] },
+      "infizierte":        { "type": "continuous", "range": [0, 5000000] },
+      "bevoelkerung_mio":  { "type": "continuous", "range": [0.5, 25] },
+      "r_wert":            { "type": "continuous", "range": [0, 5] },
+      "position":          { "type": "spatial" },
+      "kanal":             { "type": "categorical", "values": ["flug","bahn","strasse","schiff"] },
+      "flussrate":         { "type": "continuous", "range": [0, 100] }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e_wuhan", "label": "Wuhan", "land": "China",
+        "status": "recovered", "infizierte": 50000, "bevoelkerung_mio": 11, "r_wert": 0.5,
+        "position": { "x": 12, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 0, "validTo": null,
+          "history": [
+            { "timestamp": 0,  "changes": { "status": "infected", "infizierte": 100, "r_wert": 3.5 } },
+            { "timestamp": 4,  "changes": { "infizierte": 5000, "r_wert": 3.0 } },
+            { "timestamp": 8,  "changes": { "status": "peak", "infizierte": 50000, "r_wert": 1.2 } },
+            { "timestamp": 16, "changes": { "status": "recovering", "infizierte": 20000, "r_wert": 0.8 } },
+            { "timestamp": 24, "changes": { "status": "recovered", "infizierte": 1000, "r_wert": 0.5 } }
+          ]
+        }
+      },
+      {
+        "id": "e_mailand", "label": "Mailand", "land": "Italien",
+        "status": "recovered", "infizierte": 80000, "bevoelkerung_mio": 3.2, "r_wert": 0.6,
+        "position": { "x": -2, "y": 0, "z": -2 },
+        "temporal": {
+          "validFrom": 6, "validTo": null,
+          "history": [
+            { "timestamp": 6,  "changes": { "status": "infected", "infizierte": 50, "r_wert": 3.2 } },
+            { "timestamp": 10, "changes": { "infizierte": 10000, "r_wert": 2.8 } },
+            { "timestamp": 14, "changes": { "status": "peak", "infizierte": 80000, "r_wert": 1.0 } },
+            { "timestamp": 20, "changes": { "status": "recovering", "infizierte": 30000, "r_wert": 0.7 } },
+            { "timestamp": 28, "changes": { "status": "recovered", "infizierte": 5000, "r_wert": 0.6 } }
+          ]
+        }
+      },
+      {
+        "id": "e_paris", "label": "Paris", "land": "Frankreich",
+        "status": "recovered", "infizierte": 120000, "bevoelkerung_mio": 12, "r_wert": 0.7,
+        "position": { "x": -4, "y": 0, "z": 1 },
+        "temporal": {
+          "validFrom": 8, "validTo": null,
+          "history": [
+            { "timestamp": 8,  "changes": { "status": "infected", "infizierte": 200, "r_wert": 3.0 } },
+            { "timestamp": 12, "changes": { "infizierte": 30000, "r_wert": 2.5 } },
+            { "timestamp": 18, "changes": { "status": "peak", "infizierte": 120000, "r_wert": 0.9 } },
+            { "timestamp": 24, "changes": { "status": "recovering", "infizierte": 50000, "r_wert": 0.7 } },
+            { "timestamp": 32, "changes": { "status": "recovered", "infizierte": 8000, "r_wert": 0.7 } }
+          ]
+        }
+      },
+      {
+        "id": "e_london", "label": "London", "land": "UK",
+        "status": "recovered", "infizierte": 200000, "bevoelkerung_mio": 9, "r_wert": 0.8,
+        "position": { "x": -5, "y": 0, "z": 3 },
+        "temporal": {
+          "validFrom": 9, "validTo": null,
+          "history": [
+            { "timestamp": 9,  "changes": { "status": "infected", "infizierte": 100, "r_wert": 3.2 } },
+            { "timestamp": 14, "changes": { "infizierte": 50000, "r_wert": 2.8 } },
+            { "timestamp": 20, "changes": { "status": "peak", "infizierte": 200000, "r_wert": 1.1 } },
+            { "timestamp": 28, "changes": { "status": "recovering", "infizierte": 80000, "r_wert": 0.9 } },
+            { "timestamp": 36, "changes": { "status": "recovered", "infizierte": 10000, "r_wert": 0.8 } }
+          ]
+        }
+      },
+      {
+        "id": "e_berlin", "label": "Berlin", "land": "Deutschland",
+        "status": "recovered", "infizierte": 90000, "bevoelkerung_mio": 3.7, "r_wert": 0.6,
+        "position": { "x": -1, "y": 0, "z": 5 },
+        "temporal": {
+          "validFrom": 9, "validTo": null,
+          "history": [
+            { "timestamp": 9,  "changes": { "status": "infected", "infizierte": 30, "r_wert": 2.8 } },
+            { "timestamp": 17, "changes": { "status": "peak", "infizierte": 90000, "r_wert": 0.8 } },
+            { "timestamp": 24, "changes": { "status": "recovering", "infizierte": 30000, "r_wert": 0.6 } },
+            { "timestamp": 32, "changes": { "status": "recovered", "infizierte": 3000, "r_wert": 0.6 } }
+          ]
+        }
+      },
+      {
+        "id": "e_madrid", "label": "Madrid", "land": "Spanien",
+        "status": "recovered", "infizierte": 150000, "bevoelkerung_mio": 6.7, "r_wert": 0.7,
+        "position": { "x": -5, "y": 0, "z": -3 },
+        "temporal": {
+          "validFrom": 10, "validTo": null,
+          "history": [
+            { "timestamp": 10, "changes": { "status": "infected", "infizierte": 80, "r_wert": 3.5 } },
+            { "timestamp": 22, "changes": { "status": "peak", "infizierte": 150000, "r_wert": 0.9 } },
+            { "timestamp": 30, "changes": { "status": "recovering", "infizierte": 60000, "r_wert": 0.7 } },
+            { "timestamp": 38, "changes": { "status": "recovered", "infizierte": 7000, "r_wert": 0.7 } }
+          ]
+        }
+      },
+      {
+        "id": "e_newyork", "label": "New York", "land": "USA",
+        "status": "recovered", "infizierte": 800000, "bevoelkerung_mio": 8.3, "r_wert": 0.9,
+        "position": { "x": -10, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 11, "validTo": null,
+          "history": [
+            { "timestamp": 11, "changes": { "status": "infected", "infizierte": 500, "r_wert": 3.8 } },
+            { "timestamp": 22, "changes": { "status": "peak", "infizierte": 800000, "r_wert": 1.5 } },
+            { "timestamp": 30, "changes": { "status": "recovering", "infizierte": 300000, "r_wert": 1.0 } },
+            { "timestamp": 40, "changes": { "status": "recovered", "infizierte": 50000, "r_wert": 0.9 } }
+          ]
+        }
+      },
+      {
+        "id": "e_losangeles", "label": "Los Angeles", "land": "USA",
+        "status": "recovering", "infizierte": 500000, "bevoelkerung_mio": 4.0, "r_wert": 1.1,
+        "position": { "x": -12, "y": 0, "z": -3 },
+        "temporal": {
+          "validFrom": 14, "validTo": null,
+          "history": [
+            { "timestamp": 14, "changes": { "status": "infected", "infizierte": 200, "r_wert": 3.5 } },
+            { "timestamp": 26, "changes": { "status": "peak", "infizierte": 500000, "r_wert": 1.3 } },
+            { "timestamp": 36, "changes": { "status": "recovering", "infizierte": 200000, "r_wert": 1.1 } }
+          ]
+        }
+      }
+    ],
+    "relationships": [
+      { "id": "r1", "source": "e_wuhan",   "target": "e_mailand", "label": "Flugverbindung", "kanal": "flug",  "flussrate": 80, "temporal": { "validFrom": 4,  "validTo": 12,   "history": [] } },
+      { "id": "r2", "source": "e_wuhan",   "target": "e_paris",   "label": "Flugverbindung", "kanal": "flug",  "flussrate": 70, "temporal": { "validFrom": 5,  "validTo": 14,   "history": [] } },
+      { "id": "r3", "source": "e_wuhan",   "target": "e_london",  "label": "Flugverbindung", "kanal": "flug",  "flussrate": 65, "temporal": { "validFrom": 5,  "validTo": 14,   "history": [] } },
+      { "id": "r4", "source": "e_mailand", "target": "e_paris",   "label": "Bahnverbindung", "kanal": "bahn",  "flussrate": 60, "temporal": { "validFrom": 8,  "validTo": null, "history": [] } },
+      { "id": "r5", "source": "e_mailand", "target": "e_madrid",  "label": "Flugverbindung", "kanal": "flug",  "flussrate": 50, "temporal": { "validFrom": 9,  "validTo": null, "history": [] } },
+      { "id": "r6", "source": "e_paris",   "target": "e_london",  "label": "Eurotunnel",     "kanal": "bahn",  "flussrate": 75, "temporal": { "validFrom": 9,  "validTo": null, "history": [] } },
+      { "id": "r7", "source": "e_paris",   "target": "e_berlin",  "label": "Bahnverbindung", "kanal": "bahn",  "flussrate": 55, "temporal": { "validFrom": 10, "validTo": null, "history": [] } },
+      { "id": "r8", "source": "e_london",  "target": "e_newyork", "label": "Flugverbindung", "kanal": "flug",  "flussrate": 90, "temporal": { "validFrom": 10, "validTo": 20,   "history": [] } },
+      { "id": "r9", "source": "e_newyork", "target": "e_losangeles","label": "Inlandsflug",  "kanal": "flug",  "flussrate": 80, "temporal": { "validFrom": 13, "validTo": null, "history": [] } },
+      { "id": "r10","source": "e_mailand", "target": "e_berlin",  "label": "Bahnverbindung", "kanal": "bahn",  "flussrate": 45, "temporal": { "validFrom": 10, "validTo": null, "history": [] } }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "position": { "source": "position", "function": "linear" },
+        "size": { "source": "bevoelkerung_mio", "function": "linear", "domain": [0.5, 25], "range": [0.5, 2.5] },
+        "color": { "source": "status", "function": "categorical" },
+        "geometry": { "source": "status", "function": "categorical" },
+        "glow": { "source": "r_wert", "function": "linear", "domain": [0, 5], "range": [0, 2.0] }
+      },
+      "global_edge": {
+        "color": { "source": "kanal", "function": "categorical" },
+        "thickness": { "source": "flussrate", "function": "linear", "domain": [0, 100], "range": [0.05, 0.4] }
+      }
+    }
+  }
+}

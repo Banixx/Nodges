@@ -1611,6 +1611,65 @@ body.ui-mode-expert [data-min-mode="dev"] {
   border-color: var(--accent-color, #a08060);
 }
 
+.tp-settings-panel {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 15px;
+  background: rgba(30, 30, 28, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4);
+  z-index: 1001;
+  width: 280px;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 200px;
+}
+
+.tp-settings-panel.collapsed {
+  max-height: 28px;
+}
+
+.tp-settings-body {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: opacity 0.2s ease;
+}
+
+.tp-settings-panel.collapsed .tp-settings-body {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tp-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tp-setting-label {
+  font-size: 11px;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.tp-setting-val {
+  font-size: 11px;
+  color: var(--accent-color);
+  font-family: var(--font-mono, monospace);
+  min-width: 24px;
+  text-align: right;
+}
+
 /* --- Custom Nodges Toggle Switch (Restored from Session 46) --- */
 .nodges-toggle {
   appearance: none;

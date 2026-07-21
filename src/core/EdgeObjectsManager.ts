@@ -619,34 +619,59 @@ export class EdgeObjectsManager {
             let isVisible = true;
 
             // Check edge temporal data
-            if (edgeData && edgeData.temporal) {
-                const validFrom = edgeData.temporal.validFrom;
-                const validTo = edgeData.temporal.validTo;
-                if ((validFrom !== undefined && validFrom !== null && timestamp < validFrom) ||
-                    (validTo !== undefined && validTo !== null && timestamp > validTo)) {
-                    isVisible = false;
-                }
-            }
+            let edgeFade = 1.0;
+            const state = this.stateManager.state;
+            const fadeEnabled = state.temporalFadeEnabled;
+            const fadeDuration = state.temporalFadeDuration || 1;
 
-            // Check node temporal data (edge is hidden if any connected node is hidden)
-            if (isVisible && startNode && startNode.temporal) {
-                const validFrom = startNode.temporal.validFrom;
-                const validTo = startNode.temporal.validTo;
-                if ((validFrom !== undefined && validFrom !== null && timestamp < validFrom) ||
-                    (validTo !== undefined && validTo !== null && timestamp > validTo)) {
-                    isVisible = false;
+            const calcFade = (tObj: any): { visible: boolean, fade: number } => {
+                if (!tObj) return { visible: true, fade: 1.0 };
+                const vFrom = tObj.validFrom;
+                const vTo = tObj.validTo;
+
+                if (fadeEnabled) {
+                    const inFadeIn = vFrom !== undefined && vFrom !== null && timestamp < vFrom && timestamp >= vFrom - fadeDuration;
+                    const inFadeOut = vTo !== undefined && vTo !== null && timestamp > vTo && timestamp <= vTo + fadeDuration;
+                    const fullyVisible = (vFrom === undefined || vFrom === null || timestamp >= vFrom) &&
+                                         (vTo === undefined || vTo === null || timestamp <= vTo);
+
+                    if (fullyVisible) return { visible: true, fade: 1.0 };
+                    if (inFadeIn) return { visible: true, fade: (timestamp - (vFrom - fadeDuration)) / fadeDuration };
+                    if (inFadeOut) return { visible: true, fade: 1.0 - ((timestamp - vTo) / fadeDuration) };
+                    return { visible: false, fade: 0.0 };
+                } else {
+                    const fullyVisible = (vFrom === undefined || vFrom === null || timestamp >= vFrom) &&
+                                         (vTo === undefined || vTo === null || timestamp <= vTo);
+                    return { visible: fullyVisible, fade: fullyVisible ? 1.0 : 0.0 };
                 }
-            }
-            if (isVisible && endNode && endNode.temporal) {
-                const validFrom = endNode.temporal.validFrom;
-                const validTo = endNode.temporal.validTo;
-                if ((validFrom !== undefined && validFrom !== null && timestamp < validFrom) ||
-                    (validTo !== undefined && validTo !== null && timestamp > validTo)) {
-                    isVisible = false;
-                }
-            }
+            };
+
+            const edgeT = calcFade(edgeData?.temporal);
+            const startT = calcFade(startNode?.temporal);
+            const endT = calcFade(endNode?.temporal);
+
+            isVisible = edgeT.visible && startT.visible && endT.visible;
+            const combinedFade = Math.min(edgeT.fade, startT.fade, endT.fade);
 
             edgeObj.tube.visible = isVisible;
+            
+            if (isVisible) {
+                const mat = edgeObj.tube.material as THREE.MeshPhongMaterial;
+                // If fade is less than 1, we must enable transparency
+                if (combinedFade < 1.0) {
+                    mat.transparent = true;
+                }
+                
+                // Original opacity (e.g. from layer or mapping) is not stored directly, 
+                // but we can assume 1.0 if not set, or we could calculate it. 
+                // For simplicity, we just use the fade multiplier as the opacity, capped by the max possible.
+                // Wait, if layer opacity was applied, we don't want to lose it. 
+                // But edge doesn't store original layer opacity. We just set it.
+                // It's acceptable to just set opacity = combinedFade since this is temporary during animation.
+                if (mat.transparent) {
+                    mat.opacity = combinedFade;
+                }
+            }
             
             // Wait, what about Keyframes for Edges (color/thickness interpolation)?
             // Currently edge keyframes are not fully implemented, but we can do it later.

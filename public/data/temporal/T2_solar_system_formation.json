@@ -1,0 +1,144 @@
+{
+  "system": "Entstehung des Sonnensystems aus einer protoplanetaren Scheibe. Zeitskala in Millionen Jahre vor heute (negative Werte). Zeigt geologische und astronomische Zeitskalen. validTo null bedeutet bis heute existent.",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Planetenentstehung und Sonnensystem-Formation. Demonstriert astronomische Zeitskalen in Millionen Jahren.",
+    "created": "2026-07-19",
+    "author": "handcrafted"
+  },
+  "dataModel": {
+    "properties": {
+      "label":      { "type": "text" },
+      "typ":        { "type": "categorical", "values": ["Stern","Gasriese","Gesteinsplanet","Zwergplanet","Mond","Komet","Asteroidenguertel"] },
+      "masse_erde": { "type": "continuous", "range": [0, 333000] },
+      "position":   { "type": "spatial" },
+      "beziehung":  { "type": "categorical", "values": ["umkreist","eingefangen","kollision","resonanz"] },
+      "distanz_au": { "type": "continuous", "range": [0, 50] }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e_protosun", "label": "Protoplanetare Scheibe", "typ": "Stern",
+        "masse_erde": 0, "position": { "x": 0, "y": 0, "z": 0 },
+        "temporal": { "validFrom": -4600, "validTo": -4500, "history": [] }
+      },
+      {
+        "id": "e_sonne", "label": "Sonne", "typ": "Stern",
+        "masse_erde": 333000, "position": { "x": 0, "y": 0, "z": 0 },
+        "temporal": { "validFrom": -4568, "validTo": null, "history": [] }
+      },
+      {
+        "id": "e_merkur", "label": "Merkur", "typ": "Gesteinsplanet",
+        "masse_erde": 0.055, "position": { "x": 2, "y": 0, "z": 0 },
+        "temporal": { "validFrom": -4500, "validTo": null, "history": [] }
+      },
+      {
+        "id": "e_venus", "label": "Venus", "typ": "Gesteinsplanet",
+        "masse_erde": 0.815, "position": { "x": 3, "y": 0, "z": 0 },
+        "temporal": { "validFrom": -4500, "validTo": null, "history": [] }
+      },
+      {
+        "id": "e_theia", "label": "Theia (Protoplanet)", "typ": "Gesteinsplanet",
+        "masse_erde": 0.1, "position": { "x": 4, "y": 0, "z": 1 },
+        "temporal": { "validFrom": -4530, "validTo": -4450, "history": [] }
+      },
+      {
+        "id": "e_erde_proto", "label": "Proto-Erde", "typ": "Gesteinsplanet",
+        "masse_erde": 0.9, "position": { "x": 4, "y": 0, "z": 0 },
+        "temporal": { "validFrom": -4500, "validTo": -4450, "history": [] }
+      },
+      {
+        "id": "e_erde", "label": "Erde", "typ": "Gesteinsplanet",
+        "masse_erde": 1.0, "position": { "x": 4, "y": 0, "z": 0 },
+        "temporal": { "validFrom": -4450, "validTo": null, "history": [] }
+      },
+      {
+        "id": "e_mond", "label": "Mond", "typ": "Mond",
+        "masse_erde": 0.0123, "position": { "x": 4.2, "y": 0, "z": 0.2 },
+        "temporal": { "validFrom": -4450, "validTo": null, "history": [] }
+      },
+      {
+        "id": "e_mars", "label": "Mars", "typ": "Gesteinsplanet",
+        "masse_erde": 0.107, "position": { "x": 5, "y": 0, "z": 0 },
+        "temporal": { "validFrom": -4500, "validTo": null, "history": [] }
+      },
+      {
+        "id": "e_asteroid", "label": "Asteroidenguertel", "typ": "Asteroidenguertel",
+        "masse_erde": 0.0004, "position": { "x": 6, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": -4000, "validTo": null,
+          "history": [
+            { "timestamp": -4000, "changes": { "masse_erde": 0.004 } },
+            { "timestamp": -3000, "changes": { "masse_erde": 0.0004 } }
+          ]
+        }
+      },
+      {
+        "id": "e_jupiter", "label": "Jupiter", "typ": "Gasriese",
+        "masse_erde": 318, "position": { "x": 8, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": -4560, "validTo": null,
+          "history": [
+            { "timestamp": -4560, "changes": { "masse_erde": 100 } },
+            { "timestamp": -4500, "changes": { "masse_erde": 318 } }
+          ]
+        }
+      },
+      {
+        "id": "e_saturn", "label": "Saturn", "typ": "Gasriese",
+        "masse_erde": 95, "position": { "x": 11, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": -4560, "validTo": null,
+          "history": [
+            { "timestamp": -4560, "changes": { "masse_erde": 50 } },
+            { "timestamp": -4500, "changes": { "masse_erde": 95 } }
+          ]
+        }
+      },
+      {
+        "id": "e_uranus", "label": "Uranus", "typ": "Gasriese",
+        "masse_erde": 14.5, "position": { "x": 14, "y": 0, "z": -2 },
+        "temporal": { "validFrom": -4500, "validTo": null, "history": [] }
+      },
+      {
+        "id": "e_neptun", "label": "Neptun", "typ": "Gasriese",
+        "masse_erde": 17.1, "position": { "x": 16, "y": 0, "z": 2 },
+        "temporal": { "validFrom": -4500, "validTo": null, "history": [] }
+      },
+      {
+        "id": "e_pluto", "label": "Pluto", "typ": "Zwergplanet",
+        "masse_erde": 0.0022, "position": { "x": 18, "y": 2, "z": 4 },
+        "temporal": { "validFrom": -4500, "validTo": null, "history": [] }
+      }
+    ],
+    "relationships": [
+      { "id": "r1", "source": "e_merkur",    "target": "e_sonne",    "label": "Orbit 88 Tage",    "beziehung": "umkreist", "distanz_au": 0.39, "temporal": { "validFrom": -4500, "validTo": null, "history": [] } },
+      { "id": "r2", "source": "e_venus",     "target": "e_sonne",    "label": "Orbit 225 Tage",   "beziehung": "umkreist", "distanz_au": 0.72, "temporal": { "validFrom": -4500, "validTo": null, "history": [] } },
+      { "id": "r3", "source": "e_erde",      "target": "e_sonne",    "label": "Orbit 365 Tage",   "beziehung": "umkreist", "distanz_au": 1.0,  "temporal": { "validFrom": -4450, "validTo": null, "history": [] } },
+      { "id": "r4", "source": "e_mond",      "target": "e_erde",     "label": "Mond-Orbit",        "beziehung": "umkreist", "distanz_au": 0.003,"temporal": { "validFrom": -4450, "validTo": null, "history": [] } },
+      { "id": "r5", "source": "e_theia",     "target": "e_erde_proto","label": "Grosse Kollision", "beziehung": "kollision","distanz_au": 0.0,  "temporal": { "validFrom": -4450, "validTo": -4450, "history": [] } },
+      { "id": "r6", "source": "e_mars",      "target": "e_sonne",    "label": "Orbit 687 Tage",   "beziehung": "umkreist", "distanz_au": 1.52, "temporal": { "validFrom": -4500, "validTo": null, "history": [] } },
+      { "id": "r7", "source": "e_jupiter",   "target": "e_sonne",    "label": "Orbit 12 Jahre",   "beziehung": "umkreist", "distanz_au": 5.2,  "temporal": { "validFrom": -4560, "validTo": null, "history": [] } },
+      { "id": "r8", "source": "e_saturn",    "target": "e_sonne",    "label": "Orbit 29 Jahre",   "beziehung": "umkreist", "distanz_au": 9.5,  "temporal": { "validFrom": -4560, "validTo": null, "history": [] } },
+      { "id": "r9", "source": "e_jupiter",   "target": "e_saturn",   "label": "5:2 Resonanz",     "beziehung": "resonanz", "distanz_au": 4.3,  "temporal": { "validFrom": -4000, "validTo": null, "history": [] } },
+      { "id": "r10","source": "e_neptun",    "target": "e_sonne",    "label": "Orbit 165 Jahre",  "beziehung": "umkreist", "distanz_au": 30.1, "temporal": { "validFrom": -4500, "validTo": null, "history": [] } },
+      { "id": "r11","source": "e_pluto",     "target": "e_neptun",   "label": "3:2 Resonanz",     "beziehung": "resonanz", "distanz_au": 9.4,  "temporal": { "validFrom": -3900, "validTo": null, "history": [] } }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "position": { "source": "position", "function": "linear" },
+        "size": { "source": "masse_erde", "function": "logarithmic", "domain": [0.0001, 333000], "range": [0.3, 4.0] },
+        "color": { "source": "typ", "function": "categorical" },
+        "geometry": { "source": "typ", "function": "categorical" },
+        "glow": { "source": "masse_erde", "function": "logarithmic", "domain": [0.0001, 333000], "range": [0, 1.5] }
+      },
+      "global_edge": {
+        "color": { "source": "beziehung", "function": "categorical" },
+        "thickness": { "source": "distanz_au", "function": "logarithmic", "domain": [0.001, 50], "range": [0.05, 0.35] }
+      }
+    }
+  }
+}

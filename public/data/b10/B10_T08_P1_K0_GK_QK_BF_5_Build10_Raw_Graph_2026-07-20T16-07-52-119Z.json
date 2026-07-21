@@ -1,0 +1,410 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Eine Visualisierung der wichtigsten Körper und Eigenschaften des Sonnensystems.",
+    "apiResponse": {
+      "id": "gen-1784563671-xQIVV1qATwmTvNleNyrL",
+      "created": 1784563671,
+      "model": "morph/morph-v3-large",
+      "usage": {
+        "prompt_tokens": 2198,
+        "completion_tokens": 2511,
+        "total_tokens": 4709,
+        "cost": 0.0067491,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0067491,
+          "upstream_inference_prompt_cost": 0.0019782,
+          "upstream_inference_completions_cost": 0.0047709
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Concept": {
+        "properties": {
+          "importance": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "position": {
+            "type": "spatial"
+          }
+        }
+      },
+      "group": {
+        "properties": {
+          "members": {
+            "type": "array"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "related": {
+        "properties": {
+          "strength": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e1",
+        "label": "Sonne",
+        "importance": 100,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 90
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "e2",
+        "label": "Merkur",
+        "importance": 20,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "e3",
+        "label": "Venus",
+        "importance": 30,
+        "position": {
+          "x": 2,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "e4",
+        "label": "Erde",
+        "importance": 60,
+        "position": {
+          "x": 3,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "e5",
+        "label": "Mars",
+        "importance": 40,
+        "position": {
+          "x": 4,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "e6",
+        "label": "Jupiter",
+        "importance": 80,
+        "position": {
+          "x": 5,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "e7",
+        "label": "Saturn",
+        "importance": 70,
+        "position": {
+          "x": 6,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "e8",
+        "label": "Uranus",
+        "importance": 50,
+        "position": {
+          "x": 7,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "e9",
+        "label": "Neptun",
+        "importance": 45,
+        "position": {
+          "x": 8,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "e10",
+        "label": "Pluto",
+        "importance": 35,
+        "position": {
+          "x": 9,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "r1",
+        "source": "e1",
+        "target": "e2",
+        "label": "sonnennahe Planet",
+        "strength": 60,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r2",
+        "source": "e1",
+        "target": "e3",
+        "label": "sonnennahe Planet",
+        "strength": 65,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r3",
+        "source": "e1",
+        "target": "e4",
+        "label": "sonnennahe Planet",
+        "strength": 70,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r4",
+        "source": "e1",
+        "target": "e5",
+        "label": "sonnennaher Planet",
+        "strength": 60,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r5",
+        "source": "e1",
+        "target": "e6",
+        "label": "Gasriese",
+        "strength": 75,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r6",
+        "source": "e1",
+        "target": "e7",
+        "label": "Gasriese",
+        "strength": 70,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r7",
+        "source": "e1",
+        "target": "e8",
+        "label": "Eisriese",
+        "strength": 60,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r8",
+        "source": "e1",
+        "target": "e9",
+        "label": "Eisriese",
+        "strength": 55,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r9",
+        "source": "e1",
+        "target": "e10",
+        "label": "Zwergplanet",
+        "strength": 50,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r10",
+        "source": "e4",
+        "target": "e5",
+        "label": "innerer Planet",
+        "strength": 40,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r11",
+        "source": "e6",
+        "target": "e7",
+        "label": "Gasriese",
+        "strength": 70,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r12",
+        "source": "e7",
+        "target": "e8",
+        "label": "Eisriese",
+        "strength": 45,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r13",
+        "source": "e8",
+        "target": "e9",
+        "label": "Eisriese",
+        "strength": 40,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r14",
+        "source": "e9",
+        "target": "e10",
+        "label": "Zwergplanet",
+        "strength": 35,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "importance",
+          "function": "linear",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "position": {
+          "source": "position",
+          "function": "constant"
+        }
+      },
+      "global_edge": {
+        "thickness": {
+          "source": "strength",
+          "function": "linear",
+          "range": [
+            0.1,
+            1.5
+          ]
+        }
+      }
+    }
+  }
+}

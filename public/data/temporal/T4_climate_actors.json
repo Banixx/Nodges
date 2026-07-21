@@ -1,0 +1,193 @@
+{
+  "system": "Klimawandel-Akteursnetzwerk 1950-2030. CO2-Beitrag, Engagement und politischer Einfluss aendern sich ueber die Zeit via history-Deltas. Kyoto-Protokoll hat ein Ablaufdatum (validTo). Pariser Abkommen entsteht 2015.",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Klimawandel-Akteursnetzwerk mit Langzeittrends, internationalen Abkommen und sich wandelnden Einflusssphären.",
+    "created": "2026-07-19",
+    "author": "handcrafted"
+  },
+  "dataModel": {
+    "properties": {
+      "label":       { "type": "text" },
+      "kategorie":   { "type": "categorical", "values": ["Regierung","NGO","Unternehmen","Abkommen","Wissenschaft","Industrie"] },
+      "engagement":  { "type": "continuous", "range": [0, 100] },
+      "co2_beitrag": { "type": "continuous", "range": [-100, 100] },
+      "einfluss":    { "type": "continuous", "range": [0, 100] },
+      "position":    { "type": "spatial" },
+      "typ":         { "type": "categorical", "values": ["gegner","partner","unterzeichner","finanziert","beeinflusst"] },
+      "staerke":     { "type": "continuous", "range": [0, 100] }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e_usa", "label": "USA", "kategorie": "Regierung",
+        "engagement": 60, "co2_beitrag": 85, "einfluss": 95,
+        "position": { "x": -6, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1950, "validTo": null,
+          "history": [
+            { "timestamp": 1950, "changes": { "engagement": 10, "co2_beitrag": 40, "einfluss": 90 } },
+            { "timestamp": 1970, "changes": { "engagement": 30, "co2_beitrag": 60 } },
+            { "timestamp": 2001, "changes": { "engagement": 15, "co2_beitrag": 80 } },
+            { "timestamp": 2009, "changes": { "engagement": 55 } },
+            { "timestamp": 2017, "changes": { "engagement": 10 } },
+            { "timestamp": 2021, "changes": { "engagement": 65, "co2_beitrag": 75 } }
+          ]
+        }
+      },
+      {
+        "id": "e_eu", "label": "Europaeische Union", "kategorie": "Regierung",
+        "engagement": 85, "co2_beitrag": 25, "einfluss": 80,
+        "position": { "x": 0, "y": 0, "z": 2 },
+        "temporal": {
+          "validFrom": 1957, "validTo": null,
+          "history": [
+            { "timestamp": 1957, "changes": { "engagement": 5, "co2_beitrag": 30, "einfluss": 40 } },
+            { "timestamp": 1992, "changes": { "engagement": 50, "co2_beitrag": 45, "einfluss": 65 } },
+            { "timestamp": 2005, "changes": { "engagement": 70, "co2_beitrag": 40, "einfluss": 75 } },
+            { "timestamp": 2020, "changes": { "engagement": 90, "co2_beitrag": 30, "einfluss": 82 } }
+          ]
+        }
+      },
+      {
+        "id": "e_china", "label": "China", "kategorie": "Regierung",
+        "engagement": 65, "co2_beitrag": 95, "einfluss": 88,
+        "position": { "x": 6, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1950, "validTo": null,
+          "history": [
+            { "timestamp": 1950, "changes": { "engagement": 5, "co2_beitrag": 10, "einfluss": 30 } },
+            { "timestamp": 1980, "changes": { "engagement": 10, "co2_beitrag": 30, "einfluss": 50 } },
+            { "timestamp": 2000, "changes": { "engagement": 20, "co2_beitrag": 65, "einfluss": 70 } },
+            { "timestamp": 2015, "changes": { "engagement": 55, "co2_beitrag": 95, "einfluss": 85 } },
+            { "timestamp": 2020, "changes": { "engagement": 65 } }
+          ]
+        }
+      },
+      {
+        "id": "e_ipcc", "label": "IPCC", "kategorie": "Wissenschaft",
+        "engagement": 95, "co2_beitrag": -5, "einfluss": 75,
+        "position": { "x": 1, "y": 0, "z": -3 },
+        "temporal": {
+          "validFrom": 1988, "validTo": null,
+          "history": [
+            { "timestamp": 1988, "changes": { "engagement": 70, "einfluss": 30 } },
+            { "timestamp": 1995, "changes": { "einfluss": 50 } },
+            { "timestamp": 2007, "changes": { "einfluss": 70 } },
+            { "timestamp": 2018, "changes": { "engagement": 95, "einfluss": 75 } }
+          ]
+        }
+      },
+      {
+        "id": "e_kyoto", "label": "Kyoto-Protokoll", "kategorie": "Abkommen",
+        "engagement": 60, "co2_beitrag": -20, "einfluss": 50,
+        "position": { "x": 2, "y": 2, "z": 1 },
+        "temporal": {
+          "validFrom": 1997, "validTo": 2020,
+          "history": [
+            { "timestamp": 1997, "changes": { "engagement": 60, "einfluss": 60 } },
+            { "timestamp": 2005, "changes": { "einfluss": 55 } },
+            { "timestamp": 2012, "changes": { "einfluss": 40 } }
+          ]
+        }
+      },
+      {
+        "id": "e_paris", "label": "Pariser Abkommen", "kategorie": "Abkommen",
+        "engagement": 90, "co2_beitrag": -40, "einfluss": 85,
+        "position": { "x": 1, "y": 2, "z": -1 },
+        "temporal": {
+          "validFrom": 2015, "validTo": null,
+          "history": [
+            { "timestamp": 2015, "changes": { "engagement": 90, "einfluss": 80 } },
+            { "timestamp": 2017, "changes": { "einfluss": 70 } },
+            { "timestamp": 2021, "changes": { "einfluss": 85 } }
+          ]
+        }
+      },
+      {
+        "id": "e_greenpeace", "label": "Greenpeace", "kategorie": "NGO",
+        "engagement": 95, "co2_beitrag": -2, "einfluss": 55,
+        "position": { "x": -2, "y": 0, "z": 4 },
+        "temporal": {
+          "validFrom": 1971, "validTo": null,
+          "history": [
+            { "timestamp": 1971, "changes": { "engagement": 80, "einfluss": 20 } },
+            { "timestamp": 1990, "changes": { "einfluss": 40 } },
+            { "timestamp": 2010, "changes": { "engagement": 95, "einfluss": 55 } }
+          ]
+        }
+      },
+      {
+        "id": "e_oelkonzerne", "label": "Oelkonzerne (Shell/Exxon)", "kategorie": "Industrie",
+        "engagement": 30, "co2_beitrag": 90, "einfluss": 70,
+        "position": { "x": -4, "y": 0, "z": -3 },
+        "temporal": {
+          "validFrom": 1950, "validTo": null,
+          "history": [
+            { "timestamp": 1950, "changes": { "engagement": 5, "co2_beitrag": 40, "einfluss": 80 } },
+            { "timestamp": 1980, "changes": { "co2_beitrag": 70, "einfluss": 85 } },
+            { "timestamp": 2015, "changes": { "engagement": 20, "co2_beitrag": 90 } },
+            { "timestamp": 2022, "changes": { "engagement": 30, "einfluss": 70 } }
+          ]
+        }
+      },
+      {
+        "id": "e_ev_industrie", "label": "EV-Industrie / Tesla", "kategorie": "Unternehmen",
+        "engagement": 85, "co2_beitrag": -30, "einfluss": 60,
+        "position": { "x": -5, "y": 0, "z": 2 },
+        "temporal": {
+          "validFrom": 2003, "validTo": null,
+          "history": [
+            { "timestamp": 2003, "changes": { "engagement": 50, "co2_beitrag": 0, "einfluss": 5 } },
+            { "timestamp": 2012, "changes": { "einfluss": 20 } },
+            { "timestamp": 2018, "changes": { "engagement": 80, "co2_beitrag": -15, "einfluss": 45 } },
+            { "timestamp": 2022, "changes": { "engagement": 85, "co2_beitrag": -30, "einfluss": 60 } }
+          ]
+        }
+      },
+      {
+        "id": "e_noaa", "label": "Keeling-Kurve / NOAA", "kategorie": "Wissenschaft",
+        "engagement": 100, "co2_beitrag": -1, "einfluss": 80,
+        "position": { "x": 4, "y": 0, "z": 4 },
+        "temporal": {
+          "validFrom": 1958, "validTo": null,
+          "history": [
+            { "timestamp": 1958, "changes": { "engagement": 100, "einfluss": 25 } },
+            { "timestamp": 1980, "changes": { "einfluss": 50 } },
+            { "timestamp": 2000, "changes": { "einfluss": 70 } },
+            { "timestamp": 2020, "changes": { "einfluss": 80 } }
+          ]
+        }
+      }
+    ],
+    "relationships": [
+      { "id": "r1",  "source": "e_ipcc",        "target": "e_kyoto",       "label": "wissenschaftliche Grundlage", "typ": "beeinflusst",  "staerke": 90, "temporal": { "validFrom": 1997, "validTo": 2020, "history": [] } },
+      { "id": "r2",  "source": "e_ipcc",        "target": "e_paris",       "label": "wissenschaftliche Grundlage", "typ": "beeinflusst",  "staerke": 95, "temporal": { "validFrom": 2015, "validTo": null, "history": [] } },
+      { "id": "r3",  "source": "e_noaa",        "target": "e_ipcc",        "label": "Datenlieferant",              "typ": "beeinflusst",  "staerke": 85, "temporal": { "validFrom": 1988, "validTo": null, "history": [] } },
+      { "id": "r4",  "source": "e_eu",          "target": "e_kyoto",       "label": "Unterzeichner",               "typ": "unterzeichner","staerke": 80, "temporal": { "validFrom": 1997, "validTo": 2020, "history": [] } },
+      { "id": "r5",  "source": "e_usa",         "target": "e_kyoto",       "label": "Nicht-Unterzeichner",         "typ": "gegner",       "staerke": 70, "temporal": { "validFrom": 2001, "validTo": 2020, "history": [] } },
+      { "id": "r6",  "source": "e_usa",         "target": "e_paris",       "label": "Unterzeichner/Austritt",      "typ": "unterzeichner","staerke": 60, "temporal": { "validFrom": 2015, "validTo": null, "history": [] } },
+      { "id": "r7",  "source": "e_china",       "target": "e_paris",       "label": "Unterzeichner",               "typ": "unterzeichner","staerke": 70, "temporal": { "validFrom": 2015, "validTo": null, "history": [] } },
+      { "id": "r8",  "source": "e_oelkonzerne", "target": "e_usa",         "label": "Lobbying",                    "typ": "beeinflusst",  "staerke": 85, "temporal": { "validFrom": 1980, "validTo": null, "history": [] } },
+      { "id": "r9",  "source": "e_greenpeace",  "target": "e_oelkonzerne", "label": "Kampagne gegen",              "typ": "gegner",       "staerke": 80, "temporal": { "validFrom": 1990, "validTo": null, "history": [] } },
+      { "id": "r10", "source": "e_ev_industrie","target": "e_oelkonzerne", "label": "Marktkonkurrenz",             "typ": "gegner",       "staerke": 65, "temporal": { "validFrom": 2012, "validTo": null, "history": [] } },
+      { "id": "r11", "source": "e_eu",          "target": "e_ev_industrie","label": "Foerderprogramme",            "typ": "partner",      "staerke": 75, "temporal": { "validFrom": 2015, "validTo": null, "history": [] } }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "position": { "source": "position", "function": "linear" },
+        "size": { "source": "einfluss", "function": "linear", "domain": [0, 100], "range": [0.4, 3.0] },
+        "color": { "source": "kategorie", "function": "categorical" },
+        "geometry": { "source": "kategorie", "function": "categorical" },
+        "glow": { "source": "engagement", "function": "linear", "domain": [0, 100], "range": [0, 1.5] }
+      },
+      "global_edge": {
+        "color": { "source": "typ", "function": "categorical" },
+        "thickness": { "source": "staerke", "function": "linear", "domain": [0, 100], "range": [0.05, 0.35] }
+      }
+    }
+  }
+}

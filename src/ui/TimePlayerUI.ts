@@ -9,6 +9,11 @@ export class TimePlayerUI {
     private timeDisplay: HTMLElement;
     private ticksContainer: HTMLElement;
     private speedSelect: HTMLSelectElement;
+    private settingsBtn: HTMLButtonElement;
+    private settingsPanel: HTMLElement;
+    private fadeToggle: HTMLInputElement;
+    private fadeDurationSlider: HTMLInputElement;
+    private fadeDurationDisplay: HTMLElement;
     private minTime: number = 0;
     private maxTime: number = 100;
 
@@ -27,6 +32,23 @@ export class TimePlayerUI {
         
         // Setup UI HTML
         this.container.innerHTML = `
+            <div id="tp-settings-panel" class="tp-settings-panel collapsed">
+                <div class="mapping-header" id="tp-settings-header" style="cursor: pointer; border-radius: 12px 12px 0 0;">
+                    <span style="display: flex; align-items: center; gap: 8px;">Zeiteinstellungen</span>
+                    <div class="mapping-toggle" id="tp-settings-toggle">▲</div>
+                </div>
+                <div class="tp-settings-body">
+                    <div class="tp-setting-row">
+                        <label class="tp-setting-label">Fade (Nodes/Edges):</label>
+                        <input type="checkbox" id="tp-fade-toggle" class="nodges-toggle" checked>
+                    </div>
+                    <div class="tp-setting-row">
+                        <label class="tp-setting-label">Fade Dauer:</label>
+                        <input type="range" id="tp-fade-duration" class="tp-slider" min="0" max="50" value="5" step="0.5" style="width: 100px;">
+                        <span id="tp-fade-duration-display" class="tp-setting-val">5.0</span>
+                    </div>
+                </div>
+            </div>
             <div class="time-player-controls">
                 <button id="tp-play-btn" class="tp-btn" title="Abspielen / Pause">▶</button>
                 <div class="tp-slider-wrapper">
@@ -53,6 +75,11 @@ export class TimePlayerUI {
         this.timeDisplay = this.container.querySelector('#tp-time-display') as HTMLElement;
         this.ticksContainer = this.container.querySelector('#tp-ticks') as HTMLElement;
         this.speedSelect = this.container.querySelector('#tp-speed') as HTMLSelectElement;
+        this.settingsBtn = this.container.querySelector('#tp-settings-header') as HTMLButtonElement;
+        this.settingsPanel = this.container.querySelector('#tp-settings-panel') as HTMLElement;
+        this.fadeToggle = this.container.querySelector('#tp-fade-toggle') as HTMLInputElement;
+        this.fadeDurationSlider = this.container.querySelector('#tp-fade-duration') as HTMLInputElement;
+        this.fadeDurationDisplay = this.container.querySelector('#tp-fade-duration-display') as HTMLElement;
 
         this.bindEvents();
 
@@ -83,6 +110,26 @@ export class TimePlayerUI {
             const val = parseFloat((e.target as HTMLSelectElement).value);
             this.stateManager.update({ playbackSpeed: val });
         });
+
+        this.settingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.settingsPanel.classList.toggle('collapsed');
+            const toggle = this.settingsPanel.querySelector('#tp-settings-toggle');
+            if (toggle) {
+                toggle.textContent = this.settingsPanel.classList.contains('collapsed') ? '▲' : '▼';
+            }
+        });
+
+        this.fadeToggle.addEventListener('change', (e) => {
+            const isChecked = (e.target as HTMLInputElement).checked;
+            this.stateManager.update({ temporalFadeEnabled: isChecked });
+        });
+
+        this.fadeDurationSlider.addEventListener('input', (e) => {
+            const val = parseFloat((e.target as HTMLInputElement).value);
+            this.fadeDurationDisplay.textContent = val.toFixed(1);
+            this.stateManager.update({ temporalFadeDuration: val });
+        });
     }
 
     private handleStateChange(state: any) {
@@ -91,10 +138,13 @@ export class TimePlayerUI {
             this.slider.value = state.currentTimestamp.toString();
             this.timeDisplay.textContent = this.formatTimestamp(state.currentTimestamp);
 
-            // Auto-stop at end
+            // Auto-stop at end (defer to avoid isUpdating-Guard)
             if (state.isPlaying && state.currentTimestamp >= this.maxTime) {
-                this.stateManager.setPlaying(false);
-                this.stateManager.setCurrentTimestamp(this.maxTime);
+                const maxTime = this.maxTime;
+                setTimeout(() => {
+                    this.stateManager.setPlaying(false);
+                    this.stateManager.setCurrentTimestamp(maxTime);
+                }, 0);
             }
         }
 
@@ -102,6 +152,15 @@ export class TimePlayerUI {
 
         if (state.playbackSpeed !== undefined) {
             this.speedSelect.value = state.playbackSpeed.toString();
+        }
+        
+        if (state.temporalFadeEnabled !== undefined) {
+            this.fadeToggle.checked = state.temporalFadeEnabled;
+        }
+        
+        if (state.temporalFadeDuration !== undefined) {
+            this.fadeDurationSlider.value = state.temporalFadeDuration.toString();
+            this.fadeDurationDisplay.textContent = state.temporalFadeDuration.toFixed(1);
         }
     }
 
@@ -184,26 +243,36 @@ export class TimePlayerUI {
             this.slider.min = this.minTime.toString();
             this.slider.max = this.maxTime.toString();
             
-            // Set init time if not set
-            if (this.stateManager.state.currentTimestamp === null) {
-                this.stateManager.setCurrentTimestamp(this.minTime);
-            }
-            this.stateManager.update({
-                minTimestamp: this.minTime,
-                maxTimestamp: this.maxTime
-            });
+            // Set init time if not set or out of bounds.
+            // WICHTIG: Muss per setTimeout(0) ausserhalb des isUpdating-Guards des StateManager aufgerufen werden,
+            // da handleDataChange als Subscriber-Callback innerhalb von update() laeuft.
+            const capturedMinTime = this.minTime;
+            const capturedMaxTime = this.maxTime;
+            setTimeout(() => {
+                const current = this.stateManager.state.currentTimestamp;
+                if (current === null || current < capturedMinTime || current > capturedMaxTime) {
+                    this.stateManager.setCurrentTimestamp(capturedMinTime);
+                }
+                this.stateManager.update({
+                    minTimestamp: capturedMinTime,
+                    maxTimestamp: capturedMaxTime
+                });
+            }, 0);
             this.container.style.display = 'flex';
 
             // Ticks rendern
             this.updateTicks(timestamps);
         } else {
             // No temporal data in graph
-            this.stateManager.setCurrentTimestamp(null);
-            this.stateManager.update({
-                minTimestamp: null,
-                maxTimestamp: null
-            });
-            this.stateManager.setPlaying(false);
+            // Auch hier: verzögern wegen isUpdating-Guard
+            setTimeout(() => {
+                this.stateManager.setCurrentTimestamp(null);
+                this.stateManager.update({
+                    minTimestamp: null,
+                    maxTimestamp: null
+                });
+                this.stateManager.setPlaying(false);
+            }, 0);
             this.container.style.display = 'none';
             this.ticksContainer.innerHTML = '';
         }

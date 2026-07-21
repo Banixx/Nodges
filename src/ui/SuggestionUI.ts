@@ -9,6 +9,7 @@ export class SuggestionUI {
     private originalMappings: VisualMappings | null = null;
     private dataModel: DataModel | null = null;
     private currentPreviewMapping: VisualMappings | null = null;
+    private hasUserAppliedMapping: boolean = false;
 
     constructor(containerId: string) {
         let el = document.getElementById(containerId);
@@ -74,6 +75,7 @@ export class SuggestionUI {
         this.originalMappings = originalMappings;
         this.onApplyMapping = onApply;
         this.onPreviewMapping = onPreview;
+        this.hasUserAppliedMapping = false;
 
         this.renderSuggestions();
         this.container.style.display = 'flex'; // Show panel when data is bound
@@ -230,31 +232,40 @@ export class SuggestionUI {
             let cardHtml = `
                 <div style="font-weight: bold; font-size: 12px; color: #fff;">${s.label}</div>
                 <div style="font-size: 10px; color: #aaa; margin-top: 4px;">${s.desc}</div>
-            `;
-            if (s.isOriginal) {
-                cardHtml += `
                 <button class="takeover-btn action-button" style="margin-top: 8px; font-size: 11px;">
-                    Mapping aus Vorlage übernehmen
-                </button>`;
-            }
+                    ${s.isOriginal ? 'Mapping aus Vorlage übernehmen' : 'Ansicht übernehmen'}
+                </button>
+            `;
             card.innerHTML = cardHtml;
 
             // Hover -> Preview
             card.addEventListener('mouseenter', () => {
-                if (this.onPreviewMapping) this.onPreviewMapping(s.mapping);
+                if (this.hasUserAppliedMapping) {
+                    if (this.onPreviewMapping) this.onPreviewMapping(s.mapping);
+                } else {
+                    if (this.onPreviewMapping) this.onPreviewMapping(s.mapping);
+                }
             });
 
             card.addEventListener('mouseleave', () => {
-                if (this.onPreviewMapping) this.onPreviewMapping(this.currentPreviewMapping);
+                if (this.hasUserAppliedMapping) {
+                    if (this.onPreviewMapping) this.onPreviewMapping(null);
+                } else {
+                    if (this.onPreviewMapping) this.onPreviewMapping(this.currentPreviewMapping);
+                }
             });
 
-            // Click -> Set as active preview
+            // Click -> Set as active and apply
             card.addEventListener('click', (e) => {
-                // If clicked on takeover button, don't trigger the card click
+                // If clicked on takeover button, don't trigger the card click again
                 if ((e.target as HTMLElement).classList.contains('takeover-btn')) return;
 
                 this.currentPreviewMapping = s.mapping;
-                if (this.onPreviewMapping) this.onPreviewMapping(this.currentPreviewMapping);
+                this.hasUserAppliedMapping = true;
+                
+                if (this.onApplyMapping) {
+                    this.onApplyMapping(s.mapping);
+                }
                 
                 setActiveCard(s.label);
                 
@@ -270,7 +281,13 @@ export class SuggestionUI {
             if (takeoverBtn) {
                 takeoverBtn.addEventListener('click', (e) => {
                     e.stopPropagation(); // Prevent card click
+                    
+                    this.currentPreviewMapping = s.mapping;
+                    this.hasUserAppliedMapping = true;
+                    
                     if (this.onApplyMapping) this.onApplyMapping(s.mapping);
+                    
+                    setActiveCard(s.label);
                     
                     // Visual feedback
                     const origBg = takeoverBtn.style.background;
@@ -297,6 +314,18 @@ export class SuggestionUI {
         // Initial preview
         if (this.onPreviewMapping) {
             this.onPreviewMapping(this.currentPreviewMapping);
+        }
+    }
+
+    public clearPreview() {
+        this.hasUserAppliedMapping = true;
+        this.currentPreviewMapping = null;
+        
+        // Remove active class from all cards
+        const content = this.container.querySelector('.panel-content') as HTMLElement;
+        if (content) {
+            const cards = content.querySelectorAll('.suggestion-card');
+            cards.forEach(c => c.classList.remove('active'));
         }
     }
 }

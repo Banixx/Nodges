@@ -535,8 +535,33 @@ export class NodeManager {
 
                     const validFrom = entity.temporal.validFrom;
                     const validTo = entity.temporal.validTo;
-                    const isVisible = (validFrom === undefined || validFrom === null || timestamp >= validFrom) &&
-                                      (validTo === undefined || validTo === null || timestamp <= validTo);
+                    const state = this.stateManager.state;
+                    const fadeEnabled = state.temporalFadeEnabled;
+                    const fadeDuration = state.temporalFadeDuration || 1;
+                    
+                    let isVisible = false;
+                    let fadeMultiplier = 1.0;
+
+                    if (fadeEnabled) {
+                        const inFadeIn = validFrom !== undefined && validFrom !== null && timestamp < validFrom && timestamp >= validFrom - fadeDuration;
+                        const inFadeOut = validTo !== undefined && validTo !== null && timestamp > validTo && timestamp <= validTo + fadeDuration;
+                        const fullyVisible = (validFrom === undefined || validFrom === null || timestamp >= validFrom) &&
+                                             (validTo === undefined || validTo === null || timestamp <= validTo);
+
+                        if (fullyVisible) {
+                            isVisible = true;
+                            fadeMultiplier = 1.0;
+                        } else if (inFadeIn) {
+                            isVisible = true;
+                            fadeMultiplier = (timestamp - (validFrom - fadeDuration)) / fadeDuration;
+                        } else if (inFadeOut) {
+                            isVisible = true;
+                            fadeMultiplier = 1.0 - ((timestamp - validTo) / fadeDuration);
+                        }
+                    } else {
+                        isVisible = (validFrom === undefined || validFrom === null || timestamp >= validFrom) &&
+                                          (validTo === undefined || validTo === null || timestamp <= validTo);
+                    }
 
                     mesh.getMatrixAt(i, dummy.matrix);
                     dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
@@ -549,13 +574,18 @@ export class NodeManager {
                             matrixDirty = true;
                         }
                         continue; // Skip interpolation if hidden
-                    } else if (dummy.scale.x < 0.001) {
-                         // Restore base scale if it was hidden
+                    } else {
+                         // Base scale or currently set target scale
                          const targetScale = (entity as any)._baseScale !== undefined ? (entity as any)._baseScale : 1;
-                         dummy.scale.set(targetScale, targetScale, targetScale);
-                         dummy.updateMatrix();
-                         mesh.setMatrixAt(i, dummy.matrix);
-                         matrixDirty = true;
+                         const finalScale = targetScale * fadeMultiplier;
+                         
+                         // Only update matrix if scale changed significantly to save performance
+                         if (Math.abs(dummy.scale.x - finalScale) > 0.001) {
+                             dummy.scale.set(finalScale, finalScale, finalScale);
+                             dummy.updateMatrix();
+                             mesh.setMatrixAt(i, dummy.matrix);
+                             matrixDirty = true;
+                         }
                     }
 
                     // Interpolate Keyframes

@@ -19,12 +19,6 @@ export type PropertySchema = z.infer<typeof PropertySchemaSchema>;
 
 export const DataModelSchema = z.object({
     properties: z.record(PropertySchemaSchema).optional().default({}),
-    entities: z.record(z.object({
-        properties: z.record(PropertySchemaSchema).optional()
-    }).passthrough()).optional(),
-    relationships: z.record(z.object({
-        properties: z.record(PropertySchemaSchema).optional()
-    }).passthrough()).optional()
 }).passthrough();
 export type DataModel = z.infer<typeof DataModelSchema>;
 
@@ -145,7 +139,7 @@ export const GraphDataSchema = z.object({
     metadata: z.object({
         created: z.string().optional(),
         version: z.union([z.string(), z.number()]).optional(),
-        schemaVersion: z.string().optional(),
+        schemaVersion: z.string().optional().default("5.2"),
         author: z.string().optional(),
         description: z.string().optional(),
         map: z.object({

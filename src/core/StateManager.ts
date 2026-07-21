@@ -100,6 +100,8 @@ export interface State {
     isPlaying: boolean;
     playbackSpeed: number;
     mapActive: boolean;
+    temporalFadeEnabled: boolean;
+    temporalFadeDuration: number;
 
     [key: string]: any; // Allow for dynamic properties during migration
 }
@@ -225,6 +227,8 @@ export class StateManager implements IStateManager {
             isPlaying: false,
             playbackSpeed: 1.0,
             mapActive: false,
+            temporalFadeEnabled: true,
+            temporalFadeDuration: 5.0,
         };
 
         this.subscribers = new Map();

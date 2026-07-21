@@ -1,0 +1,188 @@
+{
+  "system": "Mittelalterliche Handelsrouten des Hochmittelalters und Entdeckungszeitalters 1000-1600. Zeigt das Auf und Ab von Handelsstaedte, den Zusammenbruch bestehender Routen (Pest 1347, Osmanisches Reich 1453) und die Entstehung neuer Seewege (Portugal, Spanien). Tenochtitlan erscheint und verschwindet 1521.",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Mittelalterliches Handelsnetzwerk: Seidenstrasse, Hanse, Levante und fruehneuzeitliche Seewege.",
+    "created": "2026-07-19",
+    "author": "handcrafted"
+  },
+  "dataModel": {
+    "properties": {
+      "label":         { "type": "text" },
+      "region":        { "type": "categorical", "values": ["Nordeuropa","Mittelmeer","Nahost","Asien","Atlantik","Amerika"] },
+      "wohlstand":     { "type": "continuous", "range": [0, 100] },
+      "bevoelkerung":  { "type": "continuous", "range": [0, 500] },
+      "position":      { "type": "spatial" },
+      "transportweg":  { "type": "categorical", "values": ["landweg","seeweg","flussweg"] },
+      "handelsvolumen":{ "type": "continuous", "range": [0, 100] }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e_venedig", "label": "Venedig", "region": "Mittelmeer",
+        "wohlstand": 40, "bevoelkerung": 100,
+        "position": { "x": 1, "y": 0, "z": -2 },
+        "temporal": {
+          "validFrom": 1000, "validTo": null,
+          "history": [
+            { "timestamp": 1000, "changes": { "wohlstand": 50, "bevoelkerung": 50 } },
+            { "timestamp": 1204, "changes": { "wohlstand": 95, "bevoelkerung": 120 } },
+            { "timestamp": 1347, "changes": { "wohlstand": 60, "bevoelkerung": 60 } },
+            { "timestamp": 1400, "changes": { "wohlstand": 80, "bevoelkerung": 100 } },
+            { "timestamp": 1453, "changes": { "wohlstand": 55, "bevoelkerung": 110 } },
+            { "timestamp": 1500, "changes": { "wohlstand": 40, "bevoelkerung": 100 } }
+          ]
+        }
+      },
+      {
+        "id": "e_genua", "label": "Genua", "region": "Mittelmeer",
+        "wohlstand": 45, "bevoelkerung": 80,
+        "position": { "x": 0, "y": 0, "z": -3 },
+        "temporal": {
+          "validFrom": 1000, "validTo": null,
+          "history": [
+            { "timestamp": 1000, "changes": { "wohlstand": 40, "bevoelkerung": 40 } },
+            { "timestamp": 1150, "changes": { "wohlstand": 70, "bevoelkerung": 80 } },
+            { "timestamp": 1347, "changes": { "wohlstand": 50, "bevoelkerung": 50 } },
+            { "timestamp": 1500, "changes": { "wohlstand": 45, "bevoelkerung": 80 } }
+          ]
+        }
+      },
+      {
+        "id": "e_konstantinopel", "label": "Konstantinopel", "region": "Nahost",
+        "wohlstand": 30, "bevoelkerung": 200,
+        "position": { "x": 4, "y": 0, "z": -2 },
+        "temporal": {
+          "validFrom": 1000, "validTo": null,
+          "history": [
+            { "timestamp": 1000, "changes": { "wohlstand": 95, "bevoelkerung": 400 } },
+            { "timestamp": 1204, "changes": { "wohlstand": 40, "bevoelkerung": 200 } },
+            { "timestamp": 1300, "changes": { "wohlstand": 60, "bevoelkerung": 300 } },
+            { "timestamp": 1347, "changes": { "wohlstand": 45, "bevoelkerung": 180 } },
+            { "timestamp": 1453, "changes": { "wohlstand": 30, "bevoelkerung": 200 } }
+          ]
+        }
+      },
+      {
+        "id": "e_lubeck", "label": "Luebeck (Hanse)", "region": "Nordeuropa",
+        "wohlstand": 60, "bevoelkerung": 25,
+        "position": { "x": -1, "y": 0, "z": 5 },
+        "temporal": {
+          "validFrom": 1143, "validTo": null,
+          "history": [
+            { "timestamp": 1143, "changes": { "wohlstand": 20, "bevoelkerung": 5 } },
+            { "timestamp": 1350, "changes": { "wohlstand": 80, "bevoelkerung": 25 } },
+            { "timestamp": 1500, "changes": { "wohlstand": 60, "bevoelkerung": 20 } }
+          ]
+        }
+      },
+      {
+        "id": "e_brugge", "label": "Bruegge", "region": "Nordeuropa",
+        "wohlstand": 30, "bevoelkerung": 40,
+        "position": { "x": -3, "y": 0, "z": 3 },
+        "temporal": {
+          "validFrom": 1100, "validTo": null,
+          "history": [
+            { "timestamp": 1100, "changes": { "wohlstand": 40, "bevoelkerung": 20 } },
+            { "timestamp": 1300, "changes": { "wohlstand": 90, "bevoelkerung": 45 } },
+            { "timestamp": 1347, "changes": { "wohlstand": 60, "bevoelkerung": 25 } },
+            { "timestamp": 1500, "changes": { "wohlstand": 30, "bevoelkerung": 40 } }
+          ]
+        }
+      },
+      {
+        "id": "e_antwerpen", "label": "Antwerpen", "region": "Atlantik",
+        "wohlstand": 90, "bevoelkerung": 100,
+        "position": { "x": -3, "y": 0, "z": 4 },
+        "temporal": {
+          "validFrom": 1450, "validTo": null,
+          "history": [
+            { "timestamp": 1450, "changes": { "wohlstand": 30, "bevoelkerung": 20 } },
+            { "timestamp": 1550, "changes": { "wohlstand": 90, "bevoelkerung": 100 } }
+          ]
+        }
+      },
+      {
+        "id": "e_samarkand", "label": "Samarkand", "region": "Asien",
+        "wohlstand": 30, "bevoelkerung": 50,
+        "position": { "x": 10, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1000, "validTo": null,
+          "history": [
+            { "timestamp": 1000, "changes": { "wohlstand": 80, "bevoelkerung": 100 } },
+            { "timestamp": 1220, "changes": { "wohlstand": 10, "bevoelkerung": 15 } },
+            { "timestamp": 1370, "changes": { "wohlstand": 90, "bevoelkerung": 150 } },
+            { "timestamp": 1510, "changes": { "wohlstand": 30, "bevoelkerung": 50 } }
+          ]
+        }
+      },
+      {
+        "id": "e_lissabon", "label": "Lissabon", "region": "Atlantik",
+        "wohlstand": 90, "bevoelkerung": 65,
+        "position": { "x": -7, "y": 0, "z": -1 },
+        "temporal": {
+          "validFrom": 1100, "validTo": null,
+          "history": [
+            { "timestamp": 1100, "changes": { "wohlstand": 30, "bevoelkerung": 20 } },
+            { "timestamp": 1498, "changes": { "wohlstand": 90, "bevoelkerung": 65 } }
+          ]
+        }
+      },
+      {
+        "id": "e_sevilla", "label": "Sevilla", "region": "Atlantik",
+        "wohlstand": 95, "bevoelkerung": 90,
+        "position": { "x": -6, "y": 0, "z": -3 },
+        "temporal": {
+          "validFrom": 1100, "validTo": null,
+          "history": [
+            { "timestamp": 1100, "changes": { "wohlstand": 40, "bevoelkerung": 30 } },
+            { "timestamp": 1492, "changes": { "wohlstand": 55, "bevoelkerung": 40 } },
+            { "timestamp": 1550, "changes": { "wohlstand": 95, "bevoelkerung": 90 } }
+          ]
+        }
+      },
+      {
+        "id": "e_tenochtitlan", "label": "Tenochtitlan", "region": "Amerika",
+        "wohlstand": 95, "bevoelkerung": 400,
+        "position": { "x": -14, "y": 0, "z": -3 },
+        "temporal": {
+          "validFrom": 1325, "validTo": 1521,
+          "history": [
+            { "timestamp": 1325, "changes": { "wohlstand": 30, "bevoelkerung": 50 } },
+            { "timestamp": 1430, "changes": { "wohlstand": 70, "bevoelkerung": 150 } },
+            { "timestamp": 1500, "changes": { "wohlstand": 90, "bevoelkerung": 300 } },
+            { "timestamp": 1519, "changes": { "wohlstand": 95, "bevoelkerung": 400 } }
+          ]
+        }
+      }
+    ],
+    "relationships": [
+      { "id": "r1", "source": "e_venedig",       "target": "e_konstantinopel", "label": "Levante-Handel",       "transportweg": "seeweg",  "handelsvolumen": 90, "temporal": { "validFrom": 1000, "validTo": 1453, "history": [] } },
+      { "id": "r2", "source": "e_genua",          "target": "e_konstantinopel", "label": "Genuesische Kolonie",  "transportweg": "seeweg",  "handelsvolumen": 75, "temporal": { "validFrom": 1000, "validTo": 1453, "history": [] } },
+      { "id": "r3", "source": "e_konstantinopel", "target": "e_samarkand",     "label": "Seidenstrasse West",   "transportweg": "landweg", "handelsvolumen": 80, "temporal": { "validFrom": 1000, "validTo": 1453, "history": [] } },
+      { "id": "r4", "source": "e_lubeck",         "target": "e_brugge",        "label": "Hanseroute",            "transportweg": "seeweg",  "handelsvolumen": 70, "temporal": { "validFrom": 1250, "validTo": null, "history": [] } },
+      { "id": "r5", "source": "e_brugge",         "target": "e_venedig",       "label": "Flandrische Messe",    "transportweg": "landweg", "handelsvolumen": 60, "temporal": { "validFrom": 1250, "validTo": 1400, "history": [] } },
+      { "id": "r6", "source": "e_brugge",         "target": "e_antwerpen",     "label": "Flanderntransfer",     "transportweg": "seeweg",  "handelsvolumen": 85, "temporal": { "validFrom": 1450, "validTo": null, "history": [] } },
+      { "id": "r7", "source": "e_lissabon",       "target": "e_antwerpen",     "label": "Gewuerzhandel",         "transportweg": "seeweg",  "handelsvolumen": 90, "temporal": { "validFrom": 1498, "validTo": null, "history": [] } },
+      { "id": "r8", "source": "e_sevilla",        "target": "e_antwerpen",     "label": "Amerikanisches Silber","transportweg": "seeweg",  "handelsvolumen": 95, "temporal": { "validFrom": 1500, "validTo": null, "history": [] } },
+      { "id": "r9", "source": "e_sevilla",        "target": "e_tenochtitlan",  "label": "Conquista",            "transportweg": "seeweg",  "handelsvolumen": 70, "temporal": { "validFrom": 1519, "validTo": 1521, "history": [] } },
+      { "id": "r10","source": "e_venedig",        "target": "e_lubeck",        "label": "Brenner-Route",         "transportweg": "landweg", "handelsvolumen": 55, "temporal": { "validFrom": 1100, "validTo": 1500, "history": [] } }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "position": { "source": "position", "function": "linear" },
+        "size": { "source": "wohlstand", "function": "linear", "domain": [0, 100], "range": [0.3, 3.0] },
+        "color": { "source": "region", "function": "categorical" },
+        "geometry": { "source": "region", "function": "categorical" },
+        "glow": { "source": "wohlstand", "function": "linear", "domain": [0, 100], "range": [0, 1.2] }
+      },
+      "global_edge": {
+        "color": { "source": "transportweg", "function": "categorical" },
+        "thickness": { "source": "handelsvolumen", "function": "linear", "domain": [0, 100], "range": [0.05, 0.45] }
+      }
+    }
+  }
+}

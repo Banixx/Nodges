@@ -58,7 +58,9 @@ export class LLMService {
             { id: 'qwen/qwen3-max', name: 'Qwen: Qwen3 Max' },
             { id: 'anthropic/claude-haiku-4.5', name: 'Anthropic: Claude Haiku 4.5' },
             { id: 'openai/gpt-oss-safeguard-20b', name: 'OpenAI: GPT OSS Safeguard 20B' },
-            { id: 'inception/mercury-2', name: 'Inception: Mercury 2' }
+            { id: 'inception/mercury-2', name: 'Inception: Mercury 2' },
+            { id: 'xiaomi/mimo-v2.5', name: 'Xiaomi: MiMo V2.5' },
+            { id: 'poolside/laguna-m.1', name: 'Poolside: Laguna M.1' }
         ],
         openai: [
             { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
@@ -272,7 +274,8 @@ export class LLMService {
         userPrompt: string,
         provider: LLMProvider,
         model: string,
-        jsonSchema?: any
+        jsonSchema?: any,
+        options: { temperature?: number, top_p?: number, top_k?: number } = {}
     ): Promise<GraphData> {
         let apiKey = this.getApiKey(provider);
         let apiUrl = '';
@@ -320,7 +323,8 @@ export class LLMService {
                             { role: 'user', content: userPrompt }
                         ],
                         // Use json_object because json_schema strictly forbids dynamic properties (which Nodges relies on)
-                        response_format: { type: 'json_object' }
+                        response_format: { type: 'json_object' },
+                        ...options
                     })
                 });
 
@@ -350,7 +354,8 @@ export class LLMService {
                                 messages: [
                                     { role: 'user', content: combinedPrompt }
                                 ],
-                                response_format: { type: 'json_object' }
+                                response_format: { type: 'json_object' },
+                                ...options
                             })
                         });
                         if (!response.ok) {
@@ -383,7 +388,8 @@ export class LLMService {
                             messages: [
                                 { role: 'user', content: combinedPrompt }
                             ],
-                            response_format: { type: 'json_object' }
+                            response_format: { type: 'json_object' },
+                            ...options
                         })
                     });
                     
@@ -413,7 +419,9 @@ export class LLMService {
                             { role: 'user', content: userPrompt }
                         ],
                         // Use json_object because json_schema strictly forbids dynamic properties (which Nodges relies on)
-                        response_format: { type: 'json_object' }
+                        response_format: { type: 'json_object' },
+                        ...(options.temperature !== undefined && { temperature: options.temperature }),
+                        ...(options.top_p !== undefined && { top_p: options.top_p })
                     })
                 });
 
@@ -446,7 +454,8 @@ export class LLMService {
                         system: systemPrompt,
                         messages: [
                             { role: 'user', content: userPrompt }
-                        ]
+                        ],
+                        ...options
                     })
                 });
 
@@ -470,7 +479,9 @@ export class LLMService {
                         { role: 'system', content: systemPrompt },
                         { role: 'user', content: userPrompt }
                     ],
-                    temperature: 0.2
+                    temperature: options.temperature ?? 0.2,
+                    ...(options.top_p !== undefined && { top_p: options.top_p }),
+                    ...(options.top_k !== undefined && { top_k: options.top_k })
                 };
                 if (jsonSchema) {
                     bodyObj.response_format = {
@@ -701,7 +712,8 @@ export class LLMService {
         prompt: string, 
         provider: LLMProvider, 
         model: string,
-        onProgress?: (msg: string) => void
+        onProgress?: (msg: string) => void,
+        llmOptions: { temperature?: number, top_p?: number, top_k?: number } = {}
     ): Promise<GraphData> {
         const promptFile = import.meta.env.BASE_URL + 'prompts/build_6_prompt.md';
         let systemPrompt = '';
@@ -795,7 +807,7 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         schemaToPass = this.makeSchemaStrict(schemaToPass);
 
         await this._saveDebugFile(`debug_build6_prompt_${Date.now()}.md`, `SYSTEM:\n${systemPrompt}\n\nUSER:\n${prompt}`);
-        const resultData = await this._executeLLMCall(systemPrompt, prompt, provider, model, schemaToPass);
+        const resultData = await this._executeLLMCall(systemPrompt, prompt, provider, model, schemaToPass, llmOptions);
         await this._saveDebugFile(`debug_build6_result_${Date.now()}.json`, resultData);
         
         return resultData;
@@ -1079,7 +1091,8 @@ USER ANWEISUNG: ${prompt}
         model: string,
         devPrefix: string | null,
         onProgress?: (msg: string) => void,
-        onStepComplete?: (stepNumber: number, stepName: string, content: string, extension: string) => void
+        onStepComplete?: (stepNumber: number, stepName: string, content: string, extension: string) => void,
+        llmOptions: { temperature?: number, top_p?: number, top_k?: number } = {}
     ): Promise<GraphData> {
         let finalPrompt = prompt;
         
@@ -1103,7 +1116,7 @@ USER ANWEISUNG: ${prompt}
                 if (build10KeywordPromptRaw) {
                     keywordSystemPrompt = build10KeywordPromptRaw;
                 }
-                const keywordData: any = await this._executeLLMCall(keywordSystemPrompt, `Anfrage: ${prompt}`, provider, model);
+                const keywordData: any = await this._executeLLMCall(keywordSystemPrompt, `Anfrage: ${prompt}`, provider, model, undefined, llmOptions);
                 await saveStep(1, "Build10_Wikidata_Keywords", keywordData, "json");
 
                 if (onProgress) onProgress('Wikidata Schritt 2: Suche Wikidata-IDs...');
@@ -1142,7 +1155,7 @@ USER ANWEISUNG: ${prompt}
                     attempt++;
                     if (onProgress) onProgress(`Wikidata Schritt 3: Generiere SPARQL (Versuch ${attempt}/${maxRetries})...`);
                     
-                    const sparqlData: any = await this._executeLLMCall(sparqlSystemPrompt, currentSparqlUserPrompt, provider, model);
+                    const sparqlData: any = await this._executeLLMCall(sparqlSystemPrompt, currentSparqlUserPrompt, provider, model, undefined, llmOptions);
                     await saveStep(3, `Build10_Wikidata_SPARQL_Raw_v${attempt}`, sparqlData, "json");
                     sparqlQuery = sparqlData.query || sparqlData.sparql;
                     
@@ -1304,7 +1317,7 @@ WICHTIG: "system", "metadata", "dataModel", "data", "visualMappings" sind Pflich
         delete schemaToPass.$schema;
         schemaToPass = this.makeSchemaStrict(schemaToPass);
 
-        let graphData = await this._executeLLMCall(systemPrompt, finalPrompt, provider, model, schemaToPass);
+        let graphData = await this._executeLLMCall(systemPrompt, finalPrompt, provider, model, schemaToPass, llmOptions);
         await saveStep(5, "Build10_Raw_Graph", graphData, "json");
 
         // Step 3: Qualitätssicherung - Kritiker
@@ -1318,7 +1331,7 @@ Deine Aufgabe ist es:
 Gib ausschliesslich das korrigierte JSON-Objekt zurueck, ohne Erklaerungen oder Markdown-Formatierungen ausserhalb des JSON.`;
 
             try {
-                const criticData = await this._executeLLMCall(criticSystemPrompt, JSON.stringify(graphData), provider, model, schemaToPass);
+                const criticData = await this._executeLLMCall(criticSystemPrompt, JSON.stringify(graphData), provider, model, schemaToPass, llmOptions);
                 graphData = criticData;
                 await saveStep(6, "Build10_Critic_Corrected_Graph", graphData, "json");
             } catch (e: any) {

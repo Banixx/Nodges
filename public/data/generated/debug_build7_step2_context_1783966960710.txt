@@ -1,7 +1,0 @@
-- ITEM "comet": Q3559 (comet: icy small astronomical object) | Q23772858 (Comet: family name) | Q5490433 (Comet Ping Pong: pizzeria in Washington, DC) | Q135264718 (Comet: AI-powered web browser)
-- PROPERTY "orbits": P397 (parent astronomical body: major astronomical body the item belongs to) | P1418 (orbits completed: number of orbits a spacecraft has done around a body)
-- ITEM "planet": Q3863 (asteroid: minor planet of the inner Solar System; not a comet) | Q634 (planet: celestial body directly orbiting a star or stellar remnant) | Q106831515 (Planet: 2019 album of Sofiane Pamart) | Q17085620 (Planet Labs: American company specializing in satellite imaging of Earth)
-- ITEM "moon": Q16877383 (Moon: family name) | Q405 (Moon: Earth's only natural satellite) | Q16291739 (Moon: unisex given name) | Q3323544 (Moon: 2009 video game)
-- PROPERTY "has moon": P398 (child astronomical body: minor body that belongs to the item)
-- ITEM "star": Q523 (star: astronomical object consisting of a luminous spheroid of plasma held together by its own gravity) | Q1092 (Star Trek: science fiction media franchise) | Q37529922 (Star: family name) | Q462 (Star Wars: epic space opera multimedia franchise created by George Lucas)
-- ITEM "asteroid": Q3863 (asteroid: minor planet of the inner Solar System; not a comet) | Q2179 (asteroid belt: the circumstellar disk (accumulation of matter) in an orbit around Sun between those of Mars and Jupiter) | Q4810751 (Asteroid: American Thoroughbred racehorse and sire) | Q113629153 (Asteroid: early access video game)

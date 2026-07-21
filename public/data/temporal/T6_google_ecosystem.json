@@ -1,0 +1,428 @@
+{
+  "system": "Das Google/Alphabet-Oekosystem 1998-2024. Stellt das Wachstum der Mitarbeiterzahl, Apps und Tochterfirmen dar.",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Netzwerk des Google-Konzerns inkl. jaehrlicher Mitarbeiterzahlen.",
+    "created": "2026-07-20",
+    "author": "antigravity"
+  },
+  "dataModel": {
+    "properties": {
+      "label": { "type": "text" },
+      "kategorie": { "type": "categorical", "values": ["Konzern", "Tochterfirma", "App", "Service", "Hardware", "Plattform"] },
+      "mitarbeiter": { "type": "continuous", "range": [0, 200000] },
+      "nutzer_mrd": { "type": "continuous", "range": [0, 10] },
+      "position": { "type": "spatial" },
+      "art": { "type": "categorical", "values": ["uebernahme", "eigenentwicklung", "projekt"] },
+      "staerke": { "type": "continuous", "range": [0, 100] }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e_google", "label": "Google / Alphabet", "kategorie": "Konzern",
+        "mitarbeiter": 182502, "nutzer_mrd": 4,
+        "position": { "x": 0, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1998, "validTo": null,
+          "history": [
+            { "timestamp": 1998, "changes": { "mitarbeiter": 7, "nutzer_mrd": 0.01 } },
+            { "timestamp": 2000, "changes": { "mitarbeiter": 250, "nutzer_mrd": 0.1 } },
+            { "timestamp": 2004, "changes": { "mitarbeiter": 3021, "nutzer_mrd": 0.5 } },
+            { "timestamp": 2008, "changes": { "mitarbeiter": 20222, "nutzer_mrd": 1.0 } },
+            { "timestamp": 2012, "changes": { "mitarbeiter": 53861, "nutzer_mrd": 1.5 } },
+            { "timestamp": 2015, "changes": { "mitarbeiter": 61814, "nutzer_mrd": 2.0 } },
+            { "timestamp": 2018, "changes": { "mitarbeiter": 98771, "nutzer_mrd": 3.0 } },
+            { "timestamp": 2020, "changes": { "mitarbeiter": 135301, "nutzer_mrd": 3.5 } },
+            { "timestamp": 2022, "changes": { "mitarbeiter": 190234, "nutzer_mrd": 4.0 } },
+            { "timestamp": 2024, "changes": { "mitarbeiter": 182502, "nutzer_mrd": 4.0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_youtube", "label": "YouTube", "kategorie": "Tochterfirma",
+        "mitarbeiter": 2000, "nutzer_mrd": 10.0,
+        "position": { "x": -3, "y": 0, "z": 2 },
+        "temporal": {
+          "validFrom": 2005, "validTo": null,
+          "history": [
+            { "timestamp": 2005, "changes": { "mitarbeiter": 10, "nutzer_mrd": 0 } },
+            { "timestamp": 2006, "changes": { "mitarbeiter": 65, "nutzer_mrd": 0.05 } },
+            { "timestamp": 2015, "changes": { "nutzer_mrd": 1.0 } },
+            { "timestamp": 2018, "changes": { "nutzer_mrd": 5.0 } },
+            { "timestamp": 2024, "changes": { "mitarbeiter": 2000, "nutzer_mrd": 10.0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_android", "label": "Android", "kategorie": "Tochterfirma",
+        "mitarbeiter": 1500, "nutzer_mrd": 3.0,
+        "position": { "x": 3, "y": 0, "z": 2 },
+        "temporal": {
+          "validFrom": 2003, "validTo": null,
+          "history": [
+            { "timestamp": 2003, "changes": { "mitarbeiter": 10, "nutzer_mrd": 0 } },
+            { "timestamp": 2005, "changes": { "mitarbeiter": 50, "nutzer_mrd": 0 } },
+            { "timestamp": 2010, "changes": { "mitarbeiter": 300, "nutzer_mrd": 0.5 } },
+            { "timestamp": 2024, "changes": { "mitarbeiter": 1500, "nutzer_mrd": 3.0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_deepmind", "label": "DeepMind", "kategorie": "Tochterfirma",
+        "mitarbeiter": 1200, "nutzer_mrd": 0.1,
+        "position": { "x": 0, "y": 3, "z": -2 },
+        "temporal": {
+          "validFrom": 2010, "validTo": null,
+          "history": [
+            { "timestamp": 2010, "changes": { "mitarbeiter": 15, "nutzer_mrd": 0 } },
+            { "timestamp": 2014, "changes": { "mitarbeiter": 75, "nutzer_mrd": 0 } },
+            { "timestamp": 2024, "changes": { "mitarbeiter": 1200, "nutzer_mrd": 0.1 } }
+          ]
+        }
+      },
+      {
+        "id": "e_waymo", "label": "Waymo", "kategorie": "Tochterfirma",
+        "mitarbeiter": 2500, "nutzer_mrd": 0.01,
+        "position": { "x": 0, "y": -3, "z": -2 },
+        "temporal": {
+          "validFrom": 2009, "validTo": null,
+          "history": [
+            { "timestamp": 2009, "changes": { "mitarbeiter": 20, "nutzer_mrd": 0 } },
+            { "timestamp": 2016, "changes": { "mitarbeiter": 300, "nutzer_mrd": 0 } },
+            { "timestamp": 2024, "changes": { "mitarbeiter": 2500, "nutzer_mrd": 0.01 } }
+          ]
+        }
+      },
+      {
+        "id": "e_waze", "label": "Waze", "kategorie": "Tochterfirma",
+        "mitarbeiter": 500, "nutzer_mrd": 0.15,
+        "position": { "x": -2, "y": -2, "z": 2 },
+        "temporal": {
+          "validFrom": 2006, "validTo": null,
+          "history": [
+            { "timestamp": 2006, "changes": { "mitarbeiter": 10, "nutzer_mrd": 0 } },
+            { "timestamp": 2013, "changes": { "mitarbeiter": 100, "nutzer_mrd": 0.05 } },
+            { "timestamp": 2024, "changes": { "mitarbeiter": 500, "nutzer_mrd": 0.15 } }
+          ]
+        }
+      },
+      {
+        "id": "e_nest", "label": "Nest Labs", "kategorie": "Hardware",
+        "mitarbeiter": 1000, "nutzer_mrd": 0.05,
+        "position": { "x": 2, "y": 2, "z": 2 },
+        "temporal": {
+          "validFrom": 2010, "validTo": null,
+          "history": [
+            { "timestamp": 2010, "changes": { "mitarbeiter": 20, "nutzer_mrd": 0 } },
+            { "timestamp": 2014, "changes": { "mitarbeiter": 130, "nutzer_mrd": 0.01 } },
+            { "timestamp": 2024, "changes": { "mitarbeiter": 1000, "nutzer_mrd": 0.05 } }
+          ]
+        }
+      },
+      {
+        "id": "e_fitbit", "label": "Fitbit", "kategorie": "Hardware",
+        "mitarbeiter": 1500, "nutzer_mrd": 0.03,
+        "position": { "x": 4, "y": 1, "z": 1 },
+        "temporal": {
+          "validFrom": 2007, "validTo": null,
+          "history": [
+            { "timestamp": 2007, "changes": { "mitarbeiter": 5, "nutzer_mrd": 0 } },
+            { "timestamp": 2021, "changes": { "mitarbeiter": 1600, "nutzer_mrd": 0.03 } },
+            { "timestamp": 2024, "changes": { "mitarbeiter": 1500, "nutzer_mrd": 0.03 } }
+          ]
+        }
+      },
+      {
+        "id": "e_gmail", "label": "Gmail", "kategorie": "App",
+        "mitarbeiter": 0, "nutzer_mrd": 10.0,
+        "position": { "x": -1, "y": 0, "z": -3 },
+        "temporal": {
+          "validFrom": 2004, "validTo": null,
+          "history": [
+            { "timestamp": 2004, "changes": { "nutzer_mrd": 0.01 } },
+            { "timestamp": 2012, "changes": { "nutzer_mrd": 0.4 } },
+            { "timestamp": 2014, "changes": { "nutzer_mrd": 1.0 } },
+            { "timestamp": 2019, "changes": { "nutzer_mrd": 5.0 } },
+            { "timestamp": 2024, "changes": { "nutzer_mrd": 10.0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_maps", "label": "Google Maps", "kategorie": "App",
+        "mitarbeiter": 0, "nutzer_mrd": 10.0,
+        "position": { "x": 1, "y": 0, "z": -3 },
+        "temporal": {
+          "validFrom": 2005, "validTo": null,
+          "history": [
+            { "timestamp": 2005, "changes": { "nutzer_mrd": 0.01 } },
+            { "timestamp": 2012, "changes": { "nutzer_mrd": 0.5 } },
+            { "timestamp": 2015, "changes": { "nutzer_mrd": 1.0 } },
+            { "timestamp": 2019, "changes": { "nutzer_mrd": 5.0 } },
+            { "timestamp": 2024, "changes": { "nutzer_mrd": 10.0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_chrome", "label": "Google Chrome", "kategorie": "App",
+        "mitarbeiter": 0, "nutzer_mrd": 10.0,
+        "position": { "x": 0, "y": -1, "z": -4 },
+        "temporal": {
+          "validFrom": 2008, "validTo": null,
+          "history": [
+            { "timestamp": 2008, "changes": { "nutzer_mrd": 0.01 } },
+            { "timestamp": 2012, "changes": { "nutzer_mrd": 0.3 } },
+            { "timestamp": 2015, "changes": { "nutzer_mrd": 1.0 } },
+            { "timestamp": 2019, "changes": { "nutzer_mrd": 5.0 } },
+            { "timestamp": 2024, "changes": { "nutzer_mrd": 10.0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_drive", "label": "Google Drive", "kategorie": "Service",
+        "mitarbeiter": 0, "nutzer_mrd": 10.0,
+        "position": { "x": -2, "y": -1, "z": -3 },
+        "temporal": {
+          "validFrom": 2012, "validTo": null,
+          "history": [
+            { "timestamp": 2012, "changes": { "nutzer_mrd": 0.1 } },
+            { "timestamp": 2016, "changes": { "nutzer_mrd": 1.0 } },
+            { "timestamp": 2020, "changes": { "nutzer_mrd": 5.0 } },
+            { "timestamp": 2024, "changes": { "nutzer_mrd": 10.0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_photos", "label": "Google Photos", "kategorie": "Service",
+        "mitarbeiter": 0, "nutzer_mrd": 10.0,
+        "position": { "x": 2, "y": -1, "z": -3 },
+        "temporal": {
+          "validFrom": 2015, "validTo": null,
+          "history": [
+            { "timestamp": 2015, "changes": { "nutzer_mrd": 0.1 } },
+            { "timestamp": 2017, "changes": { "nutzer_mrd": 1.0 } },
+            { "timestamp": 2020, "changes": { "nutzer_mrd": 5.0 } },
+            { "timestamp": 2024, "changes": { "nutzer_mrd": 10.0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_googleplus", "label": "Google+", "kategorie": "Service",
+        "mitarbeiter": 0, "nutzer_mrd": 0,
+        "position": { "x": -4, "y": 2, "z": -1 },
+        "temporal": {
+          "validFrom": 2011, "validTo": 2019,
+          "history": [
+            { "timestamp": 2011, "changes": { "nutzer_mrd": 0.05 } },
+            { "timestamp": 2015, "changes": { "nutzer_mrd": 0.3 } },
+            { "timestamp": 2019, "changes": { "nutzer_mrd": 0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_reader", "label": "Google Reader", "kategorie": "App",
+        "mitarbeiter": 0, "nutzer_mrd": 0,
+        "position": { "x": -3, "y": 3, "z": 0 },
+        "temporal": {
+          "validFrom": 2005, "validTo": 2013,
+          "history": [
+            { "timestamp": 2005, "changes": { "nutzer_mrd": 0.01 } },
+            { "timestamp": 2010, "changes": { "nutzer_mrd": 0.05 } },
+            { "timestamp": 2013, "changes": { "nutzer_mrd": 0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_playmusic", "label": "Google Play Music", "kategorie": "Service",
+        "mitarbeiter": 0, "nutzer_mrd": 0,
+        "position": { "x": -3, "y": -3, "z": -1 },
+        "temporal": {
+          "validFrom": 2011, "validTo": 2020,
+          "history": [
+            { "timestamp": 2011, "changes": { "nutzer_mrd": 0.01 } },
+            { "timestamp": 2015, "changes": { "nutzer_mrd": 0.05 } },
+            { "timestamp": 2020, "changes": { "nutzer_mrd": 0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_allo", "label": "Google Allo", "kategorie": "App",
+        "mitarbeiter": 0, "nutzer_mrd": 0,
+        "position": { "x": -5, "y": 1, "z": 1 },
+        "temporal": {
+          "validFrom": 2016, "validTo": 2019,
+          "history": [
+            { "timestamp": 2016, "changes": { "nutzer_mrd": 0.01 } },
+            { "timestamp": 2019, "changes": { "nutzer_mrd": 0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_stadia", "label": "Google Stadia", "kategorie": "Plattform",
+        "mitarbeiter": 0, "nutzer_mrd": 0,
+        "position": { "x": 3, "y": -4, "z": 0 },
+        "temporal": {
+          "validFrom": 2019, "validTo": 2023,
+          "history": [
+            { "timestamp": 2019, "changes": { "nutzer_mrd": 0.01 } },
+            { "timestamp": 2021, "changes": { "nutzer_mrd": 0.02 } },
+            { "timestamp": 2023, "changes": { "nutzer_mrd": 0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_inbox", "label": "Inbox by Gmail", "kategorie": "App",
+        "mitarbeiter": 0, "nutzer_mrd": 0,
+        "position": { "x": -2, "y": 2, "z": -4 },
+        "temporal": {
+          "validFrom": 2014, "validTo": 2019,
+          "history": [
+            { "timestamp": 2014, "changes": { "nutzer_mrd": 0.01 } },
+            { "timestamp": 2019, "changes": { "nutzer_mrd": 0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_search", "label": "Google Search", "kategorie": "Service",
+        "mitarbeiter": 0, "nutzer_mrd": 10.0,
+        "position": { "x": 0, "y": 1, "z": -4 },
+        "temporal": {
+          "validFrom": 1998, "validTo": null,
+          "history": [
+            { "timestamp": 1998, "changes": { "nutzer_mrd": 0.01 } },
+            { "timestamp": 2010, "changes": { "nutzer_mrd": 1.0 } },
+            { "timestamp": 2016, "changes": { "nutzer_mrd": 5.0 } },
+            { "timestamp": 2024, "changes": { "nutzer_mrd": 10.0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_assistant", "label": "Google Assistant", "kategorie": "Service",
+        "mitarbeiter": 0, "nutzer_mrd": 0.5,
+        "position": { "x": 1, "y": 2, "z": -2 },
+        "temporal": {
+          "validFrom": 2016, "validTo": null,
+          "history": [
+            { "timestamp": 2016, "changes": { "nutzer_mrd": 0.05 } },
+            { "timestamp": 2024, "changes": { "nutzer_mrd": 0.5 } }
+          ]
+        }
+      },
+      {
+        "id": "e_gemini", "label": "Gemini", "kategorie": "Service",
+        "mitarbeiter": 0, "nutzer_mrd": 0.1,
+        "position": { "x": 0, "y": 3, "z": -1 },
+        "temporal": {
+          "validFrom": 2023, "validTo": null,
+          "history": [
+            { "timestamp": 2023, "changes": { "nutzer_mrd": 0.05 } },
+            { "timestamp": 2024, "changes": { "nutzer_mrd": 0.1 } }
+          ]
+        }
+      },
+      {
+        "id": "e_translate", "label": "Google Translate", "kategorie": "Service",
+        "mitarbeiter": 0, "nutzer_mrd": 1.0,
+        "position": { "x": -1, "y": 1, "z": -2 },
+        "temporal": {
+          "validFrom": 2006, "validTo": null,
+          "history": [
+            { "timestamp": 2006, "changes": { "nutzer_mrd": 0.05 } },
+            { "timestamp": 2024, "changes": { "nutzer_mrd": 1.0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_docs", "label": "Google Docs", "kategorie": "App",
+        "mitarbeiter": 0, "nutzer_mrd": 1.2,
+        "position": { "x": -2, "y": -2, "z": -3 },
+        "temporal": {
+          "validFrom": 2006, "validTo": null,
+          "history": [
+            { "timestamp": 2006, "changes": { "nutzer_mrd": 0.02 } },
+            { "timestamp": 2024, "changes": { "nutzer_mrd": 1.2 } }
+          ]
+        }
+      },
+      {
+        "id": "e_wave", "label": "Google Wave", "kategorie": "App",
+        "mitarbeiter": 0, "nutzer_mrd": 0,
+        "position": { "x": -4, "y": -1, "z": 0 },
+        "temporal": {
+          "validFrom": 2009, "validTo": 2012,
+          "history": [
+            { "timestamp": 2009, "changes": { "nutzer_mrd": 0.01 } },
+            { "timestamp": 2012, "changes": { "nutzer_mrd": 0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_talk", "label": "Google Talk", "kategorie": "App",
+        "mitarbeiter": 0, "nutzer_mrd": 0,
+        "position": { "x": -4, "y": 0, "z": -1 },
+        "temporal": {
+          "validFrom": 2005, "validTo": 2015,
+          "history": [
+            { "timestamp": 2005, "changes": { "nutzer_mrd": 0.05 } },
+            { "timestamp": 2015, "changes": { "nutzer_mrd": 0 } }
+          ]
+        }
+      },
+      {
+        "id": "e_picasa", "label": "Picasa", "kategorie": "App",
+        "mitarbeiter": 0, "nutzer_mrd": 0,
+        "position": { "x": 3, "y": -2, "z": -2 },
+        "temporal": {
+          "validFrom": 2004, "validTo": 2016,
+          "history": [
+            { "timestamp": 2004, "changes": { "nutzer_mrd": 0.01 } },
+            { "timestamp": 2016, "changes": { "nutzer_mrd": 0 } }
+          ]
+        }
+      }
+    ],
+    "relationships": [
+      { "id": "r1", "source": "e_google", "target": "e_youtube", "label": "Uebernahme (1.65 Mrd)", "art": "uebernahme", "staerke": 95, "temporal": { "validFrom": 2006, "validTo": null, "history": [] } },
+      { "id": "r2", "source": "e_google", "target": "e_android", "label": "Uebernahme (50 Mio)", "art": "uebernahme", "staerke": 100, "temporal": { "validFrom": 2005, "validTo": null, "history": [] } },
+      { "id": "r3", "source": "e_google", "target": "e_deepmind", "label": "Uebernahme (500 Mio)", "art": "uebernahme", "staerke": 85, "temporal": { "validFrom": 2014, "validTo": null, "history": [] } },
+      { "id": "r4", "source": "e_google", "target": "e_waymo", "label": "Projekt X zu Tochterfirma", "art": "projekt", "staerke": 80, "temporal": { "validFrom": 2009, "validTo": null, "history": [] } },
+      { "id": "r5", "source": "e_google", "target": "e_waze", "label": "Uebernahme (1.3 Mrd)", "art": "uebernahme", "staerke": 75, "temporal": { "validFrom": 2013, "validTo": null, "history": [] } },
+      { "id": "r6", "source": "e_google", "target": "e_nest", "label": "Uebernahme (3.2 Mrd)", "art": "uebernahme", "staerke": 70, "temporal": { "validFrom": 2014, "validTo": null, "history": [] } },
+      { "id": "r7", "source": "e_google", "target": "e_fitbit", "label": "Uebernahme (2.1 Mrd)", "art": "uebernahme", "staerke": 70, "temporal": { "validFrom": 2021, "validTo": null, "history": [] } },
+      { "id": "r8", "source": "e_google", "target": "e_gmail", "label": "Eigenentwicklung", "art": "eigenentwicklung", "staerke": 90, "temporal": { "validFrom": 2004, "validTo": null, "history": [] } },
+      { "id": "r9", "source": "e_google", "target": "e_maps", "label": "Eigenentwicklung", "art": "eigenentwicklung", "staerke": 90, "temporal": { "validFrom": 2005, "validTo": null, "history": [] } },
+      { "id": "r10", "source": "e_google", "target": "e_chrome", "label": "Eigenentwicklung", "art": "eigenentwicklung", "staerke": 100, "temporal": { "validFrom": 2008, "validTo": null, "history": [] } },
+      { "id": "r11", "source": "e_google", "target": "e_drive", "label": "Cloud-Expansion", "art": "eigenentwicklung", "staerke": 95, "temporal": { "validFrom": 2012, "validTo": null, "history": [] } },
+      { "id": "r12", "source": "e_google", "target": "e_photos", "label": "Abspaltung von Google+", "art": "eigenentwicklung", "staerke": 90, "temporal": { "validFrom": 2015, "validTo": null, "history": [] } },
+      { "id": "r13", "source": "e_google", "target": "e_googleplus", "label": "Gescheiterter Social-Vorstoss", "art": "projekt", "staerke": 60, "temporal": { "validFrom": 2011, "validTo": 2019, "history": [] } },
+      { "id": "r14", "source": "e_google", "target": "e_reader", "label": "Feed-Reader", "art": "projekt", "staerke": 50, "temporal": { "validFrom": 2005, "validTo": 2013, "history": [] } },
+      { "id": "r15", "source": "e_google", "target": "e_playmusic", "label": "Musik-Streaming (durch YT Music ersetzt)", "art": "projekt", "staerke": 70, "temporal": { "validFrom": 2011, "validTo": 2020, "history": [] } },
+      { "id": "r16", "source": "e_google", "target": "e_allo", "label": "Kurzlebiger Messenger", "art": "projekt", "staerke": 40, "temporal": { "validFrom": 2016, "validTo": 2019, "history": [] } },
+      { "id": "r17", "source": "e_google", "target": "e_stadia", "label": "Cloud-Gaming", "art": "projekt", "staerke": 65, "temporal": { "validFrom": 2019, "validTo": 2023, "history": [] } },
+      { "id": "r18", "source": "e_gmail", "target": "e_inbox", "label": "Experimenteller Mail-Client", "art": "projekt", "staerke": 50, "temporal": { "validFrom": 2014, "validTo": 2019, "history": [] } },
+      { "id": "r19", "source": "e_google", "target": "e_search", "label": "Kernprodukt", "art": "eigenentwicklung", "staerke": 100, "temporal": { "validFrom": 1998, "validTo": null, "history": [] } },
+      { "id": "r20", "source": "e_google", "target": "e_assistant", "label": "KI-Assistenz", "art": "eigenentwicklung", "staerke": 80, "temporal": { "validFrom": 2016, "validTo": null, "history": [] } },
+      { "id": "r21", "source": "e_deepmind", "target": "e_gemini", "label": "KI-Modell", "art": "eigenentwicklung", "staerke": 90, "temporal": { "validFrom": 2023, "validTo": null, "history": [] } },
+      { "id": "r22", "source": "e_google", "target": "e_translate", "label": "ML-Uebersetzung", "art": "eigenentwicklung", "staerke": 85, "temporal": { "validFrom": 2006, "validTo": null, "history": [] } },
+      { "id": "r23", "source": "e_drive", "target": "e_docs", "label": "Office Suite", "art": "eigenentwicklung", "staerke": 95, "temporal": { "validFrom": 2006, "validTo": null, "history": [] } },
+      { "id": "r24", "source": "e_google", "target": "e_wave", "label": "Gescheiterte Kollaboration", "art": "projekt", "staerke": 40, "temporal": { "validFrom": 2009, "validTo": 2012, "history": [] } },
+      { "id": "r25", "source": "e_gmail", "target": "e_talk", "label": "Frueher Messenger", "art": "projekt", "staerke": 60, "temporal": { "validFrom": 2005, "validTo": 2015, "history": [] } },
+      { "id": "r26", "source": "e_google", "target": "e_picasa", "label": "Uebernahme & Einstellung", "art": "uebernahme", "staerke": 50, "temporal": { "validFrom": 2004, "validTo": 2016, "history": [] } }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "position": { "source": "position", "function": "linear" },
+        "size": { "source": "mitarbeiter", "function": "linear", "domain": [0, 200000], "range": [0.4, 4.0] },
+        "color": { "source": "kategorie", "function": "categorical" },
+        "geometry": { "source": "kategorie", "function": "categorical" },
+        "glow": { "source": "nutzer_mrd", "function": "linear", "domain": [0, 10], "range": [0, 1.5] }
+      },
+      "global_edge": {
+        "color": { "source": "art", "function": "categorical" },
+        "thickness": { "source": "staerke", "function": "linear", "domain": [0, 100], "range": [0.05, 0.4] }
+      }
+    }
+  }
+}

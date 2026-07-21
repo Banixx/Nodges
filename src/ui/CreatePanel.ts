@@ -38,6 +38,13 @@ export class CreatePanel {
     private b10RatingSelect!: HTMLSelectElement;
     private saveStepsToggle!: HTMLInputElement;
 
+    // Advanced LLM Properties
+    private llmParamsContainer!: HTMLElement;
+    private tempSlider!: HTMLInputElement;
+    private topPSlider!: HTMLInputElement;
+    private topKSlider!: HTMLInputElement;
+
+
     constructor(containerId: string, _stateManager: IStateManager, app: App) {
         const el = document.getElementById(containerId);
         if (!el) {
@@ -275,6 +282,87 @@ export class CreatePanel {
         this.modelContainer.appendChild(this.modelInput);
         this.modelContainer.appendChild(this.modelDropdown);
         genSection.appendChild(this.modelContainer);
+
+        // --- Advanced LLM Parameters Toggle ---
+        const advParamsDetails = document.createElement('details');
+        advParamsDetails.style.marginBottom = '15px';
+        advParamsDetails.style.marginTop = '10px';
+        
+        const advParamsSummary = document.createElement('summary');
+        advParamsSummary.textContent = 'Erweiterte LLM Parameter';
+        advParamsSummary.style.cursor = 'pointer';
+        advParamsSummary.style.color = 'var(--text-muted)';
+        advParamsSummary.style.userSelect = 'none';
+        advParamsDetails.appendChild(advParamsSummary);
+
+        this.llmParamsContainer = document.createElement('div');
+        this.llmParamsContainer.style.padding = '10px';
+        this.llmParamsContainer.style.backgroundColor = 'rgba(0,0,0,0.2)';
+        this.llmParamsContainer.style.borderRadius = '4px';
+        this.llmParamsContainer.style.marginTop = '5px';
+        this.llmParamsContainer.style.display = 'flex';
+        this.llmParamsContainer.style.flexDirection = 'column';
+        this.llmParamsContainer.style.gap = '10px';
+
+        const createSlider = (id: string, label: string, min: string, max: string, step: string, defValue: string) => {
+            const wrapper = document.createElement('div');
+            
+            const labelEl = document.createElement('div');
+            labelEl.style.display = 'flex';
+            labelEl.style.justifyContent = 'space-between';
+            labelEl.style.marginBottom = '4px';
+            
+            const titleSpan = document.createElement('span');
+            titleSpan.textContent = label;
+            titleSpan.style.color = 'var(--text-muted)';
+            titleSpan.style.fontSize = '0.9em';
+            
+            const valueSpan = document.createElement('span');
+            valueSpan.textContent = defValue;
+            valueSpan.style.color = 'var(--text-color)';
+            valueSpan.style.fontSize = '0.9em';
+            
+            labelEl.appendChild(titleSpan);
+            labelEl.appendChild(valueSpan);
+            
+            const slider = document.createElement('input');
+            slider.type = 'range';
+            slider.id = id;
+            slider.min = min;
+            slider.max = max;
+            slider.step = step;
+            slider.value = defValue;
+            slider.style.width = '100%';
+            
+            slider.addEventListener('input', () => {
+                valueSpan.textContent = slider.value;
+                localStorage.setItem(`nodges_llm_${id}`, slider.value);
+            });
+            
+            wrapper.appendChild(labelEl);
+            wrapper.appendChild(slider);
+            
+            return { wrapper, slider, valueSpan };
+        };
+
+        const storedTemp = localStorage.getItem('nodges_llm_temp') || '0.2';
+        const storedTopP = localStorage.getItem('nodges_llm_topp') || '1.0';
+        const storedTopK = localStorage.getItem('nodges_llm_topk') || '0';
+
+        const tempObj = createSlider('temp', 'Temperature (0 = deterministisch)', '0', '2', '0.1', storedTemp);
+        const topPObj = createSlider('topp', 'Top-P (1 = alle)', '0', '1', '0.05', storedTopP);
+        const topKObj = createSlider('topk', 'Top-K (0 = deaktiviert)', '0', '100', '1', storedTopK);
+
+        this.tempSlider = tempObj.slider;
+        this.topPSlider = topPObj.slider;
+        this.topKSlider = topKObj.slider;
+
+        this.llmParamsContainer.appendChild(tempObj.wrapper);
+        this.llmParamsContainer.appendChild(topPObj.wrapper);
+        this.llmParamsContainer.appendChild(topKObj.wrapper);
+
+        advParamsDetails.appendChild(this.llmParamsContainer);
+        genSection.appendChild(advParamsDetails);
 
         // Populate models initially
         this.updateModelOptions(activeProvider);
@@ -1098,6 +1186,13 @@ export class CreatePanel {
 
         try {
             let graphData: any;
+            
+            const llmOptions = {
+                temperature: parseFloat(this.tempSlider.value),
+                top_p: parseFloat(this.topPSlider.value),
+                top_k: parseInt(this.topKSlider.value, 10)
+            };
+            if (llmOptions.top_k === 0) delete (llmOptions as any).top_k; // Disable top_k if 0
 
             if (pipeline === 'build10') {
                 const config = {
@@ -1119,7 +1214,11 @@ export class CreatePanel {
                 if (config.ratingMethod === 'taxonomy') bCode = 'T';
                 if (config.ratingMethod === 'embeddings') bCode = 'E';
 
-                const devPrefix = `B10_G${gCode}_Q${qCode}_B${bCode}`;
+                const tCode = llmOptions.temperature.toString().replace(/\./g, '');
+                const pCode = llmOptions.top_p.toString().replace(/\./g, '');
+                const kCode = llmOptions.top_k !== undefined ? llmOptions.top_k : 0;
+
+                const devPrefix = `B10_T${tCode}_P${pCode}_K${kCode}_G${gCode}_Q${qCode}_B${bCode}`;
 
                 graphData = await LLMService.generateGraphDataBuild10(
                     prompt,
@@ -1131,15 +1230,15 @@ export class CreatePanel {
                     (step: number, name: string, content: string, ext: string) => {
                         // The download itself is triggered here ONLY if saveSteps is true, which is fine since the callback is only triggered if devPrefix is passed
                         if (saveSteps) {
-                            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
                             const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
-                            this.app.exportManager?.downloadFile(content, `${devPrefix}_${step}_${name}_${timestamp}.${ext}`, mime);
+                            this.app.exportManager?.downloadFile(content, `${devPrefix}_${step}_${name}.${ext}`, mime);
                         }
-                    }
+                    },
+                    llmOptions
                 );
             } else if (pipeline === 'build9') {
                 onProgressWithLog('Schritt 1/2: Generiere Roh-Netzwerk via LLM...');
-                const rawGraph = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog);
+                const rawGraph = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog, llmOptions);
                 if (saveSteps) {
                     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
                     this.app.exportManager?.downloadFile(JSON.stringify(rawGraph, null, 2), `1_Raw_Graph_${timestamp}.json`, 'application/json');
@@ -1166,7 +1265,7 @@ export class CreatePanel {
                     }
                 );
             } else if (pipeline === 'build6') {
-                graphData = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog);
+                graphData = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog, llmOptions);
                 if (saveSteps) {
                     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
                     this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `1_SingleStep_Graph_${timestamp}.json`, 'application/json');
