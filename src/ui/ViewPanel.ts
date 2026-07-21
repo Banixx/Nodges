@@ -1,6 +1,5 @@
 /**
  * ViewPanel - UI component for the "Ansicht" (View) tab
- * test
  * Controls label visibility, color scheme selection, and other visual settings.
  */
 import { IStateManager } from '../core/interfaces';
@@ -86,7 +85,6 @@ export class ViewPanel {
             this.updateActiveSwatch(state.activeColorScheme);
         }, 'ui');
 
-
         // Apply initial scheme based on state
         const initialScheme = COLOR_SCHEMES.find(s => s.id === this.stateManager.state.activeColorScheme) || COLOR_SCHEMES[0];
         this.applyColorScheme(initialScheme);
@@ -132,6 +130,23 @@ export class ViewPanel {
             this.stateManager.state.showLabelsOnHover
         );
         labelSection.appendChild(hoverRow);
+
+        // Checkbox: Label Repositioning (Überlagerung vermeiden)
+        const repositionRow = this.createCheckboxRow(
+            'Überlagerung vermeiden',
+            'repositionLabels',
+            this.stateManager.state.repositionLabels
+        );
+        labelSection.appendChild(repositionRow);
+
+        // Slider for Proximity Filter (Max closest labels)
+        const closestRow = this.createSliderRow(
+            'Proximity Limit (Kamera-Nähe)',
+            'labelMaxClosest',
+            this.stateManager.state.labelMaxClosest,
+            0, 200, 5, 0
+        );
+        labelSection.appendChild(closestRow);
 
         // --- LABEL FILTER ---
         const filterHeader = document.createElement('h5');
@@ -236,7 +251,7 @@ export class ViewPanel {
 
         // 3. Action Button
         const autoBalanceBtn = document.createElement('button');
-        autoBalanceBtn.className = 'action-button primary'; // Use primary class if exists, or style it
+        autoBalanceBtn.className = 'action-button primary';
         autoBalanceBtn.style.marginTop = '15px';
         autoBalanceBtn.style.width = '100%';
         autoBalanceBtn.style.padding = '8px';
@@ -253,12 +268,11 @@ export class ViewPanel {
         autoBalanceBtn.onmouseleave = () => autoBalanceBtn.style.filter = 'none';
 
         autoBalanceBtn.onclick = () => {
-            if (window.app && window.app.applyVisualBalance) {
-                window.app.applyVisualBalance();
+            if ((window as any).app && (window as any).app.applyVisualBalance) {
+                (window as any).app.applyVisualBalance();
             }
         };
         balanceSection.appendChild(autoBalanceBtn);
-
 
         this.container.appendChild(balanceSection);
 
@@ -434,14 +448,12 @@ export class ViewPanel {
     }
 
     private applyColorScheme(scheme: ColorScheme): void {
-        // Update CSS variables on root
         const root = document.documentElement;
         root.style.setProperty('--bg-color', scheme.bgColor);
         root.style.setProperty('--panel-bg-solid', scheme.panelBg);
         root.style.setProperty('--panel-bg', `rgba(${this.hexToRgb(scheme.panelBg)}, 0.95)`);
         root.style.setProperty('--accent-color', scheme.accentColor);
 
-        // Optional text colors for light/dark mode support
         if (scheme.textColor) {
             root.style.setProperty('--text-color', scheme.textColor);
         }
@@ -449,13 +461,11 @@ export class ViewPanel {
             root.style.setProperty('--text-muted', scheme.textMuted);
         }
 
-        // Also update the 3D scene background color via stateManager
         this.stateManager.update({
             activeColorScheme: scheme.id,
             backgroundColor: scheme.bgColor
         });
 
-        // Update swatch active state
         this.updateActiveSwatch(scheme.id);
     }
 
@@ -483,6 +493,7 @@ export class ViewPanel {
         // Sync checkboxes with state
         const alwaysCheck = document.getElementById('checkbox-showLabelsAlways') as HTMLInputElement;
         const hoverCheck = document.getElementById('checkbox-showLabelsOnHover') as HTMLInputElement;
+        const repositionCheck = document.getElementById('checkbox-repositionLabels') as HTMLInputElement;
 
         if (alwaysCheck && alwaysCheck.checked !== state.showLabelsAlways) {
             alwaysCheck.checked = state.showLabelsAlways;
@@ -490,12 +501,16 @@ export class ViewPanel {
         if (hoverCheck && hoverCheck.checked !== state.showLabelsOnHover) {
             hoverCheck.checked = state.showLabelsOnHover;
         }
+        if (repositionCheck && repositionCheck.checked !== state.repositionLabels) {
+            repositionCheck.checked = state.repositionLabels;
+        }
 
         // Sync sliders with state
         const dampeningSlider = document.getElementById('slider-visualScaleExponent') as HTMLInputElement;
         const scaleSlider = document.getElementById('slider-visualScaleMultiplier') as HTMLInputElement;
         const linesSlider = document.getElementById('slider-labelLines') as HTMLInputElement;
         const thresholdSlider = document.getElementById('slider-labelFilterThreshold') as HTMLInputElement;
+        const closestSlider = document.getElementById('slider-labelMaxClosest') as HTMLInputElement;
 
         if (dampeningSlider && parseFloat(dampeningSlider.value) !== state.visualScaleExponent) {
             dampeningSlider.value = state.visualScaleExponent.toString();
@@ -517,6 +532,11 @@ export class ViewPanel {
             const valueSpan = thresholdSlider.previousElementSibling?.querySelector('span:last-child');
             if (valueSpan) valueSpan.textContent = state.labelFilterThreshold.toFixed(2);
         }
+        if (closestSlider && parseFloat(closestSlider.value) !== state.labelMaxClosest) {
+            closestSlider.value = state.labelMaxClosest.toString();
+            const valueSpan = closestSlider.previousElementSibling?.querySelector('span:last-child');
+            if (valueSpan) valueSpan.textContent = state.labelMaxClosest.toFixed(0);
+        }
 
         const marginSlider = document.getElementById('slider-cameraFitMargin') as HTMLInputElement;
         const durationSlider = document.getElementById('slider-cameraTransitionDuration') as HTMLInputElement;
@@ -537,7 +557,6 @@ export class ViewPanel {
         const modeSelect = document.getElementById('select-labelFilterMode') as HTMLSelectElement;
 
         if (attrSelect && attrSelect.value !== state.labelFilterAttribute) {
-            // Check if option exists before setting
             const exists = Array.from(attrSelect.options).some(o => o.value === state.labelFilterAttribute);
             if (exists) attrSelect.value = state.labelFilterAttribute;
         }
@@ -569,6 +588,7 @@ export class ViewPanel {
             attrSelect?.closest('.select-row') as HTMLElement,
             modeSelect?.closest('.select-row') as HTMLElement,
             thresholdSlider?.closest('.slider-row') as HTMLElement,
+            closestSlider?.closest('.slider-row') as HTMLElement,
             labelCountInfo as HTMLElement
         ];
 
@@ -588,13 +608,11 @@ export class ViewPanel {
         const currentVal = this.stateManager.state.labelFilterAttribute;
         const attrs = new Set<string>();
 
-        // Sammle alle numerischen Attribute (die sich als Label-Filter eignen)
         let sampleSize = Math.min(entities.length, 100);
         for (let i = 0; i < sampleSize; i++) {
             const e = entities[i];
             for (const key in e) {
                 if (typeof e[key] === 'number') {
-                    // Ignoriere interne Attribute
                     if (!['id', 'x', 'y', 'z', 'fx', 'fy', 'fz', 'vx', 'vy', 'vz', 'index'].includes(key)) {
                         attrs.add(key);
                     }
@@ -604,7 +622,6 @@ export class ViewPanel {
 
         const sortedAttrs = Array.from(attrs).sort();
 
-        // Nur updaten, wenn sich die Liste geaendert hat
         const currentOptions = Array.from(select.options).map(o => o.value).filter(v => v !== '');
         if (currentOptions.join(',') === sortedAttrs.join(',')) {
             return;
@@ -619,5 +636,4 @@ export class ViewPanel {
             select.appendChild(opt);
         });
     }
-
 }

@@ -26,7 +26,8 @@ export class CreatePanel {
     private ragTextarea!: HTMLTextAreaElement;
     private urlInput!: HTMLInputElement;
     private promptTextarea!: HTMLTextAreaElement;
-    private generateBtn!: HTMLButtonElement;
+    private modifyBtn!: HTMLButtonElement;
+    private regenerateBtn!: HTMLButtonElement;
     private statusText!: HTMLElement;
     private chatLog!: HTMLDivElement;
     private clarificationHistory: {role: 'user'|'assistant', content: string}[] = [];
@@ -65,8 +66,11 @@ export class CreatePanel {
             this.chatLog.style.display = 'none';
             this.chatLog.innerHTML = '';
         }
-        if (this.generateBtn) {
-            this.generateBtn.textContent = 'Netzwerk Generieren';
+        if (this.modifyBtn) {
+            this.modifyBtn.textContent = 'Modifizieren';
+        }
+        if (this.regenerateBtn) {
+            this.regenerateBtn.textContent = 'Neu Generieren';
         }
     }
 
@@ -746,13 +750,28 @@ export class CreatePanel {
         this.ragTextarea.style.boxSizing = 'border-box';
         genSection.appendChild(this.ragTextarea);
 
-        this.generateBtn = document.createElement('button');
-        this.generateBtn.className = 'action-button primary';
-        this.generateBtn.style.width = '100%';
-        this.generateBtn.style.padding = '8px';
-        this.generateBtn.textContent = 'Netzwerk Generieren';
-        this.generateBtn.onclick = this.handleGenerate.bind(this);
-        genSection.appendChild(this.generateBtn);
+        const btnContainer = document.createElement('div');
+        btnContainer.style.display = 'flex';
+        btnContainer.style.gap = '8px';
+        btnContainer.style.marginBottom = '15px';
+
+        this.modifyBtn = document.createElement('button');
+        this.modifyBtn.className = 'action-button secondary';
+        this.modifyBtn.style.flex = '1';
+        this.modifyBtn.style.padding = '8px';
+        this.modifyBtn.textContent = 'Modifizieren';
+        this.modifyBtn.onclick = () => this.handleGenerate('modify');
+
+        this.regenerateBtn = document.createElement('button');
+        this.regenerateBtn.className = 'action-button primary';
+        this.regenerateBtn.style.flex = '1';
+        this.regenerateBtn.style.padding = '8px';
+        this.regenerateBtn.textContent = 'Neu Generieren';
+        this.regenerateBtn.onclick = () => this.handleGenerate('new');
+
+        btnContainer.appendChild(this.regenerateBtn);
+        btnContainer.appendChild(this.modifyBtn);
+        genSection.appendChild(btnContainer);
 
         this.statusText = document.createElement('div');
         this.statusText.style.marginTop = '15px';
@@ -1074,7 +1093,7 @@ export class CreatePanel {
         }
     }
 
-    private async handleGenerate(): Promise<void> {
+    private async handleGenerate(action: 'new' | 'modify' = 'new'): Promise<void> {
         let prompt = this.promptTextarea.value.trim();
         if (!prompt) {
             this.setStatus('Bitte gib ein Prompt ein.', 'error');
@@ -1095,26 +1114,31 @@ export class CreatePanel {
                 this.updateChatUI();
                 
                 this.setStatus('Generiere Rückfrage...', 'info');
-                this.generateBtn.disabled = true;
+                this.setLoading(true);
                 
                 try {
                     const question = await LLMService.askClarification(this.clarificationHistory, provider, model);
                     this.clarificationHistory.push({ role: 'assistant', content: question });
                     this.promptTextarea.value = ''; 
-                    this.generateBtn.textContent = 'Antworten & Generieren';
+                    if (action === 'modify') {
+                        this.modifyBtn.textContent = 'Antworten & Modifizieren';
+                    } else {
+                        this.regenerateBtn.textContent = 'Antworten & Generieren';
+                    }
                     this.updateChatUI();
                     this.setStatus('Bitte beantworte die Rückfrage.', 'info');
                 } catch (error: any) {
                     this.setStatus(`Fehler bei Rückfrage: ${error.message}`, 'error');
                 } finally {
-                    this.generateBtn.disabled = false;
+                    this.setLoading(false);
                 }
                 return;
             } else {
                 // Zweiter Klick: User hat geantwortet, wir bauen den finalen Prompt zusammen
                 this.clarificationHistory.push({ role: 'user', content: prompt });
                 this.updateChatUI();
-                this.generateBtn.textContent = 'Netzwerk Generieren';
+                this.modifyBtn.textContent = 'Modifizieren';
+                this.regenerateBtn.textContent = 'Neu Generieren';
                 
                 prompt = this.clarificationHistory.map(msg => `${msg.role === 'user' ? 'USER' : 'KI'}: ${msg.content}`).join('\n\n');
                 
@@ -1368,13 +1392,9 @@ export class CreatePanel {
             // Load data into graph
             if (graphData) {
                 const processLoadedGraph = async (dataToLoad: any) => {
-                    if (pipeline === 'refine') {
-                        const sourceName = 'AI_Refined_' + Date.now();
-                        await this.app.loadGraphData(dataToLoad, sourceName, false);
-                    } else {
-                        const sourceName = 'AI_Generation_' + Date.now();
-                        await this.app.loadGraphData(dataToLoad, sourceName, true);
-                    }
+                    const shouldAppend = action === 'modify' && pipeline !== 'refine';
+                    const sourceName = (pipeline === 'refine' ? 'AI_Refined_' : 'AI_Generation_') + Date.now();
+                    await this.app.loadGraphData(dataToLoad, sourceName, shouldAppend);
 
                     // --- Auto-Save & Logging Feature ---
                     if (!saveSteps) {
@@ -1460,9 +1480,16 @@ export class CreatePanel {
     }
 
     private setLoading(isLoading: boolean): void {
-        this.generateBtn.disabled = isLoading;
-        this.generateBtn.style.opacity = isLoading ? '0.5' : '1';
-        this.generateBtn.textContent = isLoading ? '⏳ Verarbeite...' : '✨ Generieren & Hinzufügen';
+        if (this.modifyBtn) {
+            this.modifyBtn.disabled = isLoading;
+            this.modifyBtn.style.opacity = isLoading ? '0.5' : '1';
+            this.modifyBtn.textContent = isLoading ? '' : 'Modifizieren';
+        }
+        if (this.regenerateBtn) {
+            this.regenerateBtn.disabled = isLoading;
+            this.regenerateBtn.style.opacity = isLoading ? '0.5' : '1';
+            this.regenerateBtn.textContent = isLoading ? 'Verarbeite...' : 'Neu Generieren';
+        }
     }
 
     private setStatus(message: string, type: 'info' | 'success' | 'error'): void {
@@ -1562,7 +1589,7 @@ export class CreatePanel {
             });
 
             const delBtn = document.createElement('button');
-            delBtn.textContent = '❌';
+            delBtn.textContent = 'X';
             delBtn.style.background = 'none';
             delBtn.style.border = 'none';
             delBtn.style.cursor = 'pointer';

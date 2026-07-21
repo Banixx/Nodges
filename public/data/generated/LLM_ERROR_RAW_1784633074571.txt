@@ -1,0 +1,8982 @@
+{
+  "system": "Mensch",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Interaktive 3D/4D-Netzwerk-Visualisierung des menschlichen Körpers und seiner Funktionen."
+  },
+  "dataModel": {
+    "entities": {
+      "Concept": {
+        "properties": {
+          "importance": {
+            "type": "continuous",
+            "range": [0, 100]
+          },
+          "position": {
+            "type": "spatial"
+          },
+          "kategorie": {
+            "type": "categorical"
+          },
+          "wikidata_id": {
+            "type": "categorical"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "related": {
+        "properties": {
+          "strength": {
+            "type": "continuous",
+            "range": [0, 100]
+          },
+          "temporal": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e1",
+        "label": "Herz",
+        "importance": 80,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 90
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e2",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e3",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e4",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e5",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e6",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e7",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e8",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e9",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e10",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e11",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e12",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e13",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e14",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e15",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e16",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e17",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e18",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e19",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e20",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e21",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e22",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e23",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e24",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e25",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e26",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e27",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e28",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e29",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e30",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e31",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e32",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e33",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e34",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e35",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e36",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e37",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e38",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e39",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e40",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e41",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e42",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e43",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e44",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e45",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e46",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e47",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e48",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e49",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e50",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e51",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e52",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e53",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e54",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e55",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e56",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e57",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e58",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e59",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e60",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e61",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e62",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e63",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e64",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e65",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e66",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e67",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e68",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e69",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e70",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e71",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e72",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e73",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e74",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e75",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e76",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e77",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e78",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e79",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e80",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e81",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e82",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e83",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e84",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e85",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e86",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e87",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e88",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e89",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e90",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e91",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e92",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e93",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e94",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e95",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e96",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e97",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e98",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e99",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e100",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e101",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e102",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e103",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e104",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e105",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e106",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e107",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e108",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e109",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e110",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e111",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e112",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e113",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e114",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e115",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e116",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e117",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e118",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e119",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e120",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e121",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e122",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e123",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e124",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e125",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e126",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e127",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e128",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e129",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e130",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e131",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e132",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e133",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e134",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e135",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e136",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e137",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e138",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e139",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e140",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e141",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e142",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e143",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e144",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e145",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e146",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e147",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e148",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e149",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e150",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e151",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e152",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e153",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e154",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e155",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e156",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e157",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e158",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e159",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e160",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e161",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e162",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e163",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e164",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e165",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e166",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e167",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e168",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e169",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e170",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e171",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e172",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e173",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e174",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e175",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e176",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e177",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e178",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e179",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e180",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e181",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e182",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e183",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e184",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e185",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e186",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e187",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e188",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e189",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e190",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e191",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e192",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e193",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e194",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e195",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e196",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e197",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e198",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e199",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e200",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e201",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e202",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e203",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e204",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e205",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e206",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e207",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e208",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e209",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e210",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e211",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e212",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e213",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e214",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e215",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e216",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e217",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e218",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e219",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e220",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e221",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e222",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e223",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e224",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e225",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e226",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e227",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e228",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e229",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e230",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e231",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e232",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e233",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e234",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e235",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e236",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e237",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e238",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e239",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e240",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e241",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e242",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e243",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e244",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e245",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e246",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e247",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e248",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e249",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e250",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e251",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e252",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e253",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e254",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e255",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e256",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e257",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e258",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e259",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e260",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e261",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e262",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e263",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e264",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e265",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e266",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e267",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e268",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e269",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e270",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e271",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e272",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e273",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e274",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e275",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e276",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e277",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e278",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e279",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e280",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e281",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e282",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e283",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e284",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e285",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e286",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e287",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e288",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e289",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e290",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e291",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e292",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e293",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e294",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e295",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e296",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e297",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e298",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e299",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e300",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e301",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e302",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e303",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e304",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e305",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e306",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e307",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e308",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e309",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e310",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e311",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e312",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e313",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e314",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e315",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e316",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e317",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e318",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e319",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e320",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e321",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e322",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e323",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e324",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e325",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e326",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e327",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e328",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e329",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e330",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e331",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e332",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e333",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e334",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e335",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e336",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e337",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e338",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e339",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e340",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e341",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e342",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e343",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e344",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e345",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e346",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e347",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e348",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e349",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e350",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e351",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e352",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e353",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e354",
+        "label": "Nerven",
+        "importance": 65,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e355",
+        "label": "Blutgefäße",
+        "importance": 70,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e356",
+        "label": "Knochen",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e357",
+        "label": "Muskeln",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e358",
+        "label": "Augen",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e359",
+        "label": "Ohren",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e360",
+        "label": "Zähne",
+        "importance": 25,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.25
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 30
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e361",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e362",
+        "label": "Lunge",
+        "importance": 70,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 75
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e363",
+        "label": "Leber",
+        "importance": 60,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e364",
+        "label": "Niere",
+        "importance": 50,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e365",
+        "label": "Gehirn",
+        "importance": 90,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 95
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e366",
+        "label": "Magen",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e367",
+        "label": "Blase",
+        "importance": 30,
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 1
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 35
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e368",
+        "label": "Haut",
+        "importance": 20,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 25
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e369",
+        "label": "Herzkranzgefäße",
+        "importance": 75,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 80
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e370",
+        "label": "Lymphknoten",
+        "importance": 45,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e371",
+        "label": "Milz",
+        "importance": 35,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e372",
+        "label": "Bauchspeicheldrüse",
+        "importance": 55,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0.75
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Organ",
+        "wikidata_id": "Q1639"
+      },
+      {
+        "id": "e373",
+        "label": "Darm",
+        "importance": 40,
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 1.5
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,

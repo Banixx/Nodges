@@ -1,0 +1,6450 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Interaktive Visualisierung des Sonnensystems mit Fokus auf physikalische Eigenschaften und Beziehungen zwischen Himmelskörpern."
+  },
+  "dataModel": {
+    "entities": {
+      "Concept": {
+        "properties": {
+          "importance": { "type": "continuous", "range": [0, 100] },
+          "position": { "type": "spatial" },
+          "kategorie": { "type": "categorical" },
+          "wikidata_id": { "type": "categorical" }
+        }
+      },
+      "group": {
+        "properties": {
+          "name": { "type": "categorical" },
+          "kategorie": { "type": "categorical" }
+        }
+      }
+    },
+    "relationships": {
+      "related": {
+        "properties": {
+          "strength": { "type": "continuous", "range": [0, 100] },
+          "temporal": { "type": "temporal" }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e1",
+        "label": "Sonne",
+        "importance": 100,
+        "position": { "x": 0, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            { "timestamp": 1920, "changes": { "importance": 90 } }
+          ]
+        },
+        "kategorie": "Stern",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e2",
+        "label": "Merkur",
+        "importance": 60,
+        "position": { "x": 1, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e3",
+        "label": "Venus",
+        "importance": 70,
+        "position": { "x": 2, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e4",
+        "label": "Erde",
+        "importance": 80,
+        "position": { "x": 3, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e5",
+        "label": "Mars",
+        "importance": 50,
+        "position": { "x": 4, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e6",
+        "label": "Jupiter",
+        "importance": 90,
+        "position": { "x": 5, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e7",
+        "label": "Saturn",
+        "importance": 85,
+        "position": { "x": 6, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e8",
+        "label": "Uranus",
+        "importance": 75,
+        "position": { "x": 7, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e9",
+        "label": "Neptun",
+        "importance": 70,
+        "position": { "x": 8, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e10",
+        "label": "Pluto",
+        "importance": 40,
+        "position": { "x": 9, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Zwergplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e11",
+        "label": "Komet",
+        "importance": 30,
+        "position": { "x": 10, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e12",
+        "label": "Asteroid",
+        "importance": 25,
+        "position": { "x": 11, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e13",
+        "label": "Mond",
+        "importance": 55,
+        "position": { "x": 12, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e14",
+        "label": "Kleinplanet",
+        "importance": 20,
+        "position": { "x": 13, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e15",
+        "label": "Komet",
+        "importance": 35,
+        "position": { "x": 14, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e16",
+        "label": "Asteroid",
+        "importance": 28,
+        "position": { "x": 15, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e17",
+        "label": "Mond",
+        "importance": 58,
+        "position": { "x": 16, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e18",
+        "label": "Kleinplanet",
+        "importance": 22,
+        "position": { "x": 17, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e19",
+        "label": "Komet",
+        "importance": 32,
+        "position": { "x": 18, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e20",
+        "label": "Asteroid",
+        "importance": 26,
+        "position": { "x": 19, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e21",
+        "label": "Mond",
+        "importance": 56,
+        "position": { "x": 20, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e22",
+        "label": "Kleinplanet",
+        "importance": 24,
+        "position": { "x": 21, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e23",
+        "label": "Komet",
+        "importance": 34,
+        "position": { "x": 22, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e24",
+        "label": "Asteroid",
+        "importance": 27,
+        "position": { "x": 23, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e25",
+        "label": "Mond",
+        "importance": 57,
+        "position": { "x": 24, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e26",
+        "label": "Kleinplanet",
+        "importance": 23,
+        "position": { "x": 25, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e27",
+        "label": "Komet",
+        "importance": 33,
+        "position": { "x": 26, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e28",
+        "label": "Asteroid",
+        "importance": 29,
+        "position": { "x": 27, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e29",
+        "label": "Mond",
+        "importance": 59,
+        "position": { "x": 28, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e30",
+        "label": "Kleinplanet",
+        "importance": 21,
+        "position": { "x": 29, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e31",
+        "label": "Komet",
+        "importance": 36,
+        "position": { "x": 30, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e32",
+        "label": "Asteroid",
+        "importance": 31,
+        "position": { "x": 31, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e33",
+        "label": "Mond",
+        "importance": 60,
+        "position": { "x": 32, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e34",
+        "label": "Kleinplanet",
+        "importance": 19,
+        "position": { "x": 33, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e35",
+        "label": "Komet",
+        "importance": 37,
+        "position": { "x": 34, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e36",
+        "label": "Asteroid",
+        "importance": 32,
+        "position": { "x": 35, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e37",
+        "label": "Mond",
+        "importance": 61,
+        "position": { "x": 36, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e38",
+        "label": "Kleinplanet",
+        "importance": 18,
+        "position": { "x": 37, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e39",
+        "label": "Komet",
+        "importance": 38,
+        "position": { "x": 38, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e40",
+        "label": "Asteroid",
+        "importance": 33,
+        "position": { "x": 39, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e41",
+        "label": "Mond",
+        "importance": 62,
+        "position": { "x": 40, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e42",
+        "label": "Kleinplanet",
+        "importance": 17,
+        "position": { "x": 41, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e43",
+        "label": "Komet",
+        "importance": 39,
+        "position": { "x": 42, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e44",
+        "label": "Asteroid",
+        "importance": 34,
+        "position": { "x": 43, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e45",
+        "label": "Mond",
+        "importance": 63,
+        "position": { "x": 44, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e46",
+        "label": "Kleinplanet",
+        "importance": 16,
+        "position": { "x": 45, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e47",
+        "label": "Komet",
+        "importance": 40,
+        "position": { "x": 46, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e48",
+        "label": "Asteroid",
+        "importance": 35,
+        "position": { "x": 47, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e49",
+        "label": "Mond",
+        "importance": 64,
+        "position": { "x": 48, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e50",
+        "label": "Kleinplanet",
+        "importance": 15,
+        "position": { "x": 49, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e51",
+        "label": "Komet",
+        "importance": 41,
+        "position": { "x": 50, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e52",
+        "label": "Asteroid",
+        "importance": 36,
+        "position": { "x": 51, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e53",
+        "label": "Mond",
+        "importance": 65,
+        "position": { "x": 52, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e54",
+        "label": "Kleinplanet",
+        "importance": 14,
+        "position": { "x": 53, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e55",
+        "label": "Komet",
+        "importance": 42,
+        "position": { "x": 54, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e56",
+        "label": "Asteroid",
+        "importance": 37,
+        "position": { "x": 55, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e57",
+        "label": "Mond",
+        "importance": 66,
+        "position": { "x": 56, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e58",
+        "label": "Kleinplanet",
+        "importance": 13,
+        "position": { "x": 57, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e59",
+        "label": "Komet",
+        "importance": 43,
+        "position": { "x": 58, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e60",
+        "label": "Asteroid",
+        "importance": 38,
+        "position": { "x": 59, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e61",
+        "label": "Mond",
+        "importance": 67,
+        "position": { "x": 60, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e62",
+        "label": "Kleinplanet",
+        "importance": 12,
+        "position": { "x": 61, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e63",
+        "label": "Komet",
+        "importance": 44,
+        "position": { "x": 62, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e64",
+        "label": "Asteroid",
+        "importance": 39,
+        "position": { "x": 63, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e65",
+        "label": "Mond",
+        "importance": 68,
+        "position": { "x": 64, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e66",
+        "label": "Kleinplanet",
+        "importance": 11,
+        "position": { "x": 65, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e67",
+        "label": "Komet",
+        "importance": 45,
+        "position": { "x": 66, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e68",
+        "label": "Asteroid",
+        "importance": 40,
+        "position": { "x": 67, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e69",
+        "label": "Mond",
+        "importance": 69,
+        "position": { "x": 68, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e70",
+        "label": "Kleinplanet",
+        "importance": 10,
+        "position": { "x": 69, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e71",
+        "label": "Komet",
+        "importance": 46,
+        "position": { "x": 70, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e72",
+        "label": "Asteroid",
+        "importance": 41,
+        "position": { "x": 71, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e73",
+        "label": "Mond",
+        "importance": 70,
+        "position": { "x": 72, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e74",
+        "label": "Kleinplanet",
+        "importance": 9,
+        "position": { "x": 73, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e75",
+        "label": "Komet",
+        "importance": 47,
+        "position": { "x": 74, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e76",
+        "label": "Asteroid",
+        "importance": 42,
+        "position": { "x": 75, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e77",
+        "label": "Mond",
+        "importance": 71,
+        "position": { "x": 76, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e78",
+        "label": "Kleinplanet",
+        "importance": 8,
+        "position": { "x": 77, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e79",
+        "label": "Komet",
+        "importance": 48,
+        "position": { "x": 78, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e80",
+        "label": "Asteroid",
+        "importance": 43,
+        "position": { "x": 79, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e81",
+        "label": "Mond",
+        "importance": 72,
+        "position": { "x": 80, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e82",
+        "label": "Kleinplanet",
+        "importance": 7,
+        "position": { "x": 81, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e83",
+        "label": "Komet",
+        "importance": 49,
+        "position": { "x": 82, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e84",
+        "label": "Asteroid",
+        "importance": 44,
+        "position": { "x": 83, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e85",
+        "label": "Mond",
+        "importance": 73,
+        "position": { "x": 84, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e86",
+        "label": "Kleinplanet",
+        "importance": 6,
+        "position": { "x": 85, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e87",
+        "label": "Komet",
+        "importance": 50,
+        "position": { "x": 86, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e88",
+        "label": "Asteroid",
+        "importance": 45,
+        "position": { "x": 87, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e89",
+        "label": "Mond",
+        "importance": 74,
+        "position": { "x": 88, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e90",
+        "label": "Kleinplanet",
+        "importance": 5,
+        "position": { "x": 89, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e91",
+        "label": "Komet",
+        "importance": 51,
+        "position": { "x": 90, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e92",
+        "label": "Asteroid",
+        "importance": 46,
+        "position": { "x": 91, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e93",
+        "label": "Mond",
+        "importance": 75,
+        "position": { "x": 92, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e94",
+        "label": "Kleinplanet",
+        "importance": 4,
+        "position": { "x": 93, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e95",
+        "label": "Komet",
+        "importance": 52,
+        "position": { "x": 94, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e96",
+        "label": "Asteroid",
+        "importance": 47,
+        "position": { "x": 95, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e97",
+        "label": "Mond",
+        "importance": 76,
+        "position": { "x": 96, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e98",
+        "label": "Kleinplanet",
+        "importance": 3,
+        "position": { "x": 97, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e99",
+        "label": "Komet",
+        "importance": 53,
+        "position": { "x": 98, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e100",
+        "label": "Asteroid",
+        "importance": 48,
+        "position": { "x": 99, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e101",
+        "label": "Mond",
+        "importance": 77,
+        "position": { "x": 100, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e102",
+        "label": "Kleinplanet",
+        "importance": 2,
+        "position": { "x": 101, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e103",
+        "label": "Komet",
+        "importance": 54,
+        "position": { "x": 102, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e104",
+        "label": "Asteroid",
+        "importance": 49,
+        "position": { "x": 103, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e105",
+        "label": "Mond",
+        "importance": 78,
+        "position": { "x": 104, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e106",
+        "label": "Kleinplanet",
+        "importance": 1,
+        "position": { "x": 105, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e107",
+        "label": "Komet",
+        "importance": 55,
+        "position": { "x": 106, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e108",
+        "label": "Asteroid",
+        "importance": 50,
+        "position": { "x": 107, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e109",
+        "label": "Mond",
+        "importance": 79,
+        "position": { "x": 108, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e110",
+        "label": "Kleinplanet",
+        "importance": 0,
+        "position": { "x": 109, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e111",
+        "label": "Komet",
+        "importance": 56,
+        "position": { "x": 110, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e112",
+        "label": "Asteroid",
+        "importance": 51,
+        "position": { "x": 111, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e113",
+        "label": "Mond",
+        "importance": 80,
+        "position": { "x": 112, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e114",
+        "label": "Kleinplanet",
+        "importance": -1,
+        "position": { "x": 113, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e115",
+        "label": "Komet",
+        "importance": 57,
+        "position": { "x": 114, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e116",
+        "label": "Asteroid",
+        "importance": 52,
+        "position": { "x": 115, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e117",
+        "label": "Mond",
+        "importance": 81,
+        "position": { "x": 116, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e118",
+        "label": "Kleinplanet",
+        "importance": -2,
+        "position": { "x": 117, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e119",
+        "label": "Komet",
+        "importance": 58,
+        "position": { "x": 118, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e120",
+        "label": "Asteroid",
+        "importance": 53,
+        "position": { "x": 119, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e121",
+        "label": "Mond",
+        "importance": 82,
+        "position": { "x": 120, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e122",
+        "label": "Kleinplanet",
+        "importance": -3,
+        "position": { "x": 121, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e123",
+        "label": "Komet",
+        "importance": 59,
+        "position": { "x": 122, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e124",
+        "label": "Asteroid",
+        "importance": 54,
+        "position": { "x": 123, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e125",
+        "label": "Mond",
+        "importance": 83,
+        "position": { "x": 124, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e126",
+        "label": "Kleinplanet",
+        "importance": -4,
+        "position": { "x": 125, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e127",
+        "label": "Komet",
+        "importance": 60,
+        "position": { "x": 126, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e128",
+        "label": "Asteroid",
+        "importance": 55,
+        "position": { "x": 127, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e129",
+        "label": "Mond",
+        "importance": 84,
+        "position": { "x": 128, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e130",
+        "label": "Kleinplanet",
+        "importance": -5,
+        "position": { "x": 129, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e131",
+        "label": "Komet",
+        "importance": 61,
+        "position": { "x": 130, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e132",
+        "label": "Asteroid",
+        "importance": 56,
+        "position": { "x": 131, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e133",
+        "label": "Mond",
+        "importance": 85,
+        "position": { "x": 132, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e134",
+        "label": "Kleinplanet",
+        "importance": -6,
+        "position": { "x": 133, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e135",
+        "label": "Komet",
+        "importance": 62,
+        "position": { "x": 134, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e136",
+        "label": "Asteroid",
+        "importance": 57,
+        "position": { "x": 135, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e137",
+        "label": "Mond",
+        "importance": 86,
+        "position": { "x": 136, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e138",
+        "label": "Kleinplanet",
+        "importance": -7,
+        "position": { "x": 137, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e139",
+        "label": "Komet",
+        "importance": 63,
+        "position": { "x": 138, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e140",
+        "label": "Asteroid",
+        "importance": 58,
+        "position": { "x": 139, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e141",
+        "label": "Mond",
+        "importance": 87,
+        "position": { "x": 140, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e142",
+        "label": "Kleinplanet",
+        "importance": -8,
+        "position": { "x": 141, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e143",
+        "label": "Komet",
+        "importance": 64,
+        "position": { "x": 142, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e144",
+        "label": "Asteroid",
+        "importance": 59,
+        "position": { "x": 143, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e145",
+        "label": "Mond",
+        "importance": 88,
+        "position": { "x": 144, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e146",
+        "label": "Kleinplanet",
+        "importance": -9,
+        "position": { "x": 145, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e147",
+        "label": "Komet",
+        "importance": 65,
+        "position": { "x": 146, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e148",
+        "label": "Asteroid",
+        "importance": 60,
+        "position": { "x": 147, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e149",
+        "label": "Mond",
+        "importance": 89,
+        "position": { "x": 148, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e150",
+        "label": "Kleinplanet",
+        "importance": -10,
+        "position": { "x": 149, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e151",
+        "label": "Komet",
+        "importance": 66,
+        "position": { "x": 150, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e152",
+        "label": "Asteroid",
+        "importance": 61,
+        "position": { "x": 151, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e153",
+        "label": "Mond",
+        "importance": 90,
+        "position": { "x": 152, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e154",
+        "label": "Kleinplanet",
+        "importance": -11,
+        "position": { "x": 153, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e155",
+        "label": "Komet",
+        "importance": 67,
+        "position": { "x": 154, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e156",
+        "label": "Asteroid",
+        "importance": 62,
+        "position": { "x": 155, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e157",
+        "label": "Mond",
+        "importance": 91,
+        "position": { "x": 156, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e158",
+        "label": "Kleinplanet",
+        "importance": -12,
+        "position": { "x": 157, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e159",
+        "label": "Komet",
+        "importance": 68,
+        "position": { "x": 158, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e160",
+        "label": "Asteroid",
+        "importance": 63,
+        "position": { "x": 159, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e161",
+        "label": "Mond",
+        "importance": 92,
+        "position": { "x": 160, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e162",
+        "label": "Kleinplanet",
+        "importance": -13,
+        "position": { "x": 161, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e163",
+        "label": "Komet",
+        "importance": 69,
+        "position": { "x": 162, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e164",
+        "label": "Asteroid",
+        "importance": 64,
+        "position": { "x": 163, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e165",
+        "label": "Mond",
+        "importance": 93,
+        "position": { "x": 164, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e166",
+        "label": "Kleinplanet",
+        "importance": -14,
+        "position": { "x": 165, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e167",
+        "label": "Komet",
+        "importance": 70,
+        "position": { "x": 166, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e168",
+        "label": "Asteroid",
+        "importance": 65,
+        "position": { "x": 167, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e169",
+        "label": "Mond",
+        "importance": 94,
+        "position": { "x": 168, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e170",
+        "label": "Kleinplanet",
+        "importance": -15,
+        "position": { "x": 169, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e171",
+        "label": "Komet",
+        "importance": 71,
+        "position": { "x": 170, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e172",
+        "label": "Asteroid",
+        "importance": 66,
+        "position": { "x": 171, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e173",
+        "label": "Mond",
+        "importance": 95,
+        "position": { "x": 172, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e174",
+        "label": "Kleinplanet",
+        "importance": -16,
+        "position": { "x": 173, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e175",
+        "label": "Komet",
+        "importance": 72,
+        "position": { "x": 174, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e176",
+        "label": "Asteroid",
+        "importance": 67,
+        "position": { "x": 175, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e177",
+        "label": "Mond",
+        "importance": 96,
+        "position": { "x": 176, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e178",
+        "label": "Kleinplanet",
+        "importance": -17,
+        "position": { "x": 177, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e179",
+        "label": "Komet",
+        "importance": 73,
+        "position": { "x": 178, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e180",
+        "label": "Asteroid",
+        "importance": 68,
+        "position": { "x": 179, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e181",
+        "label": "Mond",
+        "importance": 97,
+        "position": { "x": 180, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e182",
+        "label": "Kleinplanet",
+        "importance": -18,
+        "position": { "x": 181, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e183",
+        "label": "Komet",
+        "importance": 74,
+        "position": { "x": 182, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e184",
+        "label": "Asteroid",
+        "importance": 69,
+        "position": { "x": 183, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e185",
+        "label": "Mond",
+        "importance": 98,
+        "position": { "x": 184, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e186",
+        "label": "Kleinplanet",
+        "importance": -19,
+        "position": { "x": 185, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e187",
+        "label": "Komet",
+        "importance": 75,
+        "position": { "x": 186, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e188",
+        "label": "Asteroid",
+        "importance": 70,
+        "position": { "x": 187, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e189",
+        "label": "Mond",
+        "importance": 99,
+        "position": { "x": 188, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e190",
+        "label": "Kleinplanet",
+        "importance": -20,
+        "position": { "x": 189, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e191",
+        "label": "Komet",
+        "importance": 76,
+        "position": { "x": 190, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e192",
+        "label": "Asteroid",
+        "importance": 71,
+        "position": { "x": 191, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e193",
+        "label": "Mond",
+        "importance": 100,
+        "position": { "x": 192, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e194",
+        "label": "Kleinplanet",
+        "importance": -21,
+        "position": { "x": 193, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e195",
+        "label": "Komet",
+        "importance": 77,
+        "position": { "x": 194, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e196",
+        "label": "Asteroid",
+        "importance": 72,
+        "position": { "x": 195, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e197",
+        "label": "Mond",
+        "importance": 101,
+        "position": { "x": 196, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e198",
+        "label": "Kleinplanet",
+        "importance": -22,
+        "position": { "x": 197, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e199",
+        "label": "Komet",
+        "importance": 78,
+        "position": { "x": 198, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e200",
+        "label": "Asteroid",
+        "importance": 73,
+        "position": { "x": 199, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e201",
+        "label": "Mond",
+        "importance": 102,
+        "position": { "x": 200, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e202",
+        "label": "Kleinplanet",
+        "importance": -23,
+        "position": { "x": 201, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e203",
+        "label": "Komet",
+        "importance": 79,
+        "position": { "x": 202, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e204",
+        "label": "Asteroid",
+        "importance": 74,
+        "position": { "x": 203, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e205",
+        "label": "Mond",
+        "importance": 103,
+        "position": { "x": 204, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e206",
+        "label": "Kleinplanet",
+        "importance": -24,
+        "position": { "x": 205, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e207",
+        "label": "Komet",
+        "importance": 80,
+        "position": { "x": 206, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e208",
+        "label": "Asteroid",
+        "importance": 75,
+        "position": { "x": 207, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e209",
+        "label": "Mond",
+        "importance": 104,
+        "position": { "x": 208, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e210",
+        "label": "Kleinplanet",
+        "importance": -25,
+        "position": { "x": 209, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e211",
+        "label": "Komet",
+        "importance": 81,
+        "position": { "x": 210, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e212",
+        "label": "Asteroid",
+        "importance": 76,
+        "position": { "x": 211, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e213",
+        "label": "Mond",
+        "importance": 105,
+        "position": { "x": 212, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e214",
+        "label": "Kleinplanet",
+        "importance": -26,
+        "position": { "x": 213, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e215",
+        "label": "Komet",
+        "importance": 82,
+        "position": { "x": 214, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e216",
+        "label": "Asteroid",
+        "importance": 77,
+        "position": { "x": 215, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e217",
+        "label": "Mond",
+        "importance": 106,
+        "position": { "x": 216, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e218",
+        "label": "Kleinplanet",
+        "importance": -27,
+        "position": { "x": 217, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e219",
+        "label": "Komet",
+        "importance": 83,
+        "position": { "x": 218, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e220",
+        "label": "Asteroid",
+        "importance": 78,
+        "position": { "x": 219, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e221",
+        "label": "Mond",
+        "importance": 107,
+        "position": { "x": 220, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e222",
+        "label": "Kleinplanet",
+        "importance": -28,
+        "position": { "x": 221, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e223",
+        "label": "Komet",
+        "importance": 84,
+        "position": { "x": 222, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e224",
+        "label": "Asteroid",
+        "importance": 79,
+        "position": { "x": 223, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e225",
+        "label": "Mond",
+        "importance": 108,
+        "position": { "x": 224, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e226",
+        "label": "Kleinplanet",
+        "importance": -29,
+        "position": { "x": 225, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e227",
+        "label": "Komet",
+        "importance": 85,
+        "position": { "x": 226, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e228",
+        "label": "Asteroid",
+        "importance": 80,
+        "position": { "x": 227, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e229",
+        "label": "Mond",
+        "importance": 109,
+        "position": { "x": 228, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e230",
+        "label": "Kleinplanet",
+        "importance": -30,
+        "position": { "x": 229, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e231",
+        "label": "Komet",
+        "importance": 86,
+        "position": { "x": 230, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e232",
+        "label": "Asteroid",
+        "importance": 81,
+        "position": { "x": 231, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e233",
+        "label": "Mond",
+        "importance": 110,
+        "position": { "x": 232, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e234",
+        "label": "Kleinplanet",
+        "importance": -31,
+        "position": { "x": 233, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e235",
+        "label": "Komet",
+        "importance": 87,
+        "position": { "x": 234, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e236",
+        "label": "Asteroid",
+        "importance": 82,
+        "position": { "x": 235, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e237",
+        "label": "Mond",
+        "importance": 111,
+        "position": { "x": 236, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e238",
+        "label": "Kleinplanet",
+        "importance": -32,
+        "position": { "x": 237, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e239",
+        "label": "Komet",
+        "importance": 88,
+        "position": { "x": 238, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e240",
+        "label": "Asteroid",
+        "importance": 83,
+        "position": { "x": 239, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e241",
+        "label": "Mond",
+        "importance": 112,
+        "position": { "x": 240, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e242",
+        "label": "Kleinplanet",
+        "importance": -33,
+        "position": { "x": 241, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e243",
+        "label": "Komet",
+        "importance": 89,
+        "position": { "x": 242, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e244",
+        "label": "Asteroid",
+        "importance": 84,
+        "position": { "x": 243, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e245",
+        "label": "Mond",
+        "importance": 113,
+        "position": { "x": 244, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e246",
+        "label": "Kleinplanet",
+        "importance": -34,
+        "position": { "x": 245, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e247",
+        "label": "Komet",
+        "importance": 90,
+        "position": { "x": 246, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e248",
+        "label": "Asteroid",
+        "importance": 85,
+        "position": { "x": 247, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e249",
+        "label": "Mond",
+        "importance": 114,
+        "position": { "x": 248, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e250",
+        "label": "Kleinplanet",
+        "importance": -35,
+        "position": { "x": 249, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e251",
+        "label": "Komet",
+        "importance": 91,
+        "position": { "x": 250, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e252",
+        "label": "Asteroid",
+        "importance": 86,
+        "position": { "x": 251, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e253",
+        "label": "Mond",
+        "importance": 115,
+        "position": { "x": 252, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e254",
+        "label": "Kleinplanet",
+        "importance": -36,
+        "position": { "x": 253, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e255",
+        "label": "Komet",
+        "importance": 92,
+        "position": { "x": 254, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e256",
+        "label": "Asteroid",
+        "importance": 87,
+        "position": { "x": 255, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e257",
+        "label": "Mond",
+        "importance": 116,
+        "position": { "x": 256, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e258",
+        "label": "Kleinplanet",
+        "importance": -37,
+        "position": { "x": 257, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e259",
+        "label": "Komet",
+        "importance": 93,
+        "position": { "x": 258, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e260",
+        "label": "Asteroid",
+        "importance": 88,
+        "position": { "x": 259, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e261",
+        "label": "Mond",
+        "importance": 117,
+        "position": { "x": 260, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e262",
+        "label": "Kleinplanet",
+        "importance": -38,
+        "position": { "x": 261, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e263",
+        "label": "Komet",
+        "importance": 94,
+        "position": { "x": 262, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e264",
+        "label": "Asteroid",
+        "importance": 89,
+        "position": { "x": 263, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e265",
+        "label": "Mond",
+        "importance": 118,
+        "position": { "x": 264, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e266",
+        "label": "Kleinplanet",
+        "importance": -39,
+        "position": { "x": 265, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e267",
+        "label": "Komet",
+        "importance": 95,
+        "position": { "x": 266, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e268",
+        "label": "Asteroid",
+        "importance": 90,
+        "position": { "x": 267, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e269",
+        "label": "Mond",
+        "importance": 119,
+        "position": { "x": 268, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e270",
+        "label": "Kleinplanet",
+        "importance": -40,
+        "position": { "x": 269, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e271",
+        "label": "Komet",
+        "importance": 96,
+        "position": { "x": 270, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e272",
+        "label": "Asteroid",
+        "importance": 91,
+        "position": { "x": 271, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e273",
+        "label": "Mond",
+        "importance": 120,
+        "position": { "x": 272, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e274",
+        "label": "Kleinplanet",
+        "importance": -41,
+        "position": { "x": 273, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e275",
+        "label": "Komet",
+        "importance": 97,
+        "position": { "x": 274, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e276",
+        "label": "Asteroid",
+        "importance": 92,
+        "position": { "x": 275, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e277",
+        "label": "Mond",
+        "importance": 121,
+        "position": { "x": 276, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e278",
+        "label": "Kleinplanet",
+        "importance": -42,
+        "position": { "x": 277, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e279",
+        "label": "Komet",
+        "importance": 98,
+        "position": { "x": 278, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e280",
+        "label": "Asteroid",
+        "importance": 93,
+        "position": { "x": 279, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e281",
+        "label": "Mond",
+        "importance": 122,
+        "position": { "x": 280, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e282",
+        "label": "Kleinplanet",
+        "importance": -43,
+        "position": { "x": 281, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e283",
+        "label": "Komet",
+        "importance": 99,
+        "position": { "x": 282, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e284",
+        "label": "Asteroid",
+        "importance": 94,
+        "position": { "x": 283, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e285",
+        "label": "Mond",
+        "importance": 123,
+        "position": { "x": 284, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e286",
+        "label": "Kleinplanet",
+        "importance": -44,
+        "position": { "x": 285, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e287",
+        "label": "Komet",
+        "importance": 100,
+        "position": { "x": 286, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e288",
+        "label": "Asteroid",
+        "importance": 95,
+        "position": { "x": 287, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e289",
+        "label": "Mond",
+        "importance": 124,
+        "position": { "x": 288, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e290",
+        "label": "Kleinplanet",
+        "importance": -45,
+        "position": { "x": 289, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e291",
+        "label": "Komet",
+        "importance": 101,
+        "position": { "x": 290, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e292",
+        "label": "Asteroid",
+        "importance": 96,
+        "position": { "x": 291, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e293",
+        "label": "Mond",
+        "importance": 125,
+        "position": { "x": 292, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e294",
+        "label": "Kleinplanet",
+        "importance": -46,
+        "position": { "x": 293, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e295",
+        "label": "Komet",
+        "importance": 102,
+        "position": { "x": 294, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e296",
+        "label": "Asteroid",
+        "importance": 97,
+        "position": { "x": 295, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e297",
+        "label": "Mond",
+        "importance": 126,
+        "position": { "x": 296, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e298",
+        "label": "Kleinplanet",
+        "importance": -47,
+        "position": { "x": 297, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e299",
+        "label": "Komet",
+        "importance": 103,
+        "position": { "x": 298, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e300",
+        "label": "Asteroid",
+        "importance": 98,
+        "position": { "x": 299, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e301",
+        "label": "Mond",
+        "importance": 127,
+        "position": { "x": 300, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e302",
+        "label": "Kleinplanet",
+        "importance": -48,
+        "position": { "x": 301, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e303",
+        "label": "Komet",
+        "importance": 104,
+        "position": { "x": 302, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e304",
+        "label": "Asteroid",
+        "importance": 99,
+        "position": { "x": 303, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e305",
+        "label": "Mond",
+        "importance": 128,
+        "position": { "x": 304, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e306",
+        "label": "Kleinplanet",
+        "importance": -49,
+        "position": { "x": 305, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e307",
+        "label": "Komet",
+        "importance": 105,
+        "position": { "x": 306, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e308",
+        "label": "Asteroid",
+        "importance": 100,
+        "position": { "x": 307, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e309",
+        "label": "Mond",
+        "importance": 129,
+        "position": { "x": 308, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e310",
+        "label": "Kleinplanet",
+        "importance": -50,
+        "position": { "x": 309, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e311",
+        "label": "Komet",
+        "importance": 106,
+        "position": { "x": 310, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e312",
+        "label": "Asteroid",
+        "importance": 101,
+        "position": { "x": 311, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e313",
+        "label": "Mond",
+        "importance": 130,
+        "position": { "x": 312, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e314",
+        "label": "Kleinplanet",
+        "importance": -51,
+        "position": { "x": 313, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e315",
+        "label": "Komet",
+        "importance": 107,
+        "position": { "x": 314, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e316",
+        "label": "Asteroid",
+        "importance": 102,
+        "position": { "x": 315, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e317",
+        "label": "Mond",
+        "importance": 131,
+        "position": { "x": 316, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e318",
+        "label": "Kleinplanet",
+        "importance": -52,
+        "position": { "x": 317, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e319",
+        "label": "Komet",
+        "importance": 108,
+        "position": { "x": 318, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e320",
+        "label": "Asteroid",
+        "importance": 103,
+        "position": { "x": 319, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e321",
+        "label": "Mond",
+        "importance": 132,
+        "position": { "x": 320, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e322",
+        "label": "Kleinplanet",
+        "importance": -53,
+        "position": { "x": 321, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e323",
+        "label": "Komet",
+        "importance": 109,
+        "position": { "x": 322, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e324",
+        "label": "Asteroid",
+        "importance": 104,
+        "position": { "x": 323, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e325",
+        "label": "Mond",
+        "importance": 133,
+        "position": { "x": 324, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e326",
+        "label": "Kleinplanet",
+        "importance": -54,
+        "position": { "x": 325, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e327",
+        "label": "Komet",
+        "importance": 110,
+        "position": { "x": 326, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e328",
+        "label": "Asteroid",
+        "importance": 105,
+        "position": { "x": 327, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e329",
+        "label": "Mond",
+        "importance": 134,
+        "position": { "x": 328, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e330",
+        "label": "Kleinplanet",
+        "importance": -55,
+        "position": { "x": 329, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e331",
+        "label": "Komet",
+        "importance": 111,
+        "position": { "x": 330, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e332",
+        "label": "Asteroid",
+        "importance": 106,
+        "position": { "x": 331, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e333",
+        "label": "Mond",
+        "importance": 135,
+        "position": { "x": 332, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e334",
+        "label": "Kleinplanet",
+        "importance": -56,
+        "position": { "x": 333, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e335",
+        "label": "Komet",
+        "importance": 112,
+        "position": { "x": 334, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e336",
+        "label": "Asteroid",
+        "importance": 107,
+        "position": { "x": 335, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e337",
+        "label": "Mond",
+        "importance": 136,
+        "position": { "x": 336, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e338",
+        "label": "Kleinplanet",
+        "importance": -57,
+        "position": { "x": 337, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e339",
+        "label": "Komet",
+        "importance": 113,
+        "position": { "x": 338, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e340",
+        "label": "Asteroid",
+        "importance": 108,
+        "position": { "x": 339, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e341",
+        "label": "Mond",
+        "importance": 137,
+        "position": { "x": 340, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e342",
+        "label": "Kleinplanet",
+        "importance": -58,
+        "position": { "x": 341, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e343",
+        "label": "Komet",
+        "importance": 114,
+        "position": { "x": 342, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e344",
+        "label": "Asteroid",
+        "importance": 109,
+        "position": { "x": 343, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e345",
+        "label": "Mond",
+        "importance": 138,
+        "position": { "x": 344, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e346",
+        "label": "Kleinplanet",
+        "importance": -59,
+        "position": { "x": 345, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e347",
+        "label": "Komet",
+        "importance": 115,
+        "position": { "x": 346, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e348",
+        "label": "Asteroid",
+        "importance": 110,
+        "position": { "x": 347, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e349",
+        "label": "Mond",
+        "importance": 139,
+        "position": { "x": 348, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e350",
+        "label": "Kleinplanet",
+        "importance": -60,
+        "position": { "x": 349, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e351",
+        "label": "Komet",
+        "importance": 116,
+        "position": { "x": 350, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e352",
+        "label": "Asteroid",
+        "importance": 111,
+        "position": { "x": 351, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e353",
+        "label": "Mond",
+        "importance": 140,
+        "position": { "x": 352, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e354",
+        "label": "Kleinplanet",
+        "importance": -61,
+        "position": { "x": 353, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e355",
+        "label": "Komet",
+        "importance": 117,
+        "position": { "x": 354, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e356",
+        "label": "Asteroid",
+        "importance": 112,
+        "position": { "x": 355, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e357",
+        "label": "Mond",
+        "importance": 141,
+        "position": { "x": 356, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e358",
+        "label": "Kleinplanet",
+        "importance": -62,
+        "position": { "x": 357, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e359",
+        "label": "Komet",
+        "importance": 118,
+        "position": { "x": 358, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e360",
+        "label": "Asteroid",
+        "importance": 113,
+        "position": { "x": 359, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e361",
+        "label": "Mond",
+        "importance": 142,
+        "position": { "x": 360, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e362",
+        "label": "Kleinplanet",
+        "importance": -63,
+        "position": { "x": 361, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e363",
+        "label": "Komet",
+        "importance": 119,
+        "position": { "x": 362, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e364",
+        "label": "Asteroid",
+        "importance": 114,
+        "position": { "x": 363, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e365",
+        "label": "Mond",
+        "importance": 143,
+        "position": { "x": 364, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e366",
+        "label": "Kleinplanet",
+        "importance": -64,
+        "position": { "x": 365, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e367",
+        "label": "Komet",
+        "importance": 120,
+        "position": { "x": 366, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e368",
+        "label": "Asteroid",
+        "importance": 115,
+        "position": { "x": 367, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e369",
+        "label": "Mond",
+        "importance": 144,
+        "position": { "x": 368, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e370",
+        "label": "Kleinplanet",
+        "importance": -65,
+        "position": { "x": 369, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e371",
+        "label": "Komet",
+        "importance": 121,
+        "position": { "x": 370, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e372",
+        "label": "Asteroid",
+        "importance": 116,
+        "position": { "x": 371, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e373",
+        "label": "Mond",
+        "importance": 145,
+        "position": { "x": 372, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e374",
+        "label": "Kleinplanet",
+        "importance": -66,
+        "position": { "x": 373, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e375",
+        "label": "Komet",
+        "importance": 122,
+        "position": { "x": 374, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e376",
+        "label": "Asteroid",
+        "importance": 117,
+        "position": { "x": 375, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e377",
+        "label": "Mond",
+        "importance": 146,
+        "position": { "x": 376, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e378",
+        "label": "Kleinplanet",
+        "importance": -67,
+        "position": { "x": 377, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e379",
+        "label": "Komet",
+        "importance": 123,
+        "position": { "x": 378, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e380",
+        "label": "Asteroid",
+        "importance": 118,
+        "position": { "x": 379, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e381",
+        "label": "Mond",
+        "importance": 147,
+        "position": { "x": 380, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e382",
+        "label": "Kleinplanet",
+        "importance": -68,
+        "position": { "x": 381, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e383",
+        "label": "Komet",
+        "importance": 124,
+        "position": { "x": 382, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e384",
+        "label": "Asteroid",
+        "importance": 119,
+        "position": { "x": 383, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e385",
+        "label": "Mond",
+        "importance": 148,
+        "position": { "x": 384, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e386",
+        "label": "Kleinplanet",
+        "importance": -69,
+        "position": { "x": 385, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e387",
+        "label": "Komet",
+        "importance": 125,
+        "position": { "x": 386, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e388",
+        "label": "Asteroid",
+        "importance": 120,
+        "position": { "x": 387, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e389",
+        "label": "Mond",
+        "importance": 149,
+        "position": { "x": 388, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e390",
+        "label": "Kleinplanet",
+        "importance": -70,
+        "position": { "x": 389, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e391",
+        "label": "Komet",
+        "importance": 126,
+        "position": { "x": 390, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e392",
+        "label": "Asteroid",
+        "importance": 121,
+        "position": { "x": 391, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e393",
+        "label": "Mond",
+        "importance": 150,
+        "position": { "x": 392, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e394",
+        "label": "Kleinplanet",
+        "importance": -71,
+        "position": { "x": 393, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e395",
+        "label": "Komet",
+        "importance": 127,
+        "position": { "x": 394, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e396",
+        "label": "Asteroid",
+        "importance": 122,
+        "position": { "x": 395, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e397",
+        "label": "Mond",
+        "importance": 151,
+        "position": { "x": 396, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e398",
+        "label": "Kleinplanet",
+        "importance": -72,
+        "position": { "x": 397, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e399",
+        "label": "Komet",
+        "importance": 128,
+        "position": { "x": 398, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e400",
+        "label": "Asteroid",
+        "importance": 123,
+        "position": { "x": 399, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e401",
+        "label": "Mond",
+        "importance": 152,
+        "position": { "x": 400, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e402",
+        "label": "Kleinplanet",
+        "importance": -73,
+        "position": { "x": 401, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e403",
+        "label": "Komet",
+        "importance": 129,
+        "position": { "x": 402, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e404",
+        "label": "Asteroid",
+        "importance": 124,
+        "position": { "x": 403, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e405",
+        "label": "Mond",
+        "importance": 153,
+        "position": { "x": 404, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e406",
+        "label": "Kleinplanet",
+        "importance": -74,
+        "position": { "x": 405, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e407",
+        "label": "Komet",
+        "importance": 130,
+        "position": { "x": 406, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e408",
+        "label": "Asteroid",
+        "importance": 125,
+        "position": { "x": 407, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e409",
+        "label": "Mond",
+        "importance": 154,
+        "position": { "x": 408, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e410",
+        "label": "Kleinplanet",
+        "importance": -75,
+        "position": { "x": 409, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e411",
+        "label": "Komet",
+        "importance": 131,
+        "position": { "x": 410, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e412",
+        "label": "Asteroid",
+        "importance": 126,
+        "position": { "x": 411, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e413",
+        "label": "Mond",
+        "importance": 155,
+        "position": { "x": 412, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e414",
+        "label": "Kleinplanet",
+        "importance": -76,
+        "position": { "x": 413, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e415",
+        "label": "Komet",
+        "importance": 132,
+        "position": { "x": 414, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e416",
+        "label": "Asteroid",
+        "importance": 127,
+        "position": { "x": 415, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e417",
+        "label": "Mond",
+        "importance": 156,
+        "position": { "x": 416, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e418",
+        "label": "Kleinplanet",
+        "importance": -77,
+        "position": { "x": 417, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e419",
+        "label": "Komet",
+        "importance": 133,
+        "position": { "x": 418, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e420",
+        "label": "Asteroid",
+        "importance": 128,
+        "position": { "x": 419, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e421",
+        "label": "Mond",
+        "importance": 157,
+        "position": { "x": 420, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e422",
+        "label": "Kleinplanet",
+        "importance": -78,
+        "position": { "x": 421, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e423",
+        "label": "Komet",
+        "importance": 134,
+        "position": { "x": 422, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e424",
+        "label": "Asteroid",
+        "importance": 129,
+        "position": { "x": 423, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e425",
+        "label": "Mond",
+        "importance": 158,
+        "position": { "x": 424, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e426",
+        "label": "Kleinplanet",
+        "importance": -79,
+        "position": { "x": 425, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e427",
+        "label": "Komet",
+        "importance": 135,
+        "position": { "x": 426, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e428",
+        "label": "Asteroid",
+        "importance": 130,
+        "position": { "x": 427, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e429",
+        "label": "Mond",
+        "importance": 159,
+        "position": { "x": 428, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e430",
+        "label": "Kleinplanet",
+        "importance": -80,
+        "position": { "x": 429, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e431",
+        "label": "Komet",
+        "importance": 136,
+        "position": { "x": 430, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e432",
+        "label": "Asteroid",
+        "importance": 131,
+        "position": { "x": 431, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e433",
+        "label": "Mond",
+        "importance": 160,
+        "position": { "x": 432, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e434",
+        "label": "Kleinplanet",
+        "importance": -81,
+        "position": { "x": 433, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e435",
+        "label": "Komet",
+        "importance": 137,
+        "position": { "x": 434, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e436",
+        "label": "Asteroid",
+        "importance": 132,
+        "position": { "x": 435, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e437",
+        "label": "Mond",
+        "importance": 161,
+        "position": { "x": 436, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e438",
+        "label": "Kleinplanet",
+        "importance": -82,
+        "position": { "x": 437, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e439",
+        "label": "Komet",
+        "importance": 138,
+        "position": { "x": 438, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e440",
+        "label": "Asteroid",
+        "importance": 133,
+        "position": { "x": 439, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e441",
+        "label": "Mond",
+        "importance": 162,
+        "position": { "x": 440, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e442",
+        "label": "Kleinplanet",
+        "importance": -83,
+        "position": { "x": 441, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e443",
+        "label": "Komet",
+        "importance": 139,
+        "position": { "x": 442, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e444",
+        "label": "Asteroid",
+        "importance": 134,
+        "position": { "x": 443, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e445",
+        "label": "Mond",
+        "importance": 163,
+        "position": { "x": 444, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e446",
+        "label": "Kleinplanet",
+        "importance": -84,
+        "position": { "x": 445, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e447",
+        "label": "Komet",
+        "importance": 140,
+        "position": { "x": 446, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e448",
+        "label": "Asteroid",
+        "importance": 135,
+        "position": { "x": 447, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e449",
+        "label": "Mond",
+        "importance": 164,
+        "position": { "x": 448, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e450",
+        "label": "Kleinplanet",
+        "importance": -85,
+        "position": { "x": 449, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e451",
+        "label": "Komet",
+        "importance": 141,
+        "position": { "x": 450, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e452",
+        "label": "Asteroid",
+        "importance": 136,
+        "position": { "x": 451, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e453",
+        "label": "Mond",
+        "importance": 165,
+        "position": { "x": 452, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e454",
+        "label": "Kleinplanet",
+        "importance": -86,
+        "position": { "x": 453, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e455",
+        "label": "Komet",
+        "importance": 142,
+        "position": { "x": 454, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e456",
+        "label": "Asteroid",
+        "importance": 137,
+        "position": { "x": 455, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e457",
+        "label": "Mond",
+        "importance": 166,
+        "position": { "x": 456, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e458",
+        "label": "Kleinplanet",
+        "importance": -87,
+        "position": { "x": 457, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e459",
+        "label": "Komet",
+        "importance": 143,
+        "position": { "x": 458, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e460",
+        "label": "Asteroid",
+        "importance": 138,
+        "position": { "x": 459, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e461",
+        "label": "Mond",
+        "importance": 167,
+        "position": { "x": 460, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e462",
+        "label": "Kleinplanet",
+        "importance": -88,
+        "position": { "x": 461, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e463",
+        "label": "Komet",
+        "importance": 144,
+        "position": { "x": 462, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e464",
+        "label": "Asteroid",
+        "importance": 139,
+        "position": { "x": 463, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e465",
+        "label": "Mond",
+        "importance": 168,
+        "position": { "x": 464, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e466",
+        "label": "Kleinplanet",
+        "importance": -89,
+        "position": { "x": 465, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e467",
+        "label": "Komet",
+        "importance": 145,
+        "position": { "x": 466, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e468",
+        "label": "Asteroid",
+        "importance": 140,
+        "position": { "x": 467, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e469",
+        "label": "Mond",
+        "importance": 169,
+        "position": { "x": 468, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e470",
+        "label": "Kleinplanet",
+        "importance": -90,
+        "position": { "x": 469, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e471",
+        "label": "Komet",
+        "importance": 146,
+        "position": { "x": 470, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e472",
+        "label": "Asteroid",
+        "importance": 141,
+        "position": { "x": 471, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e473",
+        "label": "Mond",
+        "importance": 170,
+        "position": { "x": 472, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e474",
+        "label": "Kleinplanet",
+        "importance": -91,
+        "position": { "x": 473, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e475",
+        "label": "Komet",
+        "importance": 147,
+        "position": { "x": 474, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e476",
+        "label": "Asteroid",
+        "importance": 142,
+        "position": { "x": 475, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e477",
+        "label": "Mond",
+        "importance": 171,
+        "position": { "x": 476, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e478",
+        "label": "Kleinplanet",
+        "importance": -92,
+        "position": { "x": 477, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e479",
+        "label": "Komet",
+        "importance": 148,
+        "position": { "x": 478, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e480",
+        "label": "Asteroid",
+        "importance": 143,
+        "position": { "x": 479, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e481",
+        "label": "Mond",
+        "importance": 172,
+        "position": { "x": 480, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e482",
+        "label": "Kleinplanet",
+        "importance": -93,
+        "position": { "x": 481, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e483",
+        "label": "Komet",
+        "importance": 149,
+        "position": { "x": 482, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e484",
+        "label": "Asteroid",
+        "importance": 144,
+        "position": { "x": 483, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e485",
+        "label": "Mond",
+        "importance": 173,
+        "position": { "x": 484, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e486",
+        "label": "Kleinplanet",
+        "importance": -94,
+        "position": { "x": 485, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e487",
+        "label": "Komet",
+        "importance": 150,
+        "position": { "x": 486, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e488",
+        "label": "Asteroid",
+        "importance": 145,
+        "position": { "x": 487, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e489",
+        "label": "Mond",
+        "importance": 174,
+        "position": { "x": 488, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e490",
+        "label": "Kleinplanet",
+        "importance": -95,
+        "position": { "x": 489, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e491",
+        "label": "Komet",
+        "importance": 151,
+        "position": { "x": 490, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e492",
+        "label": "Asteroid",
+        "importance": 146,
+        "position": { "x": 491, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e493",
+        "label": "Mond",
+        "importance": 175,
+        "position": { "x": 492, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e494",
+        "label": "Kleinplanet",
+        "importance": -96,
+        "position": { "x": 493, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e495",
+        "label": "Komet",
+        "importance": 152,
+        "position": { "x": 494, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e496",
+        "label": "Asteroid",
+        "importance": 147,
+        "position": { "x": 495, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e497",
+        "label": "Mond",
+        "importance": 176,
+        "position": { "x": 496, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e498",
+        "label": "Kleinplanet",
+        "importance": -97,
+        "position": { "x": 497, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e499",
+        "label": "Komet",
+        "importance": 153,
+        "position": { "x": 498, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e500",
+        "label": "Asteroid",
+        "importance": 148,
+        "position": { "x": 499, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e501",
+        "label": "Mond",
+        "importance": 177,
+        "position": { "x": 500, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e502",
+        "label": "Kleinplanet",
+        "importance": -98,
+        "position": { "x": 501, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e503",
+        "label": "Komet",
+        "importance": 154,
+        "position": { "x": 502, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e504",
+        "label": "Asteroid",
+        "importance": 149,
+        "position": { "x": 503, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e505",
+        "label": "Mond",
+        "importance": 178,
+        "position": { "x": 504, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e506",
+        "label": "Kleinplanet",
+        "importance": -99,
+        "position": { "x": 505, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e507",
+        "label": "Komet",
+        "importance": 155,
+        "position": { "x": 506, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e508",
+        "label": "Asteroid",
+        "importance": 150,
+        "position": { "x": 507, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e509",
+        "label": "Mond",
+        "importance": 179,
+        "position": { "x": 508, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e510",
+        "label": "Kleinplanet",
+        "importance": -100,
+        "position": { "x": 509, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e511",
+        "label": "Komet",
+        "importance": 156,
+        "position": { "x": 510, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e512",
+        "label": "Asteroid",
+        "importance": 151,
+        "position": { "x": 511, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e513",
+        "label": "Mond",
+        "importance": 180,
+        "position": { "x": 512, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e514",
+        "label": "Kleinplanet",
+        "importance": -101,
+        "position": { "x": 513, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e515",
+        "label": "Komet",
+        "importance": 157,
+        "position": { "x": 514, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e516",
+        "label": "Asteroid",
+        "importance": 152,
+        "position": { "x": 515, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e517",
+        "label": "Mond",
+        "importance": 181,
+        "position": { "x": 516, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e518",
+        "label": "Kleinplanet",
+        "importance": -102,
+        "position": { "x": 517, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e519",
+        "label": "Komet",
+        "importance": 158,
+        "position": { "x": 518, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e520",
+        "label": "Asteroid",
+        "importance": 153,
+        "position": { "x": 519, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e521",
+        "label": "Mond",
+        "importance": 182,
+        "position": { "x": 520, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e522",
+        "label": "Kleinplanet",
+        "importance": -103,
+        "position": { "x": 521, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e523",
+        "label": "Komet",
+        "importance": 159,
+        "position": { "x": 522, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e524",
+        "label": "Asteroid",
+        "importance": 154,
+        "position": { "x": 523, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e525",
+        "label": "Mond",
+        "importance": 183,
+        "position": { "x": 524, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e526",
+        "label": "Kleinplanet",
+        "importance": -104,
+        "position": { "x": 525, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e527",
+        "label": "Komet",
+        "importance": 160,
+        "position": { "x": 526, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e528",
+        "label": "Asteroid",
+        "importance": 155,
+        "position": { "x": 527, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e529",
+        "label": "Mond",
+        "importance": 184,
+        "position": { "x": 528, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e530",
+        "label": "Kleinplanet",
+        "importance": -105,
+        "position": { "x": 529, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e531",
+        "label": "Komet",
+        "importance": 161,
+        "position": { "x": 530, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e532",
+        "label": "Asteroid",
+        "importance": 156,
+        "position": { "x": 531, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e533",
+        "label": "Mond",
+        "importance": 185,
+        "position": { "x": 532, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e534",
+        "label": "Kleinplanet",
+        "importance": -106,
+        "position": { "x": 533, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplanet",
+        "wikidata_id": "Q308"
+      },
+      {
+        "id": "e535",
+        "label": "Komet",
+        "importance": 162,
+       

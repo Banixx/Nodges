@@ -1,0 +1,494 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Interaktive Visualisierung des Sonnensystems mit Fokus auf physikalische Eigenschaften und Beziehungen zwischen Himmelskörpern.",
+    "apiResponse": {
+      "id": "gen-1784644756-KYrbHaNYpgCH33pHWt5F",
+      "created": 1784644757,
+      "model": "morph/morph-v3-large",
+      "usage": {
+        "prompt_tokens": 2198,
+        "completion_tokens": 3398,
+        "total_tokens": 5596,
+        "cost": 0.0084344,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0084344,
+          "upstream_inference_prompt_cost": 0.0019782,
+          "upstream_inference_completions_cost": 0.0064562
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Concept": {
+        "properties": {
+          "importance": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "position": {
+            "type": "spatial"
+          },
+          "kategorie": {
+            "type": "categorical"
+          },
+          "wikidata_id": {
+            "type": "categorical"
+          },
+          "masse": {
+            "type": "continuous"
+          },
+          "temperatur": {
+            "type": "continuous"
+          },
+          "alter": {
+            "type": "continuous"
+          },
+          "radius": {
+            "type": "continuous"
+          },
+          "region": {
+            "type": "categorical"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "related": {
+        "properties": {
+          "strength": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "temporal": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e1",
+        "label": "Sonne",
+        "importance": 100,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 90
+              }
+            }
+          ]
+        },
+        "kategorie": "Stern",
+        "wikidata_id": "Q308",
+        "masse": 1.989e+30,
+        "temperatur": 5778,
+        "alter": 4600000000,
+        "radius": 696340,
+        "region": "inneres_sonnensystem"
+      },
+      {
+        "id": "e2",
+        "label": "Merkur",
+        "importance": 60,
+        "position": {
+          "x": 10,
+          "y": 0,
+          "z": 0
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q393",
+        "masse": 3.285e+23,
+        "temperatur": 440,
+        "alter": 4600000000,
+        "radius": 2439,
+        "region": "inneres_sonnensystem"
+      },
+      {
+        "id": "e3",
+        "label": "Venus",
+        "importance": 70,
+        "position": {
+          "x": 20,
+          "y": 0,
+          "z": 0
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q85",
+        "masse": 4.867e+24,
+        "temperatur": 462,
+        "alter": 4600000000,
+        "radius": 6051,
+        "region": "inneres_sonnensystem"
+      },
+      {
+        "id": "e4",
+        "label": "Erde",
+        "importance": 80,
+        "position": {
+          "x": 30,
+          "y": 0,
+          "z": 0
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q2",
+        "masse": 5.972e+24,
+        "temperatur": 288,
+        "alter": 4600000000,
+        "radius": 6371,
+        "region": "inneres_sonnensystem"
+      },
+      {
+        "id": "e5",
+        "label": "Mars",
+        "importance": 50,
+        "position": {
+          "x": 40,
+          "y": 0,
+          "z": 0
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q87",
+        "masse": 6.39e+23,
+        "temperatur": 210,
+        "alter": 4600000000,
+        "radius": 3389,
+        "region": "inneres_sonnensystem"
+      },
+      {
+        "id": "e6",
+        "label": "Jupiter",
+        "importance": 90,
+        "position": {
+          "x": 50,
+          "y": 0,
+          "z": 0
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q86",
+        "masse": 1.898e+27,
+        "temperatur": 165,
+        "alter": 4600000000,
+        "radius": 69911,
+        "region": "auesres_sonnensystem"
+      },
+      {
+        "id": "e7",
+        "label": "Saturn",
+        "importance": 85,
+        "position": {
+          "x": 60,
+          "y": 0,
+          "z": 0
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q89",
+        "masse": 5.683e+26,
+        "temperatur": 134,
+        "alter": 4600000000,
+        "radius": 58232,
+        "region": "auesres_sonnensystem"
+      },
+      {
+        "id": "e8",
+        "label": "Uranus",
+        "importance": 75,
+        "position": {
+          "x": 70,
+          "y": 0,
+          "z": 0
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q84",
+        "masse": 8.681e+25,
+        "temperatur": 76,
+        "alter": 4600000000,
+        "radius": 25362,
+        "region": "auesres_sonnensystem"
+      },
+      {
+        "id": "e9",
+        "label": "Neptun",
+        "importance": 70,
+        "position": {
+          "x": 80,
+          "y": 0,
+          "z": 0
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q865",
+        "masse": 1.024e+26,
+        "temperatur": 72,
+        "alter": 4600000000,
+        "radius": 24622,
+        "region": "auesres_sonnensystem"
+      },
+      {
+        "id": "e10",
+        "label": "Pluto",
+        "importance": 30,
+        "position": {
+          "x": 90,
+          "y": 0,
+          "z": 0
+        },
+        "kategorie": "Zwergplanet",
+        "wikidata_id": "Q1030",
+        "masse": 1.303e+22,
+        "temperatur": 44,
+        "alter": 4600000000,
+        "radius": 1188,
+        "region": "auesres_sonnensystem"
+      }
+    ],
+    "relationships": [
+      {
+        "id": "r1",
+        "source": "e1",
+        "target": "e2",
+        "label": "orbitiert",
+        "strength": 60,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r2",
+        "source": "e1",
+        "target": "e3",
+        "label": "orbitiert",
+        "strength": 65,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r3",
+        "source": "e1",
+        "target": "e4",
+        "label": "orbitiert",
+        "strength": 70,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r4",
+        "source": "e1",
+        "target": "e5",
+        "label": "orbitiert",
+        "strength": 55,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r5",
+        "source": "e1",
+        "target": "e6",
+        "label": "orbitiert",
+        "strength": 80,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r6",
+        "source": "e1",
+        "target": "e7",
+        "label": "orbitiert",
+        "strength": 75,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r7",
+        "source": "e1",
+        "target": "e8",
+        "label": "orbitiert",
+        "strength": 65,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r8",
+        "source": "e1",
+        "target": "e9",
+        "label": "orbitiert",
+        "strength": 60,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r9",
+        "source": "e1",
+        "target": "e10",
+        "label": "orbitiert",
+        "strength": 40,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r10",
+        "source": "e2",
+        "target": "e3",
+        "label": "nahe",
+        "strength": 30,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r11",
+        "source": "e3",
+        "target": "e4",
+        "label": "nahe",
+        "strength": 35,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r12",
+        "source": "e4",
+        "target": "e5",
+        "label": "nahe",
+        "strength": 25,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r13",
+        "source": "e5",
+        "target": "e6",
+        "label": "nahe",
+        "strength": 20,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r14",
+        "source": "e6",
+        "target": "e7",
+        "label": "nahe",
+        "strength": 15,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r15",
+        "source": "e7",
+        "target": "e8",
+        "label": "nahe",
+        "strength": 10,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r16",
+        "source": "e8",
+        "target": "e9",
+        "label": "nahe",
+        "strength": 10,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r17",
+        "source": "e9",
+        "target": "e10",
+        "label": "nahe",
+        "strength": 5,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "importance",
+          "function": "linear",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "position": {
+          "source": "position",
+          "function": "constant"
+        }
+      },
+      "global_edge": {
+        "thickness": {
+          "source": "strength",
+          "function": "linear",
+          "range": [
+            0.1,
+            1.5
+          ]
+        }
+      }
+    }
+  }
+}

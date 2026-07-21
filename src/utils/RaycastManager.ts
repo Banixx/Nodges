@@ -73,10 +73,16 @@ export class RaycastManager {
                 const geometryType = mesh.userData.geometryType || 'sphere';
                 const nodeData = this.nodeManager.getNodeAt(geometryType, intersect.instanceId);
 
-                if (nodeData && nodeData.position) {
+                if (nodeData && nodeData.id) {
                     // Return a proxy object that looks like a selected node
                     const dummyNode = new THREE.Object3D();
-                    dummyNode.position.set(nodeData.position.x || 0, nodeData.position.y || 0, nodeData.position.z || 0);
+                    
+                    const actualPos = this.nodeManager.getNodePosition(String(nodeData.id));
+                    if (actualPos) {
+                        dummyNode.position.copy(actualPos);
+                    } else if (nodeData.position) {
+                        dummyNode.position.set(nodeData.position.x || 0, nodeData.position.y || 0, nodeData.position.z || 0);
+                    }
 
                     dummyNode.userData = {
                         type: 'node',

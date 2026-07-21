@@ -1,99 +1,125 @@
-import { EntityData, RelationshipData } from '../types';
 import * as THREE from 'three';
-import { STATE_KEY_TO_CATEGORIES, STATE_CATEGORIES, type StateCategory } from './state/StateTypes';
+import { EntityData, RelationshipData } from '../types';
 
-// Re-Export der Sub-State-Typen fuer externe Nutzung
-export { STATE_CATEGORIES } from './state/StateTypes';
-export type { GraphState, SelectionState, UIState, VisualState, EdgeVisualState, EnvironmentState, SystemState, StateCategory } from './state/StateTypes';
+export type StateCategory = 'default' | 'data' | 'layer' | 'ui' | 'camera' | 'time' | 'dev';
 
+export const STATE_CATEGORIES = {
+    DEFAULT: 'default' as StateCategory,
+    DATA: 'data' as StateCategory,
+    LAYER: 'layer' as StateCategory,
+    UI: 'ui' as StateCategory,
+    CAMERA: 'camera' as StateCategory,
+    TIME: 'time' as StateCategory,
+    DEV: 'dev' as StateCategory,
+};
 
-export type ActionType =
-    | 'ADD_NODE' | 'REMOVE_NODE' | 'UPDATE_NODE'
-    | 'ADD_EDGE' | 'REMOVE_EDGE' | 'UPDATE_EDGE'
-    | 'BATCH';
+export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
+    graphData: [STATE_CATEGORIES.DATA],
+    hoveredObject: [STATE_CATEGORIES.UI],
+    selectedObject: [STATE_CATEGORIES.UI],
+    selectedObjects: [STATE_CATEGORIES.UI],
+    layer1Visible: [STATE_CATEGORIES.LAYER],
+    layer2Visible: [STATE_CATEGORIES.LAYER],
+    layer3Visible: [STATE_CATEGORIES.LAYER],
+    layer4Visible: [STATE_CATEGORIES.LAYER],
+    layer1Opacity: [STATE_CATEGORIES.LAYER],
+    layer2Opacity: [STATE_CATEGORIES.LAYER],
+    layer3Opacity: [STATE_CATEGORIES.LAYER],
+    layer4Opacity: [STATE_CATEGORIES.LAYER],
+    complexityMode: [STATE_CATEGORIES.DEV],
+    devPowerPreference: [STATE_CATEGORIES.DEV],
+    devPixelRatio: [STATE_CATEGORIES.DEV],
+    devFpsLimit: [STATE_CATEGORIES.DEV],
+    renderMode: [STATE_CATEGORIES.DEV],
+    currentTimestamp: [STATE_CATEGORIES.TIME],
+    minTimestamp: [STATE_CATEGORIES.TIME],
+    maxTimestamp: [STATE_CATEGORIES.TIME],
+    isPlaying: [STATE_CATEGORIES.TIME],
+    playbackSpeed: [STATE_CATEGORIES.TIME],
+    mapActive: [STATE_CATEGORIES.UI],
+    temporalFadeEnabled: [STATE_CATEGORIES.TIME],
+    temporalFadeDuration: [STATE_CATEGORIES.TIME],
+    repositionLabels: [STATE_CATEGORIES.UI],
+};
 
 export interface HistoryAction {
-    type: ActionType;
+    type: string;
+    description: string;
     undo: () => void;
     redo: () => void;
-    description: string;
 }
 
 export interface State {
-    // Data State (Single Source of Truth)
+    [key: string]: any;
     graphData: {
         entities: EntityData[];
         relationships: RelationshipData[];
     };
-
-    // Interaction States
+    loadedFiles: any[];
     hoveredObject: THREE.Object3D | null;
     selectedObject: THREE.Object3D | null;
     selectedObjects: Set<THREE.Object3D>;
     isBoxSelecting: boolean;
-
-    // Visual States
     highlightedObjects: Set<THREE.Object3D>;
     glowIntensity: number;
     glowDirection: number;
-
-    // UI States
     tooltipVisible: boolean;
     tooltipContent: string | null;
-    tooltipPosition: { x: number, y: number } | null;
+    tooltipPosition: { x: number; y: number } | null;
     infoPanelVisible: boolean;
     infoPanelCollapsed: boolean;
-
-    // Highlight Effects State
     highlightEffectsEnabled: boolean;
-
-    // System States
     isInteractionEnabled: boolean;
     currentTool: string;
-
-    // Render Mode
-    renderMode: 'auto' | 'mesh' | 'instance';
+    layer1Visible: boolean;
+    layer2Visible: boolean;
+    layer3Visible: boolean;
+    layer4Visible: boolean;
+    layer1Opacity: number;
+    layer2Opacity: number;
+    layer3Opacity: number;
+    layer4Opacity: number;
+    layeringAttribute: string;
+    layer1Value: string;
+    layer2Value: string;
+    layer3Value: string;
+    layer4Value: string;
+    complexityMode: 'simple' | 'complex';
+    devPowerPreference: 'high-performance' | 'low-power';
+    devPixelRatio: number;
+    devFpsLimit: number;
+    _triggerRendererRebuild: number;
+    renderMode: string;
     activeRenderMode: 'mesh' | 'instance';
-
-    // Edge Parameters
     edgeThickness: number;
     edgeTubularSegments: number;
     edgeRadialSegments: number;
     edgeCurveFactor: number;
     edgePulseSpeed: number;
-    highlightThickness: number; // Percentage above base (1-200)
-    selectionThickness: number; // Percentage above highlight (0-100)
-
-    // Layout
+    edgeAnimationMode: string;
+    highlightThickness: number;
+    selectionThickness: number;
     layoutEnabled: boolean;
-
-    // Environment
     backgroundColor: string;
     ambientLightIntensity: number;
     directionalLightIntensity: number;
-
-    // View Settings (NEW)
     showLabelsAlways: boolean;
     showLabelsOnHover: boolean;
+    repositionLabels: boolean;
     labelLines: number;
     labelFilterAttribute: string;
     labelFilterMode: string;
     labelFilterThreshold: number;
+    labelMaxClosest: number;
     visibleLabelsCount: number;
     totalLabelsCount: number;
     activeColorScheme: string;
     visualScaleExponent: number;
     visualScaleMultiplier: number;
+    autoBalanceEnabled: boolean;
+    normalizeCoordinatesEnabled: boolean;
     cameraFitMargin: number;
     cameraTransitionDuration: number;
-
-    // Dev Settings (Performance Testing)
-    devPowerPreference: 'high-performance' | 'low-power' | 'default';
-    devPixelRatio: number;
-    devFpsLimit: number;
-    _triggerRendererRebuild: number;
-
-    // Build 4: Temporal & Geospatial State
     currentTimestamp: number | null;
     minTimestamp: number | null;
     maxTimestamp: number | null;
@@ -102,16 +128,12 @@ export interface State {
     mapActive: boolean;
     temporalFadeEnabled: boolean;
     temporalFadeDuration: number;
-
-    [key: string]: any; // Allow for dynamic properties during migration
 }
 
-type StateCallback = (state: State) => void;
-type BatchCallback = (data: { oldState: State; newState: State; updates: Partial<State> }) => void;
+export type StateCallback = (state: State) => void;
+export type BatchCallback = (data: { oldState: State; newState: State; updates: Partial<State> }) => void;
 
-import { IStateManager } from './interfaces';
-
-export class StateManager implements IStateManager {
+export class StateManager {
     public state: State;
     private subscribers: Map<string, Set<StateCallback>>;
     private batchSubscribers: Map<string, Set<BatchCallback>>;
@@ -119,7 +141,6 @@ export class StateManager implements IStateManager {
     private isUpdating: boolean = false;
     private lastTime: number;
 
-    // History System
     private undoStack: HistoryAction[] = [];
     private redoStack: HistoryAction[] = [];
     private isUndoing: boolean = false;
@@ -128,77 +149,26 @@ export class StateManager implements IStateManager {
 
     constructor() {
         this.state = {
-            // Data State
             graphData: {
                 entities: [],
                 relationships: []
             },
             loadedFiles: [],
-
-            // Interaction States
             hoveredObject: null,
             selectedObject: null,
             selectedObjects: new Set(),
             isBoxSelecting: false,
-
-            // Visual States
             highlightedObjects: new Set(),
             glowIntensity: 0,
             glowDirection: 1,
-
-            // UI States
             tooltipVisible: false,
             tooltipContent: null,
             tooltipPosition: null,
             infoPanelVisible: false,
             infoPanelCollapsed: false,
-
-            // Highlight Effects State
             highlightEffectsEnabled: true,
-
-            // System States
             isInteractionEnabled: true,
             currentTool: 'select',
-
-            // Render Mode
-            renderMode: (typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_render_mode') : null) as any || 'auto',
-            activeRenderMode: ((typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_render_mode') : null) === 'instance' ? 'instance' : 'mesh') as 'mesh' | 'instance',
-
-            // Edge Parameters
-            edgeThickness: 2.0,
-            edgeTubularSegments: 20,
-            edgeRadialSegments: 8,
-            edgeCurveFactor: 0.4,
-            edgePulseSpeed: 1.0,
-            edgeAnimationMode: 'pulse', // pulse, flow, sequential, segments
-            highlightThickness: 10, // 10% larger than original (corresponds to multiplier 1.1)
-            selectionThickness: 20, // 20% larger than highlight
-
-            layoutEnabled: false,
-
-            // Environment Defaults
-            backgroundColor: '#8fa649',
-            ambientLightIntensity: 0.6,
-            directionalLightIntensity: 0.8,
-
-            // View Settings (NEW)
-            showLabelsAlways: true,
-            showLabelsOnHover: true,
-            labelLines: 1,
-            labelFilterAttribute: '',
-            labelFilterMode: 'visibility',
-            labelFilterThreshold: 0,
-            visibleLabelsCount: 0,
-            totalLabelsCount: 0,
-            activeColorScheme: 'start-olive',
-            visualScaleExponent: 1.0,
-            visualScaleMultiplier: 1.0,
-            autoBalanceEnabled: true,
-            normalizeCoordinatesEnabled: true,
-            cameraFitMargin: 1.05,
-            cameraTransitionDuration: 1500,
-
-            // Ebenen / Layers
             layer1Visible: true,
             layer2Visible: true,
             layer3Visible: true,
@@ -213,14 +183,41 @@ export class StateManager implements IStateManager {
             layer3Value: '3',
             layer4Value: '4',
             complexityMode: (typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_complexity_mode') : null) as any || 'simple',
-
-            // Dev Settings
             devPowerPreference: (typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_dev_power_pref') : null) as any || 'high-performance',
             devPixelRatio: parseFloat((typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_dev_pixel_ratio') : null) || '1.0'),
             devFpsLimit: parseInt((typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_dev_fps_limit') : null) || '0', 10),
             _triggerRendererRebuild: 0,
-            
-            // Build 4
+            renderMode: (typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_render_mode') : null) as any || 'auto',
+            activeRenderMode: ((typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_render_mode') : null) === 'instance' ? 'instance' : 'mesh') as 'mesh' | 'instance',
+            edgeThickness: 2.0,
+            edgeTubularSegments: 20,
+            edgeRadialSegments: 8,
+            edgeCurveFactor: 0.4,
+            edgePulseSpeed: 1.0,
+            edgeAnimationMode: 'pulse',
+            highlightThickness: 10,
+            selectionThickness: 20,
+            layoutEnabled: false,
+            backgroundColor: '#8fa649',
+            ambientLightIntensity: 0.6,
+            directionalLightIntensity: 0.8,
+            showLabelsAlways: true,
+            showLabelsOnHover: true,
+            repositionLabels: false,
+            labelLines: 1,
+            labelFilterAttribute: '',
+            labelFilterMode: 'visibility',
+            labelFilterThreshold: 0,
+            labelMaxClosest: 50,
+            visibleLabelsCount: 0,
+            totalLabelsCount: 0,
+            activeColorScheme: 'start-olive',
+            visualScaleExponent: 1.0,
+            visualScaleMultiplier: 1.0,
+            autoBalanceEnabled: true,
+            normalizeCoordinatesEnabled: true,
+            cameraFitMargin: 1.05,
+            cameraTransitionDuration: 1500,
             currentTimestamp: null,
             minTimestamp: null,
             maxTimestamp: null,
@@ -236,7 +233,6 @@ export class StateManager implements IStateManager {
         this.eventQueue = [];
         this.lastTime = performance.now();
 
-        // Start animation loop
         this.animate();
     }
 
@@ -593,7 +589,7 @@ export class StateManager implements IStateManager {
         });
     }
 
-    setLoadedFiles(files: { id: string, name: string }[]) {
+    setLoadedFiles(files: any[]) {
         this.update({ loadedFiles: [...files] });
     }
 

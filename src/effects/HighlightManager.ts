@@ -225,11 +225,36 @@ export class HighlightManager {
     cleanupUnusedHighlights(hoveredObject: THREE.Object3D | null, selectedObject: THREE.Object3D | null, selectedObjects: Set<THREE.Object3D> | null = null) {
         const toRemove: THREE.Object3D[] = [];
 
+        // Helper to get ID
+        const getId = (obj: THREE.Object3D | null) => {
+            return (obj && obj.userData && obj.userData.id) ? String(obj.userData.id) : null;
+        };
+
+        const hoveredId = getId(hoveredObject);
+        const selectedId = getId(selectedObject);
+        const selectedIds = new Set<string>();
+        if (selectedObjects) {
+            selectedObjects.forEach(obj => {
+                const id = getId(obj);
+                if (id) selectedIds.add(id);
+            });
+        }
+
         for (const [object, highlightData] of this.highlightRegistry) {
-            const isSelected = (object === selectedObject) || (selectedObjects && selectedObjects.has(object));
+            const objId = getId(object);
+            let isHovered = false;
+            let isSelected = false;
+
+            if (objId) {
+                isHovered = (objId === hoveredId);
+                isSelected = (objId === selectedId) || selectedIds.has(objId);
+            } else {
+                isHovered = (object === hoveredObject);
+                isSelected = (object === selectedObject) || (selectedObjects && selectedObjects.has(object)) || false;
+            }
 
             const shouldKeep = (
-                (object === hoveredObject && highlightData.type === this.types.HOVER) ||
+                (isHovered && highlightData.type === this.types.HOVER) ||
                 (isSelected && highlightData.type === this.types.SELECTION) ||
                 (highlightData.type === this.types.SEARCH) ||
                 (highlightData.type === this.types.PATH) ||
@@ -243,9 +268,27 @@ export class HighlightManager {
                 if (highlightData.type === this.types.HOVER) {
                     if (!this.cleanupTimers.has(object)) {
                         const timer = setTimeout(() => {
-                            // Prüfe nach 150ms erneut, ob das Objekt gelöscht werden soll
-                            const isStillHovered = this.stateManager.state.hoveredObject === object;
-                            const isStillSelected = this.stateManager.state.selectedObject === object || (this.stateManager.state.selectedObjects && this.stateManager.state.selectedObjects.has(object));
+                            // Prüfe nach 150ms erneut (ID basiert)
+                            const currentHoveredId = getId(this.stateManager.state.hoveredObject);
+                            const currentSelectedId = getId(this.stateManager.state.selectedObject);
+                            const currentSelectedIds = new Set<string>();
+                            if (this.stateManager.state.selectedObjects) {
+                                this.stateManager.state.selectedObjects.forEach(obj => {
+                                    const id = getId(obj);
+                                    if (id) currentSelectedIds.add(id);
+                                });
+                            }
+                            
+                            let isStillHovered = false;
+                            let isStillSelected = false;
+                            
+                            if (objId) {
+                                isStillHovered = (objId === currentHoveredId);
+                                isStillSelected = (objId === currentSelectedId) || currentSelectedIds.has(objId);
+                            } else {
+                                isStillHovered = this.stateManager.state.hoveredObject === object;
+                                isStillSelected = this.stateManager.state.selectedObject === object || (this.stateManager.state.selectedObjects && this.stateManager.state.selectedObjects.has(object));
+                            }
                             
                             if (!isStillHovered && !isStillSelected) {
                                 this.clearHighlight(object);

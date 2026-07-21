@@ -453,6 +453,30 @@ export class NodeManager {
         }
     }
 
+    /**
+     * Get the actual rendered position of a node
+     */
+    public getNodePosition(entityId: string): THREE.Vector3 | null {
+        const map = this.entityIdMap.get(entityId);
+        if (!map) return null;
+
+        if (this.stateManager.state.activeRenderMode === 'instance') {
+            const mesh = this.meshes.get(map.type);
+            if (mesh) {
+                const dummy = new THREE.Object3D();
+                mesh.getMatrixAt(map.index, dummy.matrix);
+                dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
+                return dummy.position;
+            }
+        } else {
+            const mesh = this.individualMeshes.get(entityId);
+            if (mesh) {
+                return mesh.position.clone();
+            }
+        }
+        return null;
+    }
+
     public clear() {
         this.meshes.forEach(mesh => {
             this.scene.remove(mesh);

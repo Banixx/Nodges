@@ -1,0 +1,6216 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Interaktive 3D/4D-Visualisierung des Sonnensystems mit Fokus auf physikalische Eigenschaften und zeitliche Entwicklung."
+  },
+  "dataModel": {
+    "entities": {
+      "Concept": {
+        "properties": {
+          "importance": { "type": "continuous", "range": [0, 100] },
+          "position": { "type": "spatial" },
+          "kategorie": { "type": "categorical" },
+          "wikidata_id": { "type": "categorical" },
+          "masse": { "type": "continuous" },
+          "temperatur": { "type": "continuous" },
+          "alter": { "type": "continuous" },
+          "radius": { "type": "continuous" },
+          "region": { "type": "categorical" }
+        }
+      }
+    },
+    "relationships": {
+      "related": {
+        "properties": {
+          "strength": { "type": "continuous", "range": [0, 100] },
+          "validFrom": { "type": "continuous" },
+          "validTo": { "type": "continuous" }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e1",
+        "label": "Sonne",
+        "importance": 80,
+        "position": { "x": 0, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            { "timestamp": 1920, "changes": { "importance": 90 } }
+          ]
+        },
+        "kategorie": "Stern",
+        "wikidata_id": "Q308",
+        "masse": 1.989e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e2",
+        "label": "Erde",
+        "importance": 70,
+        "position": { "x": 1, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q2",
+        "masse": 5.972e24,
+        "temperatur": 288,
+        "alter": 4.54e9,
+        "radius": 6371,
+        "region": "Innerer Planet"
+      },
+      {
+        "id": "e3",
+        "label": "Mars",
+        "importance": 60,
+        "position": { "x": 2, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q87",
+        "masse": 6.39e23,
+        "temperatur": 210,
+        "alter": 4.0e9,
+        "radius": 3390,
+        "region": "Innerer Planet"
+      },
+      {
+        "id": "e4",
+        "label": "Jupiter",
+        "importance": 75,
+        "position": { "x": 3, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q861",
+        "masse": 1.898e27,
+        "temperatur": 165,
+        "alter": 4.57e9,
+        "radius": 69911,
+        "region": "Außerer Planet"
+      },
+      {
+        "id": "e5",
+        "label": "Saturn",
+        "importance": 70,
+        "position": { "x": 4, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q81180",
+        "masse": 5.683e26,
+        "temperatur": 134,
+        "alter": 4.53e9,
+        "radius": 58232,
+        "region": "Außerer Planet"
+      },
+      {
+        "id": "e6",
+        "label": "Venus",
+        "importance": 65,
+        "position": { "x": 1.5, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q85",
+        "masse": 4.867e24,
+        "temperatur": 737,
+        "alter": 4.0e9,
+        "radius": 6051,
+        "region": "Innerer Planet"
+      },
+      {
+        "id": "e7",
+        "label": "Merkur",
+        "importance": 55,
+        "position": { "x": 0.5, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q393",
+        "masse": 3.285e23,
+        "temperatur": 440,
+        "alter": 4.5e9,
+        "radius": 2439,
+        "region": "Innerer Planet"
+      },
+      {
+        "id": "e8",
+        "label": "Uranus",
+        "importance": 60,
+        "position": { "x": 5, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q801",
+        "masse": 8.681e25,
+        "temperatur": 76,
+        "alter": 4.56e9,
+        "radius": 25362,
+        "region": "Außerer Planet"
+      },
+      {
+        "id": "e9",
+        "label": "Neptun",
+        "importance": 55,
+        "position": { "x": 6, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q84",
+        "masse": 1.024e26,
+        "temperatur": 72,
+        "alter": 4.5e9,
+        "radius": 24622,
+        "region": "Außerer Planet"
+      },
+      {
+        "id": "e10",
+        "label": "Pluto",
+        "importance": 40,
+        "position": { "x": 7, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Zwergplanet",
+        "wikidata_id": "Q1030",
+        "masse": 1.303e22,
+        "temperatur": 44,
+        "alter": 4.5e9,
+        "radius": 1188,
+        "region": "Außerer Planet"
+      },
+      {
+        "id": "e11",
+        "label": "Komet",
+        "importance": 30,
+        "position": { "x": 8, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q1030",
+        "masse": 1e15,
+        "temperatur": 200,
+        "alter": 4.5e9,
+        "radius": 10,
+        "region": "Außerer Planet"
+      },
+      {
+        "id": "e12",
+        "label": "Asteroid",
+        "importance": 25,
+        "position": { "x": 9, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q1030",
+        "masse": 1e14,
+        "temperatur": 200,
+        "alter": 4.5e9,
+        "radius": 5,
+        "region": "Außerer Planet"
+      },
+      {
+        "id": "e13",
+        "label": "Mond",
+        "importance": 50,
+        "position": { "x": 1, "y": 0, "z": 1 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q207",
+        "masse": 7.342e22,
+        "temperatur": 250,
+        "alter": 4.5e9,
+        "radius": 1737,
+        "region": "Innerer Planet"
+      },
+      {
+        "id": "e14",
+        "label": "Kleinplaneten",
+        "importance": 35,
+        "position": { "x": 10, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplaneten",
+        "wikidata_id": "Q1030",
+        "masse": 1e13,
+        "temperatur": 200,
+        "alter": 4.5e9,
+        "radius": 1,
+        "region": "Außerer Planet"
+      },
+      {
+        "id": "e15",
+        "label": "Stern",
+        "importance": 85,
+        "position": { "x": 11, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Stern",
+        "wikidata_id": "Q308",
+        "masse": 1.989e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e16",
+        "label": "Galaxie",
+        "importance": 90,
+        "position": { "x": 12, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Galaxie",
+        "wikidata_id": "Q308",
+        "masse": 1e42,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e17",
+        "label": "Schwarzes Loch",
+        "importance": 95,
+        "position": { "x": 13, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Schwarzes Loch",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e18",
+        "label": "Nebula",
+        "importance": 75,
+        "position": { "x": 14, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Nebula",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e19",
+        "label": "Kern",
+        "importance": 80,
+        "position": { "x": 15, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kern",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e20",
+        "label": "Hülle",
+        "importance": 70,
+        "position": { "x": 16, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Hülle",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e21",
+        "label": "Magnetfeld",
+        "importance": 65,
+        "position": { "x": 17, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Magnetfeld",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e22",
+        "label": "Strahlung",
+        "importance": 60,
+        "position": { "x": 18, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Strahlung",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e23",
+        "label": "Gravitation",
+        "importance": 55,
+        "position": { "x": 19, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Gravitation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e24",
+        "label": "Rotation",
+        "importance": 50,
+        "position": { "x": 20, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Rotation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e25",
+        "label": "Translation",
+        "importance": 45,
+        "position": { "x": 21, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Translation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e26",
+        "label": "Orbit",
+        "importance": 40,
+        "position": { "x": 22, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Orbit",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e27",
+        "label": "Kollision",
+        "importance": 35,
+        "position": { "x": 23, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kollision",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e28",
+        "label": "Expansion",
+        "importance": 30,
+        "position": { "x": 24, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Expansion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e29",
+        "label": "Kontraktion",
+        "importance": 25,
+        "position": { "x": 25, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kontraktion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e30",
+        "label": "Stabilität",
+        "importance": 20,
+        "position": { "x": 26, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Stabilität",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e31",
+        "label": "Instabilität",
+        "importance": 15,
+        "position": { "x": 27, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Instabilität",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e32",
+        "label": "Energie",
+        "importance": 10,
+        "position": { "x": 28, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Energie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e33",
+        "label": "Materie",
+        "importance": 5,
+        "position": { "x": 29, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Materie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e34",
+        "label": "Raum",
+        "importance": 0,
+        "position": { "x": 30, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Raum",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e35",
+        "label": "Zeit",
+        "importance": 0,
+        "position": { "x": 31, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Zeit",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e36",
+        "label": "Masse",
+        "importance": 0,
+        "position": { "x": 32, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Masse",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e37",
+        "label": "Temperatur",
+        "importance": 0,
+        "position": { "x": 33, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Temperatur",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e38",
+        "label": "Alter",
+        "importance": 0,
+        "position": { "x": 34, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Alter",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e39",
+        "label": "Radius",
+        "importance": 0,
+        "position": { "x": 35, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Radius",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e40",
+        "label": "Region",
+        "importance": 0,
+        "position": { "x": 36, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Region",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e41",
+        "label": "Kategorie",
+        "importance": 0,
+        "position": { "x": 37, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kategorie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e42",
+        "label": "Wikidata ID",
+        "importance": 0,
+        "position": { "x": 38, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Wikidata ID",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e43",
+        "label": "Importance",
+        "importance": 0,
+        "position": { "x": 39, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Importance",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e44",
+        "label": "Position",
+        "importance": 0,
+        "position": { "x": 40, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Position",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e45",
+        "label": "Strength",
+        "importance": 0,
+        "position": { "x": 41, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Strength",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e46",
+        "label": "ValidFrom",
+        "importance": 0,
+        "position": { "x": 42, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "ValidFrom",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e47",
+        "label": "ValidTo",
+        "importance": 0,
+        "position": { "x": 43, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "ValidTo",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e48",
+        "label": "History",
+        "importance": 0,
+        "position": { "x": 44, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "History",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e49",
+        "label": "Timestamp",
+        "importance": 0,
+        "position": { "x": 45, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Timestamp",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e50",
+        "label": "Changes",
+        "importance": 0,
+        "position": { "x": 46, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Changes",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e51",
+        "label": "Label",
+        "importance": 0,
+        "position": { "x": 47, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Label",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e52",
+        "label": "Geometry",
+        "importance": 0,
+        "position": { "x": 48, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Geometry",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e53",
+        "label": "Thickness",
+        "importance": 0,
+        "position": { "x": 49, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Thickness",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e54",
+        "label": "Function",
+        "importance": 0,
+        "position": { "x": 50, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Function",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e55",
+        "label": "Range",
+        "importance": 0,
+        "position": { "x": 51, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Range",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e56",
+        "label": "Source",
+        "importance": 0,
+        "position": { "x": 52, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Source",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e57",
+        "label": "Target",
+        "importance": 0,
+        "position": { "x": 53, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Target",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e58",
+        "label": "System",
+        "importance": 0,
+        "position": { "x": 54, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "System",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e59",
+        "label": "Metadata",
+        "importance": 0,
+        "position": { "x": 55, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Metadata",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e60",
+        "label": "DataModel",
+        "importance": 0,
+        "position": { "x": 56, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "DataModel",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e61",
+        "label": "Data",
+        "importance": 0,
+        "position": { "x": 57, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Data",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e62",
+        "label": "VisualMappings",
+        "importance": 0,
+        "position": { "x": 58, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "VisualMappings",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e63",
+        "label": "DefaultPresets",
+        "importance": 0,
+        "position": { "x": 59, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "DefaultPresets",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e64",
+        "label": "GlobalNode",
+        "importance": 0,
+        "position": { "x": 60, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "GlobalNode",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e65",
+        "label": "GlobalEdge",
+        "importance": 0,
+        "position": { "x": 61, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "GlobalEdge",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e66",
+        "label": "Group",
+        "importance": 0,
+        "position": { "x": 62, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Group",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e67",
+        "label": "BelongsTo",
+        "importance": 0,
+        "position": { "x": 63, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "BelongsTo",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e68",
+        "label": "CompetencyQuestion",
+        "importance": 0,
+        "position": { "x": 64, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "CompetencyQuestion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e69",
+        "label": "Ontology",
+        "importance": 0,
+        "position": { "x": 65, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Ontology",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e70",
+        "label": "Entity",
+        "importance": 0,
+        "position": { "x": 66, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Entity",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e71",
+        "label": "Relationship",
+        "importance": 0,
+        "position": { "x": 67, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Relationship",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e72",
+        "label": "Property",
+        "importance": 0,
+        "position": { "x": 68, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Property",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e73",
+        "label": "Attribute",
+        "importance": 0,
+        "position": { "x": 69, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Attribute",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e74",
+        "label": "Value",
+        "importance": 0,
+        "position": { "x": 70, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Value",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e75",
+        "label": "Type",
+        "importance": 0,
+        "position": { "x": 71, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Type",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e76",
+        "label": "Range",
+        "importance": 0,
+        "position": { "x": 72, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Range",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e77",
+        "label": "Continuous",
+        "importance": 0,
+        "position": { "x": 73, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Continuous",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e78",
+        "label": "Categorical",
+        "importance": 0,
+        "position": { "x": 74, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Categorical",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e79",
+        "label": "Spatial",
+        "importance": 0,
+        "position": { "x": 75, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Spatial",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e80",
+        "label": "Temporal",
+        "importance": 0,
+        "position": { "x": 76, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Temporal",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e81",
+        "label": "Linear",
+        "importance": 0,
+        "position": { "x": 77, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Linear",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e82",
+        "label": "Constant",
+        "importance": 0,
+        "position": { "x": 78, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Constant",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e83",
+        "label": "Sphere",
+        "importance": 0,
+        "position": { "x": 79, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Sphere",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e84",
+        "label": "Box",
+        "importance": 0,
+        "position": { "x": 80, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Box",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e85",
+        "label": "Dodecahedron",
+        "importance": 0,
+        "position": { "x": 81, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Dodecahedron",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e86",
+        "label": "Innerer Planet",
+        "importance": 0,
+        "position": { "x": 82, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Innerer Planet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e87",
+        "label": "Außerer Planet",
+        "importance": 0,
+        "position": { "x": 83, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Außerer Planet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e88",
+        "label": "Zwergplanet",
+        "importance": 0,
+        "position": { "x": 84, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Zwergplanet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e89",
+        "label": "Komet",
+        "importance": 0,
+        "position": { "x": 85, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e90",
+        "label": "Asteroid",
+        "importance": 0,
+        "position": { "x": 86, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e91",
+        "label": "Mond",
+        "importance": 0,
+        "position": { "x": 87, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e92",
+        "label": "Kleinplaneten",
+        "importance": 0,
+        "position": { "x": 88, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplaneten",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e93",
+        "label": "Galaxie",
+        "importance": 0,
+        "position": { "x": 89, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Galaxie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e94",
+        "label": "Schwarzes Loch",
+        "importance": 0,
+        "position": { "x": 90, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Schwarzes Loch",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e95",
+        "label": "Nebula",
+        "importance": 0,
+        "position": { "x": 91, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Nebula",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e96",
+        "label": "Kern",
+        "importance": 0,
+        "position": { "x": 92, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kern",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e97",
+        "label": "Hülle",
+        "importance": 0,
+        "position": { "x": 93, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Hülle",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e98",
+        "label": "Magnetfeld",
+        "importance": 0,
+        "position": { "x": 94, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Magnetfeld",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e99",
+        "label": "Strahlung",
+        "importance": 0,
+        "position": { "x": 95, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Strahlung",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e100",
+        "label": "Gravitation",
+        "importance": 0,
+        "position": { "x": 96, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Gravitation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e101",
+        "label": "Rotation",
+        "importance": 0,
+        "position": { "x": 97, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Rotation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e102",
+        "label": "Translation",
+        "importance": 0,
+        "position": { "x": 98, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Translation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e103",
+        "label": "Orbit",
+        "importance": 0,
+        "position": { "x": 99, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Orbit",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e104",
+        "label": "Kollision",
+        "importance": 0,
+        "position": { "x": 100, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kollision",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e105",
+        "label": "Expansion",
+        "importance": 0,
+        "position": { "x": 101, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Expansion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e106",
+        "label": "Kontraktion",
+        "importance": 0,
+        "position": { "x": 102, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kontraktion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e107",
+        "label": "Stabilität",
+        "importance": 0,
+        "position": { "x": 103, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Stabilität",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e108",
+        "label": "Instabilität",
+        "importance": 0,
+        "position": { "x": 104, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Instabilität",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e109",
+        "label": "Energie",
+        "importance": 0,
+        "position": { "x": 105, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Energie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e110",
+        "label": "Materie",
+        "importance": 0,
+        "position": { "x": 106, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Materie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e111",
+        "label": "Raum",
+        "importance": 0,
+        "position": { "x": 107, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Raum",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e112",
+        "label": "Zeit",
+        "importance": 0,
+        "position": { "x": 108, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Zeit",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e113",
+        "label": "Masse",
+        "importance": 0,
+        "position": { "x": 109, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Masse",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e114",
+        "label": "Temperatur",
+        "importance": 0,
+        "position": { "x": 110, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Temperatur",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e115",
+        "label": "Alter",
+        "importance": 0,
+        "position": { "x": 111, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Alter",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e116",
+        "label": "Radius",
+        "importance": 0,
+        "position": { "x": 112, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Radius",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e117",
+        "label": "Region",
+        "importance": 0,
+        "position": { "x": 113, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Region",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e118",
+        "label": "Kategorie",
+        "importance": 0,
+        "position": { "x": 114, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kategorie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e119",
+        "label": "Wikidata ID",
+        "importance": 0,
+        "position": { "x": 115, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Wikidata ID",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e120",
+        "label": "Importance",
+        "importance": 0,
+        "position": { "x": 116, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Importance",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e121",
+        "label": "Position",
+        "importance": 0,
+        "position": { "x": 117, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Position",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e122",
+        "label": "Strength",
+        "importance": 0,
+        "position": { "x": 118, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Strength",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e123",
+        "label": "ValidFrom",
+        "importance": 0,
+        "position": { "x": 119, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "ValidFrom",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e124",
+        "label": "ValidTo",
+        "importance": 0,
+        "position": { "x": 120, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "ValidTo",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e125",
+        "label": "History",
+        "importance": 0,
+        "position": { "x": 121, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "History",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e126",
+        "label": "Timestamp",
+        "importance": 0,
+        "position": { "x": 122, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Timestamp",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e127",
+        "label": "Changes",
+        "importance": 0,
+        "position": { "x": 123, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Changes",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e128",
+        "label": "Label",
+        "importance": 0,
+        "position": { "x": 124, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Label",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e129",
+        "label": "Geometry",
+        "importance": 0,
+        "position": { "x": 125, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Geometry",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e130",
+        "label": "Thickness",
+        "importance": 0,
+        "position": { "x": 126, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Thickness",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e131",
+        "label": "Function",
+        "importance": 0,
+        "position": { "x": 127, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Function",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e132",
+        "label": "Range",
+        "importance": 0,
+        "position": { "x": 128, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Range",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e133",
+        "label": "Source",
+        "importance": 0,
+        "position": { "x": 129, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Source",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e134",
+        "label": "Target",
+        "importance": 0,
+        "position": { "x": 130, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Target",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e135",
+        "label": "System",
+        "importance": 0,
+        "position": { "x": 131, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "System",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e136",
+        "label": "Metadata",
+        "importance": 0,
+        "position": { "x": 132, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Metadata",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e137",
+        "label": "DataModel",
+        "importance": 0,
+        "position": { "x": 133, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "DataModel",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e138",
+        "label": "Data",
+        "importance": 0,
+        "position": { "x": 134, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Data",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e139",
+        "label": "VisualMappings",
+        "importance": 0,
+        "position": { "x": 135, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "VisualMappings",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e140",
+        "label": "DefaultPresets",
+        "importance": 0,
+        "position": { "x": 136, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "DefaultPresets",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e141",
+        "label": "GlobalNode",
+        "importance": 0,
+        "position": { "x": 137, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "GlobalNode",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e142",
+        "label": "GlobalEdge",
+        "importance": 0,
+        "position": { "x": 138, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "GlobalEdge",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e143",
+        "label": "Group",
+        "importance": 0,
+        "position": { "x": 139, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Group",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e144",
+        "label": "BelongsTo",
+        "importance": 0,
+        "position": { "x": 140, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "BelongsTo",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e145",
+        "label": "CompetencyQuestion",
+        "importance": 0,
+        "position": { "x": 141, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "CompetencyQuestion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e146",
+        "label": "Ontology",
+        "importance": 0,
+        "position": { "x": 142, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Ontology",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e147",
+        "label": "Entity",
+        "importance": 0,
+        "position": { "x": 143, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Entity",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e148",
+        "label": "Relationship",
+        "importance": 0,
+        "position": { "x": 144, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Relationship",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e149",
+        "label": "Property",
+        "importance": 0,
+        "position": { "x": 145, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Property",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e150",
+        "label": "Attribute",
+        "importance": 0,
+        "position": { "x": 146, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Attribute",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e151",
+        "label": "Value",
+        "importance": 0,
+        "position": { "x": 147, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Value",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e152",
+        "label": "Type",
+        "importance": 0,
+        "position": { "x": 148, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Type",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e153",
+        "label": "Range",
+        "importance": 0,
+        "position": { "x": 149, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Range",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e154",
+        "label": "Continuous",
+        "importance": 0,
+        "position": { "x": 150, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Continuous",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e155",
+        "label": "Categorical",
+        "importance": 0,
+        "position": { "x": 151, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Categorical",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e156",
+        "label": "Spatial",
+        "importance": 0,
+        "position": { "x": 152, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Spatial",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e157",
+        "label": "Temporal",
+        "importance": 0,
+        "position": { "x": 153, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Temporal",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e158",
+        "label": "Linear",
+        "importance": 0,
+        "position": { "x": 154, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Linear",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e159",
+        "label": "Constant",
+        "importance": 0,
+        "position": { "x": 155, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Constant",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e160",
+        "label": "Sphere",
+        "importance": 0,
+        "position": { "x": 156, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Sphere",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e161",
+        "label": "Box",
+        "importance": 0,
+        "position": { "x": 157, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Box",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e162",
+        "label": "Dodecahedron",
+        "importance": 0,
+        "position": { "x": 158, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Dodecahedron",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e163",
+        "label": "Innerer Planet",
+        "importance": 0,
+        "position": { "x": 159, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Innerer Planet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e164",
+        "label": "Außerer Planet",
+        "importance": 0,
+        "position": { "x": 160, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Außerer Planet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e165",
+        "label": "Zwergplanet",
+        "importance": 0,
+        "position": { "x": 161, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Zwergplanet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e166",
+        "label": "Komet",
+        "importance": 0,
+        "position": { "x": 162, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e167",
+        "label": "Asteroid",
+        "importance": 0,
+        "position": { "x": 163, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e168",
+        "label": "Mond",
+        "importance": 0,
+        "position": { "x": 164, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e169",
+        "label": "Kleinplaneten",
+        "importance": 0,
+        "position": { "x": 165, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplaneten",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e170",
+        "label": "Galaxie",
+        "importance": 0,
+        "position": { "x": 166, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Galaxie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e171",
+        "label": "Schwarzes Loch",
+        "importance": 0,
+        "position": { "x": 167, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Schwarzes Loch",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e172",
+        "label": "Nebula",
+        "importance": 0,
+        "position": { "x": 168, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Nebula",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e173",
+        "label": "Kern",
+        "importance": 0,
+        "position": { "x": 169, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kern",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e174",
+        "label": "Hülle",
+        "importance": 0,
+        "position": { "x": 170, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Hülle",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e175",
+        "label": "Magnetfeld",
+        "importance": 0,
+        "position": { "x": 171, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Magnetfeld",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e176",
+        "label": "Strahlung",
+        "importance": 0,
+        "position": { "x": 172, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Strahlung",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e177",
+        "label": "Gravitation",
+        "importance": 0,
+        "position": { "x": 173, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Gravitation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e178",
+        "label": "Rotation",
+        "importance": 0,
+        "position": { "x": 174, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Rotation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e179",
+        "label": "Translation",
+        "importance": 0,
+        "position": { "x": 175, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Translation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e180",
+        "label": "Orbit",
+        "importance": 0,
+        "position": { "x": 176, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Orbit",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e181",
+        "label": "Kollision",
+        "importance": 0,
+        "position": { "x": 177, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kollision",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e182",
+        "label": "Expansion",
+        "importance": 0,
+        "position": { "x": 178, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Expansion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e183",
+        "label": "Kontraktion",
+        "importance": 0,
+        "position": { "x": 179, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kontraktion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e184",
+        "label": "Stabilität",
+        "importance": 0,
+        "position": { "x": 180, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Stabilität",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e185",
+        "label": "Instabilität",
+        "importance": 0,
+        "position": { "x": 181, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Instabilität",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e186",
+        "label": "Energie",
+        "importance": 0,
+        "position": { "x": 182, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Energie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e187",
+        "label": "Materie",
+        "importance": 0,
+        "position": { "x": 183, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Materie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e188",
+        "label": "Raum",
+        "importance": 0,
+        "position": { "x": 184, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Raum",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e189",
+        "label": "Zeit",
+        "importance": 0,
+        "position": { "x": 185, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Zeit",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e190",
+        "label": "Masse",
+        "importance": 0,
+        "position": { "x": 186, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Masse",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e191",
+        "label": "Temperatur",
+        "importance": 0,
+        "position": { "x": 187, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Temperatur",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e192",
+        "label": "Alter",
+        "importance": 0,
+        "position": { "x": 188, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Alter",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e193",
+        "label": "Radius",
+        "importance": 0,
+        "position": { "x": 189, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Radius",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e194",
+        "label": "Region",
+        "importance": 0,
+        "position": { "x": 190, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Region",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e195",
+        "label": "Kategorie",
+        "importance": 0,
+        "position": { "x": 191, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kategorie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e196",
+        "label": "Wikidata ID",
+        "importance": 0,
+        "position": { "x": 192, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Wikidata ID",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e197",
+        "label": "Importance",
+        "importance": 0,
+        "position": { "x": 193, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Importance",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e198",
+        "label": "Position",
+        "importance": 0,
+        "position": { "x": 194, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Position",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e199",
+        "label": "Strength",
+        "importance": 0,
+        "position": { "x": 195, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Strength",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e200",
+        "label": "ValidFrom",
+        "importance": 0,
+        "position": { "x": 196, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "ValidFrom",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e201",
+        "label": "ValidTo",
+        "importance": 0,
+        "position": { "x": 197, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "ValidTo",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e202",
+        "label": "History",
+        "importance": 0,
+        "position": { "x": 198, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "History",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e203",
+        "label": "Timestamp",
+        "importance": 0,
+        "position": { "x": 199, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Timestamp",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e204",
+        "label": "Changes",
+        "importance": 0,
+        "position": { "x": 200, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Changes",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e205",
+        "label": "Label",
+        "importance": 0,
+        "position": { "x": 201, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Label",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e206",
+        "label": "Geometry",
+        "importance": 0,
+        "position": { "x": 202, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Geometry",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e207",
+        "label": "Thickness",
+        "importance": 0,
+        "position": { "x": 203, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Thickness",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e208",
+        "label": "Function",
+        "importance": 0,
+        "position": { "x": 204, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Function",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e209",
+        "label": "Range",
+        "importance": 0,
+        "position": { "x": 205, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Range",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e210",
+        "label": "Source",
+        "importance": 0,
+        "position": { "x": 206, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Source",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e211",
+        "label": "Target",
+        "importance": 0,
+        "position": { "x": 207, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Target",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e212",
+        "label": "System",
+        "importance": 0,
+        "position": { "x": 208, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "System",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e213",
+        "label": "Metadata",
+        "importance": 0,
+        "position": { "x": 209, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Metadata",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e214",
+        "label": "DataModel",
+        "importance": 0,
+        "position": { "x": 210, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "DataModel",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e215",
+        "label": "Data",
+        "importance": 0,
+        "position": { "x": 211, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Data",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e216",
+        "label": "VisualMappings",
+        "importance": 0,
+        "position": { "x": 212, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "VisualMappings",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e217",
+        "label": "DefaultPresets",
+        "importance": 0,
+        "position": { "x": 213, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "DefaultPresets",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e218",
+        "label": "GlobalNode",
+        "importance": 0,
+        "position": { "x": 214, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "GlobalNode",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e219",
+        "label": "GlobalEdge",
+        "importance": 0,
+        "position": { "x": 215, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "GlobalEdge",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e220",
+        "label": "Group",
+        "importance": 0,
+        "position": { "x": 216, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Group",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e221",
+        "label": "BelongsTo",
+        "importance": 0,
+        "position": { "x": 217, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "BelongsTo",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e222",
+        "label": "CompetencyQuestion",
+        "importance": 0,
+        "position": { "x": 218, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "CompetencyQuestion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e223",
+        "label": "Ontology",
+        "importance": 0,
+        "position": { "x": 219, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Ontology",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e224",
+        "label": "Entity",
+        "importance": 0,
+        "position": { "x": 220, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Entity",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e225",
+        "label": "Relationship",
+        "importance": 0,
+        "position": { "x": 221, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Relationship",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e226",
+        "label": "Property",
+        "importance": 0,
+        "position": { "x": 222, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Property",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e227",
+        "label": "Attribute",
+        "importance": 0,
+        "position": { "x": 223, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Attribute",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e228",
+        "label": "Value",
+        "importance": 0,
+        "position": { "x": 224, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Value",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e229",
+        "label": "Type",
+        "importance": 0,
+        "position": { "x": 225, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Type",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e230",
+        "label": "Range",
+        "importance": 0,
+        "position": { "x": 226, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Range",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e231",
+        "label": "Continuous",
+        "importance": 0,
+        "position": { "x": 227, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Continuous",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e232",
+        "label": "Categorical",
+        "importance": 0,
+        "position": { "x": 228, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Categorical",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e233",
+        "label": "Spatial",
+        "importance": 0,
+        "position": { "x": 229, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Spatial",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e234",
+        "label": "Temporal",
+        "importance": 0,
+        "position": { "x": 230, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Temporal",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e235",
+        "label": "Linear",
+        "importance": 0,
+        "position": { "x": 231, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Linear",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e236",
+        "label": "Constant",
+        "importance": 0,
+        "position": { "x": 232, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Constant",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e237",
+        "label": "Sphere",
+        "importance": 0,
+        "position": { "x": 233, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Sphere",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e238",
+        "label": "Box",
+        "importance": 0,
+        "position": { "x": 234, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Box",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e239",
+        "label": "Dodecahedron",
+        "importance": 0,
+        "position": { "x": 235, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Dodecahedron",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e240",
+        "label": "Innerer Planet",
+        "importance": 0,
+        "position": { "x": 236, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Innerer Planet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e241",
+        "label": "Außerer Planet",
+        "importance": 0,
+        "position": { "x": 237, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Außerer Planet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e242",
+        "label": "Zwergplanet",
+        "importance": 0,
+        "position": { "x": 238, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Zwergplanet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e243",
+        "label": "Komet",
+        "importance": 0,
+        "position": { "x": 239, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e244",
+        "label": "Asteroid",
+        "importance": 0,
+        "position": { "x": 240, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e245",
+        "label": "Mond",
+        "importance": 0,
+        "position": { "x": 241, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e246",
+        "label": "Kleinplaneten",
+        "importance": 0,
+        "position": { "x": 242, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplaneten",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e247",
+        "label": "Galaxie",
+        "importance": 0,
+        "position": { "x": 243, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Galaxie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e248",
+        "label": "Schwarzes Loch",
+        "importance": 0,
+        "position": { "x": 244, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Schwarzes Loch",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e249",
+        "label": "Nebula",
+        "importance": 0,
+        "position": { "x": 245, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Nebula",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e250",
+        "label": "Kern",
+        "importance": 0,
+        "position": { "x": 246, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kern",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e251",
+        "label": "Hülle",
+        "importance": 0,
+        "position": { "x": 247, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Hülle",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e252",
+        "label": "Magnetfeld",
+        "importance": 0,
+        "position": { "x": 248, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Magnetfeld",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e253",
+        "label": "Strahlung",
+        "importance": 0,
+        "position": { "x": 249, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Strahlung",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e254",
+        "label": "Gravitation",
+        "importance": 0,
+        "position": { "x": 250, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Gravitation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e255",
+        "label": "Rotation",
+        "importance": 0,
+        "position": { "x": 251, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Rotation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e256",
+        "label": "Translation",
+        "importance": 0,
+        "position": { "x": 252, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Translation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e257",
+        "label": "Orbit",
+        "importance": 0,
+        "position": { "x": 253, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Orbit",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e258",
+        "label": "Kollision",
+        "importance": 0,
+        "position": { "x": 254, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kollision",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e259",
+        "label": "Expansion",
+        "importance": 0,
+        "position": { "x": 255, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Expansion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e260",
+        "label": "Kontraktion",
+        "importance": 0,
+        "position": { "x": 256, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kontraktion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e261",
+        "label": "Stabilität",
+        "importance": 0,
+        "position": { "x": 257, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Stabilität",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e262",
+        "label": "Instabilität",
+        "importance": 0,
+        "position": { "x": 258, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Instabilität",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e263",
+        "label": "Energie",
+        "importance": 0,
+        "position": { "x": 259, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Energie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e264",
+        "label": "Materie",
+        "importance": 0,
+        "position": { "x": 260, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Materie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e265",
+        "label": "Raum",
+        "importance": 0,
+        "position": { "x": 261, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Raum",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e266",
+        "label": "Zeit",
+        "importance": 0,
+        "position": { "x": 262, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Zeit",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e267",
+        "label": "Masse",
+        "importance": 0,
+        "position": { "x": 263, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Masse",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e268",
+        "label": "Temperatur",
+        "importance": 0,
+        "position": { "x": 264, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Temperatur",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e269",
+        "label": "Alter",
+        "importance": 0,
+        "position": { "x": 265, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Alter",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e270",
+        "label": "Radius",
+        "importance": 0,
+        "position": { "x": 266, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Radius",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e271",
+        "label": "Region",
+        "importance": 0,
+        "position": { "x": 267, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Region",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e272",
+        "label": "Kategorie",
+        "importance": 0,
+        "position": { "x": 268, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kategorie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e273",
+        "label": "Wikidata ID",
+        "importance": 0,
+        "position": { "x": 269, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Wikidata ID",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e274",
+        "label": "Importance",
+        "importance": 0,
+        "position": { "x": 270, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Importance",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e275",
+        "label": "Position",
+        "importance": 0,
+        "position": { "x": 271, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Position",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e276",
+        "label": "Strength",
+        "importance": 0,
+        "position": { "x": 272, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Strength",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e277",
+        "label": "ValidFrom",
+        "importance": 0,
+        "position": { "x": 273, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "ValidFrom",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e278",
+        "label": "ValidTo",
+        "importance": 0,
+        "position": { "x": 274, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "ValidTo",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e279",
+        "label": "History",
+        "importance": 0,
+        "position": { "x": 275, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "History",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e280",
+        "label": "Timestamp",
+        "importance": 0,
+        "position": { "x": 276, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Timestamp",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e281",
+        "label": "Changes",
+        "importance": 0,
+        "position": { "x": 277, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Changes",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e282",
+        "label": "Label",
+        "importance": 0,
+        "position": { "x": 278, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Label",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e283",
+        "label": "Geometry",
+        "importance": 0,
+        "position": { "x": 279, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Geometry",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e284",
+        "label": "Thickness",
+        "importance": 0,
+        "position": { "x": 280, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Thickness",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e285",
+        "label": "Function",
+        "importance": 0,
+        "position": { "x": 281, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Function",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e286",
+        "label": "Range",
+        "importance": 0,
+        "position": { "x": 282, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Range",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e287",
+        "label": "Source",
+        "importance": 0,
+        "position": { "x": 283, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Source",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e288",
+        "label": "Target",
+        "importance": 0,
+        "position": { "x": 284, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Target",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e289",
+        "label": "System",
+        "importance": 0,
+        "position": { "x": 285, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "System",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e290",
+        "label": "Metadata",
+        "importance": 0,
+        "position": { "x": 286, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Metadata",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e291",
+        "label": "DataModel",
+        "importance": 0,
+        "position": { "x": 287, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "DataModel",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e292",
+        "label": "Data",
+        "importance": 0,
+        "position": { "x": 288, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Data",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e293",
+        "label": "VisualMappings",
+        "importance": 0,
+        "position": { "x": 289, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "VisualMappings",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e294",
+        "label": "DefaultPresets",
+        "importance": 0,
+        "position": { "x": 290, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "DefaultPresets",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e295",
+        "label": "GlobalNode",
+        "importance": 0,
+        "position": { "x": 291, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "GlobalNode",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e296",
+        "label": "GlobalEdge",
+        "importance": 0,
+        "position": { "x": 292, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "GlobalEdge",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e297",
+        "label": "Group",
+        "importance": 0,
+        "position": { "x": 293, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Group",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e298",
+        "label": "BelongsTo",
+        "importance": 0,
+        "position": { "x": 294, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "BelongsTo",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e299",
+        "label": "CompetencyQuestion",
+        "importance": 0,
+        "position": { "x": 295, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "CompetencyQuestion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e300",
+        "label": "Ontology",
+        "importance": 0,
+        "position": { "x": 296, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Ontology",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e301",
+        "label": "Entity",
+        "importance": 0,
+        "position": { "x": 297, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Entity",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e302",
+        "label": "Relationship",
+        "importance": 0,
+        "position": { "x": 298, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Relationship",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e303",
+        "label": "Property",
+        "importance": 0,
+        "position": { "x": 299, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Property",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e304",
+        "label": "Attribute",
+        "importance": 0,
+        "position": { "x": 300, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Attribute",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e305",
+        "label": "Value",
+        "importance": 0,
+        "position": { "x": 301, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Value",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e306",
+        "label": "Type",
+        "importance": 0,
+        "position": { "x": 302, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Type",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e307",
+        "label": "Range",
+        "importance": 0,
+        "position": { "x": 303, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Range",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e308",
+        "label": "Continuous",
+        "importance": 0,
+        "position": { "x": 304, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Continuous",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e309",
+        "label": "Categorical",
+        "importance": 0,
+        "position": { "x": 305, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Categorical",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e310",
+        "label": "Spatial",
+        "importance": 0,
+        "position": { "x": 306, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Spatial",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e311",
+        "label": "Temporal",
+        "importance": 0,
+        "position": { "x": 307, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Temporal",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e312",
+        "label": "Linear",
+        "importance": 0,
+        "position": { "x": 308, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Linear",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e313",
+        "label": "Constant",
+        "importance": 0,
+        "position": { "x": 309, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Constant",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e314",
+        "label": "Sphere",
+        "importance": 0,
+        "position": { "x": 310, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Sphere",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e315",
+        "label": "Box",
+        "importance": 0,
+        "position": { "x": 311, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Box",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e316",
+        "label": "Dodecahedron",
+        "importance": 0,
+        "position": { "x": 312, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Dodecahedron",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e317",
+        "label": "Innerer Planet",
+        "importance": 0,
+        "position": { "x": 313, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Innerer Planet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e318",
+        "label": "Außerer Planet",
+        "importance": 0,
+        "position": { "x": 314, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Außerer Planet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e319",
+        "label": "Zwergplanet",
+        "importance": 0,
+        "position": { "x": 315, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Zwergplanet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e320",
+        "label": "Komet",
+        "importance": 0,
+        "position": { "x": 316, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Komet",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e321",
+        "label": "Asteroid",
+        "importance": 0,
+        "position": { "x": 317, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Asteroid",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e322",
+        "label": "Mond",
+        "importance": 0,
+        "position": { "x": 318, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e323",
+        "label": "Kleinplaneten",
+        "importance": 0,
+        "position": { "x": 319, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kleinplaneten",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e324",
+        "label": "Galaxie",
+        "importance": 0,
+        "position": { "x": 320, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Galaxie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e325",
+        "label": "Schwarzes Loch",
+        "importance": 0,
+        "position": { "x": 321, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Schwarzes Loch",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e326",
+        "label": "Nebula",
+        "importance": 0,
+        "position": { "x": 322, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Nebula",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e327",
+        "label": "Kern",
+        "importance": 0,
+        "position": { "x": 323, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kern",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e328",
+        "label": "Hülle",
+        "importance": 0,
+        "position": { "x": 324, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Hülle",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e329",
+        "label": "Magnetfeld",
+        "importance": 0,
+        "position": { "x": 325, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Magnetfeld",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e330",
+        "label": "Strahlung",
+        "importance": 0,
+        "position": { "x": 326, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Strahlung",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e331",
+        "label": "Gravitation",
+        "importance": 0,
+        "position": { "x": 327, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Gravitation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e332",
+        "label": "Rotation",
+        "importance": 0,
+        "position": { "x": 328, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Rotation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e333",
+        "label": "Translation",
+        "importance": 0,
+        "position": { "x": 329, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Translation",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e334",
+        "label": "Orbit",
+        "importance": 0,
+        "position": { "x": 330, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Orbit",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e335",
+        "label": "Kollision",
+        "importance": 0,
+        "position": { "x": 331, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kollision",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e336",
+        "label": "Expansion",
+        "importance": 0,
+        "position": { "x": 332, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Expansion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e337",
+        "label": "Kontraktion",
+        "importance": 0,
+        "position": { "x": 333, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kontraktion",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e338",
+        "label": "Stabilität",
+        "importance": 0,
+        "position": { "x": 334, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Stabilität",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e339",
+        "label": "Instabilität",
+        "importance": 0,
+        "position": { "x": 335, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Instabilität",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e340",
+        "label": "Energie",
+        "importance": 0,
+        "position": { "x": 336, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Energie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e341",
+        "label": "Materie",
+        "importance": 0,
+        "position": { "x": 337, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Materie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e342",
+        "label": "Raum",
+        "importance": 0,
+        "position": { "x": 338, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Raum",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e343",
+        "label": "Zeit",
+        "importance": 0,
+        "position": { "x": 339, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Zeit",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e344",
+        "label": "Masse",
+        "importance": 0,
+        "position": { "x": 340, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Masse",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e345",
+        "label": "Temperatur",
+        "importance": 0,
+        "position": { "x": 341, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Temperatur",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e346",
+        "label": "Alter",
+        "importance": 0,
+        "position": { "x": 342, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Alter",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e347",
+        "label": "Radius",
+        "importance": 0,
+        "position": { "x": 343, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Radius",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e348",
+        "label": "Region",
+        "importance": 0,
+        "position": { "x": 344, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Region",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e349",
+        "label": "Kategorie",
+        "importance": 0,
+        "position": { "x": 345, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Kategorie",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e350",
+        "label": "Wikidata ID",
+        "importance": 0,
+        "position": { "x": 346, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Wikidata ID",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e351",
+        "label": "Importance",
+        "importance": 0,
+        "position": { "x": 347, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Importance",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e352",
+        "label": "Position",
+        "importance": 0,
+        "position": { "x": 348, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Position",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e353",
+        "label": "Strength",
+        "importance": 0,
+        "position": { "x": 349, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Strength",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e354",
+        "label": "ValidFrom",
+        "importance": 0,
+        "position": { "x": 350, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "ValidFrom",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e355",
+        "label": "ValidTo",
+        "importance": 0,
+        "position": { "x": 351, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "ValidTo",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e356",
+        "label": "History",
+        "importance": 0,
+        "position": { "x": 352, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "History",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e357",
+        "label": "Timestamp",
+        "importance": 0,
+        "position": { "x": 353, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Timestamp",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e358",
+        "label": "Changes",
+        "importance": 0,
+        "position": { "x": 354, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Changes",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e359",
+        "label": "Label",
+        "importance": 0,
+        "position": { "x": 355, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Label",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e360",
+        "label": "Geometry",
+        "importance": 0,
+        "position": { "x": 356, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Geometry",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e361",
+        "label": "Thickness",
+        "importance": 0,
+        "position": { "x": 357, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Thickness",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e362",
+        "label": "Function",
+        "importance": 0,
+        "position": { "x": 358, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Function",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e363",
+        "label": "Range",
+        "importance": 0,
+        "position": { "x": 359, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "kategorie": "Range",
+        "wikidata_id": "Q308",
+        "masse": 1e30,
+        "temperatur": 5778,
+        "alter": 4.6e9,
+        "radius": 696340,
+        "region": "Zentral"
+      },
+      {
+        "id": "e364",
+        "label": "Source",
+        "importance": 0,
+        "position": { "x": 360, "y": 0, "z": 0 },
+        "temporal": {
+          "validFrom": 1900,
+          "

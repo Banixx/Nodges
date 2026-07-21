@@ -52,13 +52,13 @@ export class SelectionHandler {
     findEquivalentObject(set: Set<THREE.Object3D>, obj: THREE.Object3D): THREE.Object3D | null {
         if (set.has(obj)) return obj;
 
-        const objId = obj.userData.id;
-        const objType = obj.userData.type;
+        const objId = obj.userData?.id;
+        const objType = obj.userData?.type;
 
         if (!objId || !objType) return null;
 
         for (const item of set) {
-            if (item.userData.type === objType && item.userData.id === objId) {
+            if (item.userData?.type === objType && String(item.userData?.id) === String(objId)) {
                 return item;
             }
         }

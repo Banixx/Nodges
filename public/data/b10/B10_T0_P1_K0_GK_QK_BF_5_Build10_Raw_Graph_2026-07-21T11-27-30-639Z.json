@@ -1,0 +1,900 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Interaktive 3D/4D-Netzwerk-Visualisierung des Sonnensystems mit Fokus auf physikalische Eigenschaften und Beziehungen zwischen Himmelskörpern.",
+    "apiResponse": {
+      "id": "gen-1784633250-RjuRYrbA5eg3jonD3NHL",
+      "created": 1784633250,
+      "model": "morph/morph-v3-large",
+      "usage": {
+        "prompt_tokens": 2198,
+        "completion_tokens": 6423,
+        "total_tokens": 8621,
+        "cost": 0.0141819,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0141819,
+          "upstream_inference_prompt_cost": 0.0019782,
+          "upstream_inference_completions_cost": 0.0122037
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Concept": {
+        "properties": {
+          "importance": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "position": {
+            "type": "spatial"
+          },
+          "kategorie": {
+            "type": "categorical"
+          },
+          "wikidata_id": {
+            "type": "categorical"
+          },
+          "masse": {
+            "type": "continuous"
+          },
+          "temperatur": {
+            "type": "continuous"
+          },
+          "alter": {
+            "type": "continuous"
+          },
+          "einfluss": {
+            "type": "continuous"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "related": {
+        "properties": {
+          "strength": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "validFrom": {
+            "type": "continuous"
+          },
+          "validTo": {
+            "type": "continuous"
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e1",
+        "label": "Sonne",
+        "importance": 100,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 90
+              }
+            }
+          ]
+        },
+        "kategorie": "Stern",
+        "wikidata_id": "Q308",
+        "masse": 1.989e+30,
+        "temperatur": 5778,
+        "alter": 4600000000,
+        "einfluss": 100
+      },
+      {
+        "id": "e2",
+        "label": "Erde",
+        "importance": 80,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 70
+              }
+            }
+          ]
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q2",
+        "masse": 5.972e+24,
+        "temperatur": 288,
+        "alter": 4540000000,
+        "einfluss": 80
+      },
+      {
+        "id": "e3",
+        "label": "Mars",
+        "importance": 60,
+        "position": {
+          "x": 2,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 50
+              }
+            }
+          ]
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q85",
+        "masse": 6.39e+23,
+        "temperatur": 210,
+        "alter": 4000000000,
+        "einfluss": 60
+      },
+      {
+        "id": "e4",
+        "label": "Jupiter",
+        "importance": 70,
+        "position": {
+          "x": 3,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 60
+              }
+            }
+          ]
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q86",
+        "masse": 1.898e+27,
+        "temperatur": 165,
+        "alter": 4500000000,
+        "einfluss": 70
+      },
+      {
+        "id": "e5",
+        "label": "Saturn",
+        "importance": 65,
+        "position": {
+          "x": 4,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 55
+              }
+            }
+          ]
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q85",
+        "masse": 5.683e+26,
+        "temperatur": 134,
+        "alter": 4500000000,
+        "einfluss": 65
+      },
+      {
+        "id": "e6",
+        "label": "Venus",
+        "importance": 75,
+        "position": {
+          "x": 1.5,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 65
+              }
+            }
+          ]
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q85",
+        "masse": 4.867e+24,
+        "temperatur": 737,
+        "alter": 4500000000,
+        "einfluss": 75
+      },
+      {
+        "id": "e7",
+        "label": "Merkur",
+        "importance": 50,
+        "position": {
+          "x": 0.5,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q85",
+        "masse": 3.285e+23,
+        "temperatur": 440,
+        "alter": 4500000000,
+        "einfluss": 50
+      },
+      {
+        "id": "e8",
+        "label": "Uranus",
+        "importance": 55,
+        "position": {
+          "x": 5,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 45
+              }
+            }
+          ]
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q85",
+        "masse": 8.681e+25,
+        "temperatur": 76,
+        "alter": 4500000000,
+        "einfluss": 55
+      },
+      {
+        "id": "e9",
+        "label": "Neptun",
+        "importance": 50,
+        "position": {
+          "x": 6,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 40
+              }
+            }
+          ]
+        },
+        "kategorie": "Planet",
+        "wikidata_id": "Q85",
+        "masse": 1.024e+26,
+        "temperatur": 72,
+        "alter": 4500000000,
+        "einfluss": 50
+      },
+      {
+        "id": "e10",
+        "label": "Pluto",
+        "importance": 30,
+        "position": {
+          "x": 7,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 20
+              }
+            }
+          ]
+        },
+        "kategorie": "Zwergplanet",
+        "wikidata_id": "Q85",
+        "masse": 1.309e+22,
+        "temperatur": 44,
+        "alter": 4500000000,
+        "einfluss": 30
+      }
+    ],
+    "relationships": [
+      {
+        "id": "r1",
+        "label": "gravitative Bindung",
+        "strength": 100,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e1",
+        "target": "e2"
+      },
+      {
+        "id": "r2",
+        "label": "gravitative Bindung",
+        "strength": 90,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e1",
+        "target": "e3"
+      },
+      {
+        "id": "r3",
+        "label": "gravitative Bindung",
+        "strength": 80,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e1",
+        "target": "e4"
+      },
+      {
+        "id": "r4",
+        "label": "gravitative Bindung",
+        "strength": 75,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e1",
+        "target": "e5"
+      },
+      {
+        "id": "r5",
+        "label": "gravitative Bindung",
+        "strength": 70,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e1",
+        "target": "e6"
+      },
+      {
+        "id": "r6",
+        "label": "gravitative Bindung",
+        "strength": 60,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e1",
+        "target": "e7"
+      },
+      {
+        "id": "r7",
+        "label": "gravitative Bindung",
+        "strength": 55,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e1",
+        "target": "e8"
+      },
+      {
+        "id": "r8",
+        "label": "gravitative Bindung",
+        "strength": 50,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e1",
+        "target": "e9"
+      },
+      {
+        "id": "r9",
+        "label": "gravitative Bindung",
+        "strength": 40,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e1",
+        "target": "e10"
+      },
+      {
+        "id": "r10",
+        "label": "gravitative Bindung",
+        "strength": 30,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e2",
+        "target": "e3"
+      },
+      {
+        "id": "r11",
+        "label": "gravitative Bindung",
+        "strength": 25,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e2",
+        "target": "e4"
+      },
+      {
+        "id": "r12",
+        "label": "gravitative Bindung",
+        "strength": 20,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e2",
+        "target": "e5"
+      },
+      {
+        "id": "r13",
+        "label": "gravitative Bindung",
+        "strength": 15,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e2",
+        "target": "e6"
+      },
+      {
+        "id": "r14",
+        "label": "gravitative Bindung",
+        "strength": 10,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e2",
+        "target": "e7"
+      },
+      {
+        "id": "r15",
+        "label": "gravitative Bindung",
+        "strength": 5,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e2",
+        "target": "e8"
+      },
+      {
+        "id": "r16",
+        "label": "gravitative Bindung",
+        "strength": 3,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e2",
+        "target": "e9"
+      },
+      {
+        "id": "r17",
+        "label": "gravitative Bindung",
+        "strength": 2,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e2",
+        "target": "e10"
+      },
+      {
+        "id": "r18",
+        "label": "gravitative Bindung",
+        "strength": 1,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e3",
+        "target": "e4"
+      },
+      {
+        "id": "r19",
+        "label": "gravitative Bindung",
+        "strength": 0.5,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e3",
+        "target": "e5"
+      },
+      {
+        "id": "r20",
+        "label": "gravitative Bindung",
+        "strength": 0.3,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e3",
+        "target": "e6"
+      },
+      {
+        "id": "r21",
+        "label": "gravitative Bindung",
+        "strength": 0.2,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e3",
+        "target": "e7"
+      },
+      {
+        "id": "r22",
+        "label": "gravitative Bindung",
+        "strength": 0.1,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e3",
+        "target": "e8"
+      },
+      {
+        "id": "r23",
+        "label": "gravitative Bindung",
+        "strength": 0.05,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e3",
+        "target": "e9"
+      },
+      {
+        "id": "r24",
+        "label": "gravitative Bindung",
+        "strength": 0.03,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e3",
+        "target": "e10"
+      },
+      {
+        "id": "r25",
+        "label": "gravitative Bindung",
+        "strength": 0.02,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e4",
+        "target": "e5"
+      },
+      {
+        "id": "r26",
+        "label": "gravitative Bindung",
+        "strength": 0.01,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e4",
+        "target": "e6"
+      },
+      {
+        "id": "r27",
+        "label": "gravitative Bindung",
+        "strength": 0.005,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e4",
+        "target": "e7"
+      },
+      {
+        "id": "r28",
+        "label": "gravitative Bindung",
+        "strength": 0.003,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e4",
+        "target": "e8"
+      },
+      {
+        "id": "r29",
+        "label": "gravitative Bindung",
+        "strength": 0.002,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e4",
+        "target": "e9"
+      },
+      {
+        "id": "r30",
+        "label": "gravitative Bindung",
+        "strength": 0.001,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e4",
+        "target": "e10"
+      },
+      {
+        "id": "r31",
+        "label": "gravitative Bindung",
+        "strength": 0.0005,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e5",
+        "target": "e6"
+      },
+      {
+        "id": "r32",
+        "label": "gravitative Bindung",
+        "strength": 0.0003,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e5",
+        "target": "e7"
+      },
+      {
+        "id": "r33",
+        "label": "gravitative Bindung",
+        "strength": 0.0002,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e5",
+        "target": "e8"
+      },
+      {
+        "id": "r34",
+        "label": "gravitative Bindung",
+        "strength": 0.0001,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e5",
+        "target": "e9"
+      },
+      {
+        "id": "r35",
+        "label": "gravitative Bindung",
+        "strength": 0.00005,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e5",
+        "target": "e10"
+      },
+      {
+        "id": "r36",
+        "label": "gravitative Bindung",
+        "strength": 0.00003,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e6",
+        "target": "e7"
+      },
+      {
+        "id": "r37",
+        "label": "gravitative Bindung",
+        "strength": 0.00002,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e6",
+        "target": "e8"
+      },
+      {
+        "id": "r38",
+        "label": "gravitative Bindung",
+        "strength": 0.00001,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e6",
+        "target": "e9"
+      },
+      {
+        "id": "r39",
+        "label": "gravitative Bindung",
+        "strength": 0.000005,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e6",
+        "target": "e10"
+      },
+      {
+        "id": "r40",
+        "label": "gravitative Bindung",
+        "strength": 0.000003,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e7",
+        "target": "e8"
+      },
+      {
+        "id": "r41",
+        "label": "gravitative Bindung",
+        "strength": 0.000002,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e7",
+        "target": "e9"
+      },
+      {
+        "id": "r42",
+        "label": "gravitative Bindung",
+        "strength": 0.000001,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e7",
+        "target": "e10"
+      },
+      {
+        "id": "r43",
+        "label": "gravitative Bindung",
+        "strength": 5e-7,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e8",
+        "target": "e9"
+      },
+      {
+        "id": "r44",
+        "label": "gravitative Bindung",
+        "strength": 3e-7,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e8",
+        "target": "e10"
+      },
+      {
+        "id": "r45",
+        "label": "gravitative Bindung",
+        "strength": 2e-7,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        },
+        "source": "e9",
+        "target": "e10"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "importance",
+          "function": "linear",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "position": {
+          "source": "position",
+          "function": "constant"
+        }
+      },
+      "global_edge": {
+        "thickness": {
+          "source": "strength",
+          "function": "linear",
+          "range": [
+            0.1,
+            1.5
+          ]
+        }
+      }
+    }
+  }
+}

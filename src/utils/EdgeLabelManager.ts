@@ -217,25 +217,63 @@ export class EdgeLabelManager {
 
         this.labelGroup.visible = true;
 
-        // Update each label
+        const state = (window as any).app?.stateManager?.state;
+        const labelMaxClosest = state?.labelMaxClosest !== undefined ? state.labelMaxClosest : 50;
+
+        interface CandidateEdgeLabel {
+            label: LabelData;
+            distance: number;
+        }
+
+        const candidateLabels: CandidateEdgeLabel[] = [];
+
+        const showAlways = state ? state.showLabelsAlways : this.config.alwaysVisible;
+        const showHover = state ? state.showLabelsOnHover : true;
+        const hoveredObj = state?.hoveredObject;
+
+        // Pass 1: Update position & check line visibility
         this.labels.forEach((label) => {
-            // Update position
+            if (!showAlways) {
+                if (!showHover) {
+                    label.sprite.visible = false;
+                    return;
+                }
+                const isHovered = hoveredObj && (
+                    hoveredObj.userData?.id === label.edge.id ||
+                    hoveredObj.userData?.source === label.edge.source ||
+                    hoveredObj.userData?.target === label.edge.target
+                );
+                if (!isHovered) {
+                    label.sprite.visible = false;
+                    return;
+                }
+            }
+
             this.updateLabelPosition(label.sprite, label.edge);
 
-            // Check distance visibility
-            if (!this.config.alwaysVisible) {
-                const distance = this.camera.position.distanceTo(label.sprite.position);
-                label.sprite.visible = distance < this.config.distanceThreshold;
-            } else {
-                label.sprite.visible = true;
-            }
-
             // Check line visibility
-            if (label.sprite.visible && label.edge.line && !label.edge.line.visible) {
+            if (label.edge.line && !label.edge.line.visible) {
                 label.sprite.visible = false;
+                return;
             }
 
-            // Face camera
+            const distance = this.camera.position.distanceTo(label.sprite.position);
+            candidateLabels.push({ label, distance });
+        });
+
+        // Pass 2: Proximity Filter (Keep top N closest labels if labelMaxClosest > 0)
+        let activeCandidates = candidateLabels;
+        if (labelMaxClosest > 0 && candidateLabels.length > labelMaxClosest) {
+            candidateLabels.sort((a, b) => a.distance - b.distance);
+            for (let i = labelMaxClosest; i < candidateLabels.length; i++) {
+                candidateLabels[i].label.sprite.visible = false;
+            }
+            activeCandidates = candidateLabels.slice(0, labelMaxClosest);
+        }
+
+        // Pass 3: Render & Face Camera
+        activeCandidates.forEach(({ label }) => {
+            label.sprite.visible = true;
             label.sprite.quaternion.copy(this.camera.quaternion);
         });
     }

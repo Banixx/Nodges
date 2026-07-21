@@ -2,16 +2,16 @@
   "system": "Sonnensystem",
   "metadata": {
     "schemaVersion": "5.0",
-    "description": "Eine Visualisierung der wichtigsten Körper und Eigenschaften des Sonnensystems.",
+    "description": "Interaktive Visualisierung des Sonnensystems mit Fokus auf physikalische Eigenschaften und Beziehungen zwischen Himmelskörpern.",
     "apiResponse": {
-      "id": "gen-1784563671-xQIVV1qATwmTvNleNyrL",
-      "created": 1784563671,
+      "id": "gen-1784632939-AHijCt0zFQHv1LezjsLs",
+      "created": 1784632939,
       "model": "morph/morph-v3-large",
       "usage": {
         "prompt_tokens": 2198,
-        "completion_tokens": 2511,
-        "total_tokens": 4709,
-        "cost": 0.0067491,
+        "completion_tokens": 3376,
+        "total_tokens": 5574,
+        "cost": 0.0083926,
         "is_byok": false,
         "prompt_tokens_details": {
           "cached_tokens": 0,
@@ -20,9 +20,9 @@
           "video_tokens": 0
         },
         "cost_details": {
-          "upstream_inference_cost": 0.0067491,
+          "upstream_inference_cost": 0.0083926,
           "upstream_inference_prompt_cost": 0.0019782,
-          "upstream_inference_completions_cost": 0.0047709
+          "upstream_inference_completions_cost": 0.0064144
         },
         "completion_tokens_details": {
           "reasoning_tokens": 0,
@@ -46,13 +46,27 @@
           },
           "position": {
             "type": "spatial"
-          }
-        }
-      },
-      "group": {
-        "properties": {
-          "members": {
-            "type": "array"
+          },
+          "kategorie": {
+            "type": "categorical"
+          },
+          "wikidata_id": {
+            "type": "categorical"
+          },
+          "masse": {
+            "type": "continuous"
+          },
+          "temperatur": {
+            "type": "continuous"
+          },
+          "alter": {
+            "type": "continuous"
+          },
+          "radius": {
+            "type": "continuous"
+          },
+          "region": {
+            "type": "categorical"
           }
         }
       }
@@ -66,6 +80,9 @@
               0,
               100
             ]
+          },
+          "temporal": {
+            "type": "object"
           }
         }
       }
@@ -93,133 +110,167 @@
               }
             }
           ]
-        }
+        },
+        "kategorie": "Stern",
+        "wikidata_id": "Q308",
+        "masse": 1.989e+30,
+        "temperatur": 5778,
+        "alter": 4600000000,
+        "radius": 696340,
+        "region": "Zentral"
       },
       {
         "id": "e2",
         "label": "Merkur",
-        "importance": 20,
+        "importance": 60,
         "position": {
-          "x": 1,
+          "x": 10,
           "y": 0,
           "z": 0
         },
-        "temporal": {
-          "validFrom": 1900,
-          "validTo": 1950
-        }
+        "kategorie": "Planet",
+        "wikidata_id": "Q308",
+        "masse": 3.285e+23,
+        "temperatur": 440,
+        "alter": 4600000000,
+        "radius": 2439,
+        "region": "Innerer Planet"
       },
       {
         "id": "e3",
         "label": "Venus",
-        "importance": 30,
+        "importance": 70,
         "position": {
-          "x": 2,
+          "x": 20,
           "y": 0,
           "z": 0
         },
-        "temporal": {
-          "validFrom": 1900,
-          "validTo": 1950
-        }
+        "kategorie": "Planet",
+        "wikidata_id": "Q308",
+        "masse": 4.867e+24,
+        "temperatur": 464,
+        "alter": 4600000000,
+        "radius": 6051,
+        "region": "Innerer Planet"
       },
       {
         "id": "e4",
         "label": "Erde",
-        "importance": 60,
+        "importance": 80,
         "position": {
-          "x": 3,
+          "x": 30,
           "y": 0,
           "z": 0
         },
-        "temporal": {
-          "validFrom": 1900,
-          "validTo": 1950
-        }
+        "kategorie": "Planet",
+        "wikidata_id": "Q308",
+        "masse": 5.972e+24,
+        "temperatur": 288,
+        "alter": 4600000000,
+        "radius": 6371,
+        "region": "Innerer Planet"
       },
       {
         "id": "e5",
         "label": "Mars",
-        "importance": 40,
+        "importance": 50,
         "position": {
-          "x": 4,
+          "x": 40,
           "y": 0,
           "z": 0
         },
-        "temporal": {
-          "validFrom": 1900,
-          "validTo": 1950
-        }
+        "kategorie": "Planet",
+        "wikidata_id": "Q308",
+        "masse": 6.39e+23,
+        "temperatur": 210,
+        "alter": 4600000000,
+        "radius": 3389,
+        "region": "Innerer Planet"
       },
       {
         "id": "e6",
         "label": "Jupiter",
-        "importance": 80,
+        "importance": 90,
         "position": {
-          "x": 5,
+          "x": 50,
           "y": 0,
           "z": 0
         },
-        "temporal": {
-          "validFrom": 1900,
-          "validTo": 1950
-        }
+        "kategorie": "Planet",
+        "wikidata_id": "Q308",
+        "masse": 1.898e+27,
+        "temperatur": 165,
+        "alter": 4600000000,
+        "radius": 69911,
+        "region": "Gasriese"
       },
       {
         "id": "e7",
         "label": "Saturn",
-        "importance": 70,
+        "importance": 85,
         "position": {
-          "x": 6,
+          "x": 60,
           "y": 0,
           "z": 0
         },
-        "temporal": {
-          "validFrom": 1900,
-          "validTo": 1950
-        }
+        "kategorie": "Planet",
+        "wikidata_id": "Q308",
+        "masse": 5.683e+26,
+        "temperatur": 134,
+        "alter": 4600000000,
+        "radius": 58232,
+        "region": "Gasriese"
       },
       {
         "id": "e8",
         "label": "Uranus",
-        "importance": 50,
+        "importance": 75,
         "position": {
-          "x": 7,
+          "x": 70,
           "y": 0,
           "z": 0
         },
-        "temporal": {
-          "validFrom": 1900,
-          "validTo": 1950
-        }
+        "kategorie": "Planet",
+        "wikidata_id": "Q308",
+        "masse": 8.681e+25,
+        "temperatur": 76,
+        "alter": 4600000000,
+        "radius": 25362,
+        "region": "Eisriese"
       },
       {
         "id": "e9",
         "label": "Neptun",
-        "importance": 45,
+        "importance": 70,
         "position": {
-          "x": 8,
+          "x": 80,
           "y": 0,
           "z": 0
         },
-        "temporal": {
-          "validFrom": 1900,
-          "validTo": 1950
-        }
+        "kategorie": "Planet",
+        "wikidata_id": "Q308",
+        "masse": 1.024e+26,
+        "temperatur": 72,
+        "alter": 4600000000,
+        "radius": 24622,
+        "region": "Eisriese"
       },
       {
         "id": "e10",
         "label": "Pluto",
-        "importance": 35,
+        "importance": 30,
         "position": {
-          "x": 9,
+          "x": 90,
           "y": 0,
           "z": 0
         },
-        "temporal": {
-          "validFrom": 1900,
-          "validTo": 1950
-        }
+        "kategorie": "Zwergplanet",
+        "wikidata_id": "Q308",
+        "masse": 1.303e+22,
+        "temperatur": 44,
+        "alter": 4600000000,
+        "radius": 1188,
+        "region": "Außerhalb des Neptunorbits"
       }
     ],
     "relationships": [
@@ -227,7 +278,7 @@
         "id": "r1",
         "source": "e1",
         "target": "e2",
-        "label": "sonnennahe Planet",
+        "label": "Orbit",
         "strength": 60,
         "temporal": {
           "validFrom": 1900,
@@ -238,7 +289,7 @@
         "id": "r2",
         "source": "e1",
         "target": "e3",
-        "label": "sonnennahe Planet",
+        "label": "Orbit",
         "strength": 65,
         "temporal": {
           "validFrom": 1900,
@@ -249,7 +300,7 @@
         "id": "r3",
         "source": "e1",
         "target": "e4",
-        "label": "sonnennahe Planet",
+        "label": "Orbit",
         "strength": 70,
         "temporal": {
           "validFrom": 1900,
@@ -260,8 +311,8 @@
         "id": "r4",
         "source": "e1",
         "target": "e5",
-        "label": "sonnennaher Planet",
-        "strength": 60,
+        "label": "Orbit",
+        "strength": 55,
         "temporal": {
           "validFrom": 1900,
           "validTo": 1950
@@ -271,8 +322,8 @@
         "id": "r5",
         "source": "e1",
         "target": "e6",
-        "label": "Gasriese",
-        "strength": 75,
+        "label": "Orbit",
+        "strength": 80,
         "temporal": {
           "validFrom": 1900,
           "validTo": 1950
@@ -282,8 +333,8 @@
         "id": "r6",
         "source": "e1",
         "target": "e7",
-        "label": "Gasriese",
-        "strength": 70,
+        "label": "Orbit",
+        "strength": 75,
         "temporal": {
           "validFrom": 1900,
           "validTo": 1950
@@ -293,8 +344,8 @@
         "id": "r7",
         "source": "e1",
         "target": "e8",
-        "label": "Eisriese",
-        "strength": 60,
+        "label": "Orbit",
+        "strength": 65,
         "temporal": {
           "validFrom": 1900,
           "validTo": 1950
@@ -304,8 +355,8 @@
         "id": "r8",
         "source": "e1",
         "target": "e9",
-        "label": "Eisriese",
-        "strength": 55,
+        "label": "Orbit",
+        "strength": 60,
         "temporal": {
           "validFrom": 1900,
           "validTo": 1950
@@ -315,8 +366,8 @@
         "id": "r9",
         "source": "e1",
         "target": "e10",
-        "label": "Zwergplanet",
-        "strength": 50,
+        "label": "Orbit",
+        "strength": 40,
         "temporal": {
           "validFrom": 1900,
           "validTo": 1950
@@ -324,10 +375,10 @@
       },
       {
         "id": "r10",
-        "source": "e4",
-        "target": "e5",
-        "label": "innerer Planet",
-        "strength": 40,
+        "source": "e2",
+        "target": "e3",
+        "label": "Nachbar",
+        "strength": 30,
         "temporal": {
           "validFrom": 1900,
           "validTo": 1950
@@ -335,10 +386,10 @@
       },
       {
         "id": "r11",
-        "source": "e6",
-        "target": "e7",
-        "label": "Gasriese",
-        "strength": 70,
+        "source": "e3",
+        "target": "e4",
+        "label": "Nachbar",
+        "strength": 35,
         "temporal": {
           "validFrom": 1900,
           "validTo": 1950
@@ -346,10 +397,10 @@
       },
       {
         "id": "r12",
-        "source": "e7",
-        "target": "e8",
-        "label": "Eisriese",
-        "strength": 45,
+        "source": "e4",
+        "target": "e5",
+        "label": "Nachbar",
+        "strength": 25,
         "temporal": {
           "validFrom": 1900,
           "validTo": 1950
@@ -357,10 +408,10 @@
       },
       {
         "id": "r13",
-        "source": "e8",
-        "target": "e9",
-        "label": "Eisriese",
-        "strength": 40,
+        "source": "e5",
+        "target": "e6",
+        "label": "Nachbar",
+        "strength": 20,
         "temporal": {
           "validFrom": 1900,
           "validTo": 1950
@@ -368,10 +419,43 @@
       },
       {
         "id": "r14",
+        "source": "e6",
+        "target": "e7",
+        "label": "Nachbar",
+        "strength": 15,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r15",
+        "source": "e7",
+        "target": "e8",
+        "label": "Nachbar",
+        "strength": 10,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r16",
+        "source": "e8",
+        "target": "e9",
+        "label": "Nachbar",
+        "strength": 10,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r17",
         "source": "e9",
         "target": "e10",
-        "label": "Zwergplanet",
-        "strength": 35,
+        "label": "Nachbar",
+        "strength": 5,
         "temporal": {
           "validFrom": 1900,
           "validTo": 1950

@@ -44,10 +44,12 @@ export interface UIState {
     infoPanelCollapsed: boolean;
     showLabelsAlways: boolean;
     showLabelsOnHover: boolean;
+    repositionLabels: boolean;
     labelLines: number;
     labelFilterAttribute: string;
     labelFilterMode: string;
     labelFilterThreshold: number;
+    labelMaxClosest: number;
     visibleLabelsCount: number;
     totalLabelsCount: number;
     visualScaleExponent: number;
@@ -71,7 +73,6 @@ export interface UIState {
     layer4Value: string;
     complexityMode: 'simple' | 'expert' | 'dev';
 }
-
 
 /**
  * Visuelle Effekte: Glow, Highlights
@@ -189,10 +190,12 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     infoPanelCollapsed: [STATE_CATEGORIES.UI],
     showLabelsAlways: [STATE_CATEGORIES.UI],
     showLabelsOnHover: [STATE_CATEGORIES.UI],
+    repositionLabels: [STATE_CATEGORIES.UI],
     labelLines: [STATE_CATEGORIES.UI],
     labelFilterAttribute: [STATE_CATEGORIES.UI],
     labelFilterMode: [STATE_CATEGORIES.UI],
     labelFilterThreshold: [STATE_CATEGORIES.UI],
+    labelMaxClosest: [STATE_CATEGORIES.UI],
     visibleLabelsCount: [STATE_CATEGORIES.UI],
     totalLabelsCount: [STATE_CATEGORIES.UI],
     visualScaleExponent: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
@@ -215,7 +218,6 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     layer3Value: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
     layer4Value: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
     complexityMode: [STATE_CATEGORIES.UI],
-
 
     // VisualState
     highlightedObjects: [STATE_CATEGORIES.HIGHLIGHT],

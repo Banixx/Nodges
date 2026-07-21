@@ -300,6 +300,7 @@ export class NodeLabelManager {
         const filterAttr = state?.labelFilterAttribute;
         const filterMode = state?.labelFilterMode || 'visibility';
         const filterThreshold = state?.labelFilterThreshold || 0;
+        const labelMaxClosest = state?.labelMaxClosest !== undefined ? state.labelMaxClosest : 50;
         
         let minVal = Infinity;
         let maxVal = -Infinity;
@@ -323,8 +324,40 @@ export class NodeLabelManager {
         // Kamera-Vektoren einmal pro Frame ermitteln
         this.camera.matrixWorld.extractBasis(this.cameraRight, this.cameraUp, this.dirToCamera);
 
-        // Update each label
+        interface CandidateLabel {
+            label: LabelData;
+            distance: number;
+            basePos: THREE.Vector3;
+            layerOpacity: number;
+            filterOpacityFactor: number;
+            filterScaleFactor: number;
+        }
+
+        const candidateLabels: CandidateLabel[] = [];
+
+        const showAlways = state ? state.showLabelsAlways : this.config.alwaysVisible;
+        const showHover = state ? state.showLabelsOnHover : true;
+        const hoveredObj = state?.hoveredObject;
+
+        // First pass: evaluate filtering rules and gather candidates with distance
         this.labels.forEach((label) => {
+            if (!showAlways) {
+                if (!showHover) {
+                    label.sprite.visible = false;
+                    return;
+                }
+                const isHovered = (hoveredObj && (
+                    hoveredObj.userData?.id === label.entity.id ||
+                    hoveredObj.parent?.userData?.id === label.entity.id ||
+                    (hoveredObj.userData && String(hoveredObj.userData.id) === String(label.entity.id))
+                )) || (highlightedNeighborhoodNodes && highlightedNeighborhoodNodes.has(String(label.entity.id)));
+
+                if (!isHovered) {
+                    label.sprite.visible = false;
+                    return;
+                }
+            }
+
             const layeringAttr = state?.layeringAttribute || 'layer';
             const rawVal = label.entity[layeringAttr];
             const nodeVal = rawVal !== undefined ? String(rawVal) : '';
@@ -360,144 +393,136 @@ export class NodeLabelManager {
                 }
             }
 
-            const basePos = label.entity.position
-                ? new THREE.Vector3(label.entity.position.x, label.entity.position.y, label.entity.position.z)
-                : (label.sprite.userData.basePosition || label.sprite.position);
-
-            // Berechne Distanz zur Kamera
-            const distance = this.camera.position.distanceTo(basePos);
-            const isSmallNetwork = this.labels.size <= 50;
-
-            // Sichtbarkeit und weiches Ausblenden (Fade-Out)
-            let currentOpacity = layerOpacity;
-            if (!this.config.alwaysVisible && !isSmallNetwork) {
-                if (distance > this.config.distanceThreshold) {
-                    label.sprite.visible = false;
-                    return; // Label ist zu weit weg
-                } else {
-                    label.sprite.visible = true;
-                    // Fade out in den letzten 15 Einheiten vor dem Threshold
-                    const fadeStart = this.config.distanceThreshold - 15;
-                    if (distance > fadeStart) {
-                        const fadeFactor = 1.0 - ((distance - fadeStart) / 15);
-                        currentOpacity *= Math.max(0, fadeFactor);
-                    }
-                }
-            } else {
-                label.sprite.visible = true;
-            }
-
-            // Neu: Labels ausblenden, wenn sie beim Selektieren verblassen sollen
-            if (label.sprite.visible && hasSelection && highlightedNeighborhoodNodes) {
+            // Check selection highlight filter
+            if (hasSelection && highlightedNeighborhoodNodes) {
                 if (!highlightedNeighborhoodNodes.has(String(label.entity.id))) {
                     label.sprite.visible = false;
+                    return;
                 }
             }
 
             // Apply Data Filter
             let filterOpacityFactor = 1.0;
             let filterScaleFactor = 1.0;
-            if (label.sprite.visible && filterAttr && minVal !== Infinity) {
+            if (filterAttr && minVal !== Infinity) {
                 const val = label.entity[filterAttr];
                 if (typeof val === 'number') {
                     if (filterMode === 'visibility') {
-                        if (val < thresholdValue) label.sprite.visible = false;
+                        if (val < thresholdValue) { label.sprite.visible = false; return; }
                     } else if (filterMode === 'fade') {
                         if (val < thresholdValue) {
                             const range = thresholdValue - minVal;
                             filterOpacityFactor = range > 0 ? Math.max(0, (val - minVal) / range) : 0;
-                            if (filterOpacityFactor <= 0.05) label.sprite.visible = false;
+                            if (filterOpacityFactor <= 0.05) { label.sprite.visible = false; return; }
                         }
                     } else if (filterMode === 'size') {
-                        if (val < thresholdValue) label.sprite.visible = false;
+                        if (val < thresholdValue) { label.sprite.visible = false; return; }
                         else {
                             const t = maxVal > thresholdValue ? (val - thresholdValue) / (maxVal - thresholdValue) : 0;
-                            filterScaleFactor = 1.0 + t * 1.5; // Scales up to 2.5x
+                            filterScaleFactor = 1.0 + t * 1.5;
                         }
                     } else if (filterMode === 'glow') {
-                        if (val < thresholdValue) label.sprite.visible = false;
+                        if (val < thresholdValue) { label.sprite.visible = false; return; }
                         else {
                             const t = maxVal > thresholdValue ? (val - thresholdValue) / (maxVal - thresholdValue) : 0;
-                            label.sprite.material.color.setHSL(0.1, 1.0, 1.0 - t * 0.4); // Tint slightly orange
+                            label.sprite.material.color.setHSL(0.1, 1.0, 1.0 - t * 0.4);
                             filterScaleFactor = 1.0 + t * 0.5;
                         }
                     }
                 } else {
                     label.sprite.visible = false;
+                    return;
                 }
             }
-            
+
             if (filterMode !== 'glow') {
                 label.sprite.material.color.setHex(0xffffff);
             }
 
-            if (label.sprite.visible) {
-                visibleCount++;
-                label.sprite.material.opacity = currentOpacity * filterOpacityFactor;
+            let basePos = label.entity.position
+                ? new THREE.Vector3(label.entity.position.x, label.entity.position.y, label.entity.position.z)
+                : (label.sprite.userData.basePosition || label.sprite.position);
 
-                // Konstante Bildschirmgroesse: Skalierung proportional zur Kamera-Distanz
-                let s = 1;
-                const cw = label.sprite.userData.canvasWidth || 100;
-                const ch = label.sprite.userData.canvasHeight || 56;
-                const cf = label.sprite.userData.canvasFontSize || 32;
-                
-                if (this.config.constantScreenSize) {
-                    s = this.config.screenSizeScale * distance * filterScaleFactor;
-                    label.sprite.scale.set(s * cw / cf, s * ch / cf, 1);
-                } else {
-                    const bs = label.sprite.userData.baseScale || this.config.fontSize;
-                    let finalScale = bs * filterScaleFactor;
-                    
-                    const camera = this.camera as THREE.PerspectiveCamera;
-                    const fovRad = (camera.fov || 45) * Math.PI / 180;
-                    const vFovHeight = 2 * Math.tan(fovRad / 2) * distance;
-                    const screenHeight = window.innerHeight || 1000;
-                    
-                    const f_screen = (finalScale * screenHeight) / vFovHeight;
-                    
-                    if (f_screen < 7) {
-                        label.sprite.visible = false;
-                        visibleCount--;
-                    } else {
-                        if (f_screen > 15) {
-                            finalScale = (15 * vFovHeight) / screenHeight;
-                        }
-                        label.sprite.scale.set(finalScale * cw / cf, finalScale * ch / cf, 1);
-                    }
-                }
-
-                // Dynamische Positionierung exakt am Rand des Nodes (rechts oben von Kamera aus)
-                if (label.sprite.visible) {
-                    this.tempPos.copy(basePos);
-                    
-                    // Der urspruengliche nodeRadius wurde als (labelOffset - 0.4) gespeichert
-                    const baseOffset = label.sprite.userData.labelOffset || 0.9;
-                    const nodeRadius = baseOffset - 0.4;
-                    
-                    // Padding skaliert mit Distanz, wird beim nahen Zoomen aber ueberproportional kleiner,
-                    // damit die Labels optisch naeher an die Nodes ruecken.
-                    const zoomFactor = Math.min(1.0, Math.max(0.1, distance / 30.0));
-                    const padding = this.config.constantScreenSize ? (distance * 0.002 * zoomFactor) : 0.1;
-
-                    // Die Dimensionen des Sprites im 3D-Raum
-                    const labelWidthIn3D = label.sprite.scale.x;
-                    const labelHeightIn3D = label.sprite.scale.y;
-                    
-                    // 0.707 ist cos(45deg) - genaue Kante des Kreises oben rechts
-                    // Auch der label offset wird leicht mit dem zoomFactor reduziert
-                    const offsetRight = (nodeRadius * 0.707) + padding + (labelWidthIn3D * 0.5 * zoomFactor);
-                    const offsetUp = (nodeRadius * 0.707) + padding + (labelHeightIn3D * 0.5 * zoomFactor);
-
-                    // Wende die Offsets auf die Kamera-Achsen an
-                    this.tempPos.addScaledVector(this.cameraRight, offsetRight);
-                    this.tempPos.addScaledVector(this.cameraUp, offsetUp);
-                    
-                    // Bewege etwas in Richtung Kamera (+Z Achse im Kamera-Space) damit es vor der Kugel liegt
-                    this.tempPos.addScaledVector(this.dirToCamera, nodeRadius * 0.5);
-                    
-                    label.sprite.position.copy(this.tempPos);
+            if (app && app.nodeManager) {
+                const nodePos = app.nodeManager.getNodePosition(String(label.entity.id));
+                if (nodePos) {
+                    basePos = nodePos;
                 }
             }
+
+            const distance = this.camera.position.distanceTo(basePos);
+
+            candidateLabels.push({
+                label,
+                distance,
+                basePos,
+                layerOpacity,
+                filterOpacityFactor,
+                filterScaleFactor
+            });
+        });
+
+        // Second pass: Proximity Filter (Keep top N closest labels if labelMaxClosest > 0)
+        let activeCandidates = candidateLabels;
+        if (labelMaxClosest > 0 && candidateLabels.length > labelMaxClosest) {
+            candidateLabels.sort((a, b) => a.distance - b.distance);
+            for (let i = labelMaxClosest; i < candidateLabels.length; i++) {
+                candidateLabels[i].label.sprite.visible = false;
+            }
+            activeCandidates = candidateLabels.slice(0, labelMaxClosest);
+        }
+
+        // Third pass: Render & position active candidates
+        activeCandidates.forEach(({ label, distance, basePos, layerOpacity, filterOpacityFactor, filterScaleFactor }) => {
+            label.sprite.visible = true;
+            visibleCount++;
+
+            label.sprite.material.opacity = layerOpacity * filterOpacityFactor;
+
+            // Konstante Bildschirmgroesse: Skalierung proportional zur Kamera-Distanz
+            let s = 1;
+            const cw = label.sprite.userData.canvasWidth || 100;
+            const ch = label.sprite.userData.canvasHeight || 56;
+            const cf = label.sprite.userData.canvasFontSize || 32;
+
+            if (this.config.constantScreenSize) {
+                s = this.config.screenSizeScale * distance * filterScaleFactor;
+                label.sprite.scale.set(s * cw / cf, s * ch / cf, 1);
+            } else {
+                const bs = label.sprite.userData.baseScale || this.config.fontSize;
+                let finalScale = bs * filterScaleFactor;
+
+                const camera = this.camera as THREE.PerspectiveCamera;
+                const fovRad = (camera.fov || 45) * Math.PI / 180;
+                const vFovHeight = 2 * Math.tan(fovRad / 2) * distance;
+                const screenHeight = window.innerHeight || 1000;
+
+                if (finalScale * screenHeight / vFovHeight > 15) {
+                    finalScale = (15 * vFovHeight) / screenHeight;
+                }
+                label.sprite.scale.set(finalScale * cw / cf, finalScale * ch / cf, 1);
+            }
+
+            // Dynamische Positionierung exakt am Rand des Nodes
+            this.tempPos.copy(basePos);
+
+            const baseOffset = label.sprite.userData.labelOffset || 0.9;
+            const nodeRadius = baseOffset - 0.4;
+
+            const zoomFactor = Math.min(1.0, Math.max(0.1, distance / 30.0));
+            const padding = this.config.constantScreenSize ? (distance * 0.002 * zoomFactor) : 0.1;
+
+            const labelWidthIn3D = label.sprite.scale.x;
+            const labelHeightIn3D = label.sprite.scale.y;
+
+            const offsetRight = (nodeRadius * 0.707) + padding + (labelWidthIn3D * 0.5 * zoomFactor);
+            const offsetUp = (nodeRadius * 0.707) + padding + (labelHeightIn3D * 0.5 * zoomFactor);
+
+            this.tempPos.addScaledVector(this.cameraRight, offsetRight);
+            this.tempPos.addScaledVector(this.cameraUp, offsetUp);
+            this.tempPos.addScaledVector(this.dirToCamera, nodeRadius * 0.5);
+
+            label.sprite.position.copy(this.tempPos);
 
             // Face camera
             label.sprite.quaternion.copy(this.camera.quaternion);

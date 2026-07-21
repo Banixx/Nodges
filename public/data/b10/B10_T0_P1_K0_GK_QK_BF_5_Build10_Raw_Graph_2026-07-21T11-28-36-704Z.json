@@ -1,0 +1,437 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Interaktive 3D/4D-Netzwerk-Visualisierung des Sonnensystems mit Fokus auf Mensch als zentrales Element.",
+    "apiResponse": {
+      "id": "gen-1784633316-FC2QQus6jmHfKSIxFnGm",
+      "created": 1784633316,
+      "model": "morph/morph-v3-large",
+      "usage": {
+        "prompt_tokens": 2255,
+        "completion_tokens": 2615,
+        "total_tokens": 4870,
+        "cost": 0.006998,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.006998,
+          "upstream_inference_prompt_cost": 0.0020295,
+          "upstream_inference_completions_cost": 0.0049685
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Concept": {
+        "properties": {
+          "importance": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "position": {
+            "type": "spatial"
+          },
+          "kategorie": {
+            "type": "categorical"
+          },
+          "wikidata_id": {
+            "type": "categorical"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "related": {
+        "properties": {
+          "strength": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "temporal": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e1",
+        "label": "Mensch",
+        "importance": 80,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 90
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "e2",
+        "label": "Sonne",
+        "importance": 95,
+        "position": {
+          "x": 10,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "e3",
+        "label": "Erde",
+        "importance": 70,
+        "position": {
+          "x": 20,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "e4",
+        "label": "Mars",
+        "importance": 60,
+        "position": {
+          "x": 30,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "e5",
+        "label": "Jupiter",
+        "importance": 85,
+        "position": {
+          "x": 40,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "e6",
+        "label": "Saturn",
+        "importance": 75,
+        "position": {
+          "x": 50,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "e7",
+        "label": "Uranus",
+        "importance": 65,
+        "position": {
+          "x": 60,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "e8",
+        "label": "Neptun",
+        "importance": 60,
+        "position": {
+          "x": 70,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "e9",
+        "label": "Pluto",
+        "importance": 50,
+        "position": {
+          "x": 80,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "e10",
+        "label": "Komet",
+        "importance": 40,
+        "position": {
+          "x": 90,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "r1",
+        "source": "e1",
+        "target": "e2",
+        "label": "beobachtet",
+        "strength": 60,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r2",
+        "source": "e2",
+        "target": "e3",
+        "label": "umkreist",
+        "strength": 70,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r3",
+        "source": "e2",
+        "target": "e4",
+        "label": "umkreist",
+        "strength": 65,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r4",
+        "source": "e2",
+        "target": "e5",
+        "label": "umkreist",
+        "strength": 80,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r5",
+        "source": "e2",
+        "target": "e6",
+        "label": "umkreist",
+        "strength": 75,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r6",
+        "source": "e2",
+        "target": "e7",
+        "label": "umkreist",
+        "strength": 65,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r7",
+        "source": "e2",
+        "target": "e8",
+        "label": "umkreist",
+        "strength": 60,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r8",
+        "source": "e2",
+        "target": "e9",
+        "label": "umkreist",
+        "strength": 50,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r9",
+        "source": "e2",
+        "target": "e10",
+        "label": "umkreist",
+        "strength": 40,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r10",
+        "source": "e3",
+        "target": "e4",
+        "label": "nahe",
+        "strength": 55,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r11",
+        "source": "e3",
+        "target": "e5",
+        "label": "nahe",
+        "strength": 50,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r12",
+        "source": "e3",
+        "target": "e6",
+        "label": "nahe",
+        "strength": 45,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r13",
+        "source": "e3",
+        "target": "e7",
+        "label": "nahe",
+        "strength": 40,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r14",
+        "source": "e3",
+        "target": "e8",
+        "label": "nahe",
+        "strength": 35,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r15",
+        "source": "e3",
+        "target": "e9",
+        "label": "nahe",
+        "strength": 30,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      },
+      {
+        "id": "r16",
+        "source": "e3",
+        "target": "e10",
+        "label": "nahe",
+        "strength": 25,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": null
+        }
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "importance",
+          "function": "linear",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "position": {
+          "source": "position",
+          "function": "constant"
+        }
+      },
+      "global_edge": {
+        "thickness": {
+          "source": "strength",
+          "function": "linear",
+          "range": [
+            0.1,
+            1.5
+          ]
+        }
+      }
+    }
+  }
+}

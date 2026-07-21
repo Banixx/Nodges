@@ -1,0 +1,415 @@
+{
+  "system": "monde der planeten",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Visualisierung der Monde des Sonnensystems mit Fokus auf physikalische Eigenschaften und Beziehungen.",
+    "apiResponse": {
+      "id": "gen-1784644845-Zfq55kCOy87wVPtNlGbN",
+      "created": 1784644845,
+      "model": "morph/morph-v3-large",
+      "usage": {
+        "prompt_tokens": 2200,
+        "completion_tokens": 3015,
+        "total_tokens": 5215,
+        "cost": 0.0077085,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0077085,
+          "upstream_inference_prompt_cost": 0.00198,
+          "upstream_inference_completions_cost": 0.0057285
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Concept": {
+        "properties": {
+          "importance": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "position": {
+            "type": "spatial"
+          },
+          "kategorie": {
+            "type": "categorical"
+          },
+          "wikidata_id": {
+            "type": "categorical"
+          },
+          "masse": {
+            "type": "continuous"
+          },
+          "radius": {
+            "type": "continuous"
+          },
+          "temperatur": {
+            "type": "continuous"
+          },
+          "alter": {
+            "type": "continuous"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "related": {
+        "properties": {
+          "strength": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "validFrom": {
+            "type": "continuous"
+          },
+          "validTo": {
+            "type": "continuous"
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e1",
+        "type": "Concept",
+        "label": "Mond der Erde",
+        "importance": 80,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950,
+          "history": [
+            {
+              "timestamp": 1920,
+              "changes": {
+                "importance": 90
+              }
+            }
+          ]
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 7.342e+22,
+        "radius": 1737.4,
+        "temperatur": -20,
+        "alter": 4500000000
+      },
+      {
+        "id": "e2",
+        "type": "Concept",
+        "label": "Mond des Mars",
+        "importance": 60,
+        "position": {
+          "x": 10,
+          "y": 10,
+          "z": 10
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 13350000000000000,
+        "radius": 11.3,
+        "temperatur": -60,
+        "alter": 4500000000
+      },
+      {
+        "id": "e3",
+        "type": "Concept",
+        "label": "Mond des Jupiter",
+        "importance": 70,
+        "position": {
+          "x": 20,
+          "y": 20,
+          "z": 20
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 8.699e+22,
+        "radius": 2631.7,
+        "temperatur": -100,
+        "alter": 4500000000
+      },
+      {
+        "id": "e4",
+        "type": "Concept",
+        "label": "Mond des Saturn",
+        "importance": 50,
+        "position": {
+          "x": 30,
+          "y": 30,
+          "z": 30
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 1.621e+23,
+        "radius": 2576,
+        "temperatur": -150,
+        "alter": 4500000000
+      },
+      {
+        "id": "e5",
+        "type": "Concept",
+        "label": "Mond des Uranus",
+        "importance": 40,
+        "position": {
+          "x": 40,
+          "y": 40,
+          "z": 40
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 1.024e+23,
+        "radius": 2555.9,
+        "temperatur": -200,
+        "alter": 4500000000
+      },
+      {
+        "id": "e6",
+        "type": "Concept",
+        "label": "Mond des Neptun",
+        "importance": 30,
+        "position": {
+          "x": 50,
+          "y": 50,
+          "z": 50
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 2.014e+23,
+        "radius": 2462.2,
+        "temperatur": -220,
+        "alter": 4500000000
+      },
+      {
+        "id": "e7",
+        "type": "Concept",
+        "label": "Mond des Pluto",
+        "importance": 20,
+        "position": {
+          "x": 60,
+          "y": 60,
+          "z": 60
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 1.303e+22,
+        "radius": 1188.3,
+        "temperatur": -230,
+        "alter": 4500000000
+      },
+      {
+        "id": "e8",
+        "type": "Concept",
+        "label": "Mond des Venus",
+        "importance": 10,
+        "position": {
+          "x": 70,
+          "y": 70,
+          "z": 70
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 4.867e+22,
+        "radius": 6051.8,
+        "temperatur": 462,
+        "alter": 4500000000
+      },
+      {
+        "id": "e9",
+        "type": "Concept",
+        "label": "Mond des Merkur",
+        "importance": 5,
+        "position": {
+          "x": 80,
+          "y": 80,
+          "z": 80
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 3.301e+23,
+        "radius": 2439.7,
+        "temperatur": 430,
+        "alter": 4500000000
+      },
+      {
+        "id": "e10",
+        "type": "Concept",
+        "label": "Mond des Erde",
+        "importance": 90,
+        "position": {
+          "x": 90,
+          "y": 90,
+          "z": 90
+        },
+        "kategorie": "Mond",
+        "wikidata_id": "Q308",
+        "masse": 5.972e+24,
+        "radius": 6371,
+        "temperatur": 15,
+        "alter": 4500000000
+      }
+    ],
+    "relationships": [
+      {
+        "id": "r1",
+        "type": "related",
+        "source": "e1",
+        "target": "e2",
+        "label": "Beziehung zwischen Mond der Erde und Mond des Mars",
+        "strength": 60,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r2",
+        "type": "related",
+        "source": "e1",
+        "target": "e3",
+        "label": "Beziehung zwischen Mond der Erde und Mond des Jupiter",
+        "strength": 70,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r3",
+        "type": "related",
+        "source": "e1",
+        "target": "e4",
+        "label": "Beziehung zwischen Mond der Erde und Mond des Saturn",
+        "strength": 50,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r4",
+        "type": "related",
+        "source": "e1",
+        "target": "e5",
+        "label": "Beziehung zwischen Mond der Erde und Mond des Uranus",
+        "strength": 40,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r5",
+        "type": "related",
+        "source": "e1",
+        "target": "e6",
+        "label": "Beziehung zwischen Mond der Erde und Mond des Neptun",
+        "strength": 30,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r6",
+        "type": "related",
+        "source": "e1",
+        "target": "e7",
+        "label": "Beziehung zwischen Mond der Erde und Mond des Pluto",
+        "strength": 20,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r7",
+        "type": "related",
+        "source": "e1",
+        "target": "e8",
+        "label": "Beziehung zwischen Mond der Erde und Mond des Venus",
+        "strength": 10,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r8",
+        "type": "related",
+        "source": "e1",
+        "target": "e9",
+        "label": "Beziehung zwischen Mond der Erde und Mond des Merkur",
+        "strength": 5,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      },
+      {
+        "id": "r9",
+        "type": "related",
+        "source": "e1",
+        "target": "e10",
+        "label": "Beziehung zwischen Mond der Erde und Mond des Erde",
+        "strength": 90,
+        "temporal": {
+          "validFrom": 1900,
+          "validTo": 1950
+        }
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "importance",
+          "function": "linear",
+          "range": [
+            0.5,
+            3
+          ]
+        },
+        "position": {
+          "source": "position",
+          "function": "constant"
+        }
+      },
+      "global_edge": {
+        "thickness": {
+          "source": "strength",
+          "function": "linear",
+          "range": [
+            0.1,
+            1.5
+          ]
+        }
+      }
+    }
+  }
+}
