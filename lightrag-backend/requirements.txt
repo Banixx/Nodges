@@ -1,3 +1,5 @@
 fastapi
 uvicorn
 lightrag-hku
+pydantic
+python-dotenv

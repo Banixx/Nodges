@@ -5,6 +5,7 @@
 import { IStateManager } from '../core/interfaces';
 import type { App } from '../App';
 import { LLMService, LLMProvider, LLMModel } from '../utils/LLMService';
+import { LightRAGService } from '../utils/LightRAGService';
 import { deduplicateGraph, getSemanticSearchMatches } from '../utils/VectorStoreManager';
 import * as THREE from 'three';
 import pkg from '../../package.json';
@@ -423,6 +424,7 @@ export class CreatePanel {
         this.pipelineSelect.style.borderRadius = '4px';
 
         const pipelines = [
+            { value: 'build12_lightrag', label: 'Build 12: LightRAG (Lokaler Graph-RAG Microservice)' },
             { value: 'build10', label: 'Build 10 (Modulare Pipeline - Konfigurierbar)' },
             { value: 'build9', label: 'Build 9 (RAG & Vektorstore Deduplizierung)' },
             { value: 'build8', label: 'Build 8 (Semantic Web / Wikidata)' },
@@ -576,14 +578,87 @@ export class CreatePanel {
         });
         this.build10Container.appendChild(this.b10RatingSelect);
 
-        this.pipelineSelect.addEventListener('change', () => {
-            this.build10Container.style.display = this.pipelineSelect.value === 'build10' ? 'block' : 'none';
-        });
-
-        // Set initial visibility
-        this.build10Container.style.display = this.pipelineSelect.value === 'build10' ? 'block' : 'none';
-
         genSection.appendChild(this.build10Container);
+
+        // --- Build 12 LightRAG Modul Einstellungen ---
+        const lightragContainer = document.createElement('div');
+        lightragContainer.style.display = 'none';
+        lightragContainer.style.backgroundColor = 'rgba(0, 150, 255, 0.08)';
+        lightragContainer.style.border = '1px solid rgba(0, 150, 255, 0.2)';
+        lightragContainer.style.borderRadius = '4px';
+        lightragContainer.style.padding = '10px';
+        lightragContainer.style.marginBottom = '15px';
+
+        const lrTitle = document.createElement('h5');
+        lrTitle.textContent = 'Build 12 LightRAG Status & Aktionen:';
+        lrTitle.style.marginTop = '0';
+        lrTitle.style.marginBottom = '8px';
+        lrTitle.style.color = '#3498db';
+        lightragContainer.appendChild(lrTitle);
+
+        const lrStatusDiv = document.createElement('div');
+        lrStatusDiv.style.fontSize = '0.85em';
+        lrStatusDiv.style.marginBottom = '8px';
+        lrStatusDiv.style.color = 'var(--text-muted)';
+        lrStatusDiv.textContent = 'Server Status: Prüfe...';
+        lightragContainer.appendChild(lrStatusDiv);
+
+        const lrBtnRow = document.createElement('div');
+        lrBtnRow.style.display = 'flex';
+        lrBtnRow.style.gap = '8px';
+
+        const lrCheckBtn = document.createElement('button');
+        lrCheckBtn.className = 'action-button secondary';
+        lrCheckBtn.textContent = 'Server-Status prüfen';
+        lrCheckBtn.style.padding = '4px 8px';
+        lrCheckBtn.style.fontSize = '0.85em';
+        lrCheckBtn.onclick = async () => {
+            const status = await LightRAGService.checkHealth();
+            if (status.online) {
+                lrStatusDiv.textContent = `Server Status: Online (Engine: ${status.engineActive ? 'Aktiv' : 'Mock-Modus'})`;
+                lrStatusDiv.style.color = '#2ecc71';
+            } else {
+                lrStatusDiv.textContent = 'Server Status: Offline (http://localhost:8000 nicht erreichbar)';
+                lrStatusDiv.style.color = '#e74c3c';
+            }
+        };
+        lrBtnRow.appendChild(lrCheckBtn);
+
+        const lrInsertBtn = document.createElement('button');
+        lrInsertBtn.className = 'action-button primary';
+        lrInsertBtn.textContent = 'Text in KB einspeisen';
+        lrInsertBtn.style.padding = '4px 8px';
+        lrInsertBtn.style.fontSize = '0.85em';
+        lrInsertBtn.onclick = async () => {
+            const text = this.ragTextarea.value.trim();
+            if (!text) {
+                this.setStatus('Bitte gib zuerst Text im Kontextfeld ein.', 'error');
+                return;
+            }
+            try {
+                this.setStatus('Sende Text an LightRAG Knowledge Base...', 'info');
+                const res = await LightRAGService.insertText(text);
+                this.setStatus(`Einspeisung erfolgreich: ${res.message}`, 'success');
+            } catch (err: any) {
+                this.setStatus(`Fehler beim Einspeisen: ${err.message}`, 'error');
+            }
+        };
+        lrBtnRow.appendChild(lrInsertBtn);
+
+        lightragContainer.appendChild(lrBtnRow);
+        genSection.appendChild(lightragContainer);
+
+        const updatePipelineContainers = () => {
+            const val = this.pipelineSelect.value;
+            this.build10Container.style.display = val === 'build10' ? 'block' : 'none';
+            lightragContainer.style.display = val === 'build12_lightrag' ? 'block' : 'none';
+            if (val === 'build12_lightrag') {
+                lrCheckBtn.click();
+            }
+        };
+
+        this.pipelineSelect.addEventListener('change', updatePipelineContainers);
+        updatePipelineContainers();
 
         // --- Interaction Mode Slidebutton ---
         const genModeLabel = document.createElement('label');
@@ -1288,6 +1363,24 @@ export class CreatePanel {
                         }
                     }
                 );
+            } else if (pipeline === 'build12_lightrag') {
+                onProgressWithLog('Frage lokalen LightRAG Microservice an...');
+                if (ragText) {
+                    onProgressWithLog('Sende Rohdaten an LightRAG Knowledge Base...');
+                    await LightRAGService.insertText(ragText);
+                }
+                const lightRagResult = await LightRAGService.queryGraph(prompt, 'hybrid');
+                onProgressWithLog(`LightRAG Antwort empfangen: ${lightRagResult.answer.substring(0, 80)}...`);
+                graphData = {
+                    metadata: { schemaVersion: "5.0" },
+                    dataModel: { entities: {}, relationships: {} },
+                    visualMappings: { defaultPresets: {} },
+                    data: lightRagResult.graphData
+                };
+                if (saveSteps) {
+                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `1_LightRAG_Graph_${timestamp}.json`, 'application/json');
+                }
             } else if (pipeline === 'build6') {
                 graphData = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog, llmOptions);
                 if (saveSteps) {
