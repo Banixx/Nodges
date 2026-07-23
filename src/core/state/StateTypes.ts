@@ -217,7 +217,7 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     layer2Value: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
     layer3Value: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
     layer4Value: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
-    complexityMode: [STATE_CATEGORIES.UI],
+    complexityMode: [STATE_CATEGORIES.UI, STATE_CATEGORIES.DEV],
 
     // VisualState
     highlightedObjects: [STATE_CATEGORIES.HIGHLIGHT],

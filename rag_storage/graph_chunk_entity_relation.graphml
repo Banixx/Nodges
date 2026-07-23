@@ -1,0 +1,1837 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d13" for="edge" attr.name="truncate" attr.type="string" />
+  <key id="d12" for="edge" attr.name="created_at" attr.type="long" />
+  <key id="d11" for="edge" attr.name="file_path" attr.type="string" />
+  <key id="d10" for="edge" attr.name="source_id" attr.type="string" />
+  <key id="d9" for="edge" attr.name="keywords" attr.type="string" />
+  <key id="d8" for="edge" attr.name="description" attr.type="string" />
+  <key id="d7" for="edge" attr.name="weight" attr.type="double" />
+  <key id="d6" for="node" attr.name="truncate" attr.type="string" />
+  <key id="d5" for="node" attr.name="created_at" attr.type="long" />
+  <key id="d4" for="node" attr.name="file_path" attr.type="string" />
+  <key id="d3" for="node" attr.name="source_id" attr.type="string" />
+  <key id="d2" for="node" attr.name="description" attr.type="string" />
+  <key id="d1" for="node" attr.name="entity_type" attr.type="string" />
+  <key id="d0" for="node" attr.name="entity_id" attr.type="string" />
+  <graph edgedefault="undirected">
+    <node id="Ständerat">
+      <data key="d0">Ständerat</data>
+      <data key="d1">organization</data>
+      <data key="d2">The Ständerat is the upper house of the Swiss Federal Assembly, with representatives elected from the cantons, serving distinct legislative functions alongside the Nationalrat (National Council).&lt;SEP&gt;The Council of States, the second chamber of the Federal Assembly, representing the cantons in the Swiss legislative process with two members per canton.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Ständerätin">
+      <data key="d0">Ständerätin</data>
+      <data key="d1">person</data>
+      <data key="d2">A Ständerätin is a female member of the Ständerat, serving to represent the interests of her canton in the Swiss legislative process.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton">
+      <data key="d0">Kanton</data>
+      <data key="d1">location</data>
+      <data key="d2">The term Kanton refers to the administrative divisions of Switzerland, with each representing a region that elects representatives to the Ständerat.&lt;SEP&gt;Kantons are administrative divisions in Switzerland, each possessing unique legal and judicial systems, such as different levels of courts and judicial authorities. They have political autonomy and can regulate certain aspects independently.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Nationalrat">
+      <data key="d0">Nationalrat</data>
+      <data key="d1">organization</data>
+      <data key="d2">The Nationalrat is the lower house of the Swiss Federal Assembly, responsible for discussing and voting on legislative proposals, working alongside the Ständerat.&lt;SEP&gt;The National Council, a chamber of the Federal Assembly, composed of representatives elected to represent the Swiss population according to their demographic distribution.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Vereinigte Bundesversammlung">
+      <data key="d0">Vereinigte Bundesversammlung</data>
+      <data key="d1">event</data>
+      <data key="d2">The Vereinigte Bundesversammlung is a joint assembly of the Nationalrat and the Ständerat, convened for specific legislative purposes, such as elections of federal officials.&lt;SEP&gt;The joint assembly of the two houses of the Federal Assembly of Switzerland, responsible for electing federal judges.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bundesrat">
+      <data key="d0">Bundesrat</data>
+      <data key="d1">organization</data>
+      <data key="d2">The Bundesrat is the federal executive authority of Switzerland, consisting of seven members, each presiding over a department and collectively responsible for the government.&lt;SEP&gt;The Bundesrat is the collective executive body of the Swiss Federal Council, composed of members who oversee various departments and functions within the Swiss government. It does not function as a head of state but is considered the collective head of state of Switzerland.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bundespräsident">
+      <data key="d0">Bundespräsident</data>
+      <data key="d1">person</data>
+      <data key="d2">The Bundespräsident is the president of the Swiss Federal Council, elected annually from among its members to lead the government temporarily but does not serve as a head of state.&lt;SEP&gt;The President of the Swiss Confederation, serving as Primus inter Pares within the Federal Council, representing the council but not acting as a head of state.&lt;SEP&gt;The Bundespräsident is a member of the Bundesrat elected to serve as the President of the Swiss Federal Council for a one-year term, representing Switzerland at ceremonial functions but not holding the powers of a head of state.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-000&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Landsgemeinde">
+      <data key="d0">Landsgemeinde</data>
+      <data key="d1">event</data>
+      <data key="d2">The Landsgemeinde is a traditional assembly held annually in certain Swiss cantons, where citizens directly participate in legislative decisions.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kantonsvertretung">
+      <data key="d0">Kantonsvertretung</data>
+      <data key="d1">concept</data>
+      <data key="d2">Kantonsvertretung refers to the representation concept within the Swiss political system, indicating how cantonal interests are represented, though often deemed misleading in the context of the Ständerat.&lt;SEP&gt;The concept of representation of the cantons in the national parliament, exemplified by the Council of States.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Instruktionsverbot">
+      <data key="d0">Instruktionsverbot</data>
+      <data key="d1">concept</data>
+      <data key="d2">Instruktionsverbot is the principle that members of the Ständerat and Nationalrat are not bound by instructions from cantons or political parties during the execution of their mandates, allowing independence in their legislative processes.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Schweizerische Eidgenossenschaft">
+      <data key="d0">Schweizerische Eidgenossenschaft</data>
+      <data key="d1">concept</data>
+      <data key="d2">The Swiss Confederation, operating with a unique system that combines elements of both parliamentary and presidential democracy, known for its directorial system and attributes that distinguish it from other modern democratic models.&lt;SEP&gt;The Schweizerische Eidgenossenschaft, known as the Swiss Confederation, is the federal state of Switzerland that governs the country along with its cantonal entities.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Föderalismus">
+      <data key="d0">Föderalismus</data>
+      <data key="d1">concept</data>
+      <data key="d2">Federalism in Switzerland, characterized by significant autonomy among the cantons, allowing them to grant their municipalities considerable leeway and involvement in political decision-making.&lt;SEP&gt;Föderalismus refers to the political system in Switzerland that divides authority between the federal government and cantonal governments, emphasizing autonomy and collaboration.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Direkte Demokratie">
+      <data key="d0">Direkte Demokratie</data>
+      <data key="d1">concept</data>
+      <data key="d2">Direct democracy in Switzerland, enabling citizens to influence government actions through initiatives and referendums, impacting government activity at various levels.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Volksrechte">
+      <data key="d0">Volksrechte</data>
+      <data key="d1">concept</data>
+      <data key="d2">The rights of citizens in Switzerland, rooted in both assembly and ballot democracy, performing functions that include control, initiation, and legitimization of political processes.&lt;SEP&gt;The Volksrechte, or popular rights, represent the rights of citizens to participate in decision-making processes in Switzerland, including various forms of democratic participation such as voting and referendums.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Gewaltenteilung">
+      <data key="d0">Gewaltenteilung</data>
+      <data key="d1">concept</data>
+      <data key="d2">The principle of separation of powers in Switzerland, ensuring that the government cannot be dismissed between elections, and the parliament cannot be dissolved by the government.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bundesversammlung">
+      <data key="d0">Bundesversammlung</data>
+      <data key="d1">organization</data>
+      <data key="d2">The Federal Assembly of Switzerland, consisting of two chambers, the National Council and the Council of States, serving as the Swiss parliament.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Schweizer Regierung">
+      <data key="d0">Schweizer Regierung</data>
+      <data key="d1">organization</data>
+      <data key="d2">The Swiss government known as the Federal Council, designed as a collegiate body without a single head of state, emphasizing shared leadership.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Staatliche Ebenen">
+      <data key="d0">Staatliche Ebenen</data>
+      <data key="d1">concept</data>
+      <data key="d2">The three political levels of Switzerland: Municipality, Canton, and Federation, where districts are part of state administrative structures without independent political authority.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bund">
+      <data key="d0">Bund</data>
+      <data key="d1">concept</data>
+      <data key="d2">The federation encompassing all Swiss cantons, representing the highest political level in Switzerland and possessing overall legislative competence.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Parlament">
+      <data key="d0">Parlament</data>
+      <data key="d1">organization</data>
+      <data key="d2">The legislative body in Switzerland, referred to as the Federal Assembly, comprised of the National Council and the Council of States, with each serving specific roles in governance.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="schweizerische Bundesverfassung">
+      <data key="d0">schweizerische Bundesverfassung</data>
+      <data key="d1">content</data>
+      <data key="d2">The Swiss Federal Constitution, which was established in 1848, serves as the fundamental legal document for Switzerland, subject to continuous revision and major renewals in 1874 and 1999.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kantone">
+      <data key="d0">Kantone</data>
+      <data key="d1">location</data>
+      <data key="d2">The cantons of Switzerland, which are semi-autonomous regions playing a crucial role in the federal system and enjoying significant powers of self-government.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bezirke">
+      <data key="d0">Bezirke</data>
+      <data key="d1">location</data>
+      <data key="d2">Districts within cantons that serve administrative functions but do not possess political autonomy.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Volksvertretung">
+      <data key="d0">Volksvertretung</data>
+      <data key="d1">concept</data>
+      <data key="d2">The concept of popular representation within the Swiss political system, exemplified by the National Council as the voice of the citizenry.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Interpellation">
+      <data key="d0">Interpellation</data>
+      <data key="d1">concept</data>
+      <data key="d2">A parliamentary procedure in Switzerland that allows legislators to question government actions and seek clarification.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Motion">
+      <data key="d0">Motion</data>
+      <data key="d1">concept</data>
+      <data key="d2">A proposal submitted in parliament to express the opinion or request actions from the government.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Postulat">
+      <data key="d0">Postulat</data>
+      <data key="d1">concept</data>
+      <data key="d2">A formal request in the Swiss parliament that urges the government to investigate a particular issue or situation.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Subsidiarität">
+      <data key="d0">Subsidiarität</data>
+      <data key="d1">concept</data>
+      <data key="d2">The principle of subsidiarity in Swiss governance, emphasizing that decisions should be taken at the most local level possible unless they require higher authority.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Urnengang">
+      <data key="d0">Urnengang</data>
+      <data key="d1">concept</data>
+      <data key="d2">The process of voting in Switzerland, particularly in relation to direct democracy mechanisms.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Schweizer Demokratie">
+      <data key="d0">Schweizer Demokratie</data>
+      <data key="d1">concept</data>
+      <data key="d2">The Swiss democracy is fundamentally representative, involving citizens directly in legislative processes and reflecting a complex relationship between parliamentary and direct democratic elements since its total revision in 1874.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bundesverfassung">
+      <data key="d0">Bundesverfassung</data>
+      <data key="d1">content</data>
+      <data key="d2">Bundesverfassung is the Federal Constitution of Switzerland, outlining the country's fundamental laws, including the principles of federalism and the distribution of powers between the canton and the federal level.&lt;SEP&gt;The Bundesverfassung is the Federal Constitution of Switzerland, which is subject to changes that require a popular vote and is primarily determined by the parliament.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Volksinitiative">
+      <data key="d0">Volksinitiative</data>
+      <data key="d1">method</data>
+      <data key="d2">The Volksinitiative is a method allowing a certain number of Swiss citizens (100,000) to propose changes to the federal constitution by gathering signatures for a popular vote.&lt;SEP&gt;A procedural method in Switzerland that allows citizens to propose changes to the constitution or legislation, requiring a certain number of signatures for consideration.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Referendumsrecht">
+      <data key="d0">Referendumsrecht</data>
+      <data key="d1">method</data>
+      <data key="d2">The Referendumsrecht is the right of the populace to challenge parliamentary decisions through a subsequent referendum, where they can either confirm or annul those decisions.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Wahlrecht">
+      <data key="d0">Wahlrecht</data>
+      <data key="d1">method</data>
+      <data key="d2">The Wahlrecht is the voting right in Switzerland granting all Swiss citizens aged 18 and above, including those residing abroad, the ability to vote in elections unless disqualified for specific reasons.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Stimmrecht">
+      <data key="d0">Stimmrecht</data>
+      <data key="d1">method</data>
+      <data key="d2">The Stimmrecht is the right of eligible voters to vote on local, cantonal, and national proposals, allowing direct participation in the legislative process.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kantonale Rechte">
+      <data key="d0">Kantonale Rechte</data>
+      <data key="d1">concept</data>
+      <data key="d2">The kantonale Rechte refers to the rights of the citizens at the cantonal level in Switzerland, which often surpass those at the federal level, allowing for greater participation in governance.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Gesetzesinitiative">
+      <data key="d0">Gesetzesinitiative</data>
+      <data key="d1">method</data>
+      <data key="d2">The Gesetzesinitiative is a method that enables citizens to propose new laws or amendments to existing ones, requiring fewer signatures than constitutional changes, thereby facilitating local governance.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Finanzreferendum">
+      <data key="d0">Finanzreferendum</data>
+      <data key="d1">method</data>
+      <data key="d2">The Finanzreferendum is a type of referendum concerning the approval of specific financial expenditures, which can be either mandatory or optional based on cantonal regulations.&lt;SEP&gt;A type of referendum related to financial matters in Swiss cantons, which may be optional or mandatory depending on expenditure thresholds defined by cantonal constitutions.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Stimmberechtigte">
+      <data key="d0">Stimmberechtigte</data>
+      <data key="d1">person</data>
+      <data key="d2">The Stimmberechtigte refers to eligible voters in Switzerland who meet the criteria to participate in elections and referendums.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Vizepräsident">
+      <data key="d0">Vizepräsident</data>
+      <data key="d1">person</data>
+      <data key="d2">The Vizepräsident is a member of the Bundesrat elected to serve as the Vice President of the Swiss Federal Council for a one-year term, assisting the Bundespräsident in ceremonial duties.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bundeskanzlei">
+      <data key="d0">Bundeskanzlei</data>
+      <data key="d1">organization</data>
+      <data key="d2">The Bundeskanzlei is the Federal Chancellery of Switzerland, responsible for the central coordination and communication between the government, administration, parliament, and the public. It is led by the Bundeskanzler.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bundeskanzler">
+      <data key="d0">Bundeskanzler</data>
+      <data key="d1">person</data>
+      <data key="d2">The Bundeskanzler is the head of the Bundeskanzlei, attending all meetings of the Bundesrat without voting rights and overseeing the preparation of council meetings.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Guy Parmelin">
+      <data key="d0">Guy Parmelin</data>
+      <data key="d1">person</data>
+      <data key="d2">Guy Parmelin is a member of the Bundesrat from the canton of Vaud and serves as the Bundespräsident for 2026.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Ignazio Cassis">
+      <data key="d0">Ignazio Cassis</data>
+      <data key="d1">person</data>
+      <data key="d2">Ignazio Cassis is a member of the Bundesrat from the canton of Ticino and serves as the Vizepräsident for 2026.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Karin Keller-Sutter">
+      <data key="d0">Karin Keller-Sutter</data>
+      <data key="d1">person</data>
+      <data key="d2">Karin Keller-Sutter is a member of the Bundesrat from the canton of St. Gallen.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Albert Rösti">
+      <data key="d0">Albert Rösti</data>
+      <data key="d1">person</data>
+      <data key="d2">Albert Rösti is a member of the Bundesrat from the canton of Bern.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Elisabeth Baume-Schneider">
+      <data key="d0">Elisabeth Baume-Schneider</data>
+      <data key="d1">person</data>
+      <data key="d2">Elisabeth Baume-Schneider is a member of the Bundesrat from the canton of Jura.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Beat Jans">
+      <data key="d0">Beat Jans</data>
+      <data key="d1">person</data>
+      <data key="d2">Beat Jans is a member of the Bundesrat from the canton of Basel-Stadt.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Martin Pfister">
+      <data key="d0">Martin Pfister</data>
+      <data key="d1">person</data>
+      <data key="d2">Martin Pfister is a member of the Bundesrat from the canton of Zug.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Regierungsrat">
+      <data key="d0">Regierungsrat</data>
+      <data key="d1">organization</data>
+      <data key="d2">The Regierungsrat is the executive body in most German-speaking cantons of Switzerland, functioning similarly to the Bundesrat at the cantonal level.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Staatsrat">
+      <data key="d0">Staatsrat</data>
+      <data key="d1">organization</data>
+      <data key="d2">The Staatsrat is the executive body in predominantly French-speaking cantons and the canton of Ticino, analogous to the Bundesrat.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Standeskommission">
+      <data key="d0">Standeskommission</data>
+      <data key="d1">organization</data>
+      <data key="d2">The Standeskommission is the executive body in the canton of Appenzell Innerrhoden, serving a similar function as the Bundesrat.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Primus inter Pares">
+      <data key="d0">Primus inter Pares</data>
+      <data key="d1">person</data>
+      <data key="d2">The Primus inter Pares is a title given to a member of the cantonal executive who leads the government meetings for one year without being termed a governmental leader.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Gericht">
+      <data key="d0">Gericht</data>
+      <data key="d1">other</data>
+      <data key="d2">Gericht refers to various types of courts within the Swiss legal system, including first-instance courts, second-instance courts, and specialized courts for different legal matters.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Obergericht">
+      <data key="d0">Obergericht</data>
+      <data key="d1">other</data>
+      <data key="d2">Obergericht is the term for a second-instance court in many Swiss cantons, responsible for appeals from lower courts.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Appellationsgericht">
+      <data key="d0">Appellationsgericht</data>
+      <data key="d1">other</data>
+      <data key="d2">Appellationsgericht is a type of appellate court that handles civil law disputes, existing in some cantons such as Basel-Stadt and Ticino.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Cour de justice">
+      <data key="d0">Cour de justice</data>
+      <data key="d1">other</data>
+      <data key="d2">Cour de justice is a type of court specific to the canton of Geneva, responsible for legal adjudications.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Zwangsmassnahmengerichte">
+      <data key="d0">Zwangsmassnahmengerichte</data>
+      <data key="d1">other</data>
+      <data key="d2">Zwangsmassnahmengerichte are courts responsible for the issuance of coercive measures related to investigations and security detention in various cantons.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Verwaltungsgericht">
+      <data key="d0">Verwaltungsgericht</data>
+      <data key="d1">other</data>
+      <data key="d2">Verwaltungsgericht refers to administrative courts that manage public law disputes in larger cantons, distinct from other judicial entities.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Spezialverwaltungsgerichte">
+      <data key="d0">Spezialverwaltungsgerichte</data>
+      <data key="d1">other</data>
+      <data key="d2">Spezialverwaltungsgerichte are specialized administrative courts for unique legal matters, such as building or tax appeals.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Jugendgerichte">
+      <data key="d0">Jugendgerichte</data>
+      <data key="d1">other</data>
+      <data key="d2">Jugendgerichte are specialized courts dealing with youth-related legal issues, commonly found across various cantons.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Strafgericht">
+      <data key="d0">Strafgericht</data>
+      <data key="d1">other</data>
+      <data key="d2">Strafgericht specifically refers to courts that address criminal cases in certain cantons, handling serious offenses by replacing district or higher courts.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kassationsgericht">
+      <data key="d0">Kassationsgericht</data>
+      <data key="d1">other</data>
+      <data key="d2">Kassationsgericht is a court of cassation that reviewed appeals before its elimination in 2011, formally addressing procedural legal matters.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Verfassungsgericht">
+      <data key="d0">Verfassungsgericht</data>
+      <data key="d1">other</data>
+      <data key="d2">Verfassungsgericht pertains to constitutional courts that some cantons, like Basel-Stadt, Geneva, and Jura, have established to oversee constitutional matters.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="direkte Demokratie">
+      <data key="d0">direkte Demokratie</data>
+      <data key="d1">concept</data>
+      <data key="d2">Direkte Demokratie denotes a form of democratic governance where citizens can directly participate in decision-making processes, complemented by representative elements.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="repräsentative Demokratie">
+      <data key="d0">repräsentative Demokratie</data>
+      <data key="d1">concept</data>
+      <data key="d2">Repräsentative Demokratie is a system of governance where elected representatives make decisions on behalf of the citizens, central to the functioning of the Swiss state.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Zürich">
+      <data key="d0">Kanton Zürich</data>
+      <data key="d1">location</data>
+      <data key="d2">A geographic region in Switzerland known for its unique political instruments such as the Einzelinitiative, which allows individual initiatives regarding constitutional or legal changes.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Freiburg">
+      <data key="d0">Kanton Freiburg</data>
+      <data key="d1">location</data>
+      <data key="d2">A canton in western Switzerland, known for its bilingual population and varied cultural heritage.&lt;SEP&gt;A canton in Switzerland that historically maintained a representative democratic government longer than others, until it was replaced by direct-democratic institutions in 1918.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Schaffhausen">
+      <data key="d0">Kanton Schaffhausen</data>
+      <data key="d1">location</data>
+      <data key="d2">A canton in northern Switzerland, known for the Rhine Falls and its historic town.&lt;SEP&gt;A canton in Switzerland that recognizes the Volksmotion, which allows a specified number of people to submit a motion to the cantonal parliament.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Solothurn">
+      <data key="d0">Kanton Solothurn</data>
+      <data key="d1">location</data>
+      <data key="d2">A canton in the northwest of Switzerland, recognized for its historical architecture and natural beauty.&lt;SEP&gt;A canton in Switzerland that has adopted the Volksmotion, enabling a certain number of individuals to submit motions to the cantonal parliament.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Appenzell Innerrhoden">
+      <data key="d0">Kanton Appenzell Innerrhoden</data>
+      <data key="d1">location</data>
+      <data key="d2">A canton in Switzerland, known for its traditional rural culture and direct democracy practices.&lt;SEP&gt;A Swiss canton that recognizes the right of the Einzelinitiative, requiring personal initiatives to be presented to the Landsgemeinde.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Glarus">
+      <data key="d0">Kanton Glarus</data>
+      <data key="d1">location</data>
+      <data key="d2">A Swiss canton that also requires personal initiatives to be presented to the Landsgemeinde under the Einzelinitiative system.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Appenzell Ausserrhoden">
+      <data key="d0">Kanton Appenzell Ausserrhoden</data>
+      <data key="d1">location</data>
+      <data key="d2">A canton in Switzerland that features the Volksdiskussion, allowing every resident to express their opinion on legislative proposals.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Bern">
+      <data key="d0">Kanton Bern</data>
+      <data key="d1">location</data>
+      <data key="d2">A canton in Switzerland that recognizes the constructive referendum, enabling citizens to introduce alternatives to parliamentary proposals.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Nidwalden">
+      <data key="d0">Kanton Nidwalden</data>
+      <data key="d1">location</data>
+      <data key="d2">A canton in Switzerland that has implemented the constructive referendum since 1996, similar to Kanton Bern.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Basel-Landschaft">
+      <data key="d0">Kanton Basel-Landschaft</data>
+      <data key="d1">location</data>
+      <data key="d2">A Swiss canton that employs a mixed approach to referendums, allowing certain laws passed by a majority in the cantonal parliament to undergo optional referendum.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kantonsrat">
+      <data key="d0">Kantonsrat</data>
+      <data key="d1">organization</data>
+      <data key="d2">The cantonal parliament in Switzerland where members can propose various legislative initiatives and motions.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Volksabstimmung">
+      <data key="d0">Volksabstimmung</data>
+      <data key="d1">event</data>
+      <data key="d2">A form of direct democratic decision-making in Switzerland where citizens vote on specific legislative proposals or changes.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Einzelinitiative">
+      <data key="d0">Einzelinitiative</data>
+      <data key="d1">method</data>
+      <data key="d2">A procedural method in Switzerland allowing individuals to propose amendments to the constitution or laws, requiring the support of other members.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Volksmotion">
+      <data key="d0">Volksmotion</data>
+      <data key="d1">method</data>
+      <data key="d2">A procedural mechanism enabling a specified number of individuals to submit motions to the cantonal parliament.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Volksdiskussion">
+      <data key="d0">Volksdiskussion</data>
+      <data key="d1">method</data>
+      <data key="d2">A democratic instrument that allows residents to voice their opinions on legislative proposals before the cantonal parliament.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="konstruktives Referendum">
+      <data key="d0">konstruktives Referendum</data>
+      <data key="d1">method</data>
+      <data key="d2">A procedure that allows citizens to propose alternative legislative options for consideration in conjunction with parliamentary proposals.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Abstimmungen">
+      <data key="d0">Abstimmungen</data>
+      <data key="d1">event</data>
+      <data key="d2">Periodic voting events where Swiss citizens participate to decide on various political matters.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kantonsverfassungen">
+      <data key="d0">Kantonsverfassungen</data>
+      <data key="d1">concept</data>
+      <data key="d2">The constitutions of the cantons in Switzerland that outline the regulations and legal frameworks guiding governance and public participation, including provisions for referendums.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Wahlbeteiligung">
+      <data key="d0">Wahlbeteiligung</data>
+      <data key="d1">concept</data>
+      <data key="d2">The level of participation of eligible voters in elections and referendums in Switzerland, often measured by the percentage of voters who cast ballots.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Schweiz">
+      <data key="d0">Schweiz</data>
+      <data key="d1">location</data>
+      <data key="d2">A country in Central Europe known for its mountainous terrain and political neutrality.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Lausanne">
+      <data key="d0">Lausanne</data>
+      <data key="d1">location</data>
+      <data key="d2">A city in Switzerland, located on the shores of Lake Geneva, known for its educational institutions and as a hub for international organizations.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Luzern">
+      <data key="d0">Luzern</data>
+      <data key="d1">location</data>
+      <data key="d2">A city in central Switzerland, known for its preserved medieval architecture and as a gateway to the Swiss Alps.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bellinzona">
+      <data key="d0">Bellinzona</data>
+      <data key="d1">location</data>
+      <data key="d2">A city in southern Switzerland, known for its medieval castles and as the capital of the canton of Ticino.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="St. Gallen">
+      <data key="d0">St. Gallen</data>
+      <data key="d1">location</data>
+      <data key="d2">A city in eastern Switzerland, recognized for its rich history and as the capital of the canton of St. Gallen.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bern">
+      <data key="d0">Bern</data>
+      <data key="d1">location</data>
+      <data key="d2">The capital city of Switzerland, known for its well-preserved medieval city center and political significance.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Zollikofen">
+      <data key="d0">Zollikofen</data>
+      <data key="d1">location</data>
+      <data key="d2">A municipality in the canton of Bern, situated close to the city of Bern.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Luzern">
+      <data key="d0">Kanton Luzern</data>
+      <data key="d1">location</data>
+      <data key="d2">A canton in central Switzerland, noted for its beautiful lakes and mountains.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Tessin">
+      <data key="d0">Kanton Tessin</data>
+      <data key="d1">location</data>
+      <data key="d2">A canton in southern Switzerland, known for its Italian-speaking population and Mediterranean climate.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Waadt">
+      <data key="d0">Kanton Waadt</data>
+      <data key="d1">location</data>
+      <data key="d2">A canton in western Switzerland, recognized for its wine production and as a center of education.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Basel-Stadt">
+      <data key="d0">Kanton Basel-Stadt</data>
+      <data key="d1">location</data>
+      <data key="d2">A canton in northwestern Switzerland, home to the city of Basel, known for its cultural institutions and position on the Rhine River.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Uri">
+      <data key="d0">Kanton Uri</data>
+      <data key="d1">location</data>
+      <data key="d2">A canton in central Switzerland, known for its mountainous landscape and traditional tourism.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Thurgau">
+      <data key="d0">Kanton Thurgau</data>
+      <data key="d1">location</data>
+      <data key="d2">A canton in northeastern Switzerland, known for its agriculture and location along Lake Constance.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Eidgenössisches Versicherungsgericht">
+      <data key="d0">Eidgenössisches Versicherungsgericht</data>
+      <data key="d1">organization</data>
+      <data key="d2">A former federal court in Switzerland, responsible for social insurance cases, now integrated into the Federal Court in Lausanne.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bundesgericht">
+      <data key="d0">Bundesgericht</data>
+      <data key="d1">organization</data>
+      <data key="d2">The federal supreme court of Switzerland with jurisdiction over civil and criminal law, located in Lausanne.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bundesstrafgericht">
+      <data key="d0">Bundesstrafgericht</data>
+      <data key="d1">organization</data>
+      <data key="d2">The federal criminal court in Switzerland, established to handle serious offenses, located in Bellinzona.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bundesverwaltungsgericht">
+      <data key="d0">Bundesverwaltungsgericht</data>
+      <data key="d1">organization</data>
+      <data key="d2">The federal administrative court in Switzerland, responsible for disputes involving federal administration, first located in Bern and later moved to St. Gallen.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Bundespatentgericht">
+      <data key="d0">Bundespatentgericht</data>
+      <data key="d1">organization</data>
+      <data key="d2">The federal patent court in Switzerland, established for handling patent disputes, located in St. Gallen.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Eidgenössische Schätzungskommission">
+      <data key="d0">Eidgenössische Schätzungskommission</data>
+      <data key="d1">organization</data>
+      <data key="d2">An official federal commission in Switzerland dealing with appraisals, recognized as a federal court.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Regierender Landammann">
+      <data key="d0">Regierender Landammann</data>
+      <data key="d1">other</data>
+      <data key="d2">The title held by a member of the government of Appenzell Innerrhoden, serving as the head of the cantonal government.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Schultheiss">
+      <data key="d0">Schultheiss</data>
+      <data key="d1">other</data>
+      <data key="d2">A title for the head of government in the Canton of Lucerne up until 2007.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Regierungspräsident">
+      <data key="d0">Regierungspräsident</data>
+      <data key="d1">other</data>
+      <data key="d2">The title for the rotating president of the cantonal government in Switzerland, assumed for one year.</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799658</data>
+      <data key="d6" />
+    </node>
+    <node id="Kanton Baselland">
+      <data key="d0">Kanton Baselland</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d2">The canton of Baselland is neighboring the canton of Basel-Stadt.</data>
+      <data key="d1">UNKNOWN</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799659</data>
+      <data key="d6" />
+    </node>
+    <node id="Appenzell Innerrhoden">
+      <data key="d0">Appenzell Innerrhoden</data>
+      <data key="d3">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d2">The Regierender Landammann governs the Canton of Appenzell Innerrhoden.</data>
+      <data key="d1">UNKNOWN</data>
+      <data key="d4">unknown_source</data>
+      <data key="d5">1784799659</data>
+      <data key="d6" />
+    </node>
+    <edge source="Ständerat" target="Nationalrat">
+      <data key="d7">2.0</data>
+      <data key="d8">The Nationalrat and Ständerat collaborate in the legislative process, convening separately for discussions and jointly in the Vereinigte Bundesversammlung.&lt;SEP&gt;Both the Ständerat and Nationalrat legislate together, treating constitutional amendments and laws that must be approved by both houses.</data>
+      <data key="d9">collaborate,convene,legislate</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799658</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Ständerat" target="Kanton">
+      <data key="d7">1.0</data>
+      <data key="d8">The Ständerat represents the interests of the cantons in the Swiss Federal Assembly, although it does not have direct instructions from them.</data>
+      <data key="d9">represent</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799658</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Ständerat" target="Kantonsvertretung">
+      <data key="d7">1.0</data>
+      <data key="d8">The Ständerat functions under the concept of Kantonsvertretung, although it is stated that members are not legally obligated to represent their cantons or take instructions from them.</data>
+      <data key="d9">function</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799658</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Ständerat" target="Instruktionsverbot">
+      <data key="d7">1.0</data>
+      <data key="d8">The Ständerat operates under the principle of Instruktionsverbot, which ensures that its members maintain autonomy in decision-making, independent of external pressures.</data>
+      <data key="d9">guided by</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Ständerat" target="Parlament">
+      <data key="d7">1.0</data>
+      <data key="d8">The Council of States also constitutes one of the two key chambers within the Swiss parliament.</data>
+      <data key="d9">is part of</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton" target="Landsgemeinde">
+      <data key="d7">1.0</data>
+      <data key="d8">In some cantons, governance is facilitated through the Landsgemeinde, which serves as the highest legislative body for direct public involvement.</data>
+      <data key="d9">govern</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799658</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton" target="Gericht">
+      <data key="d7">1.0</data>
+      <data key="d8">Each Kanton includes various types of Gerichte, serving different legal functions.</data>
+      <data key="d9">consistsof,includes</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton" target="Obergericht">
+      <data key="d7">1.0</data>
+      <data key="d8">In many Kantons, the second-instance court is designated as an Obergericht.</data>
+      <data key="d9">designates</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton" target="Appellationsgericht">
+      <data key="d7">1.0</data>
+      <data key="d8">In the canton of Basel-Stadt, the second-instance court is designated as Appellationsgericht.</data>
+      <data key="d9">designates</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton" target="Cour de justice">
+      <data key="d7">1.0</data>
+      <data key="d8">In the canton of Geneva, legal matters are managed by the Cour de justice.</data>
+      <data key="d9">designates</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton" target="Zwangsmassnahmengerichte">
+      <data key="d7">1.0</data>
+      <data key="d8">Each Kanton has Zwangsmassnahmengerichte responsible for coercive legal measures.</data>
+      <data key="d9">includes</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton" target="Verwaltungsgericht">
+      <data key="d7">1.0</data>
+      <data key="d8">Larger Kantons have a self-organized Verwaltungsgericht for administrative jurisdiction.</data>
+      <data key="d9">has</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton" target="Spezialverwaltungsgerichte">
+      <data key="d7">1.0</data>
+      <data key="d8">Certain Kantons include spezialverwaltungsgerichte for specific administrative cases.</data>
+      <data key="d9">includes</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton" target="Jugendgerichte">
+      <data key="d7">1.0</data>
+      <data key="d8">Several Kantons contain Jugendgerichte that deal with youth issues.</data>
+      <data key="d9">contains</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton" target="Strafgericht">
+      <data key="d7">1.0</data>
+      <data key="d8">In certain Kantons, the Strafgericht replaces the Bezirksgericht or Obergericht for serious criminal cases.</data>
+      <data key="d9">replaces</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton" target="Kassationsgericht">
+      <data key="d7">1.0</data>
+      <data key="d8">Some Kantons previously included a Kassationsgericht until 2011.</data>
+      <data key="d9">previously included</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton" target="Verfassungsgericht">
+      <data key="d7">1.0</data>
+      <data key="d8">The Kantons of Basel-Stadt, Geneva, and Jura have established a Verfassungsgericht for constitutional matters.</data>
+      <data key="d9">has</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Nationalrat" target="Parlament">
+      <data key="d7">1.0</data>
+      <data key="d8">The National Council functions as one of the two chambers within the Swiss parliament structure.</data>
+      <data key="d9">is part of</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Vereinigte Bundesversammlung" target="Bundesrat">
+      <data key="d7">1.0</data>
+      <data key="d8">The Vereinigte Bundesversammlung is responsible for electing members of the Bundesrat, as well as the Bundespräsident and other federal officials.</data>
+      <data key="d9">elect</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799658</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Bundespräsident">
+      <data key="d7">2.0</data>
+      <data key="d8">The Bundesrat collectively leads the Swiss executive government, while the Bundespräsident is elected from its members to preside among equals.&lt;SEP&gt;The Bundesrat elects one of its members to the position of Bundespräsident for a one-year term.</data>
+      <data key="d9">election,lead</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-001&lt;SEP&gt;doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799658</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Vizepräsident">
+      <data key="d7">1.0</data>
+      <data key="d8">The Bundesrat elects one of its members to the role of Vizepräsident for a one-year term, often following the term of the Bundespräsident.</data>
+      <data key="d9">election</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Bundeskanzlei">
+      <data key="d7">1.0</data>
+      <data key="d8">The Bundesrat is responsible for the functioning and decision-making processes in conjunction with the Bundeskanzlei.</data>
+      <data key="d9">responsibility</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Guy Parmelin">
+      <data key="d7">1.0</data>
+      <data key="d8">Guy Parmelin is a member of the Bundesrat representing the canton of Vaud and holds the position of Bundespräsident for 2026.</data>
+      <data key="d9">membership</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Ignazio Cassis">
+      <data key="d7">1.0</data>
+      <data key="d8">Ignazio Cassis is a member of the Bundesrat representing the canton of Ticino and serves as the Vizepräsident for 2026.</data>
+      <data key="d9">membership</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Karin Keller-Sutter">
+      <data key="d7">1.0</data>
+      <data key="d8">Karin Keller-Sutter is a member of the Bundesrat representing the canton of St. Gallen.</data>
+      <data key="d9">membership</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Albert Rösti">
+      <data key="d7">1.0</data>
+      <data key="d8">Albert Rösti is a member of the Bundesrat representing the canton of Bern.</data>
+      <data key="d9">membership</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Elisabeth Baume-Schneider">
+      <data key="d7">1.0</data>
+      <data key="d8">Elisabeth Baume-Schneider is a member of the Bundesrat representing the canton of Jura.</data>
+      <data key="d9">membership</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Beat Jans">
+      <data key="d7">1.0</data>
+      <data key="d8">Beat Jans is a member of the Bundesrat representing the canton of Basel-Stadt.</data>
+      <data key="d9">membership</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Martin Pfister">
+      <data key="d7">1.0</data>
+      <data key="d8">Martin Pfister is a member of the Bundesrat representing the canton of Zug.</data>
+      <data key="d9">membership</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Regierungsrat">
+      <data key="d7">1.0</data>
+      <data key="d8">The Bundesrat functions similarly to the Regierungsrat at the federal level in Switzerland.</data>
+      <data key="d9">similarity</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Staatsrat">
+      <data key="d7">1.0</data>
+      <data key="d8">The Bundesrat functions similarly to the Staatsrat at the cantonal level in Switzerland.</data>
+      <data key="d9">similarity</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Standeskommission">
+      <data key="d7">1.0</data>
+      <data key="d8">The Bundesrat functions similarly to the Standeskommission in Appenzell Innerrhoden at the cantonal level.</data>
+      <data key="d9">similarity</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesrat" target="Schweizerische Eidgenossenschaft">
+      <data key="d7">1.0</data>
+      <data key="d8">The Bundesrat acts as the executive governing body of the Schweizerische Eidgenossenschaft, overseeing national matters.</data>
+      <data key="d9">governs</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundespräsident" target="Schweizer Regierung">
+      <data key="d7">1.0</data>
+      <data key="d8">The President of the Swiss Confederation represents the Swiss government in official matters.</data>
+      <data key="d9">represents</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kantonsvertretung" target="Volksvertretung">
+      <data key="d7">1.0</data>
+      <data key="d8">Distinguishes the representation of the general populace in the National Council from that of cantons in the Council of States.</data>
+      <data key="d9">distinguishes</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Schweizerische Eidgenossenschaft" target="Föderalismus">
+      <data key="d7">1.0</data>
+      <data key="d8">Describes the federal structure and autonomy of cantons within the Swiss Confederation.</data>
+      <data key="d9">characterizes</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799658</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Föderalismus" target="Direkte Demokratie">
+      <data key="d7">1.0</data>
+      <data key="d8">Enables direct involvement of citizens in government through democratic mechanisms within the framework of federalism.</data>
+      <data key="d9">enables</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799658</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Föderalismus" target="Bundesverfassung">
+      <data key="d7">1.0</data>
+      <data key="d8">The Bundesverfassung describes the principles of Föderalismus in Switzerland.</data>
+      <data key="d9">describes</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Direkte Demokratie" target="Volksrechte">
+      <data key="d7">1.0</data>
+      <data key="d8">Correlates the implementation of citizen rights with direct democratic practices.</data>
+      <data key="d9">rooted in</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Direkte Demokratie" target="Urnengang">
+      <data key="d7">1.0</data>
+      <data key="d8">The voting process is integral to the functioning of direct democracy in Switzerland.</data>
+      <data key="d9">integral to</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksrechte" target="Gewaltenteilung">
+      <data key="d7">1.0</data>
+      <data key="d8">Ensures the respect for citizen rights through independent government structures as defined by the principle of separation of powers.</data>
+      <data key="d9">ensures</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799658</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksrechte" target="Schweizer Demokratie">
+      <data key="d7">1.0</data>
+      <data key="d8">The Swiss democracy involves the Volksrechte, empowering citizens to actively participate in the political process.</data>
+      <data key="d9">influences,involves</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksrechte" target="Bundesverfassung">
+      <data key="d7">1.0</data>
+      <data key="d8">The Volksrechte require a popular vote for amendments to the Bundesverfassung, thus impacting its content and structure.</data>
+      <data key="d9">impacts,requires</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksrechte" target="Referendumsrecht">
+      <data key="d7">1.0</data>
+      <data key="d8">The Referendumsrecht empowers the Volksrechte by allowing the electorate to challenge and confirm parliamentary decisions.</data>
+      <data key="d9">allows,empowers</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksrechte" target="Wahlrecht">
+      <data key="d7">1.0</data>
+      <data key="d8">The Wahlrecht grants citizens the right to vote, enabling them to exercise their Volksrechte in elections.</data>
+      <data key="d9">enables,grants</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksrechte" target="Stimmrecht">
+      <data key="d7">1.0</data>
+      <data key="d8">The Stimmrecht affords the electorate the opportunity to influence government proposals, thus allowing the exercise of Volksrechte.</data>
+      <data key="d9">affords,allows</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksrechte" target="Kantonale Rechte">
+      <data key="d7">1.0</data>
+      <data key="d8">The kantonale Rechte extend the Volksrechte, providing more comprehensive forms of participatory governance at the cantonal level.</data>
+      <data key="d9">enhance,extend</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksrechte" target="Gesetzesinitiative">
+      <data key="d7">1.0</data>
+      <data key="d8">The Gesetzesinitiative enables citizens to propose legislative changes as an expression of the Volksrechte.</data>
+      <data key="d9">enables,proposes</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksrechte" target="Finanzreferendum">
+      <data key="d7">1.0</data>
+      <data key="d8">The Finanzreferendum governs financial expenditures, determining the Volksrechte citizen participation in fiscal matters.</data>
+      <data key="d9">determines,governs</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksrechte" target="Stimmberechtigte">
+      <data key="d7">1.0</data>
+      <data key="d8">The Stimmberechtigte are empowered by the Volksrechte, which encompass the rights to vote and participate in the democratic process.</data>
+      <data key="d9">empowered by,include</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Gewaltenteilung" target="Subsidiarität">
+      <data key="d7">1.0</data>
+      <data key="d8">The principle of subsidiarity interacts with the separation of powers in organizing governance decisions at appropriate levels.</data>
+      <data key="d9">interrelates with</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesversammlung" target="Schweizer Regierung">
+      <data key="d7">1.0</data>
+      <data key="d8">The Swiss Federal Assembly comprises the Swiss government as part of its structure.</data>
+      <data key="d9">comprises</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799658</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bund" target="Parlament">
+      <data key="d7">1.0</data>
+      <data key="d8">The Federation encompasses the structure and function of the parliament in the Swiss political system.</data>
+      <data key="d9">includes</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="schweizerische Bundesverfassung" target="Kantone">
+      <data key="d7">1.0</data>
+      <data key="d8">The Swiss Federal Constitution provides the legal structure for the autonomy and governance of the cantons.</data>
+      <data key="d9">framework for</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kantone" target="Bezirke">
+      <data key="d7">1.0</data>
+      <data key="d8">The cantons include districts as part of their administrative organization, though districts lack political autonomy.</data>
+      <data key="d9">includes</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksvertretung" target="Interpellation">
+      <data key="d7">1.0</data>
+      <data key="d8">The parliamentary procedure of interpellation is used by the popular representation to question the government.</data>
+      <data key="d9">utilizes</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksvertretung" target="Motion">
+      <data key="d7">1.0</data>
+      <data key="d8">Motions are adopted by the popular representation to direct actions from the government.</data>
+      <data key="d9">adopted by</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksvertretung" target="Postulat">
+      <data key="d7">1.0</data>
+      <data key="d8">Postulates are used by the popular representation to request government investigations on specific issues.</data>
+      <data key="d9">used for</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-000</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundesverfassung" target="Volksinitiative">
+      <data key="d7">1.0</data>
+      <data key="d8">The Volksinitiative allows citizens to propose changes to the Bundesverfassung, linking citizen initiatives to constitutional alterations.</data>
+      <data key="d9">changes,proposes</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-005</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksinitiative" target="Kantonsverfassungen">
+      <data key="d7">1.0</data>
+      <data key="d8">The process of Volksinitiative is established in the Kantonsverfassungen, allowing citizens to propose constitutional and legal changes.</data>
+      <data key="d9">established by</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Finanzreferendum" target="Kantonsverfassungen">
+      <data key="d7">1.0</data>
+      <data key="d8">The Finanzreferendum is defined and regulated by the Kantonsverfassungen in Swiss cantons.</data>
+      <data key="d9">defined by</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bundeskanzlei" target="Bundeskanzler">
+      <data key="d7">1.0</data>
+      <data key="d8">The Bundeskanzler leads the Bundeskanzlei, overseeing its functions in the coordination among various government entities.</data>
+      <data key="d9">lead</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Regierungsrat" target="Primus inter Pares">
+      <data key="d7">1.0</data>
+      <data key="d8">The Primus inter Pares leads the meetings of the Regierungsrat without being the head of the government.</data>
+      <data key="d9">leadership</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-002</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="direkte Demokratie" target="repräsentative Demokratie">
+      <data key="d7">1.0</data>
+      <data key="d8">The system of repräsentative Demokratie includes directly democratic elements.</data>
+      <data key="d9">includes,incorporates</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-004</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Zürich" target="Kantonsrat">
+      <data key="d7">1.0</data>
+      <data key="d8">The Kanton Zürich enables its citizens to engage with the Kantonsrat through the Einzelinitiative.</data>
+      <data key="d9">supports,uses</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Zürich" target="Volksabstimmung">
+      <data key="d7">1.0</data>
+      <data key="d8">Kanton Zürich conducts Volksabstimmungen to determine public opinion on various legislative issues.</data>
+      <data key="d9">uses</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Freiburg" target="Kantonsrat">
+      <data key="d7">1.0</data>
+      <data key="d8">The Kanton Freiburg historically had a representative-democratic government that influenced the current structures of the Kantonsrat.</data>
+      <data key="d9">historical connection,influence</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Freiburg" target="Kanton Waadt">
+      <data key="d7">1.0</data>
+      <data key="d8">The Canton of Freiburg is neighboring the Canton of Vaud.</data>
+      <data key="d9">neighboring</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Schaffhausen" target="Kantonsrat">
+      <data key="d7">1.0</data>
+      <data key="d8">The Kanton Schaffhausen allows the submission of motions via Volksmotion to the Kantonsrat.</data>
+      <data key="d9">supports,uses</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Solothurn" target="Kantonsrat">
+      <data key="d7">1.0</data>
+      <data key="d8">Kanton Solothurn recognizes Volksmotion, allowing citizens to submit motions to the Kantonsrat.</data>
+      <data key="d9">supports,uses</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Appenzell Innerrhoden" target="Kantonsrat">
+      <data key="d7">1.0</data>
+      <data key="d8">Kanton Appenzell Innerrhoden uses the Einzelinitiative for legislative proposals presented to the Kantonsrat.</data>
+      <data key="d9">supports,uses</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Glarus" target="Kantonsrat">
+      <data key="d7">1.0</data>
+      <data key="d8">Kanton Glarus implements the Einzelinitiative, allowing citizens to impact decisions made in the Kantonsrat.</data>
+      <data key="d9">supports,uses</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Appenzell Ausserrhoden" target="Kantonsrat">
+      <data key="d7">1.0</data>
+      <data key="d8">Kanton Appenzell Ausserrhoden allows residents to address the Kantonsrat through Volksdiskussion.</data>
+      <data key="d9">supports,uses</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Bern" target="Kantonsrat">
+      <data key="d7">1.0</data>
+      <data key="d8">Kanton Bern employs the constructive referendum to influence legislative outcomes in the Kantonsrat.</data>
+      <data key="d9">supports,uses</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Bern" target="Kanton Luzern">
+      <data key="d7">1.0</data>
+      <data key="d8">The canton of Lucerne is neighboring the canton of Bern.</data>
+      <data key="d9">neighboring</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Nidwalden" target="Kantonsrat">
+      <data key="d7">1.0</data>
+      <data key="d8">Kanton Nidwalden uses the constructive referendum mechanism similar to Kanton Bern for legislative proposals.</data>
+      <data key="d9">supports,uses</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Basel-Landschaft" target="Kantonsrat">
+      <data key="d7">1.0</data>
+      <data key="d8">Kanton Basel-Landschaft implements a mixed referendum approach for laws addressed in the Kantonsrat.</data>
+      <data key="d9">supports,uses</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kantonsrat" target="Volksabstimmung">
+      <data key="d7">1.0</data>
+      <data key="d8">The Volksabstimmung process influences decisions made by the Kantonsrat in various cantons.</data>
+      <data key="d9">influences</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kantonsrat" target="Volksmotion">
+      <data key="d7">1.0</data>
+      <data key="d8">The Volksmotion can lead to actions or decisions taken by the Kantonsrat regarding legislative matters.</data>
+      <data key="d9">triggers</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kantonsrat" target="Volksdiskussion">
+      <data key="d7">1.0</data>
+      <data key="d8">The Volksdiskussion allows residents to influence the Kantonsrat through their opinions and discussions.</data>
+      <data key="d9">influences</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kantonsrat" target="konstruktives Referendum">
+      <data key="d7">1.0</data>
+      <data key="d8">The konstruktives Referendum can invoke alternate proposals to be considered by the Kantonsrat.</data>
+      <data key="d9">invokes</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksabstimmung" target="Einzelinitiative">
+      <data key="d7">1.0</data>
+      <data key="d8">The Einzelinitiative can trigger a Volksabstimmung if it receives enough support within the Kantonsrat.</data>
+      <data key="d9">triggers</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Volksabstimmung" target="Abstimmungen">
+      <data key="d7">1.0</data>
+      <data key="d8">Abstimmungen are similar to Volksabstimmung as both involve public voting on matters of legislation.</data>
+      <data key="d9">similar concept</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Abstimmungen" target="Wahlbeteiligung">
+      <data key="d7">1.0</data>
+      <data key="d8">Wahlbeteiligung is directly related to Abstimmungen as it measures voter participation in these voting events.</data>
+      <data key="d9">related to</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-006</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Lausanne" target="Bundesgericht">
+      <data key="d7">1.0</data>
+      <data key="d8">The Federal Court of Switzerland is located in the city of Lausanne.</data>
+      <data key="d9">located_in</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Bellinzona" target="Bundesstrafgericht">
+      <data key="d7">1.0</data>
+      <data key="d8">The Federal Criminal Court of Switzerland is located in the city of Bellinzona.</data>
+      <data key="d9">located_in</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="St. Gallen" target="Bundesverwaltungsgericht">
+      <data key="d7">1.0</data>
+      <data key="d8">The Federal Administrative Court of Switzerland is located in the city of St. Gallen.</data>
+      <data key="d9">located_in</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Luzern" target="Schultheiss">
+      <data key="d7">1.0</data>
+      <data key="d8">The Schultheiss leads the governmental operations in the Canton of Lucerne until 2007.</data>
+      <data key="d9">leads</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Tessin" target="Kanton Waadt">
+      <data key="d7">1.0</data>
+      <data key="d8">The canton of Ticino is neighboring the canton of Vaud.</data>
+      <data key="d9">neighboring</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Kanton Basel-Stadt" target="Kanton Baselland">
+      <data key="d7">1.0</data>
+      <data key="d8">The canton of Baselland is neighboring the canton of Basel-Stadt.</data>
+      <data key="d9">neighboring</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Eidgenössisches Versicherungsgericht" target="Bundesgericht">
+      <data key="d7">1.0</data>
+      <data key="d8">The former Federal Insurance Court was integrated into the Federal Court in Lausanne.</data>
+      <data key="d9">integrated_into</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Regierender Landammann" target="Appenzell Innerrhoden">
+      <data key="d7">1.0</data>
+      <data key="d8">The Regierender Landammann governs the Canton of Appenzell Innerrhoden.</data>
+      <data key="d9">governs</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+    <edge source="Regierender Landammann" target="Regierungspräsident">
+      <data key="d7">1.0</data>
+      <data key="d8">The Regierungspräsident presides over the cantonal government in a rotating role.</data>
+      <data key="d9">presides</data>
+      <data key="d10">doc-67a86848d7820be81a8cc7885716f2f2-chunk-003</data>
+      <data key="d11">unknown_source</data>
+      <data key="d12">1784799659</data>
+      <data key="d13" />
+    </edge>
+  </graph>
+</graphml>

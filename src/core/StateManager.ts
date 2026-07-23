@@ -1,46 +1,9 @@
 import * as THREE from 'three';
 import { EntityData, RelationshipData } from '../types';
 
-export type StateCategory = 'default' | 'data' | 'layer' | 'ui' | 'camera' | 'time' | 'dev';
-
-export const STATE_CATEGORIES = {
-    DEFAULT: 'default' as StateCategory,
-    DATA: 'data' as StateCategory,
-    LAYER: 'layer' as StateCategory,
-    UI: 'ui' as StateCategory,
-    CAMERA: 'camera' as StateCategory,
-    TIME: 'time' as StateCategory,
-    DEV: 'dev' as StateCategory,
-};
-
-export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
-    graphData: [STATE_CATEGORIES.DATA],
-    hoveredObject: [STATE_CATEGORIES.UI],
-    selectedObject: [STATE_CATEGORIES.UI],
-    selectedObjects: [STATE_CATEGORIES.UI],
-    layer1Visible: [STATE_CATEGORIES.LAYER],
-    layer2Visible: [STATE_CATEGORIES.LAYER],
-    layer3Visible: [STATE_CATEGORIES.LAYER],
-    layer4Visible: [STATE_CATEGORIES.LAYER],
-    layer1Opacity: [STATE_CATEGORIES.LAYER],
-    layer2Opacity: [STATE_CATEGORIES.LAYER],
-    layer3Opacity: [STATE_CATEGORIES.LAYER],
-    layer4Opacity: [STATE_CATEGORIES.LAYER],
-    complexityMode: [STATE_CATEGORIES.DEV],
-    devPowerPreference: [STATE_CATEGORIES.DEV],
-    devPixelRatio: [STATE_CATEGORIES.DEV],
-    devFpsLimit: [STATE_CATEGORIES.DEV],
-    renderMode: [STATE_CATEGORIES.DEV],
-    currentTimestamp: [STATE_CATEGORIES.TIME],
-    minTimestamp: [STATE_CATEGORIES.TIME],
-    maxTimestamp: [STATE_CATEGORIES.TIME],
-    isPlaying: [STATE_CATEGORIES.TIME],
-    playbackSpeed: [STATE_CATEGORIES.TIME],
-    mapActive: [STATE_CATEGORIES.UI],
-    temporalFadeEnabled: [STATE_CATEGORIES.TIME],
-    temporalFadeDuration: [STATE_CATEGORIES.TIME],
-    repositionLabels: [STATE_CATEGORIES.UI],
-};
+import { STATE_CATEGORIES, STATE_KEY_TO_CATEGORIES, type StateCategory } from './state/StateTypes';
+export { STATE_CATEGORIES, STATE_KEY_TO_CATEGORIES };
+export type { StateCategory };
 
 export interface HistoryAction {
     type: string;
@@ -84,7 +47,7 @@ export interface State {
     layer2Value: string;
     layer3Value: string;
     layer4Value: string;
-    complexityMode: 'simple' | 'complex';
+    complexityMode: 'simple' | 'expert' | 'dev';
     devPowerPreference: 'high-performance' | 'low-power';
     devPixelRatio: number;
     devFpsLimit: number;

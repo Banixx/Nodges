@@ -1,0 +1,35 @@
+{
+  "doc-67a86848d7820be81a8cc7885716f2f2": {
+    "status": "processed",
+    "content_summary": "Die Schweizerische Eidgenossenschaft ist weder eine rein parlamentarische noch eine präsidiale Demokratie, sondern hat ein Regierungssystem in der Tradition des Direktorialsystems. Das politische System zeichnet sich durch folgende Merkmale aus, die ...",
+    "content_length": 33860,
+    "created_at": "2026-07-23T09:39:59.178679+00:00",
+    "updated_at": "2026-07-23T09:40:59.111756+00:00",
+    "file_path": "unknown_source",
+    "track_id": "insert_20260723_113959_b3ca9306",
+    "content_hash": "67a86848d7820be81a8cc7885716f2f2",
+    "metadata": {
+      "parse_start_time": 1784799599,
+      "parse_stage_skipped": true,
+      "parse_format": "raw",
+      "parse_engine": "legacy",
+      "analyzing_start_time": 1784799599,
+      "analyzing_stage_skipped": true,
+      "process_start_time": 1784799599,
+      "process_end_time": 1784799659,
+      "chunk_method": "legacy_chunking_func",
+      "chunk_opts": "size=1200, split_only=False, overlap=100"
+    },
+    "chunks_count": 8,
+    "chunks_list": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-007"
+    ]
+  }
+}

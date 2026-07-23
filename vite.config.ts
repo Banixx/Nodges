@@ -82,10 +82,25 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     strictPort: true,
+    proxy: {
+      '/lightrag-api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/lightrag-api/, ''),
+        configure: (proxy) => {
+          proxy.on('error', (_err, _req, res: any) => {
+            if (res && !res.headersSent) {
+              res.writeHead(503, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ status: 'offline', lightrag_engine_active: false }));
+            }
+          });
+        }
+      }
+    },
     watch: {
       usePolling: true,
       interval: 500,
-      ignored: ['**/public/data/generated/**', '**/public/data/b10/**'],
+      ignored: ['**/public/data/generated/**', '**/public/data/b10/**', '**/public/data/b12/**'],
     },
   },
   

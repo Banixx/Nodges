@@ -1365,21 +1365,51 @@ export class CreatePanel {
                 );
             } else if (pipeline === 'build12_lightrag') {
                 onProgressWithLog('Frage lokalen LightRAG Microservice an...');
+                const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+
                 if (ragText) {
                     onProgressWithLog('Sende Rohdaten an LightRAG Knowledge Base...');
                     await LightRAGService.insertText(ragText);
+                    if (saveSteps) {
+                        try {
+                            await fetch('/api/save_graph', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ filename: `../b12/B12_Step1_Rohdaten_${timestamp}.txt`, content: ragText })
+                            });
+                        } catch (e) {}
+                    }
                 }
                 const lightRagResult = await LightRAGService.queryGraph(prompt, 'hybrid');
                 onProgressWithLog(`LightRAG Antwort empfangen: ${lightRagResult.answer.substring(0, 80)}...`);
                 graphData = {
-                    metadata: { schemaVersion: "5.0" },
-                    dataModel: { entities: {}, relationships: {} },
-                    visualMappings: { defaultPresets: {} },
-                    data: lightRagResult.graphData
+                    metadata: lightRagResult.graphData.metadata || { schemaVersion: "5.2" },
+                    dataModel: lightRagResult.graphData.dataModel || { entities: {}, relationships: {} },
+                    visualMappings: lightRagResult.graphData.visualMappings || { defaultPresets: {} },
+                    data: lightRagResult.graphData.data
                 };
+
+                // Immer in public/data/b12/ speichern
+                try {
+                    await fetch('/api/save_graph', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ filename: `../b12/B12_Graph_${timestamp}.json`, content: JSON.stringify(graphData, null, 2) })
+                    });
+                    onProgressWithLog(`Datei unter public/data/b12/B12_Graph_${timestamp}.json gespeichert.`);
+                } catch (e) {
+                    console.warn('[CreatePanel] Fehler beim Speichern der B12 Graph-Datei:', e);
+                }
+
                 if (saveSteps) {
-                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `1_LightRAG_Graph_${timestamp}.json`, 'application/json');
+                    try {
+                        await fetch('/api/save_graph', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ filename: `../b12/B12_Step2_Antwort_${timestamp}.json`, content: JSON.stringify(lightRagResult, null, 2) })
+                        });
+                    } catch (e) {}
+                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `B12_Graph_${timestamp}.json`, 'application/json');
                 }
             } else if (pipeline === 'build6') {
                 graphData = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog, llmOptions);

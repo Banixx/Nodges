@@ -1,0 +1,1001 @@
+{
+  "Ständerat": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Ständerat"
+  },
+  "Ständerätin": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Ständerätin"
+  },
+  "Kanton": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton"
+  },
+  "Nationalrat": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Nationalrat"
+  },
+  "Vereinigte Bundesversammlung": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Vereinigte Bundesversammlung"
+  },
+  "Bundesrat": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bundesrat"
+  },
+  "Bundespräsident": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 3,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bundespräsident"
+  },
+  "Landsgemeinde": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Landsgemeinde"
+  },
+  "Kantonsvertretung": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kantonsvertretung"
+  },
+  "Instruktionsverbot": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Instruktionsverbot"
+  },
+  "Schweizerische Eidgenossenschaft": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Schweizerische Eidgenossenschaft"
+  },
+  "Föderalismus": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Föderalismus"
+  },
+  "Direkte Demokratie": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Direkte Demokratie"
+  },
+  "Volksrechte": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Volksrechte"
+  },
+  "Gewaltenteilung": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Gewaltenteilung"
+  },
+  "Bundesversammlung": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bundesversammlung"
+  },
+  "Schweizer Regierung": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Schweizer Regierung"
+  },
+  "Staatliche Ebenen": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Staatliche Ebenen"
+  },
+  "Bund": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bund"
+  },
+  "Parlament": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Parlament"
+  },
+  "schweizerische Bundesverfassung": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "schweizerische Bundesverfassung"
+  },
+  "Kantone": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kantone"
+  },
+  "Bezirke": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bezirke"
+  },
+  "Volksvertretung": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Volksvertretung"
+  },
+  "Interpellation": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Interpellation"
+  },
+  "Motion": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Motion"
+  },
+  "Postulat": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Postulat"
+  },
+  "Subsidiarität": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Subsidiarität"
+  },
+  "Urnengang": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Urnengang"
+  },
+  "Schweizer Demokratie": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Schweizer Demokratie"
+  },
+  "Bundesverfassung": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bundesverfassung"
+  },
+  "Volksinitiative": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Volksinitiative"
+  },
+  "Referendumsrecht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Referendumsrecht"
+  },
+  "Wahlrecht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Wahlrecht"
+  },
+  "Stimmrecht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Stimmrecht"
+  },
+  "Kantonale Rechte": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kantonale Rechte"
+  },
+  "Gesetzesinitiative": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Gesetzesinitiative"
+  },
+  "Finanzreferendum": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Finanzreferendum"
+  },
+  "Stimmberechtigte": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Stimmberechtigte"
+  },
+  "Vizepräsident": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Vizepräsident"
+  },
+  "Bundeskanzlei": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bundeskanzlei"
+  },
+  "Bundeskanzler": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bundeskanzler"
+  },
+  "Guy Parmelin": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Guy Parmelin"
+  },
+  "Ignazio Cassis": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Ignazio Cassis"
+  },
+  "Karin Keller-Sutter": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Karin Keller-Sutter"
+  },
+  "Albert Rösti": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Albert Rösti"
+  },
+  "Elisabeth Baume-Schneider": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Elisabeth Baume-Schneider"
+  },
+  "Beat Jans": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Beat Jans"
+  },
+  "Martin Pfister": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Martin Pfister"
+  },
+  "Regierungsrat": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Regierungsrat"
+  },
+  "Staatsrat": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Staatsrat"
+  },
+  "Standeskommission": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Standeskommission"
+  },
+  "Primus inter Pares": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Primus inter Pares"
+  },
+  "Gericht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Gericht"
+  },
+  "Obergericht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Obergericht"
+  },
+  "Appellationsgericht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Appellationsgericht"
+  },
+  "Cour de justice": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Cour de justice"
+  },
+  "Zwangsmassnahmengerichte": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Zwangsmassnahmengerichte"
+  },
+  "Verwaltungsgericht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Verwaltungsgericht"
+  },
+  "Spezialverwaltungsgerichte": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Spezialverwaltungsgerichte"
+  },
+  "Jugendgerichte": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Jugendgerichte"
+  },
+  "Strafgericht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Strafgericht"
+  },
+  "Kassationsgericht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kassationsgericht"
+  },
+  "Verfassungsgericht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Verfassungsgericht"
+  },
+  "direkte Demokratie": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "direkte Demokratie"
+  },
+  "repräsentative Demokratie": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "repräsentative Demokratie"
+  },
+  "Kanton Zürich": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Zürich"
+  },
+  "Kanton Freiburg": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Freiburg"
+  },
+  "Kanton Schaffhausen": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Schaffhausen"
+  },
+  "Kanton Solothurn": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Solothurn"
+  },
+  "Kanton Appenzell Innerrhoden": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 2,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Appenzell Innerrhoden"
+  },
+  "Kanton Glarus": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Glarus"
+  },
+  "Kanton Appenzell Ausserrhoden": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Appenzell Ausserrhoden"
+  },
+  "Kanton Bern": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 2,
+    "update_time": 1784799659,
+    "_id": "Kanton Bern"
+  },
+  "Kanton Nidwalden": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Nidwalden"
+  },
+  "Kanton Basel-Landschaft": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Basel-Landschaft"
+  },
+  "Kantonsrat": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kantonsrat"
+  },
+  "Volksabstimmung": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Volksabstimmung"
+  },
+  "Einzelinitiative": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Einzelinitiative"
+  },
+  "Volksmotion": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Volksmotion"
+  },
+  "Volksdiskussion": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Volksdiskussion"
+  },
+  "konstruktives Referendum": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "konstruktives Referendum"
+  },
+  "Abstimmungen": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Abstimmungen"
+  },
+  "Kantonsverfassungen": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kantonsverfassungen"
+  },
+  "Wahlbeteiligung": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Wahlbeteiligung"
+  },
+  "Schweiz": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Schweiz"
+  },
+  "Lausanne": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Lausanne"
+  },
+  "Luzern": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Luzern"
+  },
+  "Bellinzona": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bellinzona"
+  },
+  "St. Gallen": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "St. Gallen"
+  },
+  "Bern": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bern"
+  },
+  "Zollikofen": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Zollikofen"
+  },
+  "Kanton Luzern": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Luzern"
+  },
+  "Kanton Tessin": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Tessin"
+  },
+  "Kanton Waadt": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Waadt"
+  },
+  "Kanton Basel-Stadt": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Basel-Stadt"
+  },
+  "Kanton Uri": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Uri"
+  },
+  "Kanton Thurgau": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Kanton Thurgau"
+  },
+  "Eidgenössisches Versicherungsgericht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Eidgenössisches Versicherungsgericht"
+  },
+  "Bundesgericht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bundesgericht"
+  },
+  "Bundesstrafgericht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bundesstrafgericht"
+  },
+  "Bundesverwaltungsgericht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bundesverwaltungsgericht"
+  },
+  "Bundespatentgericht": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Bundespatentgericht"
+  },
+  "Eidgenössische Schätzungskommission": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Eidgenössische Schätzungskommission"
+  },
+  "Regierender Landammann": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Regierender Landammann"
+  },
+  "Schultheiss": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Schultheiss"
+  },
+  "Regierungspräsident": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799658,
+    "update_time": 1784799658,
+    "_id": "Regierungspräsident"
+  },
+  "Kanton Baselland": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799659,
+    "update_time": 1784799659,
+    "_id": "Kanton Baselland"
+  },
+  "Appenzell Innerrhoden": {
+    "chunk_ids": [
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003"
+    ],
+    "count": 1,
+    "create_time": 1784799659,
+    "update_time": 1784799659,
+    "_id": "Appenzell Innerrhoden"
+  }
+}

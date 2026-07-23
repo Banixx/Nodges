@@ -1,0 +1,382 @@
+{
+  "doc-67a86848d7820be81a8cc7885716f2f2": {
+    "relation_pairs": [
+      [
+        "Beat Jans",
+        "Bundesrat"
+      ],
+      [
+        "Appenzell Innerrhoden",
+        "Regierender Landammann"
+      ],
+      [
+        "Jugendgerichte",
+        "Kanton"
+      ],
+      [
+        "Kanton",
+        "Strafgericht"
+      ],
+      [
+        "Kanton Bern",
+        "Kanton Luzern"
+      ],
+      [
+        "Motion",
+        "Volksvertretung"
+      ],
+      [
+        "Kanton Bern",
+        "Kantonsrat"
+      ],
+      [
+        "Direkte Demokratie",
+        "Föderalismus"
+      ],
+      [
+        "Kanton Zürich",
+        "Volksabstimmung"
+      ],
+      [
+        "Kantone",
+        "schweizerische Bundesverfassung"
+      ],
+      [
+        "Einzelinitiative",
+        "Volksabstimmung"
+      ],
+      [
+        "Bundeskanzlei",
+        "Bundesrat"
+      ],
+      [
+        "Abstimmungen",
+        "Volksabstimmung"
+      ],
+      [
+        "Bellinzona",
+        "Bundesstrafgericht"
+      ],
+      [
+        "Kanton Freiburg",
+        "Kanton Waadt"
+      ],
+      [
+        "Gericht",
+        "Kanton"
+      ],
+      [
+        "Bundesrat",
+        "Elisabeth Baume-Schneider"
+      ],
+      [
+        "Kanton Solothurn",
+        "Kantonsrat"
+      ],
+      [
+        "Kanton Basel-Landschaft",
+        "Kantonsrat"
+      ],
+      [
+        "Bundesrat",
+        "Staatsrat"
+      ],
+      [
+        "Kanton Schaffhausen",
+        "Kantonsrat"
+      ],
+      [
+        "Parlament",
+        "Ständerat"
+      ],
+      [
+        "Instruktionsverbot",
+        "Ständerat"
+      ],
+      [
+        "Abstimmungen",
+        "Wahlbeteiligung"
+      ],
+      [
+        "Kanton",
+        "Landsgemeinde"
+      ],
+      [
+        "Kanton",
+        "Ständerat"
+      ],
+      [
+        "Bundesrat",
+        "Standeskommission"
+      ],
+      [
+        "Stimmrecht",
+        "Volksrechte"
+      ],
+      [
+        "Bundesverfassung",
+        "Volksinitiative"
+      ],
+      [
+        "Bundesrat",
+        "Vereinigte Bundesversammlung"
+      ],
+      [
+        "direkte Demokratie",
+        "repräsentative Demokratie"
+      ],
+      [
+        "Regierender Landammann",
+        "Regierungspräsident"
+      ],
+      [
+        "Kanton Appenzell Innerrhoden",
+        "Kantonsrat"
+      ],
+      [
+        "Bund",
+        "Parlament"
+      ],
+      [
+        "Bezirke",
+        "Kantone"
+      ],
+      [
+        "Cour de justice",
+        "Kanton"
+      ],
+      [
+        "Bundespräsident",
+        "Bundesrat"
+      ],
+      [
+        "Kanton Luzern",
+        "Schultheiss"
+      ],
+      [
+        "Kanton",
+        "Obergericht"
+      ],
+      [
+        "Volksrechte",
+        "Wahlrecht"
+      ],
+      [
+        "Kanton Freiburg",
+        "Kantonsrat"
+      ],
+      [
+        "Kantonsrat",
+        "Volksabstimmung"
+      ],
+      [
+        "Kanton Appenzell Ausserrhoden",
+        "Kantonsrat"
+      ],
+      [
+        "Gewaltenteilung",
+        "Subsidiarität"
+      ],
+      [
+        "Bundesrat",
+        "Regierungsrat"
+      ],
+      [
+        "Kanton",
+        "Kassationsgericht"
+      ],
+      [
+        "Bundesverfassung",
+        "Föderalismus"
+      ],
+      [
+        "Bundesrat",
+        "Ignazio Cassis"
+      ],
+      [
+        "Nationalrat",
+        "Parlament"
+      ],
+      [
+        "Kantonsverfassungen",
+        "Volksinitiative"
+      ],
+      [
+        "Kanton Nidwalden",
+        "Kantonsrat"
+      ],
+      [
+        "Direkte Demokratie",
+        "Volksrechte"
+      ],
+      [
+        "Stimmberechtigte",
+        "Volksrechte"
+      ],
+      [
+        "Albert Rösti",
+        "Bundesrat"
+      ],
+      [
+        "Bundesverwaltungsgericht",
+        "St. Gallen"
+      ],
+      [
+        "Kanton Zürich",
+        "Kantonsrat"
+      ],
+      [
+        "Kantonsvertretung",
+        "Volksvertretung"
+      ],
+      [
+        "Kanton Glarus",
+        "Kantonsrat"
+      ],
+      [
+        "Bundesversammlung",
+        "Schweizer Regierung"
+      ],
+      [
+        "Interpellation",
+        "Volksvertretung"
+      ],
+      [
+        "Föderalismus",
+        "Schweizerische Eidgenossenschaft"
+      ],
+      [
+        "Appellationsgericht",
+        "Kanton"
+      ],
+      [
+        "Kanton",
+        "Spezialverwaltungsgerichte"
+      ],
+      [
+        "Kantonsrat",
+        "konstruktives Referendum"
+      ],
+      [
+        "Postulat",
+        "Volksvertretung"
+      ],
+      [
+        "Bundesrat",
+        "Schweizerische Eidgenossenschaft"
+      ],
+      [
+        "Bundesrat",
+        "Martin Pfister"
+      ],
+      [
+        "Bundesgericht",
+        "Lausanne"
+      ],
+      [
+        "Finanzreferendum",
+        "Volksrechte"
+      ],
+      [
+        "Primus inter Pares",
+        "Regierungsrat"
+      ],
+      [
+        "Kantonale Rechte",
+        "Volksrechte"
+      ],
+      [
+        "Kanton Basel-Stadt",
+        "Kanton Baselland"
+      ],
+      [
+        "Bundesrat",
+        "Guy Parmelin"
+      ],
+      [
+        "Kantonsrat",
+        "Volksdiskussion"
+      ],
+      [
+        "Bundesgericht",
+        "Eidgenössisches Versicherungsgericht"
+      ],
+      [
+        "Kanton Tessin",
+        "Kanton Waadt"
+      ],
+      [
+        "Kanton",
+        "Verfassungsgericht"
+      ],
+      [
+        "Kanton",
+        "Zwangsmassnahmengerichte"
+      ],
+      [
+        "Bundesverfassung",
+        "Volksrechte"
+      ],
+      [
+        "Schweizer Demokratie",
+        "Volksrechte"
+      ],
+      [
+        "Bundesrat",
+        "Vizepräsident"
+      ],
+      [
+        "Kanton",
+        "Verwaltungsgericht"
+      ],
+      [
+        "Kantonsrat",
+        "Volksmotion"
+      ],
+      [
+        "Nationalrat",
+        "Ständerat"
+      ],
+      [
+        "Direkte Demokratie",
+        "Urnengang"
+      ],
+      [
+        "Bundespräsident",
+        "Schweizer Regierung"
+      ],
+      [
+        "Bundesrat",
+        "Karin Keller-Sutter"
+      ],
+      [
+        "Gewaltenteilung",
+        "Volksrechte"
+      ],
+      [
+        "Referendumsrecht",
+        "Volksrechte"
+      ],
+      [
+        "Bundeskanzlei",
+        "Bundeskanzler"
+      ],
+      [
+        "Gesetzesinitiative",
+        "Volksrechte"
+      ],
+      [
+        "Finanzreferendum",
+        "Kantonsverfassungen"
+      ],
+      [
+        "Kantonsvertretung",
+        "Ständerat"
+      ]
+    ],
+    "count": 93,
+    "create_time": 1784799659,
+    "update_time": 1784799659,
+    "_id": "doc-67a86848d7820be81a8cc7885716f2f2"
+  }
+}

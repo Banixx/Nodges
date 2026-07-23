@@ -21,7 +21,7 @@ export interface LightRAGQueryResponse {
 }
 
 export class LightRAGService {
-    private static defaultBaseUrl = 'http://localhost:8000';
+    private static defaultBaseUrl = '/lightrag-api';
 
     /**
      * Prüft die Erreichbarkeit des lokalen LightRAG-Backends

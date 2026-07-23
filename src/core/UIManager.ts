@@ -79,6 +79,7 @@ export class UIManager {
 
         this.initModeSwitch();
         this.stateManager.subscribe(this.handleStateChange.bind(this), 'ui');
+        this.updateUIForMode(this.stateManager.state.complexityMode);
     }
 
     init() {

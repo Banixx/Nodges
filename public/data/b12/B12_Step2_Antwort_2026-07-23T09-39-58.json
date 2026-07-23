@@ -1,0 +1,2968 @@
+{
+  "answer": "### Netzwerk der Staatsgewalten in der Schweiz\n\nIm Folgenden wird ein Netzwerk der Staatsgewalten der Schweizerischen Eidgenossenschaft dargestellt, das die Legislative, Exekutive und Judikative umfasst. \n\n#### Knoten\n\n1. **Legislative**\n   - **Bundesversammlung**\n     - **Nationalrat**: 200 Mitglieder\n     - **Ständerat**: 46 Mitglieder\n\n2. **Exekutive**\n   - **Bundesrat**: 7 Mitglieder\n\n3. **Judikative**\n   - **Bundesgericht**: 38 hauptamtliche Bundesrichter\n   - **Bundesstrafgericht**: 15 bis 35 Richter\n   - **Bundesverwaltungsgericht**\n   - **Bundespatentgericht**\n\n#### Verbindungen\n\n- **Legislative → Exekutive**: Die Bundesversammlung wählt den Bundesrat. \n- **Legislative (Ständerat) → Judikative**: Der Ständerat ist an der Wahl der Bundesrichter beteiligt.\n- **Exekutive → Judikative**: Der Bundesrat ist für die Ernennung der Richter und die Struktur der gerichtlichen Systeme verantwortlich.\n- **Exekutive ↔ Judikative**: Die Judikative überprüft die Verfassungsmäßigkeit der Gesetze, die von der Legislative beschlossen wurden.\n\n### Visualisierung des Netzwerks\n\n```plaintext\n          +---------------------+\n          |    Legislative      |\n          +---------------------+\n          |  Bundesversammlung   |\n          |   +--------------+   |\n          |   |   Nationalrat|   |<--200 Mitglieder\n          |   +--------------+   |\n          |   |    Ständerat |   |<--46 Mitglieder\n          |   +--------------+   |\n          +---------------------+\n                   ▲\n                   |\n                   |\n                   |\n          +---------------------+\n          |     Exekutive       |\n          +---------------------+\n          |      Bundesrat      |<--7 Mitglieder\n          +---------------------+\n                   ▲\n                   |\n                   |\n                   |\n          +---------------------+\n          |    Judikative       |\n          +---------------------+\n          |   Bundesgericht     |<--38 hauptamtliche Richter\n          | Bundesstrafgericht  |<--15-35 Richter\n          |                                                    |\n          | Bundesverwaltungsgericht                         |\n          | Bundespatentgericht                              |\n          +---------------------+\n```\n\nDiese Darstellung gibt einen Überblick über die Staatsgewalten in der Schweiz und zeigt, wie die einzelnen Organe miteinander verbunden sind. Die Legislative hat die wichtigste Rolle in der Schaffung von Gesetzen, die Exekutive in deren Umsetzung und die Judikative in der Überprüfung ihrer Verfassungsmäßigkeit.",
+  "graphData": {
+    "metadata": {
+      "schemaVersion": "5.2",
+      "description": "LightRAG Query Result: erstelle ein netzwerk der staatsgewalten. legislative ist eine node. mach nodes der staatsgewalten. also auch exekutive und judikative. zeige verbindungen auf und setze bei den parlamentn die richtige anzahl mitglieder als attribut\n\n=== VERFUEGBARER KONTEXT / ROHDATEN (RAG) ===\nDie Schweizerische Eidgenossenschaft ist weder eine rein parlamentarische noch eine präsidiale Demokratie, sondern hat ein Regierungssystem in der Tradition des Direktorialsystems. Das politische System zeichnet sich durch folgende Merkmale aus, die sie insbesondere von anderen Demokratiemodellen der Gegenwart unterscheiden:\n\nDer Föderalismus: Die Schweiz ist ein Bundesstaat mit einer vergleichsweise stark ausgeprägten Autonomie seiner Gliedstaaten (Kantone), die wiederum ihren Gemeinden einen relativ weitreichenden Spielraum zugestehen und die in alle Phasen der politischen Willensbildung eingebunden sind.\nDie direkte Demokratie: Durch die Volksinitiative und das Referendum können die Bürger sowohl auf die Tätigkeit der Gemeindebehörden, der Kantonsparlamente und des Bundesparlaments wie auch über die Parlamente hinweg direkten Einfluss auf die Regierungstätigkeit nehmen.\nDie Volksrechte wurzeln einerseits in der Versammlungsdemokratie (Gemeindeversammlungen, Landsgemeinden), andererseits in der Urnendemokratie. Die Volksrechte haben kontrollierende, initiierende, bremsende und legitimierende Funktion.\nDie Bildung von Mehrheiten bei Entscheidungen des Volkes, des Parlaments und der Regierung erfolgt in Konstellationen, die sich von Entscheid zu Entscheid ändern. Damit sind alle politischen Kräfte mehr oder weniger an der Entscheidfindung beteiligt.\nDie Gewaltenteilung ist insofern strikt, als die Regierung zwischen den Wahlperioden nicht abberufen, das Parlament andererseits nicht von der Regierung aufgelöst werden kann.\nDie Bundesversammlung, das Schweizer Parlament, besteht aus zwei gleichwertigen Kammern.\nDie Schweizer Regierung, der Bundesrat, ist als Kollegialregierung konzipiert, ohne dass ein eigentliches Staatsoberhaupt existiert. Der Bundespräsident ist lediglich Primus inter Pares. Das Kollegialitätsprinzip wird mit dem Departementalprinzip verbunden, indem jeder Bundesrat einem Departement (Ministerium) vorsteht.\nDas System der Konkordanz betont die Wichtigkeit von Kompromissen, die Einbettung möglichst vieler gesellschaftlicher Kräfte und erlaubt breit abgestützte Entscheidungen. Es gibt keine minimal winning coalitions.\nDie Verfassungsgerichtsbarkeit auf Bundesebene ist eingeschränkt. Bundesgesetze können nicht vom Bundesgericht ausser Kraft gesetzt werden, auch wenn sie verfassungswidrig sind.[1]\nDie Gründe für dieses «genossenschaftliche» Staatsverständnis liegen vor allem in der Entstehung, Zusammensetzung und Entwicklung der Schweizerischen Eidgenossenschaft, der schweizerischen «Nation», die oft als Willensnation bezeichnet wird: Das Land ist weder ethnisch noch sprachlich, noch kulturell oder konfessionell eine Einheit, sondern versteht sich als ein aus dem freien Willen ihrer Bürger zusammengeschlossenes Gemeinwesen. Berücksichtigt wird die Tradition der alten Schweiz vor 1848 als heterogenes Bündnis unabhängiger Kleinrepubliken, der Vorläufer der heutigen Kantone, die deshalb auch als «Stände» (vgl. «Ständerat», «Standesweibel») und «Staaten» (vgl. «Staat Bern», «Staatsschreiber», «Staatskanzlei», «Staatsrat», «Staatssteuer») bezeichnet werden.\n\nDie Schweizer Politik hat ihre eigene Terminologie: Häufig gebrauchte Ausdrücke mit einem spezifischen Schweizer Bedeutungsgehalt sind neben den bereits genannten die Interpellation, die Motion, das Postulat, die Subsidiarität und der Urnengang.\n\nGrundlage bildet, neben den kantonalen Verfassungen, die schweizerische Bundesverfassung, die 1848 die moderne Schweiz begründete und seither ständig überarbeitet sowie 1874 und 1999 vollständig erneuert wurde.\n\nStaatsebenen\nDie Schweiz ist in drei Staatsebenen gegliedert: Gemeinde – Kanton – Bund. Die in einigen Kantonen vorhandenen Bezirke hingegen gelten nicht als Staatsebene, da sie Teil der kantonalen Verwaltung sind und damit keine politische Autonomie besitzen.\n\nDer Bund umfasst alle Kantone der Schweiz und ist die oberste politische Ebene der Schweiz. Bei ihm liegt die Kompetenz-Kompetenz.\n\nLegislative\nBundesebene\nDas Parlament (Bundesversammlung) besteht aus zwei Kammern:\n\ndem Nationalrat als «Volksvertretung» (200 Mitglieder, die ihrerseits auch «Nationalrat» bzw. «Nationalrätin» genannt werden). Jeder Kanton stellt Nationalräte gemäss seinem Anteil an der Bevölkerung, mindestens jedoch einen (so in Appenzell Ausserrhoden, Appenzell Innerrhoden, Glarus, Nidwalden, Obwalden und Uri). Der Nationalrat wird in den Kantonen mit mehr als einem Sitz durch eine Proporzwahl gewählt. Die Nationalräte der Einerwahlkreise werden durch Majorzwahl gewählt. Der Nationalratspräsident wird umgangssprachlich manchmal als «höchster Schweizer» bezeichnet, da er der Volksvertretung vorsteht. Die protokollarisch höchste Stellung kommt aber dem Bundespräsidenten zu, der den Gesamtbundesrat als «oberste leitende und vollziehende Behörde des Bundes»[2] repräsentiert.[3]\ndem Ständerat als «Kantonsvertretung» (46 Mitglieder, die ihrerseits auch «Ständerat» bzw. «Ständerätin» genannt werden; 2 pro Kanton mit Ausnahme von 6 Kantonen, die nur 1 Mitglied stellen und historisch Halbkantone genannt werden). Die Ständeräte werden in den Kantonen mit Majorzwahl gewählt (ausser in den Kantonen Jura und Neuenburg). Die Bezeichnung «Kantonsvertretung» ist allerdings irreführend, da die Ständeräte weder rechtlich noch tatsächlich ihren Kanton (Kantonsregierung, Kantonsparlament) vertreten oder von diesen Instruktionen entgegennehmen müssen (Instruktionsverbot). Dies im Gegensatz z. B. zum deutschen Bundesrat.\nNationalrat und Ständerat tagen in der Regel getrennt. Alle Gesetzgebungsvorhaben (Verfassungsänderungen, Bundesgesetze, Bundesbeschlüsse, Genehmigung von völkerrechtlichen Verträgen) werden in beiden Kammern behandelt und müssen von beiden Kammern angenommen werden. Im sogenannten Differenzbereinigungsverfahren werden allenfalls unterschiedliche Beschlüsse der Kammern zu einem Konsens geführt.\n\nEine Ausnahme der getrennten Beratung der beiden Kammern bildet die Vereinigte Bundesversammlung. Für die Wahl der sieben Mitglieder des Bundesrates (d. h. der Exekutive), des Bundespräsidenten und des Bundeskanzlers, der Bundesrichter und im Kriegsfall des Generals vereinigen sich National- und Ständerat zu einem Wahlorgan. Eine weitere Funktion der Vereinigten Bundesversammlung ist die Begnadigung (Erlass einer einem Individuum durch Bundesbehörden auferlegten Strafe gemäss Bundesrecht).\n\nDie National- und Ständeräte sind bei der Ausübung ihres Mandats nicht an Weisungen von Kantonen, Parteien oder anderen Instanzen gebunden (sogenanntes Instruktionsverbot). In der politischen Realität allerdings sind zahlreiche Parlamentarier von Interessen und Interessenverbänden usw. abhängig.\n\nDas Schweizer Parlament ist ein sogenanntes Milizparlament, das heisst, die National- und Ständeräte üben ihr Mandat nicht hauptberuflich aus.[4] Sie erhalten vom Staat keinen Lohn, sondern unter anderem Sitzungsgelder und Spesenentschädigungen.[5]\n\nDas schweizerische Parlament arbeitet vor allem in Kommissionen.\n\nSiehe auch: Gesetzgebungsverfahren in der Schweiz\nKantonale Ebene\nDie Parlamente in den Kantonen heissen zumeist Kantonsrat oder Grosser Rat, in den Kantonen Basel-Landschaft, Glarus, Nidwalden und Uri Landrat und im Kanton Jura Parlament. Die Anzahl der Mitglieder schwankt zwischen 49 und 180.\n\nDiese werden direkt vom Volk in der Regel auf vier, in den Kantonen Freiburg, Waadt und Genf auf fünf Jahre gewählt. Mit Ausnahme der beiden Appenzell (hier wiederum mit umgekehrter Ausnahme des Wahlkreises Herisau), wo das Mehrheitswahlrecht gilt, gelangt heute überall das Verhältniswahlrecht zur Anwendung. Die früher in grossen Teilen der Schweiz übliche Amtsdauer von drei Jahren wurde zuletzt im Kanton Appenzell Ausserrhoden 1995 und im Kanton Graubünden 2003/2006 auf vier Jahre verlängert; letzterer Kanton kannte bis ins ausgehende 20. Jahrhundert sogar eine parlamentarische Amtsdauer von nur zwei Jahren.\n\nIn den Kantonen Bern, Uri, Solothurn, Schaffhausen und Tessin kann das Kantonsparlament mittels Volksinitiative, die dem Volk zur Abstimmung unterbreitet werden muss, vorzeitig abberufen werden. Angesichts der mit vier Jahren nicht überlangen Amtsdauer ist dieses Recht allerdings von untergeordneter Bedeutung.\n\nIn den Kantonen Glarus und Appenzell Innerrhoden ist das oberste Gesetzgebungsorgan die Landsgemeinde, die einmal jährlich zusammentritt.\n\nExekutive\nBundesebene\nDer Bundesrat ist die Schweizer Bundesregierung (in der Schweiz als Landesregierung bezeichnet). Er besteht aus sieben gleichberechtigten Mitgliedern (siehe auch Kollegialitätsprinzip), die den einzelnen Departementen (Ministerien) der Bundesverwaltung vorstehen.\n\nDie Schweiz ist damit eines der wenigen Länder der Welt, welches eine Kollegialregierung kennt, in der alle Regierungsmitglieder gleichberechtigt sind und es keinen Regierungschef gibt. Die Stellung eines Mitglieds des Bundesrates ist deutlich stärker, als diejenige eines Ministers in den meisten anderen Ländern. Dies ergibt sich zum einen aus dem Umstand, dass die Mitglieder des Bundesrates zusammen für die gesamte Regierungsarbeit verantwortlich sind und nicht nur für ihr jeweiliges Ressort (Departement). Zum anderen sind die Bundesräte nicht von der Unterstützung eines Regierungschefs abhängig und können zudem während der Legislaturperiode nicht abgesetzt bzw. abgewählt werden.[6] Möglich, wenn auch sehr unüblich ist aber, dass ein Bundesrat bei der alle vier Jahre stattfindenden Gesamterneuerungswahl nicht wiedergewählt wird. Eine Nichtwiederwahl, welche umgangssprachlich zuweilen auch als «Abwahl» bezeichnet wird, kam seit Gründung des Bundesstaates im Jahr 1848 erst viermal vor (zuletzt 2007).\n\nDer Bundespräsident wird im jährlichen Turnus aus den Mitgliedern des Bundesrates gewählt. Er präsidiert während eines Jahres als primus inter pares die Landesregierung neben seinen Pflichten als Departementsvorsteher, übt aber nicht die Funktion eines Staatsoberhauptes aus. Verbleibt ein Mitglied des Bundesrates längere Zeit im Amt, wird es oft mehrmals (häufig zweimal) zum Bundespräsidenten gewählt. Es gilt die ungeschriebene Regel, dass derjenige Bundesrat zum Vizepräsidenten und ein Jahr darauf zum Bundespräsidenten gewählt wird, der dieses Amt schon am längsten nicht mehr (oder noch nicht) bekleidet hat.[7]\n\nDie Bundesverfassung der Schweizerischen Eidgenossenschaft definiert kein Staatsoberhaupt. Aufgrund seiner Stellung wird üblicherweise der Gesamtbundesrat als Staatsoberhaupt angesehen. Damit ist die Schweiz eines der wenigen Länder der Welt, welches ein kollektives Staatsoberhaupt (bestehend aus mehreren Personen) aufweist.\n\nDie einzelnen Mitglieder des Bundesrates werden als «Bundesrat» bzw. «Bundesrätin» bezeichnet (Anrede als «Herr Bundesrat» bzw. «Frau Bundesrätin»). Ist die Rede vom Bundesrat als Kollegium, wird zwecks Präzisierung zuweilen die Bezeichnung Gesamtbundesrat verwendet. Die Bezeichnung «Minister» ist in der Schweiz unüblich, wird aber hie und da umgangssprachlich oder in den Medien verwendet (z. B. «Innenminister» oder «Finanzminister»). Geht es um die Funktion eines Bundesrates als Leiter eines Departements, werden üblicherweise die Bezeichnungen «Departementsvorsteher» oder «Departementschef» verwendet. In Kombination mit dem Namen des betreffenden Departements oder dessen Abkürzung werden auch die Bezeichnungen «Vorsteher» oder «Chef» verwendet (z. B. «Chef des Eidgenössischen Departements für auswärtige Angelegenheiten», «Vorsteher des EDA» oder «Chef EDA»).\n\nDer Bundesrat wird vom Parlament gewählt. Die Reihenfolge der einzelnen Bundesräte ergibt sich wie folgt: Der Bundespräsident steht protokollarisch an der Spitze, gefolgt vom Vizepräsidenten.[8] Danach folgen die Bundesräte in der Reihenfolge des Amtsalters zur Wiederwahl gemäss Anciennitätsprinzip.[9] Die Zuteilung der Departemente erfolgt ebenfalls nach der Anciennität. Der am längsten amtierende Bundesrat kann zuerst äussern, welchem Departement er vorstehen möchte, dann jener, der am zweitlängsten im Amt ist usw. Die Entscheidung darüber, wer welches Departement tatsächlich erhält, fällt das Gremium kollektiv, und muss sich dabei nicht an die Präferenzen einzelner Mitglieder halten.[10]\n\nMitglieder des Bundesrates (2026)\nBundesrat\tKanton\tPartei\nGuy Parmelin (Bundespräsident 2026)\t Waadt\tSVP\nIgnazio Cassis (Vizepräsident 2026)\t Tessin\tFDP\nKarin Keller-Sutter\t St. Gallen\tFDP\nAlbert Rösti\t Bern\tSVP\nElisabeth Baume-Schneider\t Jura\tSP\nBeat Jans\t Basel-Stadt\tSP\nMartin Pfister\t Zug\tDie Mitte\nStabsstelle des Bundesrates ist die Bundeskanzlei, welche durch den Bundeskanzler geleitet wird. Die Bundeskanzlei hat die zentrale Scharnierfunktion zwischen Regierung, Verwaltung, Bundesversammlung und Öffentlichkeit inne.[11] Sie ist verantwortlich für die Vorbereitung, Durchführung und Nachbereitung der Bundesratssitzungen.[11] Der Bundeskanzler nimmt an sämtlichen Sitzungen des Bundesrates teil, wo er über ein Antrags- aber kein Stimmrecht verfügt. Dem Bundeskanzler stehen zwei Vizekanzler zur Seite.[12]\n\nAls höchste Staatsfunktionäre werden die Mitglieder des Bundesrates sowie der Bundeskanzler als «Magistraten» bzw. «Magistratspersonen» (von lateinisch magistratus «Obrigkeit») bezeichnet.[13] Ebenfalls in diese Kategorie fallen die ordentlichen Bundesrichter.[13]\n\nSiehe auch: Liste der Schweizer Bundespräsidenten und Liste der Mitglieder des Schweizerischen Bundesrates\nKantonale Ebene\nDie gliedstaatliche Exekutive heisst in den meisten deutschschweizerischen Kantonen Regierungsrat, in den ganz oder mehrheitlich französischen Kantonen sowie im italienischen Kanton Tessin Staatsrat (französisch: Conseil d’État, italienisch: Consiglio di Stato), im Kanton Appenzell Innerrhoden Standeskommission und in den Kantonen St. Gallen, Graubünden und Jura Regierung (französisch: Gouvernement, italienisch: Governo, rätoromanisch: Regenza). Die Anzahl der Mitglieder beträgt je nach Kanton fünf oder sieben Mitglieder. In den letzten Jahren ist aus Spar- und Effizienzgründen ein Trend zur Verkleinerung der Kantonsregierungen von sieben auf fünf Mitglieder zu beobachten.\n\nGleich wie auf Bundesebene gilt das Kollegialitätsprinzip. Es gibt somit keinen kantonalen Regierungschef, sondern in der Regel lediglich ein sog. Primus inter Pares, der für ein Jahr die Sitzungen der Regierung leitet. Dieser trägt je nach Kanton eine andere Bezeichnung, am häufigsten (Regierungs-)Präsident, dann auch Landammann, Regierender Landammann (Appenzell Innerrhoden) oder Schultheiss (Kanton Luzern; bis 2007). Dazu ist ein Regierungsmitglied jeweils für ein Jahr Vize und damit designierter Regierungspräsident bzw. Landammann für das nächste Jahr. Einen andern Weg beschreiten die neuen Kantonsverfassungen der Waadt (2003) und von Basel-Stadt (2005), welche die Amtsdauer des Regierungspräsidenten mit derjenigen des Regierungsrates gleichsetzen, also die früher einjährige Amtsdauer auf fünf bzw. vier Jahre ausdehnen.\n\nDie Mitglieder werden überall direkt vom Volk gewählt, heute in der Regel für eine Amtsdauer von vier, in den Kantonen Freiburg und Waadt von fünf Jahren, im Kanton Appenzell Innerrhoden aber von nur einem Jahr. Mit Ausnahme des Kantons Tessin (und bis 2013 auch von Zug), wo das Verhältniswahlrecht gilt, gelangt überall das Mehrheitswahlrecht zur Anwendung.\n\nIn den Kantonen Bern, Uri, Solothurn, Schaffhausen, Thurgau und Tessin kann die Kantonsregierung mittels Volksinitiative, die obligatorisch dem Volk zu unterbreiten ist, vorzeitig abberufen werden. Angesichts der mit vier Jahren nicht überlangen Amtsdauer der Behörde kommt diesem Recht freilich wenig Bedeutung zu.\n\nJudikative\nNach Art. 30 Abs. 1 der Bundesverfassung (BV) hat jede Person, dessen Anliegen in einem gerichtlichen Verfahren beurteilt werden muss, Anspruch auf ein durch Gesetz geschaffenes, zuständiges, unabhängiges und unparteiisches Gericht.\n\nBundesebene\nDie Judikative auf Bundesebene besteht aus dem Bundesgericht mit Sitz in Lausanne und Luzern (zwei sozialrechtliche Abteilungen), dem Bundesstrafgericht in Bellinzona (seit April 2004) sowie dem Bundesverwaltungsgericht (seit Januar 2007) und dem Bundespatentgericht (seit Januar 2012) in St. Gallen. Die Wahl der Richter und Richterinnen erfolgt durch die Vereinigte Bundesversammlung.\n\nDas Bundesgericht (BGer) in Lausanne besteht aus 38 hauptamtlichen sowie 15+1 ordentlichen und 15 ausserordentlichen nebenamtlichen Bundesrichtern. Es überwacht die Verfassungsmässigkeit von eidgenössischen Entscheidungen im Gebiet des Zivil- und Strafrechts sowie kantonaler Entscheidungen in anderen Rechtsbereichen. Zudem fungiert es als höchste Instanz bei Gerichtsentscheidungen. Die zwei sozialrechtlichen Abteilungen des Bundesgerichts (bis 31. Dezember 2006 Eidgenössisches Versicherungsgericht) in Luzern haben die letztinstanzliche Jurisdiktion im Bereich der Sozialversicherungen (u. a. AHV, IV, BVG, AVIG, UVG und EO). Die Amtliche Sammlung der Entscheidungen des Schweizerischen Bundesgerichts (BGE) gilt als Leitlinie für sämtliche Gerichtsentscheidungen in der Schweiz.\nDas Bundesstrafgericht (BStGer) in Bellinzona hat seinen Betrieb am 1. April 2004 aufgenommen. Es umfasst 15 bis 35 Richterstellen[14] und beurteilt erstinstanzlich Straffälle, die der Gerichtsbarkeit des Bundes zugewiesen sind (z. B. Sprengstoffanschläge, schwere Fälle von organisierter Kriminalität). Gegen seine Entscheidungen stehen Rechtsmittel an das BGer zur Verfügung.\nDas Bundesverwaltungsgericht (BVGer) hat am 1. Januar 2007 seine Tätigkeit in provisorischen Arbeitsräumen in Bern und Zollikofen aufgenommen und ist 2012 an seinen endgültigen Sitz in St. Gallen umgezogen.\nDas Bundespatentgericht (BPGer) hat am 1. Januar 2012 seine Tätigkeit in St. Gallen aufgenommen.\nErstinstanzliche eidgenössische Fachgerichte, z. B. die Eidgenössische Schätzungskommission.\nAuf Bundesrecht basiert auch die Tätigkeit der Militärgerichte bzw. der Militärjustiz.\n\nDie Schweiz kennt auf Bundesebene keine Verfassungsgerichtsbarkeit, wie sie zum Beispiel das deutsche Bundesverfassungsgericht ausübt. Für das Bundesgericht sind die Bundesgesetze verbindlich (Art. 190); ihm ist es nicht möglich, sich auf Unvereinbarkeit mit Verfassungsbestimmungen zu berufen und dadurch zum Beispiel Bundesgesetze für ungültig erklären zu lassen. Hingegen darf es kantonale Gesetze auf ihre Verfassungsmässigkeit beurteilen und nötigenfalls für ungültig erklären.\n\nKantonale Ebene\nDie Judikative auf kantonaler Ebene umfasst alle den Bundesgerichten vorgeschalteten Instanzen.\n\nAls Schlichtungsstelle fungieren die in den meisten Kantonen der Deutschschweiz und im Tessin auf kommunaler, regionaler oder in kleinen Kantonen auch kantonaler Ebene angesiedelten Schlichtungsbehörden, die manchenorts Friedensrichter oder Vermittler genannt werden. Im Kanton Basel-Stadt, in den Kantonen der Westschweiz und teilweise im Kanton Tessin sind die Schlichtungsbehörden in die Gerichte integriert.\nAls eigentliche erste Instanz amten die Bezirksgerichte, je nach Kanton auch Kantonsgericht (in gewissen kleineren Kantonen mit nur einem einzigen Gericht erster Instanz), Kreisgericht, Landgericht, Regionalgericht oder Zivilgericht bzw. Strafgericht genannt.\nDie zweite Instanz trägt in vielen Kantonen die Bezeichnung Obergericht, in anderen Kantonsgericht (dieser Begriff kann somit je nach Kanton ein Gericht erster oder zweiter Instanz bezeichnen), im Kanton Basel-Stadt Appellationsgericht, im Kanton Tessin Appellationsgericht (zivilrechtliche Streitigkeiten) bzw. Appellationshof (strafrechtliche Streitigkeiten) und im Kanton Genf Cour de justice.\nJeder Kanton kennt Zwangsmassnahmengerichte, die für die Anordnung der Untersuchungs- und der Sicherheitshaft sowie für die Anordnung oder Genehmigung gewisser weiterer Zwangsmassnahmen zuständig sind. Sie können entweder an die jeweiligen Gerichte erster und zweiter Instanz angeschlossen oder eigenständig (so das Haftgericht in den Kantonen Thurgau, Freiburg oder Solothurn) sein.\nDie Verwaltungsgerichtsbarkeit wird in grösseren Kantonen durch ein selbständig organisiertes Verwaltungsgericht, in anderen Kantonen durch die verwaltungsrechtliche Abteilung des Gerichts zweiter Instanz wahrgenommen. Einige Kantone kennen zudem Spezialverwaltungsgerichte, etwa ein Baurekursgericht oder ein Steuerrekursgericht.\nÜberdies bestehen vielfach Fach- oder Spezialgerichte. Jugendgerichte sind allgemein verbreitet. In gewissen Kantonen gibt es ein Strafgericht oder Kriminalgericht, das bei schweren Delikten an die Stelle des Bezirks- oder Obergerichts tritt. Weitere Spezialgerichte, die ebenfalls nur in einigen Kantonen vorkommen und organisatorisch in der Regel an andere Gerichte angegliedert sind, sind das Arbeitsgericht, das Mietgericht, das Sozialversicherungsgericht, das Handelsgericht, das Wirtschaftsstrafgericht oder das Landwirtschaftsgericht. Einige wenige Kantone kannten sodann noch bis 2010 ein Geschworenengericht, dessen Prozesse nach dem Unmittelbarkeitsprinzip verliefen. Da die 2011 in Kraft getretenen Eidgenössischen Strafprozessordnung keine Prozesse nach dem Unmittelbarkeitsprinzip mehr vorsieht, wurden die letzten Geschworenengerichte auf diesen Termin hin abgeschafft. Einzig der Kanton Tessin kennt dem Namen nach noch Geschworene, die allerdings volle Akteneinsicht erhalten.\nEinige wenige Kantone (Zürich und St. Gallen bis 2010, Solothurn bis 2005) kannten ein kantonales Gericht dritter Instanz, nämlich das Kassationsgericht, das Nichtigkeitsbeschwerden beurteilte und bei deren Gutheissung den Fall an die vorige Instanz zurückwies. Mit den 2011 in Kraft getretenen eidgenössischen Prozessordnungen (ZPO und StPO) ist diese dritte kantonale Instanz entfallen, da diese nur zwei kantonale Instanzen vorsehen.\nEin selbständiges Verfassungsgericht kennen die Kantone Basel-Stadt, Genf und Jura.\nFöderalismus\n→ Hauptartikel: Föderalismus in der Schweiz\nDer Schweizer Bundesstaat besteht aus 26 Kantonen, davon sechs (Obwalden, Nidwalden, Appenzell Innerrhoden, Appenzell Ausserrhoden, Basel-Stadt und Basel-Landschaft), die aus historischen Gründen als Halbkantone bezeichnet werden und daher auch nur je einen von 46 Ständeratssitzen zugeteilt erhalten. Die Kantone haben eine gewisse politische Autonomie und können einiges in eigener Kompetenz regeln. Im Allgemeinen gilt, dass der Bund nur die in der Bundesverfassung einzeln aufgezählten Kompetenzen hat; alle anderen verbleiben bei den Kantonen. Sie regeln auch ihre Angelegenheiten untereinander (interkantonal), u. a. auch in interkantonalen Konferenzen.[15] Seit Jahren ist eine Kompetenzverschiebung von den Kantonen zum Bund festzustellen.[16]\n\nDer Föderalismus in der Schweiz hat, auf der kantonalen und Bundesebene, im Wesentlichen zwei Elemente:\n\nBeteiligung der Kantone an der politischen Entscheidungsfindung.\nAutonomie der Kantone: Der Bund darf nur das regeln, was in der Verfassung ausdrücklich als seine Kompetenz erwähnt ist, alles andere regeln die Kantone in eigener Kompetenz.[17]\nDie Bundesverfassung formuliert die Grundsätze des schweizerischen Föderalismus wie folgt:\n\nArt. 3\n\nDie Kantone sind souverän, soweit ihre Souveränität nicht durch die Bundesverfassung beschränkt ist; sie üben alle Rechte aus, die nicht dem Bund übertragen sind.\nArt. 43a Abs. 1\n\nDer Bund übernimmt nur die Aufgaben, welche die Kraft der Kantone übersteigen oder einer einheitlichen Regelung durch den Bund bedürfen.\nArt. 44 Abs. 1\n\nBund und Kantone unterstützen einander in der Erfüllung ihrer Aufgaben und arbeiten zusammen.\nDemokratie\n→ Hauptartikel: Demokratie in der Schweiz\nVerhältnis von direkter und repräsentativer Demokratie\nDie Schweiz ist eine repräsentative Demokratie mit direktdemokratischen Elementen. Diese Kombination der beiden Systeme wird auch als halbdirekte Demokratie bezeichnet.[18] Die Demokratie in der Schweiz zeichnet sich dadurch aus, dass die Bürger nicht nur von einem Parlament repräsentiert werden, sondern auch direkt auf die Rechtsetzung einwirken können. Obschon die repräsentativen Elemente älter als die direktdemokratischen sind (Totalrevision der Bundesverfassung 1874), sind letztere zentral für die Funktionsweise des Schweizer Staates.[19]\n\nAll das ändert aber nichts daran, dass die schweizerische Demokratie von ihrem Grundwesen her repräsentativ ist. Die Mehrheit der politischen Entscheidungen erfolgen ohne Mitwirkung des Volkes; nur etwa gegen 7 % der referendumspflichtigen Erlasse wird es auch wirklich ergriffen. Der Inhalt der Gesetze wird ausschliesslich vom Parlament bestimmt, der Inhalt der Bundesverfassung fast ausschliesslich, wobei ein Trend zu vermehrt erfolgreichen Volksinitiativen beobachtet werden kann. Dass die Stimmbürger nachträglich Verfassungs- und Gesetzesänderungen die Anwendung versagen können, hat jedoch erhebliche Vorwirkungen auf den Inhalt der Normen (Referendumssicherheit). Die Bedeutung der direktdemokratischen Elemente liegt somit auch in ihrem Einfluss auf den politischen Prozess. Vor allem ermöglichen sie eine bessere Kommunikation zwischen dem Volk und seinen Repräsentaten. Zudem verleihen die Volksrechte dem staatlichen Handeln mehr Legitimität als in anderen Staaten, denn die Beschlüsse des Parlaments werden explizit (durch Abstimmung) oder implizit (es wurde kein Referendum ergriffen) vom Volk mitgetragen.[19]\n\nDas Mitspracherecht des Volkes ist in der Schweiz weit entwickelt. Man muss zwei Formen der direkten Demokratie unterscheiden: die Versammlungsdemokratie und die Abstimmungsdemokratie. Die Versammlungsdemokratie ist auf dem Land verbreitet, vor allem in den Gemeinden mit meist unter 5000 Einwohnern (Gemeindeversammlung), und sie existiert in Form der Landsgemeinde in einzelnen kleinen Kantonen. Die Abstimmungsdemokratie gibt es auf Bundes- sowie auf Kantons- und Gemeindeebene.\n\nVolksrechte\nBundesebene\nJede Änderung der Verfassung verlangt zwingend eine Volksabstimmung; auf Bundesebene sind dabei das Volks- und das Ständemehr erforderlich. Gesetze unterstehen auf Bundesebene und in den meisten Kantonen dem fakultativen, in einzelnen Kantonen dem obligatorischen Referendum. Verfassungsänderungen können im Bund und in den Kantonen von einer bestimmten Anzahl Stimmberechtigter mit einer Volksinitiative vorgeschlagen und – wenn der Artikel in der anschliessenden Volksabstimmung angenommen wird – in die Verfassung aufgenommen werden.[20]\n\nDie Schweiz kennt folgende Mitbestimmungsrechte auf Bundesebene:\n\nWahlrecht: Ab 18 Jahren haben alle Schweizerinnen und Schweizer, inklusive im Ausland wohnhafte, das aktive und passive Wahlrecht (falls sie nicht wegen Krankheit oder Geistesschwäche entmündigt sind).\nStimmrecht: Die Personen, die wählen dürfen, haben auch das Stimmrecht, das heisst, sie können über kommunale, kantonale oder nationale Vorlagen befinden.\nInitiativrecht: 100'000 Bürger können per Volksinitiative einen Volksentscheid über eine Verfassungsänderung erzwingen. Mit der benötigten Anzahl Unterschriften wird das Parlament beauftragt, einen Gesetzestext auszuarbeiten, oder es kann ein ausgearbeiteter Text zur Volksabstimmung gebracht werden, dies muss aber innerhalb von 18 Monaten vollbracht werden.\nReferendumsrecht: Das Volk kann Parlamentsentscheide im Nachhinein umstossen oder bestätigen, nämlich in einer Volksabstimmung nach einem obligatorischen (z. B. bei Verfassungsänderungen) oder fakultativen Referendum (hier sind mindestens 50'000 Unterschriften in 100 Tagen notwendig).\nPetitionsrecht: Alle urteilsfähigen Personen (auch nicht wahlberechtigte) dürfen schriftlich formulierte Bitten, Anregungen und Beschwerden an die Behörden richten. Diese müssen die Petitionen zur Kenntnis nehmen. In der Praxis wird jede Petition behandelt und beantwortet, was jedoch nicht vorgeschrieben ist.\nDie Wahl der Regierung ist kein Volksrecht. Schweizerinnen und Schweizer haben dieses Recht nur auf kantonaler und kommunaler Ebene. Die Landesregierung wird gleich wie das Bundesgericht von den Parlamentariern der Vereinigten Bundesversammlung gewählt.\n\nKantonale Ebene\nDie Ausgestaltung der Volksrechte in den Kantonen entspricht grundsätzlich derjenigen im Bund, wobei historisch gesehen der Bund die Regelung der Kantone übernommen hat.\n\nNoch heute gehen die kantonalen Volksrechte allerdings über diejenigen auf Bundesebene hinaus:\n\nSie kennen ausnahmslos neben der Verfassungsinitiative auch die Gesetzesinitiative, räumen also der Bevölkerung das Recht ein, auch Vorschläge zum Erlass oder zur Änderung von Gesetzen zu machen. Dank dem gesonderten Recht der Gesetzesinitiative muss nicht wie im Bund jeder Wunsch nach Detailänderung als formale Verfassungsinitiative formuliert werden, was die Überladung der Kantonsverfassungen mit untergeordneten Bestimmungen verhindert. Für eine Gesetzesinitiative sehen die Kantonsverfassungen dabei eine tiefere Unterschriftenzahl vor als für Verfassungsinitiativen.\nSodann kennt das kantonale Recht in der ganzen Schweiz neben dem Gesetzesreferendum auch das Finanzreferendum, das heisst, dass eine bestimmte einmalige oder wiederkehrende Ausgabe, deren Höhe in den Kantonsverfassungen festgelegt ist, zur Volksabstimmung unterbreitet werden kann (fakultatives Finanzreferendum) oder sogar muss (obligatorisches Finanzreferendum). Es gibt Kantone, die beide Varianten des Finanzreferendums kennen; in diesen Fällen ist der Grenzwert fürs obligatorische Finanzreferendum höher als jener fürs fakultative.\nSehr hohe einmalige oder wiederkehrende Ausgaben sind überdies gemäss den Bestimmungen der Kantonsverfassungen obligatorisch zur Volksabstimmung vorzulegen.\nDer Kanton Zürich kennt seit 1869 die Einzelinitiative: Die Initiative einer Einzelperson betreffend Änderung der Verfassung oder eines Gesetzes wird dann wie eine parlamentarische oder eine Volksinitiative behandelt, wenn sie die Unterstützung von wenigstens 60 (von insgesamt 180) Mitgliedern des Kantonsrates findet. Das Recht der Einzelinitiative kennen sodann die beiden Landsgemeindekantone Appenzell Innerrhoden und Glarus, wo solche aber zwingend der Landsgemeinde zu unterbreiten sind.\nEinzelne Kantone wie Freiburg, Schaffhausen und Solothurn kennen das erst im ausgehenden 20. Jahrhundert geschaffene Volksrecht der Volksmotion, mit anderen Worten: eine bestimmte Anzahl Personen kann zuhanden des Kantonsparlaments eine Motion einreichen, die von diesem wie eine parlamentarische Motion zu behandeln ist.\nAllein im Kanton Appenzell Ausserrhoden existiert das Instrument der Volksdiskussion, wonach ausdrücklich jeder Einwohner des Kantons zu einer Gesetzesvorlage Stellung nehmen und seine Position vor versammeltem Kantonsrat sogar persönlich vertreten darf.\nDie Kantone Bern und Nidwalden kennen seit 1995 bzw. 1996 das konstruktive Referendum, welches bei Vorlagen des Kantonsparlaments mit einer bestimmten Anzahl von Unterschriften als (Gegen-)Variante eingebracht werden kann. Sollte dieses zustande kommen, werden beide Vorlagen den Stimmberechtigten zur Abstimmung unterbreitet. Es ist bei der Abstimmung möglich, beide anzunehmen oder zu verwerfen; im ersteren Fall entscheidet die Stichfrage (Verfassung des Kantons Bern (PDF; 226 kB) – Art. 63 Absatz 3; Gesetz über die politischen Rechte – Art. 59a ff). Das vom Kanton Zürich im Jahre 2006 eingeführte Referendum mit Gegenvorschlag wurde 2012 wieder abgeschafft.\nIm Gegensatz zum Bund kennen einige Kantone noch das obligatorische Gesetzesreferendum, wonach ausnahmslos jede kantonale Gesetzesänderung der Volksabstimmung zu unterbreiten ist. Heute allerdings sind die meisten Kantone auf das fakultative Referendum umgeschwenkt, womit für Gesetze nur noch eine Volksabstimmung anberaumt wird, wenn dies von einer bestimmten Anzahl Parlamentariern oder aber einer bestimmten Anzahl Stimmberechtigten verlangt wird. Einzelne Kantone wie Basel-Landschaft oder Schaffhausen kennen einen Mittelweg, indem Gesetze, denen im Kantonsparlament mit einer Mehrheit von mindestens vier Fünfteln der Ratsmitglieder zugestimmt worden ist, dem fakultativen, die übrigen aber dem obligatorischen Referendum unterstehen. Änderungen der Kantonsverfassungen unterstehen hingegen in allen Kantonen dem obligatorischen Referendum. Zürich hat ebenfalls eine unikale Lösung, indem hier zwar die meisten Gesetze dem fakultativen, Steuergesetze aber dem obligatorischen Referendum unterliegen.\n\nStimm- und Wahlbeteiligung\n→ Hauptartikel: Wahlbeteiligung > Schweiz\nAn Abstimmungen und Wahlen nehmen in der Schweiz im langjährigen Durchschnitt rund 45 Prozent der Stimmberechtigten pro Abstimmung teil, was im internationalen Vergleich an sich gering wäre. Allerdings müsste man Gleiches mit Gleichem vergleichen – einmal in vier, fünf Jahren Wahlen und viermal jährlich, notabene verbindliche, Abstimmungen zu, im gleichen Termin, mehreren Themen. Und genau hier «hinken» oberflächliche Vergleiche, in denen die politische Beteiligung in der Schweiz massiv unterschätzt wird. So nehmen 75 Prozent der Stimmberechtigten an mindestens einem von sieben Urnengängen teil. Politologische Untersuchungen zeigen weiter, dass rund 25 Prozent der Stimmberechtigten an allen Wahlen und Abstimmungen teilnehmen, 20 Prozent an keinen, und 55 Prozent unregelmässig.[21]\n\nEntstehung\nDie Versammlungsdemokratie in der Schweiz hat ihre Wurzeln in den Korporationen des Mittelalters, die Abstimmungsdemokratie im 19. Jahrhundert. Letztere wurde in den meisten Kantonen in den 1860er- bis 1880er-Jahren etabliert, und auch beim Bund setzte sie sich ab 1874 durch. Die nachhaltigste Ausnahme bildete der Kanton Freiburg, wo sich eine repräsentativ-demokratische Staatsform fast fünfzig Jahre länger hielt als in den anderen Kantonen und erst 1918 durch direkt-demokratische Institutionen abgelöst wurde. Einen Rückschlag erlitt diese Form dort erneut in den 1930er Jahren, als das Kantonsparlament eine Verfassungsreform im korporativistischen Geiste beschloss, deren Einführung schliesslich durch das Bundesgericht abgewendet wurde.[22]\n==============================================\nNutze ZWINGEND diese Rohdaten als Faktenbasis fuer die Generierung der Knoten und Kanten."
+    },
+    "data": {
+      "entities": [
+        {
+          "id": "Ständerat",
+          "label": "Ständerat",
+          "entity_id": "Ständerat",
+          "entity_type": "organization",
+          "description": "The Ständerat is the upper house of the Swiss Federal Assembly, with representatives elected from the cantons, serving distinct legislative functions alongside the Nationalrat (National Council).<SEP>The Council of States, the second chamber of the Federal Assembly, representing the cantons in the Swiss legislative process with two members per canton.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 1.7140737734908607,
+            "y": -4.408617642758215,
+            "z": 34.67889908256881
+          }
+        },
+        {
+          "id": "Ständerätin",
+          "label": "Ständerätin",
+          "entity_id": "Ständerätin",
+          "entity_type": "person",
+          "description": "A Ständerätin is a female member of the Ständerat, serving to represent the interests of her canton in the Swiss legislative process.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -7.31322077985178,
+            "y": 3.6083295710229035,
+            "z": 34.03669724770642
+          }
+        },
+        {
+          "id": "Kanton",
+          "label": "Kanton",
+          "entity_id": "Kanton",
+          "entity_type": "location",
+          "description": "The term Kanton refers to the administrative divisions of Switzerland, with each representing a region that elects representatives to the Ständerat.<SEP>Kantons are administrative divisions in Switzerland, each possessing unique legal and judicial systems, such as different levels of courts and judicial authorities. They have political autonomy and can regulate certain aspects independently.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 10.061274379027036,
+            "y": 2.928896377728751,
+            "z": 33.39449541284404
+          }
+        },
+        {
+          "id": "Nationalrat",
+          "label": "Nationalrat",
+          "entity_id": "Nationalrat",
+          "entity_type": "organization",
+          "description": "The Nationalrat is the lower house of the Swiss Federal Assembly, responsible for discussing and voting on legislative proposals, working alongside the Ständerat.<SEP>The National Council, a chamber of the Federal Assembly, composed of representatives elected to represent the Swiss population according to their demographic distribution.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -6.4069101364420185,
+            "y": -10.546979088120855,
+            "z": 32.752293577981646
+          }
+        },
+        {
+          "id": "Vereinigte Bundesversammlung",
+          "label": "Vereinigte Bundesversammlung",
+          "entity_id": "Vereinigte Bundesversammlung",
+          "entity_type": "event",
+          "description": "The Vereinigte Bundesversammlung is a joint assembly of the Nationalrat and the Ständerat, convened for specific legislative purposes, such as elections of federal officials.<SEP>The joint assembly of the two houses of the Federal Assembly of Switzerland, responsible for electing federal judges.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -2.708558175077098,
+            "y": 13.660370451078068,
+            "z": 32.11009174311927
+          }
+        },
+        {
+          "id": "Bundesrat",
+          "label": "Bundesrat",
+          "entity_id": "Bundesrat",
+          "entity_type": "organization",
+          "description": "The Bundesrat is the federal executive authority of Switzerland, consisting of seven members, each presiding over a department and collectively responsible for the government.<SEP>The Bundesrat is the collective executive body of the Swiss Federal Council, composed of members who oversee various departments and functions within the Swiss government. It does not function as a head of state but is considered the collective head of state of Switzerland.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 12.349804606350105,
+            "y": -9.069411828051397,
+            "z": 31.46788990825688
+          }
+        },
+        {
+          "id": "Bundespräsident",
+          "label": "Bundespräsident",
+          "entity_id": "Bundespräsident",
+          "entity_type": "person",
+          "description": "The Bundespräsident is the president of the Swiss Federal Council, elected annually from among its members to lead the government temporarily but does not serve as a head of state.<SEP>The President of the Swiss Confederation, serving as Primus inter Pares within the Federal Council, representing the council but not acting as a head of state.<SEP>The Bundespräsident is a member of the Bundesrat elected to serve as the President of the Swiss Federal Council for a one-year term, representing Switzerland at ceremonial functions but not holding the powers of a head of state.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-000<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -16.479456145577323,
+            "y": -1.790106127518147,
+            "z": 30.825688073394495
+          }
+        },
+        {
+          "id": "Landsgemeinde",
+          "label": "Landsgemeinde",
+          "entity_id": "Landsgemeinde",
+          "entity_type": "event",
+          "description": "The Landsgemeinde is a traditional assembly held annually in certain Swiss cantons, where citizens directly participate in legislative decisions.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 11.696373529510824,
+            "y": 13.309846157882568,
+            "z": 30.183486238532108
+          }
+        },
+        {
+          "id": "Kantonsvertretung",
+          "label": "Kantonsvertretung",
+          "entity_id": "Kantonsvertretung",
+          "entity_type": "concept",
+          "description": "Kantonsvertretung refers to the representation concept within the Swiss political system, indicating how cantonal interests are represented, though often deemed misleading in the context of the Ständerat.<SEP>The concept of representation of the cantons in the national parliament, exemplified by the Council of States.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 0.38785039708360086,
+            "y": -18.765982197875545,
+            "z": 29.541284403669728
+          }
+        },
+        {
+          "id": "Instruktionsverbot",
+          "label": "Instruktionsverbot",
+          "entity_id": "Instruktionsverbot",
+          "entity_type": "concept",
+          "description": "Instruktionsverbot is the principle that members of the Ständerat and Nationalrat are not bound by instructions from cantons or political parties during the execution of their mandates, allowing independence in their legislative processes.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -13.635168014899513,
+            "y": 14.280238789555206,
+            "z": 28.899082568807337
+          }
+        },
+        {
+          "id": "Schweizerische Eidgenossenschaft",
+          "label": "Schweizerische Eidgenossenschaft",
+          "entity_id": "Schweizerische Eidgenossenschaft",
+          "entity_type": "concept",
+          "description": "The Swiss Confederation, operating with a unique system that combines elements of both parliamentary and presidential democracy, known for its directorial system and attributes that distinguish it from other modern democratic models.<SEP>The Schweizerische Eidgenossenschaft, known as the Swiss Confederation, is the federal state of Switzerland that governs the country along with its cantonal entities.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 20.606892682607594,
+            "y": -1.3800960673459681,
+            "z": 28.256880733944957
+          }
+        },
+        {
+          "id": "Föderalismus",
+          "label": "Föderalismus",
+          "entity_id": "Föderalismus",
+          "entity_type": "concept",
+          "description": "Federalism in Switzerland, characterized by significant autonomy among the cantons, allowing them to grant their municipalities considerable leeway and involvement in political decision-making.<SEP>Föderalismus refers to the political system in Switzerland that divides authority between the federal government and cantonal governments, emphasizing autonomy and collaboration.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -16.791726700696874,
+            "y": -13.433816423848722,
+            "z": 27.614678899082566
+          }
+        },
+        {
+          "id": "Direkte Demokratie",
+          "label": "Direkte Demokratie",
+          "entity_id": "Direkte Demokratie",
+          "entity_type": "concept",
+          "description": "Direct democracy in Switzerland, enabling citizens to influence government actions through initiatives and referendums, impacting government activity at various levels.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 3.43035395345977,
+            "y": 22.03901433308892,
+            "z": 26.972477064220186
+          }
+        },
+        {
+          "id": "Volksrechte",
+          "label": "Volksrechte",
+          "entity_id": "Volksrechte",
+          "entity_type": "concept",
+          "description": "The rights of citizens in Switzerland, rooted in both assembly and ballot democracy, performing functions that include control, initiation, and legitimization of political processes.<SEP>The Volksrechte, or popular rights, represent the rights of citizens to participate in decision-making processes in Switzerland, including various forms of democratic participation such as voting and referendums.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 12.77578799671738,
+            "y": -19.196245659222,
+            "z": 26.330275229357795
+          }
+        },
+        {
+          "id": "Gewaltenteilung",
+          "label": "Gewaltenteilung",
+          "entity_id": "Gewaltenteilung",
+          "entity_type": "concept",
+          "description": "The principle of separation of powers in Switzerland, ensuring that the government cannot be dismissed between elections, and the parliament cannot be dissolved by the government.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -23.07990136637102,
+            "y": 5.695703485751536,
+            "z": 25.688073394495415
+          }
+        },
+        {
+          "id": "Bundesversammlung",
+          "label": "Bundesversammlung",
+          "entity_id": "Bundesversammlung",
+          "entity_type": "organization",
+          "description": "The Federal Assembly of Switzerland, consisting of two chambers, the National Council and the Council of States, serving as the Swiss parliament.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 21.458860282807194,
+            "y": 11.714163784979508,
+            "z": 25.045871559633024
+          }
+        },
+        {
+          "id": "Schweizer Regierung",
+          "label": "Schweizer Regierung",
+          "entity_id": "Schweizer Regierung",
+          "entity_type": "organization",
+          "description": "The Swiss government known as the Federal Council, designed as a collegiate body without a single head of state, emphasizing shared leadership.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -8.117712903574429,
+            "y": -23.739495385948157,
+            "z": 24.403669724770644
+          }
+        },
+        {
+          "id": "Staatliche Ebenen",
+          "label": "Staatliche Ebenen",
+          "entity_id": "Staatliche Ebenen",
+          "entity_type": "concept",
+          "description": "The three political levels of Switzerland: Municipality, Canton, and Federation, where districts are part of state administrative structures without independent political authority.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -10.294018622951931,
+            "y": 23.546248624933398,
+            "z": 23.761467889908253
+          }
+        },
+        {
+          "id": "Bund",
+          "label": "Bund",
+          "entity_id": "Bund",
+          "entity_type": "concept",
+          "description": "The federation encompassing all Swiss cantons, representing the highest political level in Switzerland and possessing overall legislative competence.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 24.025360911053287,
+            "y": -10.643381519500107,
+            "z": 23.119266055045873
+          }
+        },
+        {
+          "id": "Parlament",
+          "label": "Parlament",
+          "entity_id": "Parlament",
+          "entity_type": "organization",
+          "description": "The legislative body in Switzerland, referred to as the Federal Assembly, comprised of the National Council and the Council of States, with each serving specific roles in governance.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -25.427646379522002,
+            "y": -8.556657270203653,
+            "z": 22.477064220183482
+          }
+        },
+        {
+          "id": "schweizerische Bundesverfassung",
+          "label": "schweizerische Bundesverfassung",
+          "entity_id": "schweizerische Bundesverfassung",
+          "entity_type": "content",
+          "description": "The Swiss Federal Constitution, which was established in 1848, serves as the fundamental legal document for Switzerland, subject to continuous revision and major renewals in 1874 and 1999.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 13.223513570373468,
+            "y": 23.945301699252788,
+            "z": 21.834862385321102
+          }
+        },
+        {
+          "id": "Kantone",
+          "label": "Kantone",
+          "entity_id": "Kantone",
+          "entity_type": "location",
+          "description": "The cantons of Switzerland, which are semi-autonomous regions playing a crucial role in the federal system and enjoying significant powers of self-government.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 6.541758732329754,
+            "y": -27.07538608184597,
+            "z": 21.19266055045871
+          }
+        },
+        {
+          "id": "Bezirke",
+          "label": "Bezirke",
+          "entity_id": "Bezirke",
+          "entity_type": "location",
+          "description": "Districts within cantons that serve administrative functions but do not possess political autonomy.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -23.508750862715978,
+            "y": 15.8119347156925,
+            "z": 20.55045871559633
+          }
+        },
+        {
+          "id": "Volksvertretung",
+          "label": "Volksvertretung",
+          "entity_id": "Volksvertretung",
+          "entity_type": "concept",
+          "description": "The concept of popular representation within the Swiss political system, exemplified by the National Council as the voice of the citizenry.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 28.465247449024204,
+            "y": 4.288472412938046,
+            "z": 19.90825688073394
+          }
+        },
+        {
+          "id": "Interpellation",
+          "label": "Interpellation",
+          "entity_id": "Interpellation",
+          "entity_type": "concept",
+          "description": "A parliamentary procedure in Switzerland that allows legislators to question government actions and seek clarification.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -18.36515405415017,
+            "y": -22.727521632082514,
+            "z": 19.26605504587156
+          }
+        },
+        {
+          "id": "Motion",
+          "label": "Motion",
+          "entity_id": "Motion",
+          "entity_type": "concept",
+          "description": "A proposal submitted in parliament to express the opinion or request actions from the government.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -1.8359422500866018,
+            "y": 29.576703799259484,
+            "z": 18.62385321100917
+          }
+        },
+        {
+          "id": "Postulat",
+          "label": "Postulat",
+          "entity_id": "Postulat",
+          "entity_type": "concept",
+          "description": "A formal request in the Swiss parliament that urges the government to investigate a particular issue or situation.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 21.61619321473842,
+            "y": -20.84227446057208,
+            "z": 17.98165137614679
+          }
+        },
+        {
+          "id": "Subsidiarität",
+          "label": "Subsidiarität",
+          "entity_id": "Subsidiarität",
+          "entity_type": "concept",
+          "description": "The principle of subsidiarity in Swiss governance, emphasizing that decisions should be taken at the most local level possible unless they require higher authority.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -30.393100092869734,
+            "y": 0.7765026400816728,
+            "z": 17.33944954128441
+          }
+        },
+        {
+          "id": "Urnengang",
+          "label": "Urnengang",
+          "entity_id": "Urnengang",
+          "entity_type": "concept",
+          "description": "The process of voting in Switzerland, particularly in relation to direct democracy mechanisms.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 23.20504478042496,
+            "y": 20.19227118896874,
+            "z": 16.697247706422022
+          }
+        },
+        {
+          "id": "Schweizer Demokratie",
+          "label": "Schweizer Demokratie",
+          "entity_id": "Schweizer Demokratie",
+          "entity_type": "concept",
+          "description": "The Swiss democracy is fundamentally representative, involving citizens directly in legislative processes and reflecting a complex relationship between parliamentary and direct democratic elements since its total revision in 1874.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -3.5093617941750677,
+            "y": -30.901777972467865,
+            "z": 16.055045871559635
+          }
+        },
+        {
+          "id": "Bundesverfassung",
+          "label": "Bundesverfassung",
+          "entity_id": "Bundesverfassung",
+          "entity_type": "content",
+          "description": "Bundesverfassung is the Federal Constitution of Switzerland, outlining the country's fundamental laws, including the principles of federalism and the distribution of powers between the canton and the federal level.<SEP>The Bundesverfassung is the Federal Constitution of Switzerland, which is subject to changes that require a popular vote and is primarily determined by the parliament.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -18.47619844512711,
+            "y": 25.417992244013465,
+            "z": 15.412844036697244
+          }
+        },
+        {
+          "id": "Volksinitiative",
+          "label": "Volksinitiative",
+          "entity_id": "Volksinitiative",
+          "entity_type": "method",
+          "description": "The Volksinitiative is a method allowing a certain number of Swiss citizens (100,000) to propose changes to the federal constitution by gathering signatures for a popular vote.<SEP>A procedural method in Switzerland that allows citizens to propose changes to the constitution or legislation, requiring a certain number of signatures for consideration.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 31.09415452139721,
+            "y": -6.323107111606466,
+            "z": 14.770642201834868
+          }
+        },
+        {
+          "id": "Referendumsrecht",
+          "label": "Referendumsrecht",
+          "entity_id": "Referendumsrecht",
+          "entity_type": "method",
+          "description": "The Referendumsrecht is the right of the populace to challenge parliamentary decisions through a subsequent referendum, where they can either confirm or annul those decisions.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -27.448597198903258,
+            "y": -16.49126085565513,
+            "z": 14.128440366972477
+          }
+        },
+        {
+          "id": "Wahlrecht",
+          "label": "Wahlrecht",
+          "entity_id": "Wahlrecht",
+          "entity_type": "method",
+          "description": "The Wahlrecht is the voting right in Switzerland granting all Swiss citizens aged 18 and above, including those residing abroad, the ability to vote in elections unless disqualified for specific reasons.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 9.178410614919057,
+            "y": 30.96575768230079,
+            "z": 13.486238532110093
+          }
+        },
+        {
+          "id": "Stimmrecht",
+          "label": "Stimmrecht",
+          "entity_id": "Stimmrecht",
+          "entity_type": "method",
+          "description": "The Stimmrecht is the right of eligible voters to vote on local, cantonal, and national proposals, allowing direct participation in the legislative process.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 14.263415022787235,
+            "y": -29.26748559763004,
+            "z": 12.844036697247708
+          }
+        },
+        {
+          "id": "Kantonale Rechte",
+          "label": "Kantonale Rechte",
+          "entity_id": "Kantonale Rechte",
+          "entity_type": "concept",
+          "description": "The kantonale Rechte refers to the rights of the citizens at the cantonal level in Switzerland, which often surpass those at the federal level, allowing for greater participation in governance.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -30.516219694086832,
+            "y": 12.036426445307807,
+            "z": 12.201834862385322
+          }
+        },
+        {
+          "id": "Gesetzesinitiative",
+          "label": "Gesetzesinitiative",
+          "entity_id": "Gesetzesinitiative",
+          "entity_type": "method",
+          "description": "The Gesetzesinitiative is a method that enables citizens to propose new laws or amendments to existing ones, requiring fewer signatures than constitutional changes, thereby facilitating local governance.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 30.848622584378944,
+            "y": 11.821056167515092,
+            "z": 11.559633027522933
+          }
+        },
+        {
+          "id": "Finanzreferendum",
+          "label": "Finanzreferendum",
+          "entity_id": "Finanzreferendum",
+          "entity_type": "method",
+          "description": "The Finanzreferendum is a type of referendum concerning the approval of specific financial expenditures, which can be either mandatory or optional based on cantonal regulations.<SEP>A type of referendum related to financial matters in Swiss cantons, which may be optional or mandatory depending on expenditure thresholds defined by cantonal constitutions.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -14.859106605957852,
+            "y": -29.749229351805102,
+            "z": 10.917431192660553
+          }
+        },
+        {
+          "id": "Stimmberechtigte",
+          "label": "Stimmberechtigte",
+          "entity_id": "Stimmberechtigte",
+          "entity_type": "person",
+          "description": "The Stimmberechtigte refers to eligible voters in Switzerland who meet the criteria to participate in elections and referendums.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -9.194738925612794,
+            "y": 32.16949545352652,
+            "z": 10.275229357798166
+          }
+        },
+        {
+          "id": "Vizepräsident",
+          "label": "Vizepräsident",
+          "entity_id": "Vizepräsident",
+          "entity_type": "person",
+          "description": "The Vizepräsident is a member of the Bundesrat elected to serve as the Vice President of the Swiss Federal Council for a one-year term, assisting the Bundespräsident in ceremonial duties.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 28.672443838193747,
+            "y": -17.609535629538538,
+            "z": 9.63302752293578
+          }
+        },
+        {
+          "id": "Bundeskanzlei",
+          "label": "Bundeskanzlei",
+          "entity_id": "Bundeskanzlei",
+          "entity_type": "organization",
+          "description": "The Bundeskanzlei is the Federal Chancellery of Switzerland, responsible for the central coordination and communication between the government, administration, parliament, and the public. It is led by the Bundeskanzler.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -33.211277483345036,
+            "y": -6.416860709953011,
+            "z": 8.990825688073397
+          }
+        },
+        {
+          "id": "Bundeskanzler",
+          "label": "Bundeskanzler",
+          "entity_id": "Bundeskanzler",
+          "entity_type": "person",
+          "description": "The Bundeskanzler is the head of the Bundeskanzlei, attending all meetings of the Bundesrat without voting rights and overseeing the preparation of council meetings.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 20.252272927739043,
+            "y": 27.297361063259657,
+            "z": 8.348623853211006
+          }
+        },
+        {
+          "id": "Guy Parmelin",
+          "label": "Guy Parmelin",
+          "entity_id": "Guy Parmelin",
+          "entity_type": "person",
+          "description": "Guy Parmelin is a member of the Bundesrat from the canton of Vaud and serves as the Bundespräsident for 2026.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 3.521315434469283,
+            "y": -33.95896637540783,
+            "z": 7.706422018348628
+          }
+        },
+        {
+          "id": "Ignazio Cassis",
+          "label": "Ignazio Cassis",
+          "entity_id": "Ignazio Cassis",
+          "entity_type": "person",
+          "description": "Ignazio Cassis is a member of the Bundesrat from the canton of Ticino and serves as the Vizepräsident for 2026.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -25.6391537525137,
+            "y": 22.75369394305435,
+            "z": 7.064220183486238
+          }
+        },
+        {
+          "id": "Karin Keller-Sutter",
+          "label": "Karin Keller-Sutter",
+          "entity_id": "Karin Keller-Sutter",
+          "entity_type": "person",
+          "description": "Karin Keller-Sutter is a member of the Bundesrat from the canton of St. Gallen.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 34.401492647505734,
+            "y": 0.5431242524024628,
+            "z": 6.422018348623853
+          }
+        },
+        {
+          "id": "Albert Rösti",
+          "label": "Albert Rösti",
+          "entity_id": "Albert Rösti",
+          "entity_type": "person",
+          "description": "Albert Rösti is a member of the Bundesrat from the canton of Bern.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -25.08232285526199,
+            "y": -23.716466879610294,
+            "z": 5.779816513761469
+          }
+        },
+        {
+          "id": "Elisabeth Baume-Schneider",
+          "label": "Elisabeth Baume-Schneider",
+          "entity_id": "Elisabeth Baume-Schneider",
+          "entity_type": "person",
+          "description": "Elisabeth Baume-Schneider is a member of the Bundesrat from the canton of Jura.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 2.4819507573363984,
+            "y": 34.53179456456496,
+            "z": 5.137614678899083
+          }
+        },
+        {
+          "id": "Beat Jans",
+          "label": "Beat Jans",
+          "entity_id": "Beat Jans",
+          "entity_type": "person",
+          "description": "Beat Jans is a member of the Bundesrat from the canton of Basel-Stadt.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 21.551180410118718,
+            "y": -27.20915078226781,
+            "z": 4.495412844036702
+          }
+        },
+        {
+          "id": "Martin Pfister",
+          "label": "Martin Pfister",
+          "entity_id": "Martin Pfister",
+          "entity_type": "person",
+          "description": "Martin Pfister is a member of the Bundesrat from the canton of Zug.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -34.34685718548585,
+            "y": 5.517804490793139,
+            "z": 3.853211009174309
+          }
+        },
+        {
+          "id": "Regierungsrat",
+          "label": "Regierungsrat",
+          "entity_id": "Regierungsrat",
+          "entity_type": "organization",
+          "description": "The Regierungsrat is the executive body in most German-speaking cantons of Switzerland, functioning similarly to the Bundesrat at the cantonal level.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 29.107934328993167,
+            "y": 19.168139690160487,
+            "z": 3.211009174311927
+          }
+        },
+        {
+          "id": "Staatsrat",
+          "label": "Staatsrat",
+          "entity_id": "Staatsrat",
+          "entity_type": "organization",
+          "description": "The Staatsrat is the executive body in predominantly French-speaking cantons and the canton of Ticino, analogous to the Bundesrat.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -8.528393166491728,
+            "y": -33.847713938322734,
+            "z": 2.5688073394495397
+          }
+        },
+        {
+          "id": "Standeskommission",
+          "label": "Standeskommission",
+          "entity_id": "Standeskommission",
+          "entity_type": "organization",
+          "description": "The Standeskommission is the executive body in the canton of Appenzell Innerrhoden, serving a similar function as the Bundesrat.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -16.59485616543415,
+            "y": 30.75547008384438,
+            "z": 1.9266055045871588
+          }
+        },
+        {
+          "id": "Primus inter Pares",
+          "label": "Primus inter Pares",
+          "entity_id": "Primus inter Pares",
+          "entity_type": "person",
+          "description": "The Primus inter Pares is a title given to a member of the cantonal executive who leads the government meetings for one year without being termed a governmental leader.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 33.03940986442033,
+            "y": -11.478140224968596,
+            "z": 1.2844036697247676
+          }
+        },
+        {
+          "id": "Gericht",
+          "label": "Gericht",
+          "entity_id": "Gericht",
+          "entity_type": "other",
+          "description": "Gericht refers to various types of courts within the Swiss legal system, including first-instance courts, second-instance courts, and specialized courts for different legal matters.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -32.131841306157135,
+            "y": -13.861181446010795,
+            "z": 0.6422018348623867
+          }
+        },
+        {
+          "id": "Obergericht",
+          "label": "Obergericht",
+          "entity_id": "Obergericht",
+          "entity_type": "other",
+          "description": "Obergericht is the term for a second-instance court in many Swiss cantons, responsible for appeals from lower courts.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 14.332339092451098,
+            "y": 31.93092632760594,
+            "z": 2.1431318985078682e-15
+          }
+        },
+        {
+          "id": "Appellationsgericht",
+          "label": "Appellationsgericht",
+          "entity_id": "Appellationsgericht",
+          "entity_type": "other",
+          "description": "Appellationsgericht is a type of appellate court that handles civil law disputes, existing in some cantons such as Basel-Stadt and Ticino.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 10.998958036008442,
+            "y": -33.22063363220853,
+            "z": -0.6422018348623824
+          }
+        },
+        {
+          "id": "Cour de justice",
+          "label": "Cour de justice",
+          "entity_id": "Cour de justice",
+          "entity_type": "other",
+          "description": "Cour de justice is a type of court specific to the canton of Geneva, responsible for legal adjudications.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -30.535067589244882,
+            "y": 17.057548315436314,
+            "z": -1.284403669724771
+          }
+        },
+        {
+          "id": "Zwangsmassnahmengerichte",
+          "label": "Zwangsmassnahmengerichte",
+          "entity_id": "Zwangsmassnahmengerichte",
+          "entity_type": "other",
+          "description": "Zwangsmassnahmengerichte are courts responsible for the issuance of coercive measures related to investigations and security detention in various cantons.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 34.00911717924988,
+            "y": 8.041650323021091,
+            "z": -1.9266055045871544
+          }
+        },
+        {
+          "id": "Verwaltungsgericht",
+          "label": "Verwaltungsgericht",
+          "entity_id": "Verwaltungsgericht",
+          "entity_type": "other",
+          "description": "Verwaltungsgericht refers to administrative courts that manage public law disputes in larger cantons, distinct from other judicial entities.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -19.621974772331882,
+            "y": -28.868310218763437,
+            "z": -2.5688073394495428
+          }
+        },
+        {
+          "id": "Spezialverwaltungsgerichte",
+          "label": "Spezialverwaltungsgerichte",
+          "entity_id": "Spezialverwaltungsgerichte",
+          "entity_type": "other",
+          "description": "Spezialverwaltungsgerichte are specialized administrative courts for unique legal matters, such as building or tax appeals.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -5.0239596690486605,
+            "y": 34.48839296526089,
+            "z": -3.211009174311923
+          }
+        },
+        {
+          "id": "Jugendgerichte",
+          "label": "Jugendgerichte",
+          "entity_id": "Jugendgerichte",
+          "entity_type": "other",
+          "description": "Jugendgerichte are specialized courts dealing with youth-related legal issues, commonly found across various cantons.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 26.950616853234116,
+            "y": -21.995840882970377,
+            "z": -3.853211009174312
+          }
+        },
+        {
+          "id": "Strafgericht",
+          "label": "Strafgericht",
+          "entity_id": "Strafgericht",
+          "entity_type": "other",
+          "description": "Strafgericht specifically refers to courts that address criminal cases in certain cantons, handling serious offenses by replacing district or higher courts.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -34.65350209972263,
+            "y": -1.9814276636276382,
+            "z": -4.4954128440366965
+          }
+        },
+        {
+          "id": "Kassationsgericht",
+          "label": "Kassationsgericht",
+          "entity_id": "Kassationsgericht",
+          "entity_type": "other",
+          "description": "Kassationsgericht is a court of cassation that reviewed appeals before its elimination in 2011, formally addressing procedural legal matters.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 24.151731974067648,
+            "y": 24.805216347856337,
+            "z": -5.1376146788990855
+          }
+        },
+        {
+          "id": "Verfassungsgericht",
+          "label": "Verfassungsgericht",
+          "entity_id": "Verfassungsgericht",
+          "entity_type": "other",
+          "description": "Verfassungsgericht pertains to constitutional courts that some cantons, like Basel-Stadt, Geneva, and Jura, have established to oversee constitutional matters.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -1.04996820634222,
+            "y": -34.50349674790833,
+            "z": -5.779816513761464
+          }
+        },
+        {
+          "id": "direkte Demokratie",
+          "label": "direkte Demokratie",
+          "entity_id": "direkte Demokratie",
+          "entity_type": "concept",
+          "description": "Direkte Demokratie denotes a form of democratic governance where citizens can directly participate in decision-making processes, complemented by representative elements.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -22.458352881208963,
+            "y": 26.064920222264867,
+            "z": -6.4220183486238565
+          }
+        },
+        {
+          "id": "repräsentative Demokratie",
+          "label": "repräsentative Demokratie",
+          "entity_id": "repräsentative Demokratie",
+          "entity_type": "concept",
+          "description": "Repräsentative Demokratie is a system of governance where elected representatives make decisions on behalf of the citizens, central to the functioning of the Swiss state.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 34.0414724374711,
+            "y": -4.034222042491117,
+            "z": -7.064220183486233
+          }
+        },
+        {
+          "id": "Kanton Zürich",
+          "label": "Kanton Zürich",
+          "entity_id": "Kanton Zürich",
+          "entity_type": "location",
+          "description": "A geographic region in Switzerland known for its unique political instruments such as the Einzelinitiative, which allows individual initiatives regarding constitutional or legal changes.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -27.7136618890266,
+            "y": -19.939007106067894,
+            "z": -7.706422018348624
+          }
+        },
+        {
+          "id": "Kanton Freiburg",
+          "label": "Kanton Freiburg",
+          "entity_id": "Kanton Freiburg",
+          "entity_type": "location",
+          "description": "A canton in western Switzerland, known for its bilingual population and varied cultural heritage.<SEP>A canton in Switzerland that historically maintained a representative democratic government longer than others, until it was replaced by direct-democratic institutions in 1918.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 6.93570558809131,
+            "y": 33.27456187168984,
+            "z": -8.348623853211002
+          }
+        },
+        {
+          "id": "Kanton Schaffhausen",
+          "label": "Kanton Schaffhausen",
+          "entity_id": "Kanton Schaffhausen",
+          "entity_type": "location",
+          "description": "A canton in northern Switzerland, known for the Rhine Falls and its historic town.<SEP>A canton in Switzerland that recognizes the Volksmotion, which allows a specified number of people to submit a motion to the cantonal parliament.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 17.27859298404395,
+            "y": -29.079464883976573,
+            "z": -8.990825688073393
+          }
+        },
+        {
+          "id": "Kanton Solothurn",
+          "label": "Kanton Solothurn",
+          "entity_id": "Kanton Solothurn",
+          "entity_type": "location",
+          "description": "A canton in the northwest of Switzerland, recognized for its historical architecture and natural beauty.<SEP>A canton in Switzerland that has adopted the Volksmotion, enabling a certain number of individuals to submit motions to the cantonal parliament.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -32.21389105212156,
+            "y": 9.719568098655635,
+            "z": -9.633027522935777
+          }
+        },
+        {
+          "id": "Kanton Appenzell Innerrhoden",
+          "label": "Kanton Appenzell Innerrhoden",
+          "entity_id": "Kanton Appenzell Innerrhoden",
+          "entity_type": "location",
+          "description": "A canton in Switzerland, known for its traditional rural culture and direct democracy practices.<SEP>A Swiss canton that recognizes the right of the Einzelinitiative, requiring personal initiatives to be presented to the Landsgemeinde.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 30.147324045589546,
+            "y": 14.510634532468277,
+            "z": -10.27522935779817
+          }
+        },
+        {
+          "id": "Kanton Glarus",
+          "label": "Kanton Glarus",
+          "entity_id": "Kanton Glarus",
+          "entity_type": "location",
+          "description": "A Swiss canton that also requires personal initiatives to be presented to the Landsgemeinde under the Einzelinitiative system.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -12.352125098840133,
+            "y": -30.8744992136897,
+            "z": -10.91743119266055
+          }
+        },
+        {
+          "id": "Kanton Appenzell Ausserrhoden",
+          "label": "Kanton Appenzell Ausserrhoden",
+          "entity_id": "Kanton Appenzell Ausserrhoden",
+          "entity_type": "location",
+          "description": "A canton in Switzerland that features the Volksdiskussion, allowing every resident to express their opinion on legislative proposals.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -11.670427379285277,
+            "y": 30.905921909139515,
+            "z": -11.559633027522937
+          }
+        },
+        {
+          "id": "Kanton Bern",
+          "label": "Kanton Bern",
+          "entity_id": "Kanton Bern",
+          "entity_type": "location",
+          "description": "A canton in Switzerland that recognizes the constructive referendum, enabling citizens to introduce alternatives to parliamentary proposals.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 29.275224866375794,
+            "y": -14.801230861459144,
+            "z": -12.201834862385319
+          }
+        },
+        {
+          "id": "Kanton Nidwalden",
+          "label": "Kanton Nidwalden",
+          "entity_id": "Kanton Nidwalden",
+          "entity_type": "location",
+          "description": "A canton in Switzerland that has implemented the constructive referendum since 1996, similar to Kanton Bern.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -31.347793139535504,
+            "y": -8.794690818934177,
+            "z": -12.844036697247704
+          }
+        },
+        {
+          "id": "Kanton Basel-Landschaft",
+          "label": "Kanton Basel-Landschaft",
+          "entity_id": "Kanton Basel-Landschaft",
+          "entity_type": "location",
+          "description": "A Swiss canton that employs a mixed approach to referendums, allowing certain laws passed by a majority in the cantonal parliament to undergo optional referendum.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 17.03662911137558,
+            "y": 27.438561164471786,
+            "z": -13.48623853211009
+          }
+        },
+        {
+          "id": "Kantonsrat",
+          "label": "Kantonsrat",
+          "entity_id": "Kantonsrat",
+          "entity_type": "organization",
+          "description": "The cantonal parliament in Switzerland where members can propose various legislative initiatives and motions.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 5.921217072871169,
+            "y": -31.469451237237067,
+            "z": -14.128440366972479
+          }
+        },
+        {
+          "id": "Volksabstimmung",
+          "label": "Volksabstimmung",
+          "entity_id": "Volksabstimmung",
+          "entity_type": "event",
+          "description": "A form of direct democratic decision-making in Switzerland where citizens vote on specific legislative proposals or changes.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -25.39048495804658,
+            "y": 19.03027594494061,
+            "z": -14.770642201834864
+          }
+        },
+        {
+          "id": "Einzelinitiative",
+          "label": "Einzelinitiative",
+          "entity_id": "Einzelinitiative",
+          "entity_type": "method",
+          "description": "A procedural method in Switzerland allowing individuals to propose amendments to the constitution or laws, requiring the support of other members.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 31.27147657171937,
+            "y": 3.0885258174172785,
+            "z": -15.41284403669724
+          }
+        },
+        {
+          "id": "Volksmotion",
+          "label": "Volksmotion",
+          "entity_id": "Volksmotion",
+          "entity_type": "method",
+          "description": "A procedural mechanism enabling a specified number of individuals to submit motions to the cantonal parliament.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -20.756628136377955,
+            "y": -23.160265336784008,
+            "z": -16.05504587155963
+          }
+        },
+        {
+          "id": "Volksdiskussion",
+          "label": "Volksdiskussion",
+          "entity_id": "Volksdiskussion",
+          "entity_type": "method",
+          "description": "A democratic instrument that allows residents to voice their opinions on legislative proposals before the cantonal parliament.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -0.33553397024333415,
+            "y": 30.758565245882277,
+            "z": -16.697247706422026
+          }
+        },
+        {
+          "id": "konstruktives Referendum",
+          "label": "konstruktives Referendum",
+          "entity_id": "konstruktives Referendum",
+          "entity_type": "method",
+          "description": "A procedure that allows citizens to propose alternative legislative options for consideration in conjunction with parliamentary proposals.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 20.78025944375368,
+            "y": -22.192888659557997,
+            "z": -17.339449541284406
+          }
+        },
+        {
+          "id": "Abstimmungen",
+          "label": "Abstimmungen",
+          "entity_id": "Abstimmungen",
+          "entity_type": "event",
+          "description": "Periodic voting events where Swiss citizens participate to decide on various political matters.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -29.939538720134106,
+            "y": 2.2987464001731097,
+            "z": -17.98165137614679
+          }
+        },
+        {
+          "id": "Kantonsverfassungen",
+          "label": "Kantonsverfassungen",
+          "entity_id": "Kantonsverfassungen",
+          "entity_type": "concept",
+          "description": "The constitutions of the cantons in Switzerland that outline the regulations and legal frameworks guiding governance and public participation, including provisions for referendums.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 23.319199013589422,
+            "y": 18.28570613729187,
+            "z": -18.623853211009166
+          }
+        },
+        {
+          "id": "Wahlbeteiligung",
+          "label": "Wahlbeteiligung",
+          "entity_id": "Wahlbeteiligung",
+          "entity_type": "concept",
+          "description": "The level of participation of eligible voters in elections and referendums in Switzerland, often measured by the percentage of voters who cast ballots.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -4.775464709775667,
+            "y": -28.827314473865478,
+            "z": -19.266055045871564
+          }
+        },
+        {
+          "id": "Schweiz",
+          "label": "Schweiz",
+          "entity_id": "Schweiz",
+          "entity_type": "location",
+          "description": "A country in Central Europe known for its mountainous terrain and political neutrality.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -15.71453227396981,
+            "y": 24.118764134612515,
+            "z": -19.908256880733937
+          }
+        },
+        {
+          "id": "Lausanne",
+          "label": "Lausanne",
+          "entity_id": "Lausanne",
+          "entity_type": "location",
+          "description": "A city in Switzerland, located on the shores of Lake Geneva, known for its educational institutions and as a hub for international organizations.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 27.438838143954953,
+            "y": -7.056118471823835,
+            "z": -20.550458715596328
+          }
+        },
+        {
+          "id": "Luzern",
+          "label": "Luzern",
+          "entity_id": "Luzern",
+          "entity_type": "location",
+          "description": "A city in central Switzerland, known for its preserved medieval architecture and as a gateway to the Swiss Alps.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -24.577889063015952,
+            "y": -13.107192987024794,
+            "z": -21.19266055045871
+          }
+        },
+        {
+          "id": "Bellinzona",
+          "label": "Bellinzona",
+          "entity_id": "Bellinzona",
+          "entity_type": "location",
+          "description": "A city in southern Switzerland, known for its medieval castles and as the capital of the canton of Ticino.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 9.102633127988826,
+            "y": 25.79497731635618,
+            "z": -21.834862385321106
+          }
+        },
+        {
+          "id": "St. Gallen",
+          "label": "St. Gallen",
+          "entity_id": "St. Gallen",
+          "entity_type": "location",
+          "description": "A city in eastern Switzerland, recognized for its rich history and as the capital of the canton of St. Gallen.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 10.506578247197808,
+            "y": -24.685894708866794,
+            "z": -22.477064220183475
+          }
+        },
+        {
+          "id": "Bern",
+          "label": "Bern",
+          "entity_id": "Bern",
+          "entity_type": "location",
+          "description": "The capital city of Switzerland, known for its well-preserved medieval city center and political significance.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -23.92037592536073,
+            "y": 10.877276895686089,
+            "z": -23.119266055045877
+          }
+        },
+        {
+          "id": "Zollikofen",
+          "label": "Zollikofen",
+          "entity_id": "Zollikofen",
+          "entity_type": "location",
+          "description": "A municipality in the canton of Bern, situated close to the city of Bern.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 24.43485811712911,
+            "y": 7.95803697607825,
+            "z": -23.76146788990825
+          }
+        },
+        {
+          "id": "Kanton Luzern",
+          "label": "Kanton Luzern",
+          "entity_id": "Kanton Luzern",
+          "entity_type": "location",
+          "description": "A canton in central Switzerland, noted for its beautiful lakes and mountains.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -12.342312871801797,
+            "y": -21.84326479578702,
+            "z": -24.40366972477064
+          }
+        },
+        {
+          "id": "Kanton Tessin",
+          "label": "Kanton Tessin",
+          "entity_id": "Kanton Tessin",
+          "entity_type": "location",
+          "description": "A canton in southern Switzerland, known for its Italian-speaking population and Mediterranean climate.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -5.509604891004215,
+            "y": 23.819079994059138,
+            "z": -25.04587155963302
+          }
+        },
+        {
+          "id": "Kanton Waadt",
+          "label": "Kanton Waadt",
+          "entity_id": "Kanton Waadt",
+          "entity_type": "location",
+          "description": "A canton in western Switzerland, recognized for its wine production and as a center of education.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 19.59521519790121,
+            "y": -13.459213447559197,
+            "z": -25.688073394495415
+          }
+        },
+        {
+          "id": "Kanton Basel-Stadt",
+          "label": "Kanton Basel-Stadt",
+          "entity_id": "Kanton Basel-Stadt",
+          "entity_type": "location",
+          "description": "A canton in northwestern Switzerland, home to the city of Basel, known for its cultural institutions and position on the Rhine River.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -22.834094409204702,
+            "y": -3.2125906769761388,
+            "z": -26.330275229357795
+          }
+        },
+        {
+          "id": "Kanton Uri",
+          "label": "Kanton Uri",
+          "entity_id": "Kanton Uri",
+          "entity_type": "location",
+          "description": "A canton in central Switzerland, known for its mountainous landscape and traditional tourism.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 14.187100911628718,
+            "y": 17.210800351621632,
+            "z": -26.972477064220193
+          }
+        },
+        {
+          "id": "Kanton Thurgau",
+          "label": "Kanton Thurgau",
+          "entity_id": "Kanton Thurgau",
+          "entity_type": "location",
+          "description": "A canton in northeastern Switzerland, known for its agriculture and location along Lake Constance.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 1.1228198026572946,
+            "y": -21.47484074425989,
+            "z": -27.61467889908257
+          }
+        },
+        {
+          "id": "Eidgenössisches Versicherungsgericht",
+          "label": "Eidgenössisches Versicherungsgericht",
+          "entity_id": "Eidgenössisches Versicherungsgericht",
+          "entity_type": "organization",
+          "description": "A former federal court in Switzerland, responsible for social insurance cases, now integrated into the Federal Court in Lausanne.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -14.727071566105959,
+            "y": 14.47971181599979,
+            "z": -28.256880733944953
+          }
+        },
+        {
+          "id": "Bundesgericht",
+          "label": "Bundesgericht",
+          "entity_id": "Bundesgericht",
+          "entity_type": "organization",
+          "description": "The federal supreme court of Switzerland with jurisdiction over civil and criminal law, located in Lausanne.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 19.732142751947343,
+            "y": -0.6968278826425539,
+            "z": -28.899082568807334
+          }
+        },
+        {
+          "id": "Bundesstrafgericht",
+          "label": "Bundesstrafgericht",
+          "entity_id": "Bundesstrafgericht",
+          "entity_type": "organization",
+          "description": "The federal criminal court in Switzerland, established to handle serious offenses, located in Bellinzona.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -14.279254003713772,
+            "y": -12.182586789303977,
+            "z": -29.54128440366973
+          }
+        },
+        {
+          "id": "Bundesverwaltungsgericht",
+          "label": "Bundesverwaltungsgericht",
+          "entity_id": "Bundesverwaltungsgericht",
+          "entity_type": "organization",
+          "description": "The federal administrative court in Switzerland, responsible for disputes involving federal administration, first located in Bern and later moved to St. Gallen.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 2.1710621253760314,
+            "y": 17.585324783355595,
+            "z": -30.183486238532108
+          }
+        },
+        {
+          "id": "Bundespatentgericht",
+          "label": "Bundespatentgericht",
+          "entity_id": "Bundespatentgericht",
+          "entity_type": "organization",
+          "description": "The federal patent court in Switzerland, established for handling patent disputes, located in St. Gallen.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 9.61516894046678,
+            "y": -13.502795304975447,
+            "z": -30.825688073394502
+          }
+        },
+        {
+          "id": "Eidgenössische Schätzungskommission",
+          "label": "Eidgenössische Schätzungskommission",
+          "entity_id": "Eidgenössische Schätzungskommission",
+          "entity_type": "organization",
+          "description": "An official federal commission in Switzerland dealing with appraisals, recognized as a federal court.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -14.98445435303219,
+            "y": 3.1996925576872943,
+            "z": -31.46788990825688
+          }
+        },
+        {
+          "id": "Regierender Landammann",
+          "label": "Regierender Landammann",
+          "entity_id": "Regierender Landammann",
+          "entity_type": "other",
+          "description": "The title held by a member of the government of Appenzell Innerrhoden, serving as the head of the cantonal government.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": 12.006872197343757,
+            "y": 7.055283714005923,
+            "z": -32.11009174311927
+          }
+        },
+        {
+          "id": "Schultheiss",
+          "label": "Schultheiss",
+          "entity_id": "Schultheiss",
+          "entity_type": "other",
+          "description": "A title for the head of government in the Canton of Lucerne up until 2007.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -3.622236475397508,
+            "y": -11.79689231526684,
+            "z": -32.752293577981646
+          }
+        },
+        {
+          "id": "Regierungspräsident",
+          "label": "Regierungspräsident",
+          "entity_id": "Regierungspräsident",
+          "entity_type": "other",
+          "description": "The title for the rotating president of the cantonal government in Switzerland, assumed for one year.",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": "",
+          "position": {
+            "x": -4.498595919465585,
+            "y": 9.464159279878281,
+            "z": -33.39449541284404
+          }
+        },
+        {
+          "id": "Kanton Baselland",
+          "label": "Kanton Baselland",
+          "entity_id": "Kanton Baselland",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "description": "The canton of Baselland is neighboring the canton of Basel-Stadt.",
+          "entity_type": "UNKNOWN",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": "",
+          "position": {
+            "x": 7.556618894833152,
+            "y": -3.0660644719615315,
+            "z": -34.03669724770642
+          }
+        },
+        {
+          "id": "Appenzell Innerrhoden",
+          "label": "Appenzell Innerrhoden",
+          "entity_id": "Appenzell Innerrhoden",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "description": "The Regierender Landammann governs the Canton of Appenzell Innerrhoden.",
+          "entity_type": "UNKNOWN",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": "",
+          "position": {
+            "x": -4.433229917221089,
+            "y": -1.6493728875133402,
+            "z": -34.67889908256881
+          }
+        }
+      ],
+      "relationships": [
+        {
+          "id": "rel_lightrag_0_Nationalrat_Ständerat",
+          "source": "Nationalrat",
+          "target": "Ständerat",
+          "label": "collaborate,convene,legislate",
+          "weight": 2,
+          "description": "The Nationalrat and Ständerat collaborate in the legislative process, convening separately for discussions and jointly in the Vereinigte Bundesversammlung.<SEP>Both the Ständerat and Nationalrat legislate together, treating constitutional amendments and laws that must be approved by both houses.",
+          "keywords": "collaborate,convene,legislate",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_1_Kanton_Ständerat",
+          "source": "Kanton",
+          "target": "Ständerat",
+          "label": "represent",
+          "weight": 1,
+          "description": "The Ständerat represents the interests of the cantons in the Swiss Federal Assembly, although it does not have direct instructions from them.",
+          "keywords": "represent",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_2_Kantonsvertretung_Ständerat",
+          "source": "Kantonsvertretung",
+          "target": "Ständerat",
+          "label": "function",
+          "weight": 1,
+          "description": "The Ständerat functions under the concept of Kantonsvertretung, although it is stated that members are not legally obligated to represent their cantons or take instructions from them.",
+          "keywords": "function",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_3_Instruktionsverbot_Ständerat",
+          "source": "Instruktionsverbot",
+          "target": "Ständerat",
+          "label": "guided by",
+          "weight": 1,
+          "description": "The Ständerat operates under the principle of Instruktionsverbot, which ensures that its members maintain autonomy in decision-making, independent of external pressures.",
+          "keywords": "guided by",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_4_Parlament_Ständerat",
+          "source": "Parlament",
+          "target": "Ständerat",
+          "label": "is part of",
+          "weight": 1,
+          "description": "The Council of States also constitutes one of the two key chambers within the Swiss parliament.",
+          "keywords": "is part of",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_5_Kanton_Landsgemeinde",
+          "source": "Kanton",
+          "target": "Landsgemeinde",
+          "label": "govern",
+          "weight": 1,
+          "description": "In some cantons, governance is facilitated through the Landsgemeinde, which serves as the highest legislative body for direct public involvement.",
+          "keywords": "govern",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_6_Gericht_Kanton",
+          "source": "Gericht",
+          "target": "Kanton",
+          "label": "consistsof,includes",
+          "weight": 1,
+          "description": "Each Kanton includes various types of Gerichte, serving different legal functions.",
+          "keywords": "consistsof,includes",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_7_Kanton_Obergericht",
+          "source": "Kanton",
+          "target": "Obergericht",
+          "label": "designates",
+          "weight": 1,
+          "description": "In many Kantons, the second-instance court is designated as an Obergericht.",
+          "keywords": "designates",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_8_Appellationsgericht_Kanton",
+          "source": "Appellationsgericht",
+          "target": "Kanton",
+          "label": "designates",
+          "weight": 1,
+          "description": "In the canton of Basel-Stadt, the second-instance court is designated as Appellationsgericht.",
+          "keywords": "designates",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_9_Cour de justice_Kanton",
+          "source": "Cour de justice",
+          "target": "Kanton",
+          "label": "designates",
+          "weight": 1,
+          "description": "In the canton of Geneva, legal matters are managed by the Cour de justice.",
+          "keywords": "designates",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_10_Kanton_Zwangsmassnahmengerichte",
+          "source": "Kanton",
+          "target": "Zwangsmassnahmengerichte",
+          "label": "includes",
+          "weight": 1,
+          "description": "Each Kanton has Zwangsmassnahmengerichte responsible for coercive legal measures.",
+          "keywords": "includes",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_11_Kanton_Verwaltungsgericht",
+          "source": "Kanton",
+          "target": "Verwaltungsgericht",
+          "label": "has",
+          "weight": 1,
+          "description": "Larger Kantons have a self-organized Verwaltungsgericht for administrative jurisdiction.",
+          "keywords": "has",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_12_Kanton_Spezialverwaltungsgerichte",
+          "source": "Kanton",
+          "target": "Spezialverwaltungsgerichte",
+          "label": "includes",
+          "weight": 1,
+          "description": "Certain Kantons include spezialverwaltungsgerichte for specific administrative cases.",
+          "keywords": "includes",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_13_Jugendgerichte_Kanton",
+          "source": "Jugendgerichte",
+          "target": "Kanton",
+          "label": "contains",
+          "weight": 1,
+          "description": "Several Kantons contain Jugendgerichte that deal with youth issues.",
+          "keywords": "contains",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_14_Kanton_Strafgericht",
+          "source": "Kanton",
+          "target": "Strafgericht",
+          "label": "replaces",
+          "weight": 1,
+          "description": "In certain Kantons, the Strafgericht replaces the Bezirksgericht or Obergericht for serious criminal cases.",
+          "keywords": "replaces",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_15_Kanton_Kassationsgericht",
+          "source": "Kanton",
+          "target": "Kassationsgericht",
+          "label": "previously included",
+          "weight": 1,
+          "description": "Some Kantons previously included a Kassationsgericht until 2011.",
+          "keywords": "previously included",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_16_Kanton_Verfassungsgericht",
+          "source": "Kanton",
+          "target": "Verfassungsgericht",
+          "label": "has",
+          "weight": 1,
+          "description": "The Kantons of Basel-Stadt, Geneva, and Jura have established a Verfassungsgericht for constitutional matters.",
+          "keywords": "has",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_17_Nationalrat_Parlament",
+          "source": "Nationalrat",
+          "target": "Parlament",
+          "label": "is part of",
+          "weight": 1,
+          "description": "The National Council functions as one of the two chambers within the Swiss parliament structure.",
+          "keywords": "is part of",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_18_Bundesrat_Vereinigte Bundesversammlung",
+          "source": "Bundesrat",
+          "target": "Vereinigte Bundesversammlung",
+          "label": "elect",
+          "weight": 1,
+          "description": "The Vereinigte Bundesversammlung is responsible for electing members of the Bundesrat, as well as the Bundespräsident and other federal officials.",
+          "keywords": "elect",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_19_Bundespräsident_Bundesrat",
+          "source": "Bundespräsident",
+          "target": "Bundesrat",
+          "label": "election,lead",
+          "weight": 2,
+          "description": "The Bundesrat collectively leads the Swiss executive government, while the Bundespräsident is elected from its members to preside among equals.<SEP>The Bundesrat elects one of its members to the position of Bundespräsident for a one-year term.",
+          "keywords": "election,lead",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_20_Bundesrat_Vizepräsident",
+          "source": "Bundesrat",
+          "target": "Vizepräsident",
+          "label": "election",
+          "weight": 1,
+          "description": "The Bundesrat elects one of its members to the role of Vizepräsident for a one-year term, often following the term of the Bundespräsident.",
+          "keywords": "election",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_21_Bundeskanzlei_Bundesrat",
+          "source": "Bundeskanzlei",
+          "target": "Bundesrat",
+          "label": "responsibility",
+          "weight": 1,
+          "description": "The Bundesrat is responsible for the functioning and decision-making processes in conjunction with the Bundeskanzlei.",
+          "keywords": "responsibility",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_22_Bundesrat_Guy Parmelin",
+          "source": "Bundesrat",
+          "target": "Guy Parmelin",
+          "label": "membership",
+          "weight": 1,
+          "description": "Guy Parmelin is a member of the Bundesrat representing the canton of Vaud and holds the position of Bundespräsident for 2026.",
+          "keywords": "membership",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_23_Bundesrat_Ignazio Cassis",
+          "source": "Bundesrat",
+          "target": "Ignazio Cassis",
+          "label": "membership",
+          "weight": 1,
+          "description": "Ignazio Cassis is a member of the Bundesrat representing the canton of Ticino and serves as the Vizepräsident for 2026.",
+          "keywords": "membership",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_24_Bundesrat_Karin Keller-Sutter",
+          "source": "Bundesrat",
+          "target": "Karin Keller-Sutter",
+          "label": "membership",
+          "weight": 1,
+          "description": "Karin Keller-Sutter is a member of the Bundesrat representing the canton of St. Gallen.",
+          "keywords": "membership",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_25_Albert Rösti_Bundesrat",
+          "source": "Albert Rösti",
+          "target": "Bundesrat",
+          "label": "membership",
+          "weight": 1,
+          "description": "Albert Rösti is a member of the Bundesrat representing the canton of Bern.",
+          "keywords": "membership",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_26_Bundesrat_Elisabeth Baume-Schneider",
+          "source": "Bundesrat",
+          "target": "Elisabeth Baume-Schneider",
+          "label": "membership",
+          "weight": 1,
+          "description": "Elisabeth Baume-Schneider is a member of the Bundesrat representing the canton of Jura.",
+          "keywords": "membership",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_27_Beat Jans_Bundesrat",
+          "source": "Beat Jans",
+          "target": "Bundesrat",
+          "label": "membership",
+          "weight": 1,
+          "description": "Beat Jans is a member of the Bundesrat representing the canton of Basel-Stadt.",
+          "keywords": "membership",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_28_Bundesrat_Martin Pfister",
+          "source": "Bundesrat",
+          "target": "Martin Pfister",
+          "label": "membership",
+          "weight": 1,
+          "description": "Martin Pfister is a member of the Bundesrat representing the canton of Zug.",
+          "keywords": "membership",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_29_Bundesrat_Regierungsrat",
+          "source": "Bundesrat",
+          "target": "Regierungsrat",
+          "label": "similarity",
+          "weight": 1,
+          "description": "The Bundesrat functions similarly to the Regierungsrat at the federal level in Switzerland.",
+          "keywords": "similarity",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_30_Bundesrat_Staatsrat",
+          "source": "Bundesrat",
+          "target": "Staatsrat",
+          "label": "similarity",
+          "weight": 1,
+          "description": "The Bundesrat functions similarly to the Staatsrat at the cantonal level in Switzerland.",
+          "keywords": "similarity",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_31_Bundesrat_Standeskommission",
+          "source": "Bundesrat",
+          "target": "Standeskommission",
+          "label": "similarity",
+          "weight": 1,
+          "description": "The Bundesrat functions similarly to the Standeskommission in Appenzell Innerrhoden at the cantonal level.",
+          "keywords": "similarity",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_32_Bundesrat_Schweizerische Eidgenossenschaft",
+          "source": "Bundesrat",
+          "target": "Schweizerische Eidgenossenschaft",
+          "label": "governs",
+          "weight": 1,
+          "description": "The Bundesrat acts as the executive governing body of the Schweizerische Eidgenossenschaft, overseeing national matters.",
+          "keywords": "governs",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_33_Bundespräsident_Schweizer Regierung",
+          "source": "Bundespräsident",
+          "target": "Schweizer Regierung",
+          "label": "represents",
+          "weight": 1,
+          "description": "The President of the Swiss Confederation represents the Swiss government in official matters.",
+          "keywords": "represents",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_34_Kantonsvertretung_Volksvertretung",
+          "source": "Kantonsvertretung",
+          "target": "Volksvertretung",
+          "label": "distinguishes",
+          "weight": 1,
+          "description": "Distinguishes the representation of the general populace in the National Council from that of cantons in the Council of States.",
+          "keywords": "distinguishes",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_35_Föderalismus_Schweizerische Eidgenossenschaft",
+          "source": "Föderalismus",
+          "target": "Schweizerische Eidgenossenschaft",
+          "label": "characterizes",
+          "weight": 1,
+          "description": "Describes the federal structure and autonomy of cantons within the Swiss Confederation.",
+          "keywords": "characterizes",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_36_Direkte Demokratie_Föderalismus",
+          "source": "Direkte Demokratie",
+          "target": "Föderalismus",
+          "label": "enables",
+          "weight": 1,
+          "description": "Enables direct involvement of citizens in government through democratic mechanisms within the framework of federalism.",
+          "keywords": "enables",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_37_Bundesverfassung_Föderalismus",
+          "source": "Bundesverfassung",
+          "target": "Föderalismus",
+          "label": "describes",
+          "weight": 1,
+          "description": "The Bundesverfassung describes the principles of Föderalismus in Switzerland.",
+          "keywords": "describes",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_38_Direkte Demokratie_Volksrechte",
+          "source": "Direkte Demokratie",
+          "target": "Volksrechte",
+          "label": "rooted in",
+          "weight": 1,
+          "description": "Correlates the implementation of citizen rights with direct democratic practices.",
+          "keywords": "rooted in",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_39_Direkte Demokratie_Urnengang",
+          "source": "Direkte Demokratie",
+          "target": "Urnengang",
+          "label": "integral to",
+          "weight": 1,
+          "description": "The voting process is integral to the functioning of direct democracy in Switzerland.",
+          "keywords": "integral to",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_40_Gewaltenteilung_Volksrechte",
+          "source": "Gewaltenteilung",
+          "target": "Volksrechte",
+          "label": "ensures",
+          "weight": 1,
+          "description": "Ensures the respect for citizen rights through independent government structures as defined by the principle of separation of powers.",
+          "keywords": "ensures",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_41_Schweizer Demokratie_Volksrechte",
+          "source": "Schweizer Demokratie",
+          "target": "Volksrechte",
+          "label": "influences,involves",
+          "weight": 1,
+          "description": "The Swiss democracy involves the Volksrechte, empowering citizens to actively participate in the political process.",
+          "keywords": "influences,involves",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_42_Bundesverfassung_Volksrechte",
+          "source": "Bundesverfassung",
+          "target": "Volksrechte",
+          "label": "impacts,requires",
+          "weight": 1,
+          "description": "The Volksrechte require a popular vote for amendments to the Bundesverfassung, thus impacting its content and structure.",
+          "keywords": "impacts,requires",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_43_Referendumsrecht_Volksrechte",
+          "source": "Referendumsrecht",
+          "target": "Volksrechte",
+          "label": "allows,empowers",
+          "weight": 1,
+          "description": "The Referendumsrecht empowers the Volksrechte by allowing the electorate to challenge and confirm parliamentary decisions.",
+          "keywords": "allows,empowers",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_44_Volksrechte_Wahlrecht",
+          "source": "Volksrechte",
+          "target": "Wahlrecht",
+          "label": "enables,grants",
+          "weight": 1,
+          "description": "The Wahlrecht grants citizens the right to vote, enabling them to exercise their Volksrechte in elections.",
+          "keywords": "enables,grants",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_45_Stimmrecht_Volksrechte",
+          "source": "Stimmrecht",
+          "target": "Volksrechte",
+          "label": "affords,allows",
+          "weight": 1,
+          "description": "The Stimmrecht affords the electorate the opportunity to influence government proposals, thus allowing the exercise of Volksrechte.",
+          "keywords": "affords,allows",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_46_Kantonale Rechte_Volksrechte",
+          "source": "Kantonale Rechte",
+          "target": "Volksrechte",
+          "label": "enhance,extend",
+          "weight": 1,
+          "description": "The kantonale Rechte extend the Volksrechte, providing more comprehensive forms of participatory governance at the cantonal level.",
+          "keywords": "enhance,extend",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_47_Gesetzesinitiative_Volksrechte",
+          "source": "Gesetzesinitiative",
+          "target": "Volksrechte",
+          "label": "enables,proposes",
+          "weight": 1,
+          "description": "The Gesetzesinitiative enables citizens to propose legislative changes as an expression of the Volksrechte.",
+          "keywords": "enables,proposes",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_48_Finanzreferendum_Volksrechte",
+          "source": "Finanzreferendum",
+          "target": "Volksrechte",
+          "label": "determines,governs",
+          "weight": 1,
+          "description": "The Finanzreferendum governs financial expenditures, determining the Volksrechte citizen participation in fiscal matters.",
+          "keywords": "determines,governs",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_49_Stimmberechtigte_Volksrechte",
+          "source": "Stimmberechtigte",
+          "target": "Volksrechte",
+          "label": "empowered by,include",
+          "weight": 1,
+          "description": "The Stimmberechtigte are empowered by the Volksrechte, which encompass the rights to vote and participate in the democratic process.",
+          "keywords": "empowered by,include",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_50_Gewaltenteilung_Subsidiarität",
+          "source": "Gewaltenteilung",
+          "target": "Subsidiarität",
+          "label": "interrelates with",
+          "weight": 1,
+          "description": "The principle of subsidiarity interacts with the separation of powers in organizing governance decisions at appropriate levels.",
+          "keywords": "interrelates with",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_51_Bundesversammlung_Schweizer Regierung",
+          "source": "Bundesversammlung",
+          "target": "Schweizer Regierung",
+          "label": "comprises",
+          "weight": 1,
+          "description": "The Swiss Federal Assembly comprises the Swiss government as part of its structure.",
+          "keywords": "comprises",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799658,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_52_Bund_Parlament",
+          "source": "Bund",
+          "target": "Parlament",
+          "label": "includes",
+          "weight": 1,
+          "description": "The Federation encompasses the structure and function of the parliament in the Swiss political system.",
+          "keywords": "includes",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_53_Kantone_schweizerische Bundesverfassung",
+          "source": "Kantone",
+          "target": "schweizerische Bundesverfassung",
+          "label": "framework for",
+          "weight": 1,
+          "description": "The Swiss Federal Constitution provides the legal structure for the autonomy and governance of the cantons.",
+          "keywords": "framework for",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_54_Bezirke_Kantone",
+          "source": "Bezirke",
+          "target": "Kantone",
+          "label": "includes",
+          "weight": 1,
+          "description": "The cantons include districts as part of their administrative organization, though districts lack political autonomy.",
+          "keywords": "includes",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_55_Interpellation_Volksvertretung",
+          "source": "Interpellation",
+          "target": "Volksvertretung",
+          "label": "utilizes",
+          "weight": 1,
+          "description": "The parliamentary procedure of interpellation is used by the popular representation to question the government.",
+          "keywords": "utilizes",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_56_Motion_Volksvertretung",
+          "source": "Motion",
+          "target": "Volksvertretung",
+          "label": "adopted by",
+          "weight": 1,
+          "description": "Motions are adopted by the popular representation to direct actions from the government.",
+          "keywords": "adopted by",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_57_Postulat_Volksvertretung",
+          "source": "Postulat",
+          "target": "Volksvertretung",
+          "label": "used for",
+          "weight": 1,
+          "description": "Postulates are used by the popular representation to request government investigations on specific issues.",
+          "keywords": "used for",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_58_Bundesverfassung_Volksinitiative",
+          "source": "Bundesverfassung",
+          "target": "Volksinitiative",
+          "label": "changes,proposes",
+          "weight": 1,
+          "description": "The Volksinitiative allows citizens to propose changes to the Bundesverfassung, linking citizen initiatives to constitutional alterations.",
+          "keywords": "changes,proposes",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_59_Kantonsverfassungen_Volksinitiative",
+          "source": "Kantonsverfassungen",
+          "target": "Volksinitiative",
+          "label": "established by",
+          "weight": 1,
+          "description": "The process of Volksinitiative is established in the Kantonsverfassungen, allowing citizens to propose constitutional and legal changes.",
+          "keywords": "established by",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_60_Finanzreferendum_Kantonsverfassungen",
+          "source": "Finanzreferendum",
+          "target": "Kantonsverfassungen",
+          "label": "defined by",
+          "weight": 1,
+          "description": "The Finanzreferendum is defined and regulated by the Kantonsverfassungen in Swiss cantons.",
+          "keywords": "defined by",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_61_Bundeskanzlei_Bundeskanzler",
+          "source": "Bundeskanzlei",
+          "target": "Bundeskanzler",
+          "label": "lead",
+          "weight": 1,
+          "description": "The Bundeskanzler leads the Bundeskanzlei, overseeing its functions in the coordination among various government entities.",
+          "keywords": "lead",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_62_Primus inter Pares_Regierungsrat",
+          "source": "Primus inter Pares",
+          "target": "Regierungsrat",
+          "label": "leadership",
+          "weight": 1,
+          "description": "The Primus inter Pares leads the meetings of the Regierungsrat without being the head of the government.",
+          "keywords": "leadership",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_63_direkte Demokratie_repräsentative Demokratie",
+          "source": "direkte Demokratie",
+          "target": "repräsentative Demokratie",
+          "label": "includes,incorporates",
+          "weight": 1,
+          "description": "The system of repräsentative Demokratie includes directly democratic elements.",
+          "keywords": "includes,incorporates",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_64_Kanton Zürich_Kantonsrat",
+          "source": "Kanton Zürich",
+          "target": "Kantonsrat",
+          "label": "supports,uses",
+          "weight": 1,
+          "description": "The Kanton Zürich enables its citizens to engage with the Kantonsrat through the Einzelinitiative.",
+          "keywords": "supports,uses",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_65_Kanton Zürich_Volksabstimmung",
+          "source": "Kanton Zürich",
+          "target": "Volksabstimmung",
+          "label": "uses",
+          "weight": 1,
+          "description": "Kanton Zürich conducts Volksabstimmungen to determine public opinion on various legislative issues.",
+          "keywords": "uses",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_66_Kanton Freiburg_Kantonsrat",
+          "source": "Kanton Freiburg",
+          "target": "Kantonsrat",
+          "label": "historical connection,influence",
+          "weight": 1,
+          "description": "The Kanton Freiburg historically had a representative-democratic government that influenced the current structures of the Kantonsrat.",
+          "keywords": "historical connection,influence",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_67_Kanton Freiburg_Kanton Waadt",
+          "source": "Kanton Freiburg",
+          "target": "Kanton Waadt",
+          "label": "neighboring",
+          "weight": 1,
+          "description": "The Canton of Freiburg is neighboring the Canton of Vaud.",
+          "keywords": "neighboring",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_68_Kanton Schaffhausen_Kantonsrat",
+          "source": "Kanton Schaffhausen",
+          "target": "Kantonsrat",
+          "label": "supports,uses",
+          "weight": 1,
+          "description": "The Kanton Schaffhausen allows the submission of motions via Volksmotion to the Kantonsrat.",
+          "keywords": "supports,uses",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_69_Kanton Solothurn_Kantonsrat",
+          "source": "Kanton Solothurn",
+          "target": "Kantonsrat",
+          "label": "supports,uses",
+          "weight": 1,
+          "description": "Kanton Solothurn recognizes Volksmotion, allowing citizens to submit motions to the Kantonsrat.",
+          "keywords": "supports,uses",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_70_Kanton Appenzell Innerrhoden_Kantonsrat",
+          "source": "Kanton Appenzell Innerrhoden",
+          "target": "Kantonsrat",
+          "label": "supports,uses",
+          "weight": 1,
+          "description": "Kanton Appenzell Innerrhoden uses the Einzelinitiative for legislative proposals presented to the Kantonsrat.",
+          "keywords": "supports,uses",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_71_Kanton Glarus_Kantonsrat",
+          "source": "Kanton Glarus",
+          "target": "Kantonsrat",
+          "label": "supports,uses",
+          "weight": 1,
+          "description": "Kanton Glarus implements the Einzelinitiative, allowing citizens to impact decisions made in the Kantonsrat.",
+          "keywords": "supports,uses",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_72_Kanton Appenzell Ausserrhoden_Kantonsrat",
+          "source": "Kanton Appenzell Ausserrhoden",
+          "target": "Kantonsrat",
+          "label": "supports,uses",
+          "weight": 1,
+          "description": "Kanton Appenzell Ausserrhoden allows residents to address the Kantonsrat through Volksdiskussion.",
+          "keywords": "supports,uses",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_73_Kanton Bern_Kantonsrat",
+          "source": "Kanton Bern",
+          "target": "Kantonsrat",
+          "label": "supports,uses",
+          "weight": 1,
+          "description": "Kanton Bern employs the constructive referendum to influence legislative outcomes in the Kantonsrat.",
+          "keywords": "supports,uses",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_74_Kanton Bern_Kanton Luzern",
+          "source": "Kanton Bern",
+          "target": "Kanton Luzern",
+          "label": "neighboring",
+          "weight": 1,
+          "description": "The canton of Lucerne is neighboring the canton of Bern.",
+          "keywords": "neighboring",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_75_Kanton Nidwalden_Kantonsrat",
+          "source": "Kanton Nidwalden",
+          "target": "Kantonsrat",
+          "label": "supports,uses",
+          "weight": 1,
+          "description": "Kanton Nidwalden uses the constructive referendum mechanism similar to Kanton Bern for legislative proposals.",
+          "keywords": "supports,uses",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_76_Kanton Basel-Landschaft_Kantonsrat",
+          "source": "Kanton Basel-Landschaft",
+          "target": "Kantonsrat",
+          "label": "supports,uses",
+          "weight": 1,
+          "description": "Kanton Basel-Landschaft implements a mixed referendum approach for laws addressed in the Kantonsrat.",
+          "keywords": "supports,uses",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_77_Kantonsrat_Volksabstimmung",
+          "source": "Kantonsrat",
+          "target": "Volksabstimmung",
+          "label": "influences",
+          "weight": 1,
+          "description": "The Volksabstimmung process influences decisions made by the Kantonsrat in various cantons.",
+          "keywords": "influences",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_78_Kantonsrat_Volksmotion",
+          "source": "Kantonsrat",
+          "target": "Volksmotion",
+          "label": "triggers",
+          "weight": 1,
+          "description": "The Volksmotion can lead to actions or decisions taken by the Kantonsrat regarding legislative matters.",
+          "keywords": "triggers",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_79_Kantonsrat_Volksdiskussion",
+          "source": "Kantonsrat",
+          "target": "Volksdiskussion",
+          "label": "influences",
+          "weight": 1,
+          "description": "The Volksdiskussion allows residents to influence the Kantonsrat through their opinions and discussions.",
+          "keywords": "influences",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_80_Kantonsrat_konstruktives Referendum",
+          "source": "Kantonsrat",
+          "target": "konstruktives Referendum",
+          "label": "invokes",
+          "weight": 1,
+          "description": "The konstruktives Referendum can invoke alternate proposals to be considered by the Kantonsrat.",
+          "keywords": "invokes",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_81_Einzelinitiative_Volksabstimmung",
+          "source": "Einzelinitiative",
+          "target": "Volksabstimmung",
+          "label": "triggers",
+          "weight": 1,
+          "description": "The Einzelinitiative can trigger a Volksabstimmung if it receives enough support within the Kantonsrat.",
+          "keywords": "triggers",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_82_Abstimmungen_Volksabstimmung",
+          "source": "Abstimmungen",
+          "target": "Volksabstimmung",
+          "label": "similar concept",
+          "weight": 1,
+          "description": "Abstimmungen are similar to Volksabstimmung as both involve public voting on matters of legislation.",
+          "keywords": "similar concept",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_83_Abstimmungen_Wahlbeteiligung",
+          "source": "Abstimmungen",
+          "target": "Wahlbeteiligung",
+          "label": "related to",
+          "weight": 1,
+          "description": "Wahlbeteiligung is directly related to Abstimmungen as it measures voter participation in these voting events.",
+          "keywords": "related to",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_84_Bundesgericht_Lausanne",
+          "source": "Bundesgericht",
+          "target": "Lausanne",
+          "label": "located_in",
+          "weight": 1,
+          "description": "The Federal Court of Switzerland is located in the city of Lausanne.",
+          "keywords": "located_in",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_85_Bellinzona_Bundesstrafgericht",
+          "source": "Bellinzona",
+          "target": "Bundesstrafgericht",
+          "label": "located_in",
+          "weight": 1,
+          "description": "The Federal Criminal Court of Switzerland is located in the city of Bellinzona.",
+          "keywords": "located_in",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_86_Bundesverwaltungsgericht_St. Gallen",
+          "source": "Bundesverwaltungsgericht",
+          "target": "St. Gallen",
+          "label": "located_in",
+          "weight": 1,
+          "description": "The Federal Administrative Court of Switzerland is located in the city of St. Gallen.",
+          "keywords": "located_in",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_87_Kanton Luzern_Schultheiss",
+          "source": "Kanton Luzern",
+          "target": "Schultheiss",
+          "label": "leads",
+          "weight": 1,
+          "description": "The Schultheiss leads the governmental operations in the Canton of Lucerne until 2007.",
+          "keywords": "leads",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_88_Kanton Tessin_Kanton Waadt",
+          "source": "Kanton Tessin",
+          "target": "Kanton Waadt",
+          "label": "neighboring",
+          "weight": 1,
+          "description": "The canton of Ticino is neighboring the canton of Vaud.",
+          "keywords": "neighboring",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_89_Kanton Basel-Stadt_Kanton Baselland",
+          "source": "Kanton Basel-Stadt",
+          "target": "Kanton Baselland",
+          "label": "neighboring",
+          "weight": 1,
+          "description": "The canton of Baselland is neighboring the canton of Basel-Stadt.",
+          "keywords": "neighboring",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_90_Bundesgericht_Eidgenössisches Versicherungsgericht",
+          "source": "Bundesgericht",
+          "target": "Eidgenössisches Versicherungsgericht",
+          "label": "integrated_into",
+          "weight": 1,
+          "description": "The former Federal Insurance Court was integrated into the Federal Court in Lausanne.",
+          "keywords": "integrated_into",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_91_Appenzell Innerrhoden_Regierender Landammann",
+          "source": "Appenzell Innerrhoden",
+          "target": "Regierender Landammann",
+          "label": "governs",
+          "weight": 1,
+          "description": "The Regierender Landammann governs the Canton of Appenzell Innerrhoden.",
+          "keywords": "governs",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        },
+        {
+          "id": "rel_lightrag_92_Regierender Landammann_Regierungspräsident",
+          "source": "Regierender Landammann",
+          "target": "Regierungspräsident",
+          "label": "presides",
+          "weight": 1,
+          "description": "The Regierungspräsident presides over the cantonal government in a rotating role.",
+          "keywords": "presides",
+          "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
+          "file_path": "unknown_source",
+          "created_at": 1784799659,
+          "truncate": ""
+        }
+      ]
+    }
+  }
+}
