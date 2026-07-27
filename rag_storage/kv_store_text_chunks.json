@@ -110,5 +110,19 @@
     "create_time": 1784799599,
     "update_time": 1784799635,
     "_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-007"
+  },
+  "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000": {
+    "tokens": 1014,
+    "content": "Uebersichtstabelle der Bundesraete (2026)\nName\tGeburtsdatum\tAlter\tPartei\tKanton\tDepartement\tBesondere Rolle\nGuy Parmelin\t09.11.1959\t66 Jahre\tSVP\tWaadt (VD)\tWBF (Wirtschaft, Bildung und Forschung)\tBundespraesident 2026\nIgnazio Cassis\t13.04.1961\t65 Jahre\tFDP\tTessin (TI)\tEDA (Auswaertige Angelegenheiten)\tVizepraesident 2026\nKarin Keller-Sutter\t22.12.1963\t62 Jahre\tFDP\tSt. Gallen (SG)\tEFD (Finanzdepartement)\tMitglied des Bundesrates\nMartin Pfister\t31.07.1963\t62 Jahre\tDie Mitte\tZug (ZG)\tVBS (Verteidigung, Bevoelkerungsschutz und Sport)\tMitglied des Bundesrates\nElisabeth Baume-Schneider\t24.12.1963\t62 Jahre\tSP\tJura (JU)\tEDI (Departement des Innern)\tMitglied des Bundesrates\nBeat Jans\t12.07.1964\t62 Jahre\tSP\tBasel-Stadt (BS)\tEJPD (Justiz- und Polizeidepartement)\tMitglied des Bundesrates\nAlbert Roesti\t07.08.1967\t58 Jahre\tSVP\tBern (BE)\tUVEK (Umwelt, Verkehr, Energie, Kommunikation)\tMitglied des Bundesrates\nEinzelne Steckbriefe und Attribute\nGuy Parmelin\n\nGeburtsdatum & Alter: 09.11.1959 (66 Jahre)\nPartei: Schweizerische Volkspartei (SVP)\nKanton: Waadt (VD)\nDepartement: WBF (Eidgenoessisches Departement fuer Wirtschaft, Bildung und Forschung)\nRolle: Bundespraesident 2026\nBeruf/Hintergrund: Meisterlandwirt und Winzer aus Bursins. Gewaehlt 2015.\nIgnazio Cassis\n\nGeburtsdatum & Alter: 13.04.1961 (65 Jahre)\nPartei: FDP.Die Liberalen (FDP)\nKanton: Tessin (TI)\nDepartement: EDA (Eidgenoessisches Departement fuer auswaertige Angelegenheiten)\nRolle: Vizepraesident 2026\nBeruf/Hintergrund: Dr. med. / Arzt und ehemaliger Kantonsarzt des Kantons Tessin. Gewaehlt 2017.\nKarin Keller-Sutter\n\nGeburtsdatum & Alter: 22.12.1963 (62 Jahre)\nPartei: FDP.Die Liberalen (FDP)\nKanton: St. Gallen (SG)\nDepartement: EFD (Eidgenoessisches Finanzdepartement)\nBeruf/Hintergrund: Uebersetzerin und Dolmetscherin, ehemalige St. Galler Regierungsraetin. Gewaehlt 2018.\nMartin Pfister\n\nGeburtsdatum & Alter: 31.07.1963 (62 Jahre)\nPartei: Die Mitte\nKanton: Zug (ZG)\nDepartement: VBS (Eidgenoessisches Departement fuer Verteidigung, Bevoelkerungsschutz und Sport)\nBeruf/Hintergrund: Schweizer Politiker der Partei Die Mitte aus dem Kanton Zug.\nElisabeth Baume-Schneider\n\nGeburtsdatum & Alter: 24.12.1963 (62 Jahre)\nPartei: Sozialdemokratische Partei der Schweiz (SP)\nKanton: Jura (JU)\nDepartement: EDI (Eidgenoessisches Departement des Innern)\nBeruf/Hintergrund: Sozialarbeiterin und ehemalige jurassische Regierungsraetin. Gewaehlt 2022.\nBeat Jans\n\nGeburtsdatum & Alter: 12.07.1964 (62 Jahre)\nPartei: Sozialdemokratische Partei der Schweiz (SP)\nKanton: Basel-Stadt (BS)\nDepartement: EJPD (Eidgenoessisches Justiz- und Polizeidepartement)\nBeruf/Hintergrund: Umweltwissenschaftler (ETH) und ehemaliger Regierungsrat des Kantons Basel-Stadt. Gewaehlt 2023.\nAlbert Roesti\n\nGeburtsdatum & Alter: 07.08.1967 (58 Jahre)\nPartei: Schweizerische Volkspartei (SVP)\nKanton: Bern (BE)\nDepartement: UVEK (Eidgenoessisches Departement fuer Umwelt, Verkehr, Energie und Kommunikation)\nBeruf/Hintergrund: Agraringenieur (ETH) und ehemaliger SVP-Parteipraesident. Gewaehlt 2022.\nDie detaillierte Dokumentation wurde im Projektordner unter \n010214_aktuelles_bundesrat_profil.md\n abgespeichert.",
+    "chunk_order_index": 0,
+    "full_doc_id": "doc-94e3e6258ab98fce781a5c362a19d85b",
+    "file_path": "unknown_source",
+    "llm_cache_list": [
+      "default:extract:7ccdef34a9d71d0d8a9a2733768125fd",
+      "default:extract:224c819824df43a87bdd383ae7c029ec"
+    ],
+    "create_time": 1784834635,
+    "update_time": 1784834653,
+    "_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
   }
 }

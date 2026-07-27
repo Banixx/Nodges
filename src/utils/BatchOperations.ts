@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 import { SelectionManager } from './SelectionManager';
-import { NodeGroupManager } from './NodeGroupManager';
+import { StateManager } from '../core/StateManager';
 import { ServiceContainer } from '../core/di/ServiceContainer';
-// import { NodeObject } from '../types';
 
 interface Operation {
     type: string;
@@ -13,12 +12,14 @@ interface Operation {
 
 interface BatchNodeObject extends THREE.Object3D {
     userData: {
+        id?: string;
+        nodeData?: any;
         node?: any;
         edge?: any;
         type?: string;
         [key: string]: any;
     };
-    material: THREE.Material | THREE.MeshBasicMaterial | THREE.MeshPhongMaterial; // Broaden type to allow color access
+    material: THREE.Material | THREE.MeshBasicMaterial | THREE.MeshPhongMaterial;
 }
 
 /**
@@ -27,18 +28,13 @@ interface BatchNodeObject extends THREE.Object3D {
  */
 export class BatchOperations {
     private selectionManager: SelectionManager;
-    private nodeGroupManager: NodeGroupManager;
+    private stateManager: StateManager;
     private operationHistory: Operation[];
     private maxHistorySize: number;
 
     constructor(container: ServiceContainer) {
-        const [selectionManager, nodeGroupManager] = 
-            container.resolve<SelectionManager, NodeGroupManager>(
-                'SelectionManager', 'NodeGroupManager'
-            );
-            
-        this.selectionManager = selectionManager;
-        this.nodeGroupManager = nodeGroupManager;
+        this.selectionManager = container.get<SelectionManager>('SelectionManager');
+        this.stateManager = container.get<StateManager>('IStateManager');
 
         // Operation history for undo functionality
         this.operationHistory = [];
@@ -209,8 +205,8 @@ export class BatchOperations {
      * Add selected nodes to a group
      */
     addToGroup(groupId: string) {
-        if (!this.nodeGroupManager) {
-            console.warn('NodeGroupManager not available');
+        if (!this.stateManager) {
+            console.warn('StateManager not available');
             return;
         }
 
@@ -225,16 +221,16 @@ export class BatchOperations {
         };
 
         selectedNodes.forEach(nodeObject => {
-            const node = nodeObject.userData.node;
-            if (!node) return;
+            const nodeId = nodeObject.userData.id || nodeObject.userData.nodeData?.id || nodeObject.userData.node?.id;
+            if (!nodeId) return;
 
             operation.objects.push({
                 object: nodeObject,
-                node: node,
-                previousGroupId: node.groupId
+                nodeId: nodeId,
+                groupId: groupId
             });
 
-            this.nodeGroupManager.addNodeToGroup(nodeObject.userData.id, groupId);
+            this.stateManager.addNodeToGroup(nodeId, groupId);
         });
 
         this.addToHistory(operation);
@@ -244,8 +240,8 @@ export class BatchOperations {
      * Remove selected nodes from their groups
      */
     removeFromGroups() {
-        if (!this.nodeGroupManager) {
-            console.warn('NodeGroupManager not available');
+        if (!this.stateManager) {
+            console.warn('StateManager not available');
             return;
         }
 
@@ -259,16 +255,19 @@ export class BatchOperations {
         };
 
         selectedNodes.forEach(nodeObject => {
-            const node = nodeObject.userData.node;
-            if (!node || !node.groupId) return;
+            const nodeId = nodeObject.userData.id || nodeObject.userData.nodeData?.id || nodeObject.userData.node?.id;
+            if (!nodeId) return;
+
+            const groups = this.stateManager.getNodeGroups(nodeId);
+            groups.forEach(g => {
+                this.stateManager.removeNodeFromGroup(nodeId, g.id);
+            });
 
             operation.objects.push({
                 object: nodeObject,
-                node: node,
-                previousGroupId: node.groupId
+                nodeId: nodeId,
+                previousGroups: groups
             });
-
-            this.nodeGroupManager.removeNodeFromGroup(nodeObject.userData.id);
         });
 
         this.addToHistory(operation);

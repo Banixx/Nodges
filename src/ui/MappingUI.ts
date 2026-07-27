@@ -493,12 +493,17 @@ export class MappingUI {
 
             const label = document.createElement('span');
             
+            const isGroupAttr = attr === 'group_id' || attr === 'groupId' || attr === 'parent_id' || attr === 'groups' || attr.startsWith('group:');
             const isAlgorithm = attr.startsWith('algo:');
             if (isAlgorithm) {
                 const algoName = attr.substring(5); // remove 'algo:'
                 label.innerHTML = `<span style="color: #64ffda; margin-right: 4px;">▶</span>${algoName}`;
                 item.style.borderLeft = '2px solid #64ffda';
                 item.style.backgroundColor = 'rgba(100, 255, 218, 0.05)';
+            } else if (isGroupAttr) {
+                label.innerHTML = `<span style="color: #a855f7; margin-right: 6px;">❖</span>${attr} <span style="font-size: 8px; background: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 1px 4px; border-radius: 3px; font-weight: 600; margin-left: 4px;">GRUPPE</span>`;
+                item.style.borderLeft = '2px solid #a855f7';
+                item.style.backgroundColor = 'rgba(168, 85, 247, 0.08)';
             } else {
                 label.textContent = attr;
             }
@@ -512,11 +517,14 @@ export class MappingUI {
                 stats.style.fontSize = '9px';
                 stats.style.color = 'var(--text-muted)';
                 
-                let statsText = `${presenceCount} • ${uniqueValues.size} Werte`;
-                if (hasNumeric && minVal !== Infinity && maxVal !== -Infinity) {
+                let statsText = isGroupAttr 
+                    ? `❖ ${presenceCount} Elemente • ${uniqueValues.size} Gruppen-Container`
+                    : `${presenceCount} • ${uniqueValues.size} Werte`;
+
+                if (!isGroupAttr && hasNumeric && minVal !== Infinity && maxVal !== -Infinity) {
                     const formatNum = (num: number) => Number.isInteger(num) ? num.toString() : num.toFixed(2);
                     statsText += ` • [${formatNum(minVal)} ... ${formatNum(maxVal)}]`;
-                } else if (uniqueValues.size > 0 && !hasNumeric) {
+                } else if (!isGroupAttr && uniqueValues.size > 0 && !hasNumeric) {
                     statsText += ` (Text)`;
                 }
                 stats.textContent = statsText;
@@ -1084,9 +1092,10 @@ export class MappingUI {
 
                     if (mapping.function !== 'categorical') {
                         // 2. Domain Min/Max
-                        let defaultDomain: [number, number] = [0, 1];
+                        const sourceAttrKey = mapping.field || mapping.source || '';
+                        let defaultDomain: [number, number] = this.getAttributeDataBounds(sourceAttrKey);
                         if (this.dataModel) {
-                            const propSchema = getPropertySchema(this.dataModel, this.currentType, mapping.field || mapping.source || '');
+                            const propSchema = getPropertySchema(this.dataModel, this.currentType, sourceAttrKey);
                             if (propSchema && propSchema.range) {
                                 defaultDomain = propSchema.range;
                             }
@@ -1218,8 +1227,9 @@ export class MappingUI {
                                 defaultRangeMax = 3.0;
                             }
                         }
-                        const rangeMinVal = mapping.range ? mapping.range[0] : (isPosition ? -100 : defaultRangeMin);
-                        const rangeMaxVal = mapping.range ? mapping.range[1] : (isPosition ? 100 : defaultRangeMax);
+                        const spatialExtent = this.getMaxSpatialExtent();
+                        const rangeMinVal = mapping.range ? mapping.range[0] : (isPosition ? spatialExtent[0] : defaultRangeMin);
+                        const rangeMaxVal = mapping.range ? mapping.range[1] : (isPosition ? spatialExtent[1] : defaultRangeMax);
 
                         const rangeGroup = document.createElement('div');
                         rangeGroup.className = 'mapping-control-group';
@@ -2312,7 +2322,7 @@ export class MappingUI {
         }
 
         const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(basePropName);
-        let defaultRange: [number, number] = isPosition ? [-100, 100] : [0.1, 3.0];
+        let defaultRange: [number, number] = isPosition ? this.getMaxSpatialExtent() : [0.1, 3.0];
         if (!isPosition) {
             if (basePropName === 'thickness' || this.currentCategory === 'relationships') {
                 defaultRange = [0.1, 0.45];
@@ -2358,7 +2368,7 @@ export class MappingUI {
             } else {
                 // Numeric property
                 const categories: Record<string, number> = {};
-                let defaultRange: [number, number] = isPosition ? [-50, 50] : [0.1, 3.0];
+                let defaultRange: [number, number] = isPosition ? this.getMaxSpatialExtent() : [0.1, 3.0];
                 if (!isPosition) {
                     if (basePropName === 'thickness' || this.currentCategory === 'relationships') {
                         defaultRange = [0.1, 0.45];
@@ -2411,6 +2421,25 @@ export class MappingUI {
         });
 
         this.onUpdate(this.mappings);
+    }
+
+    public getMaxSpatialExtent(): [number, number] {
+        if (!this.entities || this.entities.length === 0) return [-100, 100];
+        let minVal = Infinity;
+        let maxVal = -Infinity;
+        this.entities.forEach(item => {
+            if (item.position) {
+                const px = typeof item.position.x === 'number' ? item.position.x : (Array.isArray(item.position) ? item.position[0] : 0);
+                const py = typeof item.position.y === 'number' ? item.position.y : (Array.isArray(item.position) ? item.position[1] : 0);
+                const pz = typeof item.position.z === 'number' ? item.position.z : (Array.isArray(item.position) ? item.position[2] : 0);
+                minVal = Math.min(minVal, px, py, pz);
+                maxVal = Math.max(maxVal, px, py, pz);
+            }
+        });
+        if (minVal === Infinity || maxVal === -Infinity || minVal === maxVal) {
+            return [-100, 100];
+        }
+        return [minVal, maxVal];
     }
 
     private getAttributeDataBounds(source: string): [number, number] {
@@ -2555,9 +2584,10 @@ export class MappingUI {
         const [absMin, absMax] = this.getAttributeDataBounds(mapping.source || mapping.field || '');
         let domMin = mapping.domain ? mapping.domain[0] : absMin;
         let domMax = mapping.domain ? mapping.domain[1] : absMax;
-        let defaultRangeMin = 0.1;
-        let defaultRangeMax = 3.0;
         const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(prop);
+        const spatialExtent = this.getMaxSpatialExtent();
+        let defaultRangeMin = isPosition ? spatialExtent[0] : 0.1;
+        let defaultRangeMax = isPosition ? spatialExtent[1] : 3.0;
         if (!isPosition) {
             if (prop === 'thickness' || this.currentCategory === 'relationships') {
                 defaultRangeMin = 0.1;

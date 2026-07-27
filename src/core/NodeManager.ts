@@ -254,11 +254,11 @@ export class NodeManager {
                 
                 group.forEach(({ entity, visual }, index) => {
                     entityList.push(entity);
-                    let baseMaterial = type === 'cloud' || type === 'group' ? this.materialCache.get('cloud') : this.materialCache.get('default');
+                    let baseMaterial = this.materialCache.get('default');
                     if (!baseMaterial) {
                         console.warn('[NodeManager] Material missing, re-initializing.');
                         this.initializeMaterials();
-                        baseMaterial = type === 'cloud' || type === 'group' ? this.materialCache.get('cloud')! : this.materialCache.get('default')!;
+                        baseMaterial = this.materialCache.get('default')!;
                     }
                     const material = baseMaterial.clone() as THREE.MeshPhongMaterial;
                     const mesh = new THREE.Mesh(geometry, material);
@@ -331,6 +331,15 @@ export class NodeManager {
      * Updates positions of existing nodes (e.g. during layout)
      */
     public updateNodePositions(entities: EntityData[]) {
+        const colCounts = new Map<number, number>();
+        const colIndex = new Map<number, number>();
+
+        entities.forEach(entity => {
+            const visual = this.visualMappingEngine.applyToEntity(entity);
+            const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x || 0);
+            colCounts.set(x, (colCounts.get(x) || 0) + 1);
+        });
+
         if (this.stateManager.state.activeRenderMode === 'instance') {
             const dummy = new THREE.Object3D();
 
@@ -342,14 +351,13 @@ export class NodeManager {
                 if (!mesh) return;
 
                 const visual = this.visualMappingEngine.applyToEntity(entity);
-                const isPosMapped = visual.positionX !== undefined || visual.positionY !== undefined || visual.positionZ !== undefined;
+
+                const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x !== undefined ? entity.position.x : (entity.x || 0));
+                const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y !== undefined ? entity.position.y : (entity.y || 0));
+                const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z !== undefined ? entity.position.z : (entity.z || 0));
 
                 mesh.getMatrixAt(map.index, dummy.matrix);
                 dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
-
-                const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x || 0);
-                const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y || 0);
-                const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z || 0);
 
                 dummy.position.set(x, y, z);
 
@@ -364,14 +372,11 @@ export class NodeManager {
             entities.forEach(entity => {
                 const mesh = this.individualMeshes.get(String(entity.id));
                 if (mesh) {
-                    const map = this.entityIdMap.get(String(entity.id));
-                    const idx = map ? map.index : 0;
                     const visual = this.visualMappingEngine.applyToEntity(entity);
-                    const isPosMapped = visual.positionX !== undefined || visual.positionY !== undefined || visual.positionZ !== undefined;
-                    
-                    const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x || 0);
-                    const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y || 0);
-                    const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z || 0);
+
+                    const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x !== undefined ? entity.position.x : (entity.x || 0));
+                    const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y !== undefined ? entity.position.y : (entity.y || 0));
+                    const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z !== undefined ? entity.position.z : (entity.z || 0));
 
                     mesh.position.set(x, y, z);
                 }
@@ -399,6 +404,110 @@ export class NodeManager {
                 (mesh.material as THREE.MeshPhongMaterial).color.set(colorHex);
             }
         }
+    }
+
+    /**
+     * Animates overlap visual effects for nodes located on identical positions
+     */
+    public animateOverlapEffects(entities: EntityData[]) {
+        const state = this.stateManager.state;
+        if (!state.overlapEffectEnabled) return;
+
+        // Group entities by identical 3D base position (with 0.01 tolerance)
+        const groups = new Map<string, { entity: EntityData; x: number; y: number; z: number }[]>();
+
+        entities.forEach(entity => {
+            const visual = this.visualMappingEngine.applyToEntity(entity);
+            const isAnyPosMapped = visual.positionX !== undefined || visual.positionY !== undefined || visual.positionZ !== undefined;
+
+            const x = visual.positionX !== undefined ? visual.positionX : (isAnyPosMapped ? 0 : (entity.position?.x || 0));
+            const y = visual.positionY !== undefined ? visual.positionY : (isAnyPosMapped ? 0 : (entity.position?.y || 0));
+            const z = visual.positionZ !== undefined ? visual.positionZ : (isAnyPosMapped ? 0 : (entity.position?.z || 0));
+
+            const isFallback = entity.position?.isRandomFallback;
+            const key = isFallback
+                ? 'fallback_group'
+                : `${Math.round(x * 100) / 100}_${Math.round(y * 100) / 100}_${Math.round(z * 100) / 100}`;
+            if (!groups.has(key)) {
+                groups.set(key, []);
+            }
+            groups.get(key)!.push({ entity, x, y, z });
+        });
+
+        const mode = state.overlapEffectMode || 'static';
+        const now = performance.now() * 0.001;
+        const dummy = new THREE.Object3D();
+
+        groups.forEach(group => {
+            if (group.length <= 1) return; // Only process overlapping nodes (count > 1)
+
+            group.forEach((item, idx) => {
+                const map = this.entityIdMap.get(String(item.entity.id));
+                if (!map) return;
+
+                let posX = item.x;
+                let posY = item.y;
+                let posZ = item.z;
+                let scaleFactor = 1.0;
+
+                if (mode === 'orbit') {
+                    const radius = state.overlapRadius ?? 0.5;
+                    const speed = state.overlapSpeed ?? 2.0;
+                    const count = group.length;
+                    const azimuth = (idx / count) * Math.PI * 2 + now * speed;
+                    const elevation = ((idx % 3) - 1) * (Math.PI / 4) + Math.sin(now * speed * 0.5 + idx) * 0.3;
+
+                    posX += radius * Math.cos(elevation) * Math.cos(azimuth);
+                    posY += radius * Math.sin(elevation);
+                    posZ += radius * Math.cos(elevation) * Math.sin(azimuth);
+                } else if (mode === 'pulse') {
+                    const speed = state.overlapSpeed ?? 2.0;
+                    const minS = state.overlapMinSize ?? 0.3;
+                    const maxS = state.overlapMaxSize ?? 1.8;
+                    const phase = idx * 1.57;
+                    const t = 0.5 + 0.5 * Math.sin(now * speed * 2 + phase);
+                    scaleFactor = minS + t * (maxS - minS);
+                } else if (mode === 'jitter') {
+                    const radius = state.overlapRadius ?? 2.0;
+                    const count = group.length;
+                    const phi = Math.acos(1 - 2 * (idx + 0.5) / count);
+                    const theta = Math.PI * (1 + Math.sqrt(5)) * idx;
+                    const baseZ = (posX === 0 && posY === 0 && posZ === 0) ? 3 : posZ;
+                    posX += radius * Math.sin(phi) * Math.cos(theta);
+                    posY += radius * Math.sin(phi) * Math.sin(theta);
+                    posZ = baseZ + radius * Math.cos(phi);
+                }
+
+                if (this.stateManager.state.activeRenderMode === 'instance') {
+                    const mesh = this.meshes.get(map.type);
+                    if (mesh) {
+                        mesh.getMatrixAt(map.index, dummy.matrix);
+                        dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
+
+                        dummy.position.set(posX, posY, posZ);
+                        if (mode === 'pulse') {
+                            const baseVisual = this.visualMappingEngine.applyToEntity(item.entity);
+                            const baseScale = typeof baseVisual.size === 'number' ? baseVisual.size : 1.0;
+                            dummy.scale.setScalar(baseScale * scaleFactor);
+                        }
+
+                        dummy.updateMatrix();
+                        mesh.setMatrixAt(map.index, dummy.matrix);
+                        mesh.instanceMatrix.needsUpdate = true;
+                    }
+                } else {
+                    const mesh = this.individualMeshes.get(String(item.entity.id));
+                    if (mesh) {
+                        mesh.position.set(posX, posY, posZ);
+                        if (mode === 'pulse') {
+                            const baseVisual = this.visualMappingEngine.applyToEntity(item.entity);
+                            const baseScale = typeof baseVisual.size === 'number' ? baseVisual.size : 1.0;
+                            mesh.scale.setScalar(baseScale * scaleFactor);
+                        }
+                    }
+                }
+            });
+        });
     }
 
     /**
@@ -740,8 +849,20 @@ export class NodeManager {
     public updateCloudPositions(relationships: any[], allEntities: any[]) {
         const cloudEntities = this.entityDataMap.get('cloud') || [];
         const groupEntities = this.entityDataMap.get('group') || [];
-        const combinedClouds = [...cloudEntities, ...groupEntities];
         
+        // Strukturell ermittelte Gruppen (mindestens 1 eingehende belongs_to Edge)
+        const groupTargetIds = new Set<string>();
+        relationships.forEach(rel => {
+            if (rel.relation === 'belongs_to' || rel.label === 'belongs_to') {
+                if (rel.target) groupTargetIds.add(String(rel.target));
+            }
+        });
+
+        const extraGroupEntities = allEntities.filter(e => groupTargetIds.has(String(e.id)));
+        const combinedCloudsMap = new Map<string, any>();
+        [...cloudEntities, ...groupEntities, ...extraGroupEntities].forEach(e => combinedCloudsMap.set(String(e.id), e));
+        
+        const combinedClouds = Array.from(combinedCloudsMap.values());
         if (combinedClouds.length === 0) return;
 
         const entityMap = new Map<string, any>();
@@ -752,11 +873,15 @@ export class NodeManager {
             const mesh = this.individualMeshes.get(cloudId);
             if (!mesh) return;
 
-            // Finde alle Kind-Nodes dieser Cloud (wo Cloud target oder source ist)
+            // Finde alle Kind-Nodes dieser Cloud (wo Cloud target von belongs_to oder verknüpft ist)
             const childIds = new Set<string>();
             relationships.forEach(rel => {
-                if (String(rel.source) === cloudId && rel.target) childIds.add(String(rel.target));
-                if (String(rel.target) === cloudId && rel.source) childIds.add(String(rel.source));
+                if (rel.relation === 'belongs_to' || rel.label === 'belongs_to') {
+                    if (String(rel.target) === cloudId && rel.source) childIds.add(String(rel.source));
+                } else {
+                    if (String(rel.source) === cloudId && rel.target) childIds.add(String(rel.target));
+                    if (String(rel.target) === cloudId && rel.source) childIds.add(String(rel.source));
+                }
             });
 
             if (childIds.size === 0) return;

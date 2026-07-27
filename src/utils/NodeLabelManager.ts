@@ -268,13 +268,14 @@ export class NodeLabelManager {
     createLabelsForAllEntities(entities: EntityData[]) {
         this.removeAllLabels();
 
+        const visualEngine = (window as any).app?.visualMappingEngine;
         entities.forEach(entity => {
-            if (entity && entity.position) {
-                const position = new THREE.Vector3(
-                    entity.position.x || 0,
-                    entity.position.y || 0,
-                    entity.position.z || 0
-                );
+            if (entity && entity.id) {
+                const visual = visualEngine ? visualEngine.applyToEntity(entity) : {};
+                const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x !== undefined ? entity.position.x : (entity.x || 0));
+                const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y !== undefined ? entity.position.y : (entity.y || 0));
+                const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z !== undefined ? entity.position.z : (entity.z || 0));
+                const position = new THREE.Vector3(x, y, z);
                 this.createOrUpdateLabel(entity, position);
             }
         });

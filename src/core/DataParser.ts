@@ -27,6 +27,16 @@ export class DataParser {
      * Now uses Zod for strict validation AND parses values based on DataModel
      */
     private static normalizeData(data: any): GraphData {
+        // Entschachtele graphData falls Antwort-Wrapper uebergeben wurde (z.B. B12_Step2_Antwort_*.json)
+        if (data) {
+            if (!data.data && data.graphData && data.graphData.data) {
+                data = data.graphData;
+            }
+            if (!data.system) {
+                data.system = "Semantic Graph";
+            }
+        }
+
         // Accept Build 3 and Build 4
         let schemaVersion = data.metadata?.schemaVersion;
         const SUPPORTED_VERSIONS = ['3.0', '4.0', '5.0'];
@@ -42,9 +52,12 @@ export class DataParser {
         if (!data.metadata) data.metadata = {};
         data.metadata._buildVersion = schemaVersion;
 
-        // Normalize relationships: sync start/end and source/target
+        // Normalize relationships: sync start/end, source/target, id, relation
         if (data && data.data && Array.isArray(data.data.relationships)) {
-            data.data.relationships.forEach((rel: any) => {
+            data.data.relationships.forEach((rel: any, index: number) => {
+                if (!rel.id) {
+                    rel.id = `rel_${index + 1}`;
+                }
                 if (rel.start !== undefined && rel.source === undefined) {
                     rel.source = rel.start;
                 }
@@ -56,6 +69,9 @@ export class DataParser {
                 }
                 if (rel.target !== undefined && rel.end === undefined) {
                     rel.end = rel.target;
+                }
+                if (!rel.relation) {
+                    rel.relation = rel.type || rel.label || 'connects_to';
                 }
             });
         }
@@ -129,23 +145,53 @@ export class DataParser {
             
             Object.entries(presets).forEach(([key, value]) => {
                 if (value && typeof value === 'object') {
-                    // Pre-process categorical mappings to build params.categories from range & dataModel.properties
-                    Object.values(value).forEach((mapping: any) => {
-                        if (mapping && typeof mapping === 'object' && mapping.function === 'categorical') {
-                            const field = mapping.field;
-                            if (field && (!mapping.params || !mapping.params.categories)) {
-                                // Find property in dataModel
+                    // Pre-process categorical & position mappings to build params.categories from range & dataModel.properties/entities
+                    Object.entries(value).forEach(([propKey, mapping]: [string, any]) => {
+                        if (mapping && typeof mapping === 'object') {
+                            const field = mapping.field || mapping.source;
+                            if (field && field !== 'constant' && (!mapping.params || !mapping.params.categories)) {
+                                let propValues: string[] = [];
                                 const propDef = data.dataModel?.properties?.[field];
-                                if (propDef && Array.isArray(propDef.values) && Array.isArray(mapping.range)) {
-                                    const categories: any = {};
-                                    propDef.values.forEach((val: string, index: number) => {
-                                        categories[val] = mapping.range[index % mapping.range.length];
+                                if (propDef && Array.isArray(propDef.values) && propDef.values.length > 0) {
+                                    propValues = propDef.values;
+                                } else if (Array.isArray(data.data?.entities)) {
+                                    const set = new Set<string>();
+                                    data.data.entities.forEach((e: any) => {
+                                        const val = e[field];
+                                        if (val !== undefined && val !== null) set.add(String(val));
                                     });
-                                    mapping.params = {
-                                        ...(mapping.params || {}),
-                                        categories
-                                    };
-                                    console.log(`[DataParser] Built categories map for categorical field "${field}":`, categories);
+                                    propValues = Array.from(set);
+                                }
+
+                                if (propValues.length > 0) {
+                                    const categories: Record<string, any> = {};
+                                    const isPosition = propKey.startsWith('position') || mapping.params?.axis !== undefined;
+
+                                    if (isPosition) {
+                                        let minRange = 0;
+                                        let maxRange = 30;
+                                        if (Array.isArray(mapping.range) && mapping.range.length >= 2 && typeof mapping.range[0] === 'number') {
+                                            minRange = Number(mapping.range[0]);
+                                            maxRange = Number(mapping.range[1]);
+                                        }
+                                        const step = propValues.length > 1 ? (maxRange - minRange) / (propValues.length - 1) : 0;
+                                        propValues.forEach((val: string, index: number) => {
+                                            categories[val] = minRange + index * step;
+                                        });
+                                        mapping.function = 'categorical';
+                                    } else if (mapping.function === 'categorical' && Array.isArray(mapping.range) && mapping.range.length > 0) {
+                                        propValues.forEach((val: string, index: number) => {
+                                            categories[val] = mapping.range[index % mapping.range.length];
+                                        });
+                                    }
+
+                                    if (Object.keys(categories).length > 0) {
+                                        mapping.params = {
+                                            ...(mapping.params || {}),
+                                            categories
+                                        };
+                                        console.log(`[DataParser] Built categories map for field "${field}" (${propKey}):`, categories);
+                                    }
                                 }
                             }
                         }
@@ -195,6 +241,15 @@ export class DataParser {
         }
 
         const validData = result.data;
+
+        // Label-Fallback: Wenn kein label gesetzt ist, Wert aus relation uebernehmen
+        if (validData.data && Array.isArray(validData.data.relationships)) {
+            validData.data.relationships.forEach(rel => {
+                if (!rel.label && rel.relation) {
+                    rel.label = rel.relation;
+                }
+            });
+        }
 
         // 2. Data Parsing Strategy (Strings to Numbers, etc.)
         if (validData.dataModel) {

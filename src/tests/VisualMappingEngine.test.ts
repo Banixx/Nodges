@@ -241,4 +241,41 @@ describe('VisualMappingEngine', () => {
             expect(visual.size).toBe(3.0);
         });
     });
+
+    describe('Text-Attribute Normalisierung (0 bis 30)', () => {
+        it('sollte Text-Kategorien gleichmaessig auf den Wertebereich 0..30 oder Target-Range skalieren', () => {
+            const mappings: VisualMappings = {
+                defaultPresets: {
+                    global_node: {
+                        positionX: {
+                            source: 'entity_type',
+                            function: 'linear',
+                            range: [0, 30],
+                        },
+                        size: {
+                            source: 'entity_type',
+                            function: 'linear',
+                            range: [1.0, 3.0],
+                        },
+                    },
+                },
+            };
+
+            engine = new VisualMappingEngine(mappings);
+
+            const entityA: EntityData = { id: '1', entity_type: 'Ort' };
+            const entityB: EntityData = { id: '2', entity_type: 'Person' };
+
+            const visA = engine.applyToEntity(entityA);
+            const visB = engine.applyToEntity(entityB);
+
+            // 'Ort' < 'Person' alphabetically -> Ort=0, Person=30 for PositionX
+            expect(visA.positionX).toBe(0);
+            expect(visB.positionX).toBe(30);
+
+            // Size range [1.0, 3.0]: Ort=1.0, Person=3.0
+            expect(visA.size).toBe(1.0);
+            expect(visB.size).toBe(3.0);
+        });
+    });
 });

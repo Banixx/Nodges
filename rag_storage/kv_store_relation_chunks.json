@@ -836,5 +836,104 @@
     "create_time": 1784799659,
     "update_time": 1784799659,
     "_id": "Kantonsrat<SEP>konstruktives Referendum"
+  },
+  "Guy Parmelin<SEP>Ignazio Cassis": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "Guy Parmelin<SEP>Ignazio Cassis"
+  },
+  "Karin Keller-Sutter<SEP>Martin Pfister": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "Karin Keller-Sutter<SEP>Martin Pfister"
+  },
+  "Beat Jans<SEP>Elisabeth Baume-Schneider": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "Beat Jans<SEP>Elisabeth Baume-Schneider"
+  },
+  "FDP.Die Liberalen<SEP>Ignazio Cassis": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "FDP.Die Liberalen<SEP>Ignazio Cassis"
+  },
+  "Albert Roesti<SEP>Guy Parmelin": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "Albert Roesti<SEP>Guy Parmelin"
+  },
+  "Elisabeth Baume-Schneider<SEP>Karin Keller-Sutter": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "Elisabeth Baume-Schneider<SEP>Karin Keller-Sutter"
+  },
+  "Die Mitte<SEP>Martin Pfister": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "Die Mitte<SEP>Martin Pfister"
+  },
+  "Beat Jans<SEP>Sozialdemokratische Partei der Schweiz": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "Beat Jans<SEP>Sozialdemokratische Partei der Schweiz"
+  },
+  "Guy Parmelin<SEP>Schweizerische Volkspartei": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "Guy Parmelin<SEP>Schweizerische Volkspartei"
+  },
+  "FDP.Die Liberalen<SEP>Karin Keller-Sutter": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "FDP.Die Liberalen<SEP>Karin Keller-Sutter"
+  },
+  "Elisabeth Baume-Schneider<SEP>Sozialdemokratische Partei der Schweiz": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "Elisabeth Baume-Schneider<SEP>Sozialdemokratische Partei der Schweiz"
   }
 }

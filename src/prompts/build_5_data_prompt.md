@@ -37,10 +37,10 @@ PFLICHTSTRUKTUR (Daten Build 5):
     "relationships": [
       {
         "id": "rel_1",
-        "type": "<Typ aus dataModel.relationships>",
         "source": "eindeutige_id_1",
         "target": "id_2",
-        "label": "Beschreibung der Beziehung",
+        "relation": "belongs_to",
+        "label": "Mitglied von",
         "<kanten_spezifisches_attribut>": 0.8,
         "temporal": { "validFrom": 2005, "validTo": null }
       }

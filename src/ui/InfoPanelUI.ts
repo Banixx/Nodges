@@ -90,21 +90,24 @@ export class InfoPanelUI {
                 const currentSelection = this.stateManager.state.selectedObjects;
                 if (!currentSelection || currentSelection.size === 0) return;
                 
-                if (this.app.batchOperations && this.app.nodeGroupManager) {
-                    const groupId = this.app.nodeGroupManager.createGroup();
-                    this.app.batchOperations.addToGroup(groupId);
-                    
-                    // Feedback UI
-                    const originalText = target.textContent;
-                    target.textContent = 'Gruppe erstellt!';
-                    target.style.backgroundColor = '#4CAF50';
-                    setTimeout(() => {
-                        if (target) {
-                            target.textContent = originalText;
-                            target.style.backgroundColor = '';
-                        }
-                    }, 2000);
-                }
+                const groupNode = this.stateManager.createGroupNode('Neue Gruppe');
+                currentSelection.forEach((obj: any) => {
+                    const nodeId = obj.userData?.id || obj.userData?.nodeData?.id || obj.userData?.node?.id;
+                    if (nodeId) {
+                        this.stateManager.addNodeToGroup(nodeId, groupNode.id);
+                    }
+                });
+
+                // Feedback UI
+                const originalText = target.textContent;
+                target.textContent = 'Gruppe erstellt!';
+                target.style.backgroundColor = '#4CAF50';
+                setTimeout(() => {
+                    if (target) {
+                        target.textContent = originalText;
+                        target.style.backgroundColor = '';
+                    }
+                }, 2000);
             }
         });
     }

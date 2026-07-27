@@ -66,14 +66,20 @@ export class ContextMenuHandler {
             options.push({
                 label: 'Delete',
                 action: () => {
-                    this.stateManager.setSelectedObject(object);
+                    const selected = this.stateManager.getSelectedObjects();
+                    if (!selected.has(object) && !this.selectionHandler.findEquivalentObject(selected, object)) {
+                        this.stateManager.setSelectedObject(object);
+                    }
                     this.selectionHandler.deleteSelected();
                 }
             });
             options.push({
                 label: 'Duplicate',
                 action: () => {
-                    this.stateManager.setSelectedObject(object);
+                    const selected = this.stateManager.getSelectedObjects();
+                    if (!selected.has(object) && !this.selectionHandler.findEquivalentObject(selected, object)) {
+                        this.stateManager.setSelectedObject(object);
+                    }
                     this.selectionHandler.duplicateSelected();
                 }
             });
@@ -110,14 +116,20 @@ export class ContextMenuHandler {
             options.push({
                 label: 'Delete',
                 action: () => {
-                    this.stateManager.setSelectedObject(object);
+                    const selected = this.stateManager.getSelectedObjects();
+                    if (!selected.has(object) && !this.selectionHandler.findEquivalentObject(selected, object)) {
+                        this.stateManager.setSelectedObject(object);
+                    }
                     this.selectionHandler.deleteSelected();
                 }
             });
             options.push({
                 label: 'Duplicate',
                 action: () => {
-                    this.stateManager.setSelectedObject(object);
+                    const selected = this.stateManager.getSelectedObjects();
+                    if (!selected.has(object) && !this.selectionHandler.findEquivalentObject(selected, object)) {
+                        this.stateManager.setSelectedObject(object);
+                    }
                     this.selectionHandler.duplicateSelected();
                 }
             });

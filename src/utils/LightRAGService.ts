@@ -63,40 +63,61 @@ export class LightRAGService {
 
         const data: LightRAGQueryResponse = await response.json();
 
-        // Transformation in Nodges EntityData & RelationshipData mit strukturierter 3D-Kugel-Verteilung
+        // Datenneutrale Transformation in Nodges EntityData & RelationshipData
         const nodesList = data.graph_context?.nodes || [];
-        const totalNodes = nodesList.length || 1;
-        const radius = Math.max(10, Math.min(35, totalNodes * 4));
+        const entityTypesSet = new Set<string>();
 
-        const entities: EntityData[] = nodesList.map((node, idx) => {
-            // Fibonacci-Sphaere Verteilung fuer gleichmaessigen 3D-Abstand
-            const phi = Math.acos(1 - (2 * (idx + 0.5)) / totalNodes);
-            const theta = Math.PI * (1 + Math.sqrt(5)) * (idx + 0.5);
+        const entities: EntityData[] = nodesList.map((node) => {
+            const props = node.properties || {};
+            const entityType = String(props.entity_type || props.type || 'concept');
+            entityTypesSet.add(entityType);
 
             return {
                 id: String(node.id),
                 label: node.label || String(node.id),
-                ...node.properties,
-                position: {
-                    x: radius * Math.sin(phi) * Math.cos(theta),
-                    y: radius * Math.sin(phi) * Math.sin(theta),
-                    z: radius * Math.cos(phi)
-                }
+                ...props,
+                entity_type: entityType
             };
         });
 
-        const relationships: RelationshipData[] = (data.graph_context?.edges || []).map((edge, idx) => ({
-            id: `rel_lightrag_${idx}_${edge.source}_${edge.target}`,
-            source: String(edge.source),
-            target: String(edge.target),
-            label: edge.relation || 'verknuepft',
-            ...edge.properties
-        }));
+        const uniqueEntityTypes = Array.from(entityTypesSet);
+
+        const relationships: RelationshipData[] = (data.graph_context?.edges || []).map((edge, idx) => {
+            const props = edge.properties || {};
+            const relName = String(edge.relation || props.relation || props.relation_type || props.predicate || props.label || props.keywords || 'verknuepft');
+            return {
+                id: `rel_lightrag_${idx}_${edge.source}_${edge.target}`,
+                source: String(edge.source),
+                target: String(edge.target),
+                relation: relName,
+                label: relName,
+                ...props
+            };
+        });
 
         const graphData: GraphData = {
             metadata: {
                 schemaVersion: "5.2",
                 description: `LightRAG Query Result: ${query}`
+            },
+            dataModel: {
+                properties: {
+                    entity_type: {
+                        type: 'categorical',
+                        values: uniqueEntityTypes
+                    }
+                }
+            },
+            visualMappings: {
+                defaultPresets: {
+                    global_node: {
+                        color: {
+                            field: 'entity_type',
+                            function: 'categorical',
+                            range: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#6366f1']
+                        }
+                    }
+                }
             },
             data: {
                 entities,

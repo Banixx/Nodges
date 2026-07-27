@@ -25,7 +25,6 @@ import { NodeLabelManager } from './utils/NodeLabelManager';
 import { NeighborhoodHighlighter } from './utils/NeighborhoodHighlighter';
 import { KeyboardShortcuts } from './utils/KeyboardShortcuts';
 import { BatchOperations } from './utils/BatchOperations';
-import { NodeGroupManager } from './utils/NodeGroupManager';
 
 import { HighlightManager } from './effects/HighlightManager';
 import { GlowEffect } from './effects/GlowEffect';
@@ -77,7 +76,6 @@ export class App {
     public neighborhoodHighlighter!: NeighborhoodHighlighter;
     public keyboardShortcuts!: KeyboardShortcuts;
     public batchOperations!: BatchOperations;
-    public nodeGroupManager!: NodeGroupManager;
 
     public highlightManager!: HighlightManager;
     public glowEffect!: GlowEffect;
@@ -191,6 +189,7 @@ export class App {
         // Core State
         const stateManager = new StateManager();
         this.container.register('IStateManager', stateManager);
+        this.container.register('StateManager', stateManager);
 
         const performanceMonitor = new PerformanceMonitor(stateManager);
         this.container.register('PerformanceMonitor', performanceMonitor);
@@ -460,11 +459,6 @@ export class App {
         this.container.register('NeighborhoodHighlighter', neighborhoodHighlighter);
         this.neighborhoodHighlighter = this.container.get<NeighborhoodHighlighter>('NeighborhoodHighlighter');
 
-        // Init & Register NodeGroupManager
-        const nodeGroupManager = new NodeGroupManager(this.container);
-        this.container.register('NodeGroupManager', nodeGroupManager);
-        this.nodeGroupManager = this.container.get<NodeGroupManager>('NodeGroupManager');
-
         // Init & Register BatchOperations
         const batchOperations = new BatchOperations(this.container);
         this.container.register('BatchOperations', batchOperations);
@@ -710,9 +704,9 @@ export class App {
                 graphData.data.entities.forEach((e: any) => {
                     if (e.position === undefined) {
                         e.position = {
-                            x: (Math.random() - 0.5) * 4,
-                            y: (Math.random() - 0.5) * 4,
-                            z: 3 + (Math.random() - 0.5) * 4,
+                            x: 0,
+                            y: 0,
+                            z: 0,
                             isRandomFallback: true
                         };
                     }
@@ -1072,11 +1066,11 @@ export class App {
         // Re-apply label positions (since positionX/Y/Z mapping could have moved them)
         if (this.nodeLabelManager) {
             this.currentEntities.forEach(entity => {
-                const pos = new THREE.Vector3(
-                    entity.position?.x || 0,
-                    entity.position?.y || 0,
-                    entity.position?.z || 0
-                );
+                const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(entity) : {};
+                const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x !== undefined ? entity.position.x : (entity.x || 0));
+                const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y !== undefined ? entity.position.y : (entity.y || 0));
+                const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z !== undefined ? entity.position.z : (entity.z || 0));
+                const pos = new THREE.Vector3(x, y, z);
                 this.nodeLabelManager!.updateLabelPosition(String(entity.id), pos);
             });
         }
@@ -1240,9 +1234,10 @@ export class App {
         };
 
         nodes.forEach(node => {
-            const x = node.position?.x || 0;
-            const y = node.position?.y || 0;
-            const z = node.position?.z || 0;
+            const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(node) : {};
+            const x = visual.positionX !== undefined ? visual.positionX : (node.position?.x !== undefined ? node.position.x : (node.x || 0));
+            const y = visual.positionY !== undefined ? visual.positionY : (node.position?.y !== undefined ? node.position.y : (node.y || 0));
+            const z = visual.positionZ !== undefined ? visual.positionZ : (node.position?.z !== undefined ? node.position.z : (node.z || 0));
             bounds.x.min = Math.min(bounds.x.min, x);
             bounds.x.max = Math.max(bounds.x.max, x);
             bounds.y.min = Math.min(bounds.y.min, y);
@@ -1250,6 +1245,12 @@ export class App {
             bounds.z.min = Math.min(bounds.z.min, z);
             bounds.z.max = Math.max(bounds.z.max, z);
         });
+
+        if (!isFinite(bounds.x.min)) {
+            bounds.x.min = -10; bounds.x.max = 10;
+            bounds.y.min = -10; bounds.y.max = 10;
+            bounds.z.min = -10; bounds.z.max = 10;
+        }
 
         return bounds;
     }
@@ -1346,12 +1347,12 @@ export class App {
         // Update label positions
         if (this.nodeLabelManager) {
             this.currentEntities.forEach(entity => {
-                if (entity && entity.position && entity.id) {
-                    const position = new THREE.Vector3(
-                        entity.position.x || 0,
-                        entity.position.y || 0,
-                        entity.position.z || 0
-                    );
+                if (entity && entity.id) {
+                    const visual = this.visualMappingEngine ? this.visualMappingEngine.applyToEntity(entity) : {};
+                    const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x !== undefined ? entity.position.x : (entity.x || 0));
+                    const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y !== undefined ? entity.position.y : (entity.y || 0));
+                    const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z !== undefined ? entity.position.z : (entity.z || 0));
+                    const position = new THREE.Vector3(x, y, z);
                     this.nodeLabelManager.updateLabelPosition(String(entity.id), position);
                 }
             });
@@ -1516,6 +1517,7 @@ export class App {
                 this.stateManager.getRelationships(),
                 this.stateManager.getEntities()
             );
+            this.nodeManager.animateOverlapEffects(this.stateManager.getEntities());
         }
         if (this.edgeObjectsManager && this.edgeObjectsManager.updateTemporalState) {
             this.edgeObjectsManager.updateTemporalState(this.stateManager.state.currentTimestamp);

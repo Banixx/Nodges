@@ -27,13 +27,25 @@ describe('Build 5 Zod Schemas', () => {
     });
 
     describe('RelationshipDataSchema', () => {
-        it('sollte eine Kante ohne "type" akzeptieren', () => {
+        it('sollte eine Kante mit allen Pflichtfeldern (id, source, target, relation) akzeptieren', () => {
             const data = {
+                id: 'rel-1',
+                source: 'entity-1',
+                target: 'entity-2',
+                relation: 'connects_to'
+            };
+            const result = RelationshipDataSchema.safeParse(data);
+            expect(result.success).toBe(true);
+        });
+
+        it('sollte fehlschlagen, wenn relation fehlt', () => {
+            const data = {
+                id: 'rel-1',
                 source: 'entity-1',
                 target: 'entity-2'
             };
             const result = RelationshipDataSchema.safeParse(data);
-            expect(result.success).toBe(true);
+            expect(result.success).toBe(false);
         });
     });
 
@@ -44,7 +56,7 @@ describe('Build 5 Zod Schemas', () => {
                 metadata: { author: 'Unit Test' },
                 data: {
                     entities: [{ id: 'e1' }, { id: 'e2' }],
-                    relationships: [{ source: 'e1', target: 'e2' }]
+                    relationships: [{ id: 'r1', source: 'e1', target: 'e2', relation: 'connects_to' }]
                 }
             };
             const result = GraphDataSchema.safeParse(graphData);

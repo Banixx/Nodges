@@ -31,6 +31,25 @@ describe('DataParser', () => {
             expect(result.data.relationships).toHaveLength(1);
         });
 
+        it('sollte verschachtelte Step-Antwort-Dateien mit graphData ohne Fehler parsen', () => {
+            const wrappedData = {
+                answer: 'Antworttext',
+                graphData: {
+                    metadata: { schemaVersion: '5.2' },
+                    data: {
+                        entities: [{ id: 'node_1', label: 'Test Node' }],
+                        relationships: []
+                    }
+                }
+            };
+
+            const result = DataParser.parse(wrappedData);
+            expect(result).toBeDefined();
+            expect(result.system).toBe('Semantic Graph');
+            expect(result.data.entities).toHaveLength(1);
+            expect(result.data.entities[0].id).toBe('node_1');
+        });
+
         it('sollte einen Fehler werfen bei fehlenden data.entities', () => {
             const invalidData = {
                 system: 'Nodges',

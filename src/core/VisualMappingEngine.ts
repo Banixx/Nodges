@@ -19,6 +19,7 @@ export class VisualMappingEngine {
     private visualMappings: VisualMappings | undefined;
     private originalVisualMappings: VisualMappings | undefined;
     private dataModel: DataModel | undefined;
+    private categoryCache: Map<string, string[]> = new Map();
 
     constructor(visualMappings?: VisualMappings, dataModel?: DataModel) {
         this.visualMappings = visualMappings;
@@ -30,6 +31,7 @@ export class VisualMappingEngine {
      */
     setVisualMappings(visualMappings: VisualMappings) {
         this.visualMappings = visualMappings;
+        this.categoryCache.clear();
     }
 
     /**
@@ -58,6 +60,33 @@ export class VisualMappingEngine {
      */
     setDataModel(dataModel: DataModel) {
         this.dataModel = dataModel;
+        this.categoryCache.clear();
+    }
+
+    /**
+     * Gets a normalized value [0.0, 1.0] (representing 0..100) for a text category
+     */
+    public getCategoryNormalizedValue(sourceKey: string, textVal: string): number {
+        if (!this.categoryCache.has(sourceKey)) {
+            let initialValues: string[] = [];
+            if (this.dataModel && this.dataModel.properties && this.dataModel.properties[sourceKey]?.values) {
+                initialValues = [...this.dataModel.properties[sourceKey].values];
+            }
+            this.categoryCache.set(sourceKey, initialValues);
+        }
+
+        const categories = this.categoryCache.get(sourceKey)!;
+        if (!categories.includes(textVal)) {
+            categories.push(textVal);
+            categories.sort();
+        }
+
+        if (categories.length <= 1) {
+            return 0;
+        }
+
+        const idx = categories.indexOf(textVal);
+        return idx / (categories.length - 1);
     }
 
     private getEffectivePreset(isNode: boolean): any {
@@ -285,9 +314,11 @@ export class VisualMappingEngine {
             return value;
         }
 
+        const isNumericTarget = propName && propName !== 'color' && propName !== 'geometry';
+
         // Handle categorical mapping directly (keeps string values)
         if (mapping.function === 'categorical') {
-            if (propName && propName !== 'color' && propName !== 'geometry') {
+            if (isNumericTarget) {
                 if (mapping.params && mapping.params.categories && mapping.params.categories[String(value)] !== undefined) {
                     const mappedValue = mapping.params.categories[String(value)];
                     if (typeof mappedValue === 'number') {
@@ -296,25 +327,27 @@ export class VisualMappingEngine {
                     if (typeof mappedValue === 'string' && !isNaN(Number(mappedValue)) && mappedValue.trim() !== '') {
                         return Number(mappedValue);
                     }
-                    return mappedValue;
                 }
+            } else {
+                return value;
             }
-            return value;
         }
 
-        // If the value is a non-numeric string, return it directly so color/geometry can handle it categorically
+        // If the value is a non-numeric string
         let numValue = 0;
         if (typeof value === 'string' && isNaN(Number(value))) {
             if (mapping.function === 'heatmap') {
                 return value;
             }
-            // For continuous functions, calculate a numeric value from the text (0.0 to 1.0)
-            // Alphabetical mapping (A=0.0, Z=1.0) or fallback to word length
-            const charCode = value.toUpperCase().charCodeAt(0);
-            if (charCode >= 65 && charCode <= 90) {
-                numValue = (charCode - 65) / 25;
+            if (isNumericTarget) {
+                numValue = this.getCategoryNormalizedValue(sourceKey, String(value));
             } else {
-                numValue = Math.min(1.0, value.length / 20);
+                const charCode = value.toUpperCase().charCodeAt(0);
+                if (charCode >= 65 && charCode <= 90) {
+                    numValue = (charCode - 65) / 25;
+                } else {
+                    numValue = Math.min(1.0, value.length / 20);
+                }
             }
         } else {
             // Normalize value if it's a number
@@ -364,7 +397,7 @@ export class VisualMappingEngine {
             case 'pulse':
                 return this.pulseMapping(numValue, mapping);
             default:
-                return numValue;
+                return this.linearMapping(numValue, mapping);
         }
     }
 
@@ -382,10 +415,8 @@ export class VisualMappingEngine {
      * Linear mapping
      */
     private linearMapping(value: number, mapping: VisualMapping): number {
-        if (!mapping.range) return value;
-        const outMin = Number(mapping.range[0]);
-        const outMax = Number(mapping.range[1]);
-        // Assume input is normalized 0-1 unless we know the input range
+        const outMin = mapping.range ? Number(mapping.range[0]) : 0;
+        const outMax = mapping.range ? Number(mapping.range[1]) : 30;
         return outMin + value * (outMax - outMin);
     }
 

@@ -146,6 +146,12 @@ export class StateManager {
             layer3Value: '3',
             layer4Value: '4',
             complexityMode: (typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_complexity_mode') : null) as any || 'simple',
+            overlapEffectEnabled: false,
+            overlapEffectMode: 'static',
+            overlapRadius: 0.5,
+            overlapSpeed: 2.0,
+            overlapMinSize: 0.3,
+            overlapMaxSize: 1.8,
             devPowerPreference: (typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_dev_power_pref') : null) as any || 'high-performance',
             devPixelRatio: parseFloat((typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_dev_pixel_ratio') : null) || '1.0'),
             devFpsLimit: parseInt((typeof localStorage !== 'undefined' ? localStorage.getItem('nodges_dev_fps_limit') : null) || '0', 10),
@@ -798,5 +804,115 @@ export class StateManager {
     cancelTransaction() {
         this.currentBatch = null;
         this.batchDescription = null;
+    }
+
+    // ============================================================================
+    // Edge-based Group Management Methods
+    // ============================================================================
+
+    /**
+     * Prüft ob ein Knoten als Gruppe fungiert.
+     * Strukturelle Kriterien: Mindestens 1 eingehende Edge mit relation === 'belongs_to'
+     * (Oder Übergangs-Fallback: type === 'group' oder type === 'cloud')
+     */
+    isGroupNode(nodeId: string): boolean {
+        const entity = this.state.graphData.entities.find(e => e.id === nodeId);
+        if (!entity) return false;
+
+        // Übergangs-Fallback für expliziten Typ
+        if (entity.type === 'group' || entity.type === 'cloud') {
+            return true;
+        }
+
+        // Strukturelles Kriterium: Mindestens 1 eingehende belongs_to Edge
+        return this.state.graphData.relationships.some(
+            r => r.target === nodeId && r.relation === 'belongs_to'
+        );
+    }
+
+    /**
+     * Erstellt einen neuen Gruppen-Knoten und fügt ihn zum GraphData hinzu
+     */
+    createGroupNode(label: string = 'Neue Gruppe', attributes: Record<string, unknown> = {}): EntityData {
+        const groupId = `group_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+        const groupNode: EntityData = {
+            id: groupId,
+            label: label,
+            type: 'group',
+            ...attributes
+        };
+
+        this.addNode(groupNode);
+        return groupNode;
+    }
+
+    /**
+     * Fügt einen Knoten zu einer Gruppe hinzu (erstellt Edge nodeId --belongs_to--> groupId)
+     */
+    addNodeToGroup(nodeId: string, groupId: string): RelationshipData {
+        // Prüfen ob Beziehung bereits existiert
+        const existingEdge = this.state.graphData.relationships.find(
+            r => r.source === nodeId && r.target === groupId && r.relation === 'belongs_to'
+        );
+        if (existingEdge) return existingEdge;
+
+        const edgeId = `rel_${nodeId}_belongs_to_${groupId}_${Date.now()}`;
+        const edge: RelationshipData = {
+            id: edgeId,
+            source: nodeId,
+            target: groupId,
+            relation: 'belongs_to',
+            label: 'belongs_to'
+        };
+
+        this.addEdge(edge);
+        return edge;
+    }
+
+    /**
+     * Entfernt die Mitgliedschafts-Edge zwischen Knoten und Gruppe
+     */
+    removeNodeFromGroup(nodeId: string, groupId: string) {
+        const edge = this.state.graphData.relationships.find(
+            r => r.source === nodeId && r.target === groupId && r.relation === 'belongs_to'
+        );
+        if (edge && edge.id) {
+            this.removeEdge(edge.id);
+        }
+    }
+
+    /**
+     * Gibt alle Mitglieder einer Gruppe zurück (Entities mit ausgehender belongs_to Edge zur Gruppe)
+     */
+    getGroupMembers(groupId: string): EntityData[] {
+        const memberIds = new Set<string>();
+        this.state.graphData.relationships.forEach(r => {
+            if (r.target === groupId && r.relation === 'belongs_to' && r.source) {
+                memberIds.add(r.source);
+            }
+        });
+
+        return this.state.graphData.entities.filter(e => memberIds.has(e.id));
+    }
+
+    /**
+     * Gibt alle Gruppen zurück, denen ein Knoten angehört
+     */
+    getNodeGroups(nodeId: string): EntityData[] {
+        const groupIds = new Set<string>();
+        this.state.graphData.relationships.forEach(r => {
+            if (r.source === nodeId && r.relation === 'belongs_to' && r.target) {
+                groupIds.add(r.target);
+            }
+        });
+
+        return this.state.graphData.entities.filter(e => groupIds.has(e.id));
+    }
+
+    /**
+     * Gibt alle Knoten zurück, die als Gruppe deklariert sind oder eingehende belongs_to Kanten besitzen
+     */
+    getAllGroups(): EntityData[] {
+        return this.state.graphData.entities.filter(e => this.isGroupNode(e.id));
     }
 }

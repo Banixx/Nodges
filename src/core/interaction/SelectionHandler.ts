@@ -143,19 +143,33 @@ export class SelectionHandler {
 
         if (selectedObjects.length === 0) return;
 
-        selectedObjects.forEach(obj => {
-            if (obj.userData.type === 'node') {
-                this.duplicateNode(obj);
-            } else if (obj.userData.type === 'edge') {
-                this.duplicateEdge(obj);
+        this.stateManager.beginTransaction(`Duplicate ${selectedObjects.length} Objects`);
+
+        const nodeIdMap = new Map<string, string>();
+        const nodes = selectedObjects.filter(obj => obj.userData.type === 'node');
+        const edges = selectedObjects.filter(obj => obj.userData.type === 'edge');
+
+        // Phase 1: Nodes duplizieren und ID-Mapping speichern
+        nodes.forEach(obj => {
+            const oldId = obj.userData.id || obj.userData.nodeData?.id;
+            const newId = this.duplicateNode(obj);
+            if (oldId && newId) {
+                nodeIdMap.set(oldId, newId);
             }
         });
+
+        // Phase 2: Edges duplizieren mit remappten source/target-IDs
+        edges.forEach(obj => {
+            this.duplicateEdge(obj, nodeIdMap);
+        });
+
+        this.stateManager.commitTransaction();
     }
 
     /**
      * Dupliziert einen einzelnen Node
      */
-    private duplicateNode(node: THREE.Object3D) {
+    private duplicateNode(node: THREE.Object3D): string | null {
         const position = new THREE.Vector3();
         node.getWorldPosition(position);
 
@@ -165,9 +179,11 @@ export class SelectionHandler {
 
         const nodeData = node.userData.nodeData || node.userData.entity || {};
 
+        const newId = `node_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+
         const newEntity: any = {
             ...nodeData,
-            id: `node_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+            id: newId,
             label: nodeData.label ? `${nodeData.label} (Kopie)` : (nodeData.name ? `${nodeData.name} (Kopie)` : 'Node Kopie'),
             position: {
                 x: position.x,
@@ -181,22 +197,41 @@ export class SelectionHandler {
         }
 
         this.stateManager.addNode(newEntity);
+        return newId;
     }
 
     /**
      * Dupliziert eine einzelne Edge
      */
-    private duplicateEdge(edge: THREE.Object3D) {
+    private duplicateEdge(edge: THREE.Object3D, nodeIdMap?: Map<string, string>) {
         const edgeData = edge.userData.edge || edge.userData.relationship || {};
+
+        let source = edgeData.source;
+        let target = edgeData.target;
+
+        if (nodeIdMap) {
+            if (source && nodeIdMap.has(source)) {
+                source = nodeIdMap.get(source);
+            }
+            if (target && nodeIdMap.has(target)) {
+                target = nodeIdMap.get(target);
+            }
+        }
 
         const newEdge: any = {
             ...edgeData,
             id: `edge_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+            source: source,
+            target: target,
             label: edgeData.label ? `${edgeData.label} (Kopie)` : (edgeData.name ? `${edgeData.name} (Kopie)` : 'Verbindung Kopie')
         };
 
         if (newEdge.name) {
             newEdge.name = `${newEdge.name} (Kopie)`;
+        }
+
+        if (nodeIdMap && Array.isArray(newEdge.nodes)) {
+            newEdge.nodes = newEdge.nodes.map((nId: string) => nodeIdMap.get(nId) || nId);
         }
 
         this.stateManager.addEdge(newEdge);

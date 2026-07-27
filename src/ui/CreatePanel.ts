@@ -44,8 +44,14 @@ export class CreatePanel {
     private llmParamsContainer!: HTMLElement;
     private tempSlider!: HTMLInputElement;
     private topPSlider!: HTMLInputElement;
-    private topKSlider!: HTMLInputElement;
+    // Generation Naming Helper
+    private generationCounter = 1;
 
+    private getFormattedFileSuffix(): string {
+        const counter = String(this.generationCounter++).padStart(2, '0');
+        const day = String(new Date().getDate()).padStart(2, '0');
+        return `${counter}_${day}`;
+    }
 
     constructor(containerId: string, _stateManager: IStateManager, app: App) {
         const el = document.getElementById(containerId);
@@ -1283,6 +1289,8 @@ export class CreatePanel {
             this.setStatus(msg, 'info');
         };
 
+        const fileSuffix = this.getFormattedFileSuffix();
+
         try {
             let graphData: any;
             
@@ -1330,7 +1338,8 @@ export class CreatePanel {
                         // The download itself is triggered here ONLY if saveSteps is true, which is fine since the callback is only triggered if devPrefix is passed
                         if (saveSteps) {
                             const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
-                            this.app.exportManager?.downloadFile(content, `${devPrefix}_${step}_${name}.${ext}`, mime);
+                            const formattedStep = String(step).padStart(2, '0');
+                            this.app.exportManager?.downloadFile(content, `${devPrefix}_${formattedStep}_${name}.${ext}`, mime);
                         }
                     },
                     llmOptions
@@ -1339,15 +1348,13 @@ export class CreatePanel {
                 onProgressWithLog('Schritt 1/2: Generiere Roh-Netzwerk via LLM...');
                 const rawGraph = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog, llmOptions);
                 if (saveSteps) {
-                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-                    this.app.exportManager?.downloadFile(JSON.stringify(rawGraph, null, 2), `1_Raw_Graph_${timestamp}.json`, 'application/json');
+                    this.app.exportManager?.downloadFile(JSON.stringify(rawGraph, null, 2), `01_Raw_Graph_${fileSuffix}.json`, 'application/json');
                 }
                 
                 onProgressWithLog('Schritt 2/2: Führe semantische Deduplizierung (Entity Resolution) aus...');
                 graphData = await deduplicateGraph(rawGraph, provider, 'google/gemini-embedding-2', 0.85, onProgressWithLog);
                 if (saveSteps) {
-                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `2_Deduplicated_Graph_${timestamp}.json`, 'application/json');
+                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `02_Deduplicated_Graph_${fileSuffix}.json`, 'application/json');
                 }
             } else if (pipeline === 'build8') {
                 graphData = await LLMService.generateGraphDataBuild8(
@@ -1357,15 +1364,14 @@ export class CreatePanel {
                     onProgressWithLog, 
                     (step: number, name: string, content: string, ext: string) => {
                         if (saveSteps) {
-                            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
                             const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
-                            this.app.exportManager?.downloadFile(content, `${step}_${name}_${timestamp}.${ext}`, mime);
+                            const formattedStep = String(step).padStart(2, '0');
+                            this.app.exportManager?.downloadFile(content, `${formattedStep}_${name}_${fileSuffix}.${ext}`, mime);
                         }
                     }
                 );
             } else if (pipeline === 'build12_lightrag') {
                 onProgressWithLog('Frage lokalen LightRAG Microservice an...');
-                const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
 
                 if (ragText) {
                     onProgressWithLog('Sende Rohdaten an LightRAG Knowledge Base...');
@@ -1375,7 +1381,7 @@ export class CreatePanel {
                             await fetch('/api/save_graph', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ filename: `../b12/B12_Step1_Rohdaten_${timestamp}.txt`, content: ragText })
+                                body: JSON.stringify({ filename: `../b12/B12_01_Rohdaten_${fileSuffix}.txt`, content: ragText })
                             });
                         } catch (e) {}
                     }
@@ -1389,14 +1395,17 @@ export class CreatePanel {
                     data: lightRagResult.graphData.data
                 };
 
+                // Injiere vollständige Metadaten vor dem Speichern/Exportieren
+                this.enrichGraphMetadata(graphData, pipeline, prompt, provider, model, mode, ragText, startTime);
+
                 // Immer in public/data/b12/ speichern
                 try {
                     await fetch('/api/save_graph', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ filename: `../b12/B12_Graph_${timestamp}.json`, content: JSON.stringify(graphData, null, 2) })
+                        body: JSON.stringify({ filename: `../b12/B12_Graph_${fileSuffix}.json`, content: JSON.stringify(graphData, null, 2) })
                     });
-                    onProgressWithLog(`Datei unter public/data/b12/B12_Graph_${timestamp}.json gespeichert.`);
+                    onProgressWithLog(`Datei unter public/data/b12/B12_Graph_${fileSuffix}.json gespeichert.`);
                 } catch (e) {
                     console.warn('[CreatePanel] Fehler beim Speichern der B12 Graph-Datei:', e);
                 }
@@ -1406,16 +1415,15 @@ export class CreatePanel {
                         await fetch('/api/save_graph', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ filename: `../b12/B12_Step2_Antwort_${timestamp}.json`, content: JSON.stringify(lightRagResult, null, 2) })
+                            body: JSON.stringify({ filename: `../b12/B12_02_Antwort_${fileSuffix}.json`, content: JSON.stringify(lightRagResult, null, 2) })
                         });
                     } catch (e) {}
-                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `B12_Graph_${timestamp}.json`, 'application/json');
+                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `B12_Graph_${fileSuffix}.json`, 'application/json');
                 }
             } else if (pipeline === 'build6') {
                 graphData = await LLMService.generateGraphDataBuild6(prompt, provider, model, onProgressWithLog, llmOptions);
                 if (saveSteps) {
-                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `1_SingleStep_Graph_${timestamp}.json`, 'application/json');
+                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `01_SingleStep_Graph_${fileSuffix}.json`, 'application/json');
                 }
             } else if (pipeline === 'build5') {
                 graphData = await LLMService.generateGraphDataMultiStepBuild5(
@@ -1425,9 +1433,9 @@ export class CreatePanel {
                     onProgressWithLog,
                     (step: number, name: string, content: string, ext: string) => {
                         if (saveSteps) {
-                            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
                             const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
-                            this.app.exportManager?.downloadFile(content, `${step}_${name}_${timestamp}.${ext}`, mime);
+                            const formattedStep = String(step).padStart(2, '0');
+                            this.app.exportManager?.downloadFile(content, `${formattedStep}_${name}_${fileSuffix}.${ext}`, mime);
                         }
                     }
                 );
@@ -1443,8 +1451,7 @@ export class CreatePanel {
                 };
                 graphData = await LLMService.refineGraphData(existingData as any, prompt, provider, model, import.meta.env.BASE_URL + 'prompts/refine_prompt.md', onProgressWithLog);
                 if (saveSteps) {
-                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `1_Refined_Graph_${timestamp}.json`, 'application/json');
+                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `01_Refined_Graph_${fileSuffix}.json`, 'application/json');
                 }
             }
 
@@ -1455,60 +1462,7 @@ export class CreatePanel {
             generationLog.status = 'success';
 
             // --- Inject generation metadata directly into the JSON graphData ---
-            if (graphData) {
-                if (!graphData.metadata) graphData.metadata = {};
-                
-                // 1. Schema-Version
-                graphData.metadata.schemaVersion = graphData.metadata.schemaVersion || "5.0";
-
-                // 2. Nodges-Version aus package.json
-                graphData.metadata.nodgesVersion = pkg.version;
-
-                // 3. Verwendeter Build (Pipeline)
-                graphData.metadata.build = pipeline;
-
-                // 4. Prompt
-                graphData.metadata.prompt = prompt;
-
-                // 5. Build-spezifische Parameter
-                const buildParams: Record<string, any> = {
-                    provider: provider,
-                    model: model,
-                    interactionMode: mode,
-                    hasRagContext: !!ragText
-                };
-
-                if (pipeline === 'build10') {
-                    buildParams.grounding = this.b10GroundingSelect.value;
-                    buildParams.qualityAssurance = this.b10QaSelect.value;
-                    buildParams.ratingMethod = this.b10RatingSelect.value;
-                } else if (pipeline === 'build9') {
-                    buildParams.deduplicationThreshold = 0.85;
-                    buildParams.embeddingModel = 'google/gemini-embedding-2';
-                } else if (pipeline === 'build8') {
-                    buildParams.wikidataGrounding = true;
-                    buildParams.sparqlPipeline = true;
-                } else if (pipeline === 'build5') {
-                    buildParams.multiStep = {
-                        ontology: 'build_5_ontology_prompt.md',
-                        data: 'build_5_data_prompt.md',
-                        visuals: 'build_5_visual_prompt.md'
-                    };
-                }
-
-                graphData.metadata.buildParameters = buildParams;
-
-                // Behalte das alte generationDetails zur Kompatibilität
-                graphData.metadata.generationDetails = {
-                    prompt: prompt,
-                    context: ragText || null,
-                    provider: provider,
-                    model: model,
-                    pipeline: pipeline,
-                    durationMs: generationLog.durationMs,
-                    timestamp: generationLog.timestampEnd
-                };
-            }
+            this.enrichGraphMetadata(graphData, pipeline, prompt, provider, model, mode, ragText, startTime);
 
             this.setStatus('Graph generiert! Lade in Visualizer...', 'info');
 
@@ -1531,9 +1485,7 @@ export class CreatePanel {
                                     activeDataModel: this.app.currentGraphData.dataModel || null
                                 };
                                 const jsonStr = this.app.exportManager.exportNodgesJSON(this.app.currentGraphData, exportOptions);
-                                const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-                                
-                                this.app.exportManager.downloadFile(jsonStr, `AI_Generation_${timestamp}.json`, 'application/json');
+                                this.app.exportManager.downloadFile(jsonStr, `AI_Generation_${fileSuffix}.json`, 'application/json');
                                 
                                 // Optional: Update loaded files in UI panel (but no server save)
                                 const filePanel = (this.app as any).uiManager?.panels?.get('file');
@@ -1547,7 +1499,7 @@ export class CreatePanel {
                                 generationLog.generatedEdges = dataToLoad?.data?.relationships?.length || 0;
                                 generationLog.responsePayloadSizeKB = dataToLoad ? (JSON.stringify(dataToLoad).length / 1024).toFixed(2) : "0";
                                 const logStr = JSON.stringify(generationLog, null, 2);
-                                this.app.exportManager.downloadFile(logStr, `AI_GenerationLog_${timestamp}.json`, 'application/json');
+                                this.app.exportManager.downloadFile(logStr, `AI_GenerationLog_${fileSuffix}.json`, 'application/json');
                             }
                         } catch (e) {
                             console.warn('Auto-save or logging failed:', e);
@@ -1592,8 +1544,7 @@ export class CreatePanel {
             
             try {
                 const logStr = JSON.stringify(generationLog, null, 2);
-                const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-                this.app.exportManager?.downloadFile(logStr, `Nodges_ErrorLog_${timestamp}.json`, 'application/json');
+                this.app.exportManager?.downloadFile(logStr, `Nodges_ErrorLog_${fileSuffix}.json`, 'application/json');
             } catch(e) {}
 
             this.setStatus(error.message || 'Ein unbekannter Fehler ist aufgetreten.', 'error');
@@ -1817,4 +1768,75 @@ export class CreatePanel {
         modal.appendChild(box);
         document.body.appendChild(modal);
     }
+
+    private enrichGraphMetadata(
+        graphData: any,
+        pipeline: string,
+        prompt: string,
+        provider: string,
+        model: string,
+        mode: string,
+        ragText: string,
+        startTime: number
+    ): void {
+        if (!graphData) return;
+        if (!graphData.metadata) graphData.metadata = {};
+        
+        // 1. Schema-Version
+        graphData.metadata.schemaVersion = graphData.metadata.schemaVersion || "5.0";
+
+        // 2. Nodges-Version aus package.json
+        graphData.metadata.nodgesVersion = pkg.version;
+
+        // 3. Verwendeter Build (Pipeline)
+        graphData.metadata.build = pipeline;
+
+        // 4. Prompt
+        graphData.metadata.prompt = prompt;
+
+        // 5. Build-spezifische Parameter
+        const buildParams: Record<string, any> = {
+            provider: provider,
+            model: model,
+            interactionMode: mode,
+            hasRagContext: !!ragText
+        };
+
+        if (pipeline === 'build10') {
+            buildParams.grounding = this.b10GroundingSelect?.value;
+            buildParams.qualityAssurance = this.b10QaSelect?.value;
+            buildParams.ratingMethod = this.b10RatingSelect?.value;
+        } else if (pipeline === 'build9') {
+            buildParams.deduplicationThreshold = 0.85;
+            buildParams.embeddingModel = 'google/gemini-embedding-2';
+        } else if (pipeline === 'build8') {
+            buildParams.wikidataGrounding = true;
+            buildParams.sparqlPipeline = true;
+        } else if (pipeline === 'build5') {
+            buildParams.multiStep = {
+                ontology: 'build_5_ontology_prompt.md',
+                data: 'build_5_data_prompt.md',
+                visuals: 'build_5_visual_prompt.md'
+            };
+        } else if (pipeline === 'build12_lightrag') {
+            buildParams.lightrag = {
+                mode: 'hybrid',
+                service: 'LightRAGService'
+            };
+        }
+
+        graphData.metadata.buildParameters = buildParams;
+
+        const durationMs = Math.round(performance.now() - startTime);
+        graphData.metadata.generationDetails = {
+            prompt: prompt,
+            context: ragText || null,
+            provider: provider,
+            model: model,
+            pipeline: pipeline,
+            durationMs: durationMs,
+            timestamp: new Date().toISOString()
+        };
+    }
 }
+

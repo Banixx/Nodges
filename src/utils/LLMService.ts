@@ -109,7 +109,7 @@ export class LLMService {
             return savedModel;
         }
         // Fallbacks
-        if (provider === 'openrouter') return 'openai/gpt-4o-mini';
+        if (provider === 'openrouter') return 'morph/morph-v3-large';
         if (provider === 'openai') return 'gpt-4o-mini';
         if (provider === 'anthropic') return 'claude-3-5-sonnet-20241022';
         if (provider === 'ollama') return 'qwen2.5:14b';

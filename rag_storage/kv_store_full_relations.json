@@ -378,5 +378,57 @@
     "create_time": 1784799659,
     "update_time": 1784799659,
     "_id": "doc-67a86848d7820be81a8cc7885716f2f2"
+  },
+  "doc-94e3e6258ab98fce781a5c362a19d85b": {
+    "relation_pairs": [
+      [
+        "Albert Roesti",
+        "Guy Parmelin"
+      ],
+      [
+        "Elisabeth Baume-Schneider",
+        "Karin Keller-Sutter"
+      ],
+      [
+        "Guy Parmelin",
+        "Schweizerische Volkspartei"
+      ],
+      [
+        "Beat Jans",
+        "Sozialdemokratische Partei der Schweiz"
+      ],
+      [
+        "FDP.Die Liberalen",
+        "Ignazio Cassis"
+      ],
+      [
+        "FDP.Die Liberalen",
+        "Karin Keller-Sutter"
+      ],
+      [
+        "Die Mitte",
+        "Martin Pfister"
+      ],
+      [
+        "Beat Jans",
+        "Elisabeth Baume-Schneider"
+      ],
+      [
+        "Guy Parmelin",
+        "Ignazio Cassis"
+      ],
+      [
+        "Karin Keller-Sutter",
+        "Martin Pfister"
+      ],
+      [
+        "Elisabeth Baume-Schneider",
+        "Sozialdemokratische Partei der Schweiz"
+      ]
+    ],
+    "count": 11,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "doc-94e3e6258ab98fce781a5c362a19d85b"
   }
 }

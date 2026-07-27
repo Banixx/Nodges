@@ -5,7 +5,8 @@
       "type": "object",
       "properties": {
         "system": {
-          "type": "string"
+          "type": "string",
+          "default": "Semantic Graph"
         },
         "metadata": {
           "type": "object",
@@ -471,19 +472,28 @@
                   "target": {
                     "type": "string"
                   },
+                  "relation": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
                   "nodes": {
                     "type": "array",
                     "items": {
                       "type": "string"
                     }
                   },
-                  "label": {
-                    "type": "string"
-                  },
                   "temporal": {
                     "$ref": "#/definitions/GraphDataSchema/properties/data/properties/entities/items/properties/temporal"
                   }
                 },
+                "required": [
+                  "id",
+                  "source",
+                  "target",
+                  "relation"
+                ],
                 "additionalProperties": true
               }
             }
@@ -496,7 +506,6 @@
         }
       },
       "required": [
-        "system",
         "metadata",
         "data"
       ],

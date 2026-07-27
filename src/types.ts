@@ -115,11 +115,12 @@ export const EntityDataSchema = z.object({
 export type EntityData = z.infer<typeof EntityDataSchema> & Record<string, unknown>;
 
 export const RelationshipDataSchema = z.object({
-    id: z.string().optional(),
-    source: z.string().optional(),
-    target: z.string().optional(),
-    nodes: z.array(z.string()).optional(),
+    id: z.string(),
+    source: z.string(),
+    target: z.string(),
+    relation: z.string(),
     label: z.string().optional(),
+    nodes: z.array(z.string()).optional(),
     temporal: TemporalDataSchema.optional(),
 }).passthrough();
 export type RelationshipData = z.infer<typeof RelationshipDataSchema> & Record<string, unknown>;
@@ -135,7 +136,7 @@ export type FieldData = z.infer<typeof FieldDataSchema> & Record<string, unknown
 
 // Main Graph Data Structure
 export const GraphDataSchema = z.object({
-    system: z.string(),
+    system: z.string().optional().default("Semantic Graph"),
     metadata: z.object({
         created: z.string().optional(),
         version: z.union([z.string(), z.number()]).optional(),

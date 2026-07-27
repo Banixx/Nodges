@@ -393,29 +393,29 @@
   },
   "Guy Parmelin": {
     "chunk_ids": [
-      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
     ],
-    "count": 1,
-    "create_time": 1784799658,
-    "update_time": 1784799658,
+    "count": 2,
+    "update_time": 1784834653,
     "_id": "Guy Parmelin"
   },
   "Ignazio Cassis": {
     "chunk_ids": [
-      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
     ],
-    "count": 1,
-    "create_time": 1784799658,
-    "update_time": 1784799658,
+    "count": 2,
+    "update_time": 1784834653,
     "_id": "Ignazio Cassis"
   },
   "Karin Keller-Sutter": {
     "chunk_ids": [
-      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
     ],
-    "count": 1,
-    "create_time": 1784799658,
-    "update_time": 1784799658,
+    "count": 2,
+    "update_time": 1784834653,
     "_id": "Karin Keller-Sutter"
   },
   "Albert Rösti": {
@@ -429,29 +429,29 @@
   },
   "Elisabeth Baume-Schneider": {
     "chunk_ids": [
-      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
     ],
-    "count": 1,
-    "create_time": 1784799658,
-    "update_time": 1784799658,
+    "count": 2,
+    "update_time": 1784834653,
     "_id": "Elisabeth Baume-Schneider"
   },
   "Beat Jans": {
     "chunk_ids": [
-      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
     ],
-    "count": 1,
-    "create_time": 1784799658,
-    "update_time": 1784799658,
+    "count": 2,
+    "update_time": 1784834653,
     "_id": "Beat Jans"
   },
   "Martin Pfister": {
     "chunk_ids": [
-      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002"
+      "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
     ],
-    "count": 1,
-    "create_time": 1784799658,
-    "update_time": 1784799658,
+    "count": 2,
+    "update_time": 1784834653,
     "_id": "Martin Pfister"
   },
   "Regierungsrat": {
@@ -997,5 +997,50 @@
     "create_time": 1784799659,
     "update_time": 1784799659,
     "_id": "Appenzell Innerrhoden"
+  },
+  "Albert Roesti": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "Albert Roesti"
+  },
+  "Schweizerische Volkspartei": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "Schweizerische Volkspartei"
+  },
+  "FDP.Die Liberalen": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "FDP.Die Liberalen"
+  },
+  "Die Mitte": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "Die Mitte"
+  },
+  "Sozialdemokratische Partei der Schweiz": {
+    "chunk_ids": [
+      "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000"
+    ],
+    "count": 1,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "Sozialdemokratische Partei der Schweiz"
   }
 }

@@ -115,5 +115,24 @@
     "create_time": 1784799659,
     "update_time": 1784799659,
     "_id": "doc-67a86848d7820be81a8cc7885716f2f2"
+  },
+  "doc-94e3e6258ab98fce781a5c362a19d85b": {
+    "entity_names": [
+      "Schweizerische Volkspartei",
+      "FDP.Die Liberalen",
+      "Martin Pfister",
+      "Sozialdemokratische Partei der Schweiz",
+      "Beat Jans",
+      "Die Mitte",
+      "Elisabeth Baume-Schneider",
+      "Karin Keller-Sutter",
+      "Guy Parmelin",
+      "Ignazio Cassis",
+      "Albert Roesti"
+    ],
+    "count": 11,
+    "create_time": 1784834653,
+    "update_time": 1784834653,
+    "_id": "doc-94e3e6258ab98fce781a5c362a19d85b"
   }
 }

@@ -53,7 +53,7 @@ try:
     async def custom_llm_model_func(prompt, system_prompt=None, history_messages=None, **kwargs):
         if history_messages is None:
             history_messages = []
-        model = kwargs.pop("model", None) or os.getenv("LLM_MODEL", "openai/gpt-4o-mini")
+        model = kwargs.pop("model", None) or os.getenv("LLM_MODEL", "morph/morph-v3-large")
         return await openai_complete_if_cache(
             model,
             prompt,
@@ -141,7 +141,7 @@ async def process_query(request: QueryRequest):
                         e_src = str(edge.source).strip('"')
                         e_tgt = str(edge.target).strip('"')
                         e_props = dict(edge.properties) if edge.properties else {}
-                        e_rel = e_props.get("keywords") or e_props.get("description") or "verknuepft"
+                        e_rel = e_props.get("relation") or e_props.get("relation_type") or e_props.get("predicate") or e_props.get("label") or e_props.get("keywords") or e_props.get("description") or "verknuepft"
                         kg_edges.append({
                             "source": e_src,
                             "target": e_tgt,

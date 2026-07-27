@@ -72,6 +72,12 @@ export interface UIState {
     layer3Value: string;
     layer4Value: string;
     complexityMode: 'simple' | 'expert' | 'dev';
+    overlapEffectEnabled: boolean;
+    overlapEffectMode: 'static' | 'orbit' | 'pulse' | 'jitter';
+    overlapRadius: number;
+    overlapSpeed: number;
+    overlapMinSize: number;
+    overlapMaxSize: number;
 }
 
 /**
@@ -218,6 +224,12 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     layer3Value: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
     layer4Value: [STATE_CATEGORIES.DATA, STATE_CATEGORIES.UI],
     complexityMode: [STATE_CATEGORIES.UI, STATE_CATEGORIES.DEV],
+    overlapEffectEnabled: [STATE_CATEGORIES.UI],
+    overlapEffectMode: [STATE_CATEGORIES.UI],
+    overlapRadius: [STATE_CATEGORIES.UI],
+    overlapSpeed: [STATE_CATEGORIES.UI],
+    overlapMinSize: [STATE_CATEGORIES.UI],
+    overlapMaxSize: [STATE_CATEGORIES.UI],
 
     // VisualState
     highlightedObjects: [STATE_CATEGORIES.HIGHLIGHT],

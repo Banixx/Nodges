@@ -334,6 +334,101 @@ export class ViewPanel {
         colorSection.appendChild(swatchGrid);
         this.container.appendChild(colorSection);
 
+        // --- OVERLAP EFFECT SECTION ---
+        const overlapSection = document.createElement('section');
+        overlapSection.className = 'panel-section';
+
+        const overlapHeader = document.createElement('h4');
+        overlapHeader.className = 'section-header';
+        overlapHeader.textContent = 'Knoten-Überlagerung';
+        overlapSection.appendChild(overlapHeader);
+
+        const overlapSwitchRow = this.createCheckboxRow(
+            'Überlagerungs-Effekt',
+            'overlapEffectEnabled',
+            this.stateManager.state.overlapEffectEnabled
+        );
+        overlapSection.appendChild(overlapSwitchRow);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.id = 'overlapOptionsContainer';
+        optionsContainer.style.display = this.stateManager.state.overlapEffectEnabled ? 'block' : 'none';
+        optionsContainer.style.marginTop = '10px';
+        optionsContainer.style.paddingLeft = '8px';
+        optionsContainer.style.borderLeft = '2px solid var(--accent-color, #ac3838)';
+
+        const modeRow = this.createSelectRow(
+            'Effekt-Modus',
+            'overlapEffectMode',
+            this.stateManager.state.overlapEffectMode,
+            [
+                { value: 'static', label: '1. Statisch (0 & Verharren)' },
+                { value: 'orbit', label: '2. Kreisen (3D-Orbit)' },
+                { value: 'pulse', label: '3. Pulsieren (Größe)' },
+                { value: 'jitter', label: '4. Fallback (0,0,3 Jitter)' }
+            ]
+        );
+        optionsContainer.appendChild(modeRow);
+
+        const subContainer = document.createElement('div');
+        subContainer.id = 'overlapSubContainer';
+        optionsContainer.appendChild(subContainer);
+
+        const renderSubControls = (mode: string) => {
+            subContainer.innerHTML = '';
+            if (mode === 'orbit' || mode === 'jitter') {
+                const radiusRow = this.createSliderRow(
+                    mode === 'jitter' ? 'Jitter-Radius' : 'Orbit-Radius',
+                    'overlapRadius',
+                    this.stateManager.state.overlapRadius,
+                    0.1, 4.0, 0.1, 1
+                );
+                subContainer.appendChild(radiusRow);
+            } else if (mode === 'pulse') {
+                const speedRow = this.createSliderRow(
+                    'Geschwindigkeit',
+                    'overlapSpeed',
+                    this.stateManager.state.overlapSpeed,
+                    0.5, 5.0, 0.1, 1
+                );
+                subContainer.appendChild(speedRow);
+
+                const minRow = this.createSliderRow(
+                    'Min Größe',
+                    'overlapMinSize',
+                    this.stateManager.state.overlapMinSize,
+                    0.1, 1.0, 0.05, 2
+                );
+                subContainer.appendChild(minRow);
+
+                const maxRow = this.createSliderRow(
+                    'Max Größe',
+                    'overlapMaxSize',
+                    this.stateManager.state.overlapMaxSize,
+                    1.0, 3.0, 0.1, 1
+                );
+                subContainer.appendChild(maxRow);
+            }
+        };
+
+        renderSubControls(this.stateManager.state.overlapEffectMode);
+
+        const modeSelect = modeRow.querySelector('select');
+        if (modeSelect) {
+            modeSelect.addEventListener('change', () => {
+                renderSubControls(modeSelect.value);
+            });
+        }
+
+        const switchInput = overlapSwitchRow.querySelector('input');
+        if (switchInput) {
+            switchInput.addEventListener('change', () => {
+                optionsContainer.style.display = switchInput.checked ? 'block' : 'none';
+            });
+        }
+
+        overlapSection.appendChild(optionsContainer);
+        this.container.appendChild(overlapSection);
     }
 
     private createCheckboxRow(label: string, stateKey: string, initialValue: boolean): HTMLElement {
