@@ -1,0 +1,14 @@
+{
+  "name": "Standard Generisch",
+  "description": "Generisches Set universeller Beziehungsbegriffe für allgemeine Wissensgraphen",
+  "relations": [
+    { "id": "IS_A", "label": "ist ein", "description": "Klassifizierung und Typisierung", "enabled": true },
+    { "id": "PART_OF", "label": "teil von", "description": "Teil-Ganzes-Beziehung", "enabled": true },
+    { "id": "RELATED_TO", "label": "verwandt mit", "description": "Allgemeine Verknüpfung", "enabled": true },
+    { "id": "USES", "label": "nutzt", "description": "Verwendung von Werkzeugen oder Daten", "enabled": true },
+    { "id": "CREATES", "label": "erstellt", "description": "Erzeugung oder Autorschaft", "enabled": true },
+    { "id": "DEPENDS_ON", "label": "hängt ab von", "description": "Abhängigkeit", "enabled": true },
+    { "id": "LOCATED_IN", "label": "befindet sich in", "description": "Geografischer Ort", "enabled": true },
+    { "id": "CAUSES", "label": "verursacht", "description": "Kausalzusammenhang", "enabled": true }
+  ]
+}

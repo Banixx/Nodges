@@ -387,4 +387,77 @@ export class FileHandler {
 
         return result;
     }
+
+    /**
+     * Erstellt eine neue Datenbank auf dem Server
+     */
+    async createNewDatabase(dbName: string, initialData?: any): Promise<boolean> {
+        try {
+            const res = await fetch('/api/create_database', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ dbName, content: initialData ? JSON.stringify(initialData, null, 2) : undefined })
+            });
+            if (res.ok) {
+                this.showSuccess('Datenbank erstellt', `Die Datenbank '${dbName}' wurde erfolgreich angelegt.`);
+                return true;
+            } else {
+                const text = await res.text();
+                this.showError('Fehler beim Erstellen', text);
+                return false;
+            }
+        } catch (e: any) {
+            this.showError('Fehler beim Erstellen', e.message);
+            return false;
+        }
+    }
+
+    /**
+     * Speichert die aktuelle Graphdatenbank unter einem bestimmten Dateinamen
+     */
+    async saveCurrentDatabase(filename: string, content: string): Promise<boolean> {
+        try {
+            const res = await fetch('/api/save_graph', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename, content })
+            });
+            if (res.ok) {
+                this.showSuccess('Gespeichert', `Datenbank '${filename}' erfolgreich gespeichert.`);
+                return true;
+            } else {
+                const text = await res.text();
+                this.showError('Speicherfehler', text);
+                return false;
+            }
+        } catch (e: any) {
+            this.showError('Speicherfehler', e.message);
+            return false;
+        }
+    }
+
+    /**
+     * Loescht eine Datenbank-Datei vom Server
+     */
+    async deleteDatabaseFile(filename: string): Promise<boolean> {
+        try {
+            const res = await fetch('/api/delete_file', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename })
+            });
+            if (res.ok) {
+                this.showSuccess('Geloescht', `Datei '${filename}' wurde erfolgreich geloescht.`);
+                return true;
+            } else {
+                const text = await res.text();
+                this.showError('Loeschfehler', text);
+                return false;
+            }
+        } catch (e: any) {
+            this.showError('Loeschfehler', e.message);
+            return false;
+        }
+    }
 }
+

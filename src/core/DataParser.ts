@@ -53,6 +53,8 @@ export class DataParser {
         data.metadata._buildVersion = schemaVersion;
 
         // Normalize relationships: sync start/end, source/target, id, relation
+        const activeRelLabels: string[] = typeof window !== 'undefined' ? ((window as any).app?.uiManager?.createPanel?.getActiveRelationLabels() || []) : [];
+
         if (data && data.data && Array.isArray(data.data.relationships)) {
             data.data.relationships.forEach((rel: any, index: number) => {
                 if (!rel.id) {
@@ -72,6 +74,10 @@ export class DataParser {
                 }
                 if (!rel.relation) {
                     rel.relation = rel.type || rel.label || 'connects_to';
+                }
+                if (activeRelLabels.length > 0 && rel.relation) {
+                    rel.relation = normalizeRelationToSet(rel.relation, activeRelLabels);
+                    rel.label = rel.relation;
                 }
             });
         }
@@ -502,4 +508,60 @@ export class DataParser {
         return graphData;
     }
 
+}
+
+export function normalizeRelationToSet(rawRelation: string, allowedSet: string[]): string {
+    if (!allowedSet || allowedSet.length === 0 || !rawRelation) return rawRelation;
+    const rawLower = String(rawRelation).toLowerCase();
+
+    // 1. Direct exact match (case insensitive)
+    const exact = allowedSet.find(s => s.toLowerCase() === rawLower);
+    if (exact) return exact;
+
+    // 2. Multi-term or comma separated matching
+    const terms = rawLower.split(/[,;\s/]+/).filter(Boolean);
+
+    for (const allowed of allowedSet) {
+        const aLower = allowed.toLowerCase();
+
+        for (const term of terms) {
+            if (term.length < 3) continue;
+            if (aLower.includes(term) || term.includes(aLower)) return allowed;
+        }
+
+        if ((rawLower.includes('member') || rawLower.includes('part') || rawLower.includes('include') || rawLower.includes('comprise') || rawLower.includes('contain')) &&
+            (aLower.includes('mitglied') || aLower.includes('member') || aLower.includes('part'))) return allowed;
+
+        if ((rawLower.includes('elect') || rawLower.includes('designat') || rawLower.includes('appoint')) &&
+            (aLower.includes('wählt') || aLower.includes('waehlt') || aLower.includes('elect'))) return allowed;
+
+        if ((rawLower.includes('govern') || rawLower.includes('lead') || rawLower.includes('presid')) &&
+            (aLower.includes('leitet') || aLower.includes('lead') || aLower.includes('govern'))) return allowed;
+
+        if ((rawLower.includes('represent')) &&
+            (aLower.includes('vertritt') || aLower.includes('represent'))) return allowed;
+
+        if ((rawLower.includes('allow') || rawLower.includes('empower') || rawLower.includes('enable') || rawLower.includes('grant') || rawLower.includes('afford')) &&
+            (aLower.includes('ermächtigt') || aLower.includes('ermaechtigt') || aLower.includes('allow'))) return allowed;
+
+        if ((rawLower.includes('propos') || rawLower.includes('legislat') || rawLower.includes('change') || rawLower.includes('adopt')) &&
+            (aLower.includes('schlägt') || aLower.includes('schlaegt') || aLower.includes('propos'))) return allowed;
+
+        if ((rawLower.includes('affiliat') || rawLower.includes('location') || rawLower.includes('root')) &&
+            (aLower.includes('gehört') || aLower.includes('gehoert') || aLower.includes('location'))) return allowed;
+
+        if ((rawLower.includes('ensure') || rawLower.includes('determin') || rawLower.includes('frame') || rawLower.includes('defin')) &&
+            (aLower.includes('kontrolliert') || aLower.includes('control'))) return allowed;
+
+        if ((rawLower.includes('neighbor') || rawLower.includes('geography')) &&
+            (aLower.includes('nachbar') || aLower.includes('neighbor'))) return allowed;
+
+        if ((rawLower.includes('trigger') || rawLower.includes('influenc') || rawLower.includes('invok') || rawLower.includes('impact')) &&
+            (aLower.includes('beeinflusst') || aLower.includes('influenc'))) return allowed;
+
+        if ((rawLower.includes('support') || rawLower.includes('utiliz') || rawLower.includes('use')) &&
+            (aLower.includes('unterstützt') || aLower.includes('unterstuetzt') || aLower.includes('use'))) return allowed;
+    }
+
+    return allowedSet[0] || rawRelation;
 }

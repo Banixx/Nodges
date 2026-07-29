@@ -3,10 +3,10 @@
   "graphData": {
     "metadata": {
       "schemaVersion": "5.2",
-      "description": "LightRAG Query Result: politisches system der schweiz",
-      "nodgesVersion": "0.102.14",
+      "description": "LightRAG Query Result: System der Schweizer Politik",
+      "nodgesVersion": "0.102.15",
       "build": "build12_lightrag",
-      "prompt": "politisches system der schweiz",
+      "prompt": "System der Schweizer Politik",
       "buildParameters": {
         "provider": "openrouter",
         "model": "morph/morph-v3-large",
@@ -18,13 +18,13 @@
         }
       },
       "generationDetails": {
-        "prompt": "politisches system der schweiz",
+        "prompt": "System der Schweizer Politik",
         "context": null,
         "provider": "openrouter",
         "model": "morph/morph-v3-large",
         "pipeline": "build12_lightrag",
-        "durationMs": 7501,
-        "timestamp": "2026-07-27T19:08:56.646Z"
+        "durationMs": 3634,
+        "timestamp": "2026-07-28T11:57:53.017Z"
       }
     },
     "dataModel": {

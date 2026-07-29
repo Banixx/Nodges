@@ -213,6 +213,100 @@ async def process_insert(request: InsertRequest):
         "message": "Text received (Mock mode active)."
     }
 
+class DatabaseRequest(BaseModel):
+    name: str
+
+@app.get("/databases")
+@app.get("/databases/")
+def list_databases():
+    base_dir = os.path.abspath("./rag_storage")
+    db_dir = os.path.join(base_dir, "databases")
+    databases = [{"id": "default", "name": "Default (Hauptdatenbank)", "path": base_dir, "active": (WORKING_DIR == base_dir)}]
+    
+    if os.path.exists(db_dir):
+        for entry in os.listdir(db_dir):
+            full_path = os.path.join(db_dir, entry)
+            if os.path.isdir(full_path):
+                databases.append({
+                    "id": entry,
+                    "name": entry.replace("_", " ").title(),
+                    "path": full_path,
+                    "active": (WORKING_DIR == full_path)
+                })
+    return {"status": "success", "active_database": os.path.basename(WORKING_DIR), "databases": databases}
+
+@app.post("/databases/create")
+@app.post("/databases/create/")
+async def create_database(req: DatabaseRequest):
+    global WORKING_DIR, rag_instance
+    safe_name = "".join(c for c in req.name if c.isalnum() or c in ("_", "-")).strip()
+    if not safe_name:
+        raise HTTPException(status_code=400, detail="Ungueltiger Datenbank-Name")
+    
+    target_dir = os.path.abspath(os.path.join("./rag_storage/databases", safe_name))
+    if not os.path.exists(target_dir):
+        os.makedirs(target_dir, exist_ok=True)
+    
+    WORKING_DIR = target_dir
+    if LIGHTRAG_AVAILABLE:
+        try:
+            rag_instance = LightRAG(
+                working_dir=WORKING_DIR,
+                llm_model_func=custom_llm_model_func,
+                embedding_func=embedding_func
+            )
+            await rag_instance.initialize_storages()
+        except Exception as e:
+            print(f"[LightRAG] Re-init error on create: {e}")
+            
+    return {"status": "success", "message": f"Datenbank '{safe_name}' erstellt und aktiviert", "active_database": safe_name}
+
+@app.post("/databases/select")
+@app.post("/databases/select/")
+async def select_database(req: DatabaseRequest):
+    global WORKING_DIR, rag_instance
+    if req.name == "default":
+        target_dir = os.path.abspath("./rag_storage")
+    else:
+        target_dir = os.path.abspath(os.path.join("./rag_storage/databases", req.name))
+        
+    if not os.path.exists(target_dir):
+        raise HTTPException(status_code=404, detail=f"Datenbank '{req.name}' existiert nicht")
+        
+    WORKING_DIR = target_dir
+    if LIGHTRAG_AVAILABLE:
+        try:
+            rag_instance = LightRAG(
+                working_dir=WORKING_DIR,
+                llm_model_func=custom_llm_model_func,
+                embedding_func=embedding_func
+            )
+            await rag_instance.initialize_storages()
+        except Exception as e:
+            print(f"[LightRAG] Re-init error on select: {e}")
+            
+    return {"status": "success", "message": f"Datenbank '{req.name}' aktiviert", "active_database": req.name}
+
+@app.delete("/databases/{db_name}")
+@app.delete("/databases/{db_name}/")
+def delete_database(db_name: str):
+    import shutil
+    global WORKING_DIR
+    if db_name == "default":
+        raise HTTPException(status_code=400, detail="Die Hauptdatenbank kann nicht geloescht werden")
+        
+    target_dir = os.path.abspath(os.path.join("./rag_storage/databases", db_name))
+    if WORKING_DIR == target_dir:
+        raise HTTPException(status_code=400, detail="Die aktuell aktive Datenbank kann nicht geloescht werden")
+        
+    if os.path.exists(target_dir):
+        shutil.rmtree(target_dir)
+        return {"status": "success", "message": f"Datenbank '{db_name}' geloescht"}
+    else:
+        raise HTTPException(status_code=404, detail="Datenbank nicht gefunden")
+
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+
+

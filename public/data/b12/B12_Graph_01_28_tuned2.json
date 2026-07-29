@@ -1,10 +1,10 @@
 {
   "metadata": {
     "schemaVersion": "5.2",
-    "description": "LightRAG Query Result: politisches system der schweiz",
-    "nodgesVersion": "0.102.14",
+    "description": "Tuned 2: Normalisierte Kanten-Kategorien & Starke Gewichtung",
+    "nodgesVersion": "0.102.15",
     "build": "build12_lightrag",
-    "prompt": "politisches system der schweiz",
+    "prompt": "System der Schweizer Politik",
     "buildParameters": {
       "provider": "openrouter",
       "model": "morph/morph-v3-large",
@@ -16,13 +16,13 @@
       }
     },
     "generationDetails": {
-      "prompt": "politisches system der schweiz",
+      "prompt": "System der Schweizer Politik",
       "context": null,
       "provider": "openrouter",
       "model": "morph/morph-v3-large",
       "pipeline": "build12_lightrag",
-      "durationMs": 7501,
-      "timestamp": "2026-07-27T19:08:56.646Z"
+      "durationMs": 7667,
+      "timestamp": "2026-07-28T11:43:51.112Z"
     }
   },
   "dataModel": {
@@ -74,7 +74,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Parlament",
+        "groupId": "group_parlament"
       },
       {
         "id": "Ständerätin",
@@ -85,7 +87,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "person",
+        "groupId": "group_person"
       },
       {
         "id": "Kanton",
@@ -96,7 +100,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Nationalrat",
@@ -107,7 +113,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Parlament",
+        "groupId": "group_parlament"
       },
       {
         "id": "Vereinigte Bundesversammlung",
@@ -118,7 +126,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Parlament",
+        "groupId": "group_parlament"
       },
       {
         "id": "Bundesrat",
@@ -129,7 +139,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Bundesrat",
+        "groupId": "group_bundesrat"
       },
       {
         "id": "Bundespräsident",
@@ -140,7 +152,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-000<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "person",
+        "groupId": "group_person"
       },
       {
         "id": "Landsgemeinde",
@@ -151,7 +165,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "event",
+        "groupId": "group_event"
       },
       {
         "id": "Kantonsvertretung",
@@ -162,7 +178,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Instruktionsverbot",
@@ -173,7 +191,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Schweizerische Eidgenossenschaft",
@@ -184,7 +204,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Föderalismus",
@@ -195,7 +217,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Direkte Demokratie",
@@ -206,7 +230,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Volksrechte",
@@ -217,7 +243,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Gewaltenteilung",
@@ -228,7 +256,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Bundesversammlung",
@@ -239,7 +269,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "organization",
+        "groupId": "group_organization"
       },
       {
         "id": "Schweizer Regierung",
@@ -250,7 +282,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "organization",
+        "groupId": "group_organization"
       },
       {
         "id": "Staatliche Ebenen",
@@ -261,7 +295,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Bund",
@@ -272,7 +308,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Parlament",
@@ -283,7 +321,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Parlament",
+        "groupId": "group_parlament"
       },
       {
         "id": "schweizerische Bundesverfassung",
@@ -294,7 +334,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "content",
+        "groupId": "group_content"
       },
       {
         "id": "Kantone",
@@ -305,7 +347,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Bezirke",
@@ -316,7 +360,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "location",
+        "groupId": "group_location"
       },
       {
         "id": "Volksvertretung",
@@ -327,7 +373,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Interpellation",
@@ -338,7 +386,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Motion",
@@ -349,7 +399,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Postulat",
@@ -360,7 +412,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Subsidiarität",
@@ -371,7 +425,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Urnengang",
@@ -382,7 +438,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Schweizer Demokratie",
@@ -393,7 +451,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Bundesverfassung",
@@ -404,7 +464,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "content",
+        "groupId": "group_content"
       },
       {
         "id": "Volksinitiative",
@@ -415,7 +477,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "method",
+        "groupId": "group_method"
       },
       {
         "id": "Referendumsrecht",
@@ -426,7 +490,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "method",
+        "groupId": "group_method"
       },
       {
         "id": "Wahlrecht",
@@ -437,7 +503,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "method",
+        "groupId": "group_method"
       },
       {
         "id": "Stimmrecht",
@@ -448,7 +516,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "method",
+        "groupId": "group_method"
       },
       {
         "id": "Kantonale Rechte",
@@ -459,7 +529,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Gesetzesinitiative",
@@ -470,7 +542,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "method",
+        "groupId": "group_method"
       },
       {
         "id": "Finanzreferendum",
@@ -481,7 +555,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "method",
+        "groupId": "group_method"
       },
       {
         "id": "Stimmberechtigte",
@@ -492,7 +568,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "person",
+        "groupId": "group_person"
       },
       {
         "id": "Vizepräsident",
@@ -503,7 +581,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "person",
+        "groupId": "group_person"
       },
       {
         "id": "Bundeskanzlei",
@@ -514,7 +594,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "organization",
+        "groupId": "group_organization"
       },
       {
         "id": "Bundeskanzler",
@@ -525,7 +607,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "person",
+        "groupId": "group_person"
       },
       {
         "id": "Guy Parmelin",
@@ -536,7 +620,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002<SEP>doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784834653,
-        "truncate": ""
+        "truncate": "",
+        "group": "Bundesrat",
+        "groupId": "group_bundesrat"
       },
       {
         "id": "Ignazio Cassis",
@@ -547,7 +633,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002<SEP>doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784834653,
-        "truncate": ""
+        "truncate": "",
+        "group": "Bundesrat",
+        "groupId": "group_bundesrat"
       },
       {
         "id": "Karin Keller-Sutter",
@@ -558,7 +646,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002<SEP>doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784834653,
-        "truncate": ""
+        "truncate": "",
+        "group": "Bundesrat",
+        "groupId": "group_bundesrat"
       },
       {
         "id": "Albert Rösti",
@@ -569,7 +659,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Bundesrat",
+        "groupId": "group_bundesrat"
       },
       {
         "id": "Elisabeth Baume-Schneider",
@@ -580,7 +672,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002<SEP>doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784834653,
-        "truncate": ""
+        "truncate": "",
+        "group": "Bundesrat",
+        "groupId": "group_bundesrat"
       },
       {
         "id": "Beat Jans",
@@ -591,7 +685,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002<SEP>doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784834653,
-        "truncate": ""
+        "truncate": "",
+        "group": "Bundesrat",
+        "groupId": "group_bundesrat"
       },
       {
         "id": "Martin Pfister",
@@ -602,7 +698,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002<SEP>doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784834653,
-        "truncate": ""
+        "truncate": "",
+        "group": "Bundesrat",
+        "groupId": "group_bundesrat"
       },
       {
         "id": "Regierungsrat",
@@ -613,7 +711,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "organization",
+        "groupId": "group_organization"
       },
       {
         "id": "Staatsrat",
@@ -624,7 +724,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "organization",
+        "groupId": "group_organization"
       },
       {
         "id": "Standeskommission",
@@ -635,7 +737,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "organization",
+        "groupId": "group_organization"
       },
       {
         "id": "Primus inter Pares",
@@ -646,7 +750,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "person",
+        "groupId": "group_person"
       },
       {
         "id": "Gericht",
@@ -657,7 +763,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Obergericht",
@@ -668,7 +776,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Appellationsgericht",
@@ -679,7 +789,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Cour de justice",
@@ -690,7 +802,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "other",
+        "groupId": "group_other"
       },
       {
         "id": "Zwangsmassnahmengerichte",
@@ -701,7 +815,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Verwaltungsgericht",
@@ -712,7 +828,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Spezialverwaltungsgerichte",
@@ -723,7 +841,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Jugendgerichte",
@@ -734,7 +854,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Strafgericht",
@@ -745,7 +867,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Kassationsgericht",
@@ -756,7 +880,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Verfassungsgericht",
@@ -767,7 +893,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "direkte Demokratie",
@@ -778,7 +906,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "repräsentative Demokratie",
@@ -789,7 +919,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Kanton Zürich",
@@ -800,7 +932,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Freiburg",
@@ -811,7 +945,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Schaffhausen",
@@ -822,7 +958,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Solothurn",
@@ -833,7 +971,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Appenzell Innerrhoden",
@@ -844,7 +984,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Glarus",
@@ -855,7 +997,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Appenzell Ausserrhoden",
@@ -866,7 +1010,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Bern",
@@ -877,7 +1023,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Nidwalden",
@@ -888,7 +1036,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Basel-Landschaft",
@@ -899,7 +1049,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kantonsrat",
@@ -910,7 +1062,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "organization",
+        "groupId": "group_organization"
       },
       {
         "id": "Volksabstimmung",
@@ -921,7 +1075,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "event",
+        "groupId": "group_event"
       },
       {
         "id": "Einzelinitiative",
@@ -932,7 +1088,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "method",
+        "groupId": "group_method"
       },
       {
         "id": "Volksmotion",
@@ -943,7 +1101,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "method",
+        "groupId": "group_method"
       },
       {
         "id": "Volksdiskussion",
@@ -954,7 +1114,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "method",
+        "groupId": "group_method"
       },
       {
         "id": "konstruktives Referendum",
@@ -965,7 +1127,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "method",
+        "groupId": "group_method"
       },
       {
         "id": "Abstimmungen",
@@ -976,7 +1140,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "event",
+        "groupId": "group_event"
       },
       {
         "id": "Kantonsverfassungen",
@@ -987,7 +1153,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Wahlbeteiligung",
@@ -998,7 +1166,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "concept",
+        "groupId": "group_concept"
       },
       {
         "id": "Schweiz",
@@ -1009,7 +1179,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "location",
+        "groupId": "group_location"
       },
       {
         "id": "Lausanne",
@@ -1020,7 +1192,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "location",
+        "groupId": "group_location"
       },
       {
         "id": "Luzern",
@@ -1031,7 +1205,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "location",
+        "groupId": "group_location"
       },
       {
         "id": "Bellinzona",
@@ -1042,7 +1218,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "location",
+        "groupId": "group_location"
       },
       {
         "id": "St. Gallen",
@@ -1053,7 +1231,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "location",
+        "groupId": "group_location"
       },
       {
         "id": "Bern",
@@ -1064,7 +1244,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "location",
+        "groupId": "group_location"
       },
       {
         "id": "Zollikofen",
@@ -1075,7 +1257,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "location",
+        "groupId": "group_location"
       },
       {
         "id": "Kanton Luzern",
@@ -1086,7 +1270,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Tessin",
@@ -1097,7 +1283,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Waadt",
@@ -1108,7 +1296,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Basel-Stadt",
@@ -1119,7 +1309,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Uri",
@@ -1130,7 +1322,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Kanton Thurgau",
@@ -1141,7 +1335,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Eidgenössisches Versicherungsgericht",
@@ -1152,7 +1348,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Bundesgericht",
@@ -1163,7 +1361,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Bundesstrafgericht",
@@ -1174,7 +1374,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Bundesverwaltungsgericht",
@@ -1185,7 +1387,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Bundespatentgericht",
@@ -1196,7 +1400,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "Judikative",
+        "groupId": "group_judikative"
       },
       {
         "id": "Eidgenössische Schätzungskommission",
@@ -1207,7 +1413,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "organization",
+        "groupId": "group_organization"
       },
       {
         "id": "Regierender Landammann",
@@ -1218,7 +1426,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "other",
+        "groupId": "group_other"
       },
       {
         "id": "Schultheiss",
@@ -1229,7 +1439,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "other",
+        "groupId": "group_other"
       },
       {
         "id": "Regierungspräsident",
@@ -1240,7 +1452,9 @@
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799658,
-        "truncate": ""
+        "truncate": "",
+        "group": "other",
+        "groupId": "group_other"
       },
       {
         "id": "Kanton Baselland",
@@ -1251,7 +1465,9 @@
         "entity_type": "UNKNOWN",
         "file_path": "unknown_source",
         "created_at": 1784799659,
-        "truncate": ""
+        "truncate": "",
+        "group": "Kantone",
+        "groupId": "group_kantone"
       },
       {
         "id": "Appenzell Innerrhoden",
@@ -1262,7 +1478,9 @@
         "entity_type": "UNKNOWN",
         "file_path": "unknown_source",
         "created_at": 1784799659,
-        "truncate": ""
+        "truncate": "",
+        "group": "UNKNOWN",
+        "groupId": "group_UNKNOWN"
       },
       {
         "id": "Albert Roesti",
@@ -1273,7 +1491,9 @@
         "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784834653,
-        "truncate": ""
+        "truncate": "",
+        "group": "person",
+        "groupId": "group_person"
       },
       {
         "id": "Schweizerische Volkspartei",
@@ -1284,7 +1504,9 @@
         "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784834653,
-        "truncate": ""
+        "truncate": "",
+        "group": "organization",
+        "groupId": "group_organization"
       },
       {
         "id": "FDP.Die Liberalen",
@@ -1295,7 +1517,9 @@
         "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784834653,
-        "truncate": ""
+        "truncate": "",
+        "group": "organization",
+        "groupId": "group_organization"
       },
       {
         "id": "Die Mitte",
@@ -1306,7 +1530,9 @@
         "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784834653,
-        "truncate": ""
+        "truncate": "",
+        "group": "organization",
+        "groupId": "group_organization"
       },
       {
         "id": "Sozialdemokratische Partei der Schweiz",
@@ -1317,7 +1543,9 @@
         "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
         "file_path": "unknown_source",
         "created_at": 1784834653,
-        "truncate": ""
+        "truncate": "",
+        "group": "organization",
+        "groupId": "group_organization"
       }
     ],
     "relationships": [
@@ -1325,8 +1553,8 @@
         "id": "rel_lightrag_0_Nationalrat_Ständerat",
         "source": "Nationalrat",
         "target": "Ständerat",
-        "relation": "collaborate,convene,legislate",
-        "label": "collaborate,convene,legislate",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 2,
         "description": "The Nationalrat and Ständerat collaborate in the legislative process, convening separately for discussions and jointly in the Vereinigte Bundesversammlung.<SEP>Both the Ständerat and Nationalrat legislate together, treating constitutional amendments and laws that must be approved by both houses.",
         "keywords": "collaborate,convene,legislate",
@@ -1339,8 +1567,8 @@
         "id": "rel_lightrag_1_Kanton_Ständerat",
         "source": "Kanton",
         "target": "Ständerat",
-        "relation": "represent",
-        "label": "represent",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Ständerat represents the interests of the cantons in the Swiss Federal Assembly, although it does not have direct instructions from them.",
         "keywords": "represent",
@@ -1353,8 +1581,8 @@
         "id": "rel_lightrag_2_Kantonsvertretung_Ständerat",
         "source": "Kantonsvertretung",
         "target": "Ständerat",
-        "relation": "function",
-        "label": "function",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Ständerat functions under the concept of Kantonsvertretung, although it is stated that members are not legally obligated to represent their cantons or take instructions from them.",
         "keywords": "function",
@@ -1367,8 +1595,8 @@
         "id": "rel_lightrag_3_Instruktionsverbot_Ständerat",
         "source": "Instruktionsverbot",
         "target": "Ständerat",
-        "relation": "guided by",
-        "label": "guided by",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Ständerat operates under the principle of Instruktionsverbot, which ensures that its members maintain autonomy in decision-making, independent of external pressures.",
         "keywords": "guided by",
@@ -1381,8 +1609,8 @@
         "id": "rel_lightrag_4_Parlament_Ständerat",
         "source": "Parlament",
         "target": "Ständerat",
-        "relation": "is part of",
-        "label": "is part of",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Council of States also constitutes one of the two key chambers within the Swiss parliament.",
         "keywords": "is part of",
@@ -1395,9 +1623,9 @@
         "id": "rel_lightrag_5_Kanton_Landsgemeinde",
         "source": "Kanton",
         "target": "Landsgemeinde",
-        "relation": "govern",
-        "label": "govern",
-        "weight": 1,
+        "relation": "GOVERNANCE",
+        "label": "GOVERNANCE",
+        "weight": 2.5,
         "description": "In some cantons, governance is facilitated through the Landsgemeinde, which serves as the highest legislative body for direct public involvement.",
         "keywords": "govern",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
@@ -1409,9 +1637,9 @@
         "id": "rel_lightrag_6_Gericht_Kanton",
         "source": "Gericht",
         "target": "Kanton",
-        "relation": "consistsof,includes",
-        "label": "consistsof,includes",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Each Kanton includes various types of Gerichte, serving different legal functions.",
         "keywords": "consistsof,includes",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
@@ -1423,8 +1651,8 @@
         "id": "rel_lightrag_7_Kanton_Obergericht",
         "source": "Kanton",
         "target": "Obergericht",
-        "relation": "designates",
-        "label": "designates",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "In many Kantons, the second-instance court is designated as an Obergericht.",
         "keywords": "designates",
@@ -1437,8 +1665,8 @@
         "id": "rel_lightrag_8_Appellationsgericht_Kanton",
         "source": "Appellationsgericht",
         "target": "Kanton",
-        "relation": "designates",
-        "label": "designates",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "In the canton of Basel-Stadt, the second-instance court is designated as Appellationsgericht.",
         "keywords": "designates",
@@ -1451,8 +1679,8 @@
         "id": "rel_lightrag_9_Cour de justice_Kanton",
         "source": "Cour de justice",
         "target": "Kanton",
-        "relation": "designates",
-        "label": "designates",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "In the canton of Geneva, legal matters are managed by the Cour de justice.",
         "keywords": "designates",
@@ -1465,9 +1693,9 @@
         "id": "rel_lightrag_10_Kanton_Zwangsmassnahmengerichte",
         "source": "Kanton",
         "target": "Zwangsmassnahmengerichte",
-        "relation": "includes",
-        "label": "includes",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Each Kanton has Zwangsmassnahmengerichte responsible for coercive legal measures.",
         "keywords": "includes",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
@@ -1479,8 +1707,8 @@
         "id": "rel_lightrag_11_Kanton_Verwaltungsgericht",
         "source": "Kanton",
         "target": "Verwaltungsgericht",
-        "relation": "has",
-        "label": "has",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Larger Kantons have a self-organized Verwaltungsgericht for administrative jurisdiction.",
         "keywords": "has",
@@ -1493,9 +1721,9 @@
         "id": "rel_lightrag_12_Kanton_Spezialverwaltungsgerichte",
         "source": "Kanton",
         "target": "Spezialverwaltungsgerichte",
-        "relation": "includes",
-        "label": "includes",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Certain Kantons include spezialverwaltungsgerichte for specific administrative cases.",
         "keywords": "includes",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
@@ -1507,9 +1735,9 @@
         "id": "rel_lightrag_13_Jugendgerichte_Kanton",
         "source": "Jugendgerichte",
         "target": "Kanton",
-        "relation": "contains",
-        "label": "contains",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Several Kantons contain Jugendgerichte that deal with youth issues.",
         "keywords": "contains",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
@@ -1521,8 +1749,8 @@
         "id": "rel_lightrag_14_Kanton_Strafgericht",
         "source": "Kanton",
         "target": "Strafgericht",
-        "relation": "replaces",
-        "label": "replaces",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "In certain Kantons, the Strafgericht replaces the Bezirksgericht or Obergericht for serious criminal cases.",
         "keywords": "replaces",
@@ -1535,8 +1763,8 @@
         "id": "rel_lightrag_15_Kanton_Kassationsgericht",
         "source": "Kanton",
         "target": "Kassationsgericht",
-        "relation": "previously included",
-        "label": "previously included",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Some Kantons previously included a Kassationsgericht until 2011.",
         "keywords": "previously included",
@@ -1549,8 +1777,8 @@
         "id": "rel_lightrag_16_Kanton_Verfassungsgericht",
         "source": "Kanton",
         "target": "Verfassungsgericht",
-        "relation": "has",
-        "label": "has",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Kantons of Basel-Stadt, Geneva, and Jura have established a Verfassungsgericht for constitutional matters.",
         "keywords": "has",
@@ -1563,8 +1791,8 @@
         "id": "rel_lightrag_17_Nationalrat_Parlament",
         "source": "Nationalrat",
         "target": "Parlament",
-        "relation": "is part of",
-        "label": "is part of",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The National Council functions as one of the two chambers within the Swiss parliament structure.",
         "keywords": "is part of",
@@ -1577,8 +1805,8 @@
         "id": "rel_lightrag_18_Bundesrat_Vereinigte Bundesversammlung",
         "source": "Bundesrat",
         "target": "Vereinigte Bundesversammlung",
-        "relation": "elect",
-        "label": "elect",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Vereinigte Bundesversammlung is responsible for electing members of the Bundesrat, as well as the Bundespräsident and other federal officials.",
         "keywords": "elect",
@@ -1591,9 +1819,9 @@
         "id": "rel_lightrag_19_Bundespräsident_Bundesrat",
         "source": "Bundespräsident",
         "target": "Bundesrat",
-        "relation": "election,lead",
-        "label": "election,lead",
-        "weight": 2,
+        "relation": "GOVERNANCE",
+        "label": "GOVERNANCE",
+        "weight": 2.5,
         "description": "The Bundesrat collectively leads the Swiss executive government, while the Bundespräsident is elected from its members to preside among equals.<SEP>The Bundesrat elects one of its members to the position of Bundespräsident for a one-year term.",
         "keywords": "election,lead",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
@@ -1605,8 +1833,8 @@
         "id": "rel_lightrag_20_Bundesrat_Vizepräsident",
         "source": "Bundesrat",
         "target": "Vizepräsident",
-        "relation": "election",
-        "label": "election",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Bundesrat elects one of its members to the role of Vizepräsident for a one-year term, often following the term of the Bundespräsident.",
         "keywords": "election",
@@ -1619,8 +1847,8 @@
         "id": "rel_lightrag_21_Bundeskanzlei_Bundesrat",
         "source": "Bundeskanzlei",
         "target": "Bundesrat",
-        "relation": "responsibility",
-        "label": "responsibility",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Bundesrat is responsible for the functioning and decision-making processes in conjunction with the Bundeskanzlei.",
         "keywords": "responsibility",
@@ -1633,9 +1861,9 @@
         "id": "rel_lightrag_22_Bundesrat_Guy Parmelin",
         "source": "Bundesrat",
         "target": "Guy Parmelin",
-        "relation": "membership",
-        "label": "membership",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Guy Parmelin is a member of the Bundesrat representing the canton of Vaud and holds the position of Bundespräsident for 2026.",
         "keywords": "membership",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
@@ -1647,9 +1875,9 @@
         "id": "rel_lightrag_23_Bundesrat_Ignazio Cassis",
         "source": "Bundesrat",
         "target": "Ignazio Cassis",
-        "relation": "membership",
-        "label": "membership",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Ignazio Cassis is a member of the Bundesrat representing the canton of Ticino and serves as the Vizepräsident for 2026.",
         "keywords": "membership",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
@@ -1661,9 +1889,9 @@
         "id": "rel_lightrag_24_Bundesrat_Karin Keller-Sutter",
         "source": "Bundesrat",
         "target": "Karin Keller-Sutter",
-        "relation": "membership",
-        "label": "membership",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Karin Keller-Sutter is a member of the Bundesrat representing the canton of St. Gallen.",
         "keywords": "membership",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
@@ -1675,9 +1903,9 @@
         "id": "rel_lightrag_25_Albert Rösti_Bundesrat",
         "source": "Albert Rösti",
         "target": "Bundesrat",
-        "relation": "membership",
-        "label": "membership",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Albert Rösti is a member of the Bundesrat representing the canton of Bern.",
         "keywords": "membership",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
@@ -1689,9 +1917,9 @@
         "id": "rel_lightrag_26_Bundesrat_Elisabeth Baume-Schneider",
         "source": "Bundesrat",
         "target": "Elisabeth Baume-Schneider",
-        "relation": "membership",
-        "label": "membership",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Elisabeth Baume-Schneider is a member of the Bundesrat representing the canton of Jura.",
         "keywords": "membership",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
@@ -1703,9 +1931,9 @@
         "id": "rel_lightrag_27_Beat Jans_Bundesrat",
         "source": "Beat Jans",
         "target": "Bundesrat",
-        "relation": "membership",
-        "label": "membership",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Beat Jans is a member of the Bundesrat representing the canton of Basel-Stadt.",
         "keywords": "membership",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
@@ -1717,9 +1945,9 @@
         "id": "rel_lightrag_28_Bundesrat_Martin Pfister",
         "source": "Bundesrat",
         "target": "Martin Pfister",
-        "relation": "membership",
-        "label": "membership",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Martin Pfister is a member of the Bundesrat representing the canton of Zug.",
         "keywords": "membership",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
@@ -1731,8 +1959,8 @@
         "id": "rel_lightrag_29_Bundesrat_Regierungsrat",
         "source": "Bundesrat",
         "target": "Regierungsrat",
-        "relation": "similarity",
-        "label": "similarity",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Bundesrat functions similarly to the Regierungsrat at the federal level in Switzerland.",
         "keywords": "similarity",
@@ -1745,8 +1973,8 @@
         "id": "rel_lightrag_30_Bundesrat_Staatsrat",
         "source": "Bundesrat",
         "target": "Staatsrat",
-        "relation": "similarity",
-        "label": "similarity",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Bundesrat functions similarly to the Staatsrat at the cantonal level in Switzerland.",
         "keywords": "similarity",
@@ -1759,8 +1987,8 @@
         "id": "rel_lightrag_31_Bundesrat_Standeskommission",
         "source": "Bundesrat",
         "target": "Standeskommission",
-        "relation": "similarity",
-        "label": "similarity",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Bundesrat functions similarly to the Standeskommission in Appenzell Innerrhoden at the cantonal level.",
         "keywords": "similarity",
@@ -1773,9 +2001,9 @@
         "id": "rel_lightrag_32_Bundesrat_Schweizerische Eidgenossenschaft",
         "source": "Bundesrat",
         "target": "Schweizerische Eidgenossenschaft",
-        "relation": "governs",
-        "label": "governs",
-        "weight": 1,
+        "relation": "GOVERNANCE",
+        "label": "GOVERNANCE",
+        "weight": 2.5,
         "description": "The Bundesrat acts as the executive governing body of the Schweizerische Eidgenossenschaft, overseeing national matters.",
         "keywords": "governs",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
@@ -1787,8 +2015,8 @@
         "id": "rel_lightrag_33_Bundespräsident_Schweizer Regierung",
         "source": "Bundespräsident",
         "target": "Schweizer Regierung",
-        "relation": "represents",
-        "label": "represents",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The President of the Swiss Confederation represents the Swiss government in official matters.",
         "keywords": "represents",
@@ -1801,8 +2029,8 @@
         "id": "rel_lightrag_34_Kantonsvertretung_Volksvertretung",
         "source": "Kantonsvertretung",
         "target": "Volksvertretung",
-        "relation": "distinguishes",
-        "label": "distinguishes",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Distinguishes the representation of the general populace in the National Council from that of cantons in the Council of States.",
         "keywords": "distinguishes",
@@ -1815,8 +2043,8 @@
         "id": "rel_lightrag_35_Föderalismus_Schweizerische Eidgenossenschaft",
         "source": "Föderalismus",
         "target": "Schweizerische Eidgenossenschaft",
-        "relation": "characterizes",
-        "label": "characterizes",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Describes the federal structure and autonomy of cantons within the Swiss Confederation.",
         "keywords": "characterizes",
@@ -1829,8 +2057,8 @@
         "id": "rel_lightrag_36_Direkte Demokratie_Föderalismus",
         "source": "Direkte Demokratie",
         "target": "Föderalismus",
-        "relation": "enables",
-        "label": "enables",
+        "relation": "AUTHORIZATION",
+        "label": "AUTHORIZATION",
         "weight": 1,
         "description": "Enables direct involvement of citizens in government through democratic mechanisms within the framework of federalism.",
         "keywords": "enables",
@@ -1843,8 +2071,8 @@
         "id": "rel_lightrag_37_Bundesverfassung_Föderalismus",
         "source": "Bundesverfassung",
         "target": "Föderalismus",
-        "relation": "describes",
-        "label": "describes",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Bundesverfassung describes the principles of Föderalismus in Switzerland.",
         "keywords": "describes",
@@ -1857,8 +2085,8 @@
         "id": "rel_lightrag_38_Direkte Demokratie_Volksrechte",
         "source": "Direkte Demokratie",
         "target": "Volksrechte",
-        "relation": "rooted in",
-        "label": "rooted in",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Correlates the implementation of citizen rights with direct democratic practices.",
         "keywords": "rooted in",
@@ -1871,8 +2099,8 @@
         "id": "rel_lightrag_39_Direkte Demokratie_Urnengang",
         "source": "Direkte Demokratie",
         "target": "Urnengang",
-        "relation": "integral to",
-        "label": "integral to",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The voting process is integral to the functioning of direct democracy in Switzerland.",
         "keywords": "integral to",
@@ -1885,8 +2113,8 @@
         "id": "rel_lightrag_40_Gewaltenteilung_Volksrechte",
         "source": "Gewaltenteilung",
         "target": "Volksrechte",
-        "relation": "ensures",
-        "label": "ensures",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Ensures the respect for citizen rights through independent government structures as defined by the principle of separation of powers.",
         "keywords": "ensures",
@@ -1899,9 +2127,9 @@
         "id": "rel_lightrag_41_Schweizer Demokratie_Volksrechte",
         "source": "Schweizer Demokratie",
         "target": "Volksrechte",
-        "relation": "influences,involves",
-        "label": "influences,involves",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "The Swiss democracy involves the Volksrechte, empowering citizens to actively participate in the political process.",
         "keywords": "influences,involves",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
@@ -1913,8 +2141,8 @@
         "id": "rel_lightrag_42_Bundesverfassung_Volksrechte",
         "source": "Bundesverfassung",
         "target": "Volksrechte",
-        "relation": "impacts,requires",
-        "label": "impacts,requires",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Volksrechte require a popular vote for amendments to the Bundesverfassung, thus impacting its content and structure.",
         "keywords": "impacts,requires",
@@ -1927,8 +2155,8 @@
         "id": "rel_lightrag_43_Referendumsrecht_Volksrechte",
         "source": "Referendumsrecht",
         "target": "Volksrechte",
-        "relation": "allows,empowers",
-        "label": "allows,empowers",
+        "relation": "AUTHORIZATION",
+        "label": "AUTHORIZATION",
         "weight": 1,
         "description": "The Referendumsrecht empowers the Volksrechte by allowing the electorate to challenge and confirm parliamentary decisions.",
         "keywords": "allows,empowers",
@@ -1941,8 +2169,8 @@
         "id": "rel_lightrag_44_Volksrechte_Wahlrecht",
         "source": "Volksrechte",
         "target": "Wahlrecht",
-        "relation": "enables,grants",
-        "label": "enables,grants",
+        "relation": "AUTHORIZATION",
+        "label": "AUTHORIZATION",
         "weight": 1,
         "description": "The Wahlrecht grants citizens the right to vote, enabling them to exercise their Volksrechte in elections.",
         "keywords": "enables,grants",
@@ -1955,8 +2183,8 @@
         "id": "rel_lightrag_45_Stimmrecht_Volksrechte",
         "source": "Stimmrecht",
         "target": "Volksrechte",
-        "relation": "affords,allows",
-        "label": "affords,allows",
+        "relation": "AUTHORIZATION",
+        "label": "AUTHORIZATION",
         "weight": 1,
         "description": "The Stimmrecht affords the electorate the opportunity to influence government proposals, thus allowing the exercise of Volksrechte.",
         "keywords": "affords,allows",
@@ -1969,8 +2197,8 @@
         "id": "rel_lightrag_46_Kantonale Rechte_Volksrechte",
         "source": "Kantonale Rechte",
         "target": "Volksrechte",
-        "relation": "enhance,extend",
-        "label": "enhance,extend",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The kantonale Rechte extend the Volksrechte, providing more comprehensive forms of participatory governance at the cantonal level.",
         "keywords": "enhance,extend",
@@ -1983,8 +2211,8 @@
         "id": "rel_lightrag_47_Gesetzesinitiative_Volksrechte",
         "source": "Gesetzesinitiative",
         "target": "Volksrechte",
-        "relation": "enables,proposes",
-        "label": "enables,proposes",
+        "relation": "AUTHORIZATION",
+        "label": "AUTHORIZATION",
         "weight": 1,
         "description": "The Gesetzesinitiative enables citizens to propose legislative changes as an expression of the Volksrechte.",
         "keywords": "enables,proposes",
@@ -1997,9 +2225,9 @@
         "id": "rel_lightrag_48_Finanzreferendum_Volksrechte",
         "source": "Finanzreferendum",
         "target": "Volksrechte",
-        "relation": "determines,governs",
-        "label": "determines,governs",
-        "weight": 1,
+        "relation": "GOVERNANCE",
+        "label": "GOVERNANCE",
+        "weight": 2.5,
         "description": "The Finanzreferendum governs financial expenditures, determining the Volksrechte citizen participation in fiscal matters.",
         "keywords": "determines,governs",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
@@ -2011,8 +2239,8 @@
         "id": "rel_lightrag_49_Stimmberechtigte_Volksrechte",
         "source": "Stimmberechtigte",
         "target": "Volksrechte",
-        "relation": "empowered by,include",
-        "label": "empowered by,include",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Stimmberechtigte are empowered by the Volksrechte, which encompass the rights to vote and participate in the democratic process.",
         "keywords": "empowered by,include",
@@ -2025,8 +2253,8 @@
         "id": "rel_lightrag_50_Gewaltenteilung_Subsidiarität",
         "source": "Gewaltenteilung",
         "target": "Subsidiarität",
-        "relation": "interrelates with",
-        "label": "interrelates with",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The principle of subsidiarity interacts with the separation of powers in organizing governance decisions at appropriate levels.",
         "keywords": "interrelates with",
@@ -2039,8 +2267,8 @@
         "id": "rel_lightrag_51_Bundesversammlung_Schweizer Regierung",
         "source": "Bundesversammlung",
         "target": "Schweizer Regierung",
-        "relation": "comprises",
-        "label": "comprises",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Swiss Federal Assembly comprises the Swiss government as part of its structure.",
         "keywords": "comprises",
@@ -2053,9 +2281,9 @@
         "id": "rel_lightrag_52_Bund_Parlament",
         "source": "Bund",
         "target": "Parlament",
-        "relation": "includes",
-        "label": "includes",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "The Federation encompasses the structure and function of the parliament in the Swiss political system.",
         "keywords": "includes",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
@@ -2067,8 +2295,8 @@
         "id": "rel_lightrag_53_Kantone_schweizerische Bundesverfassung",
         "source": "Kantone",
         "target": "schweizerische Bundesverfassung",
-        "relation": "framework for",
-        "label": "framework for",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Swiss Federal Constitution provides the legal structure for the autonomy and governance of the cantons.",
         "keywords": "framework for",
@@ -2081,9 +2309,9 @@
         "id": "rel_lightrag_54_Bezirke_Kantone",
         "source": "Bezirke",
         "target": "Kantone",
-        "relation": "includes",
-        "label": "includes",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "The cantons include districts as part of their administrative organization, though districts lack political autonomy.",
         "keywords": "includes",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
@@ -2095,8 +2323,8 @@
         "id": "rel_lightrag_55_Interpellation_Volksvertretung",
         "source": "Interpellation",
         "target": "Volksvertretung",
-        "relation": "utilizes",
-        "label": "utilizes",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The parliamentary procedure of interpellation is used by the popular representation to question the government.",
         "keywords": "utilizes",
@@ -2109,8 +2337,8 @@
         "id": "rel_lightrag_56_Motion_Volksvertretung",
         "source": "Motion",
         "target": "Volksvertretung",
-        "relation": "adopted by",
-        "label": "adopted by",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Motions are adopted by the popular representation to direct actions from the government.",
         "keywords": "adopted by",
@@ -2123,8 +2351,8 @@
         "id": "rel_lightrag_57_Postulat_Volksvertretung",
         "source": "Postulat",
         "target": "Volksvertretung",
-        "relation": "used for",
-        "label": "used for",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Postulates are used by the popular representation to request government investigations on specific issues.",
         "keywords": "used for",
@@ -2137,8 +2365,8 @@
         "id": "rel_lightrag_58_Bundesverfassung_Volksinitiative",
         "source": "Bundesverfassung",
         "target": "Volksinitiative",
-        "relation": "changes,proposes",
-        "label": "changes,proposes",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Volksinitiative allows citizens to propose changes to the Bundesverfassung, linking citizen initiatives to constitutional alterations.",
         "keywords": "changes,proposes",
@@ -2151,8 +2379,8 @@
         "id": "rel_lightrag_59_Kantonsverfassungen_Volksinitiative",
         "source": "Kantonsverfassungen",
         "target": "Volksinitiative",
-        "relation": "established by",
-        "label": "established by",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The process of Volksinitiative is established in the Kantonsverfassungen, allowing citizens to propose constitutional and legal changes.",
         "keywords": "established by",
@@ -2165,8 +2393,8 @@
         "id": "rel_lightrag_60_Finanzreferendum_Kantonsverfassungen",
         "source": "Finanzreferendum",
         "target": "Kantonsverfassungen",
-        "relation": "defined by",
-        "label": "defined by",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Finanzreferendum is defined and regulated by the Kantonsverfassungen in Swiss cantons.",
         "keywords": "defined by",
@@ -2179,9 +2407,9 @@
         "id": "rel_lightrag_61_Bundeskanzlei_Bundeskanzler",
         "source": "Bundeskanzlei",
         "target": "Bundeskanzler",
-        "relation": "lead",
-        "label": "lead",
-        "weight": 1,
+        "relation": "GOVERNANCE",
+        "label": "GOVERNANCE",
+        "weight": 2.5,
         "description": "The Bundeskanzler leads the Bundeskanzlei, overseeing its functions in the coordination among various government entities.",
         "keywords": "lead",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
@@ -2193,8 +2421,8 @@
         "id": "rel_lightrag_62_Guy Parmelin_Ignazio Cassis",
         "source": "Guy Parmelin",
         "target": "Ignazio Cassis",
-        "relation": "role",
-        "label": "role",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Guy Parmelin serves as the Federal President while Ignazio Cassis serves as the Vice President in 2026.",
         "keywords": "role",
@@ -2207,9 +2435,9 @@
         "id": "rel_lightrag_63_Albert Roesti_Guy Parmelin",
         "source": "Albert Roesti",
         "target": "Guy Parmelin",
-        "relation": "member",
-        "label": "member",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Albert Roesti and Guy Parmelin are both members of the Swiss Federal Council representing the Swiss People's Party (SVP).",
         "keywords": "member",
         "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
@@ -2221,8 +2449,8 @@
         "id": "rel_lightrag_64_Guy Parmelin_Schweizerische Volkspartei",
         "source": "Guy Parmelin",
         "target": "Schweizerische Volkspartei",
-        "relation": "affiliation",
-        "label": "affiliation",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Guy Parmelin is affiliated with the Swiss People's Party (SVP).",
         "keywords": "affiliation",
@@ -2235,8 +2463,8 @@
         "id": "rel_lightrag_65_FDP.Die Liberalen_Ignazio Cassis",
         "source": "FDP.Die Liberalen",
         "target": "Ignazio Cassis",
-        "relation": "affiliation",
-        "label": "affiliation",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Ignazio Cassis is affiliated with the FDP.Die Liberalen.",
         "keywords": "affiliation",
@@ -2249,9 +2477,9 @@
         "id": "rel_lightrag_66_Karin Keller-Sutter_Martin Pfister",
         "source": "Karin Keller-Sutter",
         "target": "Martin Pfister",
-        "relation": "member",
-        "label": "member",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Both Karin Keller-Sutter and Martin Pfister serve as members of the Swiss Federal Council.",
         "keywords": "member",
         "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
@@ -2263,9 +2491,9 @@
         "id": "rel_lightrag_67_Elisabeth Baume-Schneider_Karin Keller-Sutter",
         "source": "Elisabeth Baume-Schneider",
         "target": "Karin Keller-Sutter",
-        "relation": "member",
-        "label": "member",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Both Elisabeth Baume-Schneider and Karin Keller-Sutter are members of the Swiss Federal Council affiliated with different parties.",
         "keywords": "member",
         "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
@@ -2277,8 +2505,8 @@
         "id": "rel_lightrag_68_FDP.Die Liberalen_Karin Keller-Sutter",
         "source": "FDP.Die Liberalen",
         "target": "Karin Keller-Sutter",
-        "relation": "affiliation",
-        "label": "affiliation",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Karin Keller-Sutter is affiliated with the FDP.Die Liberalen.",
         "keywords": "affiliation",
@@ -2291,9 +2519,9 @@
         "id": "rel_lightrag_69_Beat Jans_Elisabeth Baume-Schneider",
         "source": "Beat Jans",
         "target": "Elisabeth Baume-Schneider",
-        "relation": "member",
-        "label": "member",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "Elisabeth Baume-Schneider and Beat Jans are also members of the Swiss Federal Council representing respective parties.",
         "keywords": "member",
         "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
@@ -2305,8 +2533,8 @@
         "id": "rel_lightrag_70_Elisabeth Baume-Schneider_Sozialdemokratische Partei der Schweiz",
         "source": "Elisabeth Baume-Schneider",
         "target": "Sozialdemokratische Partei der Schweiz",
-        "relation": "affiliation",
-        "label": "affiliation",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Elisabeth Baume-Schneider is affiliated with the Social Democratic Party (SP).",
         "keywords": "affiliation",
@@ -2319,8 +2547,8 @@
         "id": "rel_lightrag_71_Beat Jans_Sozialdemokratische Partei der Schweiz",
         "source": "Beat Jans",
         "target": "Sozialdemokratische Partei der Schweiz",
-        "relation": "affiliation",
-        "label": "affiliation",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Beat Jans is affiliated with the Social Democratic Party (SP).",
         "keywords": "affiliation",
@@ -2333,8 +2561,8 @@
         "id": "rel_lightrag_72_Die Mitte_Martin Pfister",
         "source": "Die Mitte",
         "target": "Martin Pfister",
-        "relation": "affiliation",
-        "label": "affiliation",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Martin Pfister is affiliated with the Die Mitte party.",
         "keywords": "affiliation",
@@ -2347,9 +2575,9 @@
         "id": "rel_lightrag_73_Primus inter Pares_Regierungsrat",
         "source": "Primus inter Pares",
         "target": "Regierungsrat",
-        "relation": "leadership",
-        "label": "leadership",
-        "weight": 1,
+        "relation": "GOVERNANCE",
+        "label": "GOVERNANCE",
+        "weight": 2.5,
         "description": "The Primus inter Pares leads the meetings of the Regierungsrat without being the head of the government.",
         "keywords": "leadership",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
@@ -2361,9 +2589,9 @@
         "id": "rel_lightrag_74_direkte Demokratie_repräsentative Demokratie",
         "source": "direkte Demokratie",
         "target": "repräsentative Demokratie",
-        "relation": "includes,incorporates",
-        "label": "includes,incorporates",
-        "weight": 1,
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
         "description": "The system of repräsentative Demokratie includes directly democratic elements.",
         "keywords": "includes,incorporates",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
@@ -2375,9 +2603,9 @@
         "id": "rel_lightrag_75_Kanton Zürich_Kantonsrat",
         "source": "Kanton Zürich",
         "target": "Kantonsrat",
-        "relation": "supports,uses",
-        "label": "supports,uses",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "The Kanton Zürich enables its citizens to engage with the Kantonsrat through the Einzelinitiative.",
         "keywords": "supports,uses",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
@@ -2389,9 +2617,9 @@
         "id": "rel_lightrag_76_Kanton Zürich_Volksabstimmung",
         "source": "Kanton Zürich",
         "target": "Volksabstimmung",
-        "relation": "uses",
-        "label": "uses",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "Kanton Zürich conducts Volksabstimmungen to determine public opinion on various legislative issues.",
         "keywords": "uses",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
@@ -2403,9 +2631,9 @@
         "id": "rel_lightrag_77_Kanton Freiburg_Kantonsrat",
         "source": "Kanton Freiburg",
         "target": "Kantonsrat",
-        "relation": "historical connection,influence",
-        "label": "historical connection,influence",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "The Kanton Freiburg historically had a representative-democratic government that influenced the current structures of the Kantonsrat.",
         "keywords": "historical connection,influence",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
@@ -2417,9 +2645,9 @@
         "id": "rel_lightrag_78_Kanton Freiburg_Kanton Waadt",
         "source": "Kanton Freiburg",
         "target": "Kanton Waadt",
-        "relation": "neighboring",
-        "label": "neighboring",
-        "weight": 1,
+        "relation": "GEOGRAPHY",
+        "label": "GEOGRAPHY",
+        "weight": 1.5,
         "description": "The Canton of Freiburg is neighboring the Canton of Vaud.",
         "keywords": "neighboring",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
@@ -2431,9 +2659,9 @@
         "id": "rel_lightrag_79_Kanton Schaffhausen_Kantonsrat",
         "source": "Kanton Schaffhausen",
         "target": "Kantonsrat",
-        "relation": "supports,uses",
-        "label": "supports,uses",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "The Kanton Schaffhausen allows the submission of motions via Volksmotion to the Kantonsrat.",
         "keywords": "supports,uses",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
@@ -2445,9 +2673,9 @@
         "id": "rel_lightrag_80_Kanton Solothurn_Kantonsrat",
         "source": "Kanton Solothurn",
         "target": "Kantonsrat",
-        "relation": "supports,uses",
-        "label": "supports,uses",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "Kanton Solothurn recognizes Volksmotion, allowing citizens to submit motions to the Kantonsrat.",
         "keywords": "supports,uses",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
@@ -2459,9 +2687,9 @@
         "id": "rel_lightrag_81_Kanton Appenzell Innerrhoden_Kantonsrat",
         "source": "Kanton Appenzell Innerrhoden",
         "target": "Kantonsrat",
-        "relation": "supports,uses",
-        "label": "supports,uses",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "Kanton Appenzell Innerrhoden uses the Einzelinitiative for legislative proposals presented to the Kantonsrat.",
         "keywords": "supports,uses",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
@@ -2473,9 +2701,9 @@
         "id": "rel_lightrag_82_Kanton Glarus_Kantonsrat",
         "source": "Kanton Glarus",
         "target": "Kantonsrat",
-        "relation": "supports,uses",
-        "label": "supports,uses",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "Kanton Glarus implements the Einzelinitiative, allowing citizens to impact decisions made in the Kantonsrat.",
         "keywords": "supports,uses",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
@@ -2487,9 +2715,9 @@
         "id": "rel_lightrag_83_Kanton Appenzell Ausserrhoden_Kantonsrat",
         "source": "Kanton Appenzell Ausserrhoden",
         "target": "Kantonsrat",
-        "relation": "supports,uses",
-        "label": "supports,uses",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "Kanton Appenzell Ausserrhoden allows residents to address the Kantonsrat through Volksdiskussion.",
         "keywords": "supports,uses",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
@@ -2501,9 +2729,9 @@
         "id": "rel_lightrag_84_Kanton Bern_Kantonsrat",
         "source": "Kanton Bern",
         "target": "Kantonsrat",
-        "relation": "supports,uses",
-        "label": "supports,uses",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "Kanton Bern employs the constructive referendum to influence legislative outcomes in the Kantonsrat.",
         "keywords": "supports,uses",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
@@ -2515,9 +2743,9 @@
         "id": "rel_lightrag_85_Kanton Bern_Kanton Luzern",
         "source": "Kanton Bern",
         "target": "Kanton Luzern",
-        "relation": "neighboring",
-        "label": "neighboring",
-        "weight": 1,
+        "relation": "GEOGRAPHY",
+        "label": "GEOGRAPHY",
+        "weight": 1.5,
         "description": "The canton of Lucerne is neighboring the canton of Bern.",
         "keywords": "neighboring",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
@@ -2529,9 +2757,9 @@
         "id": "rel_lightrag_86_Kanton Nidwalden_Kantonsrat",
         "source": "Kanton Nidwalden",
         "target": "Kantonsrat",
-        "relation": "supports,uses",
-        "label": "supports,uses",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "Kanton Nidwalden uses the constructive referendum mechanism similar to Kanton Bern for legislative proposals.",
         "keywords": "supports,uses",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
@@ -2543,9 +2771,9 @@
         "id": "rel_lightrag_87_Kanton Basel-Landschaft_Kantonsrat",
         "source": "Kanton Basel-Landschaft",
         "target": "Kantonsrat",
-        "relation": "supports,uses",
-        "label": "supports,uses",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "Kanton Basel-Landschaft implements a mixed referendum approach for laws addressed in the Kantonsrat.",
         "keywords": "supports,uses",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
@@ -2557,9 +2785,9 @@
         "id": "rel_lightrag_88_Kantonsrat_Volksabstimmung",
         "source": "Kantonsrat",
         "target": "Volksabstimmung",
-        "relation": "influences",
-        "label": "influences",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "The Volksabstimmung process influences decisions made by the Kantonsrat in various cantons.",
         "keywords": "influences",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
@@ -2571,8 +2799,8 @@
         "id": "rel_lightrag_89_Kantonsrat_Volksmotion",
         "source": "Kantonsrat",
         "target": "Volksmotion",
-        "relation": "triggers",
-        "label": "triggers",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Volksmotion can lead to actions or decisions taken by the Kantonsrat regarding legislative matters.",
         "keywords": "triggers",
@@ -2585,9 +2813,9 @@
         "id": "rel_lightrag_90_Kantonsrat_Volksdiskussion",
         "source": "Kantonsrat",
         "target": "Volksdiskussion",
-        "relation": "influences",
-        "label": "influences",
-        "weight": 1,
+        "relation": "REPRESENTATION",
+        "label": "REPRESENTATION",
+        "weight": 2,
         "description": "The Volksdiskussion allows residents to influence the Kantonsrat through their opinions and discussions.",
         "keywords": "influences",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
@@ -2599,8 +2827,8 @@
         "id": "rel_lightrag_91_Kantonsrat_konstruktives Referendum",
         "source": "Kantonsrat",
         "target": "konstruktives Referendum",
-        "relation": "invokes",
-        "label": "invokes",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The konstruktives Referendum can invoke alternate proposals to be considered by the Kantonsrat.",
         "keywords": "invokes",
@@ -2613,8 +2841,8 @@
         "id": "rel_lightrag_92_Einzelinitiative_Volksabstimmung",
         "source": "Einzelinitiative",
         "target": "Volksabstimmung",
-        "relation": "triggers",
-        "label": "triggers",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Einzelinitiative can trigger a Volksabstimmung if it receives enough support within the Kantonsrat.",
         "keywords": "triggers",
@@ -2627,8 +2855,8 @@
         "id": "rel_lightrag_93_Abstimmungen_Volksabstimmung",
         "source": "Abstimmungen",
         "target": "Volksabstimmung",
-        "relation": "similar concept",
-        "label": "similar concept",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Abstimmungen are similar to Volksabstimmung as both involve public voting on matters of legislation.",
         "keywords": "similar concept",
@@ -2641,8 +2869,8 @@
         "id": "rel_lightrag_94_Abstimmungen_Wahlbeteiligung",
         "source": "Abstimmungen",
         "target": "Wahlbeteiligung",
-        "relation": "related to",
-        "label": "related to",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "Wahlbeteiligung is directly related to Abstimmungen as it measures voter participation in these voting events.",
         "keywords": "related to",
@@ -2655,8 +2883,8 @@
         "id": "rel_lightrag_95_Bundesgericht_Lausanne",
         "source": "Bundesgericht",
         "target": "Lausanne",
-        "relation": "located_in",
-        "label": "located_in",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Federal Court of Switzerland is located in the city of Lausanne.",
         "keywords": "located_in",
@@ -2669,8 +2897,8 @@
         "id": "rel_lightrag_96_Bellinzona_Bundesstrafgericht",
         "source": "Bellinzona",
         "target": "Bundesstrafgericht",
-        "relation": "located_in",
-        "label": "located_in",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Federal Criminal Court of Switzerland is located in the city of Bellinzona.",
         "keywords": "located_in",
@@ -2683,8 +2911,8 @@
         "id": "rel_lightrag_97_Bundesverwaltungsgericht_St. Gallen",
         "source": "Bundesverwaltungsgericht",
         "target": "St. Gallen",
-        "relation": "located_in",
-        "label": "located_in",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The Federal Administrative Court of Switzerland is located in the city of St. Gallen.",
         "keywords": "located_in",
@@ -2697,9 +2925,9 @@
         "id": "rel_lightrag_98_Kanton Luzern_Schultheiss",
         "source": "Kanton Luzern",
         "target": "Schultheiss",
-        "relation": "leads",
-        "label": "leads",
-        "weight": 1,
+        "relation": "GOVERNANCE",
+        "label": "GOVERNANCE",
+        "weight": 2.5,
         "description": "The Schultheiss leads the governmental operations in the Canton of Lucerne until 2007.",
         "keywords": "leads",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
@@ -2711,9 +2939,9 @@
         "id": "rel_lightrag_99_Kanton Tessin_Kanton Waadt",
         "source": "Kanton Tessin",
         "target": "Kanton Waadt",
-        "relation": "neighboring",
-        "label": "neighboring",
-        "weight": 1,
+        "relation": "GEOGRAPHY",
+        "label": "GEOGRAPHY",
+        "weight": 1.5,
         "description": "The canton of Ticino is neighboring the canton of Vaud.",
         "keywords": "neighboring",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
@@ -2725,9 +2953,9 @@
         "id": "rel_lightrag_100_Kanton Basel-Stadt_Kanton Baselland",
         "source": "Kanton Basel-Stadt",
         "target": "Kanton Baselland",
-        "relation": "neighboring",
-        "label": "neighboring",
-        "weight": 1,
+        "relation": "GEOGRAPHY",
+        "label": "GEOGRAPHY",
+        "weight": 1.5,
         "description": "The canton of Baselland is neighboring the canton of Basel-Stadt.",
         "keywords": "neighboring",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
@@ -2739,8 +2967,8 @@
         "id": "rel_lightrag_101_Bundesgericht_Eidgenössisches Versicherungsgericht",
         "source": "Bundesgericht",
         "target": "Eidgenössisches Versicherungsgericht",
-        "relation": "integrated_into",
-        "label": "integrated_into",
+        "relation": "RELATION",
+        "label": "RELATION",
         "weight": 1,
         "description": "The former Federal Insurance Court was integrated into the Federal Court in Lausanne.",
         "keywords": "integrated_into",
@@ -2753,9 +2981,9 @@
         "id": "rel_lightrag_102_Appenzell Innerrhoden_Regierender Landammann",
         "source": "Appenzell Innerrhoden",
         "target": "Regierender Landammann",
-        "relation": "governs",
-        "label": "governs",
-        "weight": 1,
+        "relation": "GOVERNANCE",
+        "label": "GOVERNANCE",
+        "weight": 2.5,
         "description": "The Regierender Landammann governs the Canton of Appenzell Innerrhoden.",
         "keywords": "governs",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
@@ -2767,15 +2995,168 @@
         "id": "rel_lightrag_103_Regierender Landammann_Regierungspräsident",
         "source": "Regierender Landammann",
         "target": "Regierungspräsident",
-        "relation": "presides",
-        "label": "presides",
-        "weight": 1,
+        "relation": "GOVERNANCE",
+        "label": "GOVERNANCE",
+        "weight": 2.5,
         "description": "The Regierungspräsident presides over the cantonal government in a rotating role.",
         "keywords": "presides",
         "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
         "file_path": "unknown_source",
         "created_at": 1784799659,
         "truncate": ""
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Zürich",
+        "source": "Kanton Zürich",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Zürich ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Freiburg",
+        "source": "Kanton Freiburg",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Freiburg ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Schaffhausen",
+        "source": "Kanton Schaffhausen",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Schaffhausen ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Solothurn",
+        "source": "Kanton Solothurn",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Solothurn ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Appenzell_Innerrhoden",
+        "source": "Kanton Appenzell Innerrhoden",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Appenzell Innerrhoden ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Glarus",
+        "source": "Kanton Glarus",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Glarus ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Appenzell_Ausserrhoden",
+        "source": "Kanton Appenzell Ausserrhoden",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Appenzell Ausserrhoden ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Bern",
+        "source": "Kanton Bern",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Bern ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Nidwalden",
+        "source": "Kanton Nidwalden",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Nidwalden ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Basel-Landschaft",
+        "source": "Kanton Basel-Landschaft",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Basel-Landschaft ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Luzern",
+        "source": "Kanton Luzern",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Luzern ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Tessin",
+        "source": "Kanton Tessin",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Tessin ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Waadt",
+        "source": "Kanton Waadt",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Waadt ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Basel-Stadt",
+        "source": "Kanton Basel-Stadt",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Basel-Stadt ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Uri",
+        "source": "Kanton Uri",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Uri ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Thurgau",
+        "source": "Kanton Thurgau",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Thurgau ist Teil des Schweizer Kantonalverbandes (Kantone)."
+      },
+      {
+        "id": "rel_tuned1_kantone_Kanton_Baselland",
+        "source": "Kanton Baselland",
+        "target": "Kantone",
+        "relation": "MEMBERSHIP",
+        "label": "MEMBERSHIP",
+        "weight": 3,
+        "description": "Kanton Baselland ist Teil des Schweizer Kantonalverbandes (Kantone)."
       }
     ]
   }

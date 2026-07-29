@@ -91,6 +91,12 @@ export interface State {
     mapActive: boolean;
     temporalFadeEnabled: boolean;
     temporalFadeDuration: number;
+    activeDatabase: {
+        id: string;
+        name: string;
+        type: 'json' | 'lightrag';
+        path?: string;
+    };
 }
 
 export type StateCallback = (state: State) => void;
@@ -112,6 +118,11 @@ export class StateManager {
 
     constructor() {
         this.state = {
+            activeDatabase: {
+                id: 'default',
+                name: 'Default (Hauptdatenbank)',
+                type: 'json'
+            },
             graphData: {
                 entities: [],
                 relationships: []

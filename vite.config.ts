@@ -74,6 +74,73 @@ export default defineConfig({
             }
           }
         });
+
+        server.middlewares.use('/api/create_database', bodyParser.json({ limit: '50mb' }));
+        server.middlewares.use('/api/create_database', (req: any, res: any) => {
+          if (req.method === 'POST') {
+            try {
+              const { dbName, content } = req.body;
+              if (!dbName) {
+                res.statusCode = 400;
+                res.end('Missing dbName');
+                return;
+              }
+              const safeName = dbName.endsWith('.json') ? dbName : `${dbName}.json`;
+              const targetPath = path.resolve(__dirname, './public/data/databases', safeName);
+              const targetDir = path.dirname(targetPath);
+              if (!fs.existsSync(targetDir)) {
+                fs.mkdirSync(targetDir, { recursive: true });
+              }
+              const defaultGraphData = content || JSON.stringify({
+                system: { name: dbName, version: '1.0' },
+                dataModel: { entityTypes: [], relationshipTypes: [] },
+                entities: [],
+                relationships: []
+              }, null, 2);
+
+              fs.writeFileSync(targetPath, defaultGraphData);
+              res.statusCode = 200;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ status: 'success', path: `databases/${safeName}` }));
+            } catch (err) {
+              res.statusCode = 500;
+              res.end('Error creating database: ' + String(err));
+            }
+          } else {
+            res.statusCode = 405;
+            res.end('Method not allowed');
+          }
+        });
+
+        server.middlewares.use('/api/delete_file', bodyParser.json());
+        server.middlewares.use('/api/delete_file', (req: any, res: any) => {
+          if (req.method === 'POST' || req.method === 'DELETE') {
+            try {
+              const { filename } = req.body || {};
+              if (!filename) {
+                res.statusCode = 400;
+                res.end('Missing filename');
+                return;
+              }
+              const targetPath = path.resolve(__dirname, './public/data', filename);
+              if (fs.existsSync(targetPath)) {
+                fs.unlinkSync(targetPath);
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify({ status: 'success', message: 'File deleted successfully' }));
+              } else {
+                res.statusCode = 404;
+                res.end('File not found');
+              }
+            } catch (err) {
+              res.statusCode = 500;
+              res.end('Error deleting file: ' + String(err));
+            }
+          } else {
+            res.statusCode = 405;
+            res.end('Method not allowed');
+          }
+        });
       }
     }
   ],

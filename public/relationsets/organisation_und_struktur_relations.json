@@ -1,0 +1,13 @@
+{
+  "name": "Organisation & Struktur",
+  "description": "Beziehungs-Set für Organigramme, Firmenstrukturen und Teams",
+  "relations": [
+    { "id": "MANAGES", "label": "führt", "description": "Führung und Management", "enabled": true },
+    { "id": "REPORTS_TO", "label": "berichtet an", "description": "Berichtslinie in der Hierarchie", "enabled": true },
+    { "id": "WORKS_IN", "label": "arbeitet in", "description": "Zugehörigkeit zu Abteilung oder Team", "enabled": true },
+    { "id": "COLLABORATES_WITH", "label": "arbeitet zusammen mit", "description": "Interdisziplinäre Zusammenarbeit", "enabled": true },
+    { "id": "OWNS", "label": "besitzt", "description": "Eigentum oder Budgetverantwortung", "enabled": true },
+    { "id": "FUNDED_BY", "label": "finanziert durch", "description": "Finanzierung und Investition", "enabled": true },
+    { "id": "PARTNER_OF", "label": "partner von", "description": "Strategische Partnerschaft", "enabled": true }
+  ]
+}

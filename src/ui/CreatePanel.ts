@@ -6,10 +6,10 @@ import { IStateManager } from '../core/interfaces';
 import type { App } from '../App';
 import { LLMService, LLMProvider, LLMModel } from '../utils/LLMService';
 import { LightRAGService } from '../utils/LightRAGService';
+import { DataParser } from '../core/DataParser';
 import { deduplicateGraph, getSemanticSearchMatches } from '../utils/VectorStoreManager';
 import * as THREE from 'three';
-import pkg from '../../package.json';
-
+import { GraphGenerationService } from '../utils/GraphGenerationService';
 
 export class CreatePanel {
     private container: HTMLElement;
@@ -44,6 +44,12 @@ export class CreatePanel {
     private llmParamsContainer!: HTMLElement;
     private tempSlider!: HTMLInputElement;
     private topPSlider!: HTMLInputElement;
+    private topKSlider!: HTMLInputElement;
+
+    // Relation Set Properties
+    private activeRelationSet: { id: string; label: string; description?: string; enabled: boolean }[] = [];
+    private relationListContainer!: HTMLElement;
+
     // Generation Naming Helper
     private generationCounter = 1;
 
@@ -108,6 +114,154 @@ export class CreatePanel {
         this.chatLog.scrollTop = this.chatLog.scrollHeight;
     }
 
+    public getActiveRelationLabels(): string[] {
+        return this.activeRelationSet.filter(r => r.enabled).map(r => r.label || r.id);
+    }
+
+    private async loadRelationSetFile(filename: string) {
+        try {
+            const baseUrl = import.meta.env.BASE_URL || '/';
+            const cleanBase = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+            const url = `${cleanBase}relationsets/${filename}`;
+            const res = await fetch(url);
+            if (!res.ok) {
+                throw new Error(`HTTP Error ${res.status}`);
+            }
+            const data = await res.json();
+            if (data.relations && Array.isArray(data.relations)) {
+                this.activeRelationSet = data.relations.map((r: any) => ({
+                    id: r.id || r.label,
+                    label: r.label || r.id,
+                    description: r.description || '',
+                    enabled: r.enabled !== false
+                }));
+                this.renderRelationList();
+                this.triggerLiveRelationNormalization();
+                this.setStatus(`Relation Set '${data.name || filename}' geladen (${this.activeRelationSet.length} Einträge).`, 'info');
+            }
+        } catch (err) {
+            console.warn(`[CreatePanel] Error loading relation set ${filename}:`, err);
+            this.setStatus(`Fehler beim Laden von ${filename}.`, 'info');
+        }
+    }
+
+    private triggerLiveRelationNormalization() {
+        if (!this.app || !this.app.stateManager) return;
+        const currentData = this.app.stateManager.state.currentGraphData;
+        if (currentData && currentData.data && Array.isArray(currentData.data.relationships)) {
+            const parsed = DataParser.parse(currentData);
+            this.app.stateManager.setGraphData(parsed.data.entities, parsed.data.relationships);
+        }
+    }
+
+    private saveRelationSetFile() {
+        const data = {
+            name: `Custom Relation Set (${new Date().toLocaleDateString()})`,
+            description: 'Benutzerdefiniertes Beziehungs-Set aus Nodges',
+            relations: this.activeRelationSet
+        };
+        const jsonStr = JSON.stringify(data, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `custom_relations_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        this.setStatus('Relation Set als JSON heruntergeladen.', 'success');
+    }
+
+    private renderRelationList() {
+        if (!this.relationListContainer) return;
+        this.relationListContainer.innerHTML = '';
+
+        if (this.activeRelationSet.length === 0) {
+            const emptyMsg = document.createElement('p');
+            emptyMsg.textContent = 'Keine Beziehungen definiert.';
+            emptyMsg.style.color = 'var(--text-muted)';
+            emptyMsg.style.fontSize = '11px';
+            emptyMsg.style.margin = '4px';
+            this.relationListContainer.appendChild(emptyMsg);
+            return;
+        }
+
+        this.activeRelationSet.forEach((item, index) => {
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.alignItems = 'center';
+            row.style.justifyContent = 'space-between';
+            row.style.padding = '6px 4px';
+            row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+
+            const left = document.createElement('div');
+            left.style.display = 'flex';
+            left.style.alignItems = 'center';
+            left.style.gap = '8px';
+            left.style.flex = '1';
+            left.style.minWidth = '0';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = item.enabled;
+            checkbox.style.cursor = 'pointer';
+            checkbox.style.flexShrink = '0';
+            checkbox.onchange = () => {
+                item.enabled = checkbox.checked;
+                label.style.color = item.enabled ? 'var(--text-color)' : 'var(--text-muted)';
+                this.triggerLiveRelationNormalization();
+            };
+
+            const textWrapper = document.createElement('div');
+            textWrapper.style.display = 'flex';
+            textWrapper.style.flexDirection = 'column';
+            textWrapper.style.minWidth = '0';
+            textWrapper.style.overflow = 'hidden';
+
+            const label = document.createElement('span');
+            label.textContent = item.label || item.id;
+            label.style.fontWeight = '600';
+            label.style.fontSize = '12px';
+            label.style.whiteSpace = 'nowrap';
+            label.style.overflow = 'hidden';
+            label.style.textOverflow = 'ellipsis';
+            label.style.color = item.enabled ? 'var(--text-color)' : 'var(--text-muted)';
+
+            textWrapper.appendChild(label);
+
+            if (item.description) {
+                const desc = document.createElement('span');
+                desc.textContent = item.description;
+                desc.style.fontSize = '10px';
+                desc.style.color = 'rgba(255,255,255,0.4)';
+                desc.style.whiteSpace = 'nowrap';
+                desc.style.overflow = 'hidden';
+                desc.style.textOverflow = 'ellipsis';
+                textWrapper.appendChild(desc);
+            }
+
+            left.appendChild(checkbox);
+            left.appendChild(textWrapper);
+
+            const delBtn = document.createElement('button');
+            delBtn.textContent = '×';
+            delBtn.style.border = 'none';
+            delBtn.style.background = 'transparent';
+            delBtn.style.color = 'rgba(255,100,100,0.7)';
+            delBtn.style.cursor = 'pointer';
+            delBtn.style.fontSize = '16px';
+            delBtn.style.padding = '0 6px';
+            delBtn.style.flexShrink = '0';
+            delBtn.onclick = () => {
+                this.activeRelationSet.splice(index, 1);
+                this.renderRelationList();
+            };
+
+            row.appendChild(left);
+            row.appendChild(delBtn);
+            this.relationListContainer.appendChild(row);
+        });
+    }
+
     private render(): void {
         this.container.innerHTML = '';
 
@@ -125,7 +279,7 @@ export class CreatePanel {
         keyHeader.style.cursor = 'pointer';
 
         const keyTitle = document.createElement('span');
-        keyTitle.textContent = '1. LLM API Key & Anbieter (BYOK)';
+        keyTitle.textContent = 'LLM API Key & Anbieter (BYOK)';
 
         const keyToggle = document.createElement('span');
         keyToggle.textContent = '▾';
@@ -242,14 +396,204 @@ export class CreatePanel {
         keySection.appendChild(keyContent);
         this.container.appendChild(keySection);
 
+        // --- RELATION SET SECTION ---
+        const relSection = document.createElement('section');
+        relSection.className = 'panel-section';
+
+        const relHeader = document.createElement('h4');
+        relHeader.className = 'section-header';
+        relHeader.style.display = 'flex';
+        relHeader.style.justifyContent = 'space-between';
+        relHeader.style.cursor = 'pointer';
+
+        const relTitle = document.createElement('span');
+        relTitle.textContent = 'Relation Set';
+
+        const relToggle = document.createElement('span');
+        relToggle.textContent = '▾';
+
+        relHeader.appendChild(relTitle);
+        relHeader.appendChild(relToggle);
+
+        const relContent = document.createElement('div');
+        relContent.style.marginTop = '10px';
+        relContent.style.display = 'block';
+
+        relHeader.onclick = () => {
+            const isHidden = relContent.style.display === 'none';
+            relContent.style.display = isHidden ? 'block' : 'none';
+            relToggle.textContent = isHidden ? '▾' : '▴';
+        };
+
+        // Preset Selector (Full Width Row)
+        const presetSelectRow = document.createElement('div');
+        presetSelectRow.style.marginBottom = '6px';
+
+        const relPresetSelect = document.createElement('select');
+        relPresetSelect.className = 'form-control';
+        relPresetSelect.style.width = '100%';
+        relPresetSelect.style.backgroundColor = 'rgba(0,0,0,0.3)';
+        relPresetSelect.style.border = '1px solid rgba(255,255,255,0.1)';
+        relPresetSelect.style.color = 'var(--text-color)';
+        relPresetSelect.style.padding = '6px';
+        relPresetSelect.style.borderRadius = '4px';
+        relPresetSelect.style.boxSizing = 'border-box';
+
+        const presets = [
+            { value: 'schweizer_politik_relations.json', name: 'Schweizer Politik & Governance' },
+            { value: 'standard_generic_relations.json', name: 'Standard Generisch' },
+            { value: 'organisation_und_struktur_relations.json', name: 'Organisation & Struktur' }
+        ];
+        presets.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p.value;
+            opt.textContent = p.name;
+            relPresetSelect.appendChild(opt);
+        });
+        presetSelectRow.appendChild(relPresetSelect);
+        relContent.appendChild(presetSelectRow);
+
+        // Open / Save Button Row (50% / 50%)
+        const btnRow = document.createElement('div');
+        btnRow.style.display = 'flex';
+        btnRow.style.gap = '6px';
+        btnRow.style.marginBottom = '8px';
+
+        const openBtn = document.createElement('button');
+        openBtn.className = 'action-button secondary';
+        openBtn.textContent = 'Laden';
+        openBtn.style.flex = '1';
+        openBtn.style.padding = '6px';
+        openBtn.onclick = () => this.loadRelationSetFile(relPresetSelect.value);
+
+        const saveBtn = document.createElement('button');
+        saveBtn.className = 'action-button secondary';
+        saveBtn.textContent = 'Speichern';
+        saveBtn.style.flex = '1';
+        saveBtn.style.padding = '6px';
+        saveBtn.onclick = () => this.saveRelationSetFile();
+
+        btnRow.appendChild(openBtn);
+        btnRow.appendChild(saveBtn);
+        relContent.appendChild(btnRow);
+
+        // Select All / Deselect All Row (50% / 50%)
+        const actionRow = document.createElement('div');
+        actionRow.style.display = 'flex';
+        actionRow.style.gap = '6px';
+        actionRow.style.marginBottom = '8px';
+
+        const selectAllBtn = document.createElement('button');
+        selectAllBtn.className = 'action-button secondary';
+        selectAllBtn.textContent = 'Alle an';
+        selectAllBtn.style.flex = '1';
+        selectAllBtn.style.padding = '4px 6px';
+        selectAllBtn.onclick = () => {
+            this.activeRelationSet.forEach(r => r.enabled = true);
+            this.renderRelationList();
+            this.triggerLiveRelationNormalization();
+        };
+
+        const deselectAllBtn = document.createElement('button');
+        deselectAllBtn.className = 'action-button secondary';
+        deselectAllBtn.textContent = 'Alle aus';
+        deselectAllBtn.style.flex = '1';
+        deselectAllBtn.style.padding = '4px 6px';
+        deselectAllBtn.onclick = () => {
+            this.activeRelationSet.forEach(r => r.enabled = false);
+            this.renderRelationList();
+            this.triggerLiveRelationNormalization();
+        };
+
+        actionRow.appendChild(selectAllBtn);
+        actionRow.appendChild(deselectAllBtn);
+        relContent.appendChild(actionRow);
+
+        // List Container for Checkboxes
+        this.relationListContainer = document.createElement('div');
+        this.relationListContainer.style.maxHeight = '180px';
+        this.relationListContainer.style.overflowY = 'auto';
+        this.relationListContainer.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+        this.relationListContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
+        this.relationListContainer.style.borderRadius = '4px';
+        this.relationListContainer.style.padding = '6px';
+        this.relationListContainer.style.marginBottom = '8px';
+        relContent.appendChild(this.relationListContainer);
+
+        // Add Custom Relation Term Row (Full Width Stack)
+        const addRow = document.createElement('div');
+        addRow.style.display = 'flex';
+        addRow.style.flexDirection = 'column';
+        addRow.style.gap = '6px';
+
+        const addInput = document.createElement('input');
+        addInput.type = 'text';
+        addInput.placeholder = 'Neuer Beziehungstyp...';
+        addInput.className = 'form-control';
+        addInput.style.width = '100%';
+        addInput.style.backgroundColor = 'rgba(0,0,0,0.3)';
+        addInput.style.border = '1px solid rgba(255,255,255,0.1)';
+        addInput.style.color = 'var(--text-color)';
+        addInput.style.padding = '6px';
+        addInput.style.borderRadius = '4px';
+        addInput.style.boxSizing = 'border-box';
+
+        const addBtn = document.createElement('button');
+        addBtn.className = 'action-button secondary';
+        addBtn.textContent = '+ Hinzufügen';
+        addBtn.style.width = '100%';
+        addBtn.style.padding = '6px';
+        addBtn.onclick = () => {
+            const val = addInput.value.trim();
+            if (val) {
+                this.activeRelationSet.push({ id: val.toUpperCase(), label: val, enabled: true });
+                addInput.value = '';
+                this.renderRelationList();
+            }
+        };
+
+        addRow.appendChild(addInput);
+        addRow.appendChild(addBtn);
+        relContent.appendChild(addRow);
+
+        relSection.appendChild(relHeader);
+        relSection.appendChild(relContent);
+        this.container.appendChild(relSection);
+
+        // Auto load default set
+        this.loadRelationSetFile('schweizer_politik_relations.json');
+
         // --- GENERATOR SECTION ---
         const genSection = document.createElement('section');
         genSection.className = 'panel-section';
 
         const genHeader = document.createElement('h4');
         genHeader.className = 'section-header';
-        genHeader.textContent = 'Netzwerk per KI generieren';
+        genHeader.style.display = 'flex';
+        genHeader.style.justifyContent = 'space-between';
+        genHeader.style.cursor = 'pointer';
+
+        const genTitle = document.createElement('span');
+        genTitle.textContent = 'Netzwerk per KI generieren';
+
+        const genToggle = document.createElement('span');
+        genToggle.textContent = '▾';
+
+        genHeader.appendChild(genTitle);
+        genHeader.appendChild(genToggle);
+
+        const genContent = document.createElement('div');
+        genContent.style.marginTop = '10px';
+        genContent.style.display = 'block';
+
+        genHeader.onclick = () => {
+            const isHidden = genContent.style.display === 'none';
+            genContent.style.display = isHidden ? 'block' : 'none';
+            genToggle.textContent = isHidden ? '▾' : '▴';
+        };
+
         genSection.appendChild(genHeader);
+        genSection.appendChild(genContent);
 
         // Model Select
         const modelLabel = document.createElement('label');
@@ -1229,28 +1573,15 @@ export class CreatePanel {
         }
 
         // --- Frontend NSFW Filter (mittelstreng) ---
-        const nsfwKeywords = [
-            'porn', 'sex', 'nude', 'nsfw', 'gore', 'murder', 'rape', 'pedophile', 
-            'porno', 'nackt', 'sexuell', 'vergewaltigung', 'mord', 'töten', 'schlampe', 
-            'hure', 'fuck', 'shit', 'bitch', 'asshole', 'dick', 'cock', 'pussy', 'vagina', 
-            'penis', 'hitler', 'nazi', 'terrorist', 'bomb'
-        ];
-        
-        const lowerPrompt = prompt.toLowerCase();
-        for (const word of nsfwKeywords) {
-            // Regex um das Wort als ganzes Wort zu matchen (verhindert False Positives wie "cocktail")
-            const regex = new RegExp(`\\b${word}\\b`, 'i');
-            if (regex.test(lowerPrompt)) {
-                this.setStatus('Fehler: Die Anfrage verstösst gegen die Inhaltsrichtlinien (NSFW-Filter).', 'error');
-                return;
-            }
+        if (GraphGenerationService.checkNSFW(prompt)) {
+            this.setStatus('Fehler: Die Anfrage verstoesst gegen die Inhaltsrichtlinien (NSFW-Filter).', 'error');
+            return;
         }
         // -------------------------------------------
 
         const ragText = this.ragTextarea?.value.trim();
-        if (ragText) {
-            prompt += `\n\n=== VERFUEGBARER KONTEXT / ROHDATEN (RAG) ===\n${ragText}\n==============================================\nNutze ZWINGEND diese Rohdaten als Faktenbasis fuer die Generierung der Knoten und Kanten.`;
-        }
+        const activeRelLabels = this.getActiveRelationLabels();
+        prompt = GraphGenerationService.assemblePrompt(prompt, ragText, activeRelLabels);
 
 
 
@@ -1337,9 +1668,7 @@ export class CreatePanel {
                     (step: number, name: string, content: string, ext: string) => {
                         // The download itself is triggered here ONLY if saveSteps is true, which is fine since the callback is only triggered if devPrefix is passed
                         if (saveSteps) {
-                            const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
-                            const formattedStep = String(step).padStart(2, '0');
-                            this.app.exportManager?.downloadFile(content, `${devPrefix}_${formattedStep}_${name}.${ext}`, mime);
+                            this.downloadStep(step, name, content, ext, devPrefix, true);
                         }
                     },
                     llmOptions
@@ -1364,9 +1693,7 @@ export class CreatePanel {
                     onProgressWithLog, 
                     (step: number, name: string, content: string, ext: string) => {
                         if (saveSteps) {
-                            const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
-                            const formattedStep = String(step).padStart(2, '0');
-                            this.app.exportManager?.downloadFile(content, `${formattedStep}_${name}_${fileSuffix}.${ext}`, mime);
+                            this.downloadStep(step, name, content, ext, fileSuffix);
                         }
                     }
                 );
@@ -1378,12 +1705,8 @@ export class CreatePanel {
                     await LightRAGService.insertText(ragText);
                     if (saveSteps) {
                         try {
-                            await fetch('/api/save_graph', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ filename: `../b12/B12_01_Rohdaten_${fileSuffix}.txt`, content: ragText })
-                            });
-                        } catch (e) {}
+                            await this.saveGraphFile(`../b12/B12_01_Rohdaten_${fileSuffix}.txt`, ragText);
+                        } catch (e) { console.warn('[CreatePanel] Operation fehlgeschlagen:', e); }
                     }
                 }
                 const lightRagResult = await LightRAGService.queryGraph(prompt, 'hybrid');
@@ -1396,15 +1719,16 @@ export class CreatePanel {
                 };
 
                 // Injiere vollständige Metadaten vor dem Speichern/Exportieren
-                this.enrichGraphMetadata(graphData, pipeline, prompt, provider, model, mode, ragText, startTime);
+                const buildConfig = {
+                    grounding: this.b10GroundingSelect?.value,
+                    qualityAssurance: this.b10QaSelect?.value,
+                    ratingMethod: this.b10RatingSelect?.value
+                };
+                GraphGenerationService.enrichGraphMetadata(graphData, pipeline, prompt, provider, model, mode, ragText, startTime, buildConfig);
 
                 // Immer in public/data/b12/ speichern
                 try {
-                    await fetch('/api/save_graph', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ filename: `../b12/B12_Graph_${fileSuffix}.json`, content: JSON.stringify(graphData, null, 2) })
-                    });
+                    await this.saveGraphFile(`../b12/B12_Graph_${fileSuffix}.json`, JSON.stringify(graphData, null, 2));
                     onProgressWithLog(`Datei unter public/data/b12/B12_Graph_${fileSuffix}.json gespeichert.`);
                 } catch (e) {
                     console.warn('[CreatePanel] Fehler beim Speichern der B12 Graph-Datei:', e);
@@ -1412,12 +1736,8 @@ export class CreatePanel {
 
                 if (saveSteps) {
                     try {
-                        await fetch('/api/save_graph', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ filename: `../b12/B12_02_Antwort_${fileSuffix}.json`, content: JSON.stringify(lightRagResult, null, 2) })
-                        });
-                    } catch (e) {}
+                        await this.saveGraphFile(`../b12/B12_02_Antwort_${fileSuffix}.json`, JSON.stringify(lightRagResult, null, 2));
+                    } catch (e) { console.warn('[CreatePanel] Operation fehlgeschlagen:', e); }
                     this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `B12_Graph_${fileSuffix}.json`, 'application/json');
                 }
             } else if (pipeline === 'build6') {
@@ -1433,9 +1753,7 @@ export class CreatePanel {
                     onProgressWithLog,
                     (step: number, name: string, content: string, ext: string) => {
                         if (saveSteps) {
-                            const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
-                            const formattedStep = String(step).padStart(2, '0');
-                            this.app.exportManager?.downloadFile(content, `${formattedStep}_${name}_${fileSuffix}.${ext}`, mime);
+                            this.downloadStep(step, name, content, ext, fileSuffix);
                         }
                     }
                 );
@@ -1462,7 +1780,12 @@ export class CreatePanel {
             generationLog.status = 'success';
 
             // --- Inject generation metadata directly into the JSON graphData ---
-            this.enrichGraphMetadata(graphData, pipeline, prompt, provider, model, mode, ragText, startTime);
+            const buildConfig = {
+                grounding: this.b10GroundingSelect?.value,
+                qualityAssurance: this.b10QaSelect?.value,
+                ratingMethod: this.b10RatingSelect?.value
+            };
+            GraphGenerationService.enrichGraphMetadata(graphData, pipeline, prompt, provider, model, mode, ragText, startTime, buildConfig);
 
             this.setStatus('Graph generiert! Lade in Visualizer...', 'info');
 
@@ -1545,7 +1868,7 @@ export class CreatePanel {
             try {
                 const logStr = JSON.stringify(generationLog, null, 2);
                 this.app.exportManager?.downloadFile(logStr, `Nodges_ErrorLog_${fileSuffix}.json`, 'application/json');
-            } catch(e) {}
+            } catch(e) { console.warn('[CreatePanel] Operation fehlgeschlagen:', e); }
 
             this.setStatus(error.message || 'Ein unbekannter Fehler ist aufgetreten.', 'error');
         } finally {
@@ -1579,6 +1902,27 @@ export class CreatePanel {
                 this.statusText.style.color = '#e74c3c'; // Red
                 break;
         }
+    }
+
+    private async saveGraphFile(filename: string, content: string): Promise<void> {
+        try {
+            await fetch('/api/save_graph', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename, content })
+            });
+        } catch (e) {
+            console.warn('[CreatePanel] Fehler beim Speichern:', e);
+        }
+    }
+
+    private downloadStep(step: number, name: string, content: string, ext: string, prefixOrSuffix: string, isPrefix: boolean = false): void {
+        const mime = ext === 'json' ? 'application/json' : (ext === 'md' ? 'text/markdown' : 'text/plain');
+        const formattedStep = String(step).padStart(2, '0');
+        const filename = isPrefix 
+            ? `${prefixOrSuffix}_${formattedStep}_${name}.${ext}`
+            : `${formattedStep}_${name}_${prefixOrSuffix}.${ext}`;
+        this.app.exportManager?.downloadFile(content, filename, mime);
     }
     private showHumanInTheLoopReview(graphData: any, onSave: (finalData: any) => void) {
         const modal = document.createElement('div');
@@ -1769,74 +2113,5 @@ export class CreatePanel {
         document.body.appendChild(modal);
     }
 
-    private enrichGraphMetadata(
-        graphData: any,
-        pipeline: string,
-        prompt: string,
-        provider: string,
-        model: string,
-        mode: string,
-        ragText: string,
-        startTime: number
-    ): void {
-        if (!graphData) return;
-        if (!graphData.metadata) graphData.metadata = {};
-        
-        // 1. Schema-Version
-        graphData.metadata.schemaVersion = graphData.metadata.schemaVersion || "5.0";
-
-        // 2. Nodges-Version aus package.json
-        graphData.metadata.nodgesVersion = pkg.version;
-
-        // 3. Verwendeter Build (Pipeline)
-        graphData.metadata.build = pipeline;
-
-        // 4. Prompt
-        graphData.metadata.prompt = prompt;
-
-        // 5. Build-spezifische Parameter
-        const buildParams: Record<string, any> = {
-            provider: provider,
-            model: model,
-            interactionMode: mode,
-            hasRagContext: !!ragText
-        };
-
-        if (pipeline === 'build10') {
-            buildParams.grounding = this.b10GroundingSelect?.value;
-            buildParams.qualityAssurance = this.b10QaSelect?.value;
-            buildParams.ratingMethod = this.b10RatingSelect?.value;
-        } else if (pipeline === 'build9') {
-            buildParams.deduplicationThreshold = 0.85;
-            buildParams.embeddingModel = 'google/gemini-embedding-2';
-        } else if (pipeline === 'build8') {
-            buildParams.wikidataGrounding = true;
-            buildParams.sparqlPipeline = true;
-        } else if (pipeline === 'build5') {
-            buildParams.multiStep = {
-                ontology: 'build_5_ontology_prompt.md',
-                data: 'build_5_data_prompt.md',
-                visuals: 'build_5_visual_prompt.md'
-            };
-        } else if (pipeline === 'build12_lightrag') {
-            buildParams.lightrag = {
-                mode: 'hybrid',
-                service: 'LightRAGService'
-            };
-        }
-
-        graphData.metadata.buildParameters = buildParams;
-
-        const durationMs = Math.round(performance.now() - startTime);
-        graphData.metadata.generationDetails = {
-            prompt: prompt,
-            context: ragText || null,
-            provider: provider,
-            model: model,
-            pipeline: pipeline,
-            durationMs: durationMs,
-            timestamp: new Date().toISOString()
-        };
-    }
 }
 

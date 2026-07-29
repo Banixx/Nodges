@@ -674,35 +674,7 @@ export class MappingUI {
                         subItem.dataset.val = displayVal;
                     }
                     
-                    subItem.style.cssText = `
-                        margin-left: 15px;
-                        width: calc(100% - 35px);
-                        border-left: 2px solid var(--accent-color);
-                        background: rgba(255, 255, 255, 0.02);
-                        padding: 4px 8px;
-                        border-radius: 4px;
-                        border-top: 1px solid rgba(255, 255, 255, 0.05);
-                        border-right: 1px solid rgba(255, 255, 255, 0.05);
-                        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-                        font-size: 11px;
-                        min-height: 20px;
-                        flex-shrink: 0;
-                        position: relative;
-                        box-sizing: border-box;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        transition: all 0.2s ease;
-                    `;
-
-                    subItem.onmouseover = () => {
-                        subItem.style.background = 'rgba(255, 255, 255, 0.05)';
-                        subItem.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                    };
-                    subItem.onmouseout = () => {
-                        subItem.style.background = 'rgba(255, 255, 255, 0.02)';
-                        subItem.style.borderColor = 'rgba(255, 255, 255, 0.05)';
-                    };
+                    subItem.classList.add('mapping-sub-item-base', 'mapping-sub-item-left');
 
                     const subLabelContainer = document.createElement('div');
                     subLabelContainer.style.display = 'flex';
@@ -825,33 +797,8 @@ export class MappingUI {
 
                 const isSubProp = ['positionX', 'positionY', 'positionZ'].includes(baseProp);
                 if (isSubProp) {
-                    item.className = 'mapping-item right mapping-sub-item';
-                    item.style.cssText = `
-                        margin-left: 15px;
-                        width: calc(100% - 15px);
-                        border-left: 2px solid var(--accent-color);
-                        background: rgba(255, 255, 255, 0.02);
-                        padding: 4px 8px;
-                        border-radius: 4px;
-                        border-top: 1px solid rgba(255, 255, 255, 0.05);
-                        border-right: 1px solid rgba(255, 255, 255, 0.05);
-                        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-                        font-size: 11px;
-                        min-height: 30px;
-                        position: relative;
-                        box-sizing: border-box;
-                        transition: all 0.2s ease;
-                        margin-top: -6px; /* pull slightly closer to main prop */
-                    `;
+                    item.className = 'mapping-item right mapping-sub-item mapping-sub-item-base mapping-sub-item-right';
                     // Keep hover styles
-                    item.onmouseover = () => {
-                        item.style.background = 'rgba(255, 255, 255, 0.05)';
-                        item.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                    };
-                    item.onmouseout = () => {
-                        item.style.background = 'rgba(255, 255, 255, 0.02)';
-                        item.style.borderColor = 'rgba(255, 255, 255, 0.05)';
-                    };
                 }
 
                 let mapping = getEffectiveMapping(prop);
@@ -1723,12 +1670,7 @@ export class MappingUI {
         algoLabel.textContent = 'Algorithmus';
         algoLabel.style.cssText = 'display: block; font-size: 10px; color: rgba(255,255,255,0.5); margin-bottom: 4px;';
         const algoSelect = document.createElement('select');
-        algoSelect.style.cssText = `
-            width: 100%; padding: 4px 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e0e0e0; border-radius: 4px; font-size: 11px;
-        `;
+        algoSelect.className = 'layout-engine-select';
         Object.entries(this.layoutAlgorithmNames).forEach(([key, name]) => {
             const opt = document.createElement('option');
             opt.value = key;
@@ -2582,8 +2524,6 @@ export class MappingUI {
         container.style.border = '1px solid rgba(255,255,255,0.05)';
         
         const [absMin, absMax] = this.getAttributeDataBounds(mapping.source || mapping.field || '');
-        let domMin = mapping.domain ? mapping.domain[0] : absMin;
-        let domMax = mapping.domain ? mapping.domain[1] : absMax;
         const isPosition = ['position', 'positionX', 'positionY', 'positionZ'].includes(prop);
         const spatialExtent = this.getMaxSpatialExtent();
         let defaultRangeMin = isPosition ? spatialExtent[0] : 0.1;
@@ -2597,8 +2537,13 @@ export class MappingUI {
                 defaultRangeMax = 3.0;
             }
         }
-        let rngMin = Number(mapping.range ? mapping.range[0] : defaultRangeMin);
-        let rngMax = Number(mapping.range ? mapping.range[1] : defaultRangeMax);
+        
+        const state = {
+            domMin: mapping.domain ? mapping.domain[0] : absMin,
+            domMax: mapping.domain ? mapping.domain[1] : absMax,
+            rngMin: Number(mapping.range ? mapping.range[0] : defaultRangeMin),
+            rngMax: Number(mapping.range ? mapping.range[1] : defaultRangeMax)
+        };
         
         const visualMin = 0.0;
         const visualMax = 5.0;
@@ -2606,26 +2551,26 @@ export class MappingUI {
         if (mode === 'OptionA') {
             // Option A: Dual tracks
             container.innerHTML = `
-                <div class="widget-track-label" style="font-size: 9px; color: var(--text-muted); text-transform: uppercase;">Domain (${absMin.toFixed(1)} bis ${absMax.toFixed(1)})</div>
-                <div class="slider-track-wrapper" id="domainTrackA" style="position: relative; height: 16px; margin: 8px 0; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer;">
-                    <div class="slider-fill" id="domainFillA" style="position: absolute; height: 100%; background: rgba(255, 165, 0, 0.3); border-radius: 4px; width: 0%;"></div>
-                    <div class="slider-handle" id="domMinHandleA" style="position: absolute; width: 12px; height: 20px; top: -2px; background: orange; border-radius: 3px; cursor: ew-resize; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.5);"></div>
-                    <div class="slider-handle" id="domMaxHandleA" style="position: absolute; width: 12px; height: 20px; top: -2px; background: orange; border-radius: 3px; cursor: ew-resize; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.5);"></div>
+                <div class="widget-track-label">Domain (${absMin.toFixed(1)} bis ${absMax.toFixed(1)})</div>
+                <div class="slider-track-wrapper slider-track-16" id="domainTrackA">
+                    <div class="slider-fill slider-fill-orange" id="domainFillA" style="width: 0%;"></div>
+                    <div class="slider-handle slider-handle-base slider-handle-orange" id="domMinHandleA"></div>
+                    <div class="slider-handle slider-handle-base slider-handle-orange" id="domMaxHandleA"></div>
                 </div>
-                <div class="widget-values" style="display: flex; justify-content: space-between; font-size: 9px; color: orange; margin-bottom: 8px;">
-                    <span id="domMinValA">Min: ${domMin.toFixed(1)}</span>
-                    <span id="domMaxValA">Max: ${domMax.toFixed(1)}</span>
+                <div class="widget-values widget-values-orange">
+                    <span id="domMinValA">Min: ${state.domMin.toFixed(1)}</span>
+                    <span id="domMaxValA">Max: ${state.domMax.toFixed(1)}</span>
                 </div>
                 
-                <div class="widget-track-label" style="font-size: 9px; color: var(--text-muted); text-transform: uppercase;">Mapping Range (${visualMin} bis ${visualMax})</div>
-                <div class="slider-track-wrapper" id="rangeTrackA" style="position: relative; height: 16px; margin: 8px 0; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer;">
-                    <div class="slider-fill" id="rangeFillA" style="position: absolute; height: 100%; background: rgba(0, 170, 255, 0.3); border-radius: 4px; width: 0%;"></div>
-                    <div class="slider-handle" id="rngMinHandleA" style="position: absolute; width: 12px; height: 20px; top: -2px; background: #00aaff; border-radius: 3px; cursor: ew-resize; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.5);"></div>
-                    <div class="slider-handle" id="rngMaxHandleA" style="position: absolute; width: 12px; height: 20px; top: -2px; background: #00aaff; border-radius: 3px; cursor: ew-resize; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.5);"></div>
+                <div class="widget-track-label">Mapping Range (${visualMin} bis ${visualMax})</div>
+                <div class="slider-track-wrapper slider-track-16" id="rangeTrackA">
+                    <div class="slider-fill slider-fill-blue" id="rangeFillA" style="width: 0%;"></div>
+                    <div class="slider-handle slider-handle-base slider-handle-blue" id="rngMinHandleA"></div>
+                    <div class="slider-handle slider-handle-base slider-handle-blue" id="rngMaxHandleA"></div>
                 </div>
-                <div class="widget-values" style="display: flex; justify-content: space-between; font-size: 9px; color: #00aaff;">
-                    <span id="rngMinValA">Min: ${rngMin.toFixed(2)}</span>
-                    <span id="rngMaxValA">Max: ${rngMax.toFixed(2)}</span>
+                <div class="widget-values widget-values-blue">
+                    <span id="rngMinValA">Min: ${state.rngMin.toFixed(2)}</span>
+                    <span id="rngMaxValA">Max: ${state.rngMax.toFixed(2)}</span>
                 </div>
             `;
 
@@ -2638,42 +2583,16 @@ export class MappingUI {
             const domMaxValText = container.querySelector('#domMaxValA') as HTMLElement;
 
             const updateDomUI = () => {
-                const minPct = Math.max(0, Math.min(1, (domMin - absMin) / (absMax - absMin)));
-                const maxPct = Math.max(0, Math.min(1, (domMax - absMin) / (absMax - absMin)));
+                const minPct = Math.max(0, Math.min(1, (state.domMin - absMin) / (absMax - absMin)));
+                const maxPct = Math.max(0, Math.min(1, (state.domMax - absMin) / (absMax - absMin)));
                 domMinHandle.style.left = `calc(${minPct * 100}% - 6px)`;
                 domMaxHandle.style.left = `calc(${maxPct * 100}% - 6px)`;
                 domFill.style.left = `${minPct * 100}%`;
                 domFill.style.width = `${(maxPct - minPct) * 100}%`;
-                domMinValText.textContent = `Min: ${domMin.toFixed(1)}`;
-                domMaxValText.textContent = `Max: ${domMax.toFixed(1)}`;
+                domMinValText.textContent = `Min: ${state.domMin.toFixed(1)}`;
+                domMaxValText.textContent = `Max: ${state.domMax.toFixed(1)}`;
             };
             updateDomUI();
-
-            this.setupSliderDrag(
-                domMinHandle,
-                domTrack,
-                () => domMin,
-                (val) => {
-                    domMin = Math.min(val, domMax);
-                    this.updatePropertyMapping(prop, { domain: [domMin, domMax] });
-                },
-                (pct) => absMin + pct * (absMax - absMin),
-                (val) => (val - absMin) / (absMax - absMin),
-                updateDomUI
-            );
-
-            this.setupSliderDrag(
-                domMaxHandle,
-                domTrack,
-                () => domMax,
-                (val) => {
-                    domMax = Math.max(val, domMin);
-                    this.updatePropertyMapping(prop, { domain: [domMin, domMax] });
-                },
-                (pct) => absMin + pct * (absMax - absMin),
-                (val) => (val - absMin) / (absMax - absMin),
-                updateDomUI
-            );
 
             // Range
             const rngTrack = container.querySelector('#rangeTrackA') as HTMLElement;
@@ -2684,71 +2603,49 @@ export class MappingUI {
             const rngMaxValText = container.querySelector('#rngMaxValA') as HTMLElement;
 
             const updateRngUI = () => {
-                const minPct = Math.max(0, Math.min(1, (rngMin - visualMin) / (visualMax - visualMin)));
-                const maxPct = Math.max(0, Math.min(1, (rngMax - visualMin) / (visualMax - visualMin)));
+                const minPct = Math.max(0, Math.min(1, (state.rngMin - visualMin) / (visualMax - visualMin)));
+                const maxPct = Math.max(0, Math.min(1, (state.rngMax - visualMin) / (visualMax - visualMin)));
                 rngMinHandle.style.left = `calc(${minPct * 100}% - 6px)`;
                 rngMaxHandle.style.left = `calc(${maxPct * 100}% - 6px)`;
                 rngFill.style.left = `${minPct * 100}%`;
                 rngFill.style.width = `${(maxPct - minPct) * 100}%`;
-                rngMinValText.textContent = `Min: ${rngMin.toFixed(2)}`;
-                rngMaxValText.textContent = `Max: ${rngMax.toFixed(2)}`;
+                rngMinValText.textContent = `Min: ${state.rngMin.toFixed(2)}`;
+                rngMaxValText.textContent = `Max: ${state.rngMax.toFixed(2)}`;
             };
             updateRngUI();
 
-            this.setupSliderDrag(
-                rngMinHandle,
-                rngTrack,
-                () => rngMin,
-                (val) => {
-                    rngMin = Math.min(val, rngMax);
-                    this.updatePropertyMapping(prop, { range: [rngMin, rngMax] });
-                },
-                (pct) => visualMin + pct * (visualMax - visualMin),
-                (val) => (val - visualMin) / (visualMax - visualMin),
-                updateRngUI
-            );
+            const updateUI = () => { updateDomUI(); updateRngUI(); };
 
-            this.setupSliderDrag(
-                rngMaxHandle,
-                rngTrack,
-                () => rngMax,
-                (val) => {
-                    rngMax = Math.max(val, rngMin);
-                    this.updatePropertyMapping(prop, { range: [rngMin, rngMax] });
-                },
-                (pct) => visualMin + pct * (visualMax - visualMin),
-                (val) => (val - visualMin) / (visualMax - visualMin),
-                updateRngUI
-            );
+            this.setupQuadSliders(prop, domTrack, rngTrack, domMinHandle, domMaxHandle, rngMinHandle, rngMaxHandle, state, absMin, absMax, visualMin, visualMax, updateUI);
         } else if (mode === 'OptionB') {
             // Option B: Unified Quad Handles on a Single Track
             container.innerHTML = `
-                <div class="widget-track-label" style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Vereinte Schiene (Orange=Domain, Blau=Mapping)</div>
-                <div class="slider-track-wrapper" id="unifiedTrackB" style="position: relative; height: 24px; margin: 8px 0; background: rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; border: 1px solid rgba(255,255,255,0.05);">
+                <div class="widget-track-label" style="margin-bottom: 4px;">Vereinte Schiene (Orange=Domain, Blau=Mapping)</div>
+                <div class="slider-track-wrapper slider-track-base slider-track-24" id="unifiedTrackB">
                     <!-- Domain Fill (top half) -->
-                    <div id="domainFillB" style="position: absolute; height: 50%; top: 0; background: rgba(255, 165, 0, 0.25); border-top-left-radius: 4px; border-top-right-radius: 4px; width: 0%;"></div>
+                    <div id="domainFillB" class="slider-fill-orange" style="height: 50%; top: 0; width: 0%; border-radius: 4px 4px 0 0; opacity: 0.8;"></div>
                     <!-- Range Fill (bottom half) -->
-                    <div id="rangeFillB" style="position: absolute; height: 50%; bottom: 0; background: rgba(0, 170, 255, 0.25); border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; width: 0%;"></div>
+                    <div id="rangeFillB" class="slider-fill-blue" style="height: 50%; bottom: 0; width: 0%; border-radius: 0 0 4px 4px; opacity: 0.8;"></div>
                     
                     <!-- Middle divider line -->
                     <div style="position: absolute; width: 100%; height: 1px; top: 12px; background: rgba(255,255,255,0.15);"></div>
 
                     <!-- Domain Handles -->
-                    <div class="slider-handle" id="domMinHandleB" style="position: absolute; width: 10px; height: 12px; top: 0px; background: orange; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 12;"></div>
-                    <div class="slider-handle" id="domMaxHandleB" style="position: absolute; width: 10px; height: 12px; top: 0px; background: orange; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 12;"></div>
+                    <div class="slider-handle slider-handle-base slider-handle-orange slider-handle-10x12" id="domMinHandleB" style="top: 0px; z-index: 12;"></div>
+                    <div class="slider-handle slider-handle-base slider-handle-orange slider-handle-10x12" id="domMaxHandleB" style="top: 0px; z-index: 12;"></div>
                     
                     <!-- Range Handles -->
-                    <div class="slider-handle" id="rngMinHandleB" style="position: absolute; width: 10px; height: 12px; bottom: 0px; background: #00aaff; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 11;"></div>
-                    <div class="slider-handle" id="rngMaxHandleB" style="position: absolute; width: 10px; height: 12px; bottom: 0px; background: #00aaff; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 11;"></div>
+                    <div class="slider-handle slider-handle-base slider-handle-blue slider-handle-10x12" id="rngMinHandleB" style="bottom: 0px; z-index: 11;"></div>
+                    <div class="slider-handle slider-handle-base slider-handle-blue slider-handle-10x12" id="rngMaxHandleB" style="bottom: 0px; z-index: 11;"></div>
                 </div>
-                <div class="widget-values" style="display: flex; flex-direction: column; gap: 2px; font-size: 9px; line-height: 1.1;">
+                <div class="widget-values widget-values-column">
                     <div style="display: flex; justify-content: space-between; color: orange;">
-                        <span id="domMinValB">Domain Min: ${domMin.toFixed(1)}</span>
-                        <span id="domMaxValB">Domain Max: ${domMax.toFixed(1)}</span>
+                        <span id="domMinValB">Domain Min: ${state.domMin.toFixed(1)}</span>
+                        <span id="domMaxValB">Domain Max: ${state.domMax.toFixed(1)}</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; color: #00aaff;">
-                        <span id="rngMinValB">Mapping Min: ${rngMin.toFixed(2)}</span>
-                        <span id="rngMaxValB">Mapping Max: ${rngMax.toFixed(2)}</span>
+                        <span id="rngMinValB">Mapping Min: ${state.rngMin.toFixed(2)}</span>
+                        <span id="rngMaxValB">Mapping Max: ${state.rngMax.toFixed(2)}</span>
                     </div>
                 </div>
             `;
@@ -2767,78 +2664,28 @@ export class MappingUI {
             const rngMaxValText = container.querySelector('#rngMaxValB') as HTMLElement;
 
             const updateUI = () => {
-                const dMinPct = Math.max(0, Math.min(1, (domMin - absMin) / (absMax - absMin)));
-                const dMaxPct = Math.max(0, Math.min(1, (domMax - absMin) / (absMax - absMin)));
+                const dMinPct = Math.max(0, Math.min(1, (state.domMin - absMin) / (absMax - absMin)));
+                const dMaxPct = Math.max(0, Math.min(1, (state.domMax - absMin) / (absMax - absMin)));
                 domMinHandle.style.left = `calc(${dMinPct * 100}% - 5px)`;
                 domMaxHandle.style.left = `calc(${dMaxPct * 100}% - 5px)`;
                 domFill.style.left = `${dMinPct * 100}%`;
                 domFill.style.width = `${(dMaxPct - dMinPct) * 100}%`;
 
-                const rMinPct = Math.max(0, Math.min(1, (rngMin - visualMin) / (visualMax - visualMin)));
-                const rMaxPct = Math.max(0, Math.min(1, (rngMax - visualMin) / (visualMax - visualMin)));
+                const rMinPct = Math.max(0, Math.min(1, (state.rngMin - visualMin) / (visualMax - visualMin)));
+                const rMaxPct = Math.max(0, Math.min(1, (state.rngMax - visualMin) / (visualMax - visualMin)));
                 rngMinHandle.style.left = `calc(${rMinPct * 100}% - 5px)`;
                 rngMaxHandle.style.left = `calc(${rMaxPct * 100}% - 5px)`;
                 rngFill.style.left = `${rMinPct * 100}%`;
                 rngFill.style.width = `${(rMaxPct - rMinPct) * 100}%`;
 
-                domMinValText.textContent = `Domain Min: ${domMin.toFixed(1)}`;
-                domMaxValText.textContent = `Domain Max: ${domMax.toFixed(1)}`;
-                rngMinValText.textContent = `Mapping Min: ${rngMin.toFixed(2)}`;
-                rngMaxValText.textContent = `Mapping Max: ${rngMax.toFixed(2)}`;
+                domMinValText.textContent = `Domain Min: ${state.domMin.toFixed(1)}`;
+                domMaxValText.textContent = `Domain Max: ${state.domMax.toFixed(1)}`;
+                rngMinValText.textContent = `Mapping Min: ${state.rngMin.toFixed(2)}`;
+                rngMaxValText.textContent = `Mapping Max: ${state.rngMax.toFixed(2)}`;
             };
             updateUI();
 
-            this.setupSliderDrag(
-                domMinHandle,
-                track,
-                () => domMin,
-                (val) => {
-                    domMin = Math.min(val, domMax);
-                    this.updatePropertyMapping(prop, { domain: [domMin, domMax] });
-                },
-                (pct) => absMin + pct * (absMax - absMin),
-                (val) => (val - absMin) / (absMax - absMin),
-                updateUI
-            );
-
-            this.setupSliderDrag(
-                domMaxHandle,
-                track,
-                () => domMax,
-                (val) => {
-                    domMax = Math.max(val, domMin);
-                    this.updatePropertyMapping(prop, { domain: [domMin, domMax] });
-                },
-                (pct) => absMin + pct * (absMax - absMin),
-                (val) => (val - absMin) / (absMax - absMin),
-                updateUI
-            );
-
-            this.setupSliderDrag(
-                rngMinHandle,
-                track,
-                () => rngMin,
-                (val) => {
-                    rngMin = Math.min(val, rngMax);
-                    this.updatePropertyMapping(prop, { range: [rngMin, rngMax] });
-                },
-                (pct) => visualMin + pct * (visualMax - visualMin),
-                (val) => (val - visualMin) / (visualMax - visualMin),
-                updateUI
-            );
-
-            this.setupSliderDrag(
-                rngMaxHandle,
-                track,
-                () => rngMax,
-                (val) => {
-                    rngMax = Math.max(val, rngMin);
-                    this.updatePropertyMapping(prop, { range: [rngMin, rngMax] });
-                },
-                (pct) => visualMin + pct * (visualMax - visualMin),
-                (val) => (val - visualMin) / (visualMax - visualMin),
-                updateUI
-            );
+            this.setupQuadSliders(prop, track, track, domMinHandle, domMaxHandle, rngMinHandle, rngMaxHandle, state, absMin, absMax, visualMin, visualMax, updateUI);
         } else if (mode === 'OptionC') {
             // Option C: Density Histogram / Sparkline Overlay
             const isEntityType = this.currentCategory === 'entities';
@@ -2870,7 +2717,7 @@ export class MappingUI {
             const fillPointsStr = `${pointsStr} L ${width} ${height} L 0 ${height} Z`;
 
             container.innerHTML = `
-                <div class="widget-track-label" style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Dichteverteilung & Bereichsauswahl</div>
+                <div class="widget-track-label" style="margin-bottom: 4px;">Dichteverteilung & Bereichsauswahl</div>
                 <div style="position: relative; width: 100%; height: 50px; background: rgba(0,0,0,0.3); border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05);">
                     <!-- Sparkline SVG -->
                     <svg viewBox="0 0 460 30" preserveAspectRatio="none" style="position: absolute; top: 0; left: 0; width: 100%; height: 30px; pointer-events: none;">
@@ -2878,27 +2725,27 @@ export class MappingUI {
                     </svg>
 
                     <!-- Domain Track (over sparkline, vertically centered) -->
-                    <div id="domainTrackC" style="position: absolute; top: 22px; left: 0; width: 100%; height: 8px; background: rgba(255,255,255,0.08); cursor: pointer;">
-                        <div id="domainFillC" style="position: absolute; height: 100%; background: rgba(255, 165, 0, 0.25); width: 0%;"></div>
-                        <div class="slider-handle" id="domMinHandleC" style="position: absolute; width: 10px; height: 14px; top: -3px; background: orange; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 12;"></div>
-                        <div class="slider-handle" id="domMaxHandleC" style="position: absolute; width: 10px; height: 14px; top: -3px; background: orange; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 12;"></div>
+                    <div id="domainTrackC" class="slider-track-base" style="position: absolute; top: 22px; left: 0; width: 100%; height: 8px; background: rgba(255,255,255,0.08);">
+                        <div id="domainFillC" class="slider-fill-base slider-fill-orange" style="width: 0%;"></div>
+                        <div class="slider-handle slider-handle-base slider-handle-orange slider-handle-10x14" id="domMinHandleC" style="z-index: 12;"></div>
+                        <div class="slider-handle slider-handle-base slider-handle-orange slider-handle-10x14" id="domMaxHandleC" style="z-index: 12;"></div>
                     </div>
 
                     <!-- Range Track (below sparkline) -->
-                    <div id="rangeTrackC" style="position: absolute; bottom: 4px; left: 0; width: 100%; height: 8px; background: rgba(255,255,255,0.08); cursor: pointer;">
-                        <div id="rangeFillC" style="position: absolute; height: 100%; background: rgba(0, 170, 255, 0.25); width: 0%;"></div>
-                        <div class="slider-handle" id="rngMinHandleC" style="position: absolute; width: 10px; height: 14px; top: -3px; background: #00aaff; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 11;"></div>
-                        <div class="slider-handle" id="rngMaxHandleC" style="position: absolute; width: 10px; height: 14px; top: -3px; background: #00aaff; border-radius: 2px; cursor: ew-resize; border: 1px solid #fff; z-index: 11;"></div>
+                    <div id="rangeTrackC" class="slider-track-base" style="position: absolute; bottom: 4px; left: 0; width: 100%; height: 8px; background: rgba(255,255,255,0.08);">
+                        <div id="rangeFillC" class="slider-fill-base slider-fill-blue" style="width: 0%;"></div>
+                        <div class="slider-handle slider-handle-base slider-handle-blue slider-handle-10x14" id="rngMinHandleC" style="z-index: 11;"></div>
+                        <div class="slider-handle slider-handle-base slider-handle-blue slider-handle-10x14" id="rngMaxHandleC" style="z-index: 11;"></div>
                     </div>
                 </div>
-                <div class="widget-values" style="display: flex; flex-direction: column; gap: 2px; font-size: 9px; line-height: 1.1; margin-top: 6px;">
+                <div class="widget-values widget-values-column" style="margin-top: 6px;">
                     <div style="display: flex; justify-content: space-between; color: orange;">
-                        <span id="domMinValC">Domain Min: ${domMin.toFixed(1)}</span>
-                        <span id="domMaxValC">Domain Max: ${domMax.toFixed(1)}</span>
+                        <span id="domMinValC">Domain Min: ${state.domMin.toFixed(1)}</span>
+                        <span id="domMaxValC">Domain Max: ${state.domMax.toFixed(1)}</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; color: #00aaff;">
-                        <span id="rngMinValC">Mapping Min: ${rngMin.toFixed(2)}</span>
-                        <span id="rngMaxValC">Mapping Max: ${rngMax.toFixed(2)}</span>
+                        <span id="rngMinValC">Mapping Min: ${state.rngMin.toFixed(2)}</span>
+                        <span id="rngMaxValC">Mapping Max: ${state.rngMax.toFixed(2)}</span>
                     </div>
                 </div>
             `;
@@ -2919,81 +2766,48 @@ export class MappingUI {
             const rngMaxValText = container.querySelector('#rngMaxValC') as HTMLElement;
 
             const updateUI = () => {
-                const dMinPct = Math.max(0, Math.min(1, (domMin - absMin) / (absMax - absMin)));
-                const dMaxPct = Math.max(0, Math.min(1, (domMax - absMin) / (absMax - absMin)));
+                const dMinPct = Math.max(0, Math.min(1, (state.domMin - absMin) / (absMax - absMin)));
+                const dMaxPct = Math.max(0, Math.min(1, (state.domMax - absMin) / (absMax - absMin)));
                 domMinHandle.style.left = `calc(${dMinPct * 100}% - 5px)`;
                 domMaxHandle.style.left = `calc(${dMaxPct * 100}% - 5px)`;
                 domFill.style.left = `${dMinPct * 100}%`;
                 domFill.style.width = `${(dMaxPct - dMinPct) * 100}%`;
 
-                const rMinPct = Math.max(0, Math.min(1, (rngMin - visualMin) / (visualMax - visualMin)));
-                const rMaxPct = Math.max(0, Math.min(1, (rngMax - visualMin) / (visualMax - visualMin)));
+                const rMinPct = Math.max(0, Math.min(1, (state.rngMin - visualMin) / (visualMax - visualMin)));
+                const rMaxPct = Math.max(0, Math.min(1, (state.rngMax - visualMin) / (visualMax - visualMin)));
                 rngMinHandle.style.left = `calc(${rMinPct * 100}% - 5px)`;
                 rngMaxHandle.style.left = `calc(${rMaxPct * 100}% - 5px)`;
                 rngFill.style.left = `${rMinPct * 100}%`;
                 rngFill.style.width = `${(rMaxPct - rMinPct) * 100}%`;
 
-                domMinValText.textContent = `Domain Min: ${domMin.toFixed(1)}`;
-                domMaxValText.textContent = `Domain Max: ${domMax.toFixed(1)}`;
-                rngMinValText.textContent = `Mapping Min: ${rngMin.toFixed(2)}`;
-                rngMaxValText.textContent = `Mapping Max: ${rngMax.toFixed(2)}`;
+                domMinValText.textContent = `Domain Min: ${state.domMin.toFixed(1)}`;
+                domMaxValText.textContent = `Domain Max: ${state.domMax.toFixed(1)}`;
+                rngMinValText.textContent = `Mapping Min: ${state.rngMin.toFixed(2)}`;
+                rngMaxValText.textContent = `Mapping Max: ${state.rngMax.toFixed(2)}`;
             };
             updateUI();
 
-            this.setupSliderDrag(
-                domMinHandle,
-                domTrack,
-                () => domMin,
-                (val) => {
-                    domMin = Math.min(val, domMax);
-                    this.updatePropertyMapping(prop, { domain: [domMin, domMax] });
-                },
-                (pct) => absMin + pct * (absMax - absMin),
-                (val) => (val - absMin) / (absMax - absMin),
-                updateUI
-            );
-
-            this.setupSliderDrag(
-                domMaxHandle,
-                domTrack,
-                () => domMax,
-                (val) => {
-                    domMax = Math.max(val, domMin);
-                    this.updatePropertyMapping(prop, { domain: [domMin, domMax] });
-                },
-                (pct) => absMin + pct * (absMax - absMin),
-                (val) => (val - absMin) / (absMax - absMin),
-                updateUI
-            );
-
-            this.setupSliderDrag(
-                rngMinHandle,
-                rngTrack,
-                () => rngMin,
-                (val) => {
-                    rngMin = Math.min(val, rngMax);
-                    this.updatePropertyMapping(prop, { range: [rngMin, rngMax] });
-                },
-                (pct) => visualMin + pct * (visualMax - visualMin),
-                (val) => (val - visualMin) / (visualMax - visualMin),
-                updateUI
-            );
-
-            this.setupSliderDrag(
-                rngMaxHandle,
-                rngTrack,
-                () => rngMax,
-                (val) => {
-                    rngMax = Math.max(val, rngMin);
-                    this.updatePropertyMapping(prop, { range: [rngMin, rngMax] });
-                },
-                (pct) => visualMin + pct * (visualMax - visualMin),
-                (val) => (val - visualMin) / (visualMax - visualMin),
-                updateUI
-            );
+            this.setupQuadSliders(prop, domTrack, rngTrack, domMinHandle, domMaxHandle, rngMinHandle, rngMaxHandle, state, absMin, absMax, visualMin, visualMax, updateUI);
         }
 
         details.appendChild(container);
+    }
+
+    private setupQuadSliders(
+        prop: string,
+        domTrack: HTMLElement,
+        rngTrack: HTMLElement,
+        domMinHandle: HTMLElement, domMaxHandle: HTMLElement,
+        rngMinHandle: HTMLElement, rngMaxHandle: HTMLElement,
+        state: { domMin: number, domMax: number, rngMin: number, rngMax: number },
+        absMin: number, absMax: number,
+        visualMin: number, visualMax: number,
+        updateUI: () => void
+    ) {
+        this.setupSliderDrag(domMinHandle, domTrack, () => state.domMin, (val) => { state.domMin = Math.min(val, state.domMax); this.updatePropertyMapping(prop, { domain: [state.domMin, state.domMax] }); }, (pct) => absMin + pct * (absMax - absMin), (val) => (val - absMin) / (absMax - absMin), updateUI);
+        this.setupSliderDrag(domMaxHandle, domTrack, () => state.domMax, (val) => { state.domMax = Math.max(val, state.domMin); this.updatePropertyMapping(prop, { domain: [state.domMin, state.domMax] }); }, (pct) => absMin + pct * (absMax - absMin), (val) => (val - absMin) / (absMax - absMin), updateUI);
+        this.setupSliderDrag(rngMinHandle, rngTrack, () => state.rngMin, (val) => { state.rngMin = Math.min(val, state.rngMax); this.updatePropertyMapping(prop, { range: [state.rngMin, state.rngMax] }); }, (pct) => visualMin + pct * (visualMax - visualMin), (val) => (val - visualMin) / (visualMax - visualMin), updateUI);
+        this.setupSliderDrag(rngMaxHandle, rngTrack, () => state.rngMax, (val) => { state.rngMax = Math.max(val, state.rngMin); this.updatePropertyMapping(prop, { range: [state.rngMin, state.rngMax] }); }, (pct) => visualMin + pct * (visualMax - visualMin), (val) => (val - visualMin) / (visualMax - visualMin), updateUI);
     }
 
     private disconnectOriginalMapping(propName: string) {

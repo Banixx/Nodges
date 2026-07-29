@@ -6,6 +6,7 @@ export class FilePanelUI {
     private stateManager: IStateManager;
     private filePanelContent: HTMLElement | null;
     private availableFiles: string[] = [];
+    private availableDatabases: { id: string; name: string; type: 'json' | 'lightrag'; path?: string }[] = [];
     private currentDirectory: string = '';
     private isRenderFilePanelPending: boolean = false;
 
@@ -41,12 +42,281 @@ export class FilePanelUI {
         this.filePanelContent.innerHTML = '<div id="fileLoadingIndicator">Loading files...</div>';
 
         this.availableFiles = await this.fetchDirectoryContents();
+        await this.fetchDatabases();
         this.renderFilePanel();
+    }
+
+    private async fetchDatabases(): Promise<void> {
+        this.availableDatabases = [
+            { id: 'default', name: 'Hauptdatenbank (Default)', type: 'json', path: 'public/data/default.json' }
+        ];
+
+        // 1. JSON Datenbanken aus public/data/databases auslesen
+        const dbFiles = this.availableFiles.filter(f => f.startsWith('databases/'));
+        dbFiles.forEach(dbFile => {
+            const dbName = dbFile.replace('databases/', '').replace('.json', '');
+            this.availableDatabases.push({
+                id: dbFile,
+                name: dbName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) + ' (JSON)',
+                type: 'json',
+                path: dbFile
+            });
+        });
+
+        // 2. LightRAG Datenbanken aus Python Backend abrufen
+        try {
+            const res = await fetch('/lightrag-api/databases');
+            if (res.ok) {
+                const data = await res.json();
+                if (data.databases && Array.isArray(data.databases)) {
+                    data.databases.forEach((db: any) => {
+                        if (db.id !== 'default') {
+                            this.availableDatabases.push({
+                                id: `lightrag_${db.id}`,
+                                name: `${db.name} (LightRAG)`,
+                                type: 'lightrag',
+                                path: db.path
+                            });
+                        }
+                    });
+                }
+            }
+        } catch (e) {
+            console.warn('[FilePanelUI] LightRAG backend databases offline or unavailable');
+        }
     }
 
     private renderFilePanel() {
         if (!this.filePanelContent) return;
         this.filePanelContent.innerHTML = '';
+
+        // --- DATENBANK-VERWALTUNG ---
+        const dbHeader = document.createElement('h4');
+        dbHeader.className = 'section-header';
+        dbHeader.textContent = 'Datenbank-Verwaltung';
+        this.filePanelContent.appendChild(dbHeader);
+
+        const currentActive = this.stateManager.state.activeDatabase || { id: 'default', name: 'Hauptdatenbank (Default)', type: 'json' };
+
+        // 1. Status-Anzeige der aktuell geladenen Datenbank
+        const activeDbCard = document.createElement('div');
+        activeDbCard.style.padding = '8px 10px';
+        activeDbCard.style.marginBottom = '10px';
+        activeDbCard.style.borderRadius = '4px';
+        activeDbCard.style.background = 'rgba(143, 166, 73, 0.15)';
+        activeDbCard.style.border = '1px solid rgba(143, 166, 73, 0.4)';
+        activeDbCard.style.fontSize = '12px';
+        activeDbCard.style.display = 'flex';
+        activeDbCard.style.justifyContent = 'space-between';
+        activeDbCard.style.alignItems = 'center';
+
+        activeDbCard.innerHTML = `
+            <div>
+                <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Aktuell geladene Datenbank</div>
+                <div style="font-weight: 600; color: #a4c639; margin-top: 2px;">${currentActive.name}</div>
+            </div>
+            <span style="font-size: 10px; padding: 2px 6px; border-radius: 3px; background: var(--bg-dark); color: var(--text-muted); border: 1px solid var(--border-color); text-transform: uppercase;">
+                ${currentActive.type === 'lightrag' ? 'LightRAG' : 'JSON'}
+            </span>
+        `;
+        this.filePanelContent.appendChild(activeDbCard);
+
+        // 2. Dropdown & Hauptaktionen
+        const dbSelectContainer = document.createElement('div');
+        dbSelectContainer.style.marginBottom = '10px';
+
+        const dbSelect = document.createElement('select');
+        dbSelect.className = 'nodges-select';
+        dbSelect.style.width = '100%';
+        dbSelect.style.padding = '8px';
+        dbSelect.style.borderRadius = '4px';
+        dbSelect.style.background = 'var(--bg-dark)';
+        dbSelect.style.color = 'var(--text-color)';
+        dbSelect.style.border = '1px solid var(--border-color)';
+
+        this.availableDatabases.forEach(db => {
+            const opt = document.createElement('option');
+            opt.value = db.id;
+            opt.textContent = db.name;
+            if (db.id === currentActive.id) {
+                opt.selected = true;
+            }
+            dbSelect.appendChild(opt);
+        });
+
+        dbSelect.onchange = async (e) => {
+            const selectedId = (e.target as HTMLSelectElement).value;
+            const targetDb = this.availableDatabases.find(d => d.id === selectedId);
+            if (targetDb) {
+                this.stateManager.update({ activeDatabase: targetDb });
+                if (targetDb.type === 'lightrag') {
+                    const rawId = targetDb.id.replace('lightrag_', '');
+                    await fetch('/lightrag-api/databases/select', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: rawId })
+                    });
+                }
+                this.renderFilePanel();
+            }
+        };
+
+        dbSelectContainer.appendChild(dbSelect);
+        this.filePanelContent.appendChild(dbSelectContainer);
+
+        const dbActionsRow = document.createElement('div');
+        dbActionsRow.style.display = 'flex';
+        dbActionsRow.style.gap = '6px';
+        dbActionsRow.style.marginBottom = '12px';
+
+        const createDbBtn = document.createElement('button');
+        createDbBtn.className = 'action-button secondary';
+        createDbBtn.style.flex = '1';
+        createDbBtn.style.fontSize = '11px';
+        createDbBtn.style.padding = '6px 2px';
+        createDbBtn.textContent = '+ Neue DB';
+        createDbBtn.onclick = () => this.showCreateDatabaseDialog();
+
+        const saveDbBtn = document.createElement('button');
+        saveDbBtn.className = 'action-button';
+        saveDbBtn.style.flex = '1';
+        saveDbBtn.style.fontSize = '11px';
+        saveDbBtn.style.padding = '6px 2px';
+        saveDbBtn.textContent = 'DB Speichern';
+        saveDbBtn.onclick = () => {
+            const activeDb = this.stateManager.state.activeDatabase;
+            const filename = activeDb && activeDb.path ? activeDb.path.replace('databases/', '') : 'meine_datenbank.json';
+            const currentData = this.app.exportManager.getCurrentNetworkData(this.app.currentEntities, this.app.currentRelationships);
+            this.app.fileHandler.saveCurrentDatabase(filename, JSON.stringify(currentData, null, 2));
+        };
+
+        const deleteDbBtn = document.createElement('button');
+        deleteDbBtn.className = 'action-button secondary';
+        deleteDbBtn.style.flex = '1';
+        deleteDbBtn.style.fontSize = '11px';
+        deleteDbBtn.style.padding = '6px 2px';
+        deleteDbBtn.style.color = '#ff6b6b';
+        deleteDbBtn.textContent = 'DB Loeschen';
+        deleteDbBtn.onclick = () => {
+            const activeDb = this.stateManager.state.activeDatabase;
+            if (!activeDb || activeDb.id === 'default') {
+                this.app.fileHandler.showError('Nicht moeglich', 'Die Hauptdatenbank kann nicht geloescht werden.');
+                return;
+            }
+            this.showConfirmDialog(
+                'Datenbank loeschen',
+                `Moechten Sie die Datenbank '${activeDb.name}' wirklich loeschen?`,
+                async () => {
+                    if (activeDb.type === 'lightrag') {
+                        const rawId = activeDb.id.replace('lightrag_', '');
+                        await fetch(`/lightrag-api/databases/${rawId}`, { method: 'DELETE' });
+                    } else if (activeDb.path) {
+                        await this.app.fileHandler.deleteDatabaseFile(activeDb.path);
+                    }
+                    this.stateManager.update({ activeDatabase: { id: 'default', name: 'Hauptdatenbank (Default)', type: 'json' } });
+                    await this.loadAvailableFiles();
+                }
+            );
+        };
+
+        dbActionsRow.appendChild(createDbBtn);
+        dbActionsRow.appendChild(saveDbBtn);
+        dbActionsRow.appendChild(deleteDbBtn);
+        this.filePanelContent.appendChild(dbActionsRow);
+
+        // 3. Listen-Ansicht aller verfuegbaren Datenbanken auf der Festplatte
+        const dbListHeader = document.createElement('div');
+        dbListHeader.style.fontSize = '10px';
+        dbListHeader.style.color = 'var(--text-muted)';
+        dbListHeader.style.textTransform = 'uppercase';
+        dbListHeader.style.letterSpacing = '0.5px';
+        dbListHeader.style.marginBottom = '6px';
+        dbListHeader.textContent = 'Verfuegbare Datenbanken';
+        this.filePanelContent.appendChild(dbListHeader);
+
+        const dbListContainer = document.createElement('div');
+        dbListContainer.style.display = 'flex';
+        dbListContainer.style.flexDirection = 'column';
+        dbListContainer.style.gap = '6px';
+        dbListContainer.style.marginBottom = '15px';
+
+        this.availableDatabases.forEach(db => {
+            const isCurrent = db.id === currentActive.id;
+            const dbItem = document.createElement('div');
+            dbItem.style.padding = '6px 8px';
+            dbItem.style.borderRadius = '4px';
+            dbItem.style.background = isCurrent ? 'rgba(143, 166, 73, 0.1)' : 'var(--bg-dark)';
+            dbItem.style.border = isCurrent ? '1px solid #a4c639' : '1px solid var(--border-color)';
+            dbItem.style.display = 'flex';
+            dbItem.style.justifyContent = 'space-between';
+            dbItem.style.alignItems = 'center';
+
+            const infoDiv = document.createElement('div');
+            infoDiv.style.flex = '1';
+            infoDiv.style.overflow = 'hidden';
+            infoDiv.style.marginRight = '8px';
+
+            const titleDiv = document.createElement('div');
+            titleDiv.style.fontSize = '11px';
+            titleDiv.style.fontWeight = isCurrent ? 'bold' : 'normal';
+            titleDiv.style.color = isCurrent ? '#a4c639' : 'var(--text-color)';
+            titleDiv.style.whiteSpace = 'nowrap';
+            titleDiv.style.overflow = 'hidden';
+            titleDiv.style.textOverflow = 'ellipsis';
+            titleDiv.textContent = db.name;
+
+            const pathDiv = document.createElement('div');
+            pathDiv.style.fontSize = '9px';
+            pathDiv.style.color = 'var(--text-muted)';
+            pathDiv.style.whiteSpace = 'nowrap';
+            pathDiv.style.overflow = 'hidden';
+            pathDiv.style.textOverflow = 'ellipsis';
+            pathDiv.textContent = db.path || db.id;
+
+            infoDiv.appendChild(titleDiv);
+            infoDiv.appendChild(pathDiv);
+            dbItem.appendChild(infoDiv);
+
+            const btnGroup = document.createElement('div');
+            btnGroup.style.display = 'flex';
+            btnGroup.style.alignItems = 'center';
+            btnGroup.style.gap = '4px';
+
+            if (!isCurrent) {
+                const loadBtn = document.createElement('button');
+                loadBtn.className = 'action-button secondary';
+                loadBtn.textContent = 'Laden';
+                loadBtn.style.padding = '2px 8px';
+                loadBtn.style.fontSize = '10px';
+                loadBtn.style.margin = '0';
+                loadBtn.onclick = async () => {
+                    this.stateManager.update({ activeDatabase: db });
+                    if (db.type === 'lightrag') {
+                        const rawId = db.id.replace('lightrag_', '');
+                        await fetch('/lightrag-api/databases/select', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name: rawId })
+                        });
+                    }
+                    this.renderFilePanel();
+                };
+                btnGroup.appendChild(loadBtn);
+            } else {
+                const activeBadge = document.createElement('span');
+                activeBadge.textContent = 'Aktiv';
+                activeBadge.style.fontSize = '10px';
+                activeBadge.style.color = '#a4c639';
+                activeBadge.style.fontWeight = 'bold';
+                activeBadge.style.padding = '2px 4px';
+                btnGroup.appendChild(activeBadge);
+            }
+
+            dbItem.appendChild(btnGroup);
+            dbListContainer.appendChild(dbItem);
+        });
+
+        this.filePanelContent.appendChild(dbListContainer);
 
         // --- ACTION BUTTONS (NEW / OPEN / SAVE AS) ---
         const actionsHeader = document.createElement('h4');
@@ -559,4 +829,143 @@ export class FilePanelUI {
 
         document.body.appendChild(overlay);
     }
+
+    private showCreateDatabaseDialog() {
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-overlay';
+        overlay.style.display = 'flex';
+
+        const modal = document.createElement('div');
+        modal.className = 'modal-content';
+        modal.style.maxWidth = '420px';
+
+        const header = document.createElement('div');
+        header.className = 'modal-header';
+        header.innerHTML = '<h3>Neue Datenbank erstellen</h3>';
+
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'modal-close';
+        closeBtn.innerHTML = '&times;';
+        closeBtn.onclick = () => document.body.contains(overlay) && document.body.removeChild(overlay);
+        header.appendChild(closeBtn);
+
+        const body = document.createElement('div');
+        body.className = 'modal-body';
+
+        const nameGroup = document.createElement('div');
+        nameGroup.className = 'form-group';
+        nameGroup.style.marginBottom = '12px';
+        nameGroup.innerHTML = `
+            <label style="display: block; margin-bottom: 4px; font-size: 11px; color: var(--text-muted);">DATENBANK-NAME</label>
+            <input type="text" id="newDbNameInput" value="neue_datenbank_1" style="width: 100%; box-sizing: border-box; padding: 8px;">
+        `;
+        body.appendChild(nameGroup);
+
+        const typeGroup = document.createElement('div');
+        typeGroup.className = 'form-group';
+        typeGroup.style.marginBottom = '12px';
+        typeGroup.innerHTML = `
+            <label style="display: block; margin-bottom: 4px; font-size: 11px; color: var(--text-muted);">TYP</label>
+            <select id="newDbTypeSelect" style="width: 100%; box-sizing: border-box; padding: 8px; background: var(--bg-dark); color: var(--text-color); border: 1px solid var(--border-color);">
+                <option value="json">Graph JSON Datenbank (.json)</option>
+                <option value="lightrag">LightRAG Wissensdatenbank</option>
+            </select>
+        `;
+        body.appendChild(typeGroup);
+
+        const footer = document.createElement('div');
+        footer.className = 'modal-footer';
+        footer.style.display = 'flex';
+        footer.style.gap = '10px';
+        footer.style.justifyContent = 'flex-end';
+
+        const createBtn = document.createElement('button');
+        createBtn.className = 'action-button';
+        createBtn.style.marginTop = '0';
+        createBtn.style.width = 'auto';
+        createBtn.style.padding = '8px 16px';
+        createBtn.textContent = 'Erstellen';
+        createBtn.onclick = async () => {
+            const nameInput = document.getElementById('newDbNameInput') as HTMLInputElement;
+            const typeSelect = document.getElementById('newDbTypeSelect') as HTMLSelectElement;
+            const dbName = nameInput ? nameInput.value.trim() : '';
+            const dbType = typeSelect ? typeSelect.value : 'json';
+
+            if (!dbName) {
+                alert('Bitte geben Sie einen Namen fuer die Datenbank ein.');
+                return;
+            }
+
+            if (document.body.contains(overlay)) {
+                document.body.removeChild(overlay);
+            }
+
+            if (dbType === 'json') {
+                const created = await this.app.fileHandler.createNewDatabase(dbName);
+                if (created) {
+                    const dbPath = `databases/${dbName.endsWith('.json') ? dbName : dbName + '.json'}`;
+                    this.stateManager.update({
+                        activeDatabase: {
+                            id: dbPath,
+                            name: `${dbName} (JSON)`,
+                            type: 'json',
+                            path: dbPath
+                        }
+                    });
+                    this.app.newGraph();
+                }
+            } else {
+                try {
+                    const res = await fetch('/lightrag-api/databases/create', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: dbName })
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        this.stateManager.update({
+                            activeDatabase: {
+                                id: `lightrag_${data.active_database}`,
+                                name: `${dbName} (LightRAG)`,
+                                type: 'lightrag',
+                                path: `./rag_storage/databases/${data.active_database}`
+                            }
+                        });
+                        this.app.fileHandler.showSuccess('LightRAG DB Erstellt', `LightRAG-Datenbank '${dbName}' wurde aktiviert.`);
+                    } else if (res.status === 404) {
+                        this.app.fileHandler.showError(
+                            'Backend Neustart erforderlich',
+                            'Der Python LightRAG-Backend-Server muss neugestartet werden, um die Datenbank-Funktionen zu aktivieren (npm run lightrag).'
+                        );
+                    } else {
+                        const errText = await res.text();
+                        this.app.fileHandler.showError('Fehler beim Erstellen', errText);
+                    }
+                } catch (e: any) {
+                    this.app.fileHandler.showError('Fehler', e.message);
+                }
+            }
+
+            await this.loadAvailableFiles();
+        };
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'action-button secondary';
+        cancelBtn.style.marginTop = '0';
+        cancelBtn.style.width = 'auto';
+        cancelBtn.style.padding = '8px 16px';
+        cancelBtn.textContent = 'Abbrechen';
+        cancelBtn.onclick = () => document.body.contains(overlay) && document.body.removeChild(overlay);
+
+        footer.appendChild(createBtn);
+        footer.appendChild(cancelBtn);
+
+        modal.appendChild(header);
+        modal.appendChild(body);
+        modal.appendChild(footer);
+        overlay.appendChild(modal);
+
+        document.body.appendChild(overlay);
+    }
 }
+

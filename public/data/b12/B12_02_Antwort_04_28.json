@@ -3,10 +3,10 @@
   "graphData": {
     "metadata": {
       "schemaVersion": "5.2",
-      "description": "LightRAG Query Result: Du bist ein Experte fuer politische Systeme und Graph-Datenbanken. Erfasse das politische System der Schweiz und strukturiere alle Entitaeten in klar abgegrenzte Gruppen und Hierarchien.\n\nAchte besonders auf folgende Gruppierungsebenen:\n1. Foederale Ebene (Bund, Kantone, Gemeinden)\n2. Gewaltenteilung (Exekutive, Legislative, Judikative)\n3. Organisationseinheiten (z. B. Bundesrat, Nationalrat, Staenderat, Bundesgericht, Parteien, Fraktionen, Departemente)\n4. Akteure & Mitglieder (z. B. Bundesraete, Parlamentsmitglieder, Parteimitglieder)\n\nGib das Ergebnis ausschliesslich als valides JSON-Objekt mit folgender Struktur aus:\n\n{\n  \"groups\": [\n    {\n      \"id\": \"group_exekutive_bund\",\n      \"label\": \"Exekutive (Bund)\",\n      \"category\": \"Gewaltenteilung\",\n      \"parentGroupId\": \"group_bund\",\n      \"description\": \"Die ausfuehrende Gewalt auf Bundesebene\"\n    },\n    {\n      \"id\": \"group_bundesrat\",\n      \"label\": \"Bundesrat\",\n      \"category\": \"Gremium\",\n      \"parentGroupId\": \"group_exekutive_bund\",\n      \"description\": \"Siebenkoepfige Landesregierung der Schweizerischen Eidgenossenschaft\"\n    }\n  ],\n  \"nodes\": [\n    {\n      \"id\": \"node_person_1\",\n      \"label\": \"Name der Person oder Institution\",\n      \"groupId\": \"group_bundesrat\",\n      \"attributes\": {\n        \"partei\": \"Partei-Name\",\n        \"kanton\": \"Kanton-Kuerzel\",\n        \"funktion\": \"Mitglied / Praesident\"\n      }\n    }\n  ],\n  \"edges\": [\n    {\n      \"source\": \"node_person_1\",\n      \"target\": \"group_bundesrat\",\n      \"relation\": \"member_of\"\n    },\n    {\n      \"source\": \"group_bundesrat\",\n      \"target\": \"group_exekutive_bund\",\n      \"relation\": \"part_of\"\n    }\n  ]\n}\n\nAnalysiere das politische System der Schweiz vollstaendig nach diesen Vorgaben und erstelle das JSON.",
-      "nodgesVersion": "0.102.14",
+      "description": "LightRAG Query Result: System der Schweizer Politik",
+      "nodgesVersion": "0.102.15",
       "build": "build12_lightrag",
-      "prompt": "Du bist ein Experte fuer politische Systeme und Graph-Datenbanken. Erfasse das politische System der Schweiz und strukturiere alle Entitaeten in klar abgegrenzte Gruppen und Hierarchien.\n\nAchte besonders auf folgende Gruppierungsebenen:\n1. Foederale Ebene (Bund, Kantone, Gemeinden)\n2. Gewaltenteilung (Exekutive, Legislative, Judikative)\n3. Organisationseinheiten (z. B. Bundesrat, Nationalrat, Staenderat, Bundesgericht, Parteien, Fraktionen, Departemente)\n4. Akteure & Mitglieder (z. B. Bundesraete, Parlamentsmitglieder, Parteimitglieder)\n\nGib das Ergebnis ausschliesslich als valides JSON-Objekt mit folgender Struktur aus:\n\n{\n  \"groups\": [\n    {\n      \"id\": \"group_exekutive_bund\",\n      \"label\": \"Exekutive (Bund)\",\n      \"category\": \"Gewaltenteilung\",\n      \"parentGroupId\": \"group_bund\",\n      \"description\": \"Die ausfuehrende Gewalt auf Bundesebene\"\n    },\n    {\n      \"id\": \"group_bundesrat\",\n      \"label\": \"Bundesrat\",\n      \"category\": \"Gremium\",\n      \"parentGroupId\": \"group_exekutive_bund\",\n      \"description\": \"Siebenkoepfige Landesregierung der Schweizerischen Eidgenossenschaft\"\n    }\n  ],\n  \"nodes\": [\n    {\n      \"id\": \"node_person_1\",\n      \"label\": \"Name der Person oder Institution\",\n      \"groupId\": \"group_bundesrat\",\n      \"attributes\": {\n        \"partei\": \"Partei-Name\",\n        \"kanton\": \"Kanton-Kuerzel\",\n        \"funktion\": \"Mitglied / Praesident\"\n      }\n    }\n  ],\n  \"edges\": [\n    {\n      \"source\": \"node_person_1\",\n      \"target\": \"group_bundesrat\",\n      \"relation\": \"member_of\"\n    },\n    {\n      \"source\": \"group_bundesrat\",\n      \"target\": \"group_exekutive_bund\",\n      \"relation\": \"part_of\"\n    }\n  ]\n}\n\nAnalysiere das politische System der Schweiz vollstaendig nach diesen Vorgaben und erstelle das JSON.",
+      "prompt": "System der Schweizer Politik",
       "buildParameters": {
         "provider": "openrouter",
         "model": "morph/morph-v3-large",
@@ -18,13 +18,13 @@
         }
       },
       "generationDetails": {
-        "prompt": "Du bist ein Experte fuer politische Systeme und Graph-Datenbanken. Erfasse das politische System der Schweiz und strukturiere alle Entitaeten in klar abgegrenzte Gruppen und Hierarchien.\n\nAchte besonders auf folgende Gruppierungsebenen:\n1. Foederale Ebene (Bund, Kantone, Gemeinden)\n2. Gewaltenteilung (Exekutive, Legislative, Judikative)\n3. Organisationseinheiten (z. B. Bundesrat, Nationalrat, Staenderat, Bundesgericht, Parteien, Fraktionen, Departemente)\n4. Akteure & Mitglieder (z. B. Bundesraete, Parlamentsmitglieder, Parteimitglieder)\n\nGib das Ergebnis ausschliesslich als valides JSON-Objekt mit folgender Struktur aus:\n\n{\n  \"groups\": [\n    {\n      \"id\": \"group_exekutive_bund\",\n      \"label\": \"Exekutive (Bund)\",\n      \"category\": \"Gewaltenteilung\",\n      \"parentGroupId\": \"group_bund\",\n      \"description\": \"Die ausfuehrende Gewalt auf Bundesebene\"\n    },\n    {\n      \"id\": \"group_bundesrat\",\n      \"label\": \"Bundesrat\",\n      \"category\": \"Gremium\",\n      \"parentGroupId\": \"group_exekutive_bund\",\n      \"description\": \"Siebenkoepfige Landesregierung der Schweizerischen Eidgenossenschaft\"\n    }\n  ],\n  \"nodes\": [\n    {\n      \"id\": \"node_person_1\",\n      \"label\": \"Name der Person oder Institution\",\n      \"groupId\": \"group_bundesrat\",\n      \"attributes\": {\n        \"partei\": \"Partei-Name\",\n        \"kanton\": \"Kanton-Kuerzel\",\n        \"funktion\": \"Mitglied / Praesident\"\n      }\n    }\n  ],\n  \"edges\": [\n    {\n      \"source\": \"node_person_1\",\n      \"target\": \"group_bundesrat\",\n      \"relation\": \"member_of\"\n    },\n    {\n      \"source\": \"group_bundesrat\",\n      \"target\": \"group_exekutive_bund\",\n      \"relation\": \"part_of\"\n    }\n  ]\n}\n\nAnalysiere das politische System der Schweiz vollstaendig nach diesen Vorgaben und erstelle das JSON.",
+        "prompt": "System der Schweizer Politik",
         "context": null,
         "provider": "openrouter",
         "model": "morph/morph-v3-large",
         "pipeline": "build12_lightrag",
-        "durationMs": 6624,
-        "timestamp": "2026-07-27T15:56:43.842Z"
+        "durationMs": 3822,
+        "timestamp": "2026-07-28T11:58:20.171Z"
       }
     },
     "dataModel": {
@@ -42,51 +42,6 @@
             "other",
             "UNKNOWN"
           ]
-        },
-        "group_id": {
-          "type": "categorical",
-          "values": [
-            "Ständerat",
-            "group_person",
-            "Vereinigte Bundesversammlung",
-            "Guy Parmelin",
-            "Bundesrat",
-            "group_event",
-            "Schweizerische Eidgenossenschaft",
-            "Föderalismus",
-            "Volksrechte",
-            "Schweizer Regierung",
-            "group_concept",
-            "Parlament",
-            "group_content",
-            "group_location",
-            "Volksvertretung",
-            "Volksinitiative",
-            "group_method",
-            "Ignazio Cassis",
-            "Martin Pfister",
-            "Karin Keller-Sutter",
-            "Regierungsrat",
-            "Staatsrat",
-            "Standeskommission",
-            "Kanton",
-            "group_other",
-            "Kantonsrat",
-            "Volksabstimmung",
-            "Kanton Waadt",
-            "Eidgenössisches Versicherungsgericht",
-            "Bundesgericht",
-            "Bundesstrafgericht",
-            "Bundesverwaltungsgericht",
-            "Bundespatentgericht",
-            "Eidgenössische Schätzungskommission",
-            "group_UNKNOWN",
-            "Schweizerische Volkspartei",
-            "Sozialdemokratische Partei der Schweiz"
-          ]
-        },
-        "is_group_header": {
-          "type": "boolean"
         }
       }
     },
@@ -107,24 +62,6 @@
               "#6366f1"
             ]
           }
-        },
-        "group_color_preset": {
-          "color": {
-            "field": "group_id",
-            "function": "categorical",
-            "range": [
-              "#3b82f6",
-              "#10b981",
-              "#f59e0b",
-              "#ef4444",
-              "#8b5cf6",
-              "#ec4899",
-              "#14b8a6",
-              "#6366f1",
-              "#84cc16",
-              "#06b6d4"
-            ]
-          }
         }
       }
     },
@@ -139,18 +76,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Ständerat",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 5,
-          "group_members": [
-            "Nationalrat",
-            "Kanton",
-            "Kantonsvertretung",
-            "Instruktionsverbot",
-            "Parlament"
-          ]
+          "truncate": ""
         },
         {
           "id": "Ständerätin",
@@ -161,12 +87,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_person",
-          "is_group_header": false,
-          "parent_id": "group_person",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton",
@@ -177,17 +98,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Ständerat",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 4,
-          "group_members": [
-            "Gericht",
-            "Appellationsgericht",
-            "Cour de justice",
-            "Jugendgerichte"
-          ]
+          "truncate": ""
         },
         {
           "id": "Nationalrat",
@@ -198,12 +109,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Ständerat",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Vereinigte Bundesversammlung",
@@ -214,12 +120,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Vereinigte Bundesversammlung",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Bundesrat",
@@ -230,17 +131,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Guy Parmelin",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 4,
-          "group_members": [
-            "Bundespräsident",
-            "Bundeskanzlei",
-            "Albert Rösti",
-            "Beat Jans"
-          ]
+          "truncate": ""
         },
         {
           "id": "Bundespräsident",
@@ -251,12 +142,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-000<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Bundesrat",
-          "is_group_header": false,
-          "parent_id": "Bundesrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Landsgemeinde",
@@ -267,12 +153,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_event",
-          "is_group_header": false,
-          "parent_id": "group_event",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kantonsvertretung",
@@ -283,12 +164,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Ständerat",
-          "is_group_header": false,
-          "parent_id": "Ständerat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Instruktionsverbot",
@@ -299,12 +175,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-001",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Ständerat",
-          "is_group_header": false,
-          "parent_id": "Ständerat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Schweizerische Eidgenossenschaft",
@@ -315,15 +186,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Schweizerische Eidgenossenschaft",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 2,
-          "group_members": [
-            "Bundesrat",
-            "Föderalismus"
-          ]
+          "truncate": ""
         },
         {
           "id": "Föderalismus",
@@ -334,15 +197,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Schweizerische Eidgenossenschaft",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 2,
-          "group_members": [
-            "Direkte Demokratie",
-            "Bundesverfassung"
-          ]
+          "truncate": ""
         },
         {
           "id": "Direkte Demokratie",
@@ -353,12 +208,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Föderalismus",
-          "is_group_header": false,
-          "parent_id": "Föderalismus",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Volksrechte",
@@ -369,23 +219,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksrechte",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 10,
-          "group_members": [
-            "Direkte Demokratie",
-            "Gewaltenteilung",
-            "Schweizer Demokratie",
-            "Bundesverfassung",
-            "Referendumsrecht",
-            "Stimmrecht",
-            "Kantonale Rechte",
-            "Gesetzesinitiative",
-            "Finanzreferendum",
-            "Stimmberechtigte"
-          ]
+          "truncate": ""
         },
         {
           "id": "Gewaltenteilung",
@@ -396,12 +230,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksrechte",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Bundesversammlung",
@@ -412,12 +241,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Schweizer Regierung",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Schweizer Regierung",
@@ -428,15 +252,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Schweizer Regierung",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 2,
-          "group_members": [
-            "Bundespräsident",
-            "Bundesversammlung"
-          ]
+          "truncate": ""
         },
         {
           "id": "Staatliche Ebenen",
@@ -447,12 +263,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_concept",
-          "is_group_header": false,
-          "parent_id": "group_concept",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Bund",
@@ -463,12 +274,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Parlament",
-          "is_group_header": false,
-          "parent_id": "Parlament",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Parlament",
@@ -479,15 +285,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Ständerat",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 2,
-          "group_members": [
-            "Nationalrat",
-            "Bund"
-          ]
+          "truncate": ""
         },
         {
           "id": "schweizerische Bundesverfassung",
@@ -498,12 +296,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_content",
-          "is_group_header": false,
-          "parent_id": "group_content",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kantone",
@@ -514,12 +307,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_location",
-          "is_group_header": false,
-          "parent_id": "group_location",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Bezirke",
@@ -530,12 +318,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_location",
-          "is_group_header": false,
-          "parent_id": "group_location",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Volksvertretung",
@@ -546,17 +329,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksvertretung",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 4,
-          "group_members": [
-            "Kantonsvertretung",
-            "Interpellation",
-            "Motion",
-            "Postulat"
-          ]
+          "truncate": ""
         },
         {
           "id": "Interpellation",
@@ -567,12 +340,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksvertretung",
-          "is_group_header": false,
-          "parent_id": "Volksvertretung",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Motion",
@@ -583,12 +351,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksvertretung",
-          "is_group_header": false,
-          "parent_id": "Volksvertretung",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Postulat",
@@ -599,12 +362,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksvertretung",
-          "is_group_header": false,
-          "parent_id": "Volksvertretung",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Subsidiarität",
@@ -615,12 +373,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_concept",
-          "is_group_header": false,
-          "parent_id": "group_concept",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Urnengang",
@@ -631,12 +384,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_concept",
-          "is_group_header": false,
-          "parent_id": "group_concept",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Schweizer Demokratie",
@@ -647,12 +395,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksrechte",
-          "is_group_header": false,
-          "parent_id": "Volksrechte",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Bundesverfassung",
@@ -663,12 +406,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Föderalismus",
-          "is_group_header": false,
-          "parent_id": "Föderalismus",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Volksinitiative",
@@ -679,15 +417,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksinitiative",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 2,
-          "group_members": [
-            "Bundesverfassung",
-            "Kantonsverfassungen"
-          ]
+          "truncate": ""
         },
         {
           "id": "Referendumsrecht",
@@ -698,12 +428,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksrechte",
-          "is_group_header": false,
-          "parent_id": "Volksrechte",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Wahlrecht",
@@ -714,12 +439,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_method",
-          "is_group_header": false,
-          "parent_id": "group_method",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Stimmrecht",
@@ -730,12 +450,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksrechte",
-          "is_group_header": false,
-          "parent_id": "Volksrechte",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kantonale Rechte",
@@ -746,12 +461,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksrechte",
-          "is_group_header": false,
-          "parent_id": "Volksrechte",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Gesetzesinitiative",
@@ -762,12 +472,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksrechte",
-          "is_group_header": false,
-          "parent_id": "Volksrechte",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Finanzreferendum",
@@ -778,12 +483,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksrechte",
-          "is_group_header": false,
-          "parent_id": "Volksrechte",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Stimmberechtigte",
@@ -794,12 +494,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-005",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksrechte",
-          "is_group_header": false,
-          "parent_id": "Volksrechte",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Vizepräsident",
@@ -810,12 +505,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_person",
-          "is_group_header": false,
-          "parent_id": "group_person",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Bundeskanzlei",
@@ -826,12 +516,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Bundesrat",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Bundeskanzler",
@@ -842,12 +527,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_person",
-          "is_group_header": false,
-          "parent_id": "group_person",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Guy Parmelin",
@@ -858,15 +538,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002<SEP>doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784834653,
-          "truncate": "",
-          "group_id": "Ignazio Cassis",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 2,
-          "group_members": [
-            "Bundesrat",
-            "Albert Roesti"
-          ]
+          "truncate": ""
         },
         {
           "id": "Ignazio Cassis",
@@ -877,16 +549,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002<SEP>doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784834653,
-          "truncate": "",
-          "group_id": "Ignazio Cassis",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 3,
-          "group_members": [
-            "Bundesrat",
-            "Guy Parmelin",
-            "FDP.Die Liberalen"
-          ]
+          "truncate": ""
         },
         {
           "id": "Karin Keller-Sutter",
@@ -897,16 +560,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002<SEP>doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784834653,
-          "truncate": "",
-          "group_id": "Martin Pfister",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 3,
-          "group_members": [
-            "Bundesrat",
-            "Elisabeth Baume-Schneider",
-            "FDP.Die Liberalen"
-          ]
+          "truncate": ""
         },
         {
           "id": "Albert Rösti",
@@ -917,12 +571,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Bundesrat",
-          "is_group_header": false,
-          "parent_id": "Bundesrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Elisabeth Baume-Schneider",
@@ -933,15 +582,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002<SEP>doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784834653,
-          "truncate": "",
-          "group_id": "Karin Keller-Sutter",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 2,
-          "group_members": [
-            "Bundesrat",
-            "Beat Jans"
-          ]
+          "truncate": ""
         },
         {
           "id": "Beat Jans",
@@ -952,12 +593,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002<SEP>doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784834653,
-          "truncate": "",
-          "group_id": "Bundesrat",
-          "is_group_header": false,
-          "parent_id": "Bundesrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Martin Pfister",
@@ -968,16 +604,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002<SEP>doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784834653,
-          "truncate": "",
-          "group_id": "Martin Pfister",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 3,
-          "group_members": [
-            "Bundesrat",
-            "Karin Keller-Sutter",
-            "Die Mitte"
-          ]
+          "truncate": ""
         },
         {
           "id": "Regierungsrat",
@@ -988,15 +615,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Regierungsrat",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 2,
-          "group_members": [
-            "Bundesrat",
-            "Primus inter Pares"
-          ]
+          "truncate": ""
         },
         {
           "id": "Staatsrat",
@@ -1007,12 +626,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Staatsrat",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Standeskommission",
@@ -1023,12 +637,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Standeskommission",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Primus inter Pares",
@@ -1039,12 +648,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-002",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Regierungsrat",
-          "is_group_header": false,
-          "parent_id": "Regierungsrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Gericht",
@@ -1055,12 +659,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kanton",
-          "is_group_header": false,
-          "parent_id": "Kanton",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Obergericht",
@@ -1071,12 +670,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_other",
-          "is_group_header": false,
-          "parent_id": "group_other",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Appellationsgericht",
@@ -1087,12 +681,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kanton",
-          "is_group_header": false,
-          "parent_id": "Kanton",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Cour de justice",
@@ -1103,12 +692,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kanton",
-          "is_group_header": false,
-          "parent_id": "Kanton",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Zwangsmassnahmengerichte",
@@ -1119,12 +703,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_other",
-          "is_group_header": false,
-          "parent_id": "group_other",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Verwaltungsgericht",
@@ -1135,12 +714,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_other",
-          "is_group_header": false,
-          "parent_id": "group_other",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Spezialverwaltungsgerichte",
@@ -1151,12 +725,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_other",
-          "is_group_header": false,
-          "parent_id": "group_other",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Jugendgerichte",
@@ -1167,12 +736,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kanton",
-          "is_group_header": false,
-          "parent_id": "Kanton",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Strafgericht",
@@ -1183,12 +747,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_other",
-          "is_group_header": false,
-          "parent_id": "group_other",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kassationsgericht",
@@ -1199,12 +758,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_other",
-          "is_group_header": false,
-          "parent_id": "group_other",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Verfassungsgericht",
@@ -1215,12 +769,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_other",
-          "is_group_header": false,
-          "parent_id": "group_other",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "direkte Demokratie",
@@ -1231,12 +780,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_concept",
-          "is_group_header": false,
-          "parent_id": "group_concept",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "repräsentative Demokratie",
@@ -1247,12 +791,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-004",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_concept",
-          "is_group_header": false,
-          "parent_id": "group_concept",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Zürich",
@@ -1263,12 +802,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kantonsrat",
-          "is_group_header": false,
-          "parent_id": "Kantonsrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Freiburg",
@@ -1279,12 +813,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kantonsrat",
-          "is_group_header": false,
-          "parent_id": "Kantonsrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Schaffhausen",
@@ -1295,12 +824,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kantonsrat",
-          "is_group_header": false,
-          "parent_id": "Kantonsrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Solothurn",
@@ -1311,12 +835,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kantonsrat",
-          "is_group_header": false,
-          "parent_id": "Kantonsrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Appenzell Innerrhoden",
@@ -1327,12 +846,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kantonsrat",
-          "is_group_header": false,
-          "parent_id": "Kantonsrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Glarus",
@@ -1343,12 +857,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kantonsrat",
-          "is_group_header": false,
-          "parent_id": "Kantonsrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Appenzell Ausserrhoden",
@@ -1359,12 +868,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kantonsrat",
-          "is_group_header": false,
-          "parent_id": "Kantonsrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Bern",
@@ -1375,12 +879,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006<SEP>doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kantonsrat",
-          "is_group_header": false,
-          "parent_id": "Kantonsrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Nidwalden",
@@ -1391,12 +890,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kantonsrat",
-          "is_group_header": false,
-          "parent_id": "Kantonsrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Basel-Landschaft",
@@ -1407,12 +901,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kantonsrat",
-          "is_group_header": false,
-          "parent_id": "Kantonsrat",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kantonsrat",
@@ -1423,23 +912,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksabstimmung",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 10,
-          "group_members": [
-            "Kanton Zürich",
-            "Kanton Freiburg",
-            "Kanton Schaffhausen",
-            "Kanton Solothurn",
-            "Kanton Appenzell Innerrhoden",
-            "Kanton Glarus",
-            "Kanton Appenzell Ausserrhoden",
-            "Kanton Bern",
-            "Kanton Nidwalden",
-            "Kanton Basel-Landschaft"
-          ]
+          "truncate": ""
         },
         {
           "id": "Volksabstimmung",
@@ -1450,17 +923,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksabstimmung",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 4,
-          "group_members": [
-            "Kanton Zürich",
-            "Kantonsrat",
-            "Einzelinitiative",
-            "Abstimmungen"
-          ]
+          "truncate": ""
         },
         {
           "id": "Einzelinitiative",
@@ -1471,12 +934,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksabstimmung",
-          "is_group_header": false,
-          "parent_id": "Volksabstimmung",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Volksmotion",
@@ -1487,12 +945,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_method",
-          "is_group_header": false,
-          "parent_id": "group_method",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Volksdiskussion",
@@ -1503,12 +956,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_method",
-          "is_group_header": false,
-          "parent_id": "group_method",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "konstruktives Referendum",
@@ -1519,12 +967,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_method",
-          "is_group_header": false,
-          "parent_id": "group_method",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Abstimmungen",
@@ -1535,12 +978,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksabstimmung",
-          "is_group_header": false,
-          "parent_id": "Volksabstimmung",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kantonsverfassungen",
@@ -1551,12 +989,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Volksinitiative",
-          "is_group_header": false,
-          "parent_id": "Volksinitiative",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Wahlbeteiligung",
@@ -1567,12 +1000,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-006",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_concept",
-          "is_group_header": false,
-          "parent_id": "group_concept",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Schweiz",
@@ -1583,12 +1011,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_location",
-          "is_group_header": false,
-          "parent_id": "group_location",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Lausanne",
@@ -1599,12 +1022,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_location",
-          "is_group_header": false,
-          "parent_id": "group_location",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Luzern",
@@ -1615,12 +1033,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_location",
-          "is_group_header": false,
-          "parent_id": "group_location",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Bellinzona",
@@ -1631,12 +1044,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_location",
-          "is_group_header": false,
-          "parent_id": "group_location",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "St. Gallen",
@@ -1647,12 +1055,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_location",
-          "is_group_header": false,
-          "parent_id": "group_location",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Bern",
@@ -1663,12 +1066,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_location",
-          "is_group_header": false,
-          "parent_id": "group_location",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Zollikofen",
@@ -1679,12 +1077,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_location",
-          "is_group_header": false,
-          "parent_id": "group_location",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Luzern",
@@ -1695,12 +1088,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_location",
-          "is_group_header": false,
-          "parent_id": "group_location",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Tessin",
@@ -1711,12 +1099,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kanton Waadt",
-          "is_group_header": false,
-          "parent_id": "Kanton Waadt",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Waadt",
@@ -1727,15 +1110,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Kanton Waadt",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 2,
-          "group_members": [
-            "Kanton Freiburg",
-            "Kanton Tessin"
-          ]
+          "truncate": ""
         },
         {
           "id": "Kanton Basel-Stadt",
@@ -1746,12 +1121,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_location",
-          "is_group_header": false,
-          "parent_id": "group_location",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Uri",
@@ -1762,12 +1132,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_location",
-          "is_group_header": false,
-          "parent_id": "group_location",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Thurgau",
@@ -1778,12 +1143,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_location",
-          "is_group_header": false,
-          "parent_id": "group_location",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Eidgenössisches Versicherungsgericht",
@@ -1794,12 +1154,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Eidgenössisches Versicherungsgericht",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Bundesgericht",
@@ -1810,12 +1165,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Bundesgericht",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Bundesstrafgericht",
@@ -1826,12 +1176,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Bundesstrafgericht",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Bundesverwaltungsgericht",
@@ -1842,12 +1187,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Bundesverwaltungsgericht",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Bundespatentgericht",
@@ -1858,12 +1198,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Bundespatentgericht",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Eidgenössische Schätzungskommission",
@@ -1874,12 +1209,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "Eidgenössische Schätzungskommission",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Regierender Landammann",
@@ -1890,12 +1220,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_other",
-          "is_group_header": false,
-          "parent_id": "group_other",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Schultheiss",
@@ -1906,12 +1231,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_other",
-          "is_group_header": false,
-          "parent_id": "group_other",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Regierungspräsident",
@@ -1922,12 +1242,7 @@
           "source_id": "doc-67a86848d7820be81a8cc7885716f2f2-chunk-003",
           "file_path": "unknown_source",
           "created_at": 1784799658,
-          "truncate": "",
-          "group_id": "group_other",
-          "is_group_header": false,
-          "parent_id": "group_other",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Kanton Baselland",
@@ -1938,12 +1253,7 @@
           "entity_type": "UNKNOWN",
           "file_path": "unknown_source",
           "created_at": 1784799659,
-          "truncate": "",
-          "group_id": "group_UNKNOWN",
-          "is_group_header": false,
-          "parent_id": "group_UNKNOWN",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Appenzell Innerrhoden",
@@ -1954,12 +1264,7 @@
           "entity_type": "UNKNOWN",
           "file_path": "unknown_source",
           "created_at": 1784799659,
-          "truncate": "",
-          "group_id": "group_UNKNOWN",
-          "is_group_header": false,
-          "parent_id": "group_UNKNOWN",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Albert Roesti",
@@ -1970,12 +1275,7 @@
           "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784834653,
-          "truncate": "",
-          "group_id": "Guy Parmelin",
-          "is_group_header": false,
-          "parent_id": "Guy Parmelin",
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Schweizerische Volkspartei",
@@ -1986,12 +1286,7 @@
           "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784834653,
-          "truncate": "",
-          "group_id": "Schweizerische Volkspartei",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "FDP.Die Liberalen",
@@ -2002,12 +1297,7 @@
           "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784834653,
-          "truncate": "",
-          "group_id": "Ignazio Cassis",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Die Mitte",
@@ -2018,12 +1308,7 @@
           "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784834653,
-          "truncate": "",
-          "group_id": "Martin Pfister",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 0,
-          "group_members": []
+          "truncate": ""
         },
         {
           "id": "Sozialdemokratische Partei der Schweiz",
@@ -2034,15 +1319,7 @@
           "source_id": "doc-94e3e6258ab98fce781a5c362a19d85b-chunk-000",
           "file_path": "unknown_source",
           "created_at": 1784834653,
-          "truncate": "",
-          "group_id": "Sozialdemokratische Partei der Schweiz",
-          "is_group_header": true,
-          "parent_id": null,
-          "member_count": 2,
-          "group_members": [
-            "Elisabeth Baume-Schneider",
-            "Beat Jans"
-          ]
+          "truncate": ""
         }
       ],
       "relationships": [

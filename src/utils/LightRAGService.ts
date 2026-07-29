@@ -82,9 +82,12 @@ export class LightRAGService {
 
         const uniqueEntityTypes = Array.from(entityTypesSet);
 
+        const activeRelLabels = (window as any).app?.uiManager?.createPanel?.getActiveRelationLabels() || [];
+
         const relationships: RelationshipData[] = (data.graph_context?.edges || []).map((edge, idx) => {
             const props = edge.properties || {};
-            const relName = String(edge.relation || props.relation || props.relation_type || props.predicate || props.label || props.keywords || 'verknuepft');
+            const rawRelName = String(edge.relation || props.relation || props.relation_type || props.predicate || props.label || props.keywords || 'verknuepft');
+            const relName = activeRelLabels.length > 0 ? normalizeRelation(rawRelName, activeRelLabels) : rawRelName;
             return {
                 id: `rel_lightrag_${idx}_${edge.source}_${edge.target}`,
                 source: String(edge.source),
@@ -154,4 +157,52 @@ export class LightRAGService {
             message: data.message || 'Text successfully processed.'
         };
     }
+}
+
+function normalizeRelation(rawRel: string, allowedSet: string[]): string {
+    if (!allowedSet || allowedSet.length === 0 || !rawRel) return rawRel;
+    const rawLower = rawRel.toLowerCase();
+
+    // 1. Direct match
+    const exact = allowedSet.find(s => s.toLowerCase() === rawLower);
+    if (exact) return exact;
+
+    // 2. Keyword mapping
+    for (const allowed of allowedSet) {
+        const aLower = allowed.toLowerCase();
+        if ((rawLower.includes('member') || rawLower.includes('part') || rawLower.includes('include') || rawLower.includes('comprise')) &&
+            (aLower.includes('mitglied') || aLower.includes('member') || aLower.includes('part'))) return allowed;
+
+        if ((rawLower.includes('elect') || rawLower.includes('designat') || rawLower.includes('appoint')) &&
+            (aLower.includes('wählt') || aLower.includes('waehlt') || aLower.includes('elect'))) return allowed;
+
+        if ((rawLower.includes('govern') || rawLower.includes('lead') || rawLower.includes('presid')) &&
+            (aLower.includes('leitet') || aLower.includes('lead') || aLower.includes('govern'))) return allowed;
+
+        if ((rawLower.includes('represent')) &&
+            (aLower.includes('vertritt') || aLower.includes('represent'))) return allowed;
+
+        if ((rawLower.includes('allow') || rawLower.includes('empower') || rawLower.includes('enable') || rawLower.includes('grant')) &&
+            (aLower.includes('ermächtigt') || aLower.includes('ermaechtigt') || aLower.includes('allow'))) return allowed;
+
+        if ((rawLower.includes('propos') || rawLower.includes('legislat') || rawLower.includes('change') || rawLower.includes('adopt')) &&
+            (aLower.includes('schlägt') || aLower.includes('schlaegt') || aLower.includes('propos'))) return allowed;
+
+        if ((rawLower.includes('affiliat') || rawLower.includes('location') || rawLower.includes('in')) &&
+            (aLower.includes('gehört') || aLower.includes('gehoert') || aLower.includes('location'))) return allowed;
+
+        if ((rawLower.includes('ensure') || rawLower.includes('determin') || rawLower.includes('frame')) &&
+            (aLower.includes('kontrolliert') || aLower.includes('control'))) return allowed;
+
+        if ((rawLower.includes('neighbor') || rawLower.includes('geography')) &&
+            (aLower.includes('nachbar') || aLower.includes('neighbor'))) return allowed;
+
+        if ((rawLower.includes('trigger') || rawLower.includes('influenc') || rawLower.includes('invok')) &&
+            (aLower.includes('beeinflusst') || aLower.includes('influenc'))) return allowed;
+
+        if ((rawLower.includes('support') || rawLower.includes('utiliz') || rawLower.includes('use')) &&
+            (aLower.includes('unterstützt') || aLower.includes('unterstuetzt') || aLower.includes('use'))) return allowed;
+    }
+
+    return allowedSet[0] || rawRel;
 }

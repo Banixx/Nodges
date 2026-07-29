@@ -1,0 +1,12 @@
+{
+  "system": {
+    "name": "neue_datenbank_1",
+    "version": "1.0"
+  },
+  "dataModel": {
+    "entityTypes": [],
+    "relationshipTypes": []
+  },
+  "entities": [],
+  "relationships": []
+}

@@ -1,0 +1,18 @@
+{
+  "name": "Schweizer Politik & Governance",
+  "description": "Restriktives Beziehungs-Set für das politische System der Schweiz",
+  "relations": [
+    { "id": "MITGLIED_VON", "label": "mitglied von", "description": "Mitgliedschaft in Gremium oder Organisation", "enabled": true },
+    { "id": "WAEHLT", "label": "wählt", "description": "Wahl oder Ernennung von Personen/Ämtern", "enabled": true },
+    { "id": "LEITET", "label": "leitet", "description": "Führung, Präsidentschaft, Vorsitz", "enabled": true },
+    { "id": "VERTRITT", "label": "vertritt", "description": "Vertretung von Interessen oder Regionen", "enabled": true },
+    { "id": "ERMAECHTIGT", "label": "ermächtigt", "description": "Rechtliche Befugnis oder Erlaubnis", "enabled": true },
+    { "id": "SCHLAEGT_VOR", "label": "schlägt vor", "description": "Gesetzgebung, Vorschlag, Beschluss", "enabled": true },
+    { "id": "GEHOERT_ZU", "label": "gehört zu", "description": "Zuordnung zu Partei, Kanton oder Region", "enabled": true },
+    { "id": "KONTROLLIERT", "label": "kontrolliert", "description": "Aufsicht, Verfassungsrahmen, Verpflichtung", "enabled": true },
+    { "id": "NACHBAR_VON", "label": "nachbar von", "description": "Geografische Nachbarschaft", "enabled": true },
+    { "id": "BEEINFLUSST", "label": "beeinflusst", "description": "Auslösung von Prozessen oder Einflussnahme", "enabled": true },
+    { "id": "IST", "label": "ist", "description": "Identität oder Wesensmerkmal", "enabled": true },
+    { "id": "UNTERSTUETZT", "label": "unterstützt", "description": "Nutzung oder Unterstützung", "enabled": true }
+  ]
+}
