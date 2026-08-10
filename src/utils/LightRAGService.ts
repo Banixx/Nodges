@@ -1,10 +1,25 @@
 import { GraphData, EntityData, RelationshipData } from '../types';
 
+export interface LightRAGDatabaseInfo {
+    id: string;
+    name: string;
+    path: string;
+    active: boolean;
+}
+
+export interface LightRAGDatabaseList {
+    status: string;
+    active_database: string;
+    databases: LightRAGDatabaseInfo[];
+}
+
 export interface LightRAGQueryResponse {
     status: string;
     query: string;
     mode: string;
     answer: string;
+    mock?: boolean;
+    engine_active?: boolean;
     graph_context: {
         nodes: Array<{
             id: string;
@@ -50,7 +65,7 @@ export class LightRAGService {
         query: string,
         mode: 'local' | 'global' | 'hybrid' = 'hybrid',
         baseUrl: string = LightRAGService.defaultBaseUrl
-    ): Promise<{ answer: string; graphData: GraphData }> {
+    ): Promise<{ answer: string; graphData: GraphData; mock: boolean }> {
         const response = await fetch(`${baseUrl}/query`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -99,6 +114,7 @@ export class LightRAGService {
         });
 
         const graphData: GraphData = {
+            system: 'Semantic Graph',
             metadata: {
                 schemaVersion: "5.2",
                 description: `LightRAG Query Result: ${query}`
@@ -128,9 +144,11 @@ export class LightRAGService {
             }
         };
 
+        const mock = !!data.mock || data.engine_active === false;
         return {
             answer: data.answer || '',
-            graphData
+            graphData,
+            mock
         };
     }
 
@@ -140,7 +158,7 @@ export class LightRAGService {
     public static async insertText(
         text: string,
         baseUrl: string = LightRAGService.defaultBaseUrl
-    ): Promise<{ success: boolean; message: string }> {
+    ): Promise<{ success: boolean; message: string; mock?: boolean }> {
         const response = await fetch(`${baseUrl}/insert`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -154,8 +172,56 @@ export class LightRAGService {
         const data = await response.json();
         return {
             success: data.status === 'success',
-            message: data.message || 'Text successfully processed.'
+            message: data.message || 'Text successfully processed.',
+            mock: !!data.mock
         };
+    }
+
+    /**
+     * Listet alle vorhandenen LightRAG-Datenbanken auf.
+     */
+    public static async listDatabases(baseUrl: string = LightRAGService.defaultBaseUrl): Promise<LightRAGDatabaseList> {
+        const response = await fetch(`${baseUrl}/databases`, { method: 'GET' });
+        if (!response.ok) {
+            throw new Error(`LightRAG ListDatabases Error: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+    }
+
+    /**
+     * Aktiviert eine vorhandene LightRAG-Datenbank (serverseitig globaler Wechsel).
+     */
+    public static async selectDatabase(
+        name: string,
+        baseUrl: string = LightRAGService.defaultBaseUrl
+    ): Promise<{ status: string; message: string; active_database: string }> {
+        const response = await fetch(`${baseUrl}/databases/select`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        });
+        if (!response.ok) {
+            throw new Error(`LightRAG SelectDatabase Error: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+    }
+
+    /**
+     * Legt eine neue LightRAG-Datenbank an und aktiviert sie.
+     */
+    public static async createDatabase(
+        name: string,
+        baseUrl: string = LightRAGService.defaultBaseUrl
+    ): Promise<{ status: string; message: string; active_database: string }> {
+        const response = await fetch(`${baseUrl}/databases/create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        });
+        if (!response.ok) {
+            throw new Error(`LightRAG CreateDatabase Error: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
     }
 }
 
@@ -204,5 +270,7 @@ function normalizeRelation(rawRel: string, allowedSet: string[]): string {
             (aLower.includes('unterstützt') || aLower.includes('unterstuetzt') || aLower.includes('use'))) return allowed;
     }
 
-    return allowedSet[0] || rawRel;
+    // Fix 5: Kein stiller Fallback auf allowedSet[0] mehr. Originalrelation beibehalten + Warnung.
+    console.warn(`[LightRAGService] Relation '${rawRel}' passt zu keiner erlaubten Relation im aktiven Relation Set. Originalrelation wird beibehalten.`);
+    return rawRel;
 }

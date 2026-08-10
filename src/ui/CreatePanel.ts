@@ -6,6 +6,7 @@ import { IStateManager } from '../core/interfaces';
 import type { App } from '../App';
 import { LLMService, LLMProvider, LLMModel } from '../utils/LLMService';
 import { LightRAGService } from '../utils/LightRAGService';
+import { GraphDataSchema } from '../types';
 import { DataParser } from '../core/DataParser';
 import { deduplicateGraph, getSemanticSearchMatches } from '../utils/VectorStoreManager';
 import * as THREE from 'three';
@@ -40,6 +41,9 @@ export class CreatePanel {
     private b10RatingSelect!: HTMLSelectElement;
     private saveStepsToggle!: HTMLInputElement;
 
+    // LightRAG Database Selection (Fix 4)
+    private lrDatabaseSelect!: HTMLSelectElement;
+
     // Advanced LLM Properties
     private llmParamsContainer!: HTMLElement;
     private tempSlider!: HTMLInputElement;
@@ -55,8 +59,10 @@ export class CreatePanel {
 
     private getFormattedFileSuffix(): string {
         const counter = String(this.generationCounter++).padStart(2, '0');
-        const day = String(new Date().getDate()).padStart(2, '0');
-        return `${counter}_${day}`;
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0');
+        const hhmm = `${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
+        return `${counter}_${day}_${hhmm}`;
     }
 
     constructor(containerId: string, _stateManager: IStateManager, app: App) {
@@ -116,6 +122,36 @@ export class CreatePanel {
 
     public getActiveRelationLabels(): string[] {
         return this.activeRelationSet.filter(r => r.enabled).map(r => r.label || r.id);
+    }
+
+    /**
+     * Laedt die vorhandenen LightRAG-Datenbanken in das Auswahlfeld (Fix 4).
+     */
+    private async reloadLightRagDatabases(): Promise<void> {
+        try {
+            const data = await LightRAGService.listDatabases();
+            const dbs = data.databases || [];
+            const current = this.lrDatabaseSelect?.value;
+            this.lrDatabaseSelect.innerHTML = '';
+            dbs.forEach(db => {
+                const opt = document.createElement('option');
+                opt.value = db.id;
+                opt.textContent = db.id === 'default' ? 'Default (Hauptdatenbank)' : db.name;
+                if (db.active) opt.selected = true;
+                this.lrDatabaseSelect.appendChild(opt);
+            });
+            if (current && dbs.some(db => db.id === current)) {
+                this.lrDatabaseSelect.value = current;
+            }
+        } catch (err: any) {
+            console.warn('[CreatePanel] DB-Liste konnte nicht geladen werden:', err);
+            this.lrDatabaseSelect.innerHTML = '';
+            const opt = document.createElement('option');
+            opt.value = 'default';
+            opt.textContent = 'Default (Hauptdatenbank)';
+            opt.selected = true;
+            this.lrDatabaseSelect.appendChild(opt);
+        }
     }
 
     private async loadRelationSetFile(filename: string) {
@@ -996,6 +1032,107 @@ export class CreatePanel {
         lrBtnRow.appendChild(lrInsertBtn);
 
         lightragContainer.appendChild(lrBtnRow);
+
+        // --- Fix 4: Datenbank-Auswahl fuer LightRAG ---
+        const lrDbLabel = document.createElement('label');
+        lrDbLabel.textContent = 'LightRAG-Datenbank: (default = gemeinsame Hauptdatenbank, neue DB pro Build empfohlen)';
+        lrDbLabel.style.display = 'block';
+        lrDbLabel.style.marginTop = '10px';
+        lrDbLabel.style.marginBottom = '5px';
+        lrDbLabel.style.color = 'var(--text-muted)';
+        lrDbLabel.style.fontSize = '0.85em';
+        lightragContainer.appendChild(lrDbLabel);
+
+        this.lrDatabaseSelect = document.createElement('select');
+        this.lrDatabaseSelect.className = 'form-control';
+        this.lrDatabaseSelect.style.width = '100%';
+        this.lrDatabaseSelect.style.backgroundColor = 'rgba(0,0,0,0.3)';
+        this.lrDatabaseSelect.style.border = '1px solid rgba(255,255,255,0.1)';
+        this.lrDatabaseSelect.style.color = 'var(--text-color)';
+        this.lrDatabaseSelect.style.padding = '4px';
+        this.lrDatabaseSelect.style.borderRadius = '3px';
+        this.lrDatabaseSelect.style.marginBottom = '8px';
+        const defaultOpt = document.createElement('option');
+        defaultOpt.value = 'default';
+        defaultOpt.textContent = 'Default (Hauptdatenbank)';
+        defaultOpt.selected = true;
+        this.lrDatabaseSelect.appendChild(defaultOpt);
+        lightragContainer.appendChild(this.lrDatabaseSelect);
+        this.lrDatabaseSelect.addEventListener('change', async () => {
+            const dbName = this.lrDatabaseSelect.value;
+            if (!dbName) return;
+            try {
+                await LightRAGService.selectDatabase(dbName);
+                lrStatusDiv.textContent = `Aktive Datenbank: ${dbName}${dbName === 'default' ? ' (Hauptdatenbank)' : ''}`;
+                lrStatusDiv.style.color = '#2ecc71';
+            } catch (err: any) {
+                lrStatusDiv.textContent = `Fehler beim Aktivieren der Datenbank: ${err.message}`;
+                lrStatusDiv.style.color = '#e74c3c';
+            }
+        });
+
+        const lrDbCreateLabel = document.createElement('label');
+        lrDbCreateLabel.textContent = 'Neue Datenbank anlegen';
+        lrDbCreateLabel.style.display = 'block';
+        lrDbCreateLabel.style.marginTop = '10px';
+        lrDbCreateLabel.style.marginBottom = '5px';
+        lrDbCreateLabel.style.color = 'var(--text-muted)';
+        lrDbCreateLabel.style.fontSize = '0.85em';
+        lightragContainer.appendChild(lrDbCreateLabel);
+
+        const lrDbRow = document.createElement('div');
+        lrDbRow.style.display = 'flex';
+        lrDbRow.style.width = '100%';
+        lrDbRow.style.gap = '8px';
+        lrDbRow.style.marginBottom = '8px';
+        lrDbRow.style.alignItems = 'stretch';
+
+        const lrDbNewInput = document.createElement('input');
+        lrDbNewInput.type = 'text';
+        lrDbNewInput.placeholder = 'Name der neuen Datenbank';
+        lrDbNewInput.setAttribute('aria-label', 'Name der neuen Datenbank');
+        lrDbNewInput.style.flex = '1 1 auto';
+        lrDbNewInput.style.minWidth = '0';
+        lrDbNewInput.style.width = 'auto';
+        lrDbNewInput.style.boxSizing = 'border-box';
+        lrDbNewInput.style.padding = '7px 9px';
+        lrDbNewInput.style.marginBottom = '0';
+        lrDbNewInput.style.borderRadius = '4px';
+        lrDbNewInput.style.border = '1px solid rgba(255,255,255,0.2)';
+        lrDbNewInput.style.backgroundColor = 'rgba(0,0,0,0.3)';
+        lrDbNewInput.style.color = 'var(--text-color)';
+        lrDbRow.appendChild(lrDbNewInput);
+
+        const lrDbCreateBtn = document.createElement('button');
+        lrDbCreateBtn.className = 'action-button secondary';
+        lrDbCreateBtn.textContent = 'Anlegen';
+        lrDbCreateBtn.style.flex = '0 0 auto';
+        lrDbCreateBtn.style.width = 'auto';
+        lrDbCreateBtn.style.whiteSpace = 'nowrap';
+        lrDbCreateBtn.style.marginTop = '0';
+        lrDbCreateBtn.style.padding = '7px 10px';
+        lrDbCreateBtn.style.fontSize = '0.85em';
+        lrDbCreateBtn.onclick = async () => {
+            const dbName = lrDbNewInput.value.trim();
+            if (!dbName) {
+                this.setStatus('Bitte einen Datenbank-Namen eingeben.', 'error');
+                return;
+            }
+            try {
+                this.setStatus(`Lege Datenbank '${dbName}' an...`, 'info');
+                await LightRAGService.createDatabase(dbName);
+                lrDbNewInput.value = '';
+                await this.reloadLightRagDatabases();
+                lrStatusDiv.textContent = `Datenbank '${dbName}' angelegt und aktiviert.`;
+                lrStatusDiv.style.color = '#2ecc71';
+                this.setStatus(`Datenbank '${dbName}' angelegt und aktiviert.`, 'success');
+            } catch (err: any) {
+                this.setStatus(`Fehler beim Anlegen der Datenbank: ${err.message}`, 'error');
+            }
+        };
+        lrDbRow.appendChild(lrDbCreateBtn);
+        lightragContainer.appendChild(lrDbRow);
+
         genSection.appendChild(lightragContainer);
 
         const updatePipelineContainers = () => {
@@ -1004,6 +1141,7 @@ export class CreatePanel {
             lightragContainer.style.display = val === 'build12_lightrag' ? 'block' : 'none';
             if (val === 'build12_lightrag') {
                 lrCheckBtn.click();
+                this.reloadLightRagDatabases();
             }
         };
 
@@ -1698,6 +1836,31 @@ export class CreatePanel {
                     }
                 );
             } else if (pipeline === 'build12_lightrag') {
+                // Fix 1: Healthcheck vor dem Build - Abbruch bei Offline, Warnung bei Mock-Engine
+                onProgressWithLog('Pruefe LightRAG Server-Status...');
+                const health = await LightRAGService.checkHealth();
+                if (!health.online) {
+                    throw new Error('LightRAG-Server nicht erreichbar (http://localhost:8000). Starte das Backend (lightrag-backend/main.py) und versuche es erneut.');
+                }
+                const engineInMockMode = !health.engineActive;
+                if (engineInMockMode) {
+                    onProgressWithLog('WARNUNG: LightRAG-Engine inaktiv. Der Server antwortet im Mock-Modus - Ergebnisse sind Platzhalter ohne echte Wissensbasis.');
+                }
+
+                // Fix 4: Aktive Datenbank aus der UI setzen
+                const activeDbName = this.lrDatabaseSelect?.value || 'default';
+                if (activeDbName === 'default') {
+                    onProgressWithLog('Verwende Default-Datenbank.');
+                } else {
+                    onProgressWithLog(`Aktiviere Datenbank '${activeDbName}'...`);
+                    try {
+                        await LightRAGService.selectDatabase(activeDbName);
+                    } catch (dbErr: any) {
+                        console.warn('[CreatePanel] Datenbank-Aktivierung fehlgeschlagen:', dbErr);
+                        onProgressWithLog(`WARNUNG: Datenbank '${activeDbName}' konnte nicht aktiviert werden (${dbErr.message}). Verwende Default.`);
+                    }
+                }
+
                 onProgressWithLog('Frage lokalen LightRAG Microservice an...');
 
                 if (ragText) {
@@ -1711,6 +1874,9 @@ export class CreatePanel {
                 }
                 const lightRagResult = await LightRAGService.queryGraph(prompt, 'hybrid');
                 onProgressWithLog(`LightRAG Antwort empfangen: ${lightRagResult.answer.substring(0, 80)}...`);
+                if (lightRagResult.mock) {
+                    onProgressWithLog('WARNUNG: Die Antwort stammt aus dem Mock-Modus. Das Ergebnis wird als Mock gekennzeichnet.');
+                }
                 graphData = {
                     metadata: lightRagResult.graphData.metadata || { schemaVersion: "5.2" },
                     dataModel: lightRagResult.graphData.dataModel || { entities: {}, relationships: {} },
@@ -1725,6 +1891,15 @@ export class CreatePanel {
                     ratingMethod: this.b10RatingSelect?.value
                 };
                 GraphGenerationService.enrichGraphMetadata(graphData, pipeline, prompt, provider, model, mode, ragText, startTime, buildConfig);
+
+                // Fix 1: Mock-Kennzeichnung + Datenbank-Info in den Metadaten
+                if (lightRagResult.mock) {
+                    graphData.metadata.mock = true;
+                    if (graphData.metadata.generationDetails) {
+                        graphData.metadata.generationDetails.mock = true;
+                    }
+                }
+                graphData.metadata.activeDatabase = activeDbName;
 
                 // Immer in public/data/b12/ speichern
                 try {
@@ -1780,12 +1955,33 @@ export class CreatePanel {
             generationLog.status = 'success';
 
             // --- Inject generation metadata directly into the JSON graphData ---
-            const buildConfig = {
-                grounding: this.b10GroundingSelect?.value,
-                qualityAssurance: this.b10QaSelect?.value,
-                ratingMethod: this.b10RatingSelect?.value
-            };
-            GraphGenerationService.enrichGraphMetadata(graphData, pipeline, prompt, provider, model, mode, ragText, startTime, buildConfig);
+            // Fix 2: Fuer build12_lightrag bereits im Pipeline-Block injiziert (dort vor dem Serverspeichern noetig)
+            if (pipeline !== 'build12_lightrag') {
+                const buildConfig = {
+                    grounding: this.b10GroundingSelect?.value,
+                    qualityAssurance: this.b10QaSelect?.value,
+                    ratingMethod: this.b10RatingSelect?.value
+                };
+                GraphGenerationService.enrichGraphMetadata(graphData, pipeline, prompt, provider, model, mode, ragText, startTime, buildConfig);
+            }
+
+            // Fix 6: Schema-Validierung des generierten Graphen vor dem Laden/Speichern
+            if (graphData) {
+                const validation = GraphDataSchema.safeParse(graphData);
+                if (validation.success) {
+                    graphData = validation.data;
+                    generationLog.validation = { success: true };
+                } else {
+                    const issues = validation.error.issues;
+                    const sample = issues.slice(0, 5).map(i => `${i.path.join('.') || '(root)'}: ${i.message}`).join('; ');
+                    console.warn('[CreatePanel] GraphData Schema-Validierung fehlgeschlagen:', issues);
+                    onProgressWithLog(`WARNUNG: Graph-Schema-Validierung fehlgeschlagen (${issues.length} Problem(e)). ${sample}`);
+                    generationLog.validation = {
+                        success: false,
+                        issues: issues.map(i => ({ path: i.path.join('.') || '(root)', message: i.message }))
+                    };
+                }
+            }
 
             this.setStatus('Graph generiert! Lade in Visualizer...', 'info');
 

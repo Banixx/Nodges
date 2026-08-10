@@ -101,6 +101,10 @@ async def startup_event():
         except Exception as e:
             print(f"[LightRAG Backend] Storage init error: {e}")
 
+# Begrenzung des extrahierten Wissensgraphen (Fix 3)
+MAX_GRAPH_NODES = int(os.getenv("LIGHTRAG_MAX_GRAPH_NODES", "150"))
+MAX_GRAPH_EDGES = int(os.getenv("LIGHTRAG_MAX_GRAPH_EDGES", "300"))
+
 @app.get("/")
 @app.get("/health")
 def read_root():
@@ -156,11 +160,21 @@ async def process_query(request: QueryRequest):
                     {"id": "lightrag_res", "label": request.query[:25], "properties": {"source": "LightRAG Engine"}}
                 ]
 
+            # Fix 3: Teilgraph statt Vollgraph - Begrenzung auf konfigurierbare Maximalwerte
+            if len(kg_nodes) > MAX_GRAPH_NODES:
+                print(f"[LightRAG Warning] Wissensgraph auf {MAX_GRAPH_NODES} Knoten begrenzt (vorher {len(kg_nodes)}).")
+                kg_nodes = kg_nodes[:MAX_GRAPH_NODES]
+            if len(kg_edges) > MAX_GRAPH_EDGES:
+                print(f"[LightRAG Warning] Wissensgraph auf {MAX_GRAPH_EDGES} Kanten begrenzt (vorher {len(kg_edges)}).")
+                kg_edges = kg_edges[:MAX_GRAPH_EDGES]
+
             return {
                 "status": "success",
                 "query": request.query,
                 "mode": request.mode,
                 "answer": str(res),
+                "engine_active": True,
+                "mock": False,
                 "graph_context": {
                     "nodes": kg_nodes,
                     "edges": kg_edges
@@ -187,6 +201,8 @@ async def process_query(request: QueryRequest):
         "query": request.query,
         "mode": request.mode,
         "answer": f"Antwort fuer '{request.query}' (Modus: {request.mode}). LightRAG-Mock verarbeitet den Kontext.",
+        "engine_active": False,
+        "mock": True,
         "graph_context": {
             "nodes": mock_nodes,
             "edges": mock_edges
@@ -201,7 +217,7 @@ async def process_insert(request: InsertRequest):
     if LIGHTRAG_AVAILABLE and rag_instance is not None:
         try:
             await rag_instance.ainsert(request.text)
-            return {"status": "success", "message": "Text successfully inserted into LightRAG knowledge base."}
+            return {"status": "success", "message": "Text successfully inserted into LightRAG knowledge base.", "mock": False, "engine_active": True}
         except Exception as err:
             import traceback
             traceback.print_exc()
@@ -210,7 +226,9 @@ async def process_insert(request: InsertRequest):
 
     return {
         "status": "success",
-        "message": "Text received (Mock mode active)."
+        "message": "Text received (Mock mode active).",
+        "mock": True,
+        "engine_active": False
     }
 
 class DatabaseRequest(BaseModel):

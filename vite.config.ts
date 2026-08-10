@@ -3,6 +3,10 @@ import path from 'path';
 import fs from 'fs';
 import bodyParser from 'body-parser';
 
+// LightRAG laeuft bei Nutzung des DevContainers auf dem Windows-Host.
+// `localhost` wuerde hier auf den Container selbst zeigen.
+const lightRagProxyTarget = process.env.VITE_LIGHTRAG_PROXY_TARGET || 'http://host.docker.internal:8000';
+
 export default defineConfig({
   base: './',
 
@@ -151,7 +155,7 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       '/lightrag-api': {
-        target: 'http://localhost:8000',
+        target: lightRagProxyTarget,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/lightrag-api/, ''),
         configure: (proxy) => {
@@ -182,4 +186,4 @@ export default defineConfig({
     include: ['three'],
     force: true,
   },
-});
+});
