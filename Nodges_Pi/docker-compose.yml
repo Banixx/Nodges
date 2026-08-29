@@ -1,0 +1,39 @@
+services:
+  pi-agent:
+    build:
+      context: .
+      args:
+        USER_ID: ${USER_ID:-1000}
+        GROUP_ID: ${GROUP_ID:-1000}
+    container_name: pi-harness
+    working_dir: /workspace
+    command: sh -c "npm install && npm run dev"
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    ports:
+      - "5173:5173"
+      # Hinweis: Port 8000 (LightRAG) läuft extern auf Windows.
+      # Der Container greift darauf zu via host.docker.internal:8000
+    volumes:
+      # Das Repo-Verzeichnis im Container
+      - ${REPO_PATH:-.}:/workspace
+      # Permanenter Speicherort fuer Skills, AGENTS.md und eigene Agent-Dateien (Read-Write)
+      - type: bind
+        source: ${CUSTOM_PATH:-/home/.pi}
+        target: /home/.pi
+        read_only: false
+      # SSH-Agent vom WSL-Host (read-only) für Git-Push
+      - type: bind
+        source: ${SSH_AUTH_SOCK:-/dev/null}
+        target: /ssh-agent
+        read_only: true
+    env_file:
+      - .env
+    # Härte: Container darf keine Privilegien erlangen
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Temporäre Dateien nur im RAM
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+

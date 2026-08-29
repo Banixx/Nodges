@@ -104,7 +104,8 @@ export const EntityDataSchema = z.object({
     position: z.object({
         x: z.number(),
         y: z.number(),
-        z: z.number()
+        z: z.number(),
+        isRandomFallback: z.boolean().optional(),
     }).optional(),
     stateVector: z.record(z.any()).optional(),
     behavior: z.string().optional(),

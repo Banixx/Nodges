@@ -17,7 +17,7 @@ describe('StateManager', () => {
             ];
 
             const relationships: RelationshipData[] = [
-                { type: 'knows', source: '1', target: '2' },
+                { id: 'r1', relation: 'knows', source: '1', target: '2' },
             ];
 
             stateManager.setGraphData(entities, relationships);
@@ -42,7 +42,7 @@ describe('StateManager', () => {
 
             stateManager.setGraphData(
                 [{ id: '2', type: 'b' }, { id: '3', type: 'c' }],
-                [{ type: 'x', source: '2', target: '3' }]
+                [{ id: 'r2', relation: 'x', source: '2', target: '3' }]
             );
             expect(stateManager.getEntities()).toHaveLength(2);
             expect(stateManager.getRelationships()).toHaveLength(1);
@@ -272,7 +272,7 @@ describe('StateManager', () => {
         it('sollte eine Edge hinzufuegen', () => {
             const edge: RelationshipData = {
                 id: 'edge1',
-                type: 'knows',
+                relation: 'knows',
                 source: '1',
                 target: '2',
             };
@@ -287,7 +287,7 @@ describe('StateManager', () => {
         it('sollte eine Edge entfernen', () => {
             const edge: RelationshipData = {
                 id: 'edge1',
-                type: 'knows',
+                relation: 'knows',
                 source: '1',
                 target: '2',
             };
@@ -302,7 +302,7 @@ describe('StateManager', () => {
         it('sollte eine Edge aktualisieren', () => {
             const edge: RelationshipData = {
                 id: 'edge1',
-                type: 'knows',
+                relation: 'knows',
                 source: '1',
                 target: '2',
                 label: 'Original',
@@ -317,7 +317,7 @@ describe('StateManager', () => {
         it.skip('sollte updateEdge rueckgaengig machen koennen', () => {
             const edge: RelationshipData = {
                 id: 'e1',
-                type: 'knows',
+                relation: 'knows',
                 source: '1',
                 target: '2',
                 label: 'V1',
@@ -335,7 +335,7 @@ describe('StateManager', () => {
         it('sollte removeEdge rueckgaengig machen koennen', () => {
             const edge: RelationshipData = {
                 id: 'e1',
-                type: 'knows',
+                relation: 'knows',
                 source: '1',
                 target: '2',
             };

@@ -233,7 +233,7 @@ export class NodeCreationHandler {
         if (sourceId && targetId) {
             const newEdge: RelationshipData = {
                 id: `e${Date.now()}`,
-                type: 'connection',
+                relation: 'connection',
                 source: sourceId,
                 target: targetId,
                 label: 'Neue Verbindung'

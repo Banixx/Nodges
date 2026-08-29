@@ -28,6 +28,11 @@ Thumbs.db
 # Node modules (if any)
 node_modules/
 
+# Python environments and caches
+**/venv/
+**/__pycache__/
+*.py[cod]
+
 # Build outputs
 dist/
 build/

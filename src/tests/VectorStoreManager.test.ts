@@ -48,7 +48,7 @@ describe('VectorStoreManager & Similarity Tests', () => {
 
         const testGraph: GraphData = {
             system: 'Test',
-            metadata: {},
+            metadata: { schemaVersion: '5.0' },
             data: {
                 entities: [
                     { id: 'n1', label: 'Apfel', properties: { desc: 'Eine rote Frucht' } },
@@ -56,8 +56,8 @@ describe('VectorStoreManager & Similarity Tests', () => {
                     { id: 'n3', label: 'Banane', properties: { desc: 'Eine gelbe Frucht' } }
                 ],
                 relationships: [
-                    { id: 'r1', source: 'n1', target: 'n3', type: 'likes' },
-                    { id: 'r2', source: 'n2', target: 'n3', type: 'likes' }
+                    { id: 'r1', source: 'n1', target: 'n3', type: 'likes', relation: 'likes' },
+                    { id: 'r2', source: 'n2', target: 'n3', type: 'likes', relation: 'likes' }
                 ]
             }
         };

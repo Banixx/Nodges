@@ -22,7 +22,7 @@ describe('VisualMappingEngine', () => {
         });
 
         it('sollte Default-Properties fuer Relationships zurueckgeben', () => {
-            const rel: RelationshipData = { source: '1', target: '2' };
+            const rel: RelationshipData = { id: 'r1', relation: 'connects', source: '1', target: '2' };
             const visual = engine.applyToRelationship(rel);
 
             expect(visual.thickness).toBe(0.1);
@@ -121,6 +121,8 @@ describe('VisualMappingEngine', () => {
         describe('applyToRelationship()', () => {
             it('sollte Thickness-Mapping anwenden', () => {
                 const rel: RelationshipData = {
+                    id: 'r1',
+                    relation: 'connects',
                     source: '1',
                     target: '2',
                     trust: 0.8,
@@ -134,6 +136,8 @@ describe('VisualMappingEngine', () => {
 
             it('sollte Constant-Mapping korrekt verarbeiten', () => {
                 const rel: RelationshipData = {
+                    id: 'r2',
+                    relation: 'connects',
                     source: '1',
                     target: '2',
                 };
@@ -146,6 +150,8 @@ describe('VisualMappingEngine', () => {
 
             it('sollte Default-Properties zurueckgeben wenn keine globalen Edges definiert', () => {
                 const rel: RelationshipData = {
+                    id: 'r3',
+                    relation: 'connects',
                     source: '1',
                     target: '2',
                 };

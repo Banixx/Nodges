@@ -1004,7 +1004,7 @@ export class CreatePanel {
                 lrStatusDiv.textContent = `Server Status: Online (Engine: ${status.engineActive ? 'Aktiv' : 'Mock-Modus'})`;
                 lrStatusDiv.style.color = '#2ecc71';
             } else {
-                lrStatusDiv.textContent = 'Server Status: Offline (http://localhost:8000 nicht erreichbar)';
+                lrStatusDiv.textContent = 'Server Status: Offline (LightRAG nicht erreichbar)';
                 lrStatusDiv.style.color = '#e74c3c';
             }
         };
@@ -1840,7 +1840,7 @@ export class CreatePanel {
                 onProgressWithLog('Pruefe LightRAG Server-Status...');
                 const health = await LightRAGService.checkHealth();
                 if (!health.online) {
-                    throw new Error('LightRAG-Server nicht erreichbar (http://localhost:8000). Starte das Backend (lightrag-backend/main.py) und versuche es erneut.');
+                    throw new Error('LightRAG-Server nicht erreichbar. Starte das Backend (lightrag-backend/main.py) und versuche es erneut.');
                 }
                 const engineInMockMode = !health.engineActive;
                 if (engineInMockMode) {

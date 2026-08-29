@@ -1,6 +1,26 @@
 import { DataModel, PropertySchema, EntityData } from '../types';
 
 /**
+ * Build 5 Schema-Gruppe: Gruppentyp mit Property-Map.
+ * Ermoeglicht typsicheren Zugriff auf die Legacy-Felder entities/relationships
+ * des DataModel, die nicht im offiziellen Zod-Schema deklariert sind.
+ */
+interface Build5SchemaGroup {
+    properties?: Record<string, PropertySchema>;
+}
+
+interface Build5DataModel {
+    properties?: Record<string, PropertySchema>;
+    entities?: Record<string, Build5SchemaGroup>;
+    relationships?: Record<string, Build5SchemaGroup>;
+}
+
+/** Views das DataModel als Build-5-kompatible Struktur (Legacy-Felder). */
+function asBuild5(dm: DataModel): Build5DataModel {
+    return dm as unknown as Build5DataModel;
+}
+
+/**
  * BuildFormatUtils
  * 
  * Provides utility functions to handle the JSON build format (Build 3)
@@ -12,40 +32,42 @@ import { DataModel, PropertySchema, EntityData } from '../types';
  */
 export function getPropertySchema(dm: DataModel | undefined, entityType?: string, propName?: string): PropertySchema | undefined {
     if (!dm || !propName) return undefined;
-    
+
+    const b5 = asBuild5(dm);
+
     // Build 5 Schema: dm.entities[type].properties
     if (entityType) {
-        if (dm.entities && dm.entities[entityType] && dm.entities[entityType].properties) {
-            const schema = dm.entities[entityType].properties[propName];
+        if (b5.entities && b5.entities[entityType] && b5.entities[entityType].properties) {
+            const schema = b5.entities[entityType].properties[propName];
             if (schema) return schema as PropertySchema;
         }
         
         // Build 5 Schema für Relationships
-        if (dm.relationships && dm.relationships[entityType] && dm.relationships[entityType].properties) {
-            const schema = dm.relationships[entityType].properties[propName];
+        if (b5.relationships && b5.relationships[entityType] && b5.relationships[entityType].properties) {
+            const schema = b5.relationships[entityType].properties[propName];
             if (schema) return schema as PropertySchema;
         }
     } else {
         // Search across all entities
-        if (dm.entities) {
-            for (const type in dm.entities) {
-                if (dm.entities[type].properties && dm.entities[type].properties[propName]) {
-                    return dm.entities[type].properties[propName] as PropertySchema;
+        if (b5.entities) {
+            for (const type in b5.entities) {
+                if (b5.entities[type].properties && b5.entities[type].properties[propName]) {
+                    return b5.entities[type].properties[propName] as PropertySchema;
                 }
             }
         }
         // Search across all relationships
-        if (dm.relationships) {
-            for (const type in dm.relationships) {
-                if (dm.relationships[type].properties && dm.relationships[type].properties[propName]) {
-                    return dm.relationships[type].properties[propName] as PropertySchema;
+        if (b5.relationships) {
+            for (const type in b5.relationships) {
+                if (b5.relationships[type].properties && b5.relationships[type].properties[propName]) {
+                    return b5.relationships[type].properties[propName] as PropertySchema;
                 }
             }
         }
     }
 
     // Build 4 Fallback: dm.properties
-    return dm.properties?.[propName];
+    return b5.properties?.[propName];
 }
 
 export function collectPaths(obj: any, prefix = ''): string[] {
@@ -69,28 +91,29 @@ export function collectPaths(obj: any, prefix = ''): string[] {
 
 export function getAvailableProperties(dm: DataModel | undefined, entityType?: string, entity?: EntityData): string[] {
     const props = new Set<string>();
+    const b5 = dm ? asBuild5(dm) : undefined;
 
     // Build 4: global properties
-    if (dm && dm.properties) {
-        Object.keys(dm.properties).forEach(k => props.add(k));
+    if (b5 && b5.properties) {
+        Object.keys(b5.properties).forEach(k => props.add(k));
     }
     
     // Build 5: type-specific properties
     if (entityType) {
-        if (dm && dm.entities && dm.entities[entityType] && dm.entities[entityType].properties) {
-            Object.keys(dm.entities[entityType].properties).forEach(k => props.add(k));
+        if (b5 && b5.entities && b5.entities[entityType] && b5.entities[entityType].properties) {
+            Object.keys(b5.entities[entityType].properties).forEach(k => props.add(k));
         }
-        if (dm && dm.relationships && dm.relationships[entityType] && dm.relationships[entityType].properties) {
-            Object.keys(dm.relationships[entityType].properties).forEach(k => props.add(k));
+        if (b5 && b5.relationships && b5.relationships[entityType] && b5.relationships[entityType].properties) {
+            Object.keys(b5.relationships[entityType].properties).forEach(k => props.add(k));
         }
     } else {
-        if (dm && dm.entities) {
-            Object.values(dm.entities).forEach(e => {
+        if (b5 && b5.entities) {
+            Object.values(b5.entities).forEach(e => {
                 if (e.properties) Object.keys(e.properties).forEach(k => props.add(k));
             });
         }
-        if (dm && dm.relationships) {
-            Object.values(dm.relationships).forEach(r => {
+        if (b5 && b5.relationships) {
+            Object.values(b5.relationships).forEach(r => {
                 if (r.properties) Object.keys(r.properties).forEach(k => props.add(k));
             });
         }

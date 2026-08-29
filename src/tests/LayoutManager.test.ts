@@ -55,7 +55,7 @@ describe('LayoutManager', () => {
         for (let i = 0; i < nodeCount - 1; i++) {
             edges.push({
                 id: `edge_${i}`,
-                type: 'connects',
+                relation: 'connects',
                 source: `node_${i}`,
                 target: `node_${i + 1}`,
             });
@@ -240,8 +240,8 @@ describe('LayoutManager', () => {
         it('sollte Nodes ohne eingehende Kanten als Root erkennen', () => {
             const nodes = createNodes(3);
             const edges: RelationshipData[] = [
-                { id: 'e1', type: 'x', source: 'node_0', target: 'node_1' },
-                { id: 'e2', type: 'x', source: 'node_0', target: 'node_2' },
+                { id: 'e1', relation: 'x', source: 'node_0', target: 'node_1' },
+                { id: 'e2', relation: 'x', source: 'node_0', target: 'node_2' },
             ];
 
             layoutManager.applyHierarchicalLayout(nodes, edges, {
@@ -297,10 +297,10 @@ describe('LayoutManager', () => {
                 { id: 'n4', type: 't', label: '4', position: { x: 0, y: 0, z: 5 } },
             ];
             const edges: RelationshipData[] = [
-                { id: 'e0', type: 'c', source: 'n0', target: 'n1' },
-                { id: 'e1', type: 'c', source: 'n1', target: 'n2' },
-                { id: 'e2', type: 'c', source: 'n2', target: 'n3' },
-                { id: 'e3', type: 'c', source: 'n3', target: 'n4' },
+                { id: 'e0', relation: 'c', source: 'n0', target: 'n1' },
+                { id: 'e1', relation: 'c', source: 'n1', target: 'n2' },
+                { id: 'e2', relation: 'c', source: 'n2', target: 'n3' },
+                { id: 'e3', relation: 'c', source: 'n3', target: 'n4' },
             ];
 
             // Positionen vorher merken
@@ -340,7 +340,7 @@ describe('LayoutManager', () => {
             ];
 
             const edges: RelationshipData[] = [
-                { id: 'e1', type: 'x', source: 'a', target: 'b' },
+                { id: 'e1', relation: 'x', source: 'a', target: 'b' },
             ];
 
             layoutManager.applyForceLayout(nodes, edges, [], {
@@ -373,10 +373,10 @@ describe('LayoutManager', () => {
                 { id: 'n4', type: 't', label: '4', position: { x: 0, y: 0, z: 5 } },
             ];
             const edges: RelationshipData[] = [
-                { id: 'e0', type: 'c', source: 'n0', target: 'n1' },
-                { id: 'e1', type: 'c', source: 'n1', target: 'n2' },
-                { id: 'e2', type: 'c', source: 'n2', target: 'n3' },
-                { id: 'e3', type: 'c', source: 'n3', target: 'n4' },
+                { id: 'e0', relation: 'c', source: 'n0', target: 'n1' },
+                { id: 'e1', relation: 'c', source: 'n1', target: 'n2' },
+                { id: 'e2', relation: 'c', source: 'n2', target: 'n3' },
+                { id: 'e3', relation: 'c', source: 'n3', target: 'n4' },
             ];
 
             const beforeX = nodes.map(n => n.position!.x);
@@ -415,10 +415,10 @@ describe('LayoutManager', () => {
                 { id: 'n4', type: 't', label: '4', position: { x: 0, y: 0, z: 5 } },
             ];
             const edges: RelationshipData[] = [
-                { id: 'e0', type: 'c', source: 'n0', target: 'n1' },
-                { id: 'e1', type: 'c', source: 'n1', target: 'n2' },
-                { id: 'e2', type: 'c', source: 'n2', target: 'n3' },
-                { id: 'e3', type: 'c', source: 'n3', target: 'n4' },
+                { id: 'e0', relation: 'c', source: 'n0', target: 'n1' },
+                { id: 'e1', relation: 'c', source: 'n1', target: 'n2' },
+                { id: 'e2', relation: 'c', source: 'n2', target: 'n3' },
+                { id: 'e3', relation: 'c', source: 'n3', target: 'n4' },
             ];
 
             const beforeX = nodes.map(n => n.position!.x);
@@ -561,10 +561,10 @@ describe('LayoutManager', () => {
             const nodes = createNodes(5);
             // Baum: 0->1, 0->2, 1->3, 1->4
             const edges: RelationshipData[] = [
-                { id: 'e1', type: 'x', source: 'node_0', target: 'node_1' },
-                { id: 'e2', type: 'x', source: 'node_0', target: 'node_2' },
-                { id: 'e3', type: 'x', source: 'node_1', target: 'node_3' },
-                { id: 'e4', type: 'x', source: 'node_1', target: 'node_4' },
+                { id: 'e1', relation: 'x', source: 'node_0', target: 'node_1' },
+                { id: 'e2', relation: 'x', source: 'node_0', target: 'node_2' },
+                { id: 'e3', relation: 'x', source: 'node_1', target: 'node_3' },
+                { id: 'e4', relation: 'x', source: 'node_1', target: 'node_4' },
             ];
 
             const levels = layoutManager.calculateNodeLevels(nodes, edges);

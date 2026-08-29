@@ -3,12 +3,10 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import * as THREE from 'three';
 import { StateManager } from '../core/StateManager';
 import { SelectionHandler } from '../core/interaction/SelectionHandler';
-import { ContextMenuHandler } from '../core/interaction/ContextMenuHandler';
 
 describe('SelectionHandler - Multi-Selection Duplication', () => {
     let stateManager: StateManager;
     let selectionHandler: SelectionHandler;
-    let contextMenuHandler: ContextMenuHandler;
     let mockCamera: THREE.Camera;
     let mockControls: any;
 
@@ -17,7 +15,6 @@ describe('SelectionHandler - Multi-Selection Duplication', () => {
         mockCamera = new THREE.PerspectiveCamera();
         mockControls = { target: new THREE.Vector3(), update: vi.fn() };
         selectionHandler = new SelectionHandler(stateManager, mockCamera, mockControls);
-        contextMenuHandler = new ContextMenuHandler(stateManager, selectionHandler, {} as any);
     });
 
     it('sollte bei Multi-Selektion sowohl Nodes als auch Edges duplizieren und Edges auf neue Nodes remappen', () => {
@@ -25,8 +22,8 @@ describe('SelectionHandler - Multi-Selection Duplication', () => {
             { id: 'node_1', label: 'Node A' },
             { id: 'node_2', label: 'Node B' }
         ], [
-            { id: 'edge_1', source: 'node_1', target: 'node_2', label: 'Edge 1' },
-            { id: 'edge_2', source: 'node_2', target: 'node_1', label: 'Edge 2' }
+            { id: 'edge_1', source: 'node_1', target: 'node_2', relation: 'connects', label: 'Edge 1' },
+            { id: 'edge_2', source: 'node_2', target: 'node_1', relation: 'connects', label: 'Edge 2' }
         ]);
 
         const nodeObj1 = new THREE.Object3D();

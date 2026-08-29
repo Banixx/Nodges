@@ -2,13 +2,14 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { MapManager } from './core/MapManager';
+import { MinimapManager } from './core/MinimapManager';
+import { SceneFactory } from './core/SceneFactory';
 import { StateManager } from './core/StateManager';
 import { NodeManager } from './core/NodeManager';
 import { CentralEventManager } from './core/CentralEventManager';
 import { InteractionManager } from './core/InteractionManager';
 import { LayoutManager } from './core/LayoutManager';
 import { UIManager } from './core/UIManager';
-import { MinimapUI } from './ui/MinimapUI';
 import { SuggestionUI } from './ui/SuggestionUI';
 import { SelectionManager } from './utils/SelectionManager';
 import { RaycastManager } from './utils/RaycastManager';
@@ -83,12 +84,8 @@ export class App {
     public edgeObjectsManager: EdgeObjectsManager;
     public cameraManager!: CameraManager;
     public trailManager!: TrailManager;
-    public minimapUI!: MinimapUI;
+    public minimapManager!: MinimapManager;
     public suggestionUI!: SuggestionUI;
-    public minimapCamera!: THREE.OrthographicCamera;
-    private minimapZoom: number = 100;
-    private minimapCenter: THREE.Vector2 = new THREE.Vector2(0, 0);
-    private cameraMarker!: THREE.Group;
 
     private ambientLight!: THREE.AmbientLight;
     private directionalLight!: THREE.DirectionalLight;
@@ -112,7 +109,6 @@ export class App {
     public get isInitialized(): boolean {
         return this._isInitialized;
     }
-    private ground: THREE.Mesh | null = null;
     private mapManager: MapManager | null = null;
 
     constructor() {
@@ -123,34 +119,8 @@ export class App {
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-        // Robust WebGL Renderer Initialization
-        try {
-            this.renderer = new THREE.WebGLRenderer({
-                antialias: true,
-                powerPreference: "high-performance"
-            });
-        } catch (e) {
-            console.warn('High-performance WebGL context creation failed, trying fallback...', e);
-            try {
-                this.renderer = new THREE.WebGLRenderer({
-                    antialias: false,
-                    powerPreference: "default",
-                    failIfMajorPerformanceCaveat: false
-                });
-            } catch (e2) {
-                console.warn('Standard fallback failed, trying minimal...', e2);
-                try {
-                    // Maximum minimal: no options at all
-                    this.renderer = new THREE.WebGLRenderer();
-                } catch (e3) {
-                    console.error('Critical: WebGL context creation failed completely.', e3);
-                    this.showWebGLError();
-                    // Create a dummy renderer to prevent immediate crashes in other components before we stop
-                    this.renderer = { domElement: document.createElement('canvas'), setSize: () => { }, render: () => { }, shadowMap: {} } as any;
-                    throw new Error('WebGL not supported');
-                }
-            }
-        }
+        // Robust WebGL Renderer Initialization (inkl. Fallback) via SceneFactory
+        this.renderer = SceneFactory.createRenderer(() => this.showWebGLError());
 
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
@@ -221,78 +191,30 @@ export class App {
     }
 
     async initThreeJS() {
-        this.scene.background = new THREE.Color();
-        this.camera.position.set(10, 10, 10);
-
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setPixelRatio(window.devicePixelRatio); // Fix for High-DPI screens
-        this.renderer.autoClear = false; // Important for multi-viewport rendering
-        this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        document.body.appendChild(this.renderer.domElement);
-
-        this.controls.enableDamping = true;
-        this.controls.dampingFactor = 0.05;
-        this.controls.maxPolarAngle = Math.PI / 2 - 0.05; // Prevent camera from going below ground
-        this.controls.minDistance = 2; // Prevent getting too close
-        this.controls.maxDistance = 500; // Limit far zoom
-
-        // OrbitControls Event-Listener für Performance-Optimierung
-        // Deaktiviert Raycasting während Kamerabewegung
-        this.controls.addEventListener('start', () => {
-            if (this.centralEventManager) {
-                this.centralEventManager.setCameraMoving(true);
+        const setup = SceneFactory.setup(
+            this.scene,
+            this.camera,
+            this.renderer,
+            this.controls,
+            {
+                ambientLightIntensity: this.stateManager.state.ambientLightIntensity,
+                directionalLightIntensity: this.stateManager.state.directionalLightIntensity,
+                // Kamera-Bewegung deaktiviert Raycasting (Performance-Optimierung)
+                onCameraMoveStart: () => {
+                    if (this.centralEventManager) {
+                        this.centralEventManager.setCameraMoving(true);
+                    }
+                },
+                onCameraMoveEnd: () => {
+                    if (this.centralEventManager) {
+                        this.centralEventManager.setCameraMoving(false);
+                    }
+                },
             }
-        });
+        );
 
-        this.controls.addEventListener('end', () => {
-            if (this.centralEventManager) {
-                this.centralEventManager.setCameraMoving(false);
-            }
-        });
-
-        this.ambientLight = new THREE.AmbientLight(0x404040, this.stateManager.state.ambientLightIntensity);
-        this.scene.add(this.ambientLight);
-
-        // Add a secondary ambient light that specifically targets layer 1 (minimap camera etc)
-        // or just ensure the main ambient light covers all layers if we want it global.
-        // Actually, THREE.Light affects all layers unless specified otherwise, but OrthographicCamera 
-        // with layers needs the light to be visible to it.
-        // Core Minimap Lighting (Layer 1)
-        // These are visible only during the minimap render pass
-        const minimapAmbient = new THREE.AmbientLight(0x2fffff, 0.01); // Extreme brightness for contrast
-        minimapAmbient.layers.set(1);
-        minimapAmbient.name = "minimap_ambient";
-        minimapAmbient.visible = false; // Off by default
-        //this.scene.add(minimapAmbient);
-
-        const minimapDirLight = new THREE.DirectionalLight(0xffffff, 0.01);
-        minimapDirLight.position.set(0, 100, 0);
-        minimapDirLight.layers.set(1);
-        minimapDirLight.name = "minimap_directional";
-        minimapDirLight.visible = false; // Off by default
-        //this.scene.add(minimapDirLight);
-
-        this.directionalLight = new THREE.DirectionalLight(0xffffff, this.stateManager.state.directionalLightIntensity);
-        this.directionalLight.position.set(10, 10, 5);
-        this.directionalLight.castShadow = true;
-        this.directionalLight.shadow.mapSize.width = 2048;
-        this.directionalLight.shadow.mapSize.height = 2048;
-        this.directionalLight.shadow.camera.near = 0.5;
-        this.directionalLight.shadow.camera.far = 500;
-        this.directionalLight.shadow.camera.left = -50;
-        this.directionalLight.shadow.camera.right = 50;
-        this.directionalLight.shadow.camera.top = 50;
-        this.directionalLight.shadow.camera.bottom = -50;
-        this.scene.add(this.directionalLight);
-
-        this.createGround();
-
-        window.addEventListener('resize', () => {
-            this.camera.aspect = window.innerWidth / window.innerHeight;
-            this.camera.updateProjectionMatrix();
-            this.renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        this.ambientLight = setup.ambientLight;
+        this.directionalLight = setup.directionalLight;
     }
 
     public recreateRenderer() {
@@ -340,40 +262,6 @@ export class App {
             console.error('[DevPanel] Failed to recreate WebGLRenderer', e);
             alert('Failed to recreate WebGL renderer with selected settings. See console.');
         }
-    }
-
-    createGround() {
-        const groundGeometry = new THREE.PlaneGeometry(1000, 1000);
-        const groundMaterial = new THREE.MeshLambertMaterial({
-            color: 0x333333,
-            transparent: true,
-            opacity: 0.8,
-            depthWrite: false // Prevent z-fighting and sort issues with transparent objects
-        });
-
-        this.ground = new THREE.Mesh(groundGeometry, groundMaterial);
-        this.ground.rotation.x = -Math.PI / 2;
-        this.ground.position.y = -5;
-        this.ground.receiveShadow = true;
-        this.scene.add(this.ground);
-
-        const gridHelper = new THREE.GridHelper(1000, 200, 0x444444, 0x222222);
-        gridHelper.position.y = -4.9;
-
-        // Handle grid material (can be single or array of materials)
-        const materials = Array.isArray(gridHelper.material)
-            ? gridHelper.material
-            : [gridHelper.material];
-
-        materials.forEach(mat => {
-            if (mat instanceof THREE.Material) {
-                mat.transparent = true;
-                mat.opacity = 0.3;
-                mat.depthWrite = false; // Prevents z-fighting and view angle flicker
-            }
-        });
-
-        this.scene.add(gridHelper);
     }
 
     async initManagers() {
@@ -521,96 +409,11 @@ export class App {
         }
 
         try {
-            this.minimapUI = new MinimapUI('minimapContainer');
+            this.minimapManager = new MinimapManager('minimapContainer', this.scene);
             this.suggestionUI = new SuggestionUI('suggestionContainer');
-
-            // Interaction Callbacks
-            this.minimapUI.onZoom = (delta: number) => {
-                this.minimapZoom = Math.max(10, Math.min(500, this.minimapZoom + delta * 0.1));
-                this.updateMinimapCamera();
-            };
-
-            this.minimapUI.onPan = (dx: number, dy: number) => {
-                const canvas = this.minimapUI.getCanvas();
-                const aspect = canvas.width / canvas.height;
-                const worldWidth = this.minimapZoom * aspect * 2;
-                const worldHeight = this.minimapZoom * 2;
-
-                this.minimapCenter.x -= (dx / canvas.width) * worldWidth;
-                this.minimapCenter.y -= (dy / canvas.height) * worldHeight;
-                this.updateMinimapCamera();
-            };
-
-            // Minimap Camera Setup
-            this.minimapCamera = new THREE.OrthographicCamera(-100, 100, 100, -100, 0.1, 2000);
-            this.minimapCamera.position.set(0, 500, 0);
-            this.minimapCamera.up.set(0, 0, -1);
-            this.minimapCamera.lookAt(0, 0, 0);
-            this.minimapCamera.layers.disableAll();
-            this.minimapCamera.layers.enable(0); // View Ground on Layer 0
-            this.minimapCamera.layers.enable(1); // View Graph on Layer 1
-            this.minimapCamera.layers.enable(2); // View Marker on Layer 2
-
-            // Create Camera Marker for Minimap
-            this.createCameraMarker();
-
-            window.addEventListener('resize', this.updateMinimapCamera.bind(this));
-            this.minimapUI.updateSize();
-            this.updateMinimapCamera();
         } catch (e) {
             console.warn("Failed to initialize minimap:", e);
         }
-    }
-
-    private createCameraMarker() {
-        this.cameraMarker = new THREE.Group();
-
-        // A classic camera icon with lines (black)
-        const points = [];
-        // Quadrat (body)
-        points.push(new THREE.Vector3(-1.5, 0, -3));
-        points.push(new THREE.Vector3(-1.5, 0, 0));
-        points.push(new THREE.Vector3(0, 0, 0)); // Base of triangle
-        
-        // Dreieck (lens)
-        points.push(new THREE.Vector3(-2, 0, 3));
-        points.push(new THREE.Vector3(2, 0, 3));
-        points.push(new THREE.Vector3(0, 0, 0));
-        
-        // Rest of Quadrat
-        points.push(new THREE.Vector3(1.5, 0, 0));
-        points.push(new THREE.Vector3(1.5, 0, -3));
-        points.push(new THREE.Vector3(-1.5, 0, -3));
-
-        const geometry = new THREE.BufferGeometry().setFromPoints(points);
-        const material = new THREE.LineBasicMaterial({ color: 0x000000 });
-        const mesh = new THREE.Line(geometry, material);
-
-        this.cameraMarker.add(mesh);
-        this.cameraMarker.layers.set(2); // Visible on layer 2
-        mesh.layers.set(2);
-
-        this.scene.add(this.cameraMarker);
-    }
-
-    private updateMinimapCamera() {
-        if (!this.minimapUI || !this.minimapCamera) return;
-        this.minimapUI.updateSize();
-        const canvas = this.minimapUI.getCanvas();
-        const aspect = canvas.width / canvas.height;
-
-        const d = this.minimapZoom;
-
-        this.minimapCamera.left = -d * aspect;
-        this.minimapCamera.right = d * aspect;
-        this.minimapCamera.top = d;
-        this.minimapCamera.bottom = -d;
-
-        this.minimapCamera.position.set(this.minimapCenter.x, 500, this.minimapCenter.y);
-        this.minimapCamera.up.set(0, 0, -1);
-        this.minimapCamera.lookAt(this.minimapCenter.x, 0, this.minimapCenter.y);
-
-        this.minimapCamera.updateProjectionMatrix();
     }
 
     async loadDefaultData() {
@@ -680,10 +483,8 @@ export class App {
         }
 
         // Reset minimap center & zoom
-        if (this.minimapCenter) {
-            this.minimapCenter.set(0, 0);
-            this.minimapZoom = 100;
-            this.updateMinimapCamera();
+        if (this.minimapManager) {
+            this.minimapManager.reset();
         }
 
         // Reset camera and controls
@@ -926,14 +727,13 @@ export class App {
 
 
             // Auto-center minimap on data load
-            const bounds = this.calculateBounds(this.currentEntities);
-            this.minimapCenter.set(
-                (bounds.x.min + bounds.x.max) / 2,
-                (bounds.z.min + bounds.z.max) / 2
-            );
-            const maxDim = Math.max(bounds.x.max - bounds.x.min, bounds.z.max - bounds.z.min);
-            this.minimapZoom = (maxDim / 2) * 1.2; // 20% margin
-            this.updateMinimapCamera();
+            if (this.minimapManager) {
+                const bounds = this.calculateBounds(this.currentEntities);
+                const cx = (bounds.x.min + bounds.x.max) / 2;
+                const cz = (bounds.z.min + bounds.z.max) / 2;
+                const maxDim = Math.max(bounds.x.max - bounds.x.min, bounds.z.max - bounds.z.min);
+                this.minimapManager.setView(cx, cz, (maxDim / 2) * 1.2); // 20% margin
+            }
 
         } catch (error) {
             errorHandler.handle(error, {
@@ -1310,6 +1110,11 @@ export class App {
             this.interactionManager.destroy();
         }
 
+        // Minimap-Manager freigeben (Listener, Marker)
+        if (this.minimapManager) {
+            this.minimapManager.dispose();
+        }
+
         // Renderer freigeben
         if (this.renderer && this.renderer.domElement) {
             this.renderer.domElement.remove();
@@ -1557,72 +1362,17 @@ export class App {
         this.renderer.render(this.scene, this.camera);
 
         // Render Minimap Viewport if exists
-        if (this.minimapUI) {
-            const mmCanvas = this.minimapUI.getCanvas();
-            if (mmCanvas && this.renderer.domElement) {
-                // Determine minimap position on the main canvas
-                const rect = mmCanvas.parentElement!.getBoundingClientRect();
-
-                // Set explicit clear background for the minimap viewport
-                const oldClearColor = new THREE.Color();
-                this.renderer.getClearColor(oldClearColor);
-                const oldClearAlpha = this.renderer.getClearAlpha();
-
-                this.renderer.setScissorTest(true);
-                
-                // DPR Handling for Viewport and Scissor
-                const dpr = window.devicePixelRatio;
-                const viewY = (window.innerHeight - rect.bottom) * dpr;
-                const viewX = rect.left * dpr;
-                const viewWidth = rect.width * dpr;
-                const viewHeight = rect.height * dpr;
-
-                this.renderer.setViewport(viewX, viewY, viewWidth, viewHeight);
-                this.renderer.setScissor(viewX, viewY, viewWidth, viewHeight);
-                
-                // Renderer clear for minimap viewport
-                this.renderer.setClearColor(0x000000, 0.0); // Transparent background for minimap viewport
-                this.renderer.clear();
-
-                // Keep main lights enabled for minimap pass to ensure consistent colors
-                // (Previously we toggled them, which caused color differences)
-
-
-                // Ensure labels are hidden in minimap
-                if (this.nodeLabelManager) this.nodeLabelManager.setVisible(false);
-                if (this.edgeLabelManager) this.edgeLabelManager.updateConfig({ visible: false });
-
-                // Update marker position (lifted above the graph)
-                if (this.cameraMarker) {
-                    this.cameraMarker.position.set(this.camera.position.x, 10, this.camera.position.z);
-                    const dir = new THREE.Vector3();
-                    this.camera.getWorldDirection(dir);
-                    this.cameraMarker.rotation.y = Math.atan2(dir.x, dir.z);
+        if (this.minimapManager) {
+            const currentLabelsVisible = this.stateManager.state.showLabelsAlways || this.stateManager.state.showLabelsOnHover;
+            this.minimapManager.render(
+                this.renderer,
+                this.camera,
+                { nodeVisible: currentLabelsVisible, edgeVisible: currentLabelsVisible },
+                (nodeVisible, edgeVisible) => {
+                    if (this.nodeLabelManager) this.nodeLabelManager.setVisible(nodeVisible);
+                    if (this.edgeLabelManager) this.edgeLabelManager.updateConfig({ visible: edgeVisible });
                 }
-
-                // Render with minimap camera
-                const oldBackground = this.scene.background;
-                // Use a dark background to match the ground or theme, but keep it consistent
-                this.scene.background = null; // Transparent viewport to see main canvas or clear color
-
-                // Ensure all relevant layers are visible
-                this.minimapCamera.layers.enable(0);
-                this.minimapCamera.layers.enable(1);
-                this.minimapCamera.layers.enable(2);
-
-                // Render everything together with original materials
-                this.renderer.render(this.scene, this.minimapCamera);
-                
-                this.scene.background = oldBackground;
-
-                // Restore labels to their previous state
-                const currentLabelsVisible = this.stateManager.state.showLabelsAlways || this.stateManager.state.showLabelsOnHover;
-                if (this.nodeLabelManager) this.nodeLabelManager.setVisible(currentLabelsVisible);
-                if (this.edgeLabelManager) this.edgeLabelManager.updateConfig({ visible: currentLabelsVisible });
-                
-                this.renderer.setClearColor(oldClearColor, oldClearAlpha);
-                this.renderer.setScissorTest(false);
-            }
+            );
         }
 
         // FPS Berechnung

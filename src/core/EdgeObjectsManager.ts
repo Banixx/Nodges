@@ -619,7 +619,6 @@ export class EdgeObjectsManager {
             let isVisible = true;
 
             // Check edge temporal data
-            let edgeFade = 1.0;
             const state = this.stateManager.state;
             const fadeEnabled = state.temporalFadeEnabled;
             const fadeDuration = state.temporalFadeDuration || 1;

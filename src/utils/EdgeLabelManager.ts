@@ -14,6 +14,9 @@ export interface LabelConfig {
 }
 
 interface EdgeWithPosition {
+    id?: string;
+    source?: string | number;
+    target?: string | number;
     line?: THREE.Object3D;
     startNode: { mesh: THREE.Object3D };
     endNode: { mesh: THREE.Object3D };

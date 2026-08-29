@@ -28,6 +28,13 @@ export interface IStateManager {
     updateEdge(id: string, data: Partial<RelationshipData>): void;
     removeEdge(id: string): void;
 
+    // Group Operations
+    createGroupNode(label?: string, attributes?: Record<string, unknown>): EntityData;
+    addNodeToGroup(nodeId: string, groupId: string): RelationshipData;
+    removeNodeFromGroup(nodeId: string, groupId: string): void;
+    isGroupNode(nodeId: string): boolean;
+    getAllGroups(): EntityData[];
+
     // Transaction
     beginTransaction(name: string): void;
     commitTransaction(): void;
@@ -75,6 +82,7 @@ export interface INodeManager {
     clear(): void;
     getMeshes(): THREE.Object3D[];
     getNodeAt(geometryType: string, instanceId: number): EntityData | null;
+    getNodePosition(entityId: string): THREE.Vector3 | null;
 }
 
 export interface IEdgeManager {

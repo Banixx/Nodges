@@ -46,7 +46,13 @@ try:
     import numpy as np
     from openai import AsyncOpenAI
 
-    WORKING_DIR = os.getenv("LIGHTRAG_WORKING_DIR", "./rag_storage")
+    configured_working_dir = os.getenv("LIGHTRAG_WORKING_DIR")
+    if not configured_working_dir:
+        # Der Backend-Prozess soll mit einem expliziten Datenpfad gestartet
+        # werden. Der Fallback bleibt kompatibel, ist aber absichtlich sichtbar.
+        configured_working_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "rag_storage"))
+        print(f"[LightRAG] LIGHTRAG_WORKING_DIR nicht gesetzt; verwende Fallback: {configured_working_dir}")
+    WORKING_DIR = os.path.abspath(os.path.expanduser(configured_working_dir))
     if not os.path.exists(WORKING_DIR):
         os.makedirs(WORKING_DIR)
 

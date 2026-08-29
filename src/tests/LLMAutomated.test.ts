@@ -15,7 +15,7 @@ import path from 'path';
  * 2. Stelle sicher, dass VITE_OPENROUTER_API_KEY in deiner .env Datei steht
  * 3. Führe aus: `npm run test src/tests/LLMAutomated.test.ts`
  */
-describe('Automatischer OpenRouter Model Pipeline Test', () => {
+describe.skip('Automatischer OpenRouter Model Pipeline Test', () => {
 
     beforeAll(() => {
         // 1. Mock für LocalStorage (API Key injizieren)
@@ -47,7 +47,7 @@ describe('Automatischer OpenRouter Model Pipeline Test', () => {
 
             // Wenn die Prompt-Datei geladen wird, lesen wir sie lokal über fs
             if (urlStr.includes('build_6_prompt.md')) {
-                const promptPath = path.resolve(__dirname, '../../public/prompts/build_6_prompt.md');
+                const promptPath = path.resolve(__dirname, '../../src/prompts/build_6_prompt.md');
                 const content = fs.readFileSync(promptPath, 'utf-8');
                 return new Response(content, { status: 200 });
             }

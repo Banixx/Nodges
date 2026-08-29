@@ -48,7 +48,7 @@ export interface State {
     layer3Value: string;
     layer4Value: string;
     complexityMode: 'simple' | 'expert' | 'dev';
-    devPowerPreference: 'high-performance' | 'low-power';
+    devPowerPreference: 'high-performance' | 'low-power' | 'default';
     devPixelRatio: number;
     devFpsLimit: number;
     _triggerRendererRebuild: number;

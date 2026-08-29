@@ -176,8 +176,6 @@ export class NodeManager {
                 group.forEach(({ entity, visual }, index) => {
                     entityList.push(entity);
 
-                    // Position mapped override (fallback to ~0,0,5 if completely unmapped)
-                    const isPosMapped = visual.positionX !== undefined || visual.positionY !== undefined || visual.positionZ !== undefined;
                     const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x || 0);
                     const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y || 0);
                     const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z || 0);
@@ -263,8 +261,6 @@ export class NodeManager {
                     const material = baseMaterial.clone() as THREE.MeshPhongMaterial;
                     const mesh = new THREE.Mesh(geometry, material);
 
-                    // Position mapped override (fallback to ~0,0,5 if completely unmapped)
-                    const isPosMapped = visual.positionX !== undefined || visual.positionY !== undefined || visual.positionZ !== undefined;
                     const x = visual.positionX !== undefined ? visual.positionX : (entity.position?.x || 0);
                     const y = visual.positionY !== undefined ? visual.positionY : (entity.position?.y || 0);
                     const z = visual.positionZ !== undefined ? visual.positionZ : (entity.position?.z || 0);
@@ -332,7 +328,6 @@ export class NodeManager {
      */
     public updateNodePositions(entities: EntityData[]) {
         const colCounts = new Map<number, number>();
-        const colIndex = new Map<number, number>();
 
         entities.forEach(entity => {
             const visual = this.visualMappingEngine.applyToEntity(entity);

@@ -6,7 +6,7 @@ import { getAvailableProperties } from '../core/BuildFormatUtils';
 describe('DataParser', () => {
     describe('parse()', () => {
         it('sollte valide GraphData mit Entities und Relationships parsen', () => {
-            const validData: GraphData = {
+            const validData: any = {
                 system: 'Nodges',
                 metadata: {
                     created: '2026-02-11',
@@ -100,7 +100,7 @@ describe('DataParser', () => {
     });
 
     describe('getEntities()', () => {
-        const sampleData: GraphData = {
+        const sampleData: any = {
             system: 'Nodges',
             metadata: {
                 schemaVersion: '3.0'
@@ -133,7 +133,7 @@ describe('DataParser', () => {
     });
 
     describe('getRelationships()', () => {
-        const sampleData: GraphData = {
+        const sampleData: any = {
             system: 'Nodges',
             metadata: {
                 schemaVersion: '3.0'
@@ -161,7 +161,7 @@ describe('DataParser', () => {
     });
 
     describe('findEntity()', () => {
-        const sampleData: GraphData = {
+        const sampleData: any = {
             system: 'Nodges',
             metadata: {
                 schemaVersion: '3.0'
@@ -188,7 +188,7 @@ describe('DataParser', () => {
     });
 
     describe('findRelationshipsForEntity()', () => {
-        const sampleData: GraphData = {
+        const sampleData: any = {
             system: 'Nodges',
             metadata: {
                 schemaVersion: '3.0'

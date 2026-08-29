@@ -33,7 +33,6 @@ export class MappingUI {
     // --- Layout-Engine State ---
     private layoutCallback: ((algorithm: string, params: Record<string, number>) => Promise<void>) | null = null;
     private layoutStopCallback: (() => void) | null = null;
-    private layoutEnabled = false;
     private layoutExpanded = false;
     private selectedAlgorithm = 'force-directed';
     private layoutCurrentParams: Record<string, number> = {};
@@ -1556,11 +1555,6 @@ export class MappingUI {
     ) {
         this.layoutCallback = onApply;
         this.layoutStopCallback = onStop;
-    }
-
-    /** Setzt den Layout-Enabled-State von aussen (z.B. StateManager). */
-    public setLayoutEnabled(enabled: boolean) {
-        this.layoutEnabled = enabled;
     }
 
     /** Rendert die Layout-Engine-Steuerung als Sektion in der rechten Spalte. */
