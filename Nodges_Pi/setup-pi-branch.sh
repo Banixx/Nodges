@@ -49,16 +49,13 @@ echo "  Pi-Agent: Branch-Setup"
 echo "=========================================="
 echo ""
 
-read -rp "GitHub-Repo-URL (SSH oder HTTPS): " REPO_URL
+read -rp "GitHub-Repo-URL (HTTPS empfohlen, SSH möglich): " REPO_URL
 [[ -z "$REPO_URL" ]] && error "Repo-URL erforderlich"
 
-# HTTPS → SSH konvertieren (für SSH-Agent-Support im Container)
+# HTTPS beibehalten: GitHub-Authentifizierung erfolgt dauerhaft über den
+# persistenten Credential-Speicher im gemounteten CUSTOM_PATH.
 if [[ "$REPO_URL" == https://github.com/* ]]; then
-    REPO_SSH=$(echo "$REPO_URL" | sed -E 's#https://github.com/##; s#/+$##; s#\.git$##; s#^#git@github.com:#; s#$#.git#')
-    warn "HTTPS erkannt – konvertiere zu SSH für SSH-Agent-Support."
-    info "  Alt: $REPO_URL"
-    info "  Neu: $REPO_SSH"
-    REPO_URL="$REPO_SSH"
+    info "HTTPS-Remote wird beibehalten; GitHub-Benutzername: Banixx"
 fi
 
 read -rp "Branch-Name für Pi [pi-feature]: " BRANCH_NAME
@@ -94,26 +91,11 @@ USER_ID=$(id -u)
 GROUP_ID=$(id -g)
 info "WSL-User: UID=$USER_ID, GID=$GROUP_ID"
 
-# --- 4. SSH-Agent prüfen ---
-info "Prüfe SSH-Agent..."
-
-# Versuche automatisch zu starten, falls nicht aktiv
-if [[ -z "${SSH_AUTH_SOCK:-}" ]] || ! ssh-add -l >/dev/null 2>&1; then
-    warn "SSH-Agent nicht aktiv oder keine Keys geladen. Starte automatisch..."
-    eval "$(ssh-agent -s 2>/dev/null)" >/dev/null 2>&1 || true
-    for key in ~/.ssh/id_ed25519 ~/.ssh/id_rsa ~/.ssh/id_ecdsa ~/.ssh/id_ed25519_github; do
-        if [[ -f "$key" ]]; then
-            ssh-add "$key" 2>/dev/null && info "Key geladen: $key" && break
-        fi
-    done
-fi
-
-if ! ssh-add -l >/dev/null 2>&1; then
-    error "Kein SSH-Key im Agent.\n  1. eval \$(ssh-agent -s)\n  2. ssh-add ~/.ssh/id_ed25519\n  3. Erstelle Key falls nötig: ssh-keygen -t ed25519 -C 'pi@local'"
-fi
-
+# --- 4. Authentifizierung vorbereiten ---
+# Der Container verwendet HTTPS und speichert die GitHub-Credentials dauerhaft
+# im gemounteten CUSTOM_PATH. Ein SSH-Agent ist dafür nicht erforderlich.
 SSH_AUTH_SOCK="${SSH_AUTH_SOCK:-}"
-info "SSH-Agent Socket: $SSH_AUTH_SOCK"
+info "HTTPS-Git-Authentifizierung wird im persistenten Pi-Verzeichnis konfiguriert."
 
 # --- 5. Git Worktree anlegen ---
 info "Bereite Worktree vor: $TARGET_PATH"
@@ -204,13 +186,16 @@ REPO_PATH=${TARGET_PATH}
 # Custom-Verzeichnis in WSL für AGENTS.md und eigene Dateien
 CUSTOM_PATH=${CUSTOM_PATH}
 
-# SSH-Agent vom WSL-Host (sicherer als Token im Container)
+# Optionaler SSH-Agent vom WSL-Host (HTTPS-Credentials sind der Standard-Fallback)
 SSH_AUTH_SOCK=${SSH_AUTH_SOCK}
+
+# GitHub-Benutzername für HTTPS-Git-Pushes
+GITHUB_USERNAME=Banixx
 
 # Externe LightRAG-Instanz auf Windows-Host
 LIGHT_RAG_URL=http://host.docker.internal:8000
 
-# Fallback: GitHub PAT (nur wenn kein SSH verfügbar)
+# Optionaler GitHub-PAT für HTTPS-Git (wird beim Containerstart gespeichert)
 GITHUB_TOKEN=
 EOF
 
@@ -254,14 +239,14 @@ fi
 if docker exec pi-harness git -C /workspace status --short >/dev/null 2>&1; then
     info "✓ Git funktioniert im Container"
 else
-    warn "Git-Status im Container fehlgeschlagen – SSH-Agent/Key prüfen"
+    warn "Git-Status im Container fehlgeschlagen – HTTPS-Git-Konfiguration prüfen"
 fi
 
-# Prüfe SSH-Agent im Container
-if docker exec pi-harness ssh-add -l >/dev/null 2>&1; then
-    info "✓ SSH-Agent erreichbar im Container"
+# Prüfe die persistente HTTPS-Git-Konfiguration im Container
+if docker exec pi-harness sh -c 'test -f /home/.pi/gitconfig && git config --global --get credential.username >/dev/null'; then
+    info "✓ Persistente HTTPS-Git-Konfiguration erreichbar"
 else
-    warn "SSH-Agent im Container nicht erreichbar – Git-Push wird evtl. fehlschlagen"
+    warn "Persistente HTTPS-Git-Konfiguration nicht erreichbar – Git-Push manuell prüfen"
 fi
 
 # --- 9. Abschluss ---
