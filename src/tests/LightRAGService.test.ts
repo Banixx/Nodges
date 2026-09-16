@@ -7,6 +7,7 @@ describe('LightRAGService (Build 12)', () => {
 
     afterEach(() => {
         global.fetch = originalFetch;
+        delete (window as any).app;
         vi.unstubAllGlobals();
     });
 
@@ -46,6 +47,30 @@ describe('LightRAGService (Build 12)', () => {
         expect(result.graphData.data.relationships.length).toBe(1);
         expect(result.graphData.data.relationships[0].source).toBe('node_a');
         expect(result.graphData.data.relationships[0].target).toBe('node_b');
+    });
+
+    it('sollte fuer Build 13 rohe Relationen ohne Preset-Normalisierung liefern', async () => {
+        (window as any).app = {
+            uiManager: {
+                createPanel: {
+                    getActiveRelationLabels: () => ['unterstützt']
+                }
+            }
+        };
+        global.fetch = vi.fn().mockResolvedValue(
+            new Response(JSON.stringify({
+                status: 'success',
+                answer: 'Quellenantwort',
+                graph_context: {
+                    nodes: [{ id: 'a' }, { id: 'b' }],
+                    edges: [{ source: 'a', target: 'b', relation: 'supports' }]
+                }
+            }), { status: 200 })
+        );
+
+        const result = await LightRAGService.queryGraph('Relation Discovery', 'hybrid', 'http://localhost:8000', false);
+        expect(result.graphData.data.relationships[0].relation).toBe('supports');
+        delete (window as any).app;
     });
 
     it('sollte insertText erfolgreich verarbeiten', async () => {

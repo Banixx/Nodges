@@ -1,0 +1,230 @@
+Anleitung: Neues Netzwerk mit Nodges erstellen
+================================================
+
+Für ein neues, getrenntes Netzwerk mit eigener Wissensbasis sollte im Create-Panel der Modus „Build 12: LightRAG“ verwendet und zuerst eine neue LightRAG-Datenbank angelegt werden.
+
+Die Anwendung ist unter folgender Adresse erreichbar:
+
+http://localhost:5173
+
+
+1. Create-Panel öffnen
+----------------------
+
+Die Anwendung im Browser öffnen und rechts den Tab „Create“ auswählen.
+
+
+2. Beziehungstypen festlegen
+----------------------------
+
+Im Abschnitt „Relation Set“ wird festgelegt, welche Arten von Kanten erzeugt werden sollen.
+
+Vorhandene Vorlagen:
+
+- Schweizer Politik & Governance
+- Standard Generisch
+- Organisation & Struktur
+
+Für ein allgemeines Netzwerk beispielsweise „Standard Generisch“ auswählen und „Laden“ drücken.
+
+Danach können:
+
+- einzelne Beziehungen ein- oder ausgeschaltet,
+- mit „Alle an“ oder „Alle aus“ alle Beziehungen umgeschaltet,
+- eigene Beziehungstypen hinzugefügt,
+- angepasste Sets über „Speichern“ als JSON heruntergeladen werden.
+
+Wichtig: Beim Öffnen wird automatisch „Schweizer Politik & Governance“ geladen. Für andere Themen muss ausdrücklich ein anderes Set ausgewählt und geladen werden.
+
+
+3. Generierungsmodus Build 12 auswählen
+---------------------------------------
+
+Unter „Netzwerk per KI generieren“ folgenden Generierungsmodus auswählen:
+
+Build 12: LightRAG (Lokaler Graph-RAG Microservice)
+
+Danach erscheint der Bereich „Build 12 LightRAG Status & Aktionen“.
+
+„Server-Status prüfen“ drücken. Die Anzeige sollte melden:
+
+Server Status: Online (Engine: Aktiv)
+
+Wenn dort „Mock-Modus“ steht, sollte nicht produktiv generiert werden. Das Ergebnis wäre dann nur ein Platzhaltergraph.
+
+
+4. Neue Datenbank anlegen
+-------------------------
+
+Unter „Neue Datenbank anlegen“ einen eindeutigen Namen eingeben, zum Beispiel:
+
+energiewende_schweiz
+
+Danach „Anlegen“ drücken.
+
+Dadurch passiert Folgendes:
+
+1. Ein neuer LightRAG-Speicherordner wird angelegt.
+2. Die neue Datenbank wird sofort aktiviert.
+3. Die Datenbank erscheint anschließend im Auswahlfeld.
+4. Nachfolgende Texte und Abfragen verwenden diese Datenbank.
+
+Für den Namen am besten nur folgende Zeichen verwenden:
+
+- Buchstaben
+- Zahlen
+- Unterstrich (_)
+- Bindestrich (-)
+
+Beispiel:
+
+projekt_klimapolitik_2026
+
+Die LightRAG-Datenbank ist die Wissensbasis. Sie ist nicht identisch mit der später erzeugten oder heruntergeladenen Netzwerk-JSON-Datei.
+
+
+5. Rohdaten einspeisen
+----------------------
+
+Im Feld „Kontext / Rohdaten (RAG)“ können beispielsweise eingefügt werden:
+
+- eigene Notizen
+- Berichte
+- CSV-Inhalte
+- Artikel
+- kopierte Website-Texte
+- Dokumentauszüge
+
+Möglichkeiten:
+
+A) Text direkt einfügen
+
+Text in das Kontextfeld schreiben oder mit „Paste“ aus der Zwischenablage übernehmen.
+
+B) Website laden
+
+Eine URL eingeben und „Laden“ drücken. Die Anwendung lädt den Text über corsproxy.io, entfernt das HTML und übernimmt maximal 20.000 Zeichen.
+
+C) Text bewusst in die Datenbank schreiben
+
+„Text in KB einspeisen“ drücken und auf die Erfolgsmeldung warten.
+
+Wichtig: Wenn Text im Kontextfeld steht und anschließend „Neu Generieren“ gedrückt wird, wird dieser Text bei Build 12 automatisch ebenfalls in die aktive LightRAG-Datenbank eingespeist. Daher nicht zusätzlich vorher „Text in KB einspeisen“ drücken, wenn sofort generiert werden soll. Andernfalls kann derselbe Inhalt doppelt verarbeitet werden.
+
+Der separate Button ist sinnvoll, wenn zunächst mehrere Dokumente nacheinander in die Datenbank eingelesen werden sollen, ohne sofort ein Netzwerk zu erzeugen.
+
+
+6. Prompt formulieren
+---------------------
+
+In „Dein Prompt“ beschreiben, welchen Teil der Wissensbasis Nodges als Netzwerk darstellen soll.
+
+Beispiel:
+
+Erstelle aus der Wissensbasis ein Netzwerk zur Schweizer Energiewende.
+
+Zeige die wichtigsten Organisationen, Personen, Gesetze, Technologien und politischen Vorhaben. Erzeuge ungefähr 30 relevante Knoten. Verbinde sie nur durch sachlich belegte Beziehungen aus dem aktiven Relation Set.
+
+Ein genauer Prompt sollte enthalten:
+
+- Thema
+- gewünschte Knotentypen
+- ungefähre Knotenzahl
+- gewünschten Fokus
+- Umgang mit unsicheren Informationen
+
+Weiteres Beispiel:
+
+Erstelle ein Netzwerk mit maximal 25 Knoten zu den Akteuren der Schweizer Klimapolitik. Zeige insbesondere Zuständigkeiten, Mitgliedschaften, politische Einflüsse und institutionelle Beziehungen. Verwende nur Informationen aus der aktiven LightRAG-Datenbank.
+
+
+7. Interaktionsmodus auswählen
+------------------------------
+
+Es gibt drei Modi:
+
+- Auto-Pilot: Soll das Thema eigenständig erweitern.
+- Co-Pilot: Stellt zunächst eine Rückfrage. Danach wird die Antwort eingegeben und die Generierung erneut gestartet.
+- Strikt: Soll nur die genaue Anweisung ausführen.
+
+Technischer Hinweis: Im aktuellen Code besitzt nur „Co-Pilot“ eine echte zusätzliche Programmlogik. Er erzeugt eine Rückfrage und kombiniert anschließend den Dialog zum finalen Prompt. „Auto-Pilot“ und „Strikt“ werden momentan gleich an die Generierung übergeben; ihre Unterscheidung wird nur in den Metadaten gespeichert.
+
+Für den ersten Versuch wird „Auto-Pilot“ empfohlen. Wenn eine Abstimmung mit Rückfrage erwünscht ist, „Co-Pilot“ verwenden.
+
+
+8. Netzwerk erzeugen
+--------------------
+
+„Neu Generieren“ drücken.
+
+Bei Build 12 passiert Folgendes:
+
+1. Das Backend wird geprüft.
+2. Die ausgewählte Datenbank wird aktiviert.
+3. Der Kontexttext wird gegebenenfalls eingespeist.
+4. LightRAG wird im Modus „hybrid“ abgefragt.
+5. Knoten und Kanten werden aus der Knowledge Base extrahiert.
+6. Beziehungen werden soweit möglich auf das aktive Relation Set normalisiert.
+7. Der Graph wird validiert.
+8. Das neue Netzwerk wird in den Visualizer geladen.
+9. Die Kamera wird auf das erzeugte Netzwerk ausgerichtet.
+
+„Neu Generieren“ ersetzt grundsätzlich das aktuell angezeigte Netzwerk.
+
+
+9. Unterschied zwischen „Neu Generieren“ und „Modifizieren“
+----------------------------------------------------------
+
+Neu Generieren:
+
+Erzeugt einen neuen Graphen und lädt ihn als neues Netzwerk.
+
+Modifizieren:
+
+Bei den meisten Pipelines wird das neu generierte Ergebnis an das bestehende Netzwerk angehängt.
+
+Eine Ausnahme ist die Pipeline „Update: Iterativ“. Sie sendet das bestehende Netzwerk an das LLM und lässt es als Ganzes überarbeiten.
+
+Wenn ein wirklich neues, sauberes Netzwerk gewünscht ist, „Neu Generieren“ verwenden.
+
+
+10. Speicherung
+---------------
+
+Standardmäßig ist folgende Option aktiviert:
+
+Zwischenschritte speichern (Dev)
+
+Bei Build 12 werden Dateien unter anderem nach folgendem Muster gespeichert:
+
+public/data/b12/B12_Graph_...
+public/data/b12/B12_01_Rohdaten_...
+public/data/b12/B12_02_Antwort_...
+
+Zusätzlich wird die fertige Graph-JSON heruntergeladen.
+
+Wenn „Zwischenschritte speichern“ deaktiviert wird, werden normalerweise nur das Endergebnis und ein Generierungsprotokoll heruntergeladen. Build 12 speichert den fertigen Graphen allerdings trotzdem in public/data/b12.
+
+
+Empfohlener erster Versuch
+--------------------------
+
+1. Relation Set: „Standard Generisch“ auswählen und „Laden“ drücken.
+2. Generierungs-Modus: „Build 12: LightRAG“ auswählen.
+3. „Server-Status prüfen“: Es muss „Online (Engine: Aktiv)“ angezeigt werden.
+4. Neue Datenbank anlegen, zum Beispiel: test_netzwerk_01
+5. Eigene Rohdaten ins Kontextfeld einfügen.
+6. Nicht zusätzlich „Text in KB einspeisen“ drücken, wenn sofort generiert werden soll.
+7. Interaktionsmodus: „Auto-Pilot“.
+8. Folgenden oder einen ähnlichen Prompt eingeben:
+
+Erstelle aus den bereitgestellten Rohdaten ein übersichtliches Netzwerk mit etwa 20 bis 30 Knoten. Identifiziere die wichtigsten Personen, Organisationen, Themen und Ereignisse. Verwende ausschließlich belegbare Informationen aus den Rohdaten und die aktivierten Beziehungstypen.
+
+9. „Neu Generieren“ drücken.
+10. Erfolgsmeldung und Anzahl der erzeugten Knoten und Kanten kontrollieren.
+
+
+Hinweis zum aktuellen Zustand
+-----------------------------
+
+Das LightRAG-Backend war bei der Prüfung erreichbar und die Engine aktiv. Die Datenbank-API lieferte jedoch nur die Default-Datenbank und markierte sie nicht eindeutig als aktiv. Das deutet auf eine Pfadabweichung im laufenden Windows-Backend hin. Das Anlegen einer neuen Datenbank über „Anlegen“ sollte den aktiven Speicher eindeutig setzen und ist für ein neues Projekt besonders sinnvoll.

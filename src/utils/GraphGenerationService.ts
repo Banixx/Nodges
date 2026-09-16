@@ -65,6 +65,13 @@ export class GraphGenerationService {
             };
         } else if (pipeline === 'build12_lightrag') {
             buildParams.lightrag = { mode: 'hybrid', service: 'LightRAGService' };
+        } else if (pipeline === 'build13_lightrag') {
+            buildParams.lightrag = { mode: 'hybrid', service: 'LightRAGService' };
+            buildParams.relationDiscovery = {
+                sourceDerived: true,
+                reviewRequired: true,
+                relationSetAppliedBeforeGraphGeneration: true
+            };
         }
 
         graphData.metadata.buildParameters = buildParams;

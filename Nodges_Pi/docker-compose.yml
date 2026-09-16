@@ -42,6 +42,11 @@ services:
     env_file:
       - .env
     environment:
+      # Pi-Home auf das persistente (/home/.pi, Bind-Mount vom Host) umstellen.
+      # Damit bleiben Sessions, Skills und AGENTS.md über Container-Neustarts erhalten
+      # und /resume zeigt wieder alle alten Sessions (Standard-Session-Dir ist
+      # dann /home/.pi/agent/sessions).
+      PI_CODING_AGENT_DIR: /home/.pi/agent
       # Verwendet eine persistente Git-Konfiguration statt des fehlerhaften,
       # temporären VS-Code-Credential-Helpers unter /tmp.
       GIT_CONFIG_GLOBAL: /home/.pi/gitconfig

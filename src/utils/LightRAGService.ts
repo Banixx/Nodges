@@ -64,7 +64,8 @@ export class LightRAGService {
     public static async queryGraph(
         query: string,
         mode: 'local' | 'global' | 'hybrid' = 'hybrid',
-        baseUrl: string = LightRAGService.defaultBaseUrl
+        baseUrl: string = LightRAGService.defaultBaseUrl,
+        normalizeRelations: boolean = true
     ): Promise<{ answer: string; graphData: GraphData; mock: boolean }> {
         const response = await fetch(`${baseUrl}/query`, {
             method: 'POST',
@@ -102,7 +103,9 @@ export class LightRAGService {
         const relationships: RelationshipData[] = (data.graph_context?.edges || []).map((edge, idx) => {
             const props = edge.properties || {};
             const rawRelName = String(edge.relation || props.relation || props.relation_type || props.predicate || props.label || props.keywords || 'verknuepft');
-            const relName = activeRelLabels.length > 0 ? normalizeRelation(rawRelName, activeRelLabels) : rawRelName;
+            const relName = normalizeRelations && activeRelLabels.length > 0
+                ? normalizeRelation(rawRelName, activeRelLabels)
+                : rawRelName;
             return {
                 id: `rel_lightrag_${idx}_${edge.source}_${edge.target}`,
                 source: String(edge.source),

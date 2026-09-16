@@ -4,13 +4,14 @@
  */
 import { IStateManager } from '../core/interfaces';
 import type { App } from '../App';
-import { LLMService, LLMProvider, LLMModel } from '../utils/LLMService';
+import { LLMService, LLMProvider, LLMModel, Build13RelationCandidate } from '../utils/LLMService';
 import { LightRAGService } from '../utils/LightRAGService';
 import { GraphDataSchema } from '../types';
 import { DataParser } from '../core/DataParser';
 import { deduplicateGraph, getSemanticSearchMatches } from '../utils/VectorStoreManager';
 import * as THREE from 'three';
 import { GraphGenerationService } from '../utils/GraphGenerationService';
+import { isSupportedSourceDocument, parseSourceDocument } from '../utils/SourceDocumentParser';
 
 export class CreatePanel {
     private container: HTMLElement;
@@ -51,7 +52,15 @@ export class CreatePanel {
     private topKSlider!: HTMLInputElement;
 
     // Relation Set Properties
-    private activeRelationSet: { id: string; label: string; description?: string; enabled: boolean }[] = [];
+    private activeRelationSet: Array<{
+        id: string;
+        label: string;
+        description?: string;
+        enabled: boolean;
+        confidence?: number;
+        occurrences?: number;
+        examples?: string[];
+    }> = [];
     private relationListContainer!: HTMLElement;
 
     // Generation Naming Helper
@@ -446,19 +455,21 @@ export class CreatePanel {
         relTitle.textContent = 'Relation Set';
 
         const relToggle = document.createElement('span');
-        relToggle.textContent = '▾';
+        relToggle.textContent = '▸';
 
         relHeader.appendChild(relTitle);
         relHeader.appendChild(relToggle);
 
         const relContent = document.createElement('div');
         relContent.style.marginTop = '10px';
-        relContent.style.display = 'block';
+        // Build 13 ist der Standard und entdeckt Relationen erst aus den Quellen.
+        // Deshalb startet der Bereich leer und eingeklappt.
+        relContent.style.display = 'none';
 
         relHeader.onclick = () => {
             const isHidden = relContent.style.display === 'none';
             relContent.style.display = isHidden ? 'block' : 'none';
-            relToggle.textContent = isHidden ? '▾' : '▴';
+            relToggle.textContent = isHidden ? '▾' : '▸';
         };
 
         // Preset Selector (Full Width Row)
@@ -476,6 +487,7 @@ export class CreatePanel {
         relPresetSelect.style.boxSizing = 'border-box';
 
         const presets = [
+            { value: '', name: 'Kein Preset (Build 13 erkennt Relationen automatisch)' },
             { value: 'schweizer_politik_relations.json', name: 'Schweizer Politik & Governance' },
             { value: 'standard_generic_relations.json', name: 'Standard Generisch' },
             { value: 'organisation_und_struktur_relations.json', name: 'Organisation & Struktur' }
@@ -500,7 +512,16 @@ export class CreatePanel {
         openBtn.textContent = 'Laden';
         openBtn.style.flex = '1';
         openBtn.style.padding = '6px';
-        openBtn.onclick = () => this.loadRelationSetFile(relPresetSelect.value);
+        openBtn.onclick = () => {
+            if (!relPresetSelect.value) {
+                this.activeRelationSet = [];
+                this.renderRelationList();
+                this.triggerLiveRelationNormalization();
+                this.setStatus('Kein Relation-Preset aktiv. Build 13 erkennt Relationen aus den Quellen.', 'info');
+                return;
+            }
+            this.loadRelationSetFile(relPresetSelect.value);
+        };
 
         const saveBtn = document.createElement('button');
         saveBtn.className = 'action-button secondary';
@@ -596,8 +617,9 @@ export class CreatePanel {
         relSection.appendChild(relContent);
         this.container.appendChild(relSection);
 
-        // Auto load default set
-        this.loadRelationSetFile('schweizer_politik_relations.json');
+        // Kein statisches Preset automatisch laden: Build 13 startet mit einem
+        // leeren Set und ersetzt es nach dem Quellen-Review.
+        this.renderRelationList();
 
         // --- GENERATOR SECTION ---
         const genSection = document.createElement('section');
@@ -810,6 +832,7 @@ export class CreatePanel {
         this.pipelineSelect.style.borderRadius = '4px';
 
         const pipelines = [
+            { value: 'build13_lightrag', label: 'Build 13: LightRAG + automatische Relation Discovery (Standard)' },
             { value: 'build12_lightrag', label: 'Build 12: LightRAG (Lokaler Graph-RAG Microservice)' },
             { value: 'build10', label: 'Build 10 (Modulare Pipeline - Konfigurierbar)' },
             { value: 'build9', label: 'Build 9 (RAG & Vektorstore Deduplizierung)' },
@@ -976,11 +999,18 @@ export class CreatePanel {
         lightragContainer.style.marginBottom = '15px';
 
         const lrTitle = document.createElement('h5');
-        lrTitle.textContent = 'Build 12 LightRAG Status & Aktionen:';
+        lrTitle.textContent = 'LightRAG Status, Datenbank & Build-13-Quellenanalyse:';
         lrTitle.style.marginTop = '0';
         lrTitle.style.marginBottom = '8px';
         lrTitle.style.color = '#3498db';
         lightragContainer.appendChild(lrTitle);
+
+        const lrBuild13Info = document.createElement('p');
+        lrBuild13Info.textContent = 'Build 13 analysiert zuerst die Quellen, zeigt ein Relation Review mit Rueckfragen und generiert danach den Graphen mit dem bestaetigten Relation Set.';
+        lrBuild13Info.style.fontSize = '0.82em';
+        lrBuild13Info.style.color = 'var(--text-muted)';
+        lrBuild13Info.style.margin = '0 0 10px';
+        lightragContainer.appendChild(lrBuild13Info);
 
         const lrStatusDiv = document.createElement('div');
         lrStatusDiv.style.fontSize = '0.85em';
@@ -1138,8 +1168,9 @@ export class CreatePanel {
         const updatePipelineContainers = () => {
             const val = this.pipelineSelect.value;
             this.build10Container.style.display = val === 'build10' ? 'block' : 'none';
-            lightragContainer.style.display = val === 'build12_lightrag' ? 'block' : 'none';
-            if (val === 'build12_lightrag') {
+            const usesLightRag = val === 'build12_lightrag' || val === 'build13_lightrag';
+            lightragContainer.style.display = usesLightRag ? 'block' : 'none';
+            if (usesLightRag) {
                 lrCheckBtn.click();
                 this.reloadLightRagDatabases();
             }
@@ -1242,6 +1273,95 @@ export class CreatePanel {
         };
         ragHeader.appendChild(pasteBtn);
         genSection.appendChild(ragHeader);
+
+        // Quellen-Dateien: PDF/TXT/CSV/Markdown per Auswahl oder Drag-and-drop
+        const sourceFileInput = document.createElement('input');
+        sourceFileInput.type = 'file';
+        sourceFileInput.accept = '.pdf,.txt,.csv,.md,.markdown,application/pdf,text/plain,text/csv,text/markdown';
+        sourceFileInput.multiple = true;
+        sourceFileInput.style.display = 'none';
+
+        const sourceDropZone = document.createElement('div');
+        sourceDropZone.tabIndex = 0;
+        sourceDropZone.setAttribute('role', 'button');
+        sourceDropZone.setAttribute('aria-label', 'PDF, TXT, CSV oder Markdown als Quellen auswaehlen');
+        Object.assign(sourceDropZone.style, {
+            border: '1px dashed rgba(52, 152, 219, 0.65)',
+            borderRadius: '6px',
+            padding: '14px 10px',
+            marginBottom: '8px',
+            textAlign: 'center',
+            color: 'var(--text-muted)',
+            backgroundColor: 'rgba(52, 152, 219, 0.06)',
+            cursor: 'pointer',
+            transition: 'background-color .15s, border-color .15s'
+        });
+
+        const dropTitle = document.createElement('strong');
+        dropTitle.textContent = 'PDF, TXT, CSV oder Markdown hier ablegen';
+        dropTitle.style.display = 'block';
+        dropTitle.style.color = 'var(--text-color)';
+        const dropHint = document.createElement('small');
+        dropHint.textContent = 'oder klicken, um eine oder mehrere Quellen auszuwaehlen (max. 50 MB je Datei)';
+        sourceDropZone.append(dropTitle, dropHint);
+
+        const sourceFileStatus = document.createElement('div');
+        sourceFileStatus.style.fontSize = '0.82em';
+        sourceFileStatus.style.marginBottom = '10px';
+        sourceFileStatus.style.color = 'var(--text-muted)';
+
+        const setDropActive = (active: boolean) => {
+            sourceDropZone.style.backgroundColor = active ? 'rgba(52, 152, 219, 0.18)' : 'rgba(52, 152, 219, 0.06)';
+            sourceDropZone.style.borderColor = active ? '#3498db' : 'rgba(52, 152, 219, 0.65)';
+        };
+        const processFiles = async (fileList: FileList | File[]) => {
+            const files = Array.from(fileList);
+            if (files.length === 0) return;
+            sourceDropZone.style.pointerEvents = 'none';
+            sourceDropZone.style.opacity = '0.65';
+            try {
+                await this.appendSourceDocuments(files, sourceFileStatus);
+            } finally {
+                sourceDropZone.style.pointerEvents = 'auto';
+                sourceDropZone.style.opacity = '1';
+                sourceFileInput.value = '';
+                setDropActive(false);
+            }
+        };
+
+        sourceDropZone.onclick = () => sourceFileInput.click();
+        sourceDropZone.onkeydown = event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                sourceFileInput.click();
+            }
+        };
+        sourceFileInput.onchange = () => {
+            if (sourceFileInput.files) void processFiles(sourceFileInput.files);
+        };
+        ['dragenter', 'dragover'].forEach(eventName => {
+            sourceDropZone.addEventListener(eventName, event => {
+                event.preventDefault();
+                event.stopPropagation();
+                setDropActive(true);
+            });
+        });
+        ['dragleave', 'dragend'].forEach(eventName => {
+            sourceDropZone.addEventListener(eventName, event => {
+                event.preventDefault();
+                event.stopPropagation();
+                setDropActive(false);
+            });
+        });
+        sourceDropZone.addEventListener('drop', event => {
+            event.preventDefault();
+            event.stopPropagation();
+            if (event.dataTransfer?.files) void processFiles(event.dataTransfer.files);
+        });
+
+        genSection.appendChild(sourceFileInput);
+        genSection.appendChild(sourceDropZone);
+        genSection.appendChild(sourceFileStatus);
 
         // URL Loader
         const urlContainer = document.createElement('div');
@@ -1521,6 +1641,43 @@ export class CreatePanel {
         this.container.appendChild(searchSection);
     }
 
+    private async appendSourceDocuments(files: File[], statusElement: HTMLElement): Promise<void> {
+        const successes: string[] = [];
+        const errors: string[] = [];
+        statusElement.style.whiteSpace = 'pre-line';
+
+        for (let index = 0; index < files.length; index++) {
+            const file = files[index];
+            statusElement.style.color = 'var(--text-muted)';
+            statusElement.textContent = `Verarbeite ${index + 1}/${files.length}: ${file.name} ...`;
+
+            try {
+                if (!isSupportedSourceDocument(file)) {
+                    throw new Error('Nur PDF, TXT, CSV und Markdown werden als Quellen unterstuetzt.');
+                }
+                const parsed = await parseSourceDocument(file);
+                const sourceInfo = parsed.pageCount ? `PDF, ${parsed.pageCount} Seiten` : 'Textdatei';
+                const sourceBlock = `=== QUELLE: ${parsed.filename} (${sourceInfo}) ===\n${parsed.text}\n=== ENDE QUELLE: ${parsed.filename} ===`;
+                this.ragTextarea.value = `${this.ragTextarea.value.trim()}${this.ragTextarea.value.trim() ? '\n\n' : ''}${sourceBlock}`;
+                successes.push(`${parsed.filename}: ${parsed.characterCount.toLocaleString('de-CH')} Zeichen${parsed.pageCount ? `, ${parsed.pageCount} Seiten` : ''}`);
+            } catch (error: any) {
+                errors.push(`${file.name}: ${error?.message || 'Datei konnte nicht gelesen werden.'}`);
+            }
+        }
+
+        const summary: string[] = [];
+        if (successes.length) summary.push(`Geladen:\n- ${successes.join('\n- ')}`);
+        if (errors.length) summary.push(`Nicht geladen:\n- ${errors.join('\n- ')}`);
+        statusElement.textContent = summary.join('\n\n');
+        statusElement.style.color = errors.length ? '#f1c40f' : '#2ecc71';
+
+        if (successes.length) {
+            this.setStatus(`${successes.length} Quelldatei(en) in das Kontextfeld uebernommen.`, errors.length ? 'info' : 'success');
+        } else {
+            this.setStatus(errors[0] || 'Keine Quelldatei konnte verarbeitet werden.', 'error');
+        }
+    }
+
     private renderModelDropdown(filterText: string = '') {
         this.modelDropdown.innerHTML = '';
         const lowerFilter = filterText.toLowerCase();
@@ -1710,6 +1867,8 @@ export class CreatePanel {
             }
         }
 
+        const graphGoal = prompt;
+
         // --- Frontend NSFW Filter (mittelstreng) ---
         if (GraphGenerationService.checkNSFW(prompt)) {
             this.setStatus('Fehler: Die Anfrage verstoesst gegen die Inhaltsrichtlinien (NSFW-Filter).', 'error');
@@ -1719,7 +1878,13 @@ export class CreatePanel {
 
         const ragText = this.ragTextarea?.value.trim();
         const activeRelLabels = this.getActiveRelationLabels();
-        prompt = GraphGenerationService.assemblePrompt(prompt, ragText, activeRelLabels);
+        // Build 13 entdeckt sein Relation Set erst aus den Quellen. Ein zuvor
+        // geladenes Preset darf diese Analyse daher nicht vorab einschränken.
+        prompt = GraphGenerationService.assemblePrompt(
+            prompt,
+            ragText,
+            pipeline === 'build13_lightrag' ? [] : activeRelLabels
+        );
 
 
 
@@ -1835,6 +2000,138 @@ export class CreatePanel {
                         }
                     }
                 );
+            } else if (pipeline === 'build13_lightrag') {
+                onProgressWithLog('Build 13, Schritt 1/5: Pruefe LightRAG Server-Status...');
+                const health = await LightRAGService.checkHealth();
+                if (!health.online) {
+                    throw new Error('LightRAG-Server nicht erreichbar. Starte das Backend und versuche es erneut.');
+                }
+                if (!health.engineActive) {
+                    throw new Error('Build 13 benoetigt eine aktive LightRAG-Engine; der Server ist derzeit nur im Mock-Modus.');
+                }
+
+                const activeDbName = this.lrDatabaseSelect?.value || 'default';
+                onProgressWithLog(`Build 13, Schritt 2/5: Aktiviere Datenbank '${activeDbName}'...`);
+                await LightRAGService.selectDatabase(activeDbName);
+
+                if (ragText) {
+                    onProgressWithLog('Build 13, Schritt 2/5: Speise neue Quellen in die Wissensbasis ein...');
+                    await LightRAGService.insertText(ragText);
+                }
+
+                onProgressWithLog('Build 13, Schritt 3/5: Ermittle Quellenkontext und rohe Beziehungen...');
+                const discoveryQuery = `Liefere die fuer dieses Netzwerkziel relevanten Fakten, Entitaeten und Beziehungen aus der Wissensbasis: ${graphGoal}`;
+                const sourceResult = await LightRAGService.queryGraph(discoveryQuery, 'hybrid', undefined, false);
+                if (sourceResult.mock) {
+                    throw new Error('Relation Discovery wurde im Mock-Modus beantwortet und deshalb abgebrochen.');
+                }
+
+                const compactSourceGraph = {
+                    entities: sourceResult.graphData.data.entities.slice(0, 150).map((entity: any) => ({
+                        id: entity.id,
+                        label: entity.label,
+                        type: entity.entity_type || entity.type
+                    })),
+                    relationships: sourceResult.graphData.data.relationships.slice(0, 300).map((relation: any) => ({
+                        source: relation.source,
+                        target: relation.target,
+                        relation: relation.relation || relation.label
+                    }))
+                };
+                const discoverySource = [
+                    ragText ? `NEU EINGESPEISTE QUELLEN:\n${ragText}` : '',
+                    `LIGHTRAG-ANTWORT:\n${sourceResult.answer}`,
+                    `EXTRAHIERTER QUELLENGRAPH:\n${JSON.stringify(compactSourceGraph, null, 2)}`
+                ].filter(Boolean).join('\n\n').substring(0, 50000);
+
+                onProgressWithLog('Build 13, Schritt 4/5: Leite Relation Set aus den Quellen ab...');
+                let discovery;
+                try {
+                    discovery = await LLMService.discoverRelationsBuild13(
+                        discoverySource,
+                        graphGoal,
+                        provider,
+                        model,
+                        llmOptions
+                    );
+                } catch (discoveryError: any) {
+                    console.warn('[CreatePanel] LLM Relation Discovery fehlgeschlagen, nutze rohe LightRAG-Relationen:', discoveryError);
+                    const relationCounts = new Map<string, number>();
+                    compactSourceGraph.relationships.forEach((relation: any) => {
+                        const label = String(relation.relation || '').trim();
+                        if (label) relationCounts.set(label, (relationCounts.get(label) || 0) + 1);
+                    });
+                    discovery = {
+                        entities: [],
+                        questions: ['Die automatische semantische Zusammenfuehrung ist fehlgeschlagen. Bitte pruefe und vereinheitliche die rohen Relationslabels.'],
+                        relations: Array.from(relationCounts.entries()).slice(0, 20).map(([label, occurrences], index) => ({
+                            id: `SOURCE_RELATION_${index + 1}`,
+                            label,
+                            description: 'Direkt aus dem LightRAG-Quellengraph uebernommen.',
+                            sourceTypes: [],
+                            targetTypes: [],
+                            directional: true,
+                            examples: [],
+                            confidence: 0.6,
+                            occurrences,
+                            enabled: true
+                        }))
+                    };
+                }
+
+                if (!discovery.relations.length) {
+                    throw new Error('In den Quellen konnten keine Beziehungen erkannt werden. Bitte speise aussagekraeftigere Quellen ein.');
+                }
+
+                if (saveSteps) {
+                    await this.saveGraphFile(`../b13/B13_01_Relation_Discovery_${fileSuffix}.json`, JSON.stringify(discovery, null, 2));
+                }
+
+                this.setLoading(false);
+                this.setStatus('Relationen erkannt. Bitte Relation Set und Rueckfragen pruefen.', 'info');
+                const reviewedDiscovery = await this.showBuild13RelationReview(discovery.relations, discovery.questions);
+                if (!reviewedDiscovery) {
+                    this.setStatus('Build-13-Generierung wurde beim Relation Review abgebrochen.', 'info');
+                    return;
+                }
+                this.setLoading(true);
+
+                this.activeRelationSet = reviewedDiscovery.relations.map(relation => ({
+                    id: relation.id,
+                    label: relation.label,
+                    description: relation.description,
+                    enabled: relation.enabled,
+                    confidence: relation.confidence,
+                    occurrences: relation.occurrences,
+                    examples: relation.examples
+                }));
+                this.renderRelationList();
+
+                const approvedLabels = this.getActiveRelationLabels();
+                if (approvedLabels.length === 0) {
+                    throw new Error('Mindestens eine erkannte Relation muss fuer Build 13 aktiviert sein.');
+                }
+
+                const userDecisions = reviewedDiscovery.answers
+                    .filter(answer => answer.answer.trim())
+                    .map(answer => `Frage: ${answer.question}\nAntwort: ${answer.answer}`)
+                    .join('\n\n');
+                const build13Prompt = GraphGenerationService.assemblePrompt(
+                    `${graphGoal}\n\n=== BELEGTER LIGHTRAG-QUELLENKONTEXT ===\n${discoverySource}${userDecisions ? `\n\n=== ENTSCHEIDUNGEN DES BENUTZERS ===\n${userDecisions}` : ''}\n\nNutze fuer Knoten und Kanten ausschliesslich Fakten aus diesem Quellenkontext. Erfinde keine zusaetzlichen Entitaeten oder Beziehungen.`,
+                    undefined,
+                    approvedLabels
+                );
+
+                onProgressWithLog('Build 13, Schritt 5/5: Generiere Graph mit bestaetigtem Relation Set...');
+                graphData = await LLMService.generateGraphDataBuild6(build13Prompt, provider, model, onProgressWithLog, llmOptions);
+                if (!graphData.metadata) graphData.metadata = {};
+                graphData.metadata.activeDatabase = activeDbName;
+                graphData.metadata.relationDiscovery = {
+                    build: 13,
+                    sourceDerived: true,
+                    approvedRelations: reviewedDiscovery.relations.filter(relation => relation.enabled),
+                    userAnswers: reviewedDiscovery.answers
+                };
             } else if (pipeline === 'build12_lightrag') {
                 // Fix 1: Healthcheck vor dem Build - Abbruch bei Offline, Warnung bei Mock-Engine
                 onProgressWithLog('Pruefe LightRAG Server-Status...');
@@ -1963,6 +2260,13 @@ export class CreatePanel {
                     ratingMethod: this.b10RatingSelect?.value
                 };
                 GraphGenerationService.enrichGraphMetadata(graphData, pipeline, prompt, provider, model, mode, ragText, startTime, buildConfig);
+            }
+
+            // Build 13 besitzt einen eigenen, nachvollziehbaren Ausgabeordner.
+            // Das Endergebnis wird unabhaengig vom Dev-Schalter im Projekt gesichert.
+            if (pipeline === 'build13_lightrag' && graphData) {
+                await this.saveGraphFile(`../b13/B13_Graph_${fileSuffix}.json`, JSON.stringify(graphData, null, 2));
+                onProgressWithLog(`Build-13-Datei unter public/data/b13/B13_Graph_${fileSuffix}.json gespeichert.`);
             }
 
             // Fix 6: Schema-Validierung des generierten Graphen vor dem Laden/Speichern
@@ -2120,6 +2424,167 @@ export class CreatePanel {
             : `${formattedStep}_${name}_${prefixOrSuffix}.${ext}`;
         this.app.exportManager?.downloadFile(content, filename, mime);
     }
+    private showBuild13RelationReview(
+        candidates: Build13RelationCandidate[],
+        questions: string[]
+    ): Promise<{ relations: Build13RelationCandidate[]; answers: Array<{ question: string; answer: string }> } | null> {
+        return new Promise(resolve => {
+            const relations = candidates.map(candidate => ({
+                ...candidate,
+                sourceTypes: [...candidate.sourceTypes],
+                targetTypes: [...candidate.targetTypes],
+                examples: [...candidate.examples]
+            }));
+            const answers = questions.map(question => ({ question, answer: '' }));
+
+            const modal = document.createElement('div');
+            modal.id = 'build13-relation-review-modal';
+            Object.assign(modal.style, {
+                position: 'fixed', inset: '0', zIndex: '100000', display: 'flex',
+                alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.82)',
+                backdropFilter: 'blur(8px)'
+            });
+
+            const box = document.createElement('div');
+            Object.assign(box.style, {
+                width: 'min(1000px, 92vw)', height: 'min(820px, 90vh)', display: 'flex',
+                flexDirection: 'column', backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,.15)',
+                borderRadius: '8px', padding: '20px', boxSizing: 'border-box'
+            });
+
+            const title = document.createElement('h3');
+            title.textContent = 'Build 13: Relation Discovery pruefen';
+            title.style.margin = '0 0 6px';
+            box.appendChild(title);
+
+            const intro = document.createElement('p');
+            intro.textContent = 'Die Relationen wurden aus dem LightRAG-Quellenkontext abgeleitet. Aktiviere nur passende Typen, korrigiere Labels und beantworte offene Fragen.';
+            intro.style.color = 'var(--text-muted)';
+            intro.style.margin = '0 0 12px';
+            box.appendChild(intro);
+
+            const content = document.createElement('div');
+            Object.assign(content.style, { flex: '1', overflowY: 'auto', paddingRight: '6px' });
+            box.appendChild(content);
+
+            if (answers.length > 0) {
+                const questionTitle = document.createElement('h4');
+                questionTitle.textContent = 'Rueckfragen zu mehrdeutigen Beziehungen';
+                content.appendChild(questionTitle);
+                answers.forEach(item => {
+                    const label = document.createElement('label');
+                    label.textContent = item.question;
+                    label.style.display = 'block';
+                    label.style.marginTop = '8px';
+                    const input = document.createElement('textarea');
+                    input.placeholder = 'Optionale Entscheidung oder Praezisierung...';
+                    input.className = 'form-control';
+                    input.style.width = '100%';
+                    input.style.minHeight = '52px';
+                    input.style.boxSizing = 'border-box';
+                    input.oninput = () => item.answer = input.value;
+                    content.appendChild(label);
+                    content.appendChild(input);
+                });
+            }
+
+            const relationTitle = document.createElement('h4');
+            relationTitle.textContent = 'Vorgeschlagenes Relation Set';
+            relationTitle.style.marginTop = '18px';
+            content.appendChild(relationTitle);
+
+            const list = document.createElement('div');
+            content.appendChild(list);
+
+            const renderCandidates = () => {
+                list.innerHTML = '';
+                relations.forEach((relation, index) => {
+                    const row = document.createElement('div');
+                    Object.assign(row.style, {
+                        display: 'grid', gridTemplateColumns: '28px minmax(150px, .8fr) minmax(220px, 1.4fr) 90px 30px',
+                        gap: '8px', alignItems: 'start', padding: '9px', marginBottom: '6px',
+                        backgroundColor: 'rgba(255,255,255,.05)', borderRadius: '4px'
+                    });
+
+                    const enabled = document.createElement('input');
+                    enabled.type = 'checkbox';
+                    enabled.checked = relation.enabled;
+                    enabled.title = 'Relation verwenden';
+                    enabled.onchange = () => relation.enabled = enabled.checked;
+
+                    const label = document.createElement('input');
+                    label.className = 'form-control';
+                    label.value = relation.label;
+                    label.title = 'Relationslabel';
+                    label.oninput = () => relation.label = label.value.trim();
+
+                    const details = document.createElement('div');
+                    const description = document.createElement('textarea');
+                    description.className = 'form-control';
+                    description.value = relation.description;
+                    description.placeholder = 'Bedeutung der Relation';
+                    description.style.width = '100%';
+                    description.style.minHeight = '48px';
+                    description.style.boxSizing = 'border-box';
+                    description.oninput = () => relation.description = description.value;
+                    details.appendChild(description);
+                    if (relation.examples.length > 0) {
+                        const evidence = document.createElement('small');
+                        evidence.textContent = `Beleg: ${relation.examples[0]}`;
+                        evidence.style.display = 'block';
+                        evidence.style.color = 'var(--text-muted)';
+                        evidence.style.marginTop = '4px';
+                        details.appendChild(evidence);
+                    }
+
+                    const score = document.createElement('small');
+                    score.textContent = `${Math.round(relation.confidence * 100)} %\n${relation.occurrences} Treffer`;
+                    score.style.whiteSpace = 'pre-line';
+                    score.style.color = relation.confidence >= 0.85 ? '#2ecc71' : (relation.confidence >= 0.55 ? '#f1c40f' : '#e74c3c');
+
+                    const remove = document.createElement('button');
+                    remove.textContent = '×';
+                    remove.title = 'Relation entfernen';
+                    remove.className = 'action-button secondary';
+                    remove.onclick = () => {
+                        relations.splice(index, 1);
+                        renderCandidates();
+                    };
+
+                    row.append(enabled, label, details, score, remove);
+                    list.appendChild(row);
+                });
+            };
+            renderCandidates();
+
+            const footer = document.createElement('div');
+            Object.assign(footer.style, { display: 'flex', justifyContent: 'flex-end', gap: '10px', paddingTop: '14px' });
+            const cancel = document.createElement('button');
+            cancel.className = 'action-button secondary';
+            cancel.textContent = 'Abbrechen';
+            cancel.onclick = () => {
+                modal.remove();
+                resolve(null);
+            };
+            const approve = document.createElement('button');
+            approve.className = 'action-button primary';
+            approve.textContent = 'Relation Set bestaetigen und Graph generieren';
+            approve.onclick = () => {
+                const validRelations = relations.filter(relation => relation.label.trim().length > 0);
+                if (!validRelations.some(relation => relation.enabled)) {
+                    window.alert('Bitte mindestens eine Relation aktivieren.');
+                    return;
+                }
+                modal.remove();
+                resolve({ relations: validRelations, answers });
+            };
+            footer.append(cancel, approve);
+            box.appendChild(footer);
+            modal.appendChild(box);
+            document.body.appendChild(modal);
+        });
+    }
+
     private showHumanInTheLoopReview(graphData: any, onSave: (finalData: any) => void) {
         const modal = document.createElement('div');
         modal.id = 'b10-review-modal';

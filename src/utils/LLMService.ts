@@ -21,6 +21,25 @@ export interface LLMModel {
     name: string;
 }
 
+export interface Build13RelationCandidate {
+    id: string;
+    label: string;
+    description: string;
+    sourceTypes: string[];
+    targetTypes: string[];
+    directional: boolean;
+    examples: string[];
+    confidence: number;
+    occurrences: number;
+    enabled: boolean;
+}
+
+export interface Build13RelationDiscovery {
+    entities: string[];
+    relations: Build13RelationCandidate[];
+    questions: string[];
+}
+
 export class LLMService {
     public static readonly PROVIDERS: { id: LLMProvider; name: string }[] = [
         { id: 'openrouter', name: 'OpenRouter' },
@@ -812,6 +831,65 @@ WICHTIG: "system", "metadata", "data" (mit entities+relationships Array) und "vi
         
         return resultData;
     }
+    /**
+     * Build 13: Leitet ein belegbares Relation Set aus dem von LightRAG
+     * gelieferten Quellenkontext ab. `entities` ist auch deshalb Teil der
+     * Antwort, damit die generische JSON-Antwortvalidierung greift.
+     */
+    public static async discoverRelationsBuild13(
+        sourceContext: string,
+        graphGoal: string,
+        provider: LLMProvider,
+        model: string,
+        llmOptions: { temperature?: number, top_p?: number, top_k?: number } = {}
+    ): Promise<Build13RelationDiscovery> {
+        const systemPrompt = `Du bist Ontologie- und Quellenanalyst fuer Nodges Build 13.
+Leite Beziehungstypen AUSSCHLIESSLICH aus dem gelieferten Quellenkontext ab. Erfinde keine unbelegten Beziehungen.
+Fuehre Synonyme zu einem kurzen, praezisen deutschen Relationslabel zusammen. Vermeide unspezifische Labels wie "verbunden mit", sofern eine genauere Relation belegt ist.
+Gib ausschliesslich JSON in dieser Struktur zurueck:
+{
+  "entities": ["erkannter Entitaetstyp"],
+  "relations": [{
+    "id": "MASCHINENLESBARE_ID",
+    "label": "kurzes Relationslabel",
+    "description": "eindeutige Bedeutung",
+    "sourceTypes": ["Typ"],
+    "targetTypes": ["Typ"],
+    "directional": true,
+    "examples": ["kurzer woertlicher oder eng paraphrasierter Quellenbeleg"],
+    "confidence": 0.0,
+    "occurrences": 1
+  }],
+  "questions": ["nur gezielte Rueckfragen zu wirklich mehrdeutigen Relationen"]
+}
+Confidence liegt zwischen 0 und 1. Liefere hoechstens 20 relevante Relationen und hoechstens 5 Rueckfragen.`;
+
+        const userPrompt = `=== ZIEL DES NETZWERKS ===\n${graphGoal}\n\n=== QUELLENKONTEXT ===\n${sourceContext.substring(0, 50000)}`;
+        const result: any = await this._executeLLMCall(systemPrompt, userPrompt, provider, model, undefined, llmOptions);
+        const rawRelations = Array.isArray(result.relations) ? result.relations : [];
+
+        return {
+            entities: Array.isArray(result.entities) ? result.entities.map(String) : [],
+            relations: rawRelations.slice(0, 20).map((relation: any, index: number) => {
+                const confidence = Math.max(0, Math.min(1, Number(relation.confidence) || 0));
+                const label = String(relation.label || relation.id || `Relation ${index + 1}`).trim();
+                return {
+                    id: String(relation.id || label.toUpperCase().replace(/[^A-Z0-9]+/g, '_')).trim(),
+                    label,
+                    description: String(relation.description || ''),
+                    sourceTypes: Array.isArray(relation.sourceTypes) ? relation.sourceTypes.map(String) : [],
+                    targetTypes: Array.isArray(relation.targetTypes) ? relation.targetTypes.map(String) : [],
+                    directional: relation.directional !== false,
+                    examples: Array.isArray(relation.examples) ? relation.examples.map(String).slice(0, 3) : [],
+                    confidence,
+                    occurrences: Math.max(1, Math.round(Number(relation.occurrences) || 1)),
+                    enabled: confidence >= 0.55
+                };
+            }).filter((relation: Build13RelationCandidate) => relation.label.length > 0),
+            questions: Array.isArray(result.questions) ? result.questions.map(String).filter(Boolean).slice(0, 5) : []
+        };
+    }
+
     public static async askClarification(
         history: {role: 'user'|'assistant', content: string}[],
         provider: LLMProvider,
