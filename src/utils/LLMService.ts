@@ -51,7 +51,6 @@ export class LLMService {
 
     public static readonly PROVIDER_MODELS: Record<LLMProvider, LLMModel[]> = {
         openrouter: [
-            { id: 'kwaipilot/kat-coder-pro-v2.5', name: 'kwaipilot: Kat Coder Pro V2.5' },
             { id: 'openai/gpt-5.6-luna', name: 'OpenAI: GPT-5.6 Luna' },
             { id: 'deepseek/deepseek-v4-flash', name: 'DeepSeek: DeepSeek V4 Flash' },
             { id: 'qwen/qwen-2.5-72b-instruct', name: 'Qwen2.5 72B Instruct' },
@@ -65,21 +64,21 @@ export class LLMService {
             { id: 'qwen/qwen3.7-plus', name: 'Qwen: Qwen3.7 Plus' },
             { id: 'aion-labs/aion-3.0-mini', name: 'AionLabs: Aion-3.0-Mini' },
             { id: 'mistralai/mistral-large-2512', name: 'Mistral: Mistral Large 3 2512' },
-            { id: 'google/gemini-3.1-flash-lite', name: 'Google: Gemini 3.1 Flash Lite' },
             { id: 'openai/gpt-4.1-mini', name: 'OpenAI: GPT-4.1 Mini' },
             { id: 'morph/morph-v3-large', name: 'Morph: Morph V3 Large' },
             { id: 'moonshotai/kimi-k2.5', name: 'MoonshotAI: Kimi K2.5' },
-            { id: 'google/gemini-2.5-flash', name: 'Google: Gemini 2.5 Flash' },
-            { id: 'x-ai/grok-4.20', name: 'xAI: Grok 4.20' },
             { id: 'deepseek/deepseek-r1', name: 'DeepSeek: R1' },
-            { id: 'qwen/qwen3-coder-plus', name: 'Qwen: Qwen3 Coder Plus' },
             { id: 'qwen/qwen3.7-max', name: 'Qwen: Qwen3.7 Max' },
             { id: 'qwen/qwen3-max', name: 'Qwen: Qwen3 Max' },
             { id: 'anthropic/claude-haiku-4.5', name: 'Anthropic: Claude Haiku 4.5' },
             { id: 'openai/gpt-oss-safeguard-20b', name: 'OpenAI: GPT OSS Safeguard 20B' },
             { id: 'inception/mercury-2', name: 'Inception: Mercury 2' },
             { id: 'xiaomi/mimo-v2.5', name: 'Xiaomi: MiMo V2.5' },
-            { id: 'poolside/laguna-m.1', name: 'Poolside: Laguna M.1' }
+            { id: 'poolside/laguna-m.1', name: 'Poolside: Laguna M.1' },
+            // Neue Modelle 2025-08-18
+            { id: 'deepseek/deepseek-v4.1-flash', name: 'DeepSeek: DeepSeek V4.1 Flash' },
+            { id: 'tencent/hy4-preview', name: 'Tencent: hy4 Preview' },
+            { id: 'z-ai/glm-5.3-flash', name: 'Z-AI: GLM 5.3 Flash' }
         ],
         openai: [
             { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
@@ -149,6 +148,11 @@ export class LLMService {
         }
         // Migration of old openrouter key if needed
         if (provider === 'openrouter') {
+            // Der explizit im Create-Panel gewaehlte Free-Modus muss auch
+            // einen eventuell in Vite gesetzten Umgebungs-Key uebersteuern.
+            if (localStorage.getItem('llm_openrouter_proxy_mode') === 'true') {
+                return '';
+            }
             const oldKey = localStorage.getItem('openrouter_api_key');
             const newKey = localStorage.getItem('llm_key_openrouter');
             if (oldKey && !newKey) {
@@ -186,6 +190,18 @@ export class LLMService {
      */
     public static setApiKey(provider: LLMProvider, key: string): void {
         localStorage.setItem(`llm_key_${provider}`, key.trim());
+        if (provider === 'openrouter') {
+            localStorage.removeItem('llm_openrouter_proxy_mode');
+        }
+    }
+
+    public static setOpenRouterProxyMode(enabled: boolean): void {
+        if (enabled) {
+            localStorage.setItem('llm_openrouter_proxy_mode', 'true');
+            this.clearApiKey('openrouter');
+        } else {
+            localStorage.removeItem('llm_openrouter_proxy_mode');
+        }
     }
 
     /**
@@ -298,6 +314,7 @@ export class LLMService {
     ): Promise<GraphData> {
         let apiKey = this.getApiKey(provider);
         let apiUrl = '';
+        const usingOpenRouterProxy = provider === 'openrouter' && !apiKey;
 
         if (provider === 'openrouter') {
             if (!apiKey) {
@@ -325,15 +342,22 @@ export class LLMService {
 
         try {
             if (provider === 'openrouter') {
+                // Der Deno-Free-Proxy erlaubt per CORS nur Authorization und
+                // Content-Type. OpenRouter-Metadatenheader werden daher nur
+                // beim direkten API-Aufruf mit eigenem Key gesendet.
+                const openRouterHeaders: Record<string, string> = {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                };
+                if (!usingOpenRouterProxy) {
+                    openRouterHeaders['HTTP-Referer'] = window.location.href;
+                    openRouterHeaders['X-Title'] = 'Nodges 3D Graph';
+                }
+
                 // First attempt: multi-turn (system + user)
                 let response = await fetch(apiUrl, {
                     method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'HTTP-Referer': window.location.href,
-                        'X-Title': 'Nodges 3D Graph',
-                        'Content-Type': 'application/json'
-                    },
+                    headers: openRouterHeaders,
                     body: JSON.stringify({
                         model: model,
                         provider: { data_collection: 'deny' },
@@ -361,12 +385,7 @@ export class LLMService {
                         const combinedPrompt = `${systemPrompt}\n\n---\nUSER REQUEST:\n${userPrompt}`;
                         response = await fetch(apiUrl, {
                             method: 'POST',
-                            headers: {
-                                'Authorization': `Bearer ${apiKey}`,
-                                'HTTP-Referer': window.location.href,
-                                'X-Title': 'Nodges 3D Graph',
-                                'Content-Type': 'application/json'
-                            },
+                            headers: openRouterHeaders,
                             body: JSON.stringify({
                                 model: model,
                                 provider: { data_collection: 'deny' },
@@ -395,12 +414,7 @@ export class LLMService {
                     const combinedPrompt = `${systemPrompt}\n\n---\nUSER REQUEST:\n${userPrompt}\n\nWICHTIG: Antworte AUSSCHLIESSLICH in validem JSON!`;
                     response = await fetch(apiUrl, {
                         method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${apiKey}`,
-                            'HTTP-Referer': window.location.href,
-                            'X-Title': 'Nodges 3D Graph',
-                            'Content-Type': 'application/json'
-                        },
+                        headers: openRouterHeaders,
                         body: JSON.stringify({
                             model: model,
                             provider: { data_collection: 'deny' },
@@ -865,28 +879,82 @@ Gib ausschliesslich JSON in dieser Struktur zurueck:
 Confidence liegt zwischen 0 und 1. Liefere hoechstens 20 relevante Relationen und hoechstens 5 Rueckfragen.`;
 
         const userPrompt = `=== ZIEL DES NETZWERKS ===\n${graphGoal}\n\n=== QUELLENKONTEXT ===\n${sourceContext.substring(0, 50000)}`;
-        const result: any = await this._executeLLMCall(systemPrompt, userPrompt, provider, model, undefined, llmOptions);
-        const rawRelations = Array.isArray(result.relations) ? result.relations : [];
+        let result: any = await this._executeLLMCall(systemPrompt, userPrompt, provider, model, undefined, llmOptions);
+
+        const getRawRelations = (value: any): any[] => {
+            const variants = [
+                value?.relations,
+                value?.relationSet?.relations,
+                value?.relation_set?.relations,
+                value?.relationships,
+                value?.data?.relationships,
+                value?.dataModel?.relationships
+            ];
+            for (const variant of variants) {
+                if (Array.isArray(variant) && variant.length > 0) return variant;
+                if (variant && typeof variant === 'object' && !Array.isArray(variant)) {
+                    return Object.entries(variant).map(([key, definition]) => ({
+                        id: key,
+                        label: key,
+                        ...(definition && typeof definition === 'object' ? definition : {})
+                    }));
+                }
+            }
+            return [];
+        };
+
+        let rawRelations = getRawRelations(result);
+        if (rawRelations.length === 0) {
+            // Einige Modelle antworten trotz Relation-Discovery-Prompt im
+            // normalen Nodges-Graphformat. Ein kurzer, fokussierter Retry
+            // verhindert, dass gehaltvolle Dokumente faelschlich als
+            // "beziehungslos" abgewiesen werden.
+            const retrySystemPrompt = `Analysiere den Quellenkontext als Ontologie-Experte.
+Extrahiere 5 bis 15 unterschiedliche, im Text belegte BEZIEHUNGSTYPEN. Beispiele sind "schuetzt", "erfordert", "erlaubt", "verbietet", "gilt fuer" oder "basiert auf"; verwende aber die fuer den konkreten Text passenden Begriffe.
+Antworte ausschliesslich als JSON: {"entities":["Entitaetstyp"],"relations":[{"id":"ID","label":"deutsches Verb oder kurze Relation","description":"Bedeutung","sourceTypes":[],"targetTypes":[],"directional":true,"examples":["Beleg aus der Quelle"],"confidence":0.8,"occurrences":1}],"questions":[]}.
+Gib nur dann weniger als 5 Relationen aus, wenn der Quellenkontext tatsaechlich keine entsprechenden Aussagen enthaelt.`;
+            result = await this._executeLLMCall(retrySystemPrompt, userPrompt, provider, model, undefined, {
+                ...llmOptions,
+                temperature: Math.min(llmOptions.temperature ?? 0.2, 0.3)
+            });
+            rawRelations = getRawRelations(result);
+        }
+
+        const rawEntities = Array.isArray(result.entities)
+            ? result.entities
+            : (Array.isArray(result.entityTypes) ? result.entityTypes : []);
+        const rawQuestions = Array.isArray(result.questions)
+            ? result.questions
+            : (Array.isArray(result.clarificationQuestions) ? result.clarificationQuestions : []);
 
         return {
-            entities: Array.isArray(result.entities) ? result.entities.map(String) : [],
+            entities: rawEntities.map((entity: any) => String(entity?.label || entity?.type || entity)),
             relations: rawRelations.slice(0, 20).map((relation: any, index: number) => {
-                const confidence = Math.max(0, Math.min(1, Number(relation.confidence) || 0));
-                const label = String(relation.label || relation.id || `Relation ${index + 1}`).trim();
+                const suppliedConfidence = Number(relation.confidence ?? relation.score);
+                const confidence = Number.isFinite(suppliedConfidence)
+                    ? Math.max(0, Math.min(1, suppliedConfidence > 1 ? suppliedConfidence / 100 : suppliedConfidence))
+                    : 0.7;
+                const label = String(
+                    relation.label || relation.relation || relation.predicate || relation.type || relation.name || relation.id || `Relation ${index + 1}`
+                ).trim();
+                const rawExamples = relation.examples || relation.evidence || relation.sources;
+                const examples = Array.isArray(rawExamples)
+                    ? rawExamples.map(String).slice(0, 3)
+                    : (typeof rawExamples === 'string' ? [rawExamples] : []);
                 return {
                     id: String(relation.id || label.toUpperCase().replace(/[^A-Z0-9]+/g, '_')).trim(),
                     label,
-                    description: String(relation.description || ''),
+                    description: String(relation.description || relation.definition || ''),
                     sourceTypes: Array.isArray(relation.sourceTypes) ? relation.sourceTypes.map(String) : [],
                     targetTypes: Array.isArray(relation.targetTypes) ? relation.targetTypes.map(String) : [],
                     directional: relation.directional !== false,
-                    examples: Array.isArray(relation.examples) ? relation.examples.map(String).slice(0, 3) : [],
+                    examples,
                     confidence,
-                    occurrences: Math.max(1, Math.round(Number(relation.occurrences) || 1)),
+                    occurrences: Math.max(1, Math.round(Number(relation.occurrences ?? relation.count) || 1)),
                     enabled: confidence >= 0.55
                 };
             }).filter((relation: Build13RelationCandidate) => relation.label.length > 0),
-            questions: Array.isArray(result.questions) ? result.questions.map(String).filter(Boolean).slice(0, 5) : []
+            questions: rawQuestions.map(String).filter(Boolean).slice(0, 5)
         };
     }
 
@@ -1098,6 +1166,7 @@ USER ANWEISUNG: ${prompt}
     ): Promise<number[]> {
         let apiKey = this.getApiKey(provider);
         let apiUrl = '';
+        const usingOpenRouterProxy = provider === 'openrouter' && !apiKey;
 
         if (provider === 'openrouter') {
             if (!apiKey) {
@@ -1131,8 +1200,10 @@ USER ANWEISUNG: ${prompt}
 
         if (provider === 'openrouter') {
             headers['Authorization'] = `Bearer ${apiKey}`;
-            headers['HTTP-Referer'] = window.location.href;
-            headers['X-Title'] = 'Nodges 3D Graph';
+            if (!usingOpenRouterProxy) {
+                headers['HTTP-Referer'] = window.location.href;
+                headers['X-Title'] = 'Nodges 3D Graph';
+            }
         } else if (provider === 'openai') {
             headers['Authorization'] = `Bearer ${apiKey}`;
         }

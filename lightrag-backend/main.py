@@ -1,4 +1,5 @@
 import os
+import json
 import asyncio
 from typing import Optional, List, Dict, Any
 from fastapi import FastAPI, HTTPException
@@ -17,7 +18,43 @@ if not os.getenv("OPENAI_API_KEY") and os.getenv("VITE_OPENROUTER_API_KEY"):
     os.environ["OPENAI_API_KEY"] = os.getenv("VITE_OPENROUTER_API_KEY", "")
     os.environ["OPENAI_API_BASE"] = "https://openrouter.ai/api/v1"
 
-app = FastAPI(title="LightRAG Local API for Nodges", version="0.102.12")
+BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def _project_version() -> str:
+    """Liest die Projektversion zentral aus package.json statt sie hart zu kodieren."""
+    try:
+        with open(os.path.join(BACKEND_DIR, "..", "package.json"), encoding="utf-8") as fh:
+            return str(json.load(fh).get("version", "unknown"))
+    except Exception:
+        return "unknown"
+
+
+APP_VERSION = _project_version()
+
+# Einzige Quelle fuer den Speicherort ist LIGHTRAG_WORKING_DIR. Fehlt die
+# Variable, bleibt der bisherige Container-Pfad der sichtbare Fallback.
+_configured_working_dir = (os.getenv("LIGHTRAG_WORKING_DIR") or "").strip()
+if _configured_working_dir:
+    STORAGE_ROOT = os.path.abspath(os.path.expanduser(_configured_working_dir))
+else:
+    STORAGE_ROOT = os.path.join(BACKEND_DIR, "rag_storage")
+    print(f"[LightRAG] LIGHTRAG_WORKING_DIR nicht gesetzt; verwende Fallback: {STORAGE_ROOT}")
+
+DATABASES_DIR = os.path.join(STORAGE_ROOT, "databases")
+# Altbestand: Datenbanken, die durch die frueher relative Pfadlogik unter
+# lightrag-backend/rag_storage/databases angelegt wurden, weiterhin finden.
+LEGACY_DATABASES_DIR = os.path.join(BACKEND_DIR, "rag_storage", "databases")
+WORKING_DIR = STORAGE_ROOT
+
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
+EMBEDDING_BASE_URL = os.getenv("OPENAI_API_BASE", "https://api.openai.com/v1")
+try:
+    EMBEDDING_DIM = int(os.getenv("EMBEDDING_DIM", "1536"))
+except ValueError:
+    EMBEDDING_DIM = 1536
+
+app = FastAPI(title="LightRAG Local API for Nodges", version=APP_VERSION)
 
 # CORS-Einstellungen fuer Kommunikation mit Nodges Frontend
 app.add_middleware(
@@ -46,15 +83,7 @@ try:
     import numpy as np
     from openai import AsyncOpenAI
 
-    configured_working_dir = os.getenv("LIGHTRAG_WORKING_DIR")
-    if not configured_working_dir:
-        # Der Backend-Prozess soll mit einem expliziten Datenpfad gestartet
-        # werden. Der Fallback bleibt kompatibel, ist aber absichtlich sichtbar.
-        configured_working_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "rag_storage"))
-        print(f"[LightRAG] LIGHTRAG_WORKING_DIR nicht gesetzt; verwende Fallback: {configured_working_dir}")
-    WORKING_DIR = os.path.abspath(os.path.expanduser(configured_working_dir))
-    if not os.path.exists(WORKING_DIR):
-        os.makedirs(WORKING_DIR)
+    os.makedirs(STORAGE_ROOT, exist_ok=True)
 
     async def custom_llm_model_func(prompt, system_prompt=None, history_messages=None, **kwargs):
         if history_messages is None:
@@ -71,21 +100,28 @@ try:
     async def custom_openai_embed(texts: list[str], **kwargs) -> np.ndarray:
         client = AsyncOpenAI(
             api_key=os.getenv("OPENAI_API_KEY"),
-            base_url=os.getenv("OPENAI_API_BASE", "https://api.openai.com/v1")
+            base_url=EMBEDDING_BASE_URL
         )
-        model = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
         response = await client.embeddings.create(
-            model=model,
+            model=EMBEDDING_MODEL,
             input=texts
         )
         embeddings = [item.embedding for item in response.data]
         return np.array(embeddings)
 
+    if "openrouter" in EMBEDDING_BASE_URL.lower() and EMBEDDING_MODEL.startswith("text-embedding"):
+        print(
+            "[LightRAG Warning] OPENAI_API_BASE zeigt auf OpenRouter, aber EMBEDDING_MODEL "
+            f"ist '{EMBEDDING_MODEL}'. OpenRouter bietet keine Embeddings an. Setze "
+            "OPENAI_API_BASE/OPENAI_API_KEY/EMBEDDING_MODEL explizit, sonst schlagen "
+            "Embeddings fehl und /query faellt auf Mock zurueck."
+        )
+
     embedding_func = EmbeddingFunc(
-        embedding_dim=1536,
+        embedding_dim=EMBEDDING_DIM,
         max_token_size=8192,
         func=custom_openai_embed,
-        model_name=os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
+        model_name=EMBEDDING_MODEL
     )
 
     rag_instance = LightRAG(
@@ -118,7 +154,13 @@ def read_root():
         "status": "online",
         "service": "LightRAG Local API",
         "lightrag_engine_active": LIGHTRAG_AVAILABLE,
-        "version": "0.102.12"
+        "version": APP_VERSION,
+        "storage_root": STORAGE_ROOT,
+        "working_dir": WORKING_DIR,
+        "databases_dir": DATABASES_DIR,
+        "embedding_model": EMBEDDING_MODEL,
+        "embedding_base_url": EMBEDDING_BASE_URL,
+        "embedding_key_set": bool(os.getenv("OPENAI_API_KEY"))
     }
 
 @app.post("/query")
@@ -240,94 +282,135 @@ async def process_insert(request: InsertRequest):
 class DatabaseRequest(BaseModel):
     name: str
 
+
+def _sanitize_db_name(name: str) -> str:
+    """Erlaubt nur unkritische Zeichen und verhindert Pfad-Traversal."""
+    return "".join(c for c in (name or "") if c.isalnum() or c in ("_", "-")).strip()
+
+
+def _iter_database_dirs():
+    """Liefert (id, pfad) fuer alle Datenbanken inkl. Altbestand, ohne Duplikate."""
+    seen = set()
+    for base in (DATABASES_DIR, LEGACY_DATABASES_DIR):
+        if not base or not os.path.isdir(base):
+            continue
+        for entry in sorted(os.listdir(base)):
+            full_path = os.path.join(base, entry)
+            if not os.path.isdir(full_path):
+                continue
+            real = os.path.realpath(full_path)
+            if real in seen:
+                continue
+            seen.add(real)
+            yield entry, full_path
+
+
+def _find_database_dir(name: str) -> Optional[str]:
+    for base in (DATABASES_DIR, LEGACY_DATABASES_DIR):
+        candidate = os.path.join(base, name)
+        if os.path.isdir(candidate):
+            return candidate
+    return None
+
+
+async def _activate_working_dir(target_dir: str) -> None:
+    """Setzt die aktive Working Dir und initialisiert die LightRAG-Engine neu."""
+    global WORKING_DIR, rag_instance
+    WORKING_DIR = target_dir
+    if not LIGHTRAG_AVAILABLE:
+        return
+    rag_instance = LightRAG(
+        working_dir=WORKING_DIR,
+        llm_model_func=custom_llm_model_func,
+        embedding_func=embedding_func
+    )
+    await rag_instance.initialize_storages()
+
+
 @app.get("/databases")
 @app.get("/databases/")
 def list_databases():
-    base_dir = os.path.abspath("./rag_storage")
-    db_dir = os.path.join(base_dir, "databases")
-    databases = [{"id": "default", "name": "Default (Hauptdatenbank)", "path": base_dir, "active": (WORKING_DIR == base_dir)}]
-    
-    if os.path.exists(db_dir):
-        for entry in os.listdir(db_dir):
-            full_path = os.path.join(db_dir, entry)
-            if os.path.isdir(full_path):
-                databases.append({
-                    "id": entry,
-                    "name": entry.replace("_", " ").title(),
-                    "path": full_path,
-                    "active": (WORKING_DIR == full_path)
-                })
-    return {"status": "success", "active_database": os.path.basename(WORKING_DIR), "databases": databases}
+    active_real = os.path.realpath(WORKING_DIR)
+    databases = [{
+        "id": "default",
+        "name": "Default (Hauptdatenbank)",
+        "path": STORAGE_ROOT,
+        "active": os.path.realpath(STORAGE_ROOT) == active_real
+    }]
+
+    for entry, full_path in _iter_database_dirs():
+        databases.append({
+            "id": entry,
+            "name": entry.replace("_", " ").title(),
+            "path": full_path,
+            "active": os.path.realpath(full_path) == active_real
+        })
+
+    active_name = os.path.basename(WORKING_DIR.rstrip(os.sep)) or "default"
+    return {"status": "success", "active_database": active_name, "databases": databases}
+
 
 @app.post("/databases/create")
 @app.post("/databases/create/")
 async def create_database(req: DatabaseRequest):
-    global WORKING_DIR, rag_instance
-    safe_name = "".join(c for c in req.name if c.isalnum() or c in ("_", "-")).strip()
+    safe_name = _sanitize_db_name(req.name)
     if not safe_name:
         raise HTTPException(status_code=400, detail="Ungueltiger Datenbank-Name")
-    
-    target_dir = os.path.abspath(os.path.join("./rag_storage/databases", safe_name))
-    if not os.path.exists(target_dir):
-        os.makedirs(target_dir, exist_ok=True)
-    
-    WORKING_DIR = target_dir
-    if LIGHTRAG_AVAILABLE:
-        try:
-            rag_instance = LightRAG(
-                working_dir=WORKING_DIR,
-                llm_model_func=custom_llm_model_func,
-                embedding_func=embedding_func
-            )
-            await rag_instance.initialize_storages()
-        except Exception as e:
-            print(f"[LightRAG] Re-init error on create: {e}")
-            
+
+    target_dir = os.path.join(DATABASES_DIR, safe_name)
+    os.makedirs(target_dir, exist_ok=True)
+    try:
+        await _activate_working_dir(target_dir)
+    except Exception as e:
+        print(f"[LightRAG] Re-init error on create: {e}")
+
     return {"status": "success", "message": f"Datenbank '{safe_name}' erstellt und aktiviert", "active_database": safe_name}
+
 
 @app.post("/databases/select")
 @app.post("/databases/select/")
 async def select_database(req: DatabaseRequest):
-    global WORKING_DIR, rag_instance
-    if req.name == "default":
-        target_dir = os.path.abspath("./rag_storage")
+    requested = (req.name or "").strip()
+    if requested.lower() == "default":
+        target_dir = STORAGE_ROOT
     else:
-        target_dir = os.path.abspath(os.path.join("./rag_storage/databases", req.name))
-        
-    if not os.path.exists(target_dir):
-        raise HTTPException(status_code=404, detail=f"Datenbank '{req.name}' existiert nicht")
-        
-    WORKING_DIR = target_dir
-    if LIGHTRAG_AVAILABLE:
-        try:
-            rag_instance = LightRAG(
-                working_dir=WORKING_DIR,
-                llm_model_func=custom_llm_model_func,
-                embedding_func=embedding_func
-            )
-            await rag_instance.initialize_storages()
-        except Exception as e:
-            print(f"[LightRAG] Re-init error on select: {e}")
-            
-    return {"status": "success", "message": f"Datenbank '{req.name}' aktiviert", "active_database": req.name}
+        safe_name = _sanitize_db_name(requested)
+        if not safe_name:
+            raise HTTPException(status_code=400, detail="Ungueltiger Datenbank-Name")
+        found = _find_database_dir(safe_name)
+        if not found:
+            raise HTTPException(status_code=404, detail=f"Datenbank '{safe_name}' existiert nicht")
+        target_dir = found
+
+    try:
+        await _activate_working_dir(target_dir)
+    except Exception as e:
+        print(f"[LightRAG] Re-init error on select: {e}")
+
+    active_name = os.path.basename(target_dir.rstrip(os.sep)) or "default"
+    return {"status": "success", "message": f"Datenbank '{requested or 'default'}' aktiviert", "active_database": active_name}
+
 
 @app.delete("/databases/{db_name}")
 @app.delete("/databases/{db_name}/")
 def delete_database(db_name: str):
     import shutil
-    global WORKING_DIR
-    if db_name == "default":
+    requested = (db_name or "").strip()
+    if requested.lower() == "default":
         raise HTTPException(status_code=400, detail="Die Hauptdatenbank kann nicht geloescht werden")
-        
-    target_dir = os.path.abspath(os.path.join("./rag_storage/databases", db_name))
-    if WORKING_DIR == target_dir:
-        raise HTTPException(status_code=400, detail="Die aktuell aktive Datenbank kann nicht geloescht werden")
-        
-    if os.path.exists(target_dir):
-        shutil.rmtree(target_dir)
-        return {"status": "success", "message": f"Datenbank '{db_name}' geloescht"}
-    else:
+
+    safe_name = _sanitize_db_name(requested)
+    if not safe_name:
+        raise HTTPException(status_code=400, detail="Ungueltiger Datenbank-Name")
+
+    target_dir = _find_database_dir(safe_name)
+    if not target_dir:
         raise HTTPException(status_code=404, detail="Datenbank nicht gefunden")
+    if os.path.realpath(target_dir) == os.path.realpath(WORKING_DIR):
+        raise HTTPException(status_code=400, detail="Die aktuell aktive Datenbank kann nicht geloescht werden")
+
+    shutil.rmtree(target_dir)
+    return {"status": "success", "message": f"Datenbank '{safe_name}' geloescht"}
 
 if __name__ == '__main__':
     import uvicorn

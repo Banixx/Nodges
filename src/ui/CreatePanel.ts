@@ -357,7 +357,7 @@ export class CreatePanel {
             this.providerSelect.value = 'openrouter';
             LLMService.setActiveProvider('openrouter');
             this.keyInput.value = '';
-            LLMService.clearApiKey('openrouter');
+            LLMService.setOpenRouterProxyMode(true);
             this.updateModelOptions('openrouter');
             
             keyContent.style.display = 'none';
@@ -2045,6 +2045,64 @@ export class CreatePanel {
                 ].filter(Boolean).join('\n\n').substring(0, 50000);
 
                 onProgressWithLog('Build 13, Schritt 4/5: Leite Relation Set aus den Quellen ab...');
+
+                const createSourceFallbackDiscovery = (reason: string) => {
+                    const relationCounts = new Map<string, number>();
+                    compactSourceGraph.relationships.forEach((relation: any) => {
+                        const label = String(relation.relation || '').trim();
+                        if (label) relationCounts.set(label, (relationCounts.get(label) || 0) + 1);
+                    });
+
+                    const rawRelations: Build13RelationCandidate[] = Array.from(relationCounts.entries())
+                        .slice(0, 20)
+                        .map(([label, occurrences], index) => ({
+                            id: `SOURCE_RELATION_${index + 1}`,
+                            label,
+                            description: 'Direkt aus dem LightRAG-Quellengraph uebernommen.',
+                            sourceTypes: [], targetTypes: [], directional: true,
+                            examples: [], confidence: 0.65, occurrences, enabled: true
+                        }));
+
+                    if (rawRelations.length === 0) {
+                        const sourcePatterns = [
+                            { id: 'SCHUETZT', label: 'schützt', pattern: /schuetzt|schützt|schutz von/i },
+                            { id: 'ERFORDERT', label: 'erfordert', pattern: /erfordert|muss|muessen|müssen|notwendig|unentbehrlich/i },
+                            { id: 'ERLAUBT', label: 'erlaubt', pattern: /erlaubt|zulaessig|zulässig|duerfen|dürfen/i },
+                            { id: 'VERBIETET', label: 'verbietet', pattern: /verboten|untersagt|nicht erlaubt|keinesfalls/i },
+                            { id: 'GILT_FUER', label: 'gilt für', pattern: /gilt fuer|gilt für|richtet sich nach|anwendbar/i },
+                            { id: 'BASIERT_AUF', label: 'basiert auf', pattern: /basiert auf|grundlage|gestuetzt auf|gestützt auf/i },
+                            { id: 'VERWENDET', label: 'verwendet', pattern: /verwendet|verwendung|nutzt|bearbeitet/i },
+                            { id: 'SPEICHERT', label: 'speichert', pattern: /speichert|speicherung|aufbewahrt|aufbewahrung/i },
+                            { id: 'UEBERMITTELT_AN', label: 'übermittelt an', pattern: /uebermittelt|übermittelt|weitergegeben|bekanntgegeben|versendet/i },
+                            { id: 'VERNICHTET', label: 'vernichtet', pattern: /vernichtet|vernichtung|geloescht|gelöscht|entfernt/i },
+                            { id: 'VERANTWORTLICH_FUER', label: 'ist verantwortlich für', pattern: /verantwortlich|zustaendig|zuständig|verpflichtet/i },
+                            { id: 'BESTEHT_AUS', label: 'besteht aus', pattern: /besteht aus|umfasst|enthaelt|enthält|dazu gehoeren|dazu gehören/i }
+                        ];
+                        const sentences = discoverySource.split(/(?<=[.!?])\s+|\n{2,}/).map(sentence => sentence.trim()).filter(Boolean);
+                        sourcePatterns.forEach(definition => {
+                            const matches = discoverySource.match(new RegExp(definition.pattern.source, 'gi')) || [];
+                            if (matches.length === 0) return;
+                            const example = sentences.find(sentence => definition.pattern.test(sentence));
+                            rawRelations.push({
+                                id: definition.id,
+                                label: definition.label,
+                                description: 'Als sprachliches Beziehungsmuster direkt im Quellenmaterial erkannt.',
+                                sourceTypes: [], targetTypes: [], directional: true,
+                                examples: example ? [example.substring(0, 300)] : [],
+                                confidence: 0.58,
+                                occurrences: matches.length,
+                                enabled: true
+                            });
+                        });
+                    }
+
+                    return {
+                        entities: [],
+                        questions: [`${reason} Die quellenbasierten Ersatzvorschlaege wurden automatisch erkannt. Bitte pruefe ihre Bedeutung und Auswahl.`],
+                        relations: rawRelations.slice(0, 20)
+                    };
+                };
+
                 let discovery;
                 try {
                     discovery = await LLMService.discoverRelationsBuild13(
@@ -2055,32 +2113,15 @@ export class CreatePanel {
                         llmOptions
                     );
                 } catch (discoveryError: any) {
-                    console.warn('[CreatePanel] LLM Relation Discovery fehlgeschlagen, nutze rohe LightRAG-Relationen:', discoveryError);
-                    const relationCounts = new Map<string, number>();
-                    compactSourceGraph.relationships.forEach((relation: any) => {
-                        const label = String(relation.relation || '').trim();
-                        if (label) relationCounts.set(label, (relationCounts.get(label) || 0) + 1);
-                    });
-                    discovery = {
-                        entities: [],
-                        questions: ['Die automatische semantische Zusammenfuehrung ist fehlgeschlagen. Bitte pruefe und vereinheitliche die rohen Relationslabels.'],
-                        relations: Array.from(relationCounts.entries()).slice(0, 20).map(([label, occurrences], index) => ({
-                            id: `SOURCE_RELATION_${index + 1}`,
-                            label,
-                            description: 'Direkt aus dem LightRAG-Quellengraph uebernommen.',
-                            sourceTypes: [],
-                            targetTypes: [],
-                            directional: true,
-                            examples: [],
-                            confidence: 0.6,
-                            occurrences,
-                            enabled: true
-                        }))
-                    };
+                    console.warn('[CreatePanel] LLM Relation Discovery fehlgeschlagen, nutze quellenbasierte Ersatzanalyse:', discoveryError);
+                    discovery = createSourceFallbackDiscovery('Die semantische Relation Discovery ist fehlgeschlagen.');
                 }
 
                 if (!discovery.relations.length) {
-                    throw new Error('In den Quellen konnten keine Beziehungen erkannt werden. Bitte speise aussagekraeftigere Quellen ein.');
+                    discovery = createSourceFallbackDiscovery('Das LLM hat keine Relationstypen geliefert.');
+                }
+                if (!discovery.relations.length) {
+                    throw new Error('In den Quellen konnten auch mit der Ersatzanalyse keine Beziehungen erkannt werden.');
                 }
 
                 if (saveSteps) {
@@ -2370,7 +2411,16 @@ export class CreatePanel {
                 this.app.exportManager?.downloadFile(logStr, `Nodges_ErrorLog_${fileSuffix}.json`, 'application/json');
             } catch(e) { console.warn('[CreatePanel] Operation fehlgeschlagen:', e); }
 
-            this.setStatus(error.message || 'Ein unbekannter Fehler ist aufgetreten.', 'error');
+            const errorMessage = error.message || 'Ein unbekannter Fehler ist aufgetreten.';
+            const lastStep = generationLog.steps[generationLog.steps.length - 1]?.message;
+            if (/NetworkError|Failed to fetch|fetch resource/i.test(errorMessage)) {
+                this.setStatus(
+                    `Netzwerkfehler${lastStep ? ` bei „${lastStep}“` : ''}. Pruefe LightRAG-Status, Datenbank und LLM-Verbindung und versuche es erneut.`,
+                    'error'
+                );
+            } else {
+                this.setStatus(lastStep ? `${lastStep}: ${errorMessage}` : errorMessage, 'error');
+            }
         } finally {
             this.setLoading(false);
         }

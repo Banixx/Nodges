@@ -1,0 +1,416 @@
+{
+  "entities": [
+    "Informatiksysteme",
+    "Informatikanwendungen",
+    "Daten",
+    "Ereignis",
+    "Normalbetrieb",
+    "Notbetrieb",
+    "Risiken",
+    "Sicherheitsmassnahmen",
+    "Sicherheitsstufen",
+    "Massnahmenkatalog",
+    "Departementsinformatikverantwortliche",
+    "Dienst für Informatikplanung",
+    "Informatik-Sicherheitsorganisation",
+    "Informatik-Sicherheitsbeauftragter",
+    "Teilstab Informatik",
+    "Amtsübergreifende Koordination",
+    "Kantonaler Informatik-Sicherheitsbeauftragter",
+    "Datenaustausch",
+    "öffentliche Netze",
+    "Verwaltungsexterne Informatikarbeitsplätze",
+    "Amtsinterne Überprüfung",
+    "Kontrolle und Test",
+    "Aufhebung bisherigen Rechts",
+    "Übergangsbestimmung",
+    "Vollzugsbeginn"
+  ],
+  "relations": [
+    {
+      "id": "MASCHINENLESBARE_ID_1",
+      "label": "gilt für",
+      "description": "Die Verordnung gilt für die Staatsverwaltung nach Art. 1 des Staatsverwaltungsgesetzes, ausgenommen die selbständigen öffentlich-rechtlichen Anstalten.",
+      "sourceTypes": [
+        "Verordnung"
+      ],
+      "targetTypes": [
+        "Staatsverwaltung"
+      ],
+      "directional": true,
+      "examples": [
+        "Diese Verordnung gilt für die Staatsverwaltung nach Art. 1 des Staatsverwaltungsgesetzes vom 16. Juni 1994"
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_2",
+      "label": "werden durch geschützt",
+      "description": "Informatiksysteme werden durch angemessene organisatorische und technische Massnahmen vor äusseren Einwirkungen und unbefugten Zugriffen geschützt.",
+      "sourceTypes": [
+        "Informatiksysteme"
+      ],
+      "targetTypes": [
+        "organisatorische und technische Massnahmen"
+      ],
+      "directional": true,
+      "examples": [
+        "Informatiksysteme werden durch angemessene organisatorische und technische Massnahmen vor äusseren Einwirkungen und unbefugten Zugriffen geschützt."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_3",
+      "label": "bedeuten",
+      "description": "Folgende Begriffe bedeuten: Informatiksysteme, Informatikanwendungen, Daten, Ereignis, Normalbetrieb, Notbetrieb.",
+      "sourceTypes": [
+        "Begriffe"
+      ],
+      "targetTypes": [
+        "Informatiksysteme",
+        "Informatikanwendungen",
+        "Daten",
+        "Ereignis",
+        "Normalbetrieb",
+        "Notbetrieb"
+      ],
+      "directional": true,
+      "examples": [
+        "Folgende Begriffe bedeuten: a) Informatiksysteme: Geräte und Einrichtungen sowie die dazugehörende Infrastruktur, Betriebssoftware und die Informatikanwendungen, die zur elektronischen Bearbeitung von Daten eingesetzt werden, einschliesslich der bearbeiteten Daten."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_4",
+      "label": "legen fest",
+      "description": "Die Konferenz der Departementsinformatikverantwortlichen legt die Sicherheitsmassnahmen, abgestuft nach den Risiken, in einem Massnahmenkatalog fest.",
+      "sourceTypes": [
+        "Konferenz der Departementsinformatikverantwortlichen"
+      ],
+      "targetTypes": [
+        "Sicherheitsmassnahmen",
+        "Massnahmenkatalog"
+      ],
+      "directional": true,
+      "examples": [
+        "Die Konferenz der Departementsinformatikverantwortlichen legt die Sicherheitsmassnahmen, abgestuft nach den Risiken, in einem Massnahmenkatalog fest."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_5",
+      "label": "beurteilen",
+      "description": "Die Ämter beurteilen die Risiken, legen die Sicherheitsstufen fest, ermitteln die zu treffenden Sicherheitsmassnahmen und sorgen für deren Umsetzung.",
+      "sourceTypes": [
+        "Ämter"
+      ],
+      "targetTypes": [
+        "Risiken",
+        "Sicherheitsstufen",
+        "Sicherheitsmassnahmen"
+      ],
+      "directional": true,
+      "examples": [
+        "Die Ämter beurteilen die Risiken, legen die Sicherheitsstufen fest, ermitteln die zu treffenden Sicherheitsmassnahmen und sorgen für deren Umsetzung."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_6",
+      "label": "kontrollieren",
+      "description": "Departemente und Dienst für Informatikplanung kontrollieren die Einstufung der Informatiksysteme und -anwendungen.",
+      "sourceTypes": [
+        "Departemente",
+        "Dienst für Informatikplanung"
+      ],
+      "targetTypes": [
+        "Einstufung",
+        "Informatiksysteme",
+        "Informatikanwendungen"
+      ],
+      "directional": true,
+      "examples": [
+        "Departemente und Dienst für Informatikplanung kontrollieren die Einstufung der Informatiksysteme und -anwendungen."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_7",
+      "label": "beraten",
+      "description": "Departementsinformatikverantwortliche und Dienst für Informatikplanung beraten die Ämter bei der Risikobeurteilung, bei der Festlegung der Sicherheitsstufen, bei der Ermittlung der Sicherheitsmassnahmen sowie bei deren Umsetzung und Überprüfung.",
+      "sourceTypes": [
+        "Departementsinformatikverantwortliche",
+        "Dienst für Informatikplanung"
+      ],
+      "targetTypes": [
+        "Ämter"
+      ],
+      "directional": true,
+      "examples": [
+        "Departementsinformatikverantwortliche und Dienst für Informatikplanung beraten die Ämter bei der Risikobeurteilung, bei der Festlegung der Sicherheitsstufen, bei der Ermittlung der Sicherheitsmassnahmen sowie bei deren Umsetzung und Überprüfung."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_8",
+      "label": "legen für fest",
+      "description": "Die Ämter legen für ihre Informatiksysteme und -anwendungen je einzeln die Gefährdung fest, indem sie die damit verwalteten Daten klassifizieren.",
+      "sourceTypes": [
+        "Ämter"
+      ],
+      "targetTypes": [
+        "Informatiksysteme",
+        "Informatikanwendungen",
+        "Gefährdung",
+        "Daten"
+      ],
+      "directional": true,
+      "examples": [
+        "Die Ämter legen für ihre Informatiksysteme und -anwendungen je einzeln die Gefährdung fest, indem sie die damit verwalteten Daten klassifizieren."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_9",
+      "label": "gelten",
+      "description": "Als «geheim» gelten Daten, wenn es sich um besonders schützenswerte Personendaten, um Persönlichkeitsprofile, um Daten, deren Missbrauch eine betroffene Person in gesellschaftlicher und wirtschaftlicher Hinsicht erheblich benachteiligen, oder um vertraglich geschützte Daten handelt.",
+      "sourceTypes": [
+        "Daten"
+      ],
+      "targetTypes": [
+        "geheim"
+      ],
+      "directional": true,
+      "examples": [
+        "Als «geheim» gelten Daten, wenn es sich um besonders schützenswerte Personendaten, um Persönlichkeitsprofile, um Daten, deren Missbrauch eine betroffene Person in gesellschaftlicher und wirtschaftlicher Hinsicht erheblich benachteiligen, oder um vertraglich geschützte Daten handelt."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_10",
+      "label": "gelten",
+      "description": "Als «vertraulich» gelten Daten, wenn es sich um Personendaten, um Daten, deren Missbrauch eine betroffene Person in gesellschaftlicher und wirtschaftlicher Hinsicht benachteiligen, um Daten von finanzieller Relevanz oder um Daten handelt, für die eine Archivierungspflicht besteht.",
+      "sourceTypes": [
+        "Daten"
+      ],
+      "targetTypes": [
+        "vertraulich"
+      ],
+      "directional": true,
+      "examples": [
+        "Als «vertraulich» gelten Daten, wenn es sich um Personendaten, um Daten, deren Missbrauch eine betroffene Person in gesellschaftlicher und wirtschaftlicher Hinsicht benachteiligen, um Daten von finanzieller Relevanz oder um Daten handelt, für die eine Archivierungspflicht besteht."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_11",
+      "label": "gelten",
+      "description": "Alle anderen Daten werden bezüglich Vertraulichkeit als nicht klassifiziert eingestuft.",
+      "sourceTypes": [
+        "Daten"
+      ],
+      "targetTypes": [
+        "nicht klassifiziert"
+      ],
+      "directional": true,
+      "examples": [
+        "Alle anderen Daten werden bezüglich Vertraulichkeit als nicht klassifiziert eingestuft."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_12",
+      "label": "gestellt",
+      "description": "Die Anforderung «hohe Verfügbarkeit» wird an die Daten gestellt, deren Nichtverfügbarkeit Leben gefährdet oder deren Bedeutung für die Aufgabenerfüllung so gross ist, dass die Verfügbarkeit auf einem entsprechenden Informatiksystem innert eines Tages wiederhergestellt werden muss.",
+      "sourceTypes": [
+        "Daten"
+      ],
+      "targetTypes": [
+        "hohe Verfügbarkeit"
+      ],
+      "directional": true,
+      "examples": [
+        "Die Anforderung «hohe Verfügbarkeit» wird an die Daten gestellt, deren Nichtverfügbarkeit Leben gefährdet oder deren Bedeutung für die Aufgabenerfüllung so gross ist, dass die Verfügbarkeit auf einem entsprechenden Informatiksystem innert eines Tages wiederhergestellt werden muss."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_13",
+      "label": "gestellt",
+      "description": "Die Anforderung «mittlere Verfügbarkeit» wird an die Daten gestellt, deren Bedeutung für die Aufgabenerfüllung so gross ist, dass die Verfügbarkeit innert drei Tagen auf einem entsprechenden Informatiksystem wiederhergestellt werden muss.",
+      "sourceTypes": [
+        "Daten"
+      ],
+      "targetTypes": [
+        "mittlere Verfügbarkeit"
+      ],
+      "directional": true,
+      "examples": [
+        "Die Anforderung «mittlere Verfügbarkeit» wird an die Daten gestellt, deren Bedeutung für die Aufgabenerfüllung so gross ist, dass die Verfügbarkeit innert drei Tagen auf einem entsprechenden Informatiksystem wiederhergestellt werden muss."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_14",
+      "label": "gestellt",
+      "description": "Alle anderen Daten werden bezüglich Verfügbarkeit als nicht klassifiziert eingestuft.",
+      "sourceTypes": [
+        "Daten"
+      ],
+      "targetTypes": [
+        "nicht klassifiziert"
+      ],
+      "directional": true,
+      "examples": [
+        "Alle anderen Daten werden bezüglich Verfügbarkeit als nicht klassifiziert eingestuft."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_15",
+      "label": "gewährleistet",
+      "description": "Bei der Einstufung «geheim» bzw. «hohe Verfügbarkeit» wird ein hoher Schutz für die Informatiksysteme und -anwendungen gewährleistet.",
+      "sourceTypes": [
+        "Einstufung"
+      ],
+      "targetTypes": [
+        "hoher Schutz",
+        "Informatiksysteme",
+        "Informatikanwendungen"
+      ],
+      "directional": true,
+      "examples": [
+        "Bei der Einstufung «geheim» bzw. «hohe Verfügbarkeit» wird ein hoher Schutz für die Informatiksysteme und -anwendungen gewährleistet."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_16",
+      "label": "gewährleistet",
+      "description": "Bei der Einstufung «vertraulich» bzw. «mittlere Verfügbarkeit» wird ein mittlerer Schutz für die Informatiksysteme und -anwendungen gewährleistet.",
+      "sourceTypes": [
+        "Einstufung"
+      ],
+      "targetTypes": [
+        "mittlerer Schutz",
+        "Informatiksysteme",
+        "Informatikanwendungen"
+      ],
+      "directional": true,
+      "examples": [
+        "Bei der Einstufung «vertraulich» bzw. «mittlere Verfügbarkeit» wird ein mittlerer Schutz für die Informatiksysteme und -anwendungen gewährleistet."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_17",
+      "label": "gewährleistet",
+      "description": "Werden die Daten als nicht klassifiziert eingestuft, wird ein Grundschutz für die Informatiksysteme und -anwendungen gewährleistet.",
+      "sourceTypes": [
+        "Daten"
+      ],
+      "targetTypes": [
+        "Grundschutz",
+        "Informatiksysteme",
+        "Informatikanwendungen"
+      ],
+      "directional": true,
+      "examples": [
+        "Werden die Daten als nicht klassifiziert eingestuft, wird ein Grundschutz für die Informatiksysteme und -anwendungen gewährleistet."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_18",
+      "label": "legt fest",
+      "description": "Ein Massnahmenkatalog legt nach der Klassifizierung der Daten die Informatik-Sicherheitsmassnahmen für die Informatiksysteme und -anwendungen fest bezüglich: Verhinderung einer unbefugten Kenntnisnahme von Daten (Vertraulichkeit); Verhinderung einer unbefugten Veränderung von Daten oder Zugriffsrechten (Integrität und Authentizität); höchstzulässiger Dauer eines Ausfalls (Verfügbarkeit).",
+      "sourceTypes": [
+        "Massnahmenkatalog"
+      ],
+      "targetTypes": [
+        "Informatik-Sicherheitsmassnahmen",
+        "Informatiksysteme",
+        "Informatikanwendungen"
+      ],
+      "directional": true,
+      "examples": [
+        "Ein Massnahmenkatalog legt nach der Klassifizierung der Daten die Informatik-Sicherheitsmassnahmen für die Informatiksysteme und -anwendungen fest bezüglich: Verhinderung einer unbefugten Kenntnisnahme von Daten (Vertraulichkeit); Verhinderung einer unbefugten Veränderung von Daten oder Zugriffsrechten (Integrität und Authentizität); höchstzulässiger Dauer eines Ausfalls (Verfügbarkeit)."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_19",
+      "label": "sorgt für",
+      "description": "Der Departementsinformatikverantwortliche sorgt für die amtsübergreifende Koordination innerhalb des Departementes bzw. der Staatskanzlei.",
+      "sourceTypes": [
+        "Departementsinformatikverantwortliche"
+      ],
+      "targetTypes": [
+        "amtsübergreifende Koordination"
+      ],
+      "directional": true,
+      "examples": [
+        "Der Departementsinformatikverantwortliche sorgt für die amtsübergreifende Koordination innerhalb des Departementes bzw. der Staatskanzlei."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "MASCHINENLESBARE_ID_20",
+      "label": "sorgt für",
+      "description": "Der Dienst für Informatikplanung sorgt für die departementsübergreifende Koordination. Er bestimmt hiefür einen kantonalen Informatik-Sicherheitsbeauftragten.",
+      "sourceTypes": [
+        "Dienst für Informatikplanung"
+      ],
+      "targetTypes": [
+        "departementsübergreifende Koordination",
+        "kantonalen Informatik-Sicherheitsbeauftragten"
+      ],
+      "directional": true,
+      "examples": [
+        "Der Dienst für Informatikplanung sorgt für die departementsübergreifende Koordination. Er bestimmt hiefür einen kantonalen Informatik-Sicherheitsbeauftragten."
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    }
+  ],
+  "questions": []
+}

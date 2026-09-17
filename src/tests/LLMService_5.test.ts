@@ -64,6 +64,68 @@ describe('LLMService (Build 5)', () => {
         ).rejects.toThrow(/Rate-Limit/);
     });
 
+    it('sollte im Free-Modus keine vom Deno-Proxy blockierten CORS-Header senden', async () => {
+        LLMService.setOpenRouterProxyMode(true);
+        let requestedUrl = '';
+        let requestedHeaders: Record<string, string> = {};
+        global.fetch = vi.fn().mockImplementation(async (url: string | URL | Request, init?: RequestInit) => {
+            requestedUrl = url.toString();
+            requestedHeaders = init?.headers as Record<string, string>;
+            return new Response(JSON.stringify({
+                choices: [{
+                    message: {
+                        content: JSON.stringify({
+                            entities: ['Person'],
+                            relations: [{ id: 'LEITET', label: 'leitet', confidence: 0.9 }],
+                            questions: []
+                        })
+                    }
+                }]
+            }), { status: 200 });
+        });
+
+        await LLMService.discoverRelationsBuild13('Person A leitet Organisation B.', 'Organisation darstellen', 'openrouter', 'test-model');
+
+        expect(requestedUrl).toContain('banixx.deno.net');
+        expect(requestedHeaders.Authorization).toBe('Bearer proxy-mode');
+        expect(requestedHeaders['HTTP-Referer']).toBeUndefined();
+        expect(requestedHeaders['X-Title']).toBeUndefined();
+    });
+
+    it('sollte Build-13-Relationen auch aus einem Nodges-Graphformat uebernehmen', async () => {
+        global.fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({
+            choices: [{
+                message: {
+                    content: JSON.stringify({
+                        system: 'Relation Discovery',
+                        metadata: {},
+                        data: {
+                            entities: [{ id: 'datenschutz', label: 'Datenschutz' }],
+                            relationships: [{
+                                id: 'r1',
+                                source: 'datenschutz',
+                                target: 'personendaten',
+                                relation: 'schützt',
+                                label: 'schützt'
+                            }]
+                        }
+                    })
+                }
+            }]
+        }), { status: 200 }));
+
+        const discovery = await LLMService.discoverRelationsBuild13(
+            'Datenschutz schützt Personendaten.',
+            'Datenschutz in Schulen darstellen',
+            'openrouter',
+            'test-model'
+        );
+
+        expect(discovery.relations).toHaveLength(1);
+        expect(discovery.relations[0].label).toBe('schützt');
+        expect(discovery.relations[0].enabled).toBe(true);
+    });
+
     it('sollte Fehler werfen, wenn JSON nicht valide ist', async () => {
         global.fetch = vi.fn().mockImplementation(async (url: string | URL | Request) => {
             const urlStr = url.toString();
