@@ -11,11 +11,12 @@ Kurze Checkliste für ein LLM, das nach `/new` oder in einer neuen Sitzung am No
 - Kein direkter Zugriff auf Windows-Dateien, Windows-Prozesse oder Desktop-Anwendungen.
 - `/workspace/start_pi_container.cmd` ist die aktuell bereitgestellte temporäre Referenzkopie der echten Windows-Datei; ältere Kopien sind ungültig.
 - Echte Windows-Datei: `C:\Users\ich\Desktop\code\_projects\Nodges_Pi\start_pi_container.cmd`.
-- LightRAG läuft ausschließlich unter Windows auf Port 8000.
-- LightRAG wird aus dem Container nicht gestartet.
-- Containerzugriff: `http://host.docker.internal:8000`.
+- Kanonische Compose-Quelle: `C:\Users\ich\Desktop\code\_projects\Nodges_Pi\docker-compose.yml`. Der Ordner `/workspace/Nodges_Pi` ist nur der Git-Snapshot.
+- LightRAG läuft im Pi-Container auf Port 8000 und wird beim Containerstart von `.devcontainer/start-lightrag.sh` gestartet.
+- Containerzugriff intern: `http://localhost:8000` (über den Vite-Proxy `/lightrag-api`).
 - Nodges/Vite läuft im Container auf Port 5173.
 - Pi wird per `docker compose exec -it pi-agent pi` auf dem Windows-Host geöffnet.
+- Bei Setupänderungen: `resetup.md` lesen.
 
 ## Erste Prüfungen
 
@@ -34,7 +35,8 @@ Danach die projektspezifisch relevante Datei lesen, nicht pauschal alle Dateien 
 
 ```bash
 cd /workspace
-curl -i --max-time 5 http://host.docker.internal:8000/health
+curl -i --max-time 5 http://localhost:8000/health
+curl -i --max-time 5 http://localhost:5173/lightrag-api/health
 for p in /proc/[0-9]*; do
   cmdline=$(tr '\0' ' ' < "$p/cmdline" 2>/dev/null)
   case "$cmdline" in
@@ -69,9 +71,9 @@ Normaler Start:
 ```text
 Desktop start_pi_container.cmd
   -> Docker Desktop prüfen/starten
-  -> LightRAG auf localhost:8000 prüfen/starten
-  -> auf /health warten
   -> docker compose up -d
+  -> LightRAG startet im Container mit (.devcontainer/start-lightrag.sh)
+  -> auf /health im Container warten
   -> Pi öffnen
 ```
 
@@ -82,7 +84,7 @@ cd "C:\Users\ich\Desktop\code\_projects\Nodges_Pi"
 docker compose down
 ```
 
-LightRAG separat im Backend-Fenster mit `Ctrl+C` stoppen.
+Das LightRAG-Backend läuft im Container und wird mit dem Container beendet. Ein separates Windows-Backend-Fenster gibt es im Normalbetrieb nicht mehr.
 
 ## Sicherheits- und Änderungsregeln
 
@@ -96,4 +98,4 @@ LightRAG separat im Backend-Fenster mit `Ctrl+C` stoppen.
 
 ## Bekannte offene Aufgabe
 
-`lightrag-backend/main.py` nutzt für die LightRAG-Instanz `LIGHTRAG_WORKING_DIR`, verwendet aber bei den Datenbank-Endpunkten noch relative `./rag_storage`-Pfade. Vor einer Änderung daran zuerst den aktuellen Laufzeitpfad und den Datenbestand auf Windows bestätigen. Das ist eine Stabilisierung des bestehenden Setups, kein neues Feature.
+Erledigt (Commit `2b3a97b`): `lightrag-backend/main.py` verwendet für Datenbank-Endpunkte nicht mehr relative `./rag_storage`-Pfade, sondern leitet alle Pfade zentral aus `LIGHTRAG_WORKING_DIR` ab und liest den Legacy-Pfad zusätzlich als Altbestand. Der Windows-Datenpfad ist für den Container-Betrieb nicht mehr relevant.

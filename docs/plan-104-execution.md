@@ -1,5 +1,10 @@
 # Plan 104 – Ausführungsleitfaden
 
+> **Nachtrag (Commit `2b3a97b`):** Die Zielarchitektur unten wurde geändert.
+> LightRAG läuft jetzt im Pi-Container auf Port 8000, gestartet durch
+> `.devcontainer/start-lightrag.sh`; der Vite-Proxy zeigt auf
+> `http://localhost:8000`. Siehe `resetup.md`.
+
 Dieses Dokument trennt die langfristige Vision (`vision_104.md`) von den konkret auszuführenden Arbeitsschritten.
 
 ## Arbeitsregel für neue Sessions
@@ -15,12 +20,12 @@ Danach zuerst den aktuellen Repository-Zustand und die im Fortschrittsdokument o
 
 ## Zielarchitektur LightRAG
 
-- LightRAG läuft ausschließlich auf dem Windows-Host.
-- Der Windows-Prozess ist der einzige Besitzer von Port 8000 und der LightRAG-Daten.
-- Vite im Container greift über `http://host.docker.internal:8000` auf den Windows-Prozess zu.
-- Der Container startet keinen eigenen LightRAG-Prozess.
-- Windows- und Container-Python-Umgebungen bleiben getrennt.
-- LightRAG-Datenbankdateien werden nicht gleichzeitig von zwei Prozessen geöffnet.
+- LightRAG läuft im Pi-Container auf Port 8000.
+- Das Backend wird beim Containerstart durch `.devcontainer/start-lightrag.sh` gestartet; der Container ist der einzige Besitzer von Port 8000 und der LightRAG-Daten.
+- Vite im Container greift über den internen Proxy `/lightrag-api` auf `http://localhost:8000` zu.
+- Der Windows-Prozess `C:\Users\ich\Desktop\code\_projects\Nodges\lightrag-backend` ist nur noch optional und muss gestoppt bleiben, solange der Container-Betrieb aktiv ist.
+- Windows und Container dürfen nicht gleichzeitig dieselben LightRAG-Datenbankdateien öffnen.
+- Eine externe Host-Instanz ist weiter möglich: `VITE_LIGHTRAG_PROXY_TARGET=http://host.docker.internal:8000` und `start-lightrag.sh` nicht ausführen.
 
 ## Ausführungsreihenfolge Plan 104
 

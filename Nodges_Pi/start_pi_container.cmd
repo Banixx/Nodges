@@ -32,16 +32,18 @@ set /a LIGHTRAG_ATTEMPTS=0
 docker compose exec -T pi-agent curl -fsS --max-time 2 http://localhost:8000/health >nul 2>&1
 if not errorlevel 1 goto lightrag_ready
 set /a LIGHTRAG_ATTEMPTS+=1
-if %LIGHTRAG_ATTEMPTS% geq 30 (
+if %LIGHTRAG_ATTEMPTS% geq 60 (
     echo WARNUNG: LightRAG im Container nicht erreichbar, starte Pi trotzdem.
-    goto lightrag_ready
+    goto start_pi
 )
-echo Warte auf LightRAG... (%LIGHTRAG_ATTEMPTS%/30)
+echo Warte auf LightRAG... (%LIGHTRAG_ATTEMPTS%/60)
 timeout /t 2 /nobreak >nul
 goto wait_lightrag
 
 :lightrag_ready
 echo LightRAG ist bereit.
+
+:start_pi
 docker compose exec -it pi-agent pi
 
 pause

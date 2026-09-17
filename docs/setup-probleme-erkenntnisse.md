@@ -2,6 +2,8 @@
 
 **Korrekturstand:** Die Datei `/workspace/start_pi_container.cmd` wurde am 18.08.2026 durch den Benutzer durch eine neuere Kopie ersetzt. Frühere Aussagen, die diese Datei als veraltet oder nur als alten Skriptstand behandeln, sind mit diesem Dokumentstand überholt.
 
+**Nachtrag (Commit `2b3a97b`):** LightRAG läuft jetzt im Pi-Container auf Port 8000 und wird von `.devcontainer/start-lightrag.sh` gestartet (aufgerufen aus `Nodges_Pi/docker-compose.yml`). Der Vite-Proxy zeigt auf `http://localhost:8000`. Der Windows-Backend-Prozess ist gestoppt. Die Abschnitte unten zur Windows-Architektur sind damit historisch. Siehe `resetup.md`.
+
 Dieses Dokument sammelt die für den laufenden Nodges-/Pi-Betrieb wichtigen Probleme und deren Auflösung aus den bisherigen Pi-Sitzungen. Es ist als historischer Kontext gedacht. Bei Widersprüchen gilt der aktuelle Laufzeitnachweis und anschließend `docs/setup-llm-orientierung.md`, nicht eine alte Antwort aus einer Sitzung.
 
 ## 1. Historischer Ausgangspunkt
@@ -92,9 +94,9 @@ Beim Wechsel zwischen Windows/Antigravity, GitHub, WSL und Pi wurden folgende Ri
 
 ### 2.5 14.–16.08.2026: LightRAG als einzige Windows-Instanz
 
-Die zentrale Architekturentscheidung wurde getroffen:
+Die damalige zentrale Architekturentscheidung (inzwischen überholt, siehe Nachtrag):
 
-> LightRAG läuft ausschließlich als lokaler Windows-Prozess. Der Container startet kein eigenes LightRAG. Der Container greift über `host.docker.internal:8000` auf Windows-LightRAG zu.
+> **Überholt (damaliger Stand):** LightRAG läuft ausschließlich als lokaler Windows-Prozess. Der Container startet kein eigenes LightRAG. Der Container greift über `host.docker.internal:8000` auf Windows-LightRAG zu.
 
 Der Grund ist die gemeinsame lokale Installation und Datenbank mit mehreren Datenbanken. Zwei gleichzeitig laufende LightRAG-Prozesse hätten Risiken:
 
@@ -104,7 +106,7 @@ Der Grund ist die gemeinsame lokale Installation und Datenbank mit mehreren Date
 - unterschiedliche Caches und aktive Datenbanken,
 - scheinbar leere oder voneinander abweichende Datenbanken.
 
-Die ältere Datei `/workspace/.devcontainer/start-lightrag.sh` ist deshalb nicht Teil des bestätigten normalen Startpfads. Sie darf nicht zusätzlich zum Windows-Prozess ausgeführt werden.
+Die damals ältere Datei `/workspace/.devcontainer/start-lightrag.sh` war nicht Teil des bestätigten Startpfads. Heute ist sie der normale Startpfad im Container.
 
 ### 2.6 16.08.–18.08.2026: Desktop-Startskript und aktuelle Setup-Kopie
 
@@ -279,20 +281,21 @@ Lehre für zukünftige Sitzungen: Bei mehrdeutlichen Statusformulierungen nicht 
 - Ein zweiter Vite-Start ist im Normalfall nicht nötig.
 - Node und npm sind im Container verfügbar.
 - Pi-Agent ist im Container installiert und startbar.
-- LightRAG läuft nur auf Windows.
-- Containerzugriff auf Windows-LightRAG über `host.docker.internal:8000` funktioniert.
-- `/health` meldet `lightrag_engine_active: true`.
+- LightRAG läuft im Pi-Container (früher: nur auf Windows).
+- Containerzugriff auf das Backend über `http://localhost:8000` und den Vite-Proxy funktioniert; `host.docker.internal:8000` war nur der frühere Windows-Weg.
+- `/health` meldet `lightrag_engine_active: true` und im Container `version: 0.105.1`.
 - Swagger ist unter `/docs` erreichbar.
 - Production-Build läuft erfolgreich.
-- Windows-Startskript prüft LightRAG vor dem Compose-Start und wartet auf `/health`.
-- Gemeinsamer LightRAG-Datenpfad wird im Referenzskript explizit gesetzt.
+- Das Compose-Startkommando prüft LightRAG nach dem Containerstart und wartet auf `/health` (`start-lightrag.sh`).
+- Gemeinsamer LightRAG-Datenpfad wird zentral aus `LIGHTRAG_WORKING_DIR` abgeleitet.
 - `.env`, `.env.local` und Python-venvs sind per `.gitignore` ausgeschlossen.
 
 ### Noch nicht endgültig erledigt
 
 - Die aktuelle Referenzkopie `/workspace/start_pi_container.cmd` entspricht dem zuletzt vom Benutzer bereitgestellten neueren Stand; die echte Desktop-Datei bleibt außerhalb des Containers und muss bei Änderungen manuell synchronisiert werden.
 - Die aktuelle temporäre Kopie `/workspace/start_pi_container.cmd` soll nach Abschluss der Dokumentation entfernt werden.
-- `main.py` verwendet in den Datenbankverwaltungs-Endpunkten teilweise weiterhin relative `./rag_storage`-Pfade. Das kann trotz `LIGHTRAG_WORKING_DIR` zu inkonsistenten Pfaden führen.
+- `main.py` leitet die Datenbankpfade inzwischen zentral aus `LIGHTRAG_WORKING_DIR` ab; die früheren relativen `./rag_storage`-Pfade sind behoben (Commit `2b3a97b`).
+- Die kanonische Compose-Datei liegt auf Windows und muss bei Änderungen von Hand dorthin kopiert werden.
 - Die verschiedenen Docker-/Devcontainer-Konfigurationen müssen bei zukünftigen Änderungen eindeutig getrennt bleiben.
 - Ein nachträglicher Windows-Laufzeittest kann aus dem Container nicht ersetzt werden.
 
@@ -305,7 +308,7 @@ Lehre für zukünftige Sitzungen: Bei mehrdeutlichen Statusformulierungen nicht 
 4. git status --short --branch ausführen.
 5. `/workspace/start_pi_container.cmd` als aktuelle, vom Benutzer bereitgestellte Referenzkopie behandeln; ältere Kopien sind ungültig.
 6. Nicht behaupten, die echte Desktop-Datei direkt gelesen zu haben.
-7. Keine zweite LightRAG-Instanz starten.
+7. Keine zweite LightRAG-Instanz starten (das Backend läuft im Container; Windows-LightRAG muss gestoppt bleiben).
 8. Keine zweite Vite-Instanz auf Port 5173 starten.
 9. Vor Codeänderungen relevante Dateien und vorhandene Änderungen prüfen.
 10. Nach Änderungen Build, Tests und Laufzeitchecks durchführen.

@@ -14,6 +14,7 @@
 - **Container-Startbefehl (PID 1):** `npm run dev`.
 - **npm install:** Wird ueber `postCreateCommand` in `.devcontainer/devcontainer.json` vor dem Container-Start ausgefuehrt.
 - **Vite** wird automatisch beim Containerstart auf Port 5173 gestartet (daher standardmaessig belegt).
+- **Kanonische Compose-Quelle:** Der Pi-Container wird auf Windows ueber `C:\Users\ich\Desktop\code\_projects\Nodges_Pi\docker-compose.yml` gestartet. `/workspace/Nodges_Pi` ist nur der Git-Snapshot im Repo und wird von Docker nicht direkt verwendet. Aenderungen daran muessen nach Windows kopiert werden (siehe `resetup.md`).
 - **Container hat kein `ps`, `pgrep`, `pkill`, `ss`, `docker`:** Prozess-Status muss ueber `/proc` abgefragt werden (`/proc/*/cmdline`, `/proc/net/tcp`).
 
 ## Ports & Services
@@ -69,7 +70,7 @@
 - **Hinweis:** Liefert der Health-Check `status: offline`, laeuft das LightRAG-Backend nicht. Im Container mit `.devcontainer/start-lightrag.sh` starten (Log: `/tmp/lightrag.log`). Der Vite-Proxy antwortet in diesem Fall mit HTTP 503.
 
 ### 6. VNC / Chrome (CDP) nicht verfuegbar
-- **Problem:** Die benoetigten Pakete (`Xvfb`, `fluxbox`, `x11vnc`, `websockify`, `google-chrome-stable`) sind im laufenden Container nicht installiert. Daher starten weder noVNC (Port 6080) noch Chrome/CDP (Port 9222). Der `Dockerfile` installiert sie zwar, das laufende Image stammt aber offenbar von einem aelteren Build; ein Rebuild des DevContainers wuerde das beheben.
+- **Problem:** Die benoetigten Pakete (`Xvfb`, `fluxbox`, `x11vnc`, `websockify`, `google-chrome-stable`) sind im Container nicht installiert. Daher starten weder noVNC (Port 6080) noch Chrome/CDP (Port 9222). Ein Rebuild behebt das **nicht**, weil der fuer den Pi-Container verwendete `Nodges_Pi/Dockerfile` diese Pakete nicht enthaelt; nur `.devcontainer/Dockerfile` (VS-Code-Devcontainer-Pfad) tut das. VNC muesste in `Nodges_Pi/Dockerfile` ergaenzt werden.
 - **Hintergrund:** Der Container laeuft als `piuser`, nicht als `node` (der in `devcontainer.json` konfigurierte `remoteUser` existiert nicht im Image).
 
 ## Arbeitsregeln
