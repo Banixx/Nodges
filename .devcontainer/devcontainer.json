@@ -34,6 +34,6 @@
         "DISPLAY": ":99"
     },
     "postCreateCommand": "npm install",
-    "postStartCommand": "bash .devcontainer/start-vnc.sh &",
+    "postStartCommand": "bash .devcontainer/start-lightrag.sh; bash .devcontainer/start-vnc.sh || true",
     "remoteUser": "node"
 }

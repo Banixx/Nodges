@@ -19,12 +19,15 @@ services:
       chmod 600 /home/.pi/gitconfig /home/.pi/git-credentials;
       if [ -n "$${GITHUB_TOKEN:-}" ]; then printf "protocol=https\\nhost=github.com\\nusername=%s\\npassword=%s\\n\\n" "$${GITHUB_USERNAME}" "$${GITHUB_TOKEN}" | GIT_CONFIG_GLOBAL=/home/.pi/gitconfig GIT_CONFIG_NOSYSTEM=1 git credential approve; fi;
       npm install;
+      bash /workspace/.devcontainer/start-lightrag.sh > /tmp/lightrag-start.log 2>&1 &
       exec npm run dev'
     user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
     ports:
       - "5173:5173"
-      # Hinweis: Port 8000 (LightRAG) läuft extern auf Windows.
-      # Der Container greift darauf zu via host.docker.internal:8000
+      # LightRAG laeuft im Container selbst (Port 8000) und wird beim Start durch
+      # .devcontainer/start-lightrag.sh hochgefahren. Das Frontend nutzt den
+      # internen Vite-Proxy, daher muss 8000 nicht veroeffentlicht werden.
+      # Fuer eine externe Windows-Instanz: VITE_LIGHTRAG_PROXY_TARGET setzen.
     volumes:
       # Das Repo-Verzeichnis im Container
       - ${REPO_PATH:-.}:/workspace

@@ -192,8 +192,8 @@ SSH_AUTH_SOCK=${SSH_AUTH_SOCK}
 # GitHub-Benutzername für HTTPS-Git-Pushes
 GITHUB_USERNAME=Banixx
 
-# Externe LightRAG-Instanz auf Windows-Host
-LIGHT_RAG_URL=http://host.docker.internal:8000
+# LightRAG laeuft im Container (Start via .devcontainer/start-lightrag.sh)
+LIGHT_RAG_URL=http://localhost:8000
 
 # Optionaler GitHub-PAT für HTTPS-Git (wird beim Containerstart gespeichert)
 GITHUB_TOKEN=

@@ -33,6 +33,9 @@ node_modules/
 **/__pycache__/
 *.py[cod]
 
+# LightRAG Laufzeitdaten (Datenbanken, Vektorindex)
+lightrag-backend/rag_storage/
+
 # Build outputs
 dist/
 build/

@@ -439,7 +439,8 @@ export class CreatePanel {
 
         keySection.appendChild(keyHeader);
         keySection.appendChild(keyContent);
-        this.container.appendChild(keySection);
+        // Der BYOK-Block wird bewusst nicht ins Panel gehaengt: Anbieter, Key und
+        // Modell sind fest verdrahtet, der Key liegt nur im Deno-Proxy.
 
         // --- RELATION SET SECTION ---
         const relSection = document.createElement('section');
@@ -659,7 +660,8 @@ export class CreatePanel {
         modelLabel.style.display = 'block';
         modelLabel.style.marginBottom = '5px';
         modelLabel.style.color = 'var(--text-muted)';
-        genSection.appendChild(modelLabel);
+        // Modell-Label wird nicht angezeigt: es gibt genau ein Modell.
+        void modelLabel;
 
         this.modelContainer = document.createElement('div');
         this.modelContainer.style.position = 'relative';
@@ -694,7 +696,7 @@ export class CreatePanel {
 
         this.modelContainer.appendChild(this.modelInput);
         this.modelContainer.appendChild(this.modelDropdown);
-        genSection.appendChild(this.modelContainer);
+        // Nicht anhaengen: die Modell-Auswahl ist ausgeblendet.
 
         // --- Advanced LLM Parameters Toggle ---
         const advParamsDetails = document.createElement('details');

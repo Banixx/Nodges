@@ -109,13 +109,10 @@ try:
         embeddings = [item.embedding for item in response.data]
         return np.array(embeddings)
 
-    if "openrouter" in EMBEDDING_BASE_URL.lower() and EMBEDDING_MODEL.startswith("text-embedding"):
-        print(
-            "[LightRAG Warning] OPENAI_API_BASE zeigt auf OpenRouter, aber EMBEDDING_MODEL "
-            f"ist '{EMBEDDING_MODEL}'. OpenRouter bietet keine Embeddings an. Setze "
-            "OPENAI_API_BASE/OPENAI_API_KEY/EMBEDDING_MODEL explizit, sonst schlagen "
-            "Embeddings fehl und /query faellt auf Mock zurueck."
-        )
+    print(
+        f"[LightRAG] storage={WORKING_DIR} embedding={EMBEDDING_MODEL} "
+        f"dim={EMBEDDING_DIM} base={EMBEDDING_BASE_URL}"
+    )
 
     embedding_func = EmbeddingFunc(
         embedding_dim=EMBEDDING_DIM,

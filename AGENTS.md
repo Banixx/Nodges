@@ -21,17 +21,17 @@
 |------|---------|---------------------------|------------|
 | 5173 | Vite Dev-Server | ✅ automatisch (via Container-CMD) | `node /workspace/node_modules/.bin/vite` (z.B. PID 55/56) |
 | 5174 | Vite (manuell) | ❌ nicht automatisch | `npm run dev -- --port 5174` (falls 5173 belegt) |
-| 8000 | LightRAG Backend | ❌ nicht im Container | Laeuft auf dem **Windows-Host** (via `.cmd`-Script gestartet) |
+| 8000 | LightRAG Backend | ✅ via `postStartCommand` | `.devcontainer/start-lightrag.sh` bzw. `npm run lightrag` |
 | 9222 | Chrome CDP | ❌ nicht automatisch | Benoetigt `start-vnc.sh`, welches scheitert (Tools nicht installiert) |
 | 6080 | noVNC / VNC | ❌ nicht automatisch | Benoetigt `start-vnc.sh`, welches scheitert (Tools nicht installiert) |
 
 ### LightRAG-Details
 - **venv-Pfad:** `/workspace/lightrag-backend/venv`
 - **Abhaengigkeiten:** `fastapi`, `uvicorn`, `lightrag-hku`, `pydantic`, `python-dotenv` (installiert im venv).
-- **LightRAG:** Laeuft **ausserhalb** des Containers auf dem Windows-Host. Der Container startet kein eigenes LightRAG-Backend. Das Frontend greift ueber den Vite-Dev-Server-Proxy auf `host.docker.internal:8000` zu. Stand der letzten Pruefung: `host.docker.internal` ist im Container auflösbar (192.168.65.254) und Port 8000 erreichbar.
-- **Speicherort (Working Dir):** Das Backend nutzt `LIGHTRAG_WORKING_DIR` als einzige Pfadquelle. Datenbanken liegen unter `<WorkingDir>/databases`; `lightrag-backend/rag_storage/databases` wird nur noch als Altbestand mitgelesen.
-- **Getrennte Checkouts:** Der Container mountet den WSL-Pfad `\\wsl.localhost\Ubuntu\home\unixusername\nodges` (siehe `Nodges_Pi/.env`, `REPO_PATH`). Der laufende Backend-Prozess arbeitet dagegen mit `C:\Users\ich\Desktop\code\_projects\Nodges`. Aenderungen an `lightrag-backend/` im Container wirken daher erst nach Sync in den Windows-Checkout und Neustart des Dienstes. Im Container sichtbare `rag_storage`-Dateien sind nicht zwangslaeufig die Live-Daten des Backends.
-- **nm-Script (obsolet):** Das fruehere `package.json`-Script `lightrag` wurde fuer den Linux-Container nicht mehr verwendet, da LightRAG auf dem Host laeuft.
+- **LightRAG:** Laeuft **im Container** auf Port 8000. Start automatisch via `postStartCommand` (`.devcontainer/start-lightrag.sh`) oder manuell mit `npm run lightrag`. Das Frontend erreicht es ueber den Vite-Proxy `/lightrag-api` (Ziel `http://localhost:8000`).
+- **Speicherort (Working Dir):** `LIGHTRAG_WORKING_DIR`, sonst Fallback `lightrag-backend/rag_storage`. Datenbanken liegen unter `<WorkingDir>/databases`; `lightrag-backend/rag_storage/databases` wird als Altbestand mitgelesen. Laufzeitdaten sind per `.gitignore` ausgeschlossen.
+- **Embeddings:** Laufen ueber OpenRouter (`text-embedding-3-small`, dim 1536). Verifiziert: `POST https://openrouter.ai/api/v1/embeddings` liefert HTTP 200. Die frueher vermutete Einschraenkung "OpenRouter bietet keine Embeddings" ist falsch.
+- **Externe Host-Instanz (optional):** Wer LightRAG weiter auf dem Windows-Host betreiben will, setzt `VITE_LIGHTRAG_PROXY_TARGET=http://host.docker.internal:8000` und laesst `.devcontainer/start-lightrag.sh` aus, damit sich nicht zwei Instanzen Port 8000 teilen.
 
 ## Bekannte Probleme & Fixes
 
@@ -66,10 +66,10 @@
   ```bash
   curl -s http://localhost:5173/lightrag-api/health
   ```
-- **Hinweis:** Liefert der Health-Check `status: offline`, laeuft das Windows-Backend nicht (`.cmd`-Starter-Skript ausfuehren). Der Vite-Proxy antwortet in diesem Fall mit HTTP 503.
+- **Hinweis:** Liefert der Health-Check `status: offline`, laeuft das LightRAG-Backend nicht. Im Container mit `.devcontainer/start-lightrag.sh` starten (Log: `/tmp/lightrag.log`). Der Vite-Proxy antwortet in diesem Fall mit HTTP 503.
 
 ### 6. VNC / Chrome (CDP) nicht verfuegbar
-- **Problem:** `.devcontainer/devcontainer.json` enthaelt zwar `postStartCommand: bash .devcontainer/start-vnc.sh &`, aber die benoetigten Pakete (`Xvfb`, `fluxbox`, `x11vnc`, `websockify`, `google-chrome-stable`) sind im Container nicht installiert. Daher starten weder noVNC (Port 6080) noch Chrome/CDP (Port 9222).
+- **Problem:** Die benoetigten Pakete (`Xvfb`, `fluxbox`, `x11vnc`, `websockify`, `google-chrome-stable`) sind im laufenden Container nicht installiert. Daher starten weder noVNC (Port 6080) noch Chrome/CDP (Port 9222). Der `Dockerfile` installiert sie zwar, das laufende Image stammt aber offenbar von einem aelteren Build; ein Rebuild des DevContainers wuerde das beheben.
 - **Hintergrund:** Der Container laeuft als `piuser`, nicht als `node` (der in `devcontainer.json` konfigurierte `remoteUser` existiert nicht im Image).
 
 ## Arbeitsregeln

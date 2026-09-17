@@ -49,36 +49,18 @@ export class LLMService {
         { id: 'lmstudio', name: 'LM Studio (Lokal)' }
     ];
 
+    /**
+     * Fest verdrahtete Anbindung der Web-App: OpenRouter laeuft ausschliesslich
+     * ueber den Deno-Proxy, der Guardrail des Proxy-Keys erlaubt genau ein Modell.
+     * Auswahl-UI fuer Anbieter, Key und Modell gibt es bewusst nicht mehr.
+     */
+    public static readonly FIXED_PROVIDER: LLMProvider = 'openrouter';
+    public static readonly FIXED_MODEL = 'deepseek/deepseek-v4.1-flash';
+    public static readonly FIXED_MODEL_LABEL = 'DeepSeek: DeepSeek V4.1 Flash';
+
     public static readonly PROVIDER_MODELS: Record<LLMProvider, LLMModel[]> = {
         openrouter: [
-            { id: 'openai/gpt-5.6-luna', name: 'OpenAI: GPT-5.6 Luna' },
-            { id: 'deepseek/deepseek-v4-flash', name: 'DeepSeek: DeepSeek V4 Flash' },
-            { id: 'qwen/qwen-2.5-72b-instruct', name: 'Qwen2.5 72B Instruct' },
-            { id: 'nvidia/llama-3.3-nemotron-super-49b-v1.5', name: 'NVIDIA: Llama 3.3 Nemotron Super 49B V1.5' },
-            { id: 'qwen/qwen3-vl-32b-instruct', name: 'Qwen: Qwen3 VL 32B Instruct' },
-            { id: 'tencent/hunyuan-a13b-instruct', name: 'Tencent: Hunyuan A13B Instruct' },
-            { id: 'qwen/qwen-plus', name: 'Qwen: Qwen-Plus' },
-            { id: 'deepseek/deepseek-chat', name: 'DeepSeek: DeepSeek V3' },
-            { id: 'deepseek/deepseek-v4-pro', name: 'DeepSeek: DeepSeek V4 Pro' },
-            { id: 'qwen/qwen3.5-35b-a3b', name: 'Qwen: Qwen3.5-35B-A3B' },
-            { id: 'qwen/qwen3.7-plus', name: 'Qwen: Qwen3.7 Plus' },
-            { id: 'aion-labs/aion-3.0-mini', name: 'AionLabs: Aion-3.0-Mini' },
-            { id: 'mistralai/mistral-large-2512', name: 'Mistral: Mistral Large 3 2512' },
-            { id: 'openai/gpt-4.1-mini', name: 'OpenAI: GPT-4.1 Mini' },
-            { id: 'morph/morph-v3-large', name: 'Morph: Morph V3 Large' },
-            { id: 'moonshotai/kimi-k2.5', name: 'MoonshotAI: Kimi K2.5' },
-            { id: 'deepseek/deepseek-r1', name: 'DeepSeek: R1' },
-            { id: 'qwen/qwen3.7-max', name: 'Qwen: Qwen3.7 Max' },
-            { id: 'qwen/qwen3-max', name: 'Qwen: Qwen3 Max' },
-            { id: 'anthropic/claude-haiku-4.5', name: 'Anthropic: Claude Haiku 4.5' },
-            { id: 'openai/gpt-oss-safeguard-20b', name: 'OpenAI: GPT OSS Safeguard 20B' },
-            { id: 'inception/mercury-2', name: 'Inception: Mercury 2' },
-            { id: 'xiaomi/mimo-v2.5', name: 'Xiaomi: MiMo V2.5' },
-            { id: 'poolside/laguna-m.1', name: 'Poolside: Laguna M.1' },
-            // Neue Modelle 2025-08-18
-            { id: 'deepseek/deepseek-v4.1-flash', name: 'DeepSeek: DeepSeek V4.1 Flash' },
-            { id: 'tencent/hy4-preview', name: 'Tencent: hy4 Preview' },
-            { id: 'z-ai/glm-5.3-flash', name: 'Z-AI: GLM 5.3 Flash' }
+            { id: 'deepseek/deepseek-v4.1-flash', name: 'DeepSeek: DeepSeek V4.1 Flash' }
         ],
         openai: [
             { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
@@ -104,11 +86,9 @@ export class LLMService {
      * Get the active provider from localStorage (defaults to 'openrouter')
      */
     public static getActiveProvider(): LLMProvider {
-        const provider = localStorage.getItem('llm_provider') as LLMProvider;
-        if (provider && this.PROVIDERS.some(p => p.id === provider)) {
-            return provider;
-        }
-        return 'openrouter';
+        // Es gibt genau einen Anbieter. Alte localStorage-Werte werden ignoriert,
+        // damit niemand versehentlich bei OpenAI/Anthropic/Ollama landet.
+        return this.FIXED_PROVIDER;
     }
 
     /**
@@ -122,12 +102,17 @@ export class LLMService {
      * Get the active model for a provider from localStorage
      */
     public static getActiveModel(provider: LLMProvider): string {
+        if (provider === this.FIXED_PROVIDER) {
+            // Der Guardrail des Proxy-Keys erlaubt nur dieses Modell. Alte
+            // Auswahlen aus localStorage werden bewusst ignoriert.
+            return this.FIXED_MODEL;
+        }
         const savedModel = localStorage.getItem(`llm_model_${provider}`);
         if (savedModel) {
             return savedModel;
         }
         // Fallbacks
-        if (provider === 'openrouter') return 'morph/morph-v3-large';
+        if (provider === 'openrouter') return this.FIXED_MODEL;
         if (provider === 'openai') return 'gpt-4o-mini';
         if (provider === 'anthropic') return 'claude-3-5-sonnet-20241022';
         if (provider === 'ollama') return 'qwen2.5:14b';
