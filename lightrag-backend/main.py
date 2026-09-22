@@ -47,12 +47,21 @@ DATABASES_DIR = os.path.join(STORAGE_ROOT, "databases")
 LEGACY_DATABASES_DIR = os.path.join(BACKEND_DIR, "rag_storage", "databases")
 WORKING_DIR = STORAGE_ROOT
 
-EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
+# Standard-Embedding fuer deutschsprachige Ontologie-Extraktion:
+# Qwen3-Embedding-8B (Platz 1 MTEB multilingual, deutschsprachige Unterstuetzung).
+# 4096 = native Dimension. Per EMBEDDING_DIM kuerzbar (Matryoshka), dann muss
+# der Wert aber auch als "dimensions" an die API gehen (siehe custom_openai_embed).
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "qwen/qwen3-embedding-8b")
 EMBEDDING_BASE_URL = os.getenv("OPENAI_API_BASE", "https://api.openai.com/v1")
+_embedding_dim_env = (os.getenv("EMBEDDING_DIM") or "").strip()
 try:
-    EMBEDDING_DIM = int(os.getenv("EMBEDDING_DIM", "1536"))
+    EMBEDDING_DIM = int(_embedding_dim_env) if _embedding_dim_env else 4096
 except ValueError:
-    EMBEDDING_DIM = 1536
+    EMBEDDING_DIM = 4096
+
+# Ausgabesprache der Ontologie-Extraktion (Knotennamen, Beziehungen,
+# Beschreibungen). LightRAG standardmaessig "English"; hier deutschsprachig.
+SUMMARY_LANGUAGE = os.getenv("SUMMARY_LANGUAGE", "German")
 
 app = FastAPI(title="LightRAG Local API for Nodges", version=APP_VERSION)
 
@@ -88,7 +97,7 @@ try:
     async def custom_llm_model_func(prompt, system_prompt=None, history_messages=None, **kwargs):
         if history_messages is None:
             history_messages = []
-        model = kwargs.pop("model", None) or os.getenv("LLM_MODEL", "morph/morph-v3-large")
+        model = kwargs.pop("model", None) or os.getenv("LLM_MODEL", "deepseek/deepseek-v4.1-flash")
         return await openai_complete_if_cache(
             model,
             prompt,
@@ -102,16 +111,19 @@ try:
             api_key=os.getenv("OPENAI_API_KEY"),
             base_url=EMBEDDING_BASE_URL
         )
-        response = await client.embeddings.create(
-            model=EMBEDDING_MODEL,
-            input=texts
-        )
+        # Qwen3-Embedding ist Matryoshka-faehig: Wird EMBEDDING_DIM explizit
+        # gesetzt, fordern wir diese verkuerzte Dimension direkt an. Ohne die
+        # Variable nutzen wir die native Dimension des Modells.
+        embed_kwargs: Dict[str, Any] = {"model": EMBEDDING_MODEL, "input": texts}
+        if _embedding_dim_env:
+            embed_kwargs["dimensions"] = EMBEDDING_DIM
+        response = await client.embeddings.create(**embed_kwargs)
         embeddings = [item.embedding for item in response.data]
         return np.array(embeddings)
 
     print(
         f"[LightRAG] storage={WORKING_DIR} embedding={EMBEDDING_MODEL} "
-        f"dim={EMBEDDING_DIM} base={EMBEDDING_BASE_URL}"
+        f"dim={EMBEDDING_DIM} base={EMBEDDING_BASE_URL} language={SUMMARY_LANGUAGE}"
     )
 
     embedding_func = EmbeddingFunc(
@@ -124,7 +136,8 @@ try:
     rag_instance = LightRAG(
         working_dir=WORKING_DIR,
         llm_model_func=custom_llm_model_func,
-        embedding_func=embedding_func
+        embedding_func=embedding_func,
+        addon_params={"language": SUMMARY_LANGUAGE}
     )
     LIGHTRAG_AVAILABLE = True
 except Exception as e:
@@ -157,7 +170,8 @@ def read_root():
         "databases_dir": DATABASES_DIR,
         "embedding_model": EMBEDDING_MODEL,
         "embedding_base_url": EMBEDDING_BASE_URL,
-        "embedding_key_set": bool(os.getenv("OPENAI_API_KEY"))
+        "embedding_key_set": bool(os.getenv("OPENAI_API_KEY")),
+        "summary_language": SUMMARY_LANGUAGE
     }
 
 @app.post("/query")
@@ -319,7 +333,8 @@ async def _activate_working_dir(target_dir: str) -> None:
     rag_instance = LightRAG(
         working_dir=WORKING_DIR,
         llm_model_func=custom_llm_model_func,
-        embedding_func=embedding_func
+        embedding_func=embedding_func,
+        addon_params={"language": SUMMARY_LANGUAGE}
     )
     await rag_instance.initialize_storages()
 

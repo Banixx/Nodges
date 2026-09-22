@@ -87,10 +87,13 @@ Python-Framework für Retrieval-Augmented Generation über große Textmengen. Es
 Datenmodellierungssprache und Framework zur Definition von Schemas. OntoGPT verwendet LinkML-Schemas als Eingabe, um die Struktur der zu extrahierenden Daten vorzugeben (z. B. welche Felder ein „Drug“-Objekt hat).
 
 ### LLM (Large Language Model)
-Großes Sprachmodell (z. B. GPT-4, Morph-v3), das auf Basis riesiger Textmengen trainiert wurde und zur Textgenerierung, -zusammenfassung und -extraktion genutzt wird. Sowohl OntoGPT als auch LightRAG setzen auf LLMs.
+Großes Sprachmodell (z. B. GPT-4, DeepSeek V4.1 Flash), das auf Basis riesiger Textmengen trainiert wurde und zur Textgenerierung, -zusammenfassung und -extraktion genutzt wird. Sowohl OntoGPT als auch LightRAG setzen auf LLMs.
 
 ### LLM_MODEL
-Umgebungsvariable im LightRAG-Backend, die das zu verwendende Sprachmodell festlegt (z. B. `morph/morph-v3-large`).
+Umgebungsvariable im LightRAG-Backend, die das zu verwendende Sprachmodell festlegt (z. B. `deepseek/deepseek-v4.1-flash`).
+
+### SUMMARY_LANGUAGE
+Umgebungsvariable im LightRAG-Backend, die die Ausgabesprache der Ontologie-Extraktion festlegt (Standard im Projekt: `German`). Ohne diesen Wert verwendet LightRAG `English` und liefert dann englische Entitätsnamen.
 
 ## M
 

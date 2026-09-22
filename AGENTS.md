@@ -31,7 +31,7 @@
 - **Abhaengigkeiten:** `fastapi`, `uvicorn`, `lightrag-hku`, `pydantic`, `python-dotenv` (installiert im venv).
 - **LightRAG:** Laeuft **im Container** auf Port 8000. Start automatisch via `postStartCommand` (`.devcontainer/start-lightrag.sh`) oder manuell mit `npm run lightrag`. Das Frontend erreicht es ueber den Vite-Proxy `/lightrag-api` (Ziel `http://localhost:8000`).
 - **Speicherort (Working Dir):** `LIGHTRAG_WORKING_DIR`, sonst Fallback `lightrag-backend/rag_storage`. Datenbanken liegen unter `<WorkingDir>/databases`; `lightrag-backend/rag_storage/databases` wird als Altbestand mitgelesen. Laufzeitdaten sind per `.gitignore` ausgeschlossen.
-- **Embeddings:** Laufen ueber OpenRouter (`text-embedding-3-small`, dim 1536). Verifiziert: `POST https://openrouter.ai/api/v1/embeddings` liefert HTTP 200. Die frueher vermutete Einschraenkung "OpenRouter bietet keine Embeddings" ist falsch.
+- **Embeddings:** Laufen ueber OpenRouter (`qwen/qwen3-embedding-8b`, native dim 4096, ueberschreibbar via `EMBEDDING_MODEL`/`EMBEDDING_DIM`). Verifiziert: `POST https://openrouter.ai/api/v1/embeddings` liefert HTTP 200. Die frueher vermutete Einschraenkung "OpenRouter bietet keine Embeddings" ist falsch. Modellwechsel erfordert Neu-Einspielen aller Dokumente (Vektoren sind nicht kompatibel).
 - **Externe Host-Instanz (optional):** Wer LightRAG weiter auf dem Windows-Host betreiben will, setzt `VITE_LIGHTRAG_PROXY_TARGET=http://host.docker.internal:8000` und laesst `.devcontainer/start-lightrag.sh` aus, damit sich nicht zwei Instanzen Port 8000 teilen.
 
 ## Bekannte Probleme & Fixes

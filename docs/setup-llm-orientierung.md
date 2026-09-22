@@ -381,8 +381,9 @@ Das Backend:
 - lädt `.env.local` und `.env` abhängig vom Startkontext,
 - mappt bei Bedarf `VITE_OPENROUTER_API_KEY` auf `OPENAI_API_KEY` und OpenRouter als API-Basis,
 - initialisiert LightRAG mit einem Arbeitsverzeichnis,
-- nutzt standardmäßig Modell `morph/morph-v3-large`, sofern `LLM_MODEL` nicht gesetzt ist,
-- nutzt standardmäßig `text-embedding-3-small`, Embedding-Dimension 1536 und maximale Token-Größe 8192,
+- nutzt standardmäßig Modell `deepseek/deepseek-v4.1-flash`, sofern `LLM_MODEL` nicht gesetzt ist,
+- nutzt standardmäßig `qwen/qwen3-embedding-8b`, Embedding-Dimension 4096 und maximale Token-Größe 8192,
+- extrahiert Knoten und Beziehungen standardmäßig deutschsprachig (`SUMMARY_LANGUAGE=German`),
 - bietet Query, Insert und Datenbankverwaltung,
 - begrenzt den Graph-Auszug standardmäßig auf 150 Knoten und 300 Kanten.
 

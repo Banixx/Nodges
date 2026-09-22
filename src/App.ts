@@ -1245,7 +1245,7 @@ export class App {
             try {
                 notify.info('Deep Dive gestartet', `Erforsche ${label}...`);
                 const provider = LLMService.getActiveProvider();
-                const model = LLMService.getActiveModel(provider) || 'google/gemini-2.5-flash-001';
+                const model = LLMService.getActiveModel(provider) || LLMService.FIXED_MODEL;
                 
                 const newGraphData = await LLMService.expandGraphNodeBuild10(
                     label,
