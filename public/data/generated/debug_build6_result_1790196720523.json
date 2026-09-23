@@ -1,0 +1,1557 @@
+{
+  "system": "Buddenbrooks – Verwandtschaftsgraph der Familie Buddenbrook und ihres geselligen Kreises (Erster Teil, Anno 1835)",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Verwandtschafts- und Beziehungsgraph der im Quellenkontext (Buddenbrooks, Erster Teil, Kap. 1–6) genannten Protagonisten. Die Knoten sind in vier Ebenen (Ebenen des Verwandtschaftsgraphen) geordnet: Grosseltern-Generation, Eltern-Generation, Kinder-Generation und der nicht-verwandte Haus- und Freundeskreis. Kanten geben die im Text belegte Beziehung (erlaubtes Relation-Set) sowie eine aus dem Text abgeleitete Intensität (0–100) an.",
+    "competencyQuestions": [
+      "Wer gehört zur Grosseltern-, Eltern- und Kinder-Generation der Buddenbrooks?",
+      "Wie sind die Buddenbrooks mit den Krögers verschwägert und verschwiegert?",
+      "Welche gespannten Verhältnisse bestehen zwischen Gotthold und dem Hause (Stiefbruder / Stiefmutter)?",
+      "Welche nicht-verwandten Personen (Hausfreunde, Arzt, Geistlicher, Erzieherin) sind dem Hause Buddenbrook verbunden und wie intensiv?"
+    ],
+    "apiResponse": {
+      "id": "gen-1790196610-eDaPm96OJ29sFbdzQ5lQ",
+      "created": 1790196610,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "usage": {
+        "prompt_tokens": 19762,
+        "completion_tokens": 25737,
+        "total_tokens": 45499,
+        "cost": 0.0184065,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0184065,
+          "upstream_inference_prompt_cost": 0.0029643,
+          "upstream_inference_completions_cost": 0.0154422
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 16209,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Familienmitglied": {
+        "properties": {
+          "layer": {
+            "type": "categorical"
+          },
+          "generation": {
+            "type": "continuous",
+            "range": [
+              1,
+              4
+            ]
+          },
+          "rolle": {
+            "type": "categorical"
+          },
+          "position": {
+            "type": "spatial"
+          }
+        }
+      },
+      "Kind": {
+        "properties": {
+          "layer": {
+            "type": "categorical"
+          },
+          "generation": {
+            "type": "continuous",
+            "range": [
+              1,
+              4
+            ]
+          },
+          "alter": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "position": {
+            "type": "spatial"
+          }
+        }
+      },
+      "Bedienstete": {
+        "properties": {
+          "layer": {
+            "type": "categorical"
+          },
+          "generation": {
+            "type": "continuous",
+            "range": [
+              1,
+              4
+            ]
+          },
+          "rolle": {
+            "type": "categorical"
+          },
+          "position": {
+            "type": "spatial"
+          }
+        }
+      },
+      "Hausfreund": {
+        "properties": {
+          "layer": {
+            "type": "categorical"
+          },
+          "generation": {
+            "type": "continuous",
+            "range": [
+              1,
+              4
+            ]
+          },
+          "rolle": {
+            "type": "categorical"
+          },
+          "position": {
+            "type": "spatial"
+          }
+        }
+      },
+      "Arzt": {
+        "properties": {
+          "layer": {
+            "type": "categorical"
+          },
+          "generation": {
+            "type": "continuous",
+            "range": [
+              1,
+              4
+            ]
+          },
+          "rolle": {
+            "type": "categorical"
+          },
+          "position": {
+            "type": "spatial"
+          }
+        }
+      },
+      "Geistlicher": {
+        "properties": {
+          "layer": {
+            "type": "categorical"
+          },
+          "generation": {
+            "type": "continuous",
+            "range": [
+              1,
+              4
+            ]
+          },
+          "rolle": {
+            "type": "categorical"
+          },
+          "position": {
+            "type": "spatial"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "Ehepartner": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Vater von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Mutter von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Geschwister": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Stiefbruder": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Stiefmutter von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Schwiegermutter von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Schwiegertochter von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Schwager von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Großvater von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Großmutter von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Onkel von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Cousin von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Erzieherin von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Bedienstete von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Hausfreund von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Arzt von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      },
+      "Geistlicher von": {
+        "properties": {
+          "intensity": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "art": {
+            "type": "categorical"
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "johann_buddenbrook",
+        "type": "Familienmitglied",
+        "label": "Johann Buddenbrook (der Ältere)",
+        "layer": "Grosseltern-Generation",
+        "generation": 1,
+        "rolle": "Familienoberhaupt",
+        "position": {
+          "x": -8,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "antoinette_buddenbrook",
+        "type": "Familienmitglied",
+        "label": "Madame Antoinette Buddenbrook, geb. Duchamps",
+        "layer": "Grosseltern-Generation",
+        "generation": 1,
+        "rolle": "Hausherrin",
+        "position": {
+          "x": -4,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "lebrecht_kroeger",
+        "type": "Familienmitglied",
+        "label": "Lebrecht Kröger",
+        "layer": "Grosseltern-Generation",
+        "generation": 1,
+        "rolle": "à la mode-Kavalier",
+        "position": {
+          "x": 4,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "madame_kroeger",
+        "type": "Familienmitglied",
+        "label": "Madame Kröger",
+        "layer": "Grosseltern-Generation",
+        "generation": 1,
+        "rolle": "Ehefrau Lebrecht Kröger",
+        "position": {
+          "x": 8,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "oeverdieck",
+        "type": "Familienmitglied",
+        "label": "Holzgroßhändler Oeverdieck",
+        "layer": "Grosseltern-Generation",
+        "generation": 1,
+        "rolle": "Holzgroßhändler",
+        "position": {
+          "x": 12,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "frau_oeverdieck",
+        "type": "Familienmitglied",
+        "label": "Frau Oeverdieck",
+        "layer": "Grosseltern-Generation",
+        "generation": 1,
+        "rolle": "Ehefrau Oeverdieck",
+        "position": {
+          "x": 16,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "id": "gotthold",
+        "type": "Familienmitglied",
+        "label": "Gotthold Buddenbrook",
+        "layer": "Eltern-Generation",
+        "generation": 2,
+        "rolle": "Sohn erster Ehe / Stiefbruder",
+        "position": {
+          "x": -12,
+          "y": 6,
+          "z": 0
+        }
+      },
+      {
+        "id": "demoiselle_stuewing",
+        "type": "Familienmitglied",
+        "label": "Demoiselle Stüwing",
+        "layer": "Eltern-Generation",
+        "generation": 2,
+        "rolle": "Ehefrau Gotthold",
+        "position": {
+          "x": -16,
+          "y": 6,
+          "z": 0
+        }
+      },
+      {
+        "id": "konsul_jean",
+        "type": "Familienmitglied",
+        "label": "Konsul Jean Buddenbrook",
+        "layer": "Eltern-Generation",
+        "generation": 2,
+        "rolle": "Konsul / Associé",
+        "position": {
+          "x": -8,
+          "y": 6,
+          "z": 0
+        }
+      },
+      {
+        "id": "elisabeth",
+        "type": "Familienmitglied",
+        "label": "Konsulin Elisabeth Buddenbrook, geb. Kröger",
+        "layer": "Eltern-Generation",
+        "generation": 2,
+        "rolle": "Konsulin",
+        "position": {
+          "x": -4,
+          "y": 6,
+          "z": 0
+        }
+      },
+      {
+        "id": "schwester_frankfurt",
+        "type": "Familienmitglied",
+        "label": "Schwester in Frankfurt",
+        "layer": "Eltern-Generation",
+        "generation": 2,
+        "rolle": "verheiratete Schwester",
+        "position": {
+          "x": 0,
+          "y": 6,
+          "z": 0
+        }
+      },
+      {
+        "id": "justus_kroeger",
+        "type": "Familienmitglied",
+        "label": "Konsul Justus Kröger",
+        "layer": "Eltern-Generation",
+        "generation": 2,
+        "rolle": "Konsul Kröger",
+        "position": {
+          "x": 6,
+          "y": 6,
+          "z": 0
+        }
+      },
+      {
+        "id": "konsulin_kroeger",
+        "type": "Familienmitglied",
+        "label": "Konsulin Kröger",
+        "layer": "Eltern-Generation",
+        "generation": 2,
+        "rolle": "Ehefrau Konsul Kröger",
+        "position": {
+          "x": 10,
+          "y": 6,
+          "z": 0
+        }
+      },
+      {
+        "id": "thomas",
+        "type": "Kind",
+        "label": "Thomas Buddenbrook",
+        "layer": "Kinder-Generation",
+        "generation": 3,
+        "alter": 9,
+        "position": {
+          "x": -12,
+          "y": 12,
+          "z": 0
+        }
+      },
+      {
+        "id": "antonie",
+        "type": "Kind",
+        "label": "Antonie (Tony) Buddenbrook",
+        "layer": "Kinder-Generation",
+        "generation": 3,
+        "alter": 8,
+        "position": {
+          "x": -9,
+          "y": 12,
+          "z": 0
+        }
+      },
+      {
+        "id": "christian",
+        "type": "Kind",
+        "label": "Christian Buddenbrook",
+        "layer": "Kinder-Generation",
+        "generation": 3,
+        "alter": 7,
+        "position": {
+          "x": -6,
+          "y": 12,
+          "z": 0
+        }
+      },
+      {
+        "id": "klothilde",
+        "type": "Kind",
+        "label": "Klothilde (Thilda)",
+        "layer": "Kinder-Generation",
+        "generation": 3,
+        "alter": 8,
+        "position": {
+          "x": -3,
+          "y": 12,
+          "z": 0
+        }
+      },
+      {
+        "id": "jakob_kroeger",
+        "type": "Kind",
+        "label": "Jakob Kröger",
+        "layer": "Kinder-Generation",
+        "generation": 3,
+        "alter": 9,
+        "position": {
+          "x": 6,
+          "y": 12,
+          "z": 0
+        }
+      },
+      {
+        "id": "juergen_kroeger",
+        "type": "Kind",
+        "label": "Jürgen Kröger",
+        "layer": "Kinder-Generation",
+        "generation": 3,
+        "alter": 7,
+        "position": {
+          "x": 10,
+          "y": 12,
+          "z": 0
+        }
+      },
+      {
+        "id": "ida_jungmann",
+        "type": "Bedienstete",
+        "label": "Ida Jungmann",
+        "layer": "Nicht-Verwandt",
+        "generation": 4,
+        "rolle": "Mamsell / Erzieherin",
+        "position": {
+          "x": -8,
+          "y": -6,
+          "z": 0
+        }
+      },
+      {
+        "id": "hoffstede",
+        "type": "Hausfreund",
+        "label": "Jean Jacques Hoffstede",
+        "layer": "Nicht-Verwandt",
+        "generation": 4,
+        "rolle": "Dichter der Stadt",
+        "position": {
+          "x": -12,
+          "y": -6,
+          "z": 0
+        }
+      },
+      {
+        "id": "grabow",
+        "type": "Arzt",
+        "label": "Doktor Grabow",
+        "layer": "Nicht-Verwandt",
+        "generation": 4,
+        "rolle": "Hausarzt",
+        "position": {
+          "x": -16,
+          "y": -6,
+          "z": 0
+        }
+      },
+      {
+        "id": "wunderlich",
+        "type": "Geistlicher",
+        "label": "Pastor Wunderlich",
+        "layer": "Nicht-Verwandt",
+        "generation": 4,
+        "rolle": "Pastor",
+        "position": {
+          "x": -4,
+          "y": -6,
+          "z": 0
+        }
+      },
+      {
+        "id": "graetjens",
+        "type": "Hausfreund",
+        "label": "Herr Grätjens",
+        "layer": "Nicht-Verwandt",
+        "generation": 4,
+        "rolle": "Makler / Kunstkenner",
+        "position": {
+          "x": 0,
+          "y": -6,
+          "z": 0
+        }
+      },
+      {
+        "id": "langhals",
+        "type": "Hausfreund",
+        "label": "Senator Doktor Langhals",
+        "layer": "Nicht-Verwandt",
+        "generation": 4,
+        "rolle": "Senator",
+        "position": {
+          "x": 4,
+          "y": -6,
+          "z": 0
+        }
+      },
+      {
+        "id": "frau_langhals",
+        "type": "Hausfreund",
+        "label": "Frau Langhals",
+        "layer": "Nicht-Verwandt",
+        "generation": 4,
+        "rolle": "Senatorin",
+        "position": {
+          "x": 8,
+          "y": -6,
+          "z": 0
+        }
+      },
+      {
+        "id": "koeppen",
+        "type": "Hausfreund",
+        "label": "Weinhändler Köppen",
+        "layer": "Nicht-Verwandt",
+        "generation": 4,
+        "rolle": "Weinhändler",
+        "position": {
+          "x": 12,
+          "y": -6,
+          "z": 0
+        }
+      },
+      {
+        "id": "frau_koeppen",
+        "type": "Hausfreund",
+        "label": "Frau Köppen",
+        "layer": "Nicht-Verwandt",
+        "generation": 4,
+        "rolle": "Ehefrau Köppen",
+        "position": {
+          "x": 16,
+          "y": -6,
+          "z": 0
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel_001",
+        "type": "Ehepartner",
+        "relation": "Ehepartner",
+        "source": "johann_buddenbrook",
+        "target": "antoinette_buddenbrook",
+        "label": "Ehepaar Buddenbrook (der Ältere)",
+        "intensity": 90,
+        "art": "Heirat"
+      },
+      {
+        "id": "rel_002",
+        "type": "Ehepartner",
+        "relation": "Ehepartner",
+        "source": "lebrecht_kroeger",
+        "target": "madame_kroeger",
+        "label": "die alten Krögers",
+        "intensity": 80,
+        "art": "Heirat"
+      },
+      {
+        "id": "rel_003",
+        "type": "Ehepartner",
+        "relation": "Ehepartner",
+        "source": "oeverdieck",
+        "target": "frau_oeverdieck",
+        "label": "altes, zärtliches Ehepaar",
+        "intensity": 92,
+        "art": "Heirat"
+      },
+      {
+        "id": "rel_004",
+        "type": "Ehepartner",
+        "relation": "Ehepartner",
+        "source": "konsul_jean",
+        "target": "elisabeth",
+        "label": "Konsul und Konsulin Buddenbrook",
+        "intensity": 82,
+        "art": "Heirat"
+      },
+      {
+        "id": "rel_005",
+        "type": "Ehepartner",
+        "relation": "Ehepartner",
+        "source": "gotthold",
+        "target": "demoiselle_stuewing",
+        "label": "Gotthold und Demoiselle Stüwing",
+        "intensity": 60,
+        "art": "Heirat"
+      },
+      {
+        "id": "rel_006",
+        "type": "Ehepartner",
+        "relation": "Ehepartner",
+        "source": "justus_kroeger",
+        "target": "konsulin_kroeger",
+        "label": "Konsul und Konsulin Kröger",
+        "intensity": 72,
+        "art": "Heirat"
+      },
+      {
+        "id": "rel_007",
+        "type": "Ehepartner",
+        "relation": "Ehepartner",
+        "source": "langhals",
+        "target": "frau_langhals",
+        "label": "Senator und Senatorin Langhals",
+        "intensity": 70,
+        "art": "Heirat"
+      },
+      {
+        "id": "rel_008",
+        "type": "Ehepartner",
+        "relation": "Ehepartner",
+        "source": "koeppen",
+        "target": "frau_koeppen",
+        "label": "Weinhändler Köppen und Gattin",
+        "intensity": 70,
+        "art": "Heirat"
+      },
+      {
+        "id": "rel_009",
+        "type": "Vater von",
+        "relation": "Vater von",
+        "source": "johann_buddenbrook",
+        "target": "konsul_jean",
+        "label": "Vater des Konsuls",
+        "intensity": 70,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_010",
+        "type": "Vater von",
+        "relation": "Vater von",
+        "source": "johann_buddenbrook",
+        "target": "gotthold",
+        "label": "Vater des ungehorsamen Sohnes",
+        "intensity": 35,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_011",
+        "type": "Mutter von",
+        "relation": "Mutter von",
+        "source": "antoinette_buddenbrook",
+        "target": "konsul_jean",
+        "label": "Mutter des Konsuls",
+        "intensity": 75,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_012",
+        "type": "Vater von",
+        "relation": "Vater von",
+        "source": "konsul_jean",
+        "target": "antonie",
+        "label": "Vater von Tony",
+        "intensity": 80,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_013",
+        "type": "Vater von",
+        "relation": "Vater von",
+        "source": "konsul_jean",
+        "target": "thomas",
+        "label": "Vater von Thomas",
+        "intensity": 75,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_014",
+        "type": "Vater von",
+        "relation": "Vater von",
+        "source": "konsul_jean",
+        "target": "christian",
+        "label": "Vater von Christian",
+        "intensity": 75,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_015",
+        "type": "Mutter von",
+        "relation": "Mutter von",
+        "source": "elisabeth",
+        "target": "antonie",
+        "label": "Mutter von Tony",
+        "intensity": 82,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_016",
+        "type": "Mutter von",
+        "relation": "Mutter von",
+        "source": "elisabeth",
+        "target": "thomas",
+        "label": "Mutter von Thomas",
+        "intensity": 78,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_017",
+        "type": "Mutter von",
+        "relation": "Mutter von",
+        "source": "elisabeth",
+        "target": "christian",
+        "label": "Mutter von Christian",
+        "intensity": 78,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_018",
+        "type": "Vater von",
+        "relation": "Vater von",
+        "source": "lebrecht_kroeger",
+        "target": "elisabeth",
+        "label": "Vater der Konsulin Buddenbrook",
+        "intensity": 75,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_019",
+        "type": "Vater von",
+        "relation": "Vater von",
+        "source": "lebrecht_kroeger",
+        "target": "justus_kroeger",
+        "label": "Vater des Konsuls Kröger",
+        "intensity": 75,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_020",
+        "type": "Mutter von",
+        "relation": "Mutter von",
+        "source": "madame_kroeger",
+        "target": "elisabeth",
+        "label": "Mutter der Konsulin Buddenbrook",
+        "intensity": 75,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_021",
+        "type": "Mutter von",
+        "relation": "Mutter von",
+        "source": "madame_kroeger",
+        "target": "justus_kroeger",
+        "label": "Mutter des Konsuls Kröger",
+        "intensity": 75,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_022",
+        "type": "Vater von",
+        "relation": "Vater von",
+        "source": "justus_kroeger",
+        "target": "jakob_kroeger",
+        "label": "Vater von Jakob",
+        "intensity": 70,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_023",
+        "type": "Vater von",
+        "relation": "Vater von",
+        "source": "justus_kroeger",
+        "target": "juergen_kroeger",
+        "label": "Vater von Jürgen",
+        "intensity": 70,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_024",
+        "type": "Mutter von",
+        "relation": "Mutter von",
+        "source": "konsulin_kroeger",
+        "target": "jakob_kroeger",
+        "label": "Mutter von Jakob",
+        "intensity": 70,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_025",
+        "type": "Mutter von",
+        "relation": "Mutter von",
+        "source": "konsulin_kroeger",
+        "target": "juergen_kroeger",
+        "label": "Mutter von Jürgen",
+        "intensity": 70,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_026",
+        "type": "Stiefbruder",
+        "relation": "Stiefbruder",
+        "source": "konsul_jean",
+        "target": "gotthold",
+        "label": "Ich, der Stiefbruder",
+        "intensity": 30,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_027",
+        "type": "Stiefmutter von",
+        "relation": "Stiefmutter von",
+        "source": "elisabeth",
+        "target": "gotthold",
+        "label": "Gottholds Stiefmutter",
+        "intensity": 35,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_028",
+        "type": "Schwiegermutter von",
+        "relation": "Schwiegermutter von",
+        "source": "antoinette_buddenbrook",
+        "target": "elisabeth",
+        "label": "Schwiegermutter der Konsulin",
+        "intensity": 72,
+        "art": "Heirat"
+      },
+      {
+        "id": "rel_029",
+        "type": "Schwiegertochter von",
+        "relation": "Schwiegertochter von",
+        "source": "elisabeth",
+        "target": "antoinette_buddenbrook",
+        "label": "Schwiegertochter Madame Buddenbrooks",
+        "intensity": 72,
+        "art": "Heirat"
+      },
+      {
+        "id": "rel_030",
+        "type": "Schwiegermutter von",
+        "relation": "Schwiegermutter von",
+        "source": "frau_oeverdieck",
+        "target": "justus_kroeger",
+        "label": "Eltern der Konsulin Kröger",
+        "intensity": 60,
+        "art": "Heirat"
+      },
+      {
+        "id": "rel_031",
+        "type": "Schwager von",
+        "relation": "Schwager von",
+        "source": "justus_kroeger",
+        "target": "konsul_jean",
+        "label": "Schwager des Konsuls Buddenbrook",
+        "intensity": 60,
+        "art": "Heirat"
+      },
+      {
+        "id": "rel_032",
+        "type": "Geschwister",
+        "relation": "Geschwister",
+        "source": "elisabeth",
+        "target": "justus_kroeger",
+        "label": "Geschwister Kröger",
+        "intensity": 70,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_033",
+        "type": "Geschwister",
+        "relation": "Geschwister",
+        "source": "jakob_kroeger",
+        "target": "juergen_kroeger",
+        "label": "Brüder Kröger",
+        "intensity": 65,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_034",
+        "type": "Geschwister",
+        "relation": "Geschwister",
+        "source": "konsul_jean",
+        "target": "schwester_frankfurt",
+        "label": "meine Schwester in Frankfurt",
+        "intensity": 55,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_035",
+        "type": "Großvater von",
+        "relation": "Großvater von",
+        "source": "johann_buddenbrook",
+        "target": "antonie",
+        "label": "Großvater, der Tony verteidigt",
+        "intensity": 88,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_036",
+        "type": "Großvater von",
+        "relation": "Großvater von",
+        "source": "johann_buddenbrook",
+        "target": "thomas",
+        "label": "Großvater von Thomas",
+        "intensity": 70,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_037",
+        "type": "Großvater von",
+        "relation": "Großvater von",
+        "source": "johann_buddenbrook",
+        "target": "christian",
+        "label": "Großvater von Christian",
+        "intensity": 62,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_038",
+        "type": "Großmutter von",
+        "relation": "Großmutter von",
+        "source": "antoinette_buddenbrook",
+        "target": "antonie",
+        "label": "Großmama",
+        "intensity": 72,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_039",
+        "type": "Großmutter von",
+        "relation": "Großmutter von",
+        "source": "antoinette_buddenbrook",
+        "target": "thomas",
+        "label": "Großmutter von Thomas",
+        "intensity": 65,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_040",
+        "type": "Großmutter von",
+        "relation": "Großmutter von",
+        "source": "antoinette_buddenbrook",
+        "target": "christian",
+        "label": "Großmutter von Christian",
+        "intensity": 65,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_041",
+        "type": "Großvater von",
+        "relation": "Großvater von",
+        "source": "lebrecht_kroeger",
+        "target": "antonie",
+        "label": "Großvater Kröger",
+        "intensity": 55,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_042",
+        "type": "Großvater von",
+        "relation": "Großvater von",
+        "source": "lebrecht_kroeger",
+        "target": "thomas",
+        "label": "Großvater Kröger",
+        "intensity": 55,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_043",
+        "type": "Großvater von",
+        "relation": "Großvater von",
+        "source": "lebrecht_kroeger",
+        "target": "christian",
+        "label": "Großvater Kröger",
+        "intensity": 55,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_044",
+        "type": "Großmutter von",
+        "relation": "Großmutter von",
+        "source": "madame_kroeger",
+        "target": "antonie",
+        "label": "Großmutter Kröger",
+        "intensity": 55,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_045",
+        "type": "Großmutter von",
+        "relation": "Großmutter von",
+        "source": "madame_kroeger",
+        "target": "thomas",
+        "label": "Großmutter Kröger",
+        "intensity": 55,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_046",
+        "type": "Großmutter von",
+        "relation": "Großmutter von",
+        "source": "madame_kroeger",
+        "target": "christian",
+        "label": "Großmutter Kröger",
+        "intensity": 55,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_047",
+        "type": "Großvater von",
+        "relation": "Großvater von",
+        "source": "lebrecht_kroeger",
+        "target": "jakob_kroeger",
+        "label": "Großvater Kröger",
+        "intensity": 65,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_048",
+        "type": "Großvater von",
+        "relation": "Großvater von",
+        "source": "lebrecht_kroeger",
+        "target": "juergen_kroeger",
+        "label": "Großvater Kröger",
+        "intensity": 65,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_049",
+        "type": "Großmutter von",
+        "relation": "Großmutter von",
+        "source": "madame_kroeger",
+        "target": "jakob_kroeger",
+        "label": "Großmutter Kröger",
+        "intensity": 65,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_050",
+        "type": "Großmutter von",
+        "relation": "Großmutter von",
+        "source": "madame_kroeger",
+        "target": "juergen_kroeger",
+        "label": "Großmutter Kröger",
+        "intensity": 65,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_051",
+        "type": "Großvater von",
+        "relation": "Großvater von",
+        "source": "oeverdieck",
+        "target": "jakob_kroeger",
+        "label": "Oeverdieck, Großvater mütterlicherseits",
+        "intensity": 65,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_052",
+        "type": "Großvater von",
+        "relation": "Großvater von",
+        "source": "oeverdieck",
+        "target": "juergen_kroeger",
+        "label": "Oeverdieck, Großvater mütterlicherseits",
+        "intensity": 65,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_053",
+        "type": "Großmutter von",
+        "relation": "Großmutter von",
+        "source": "frau_oeverdieck",
+        "target": "jakob_kroeger",
+        "label": "Frau Oeverdieck, Großmutter mütterlicherseits",
+        "intensity": 65,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_054",
+        "type": "Großmutter von",
+        "relation": "Großmutter von",
+        "source": "frau_oeverdieck",
+        "target": "juergen_kroeger",
+        "label": "Frau Oeverdieck, Großmutter mütterlicherseits",
+        "intensity": 65,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_055",
+        "type": "Onkel von",
+        "relation": "Onkel von",
+        "source": "justus_kroeger",
+        "target": "antonie",
+        "label": "Onkel Justus",
+        "intensity": 50,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_056",
+        "type": "Onkel von",
+        "relation": "Onkel von",
+        "source": "justus_kroeger",
+        "target": "thomas",
+        "label": "Onkel Justus",
+        "intensity": 50,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_057",
+        "type": "Onkel von",
+        "relation": "Onkel von",
+        "source": "justus_kroeger",
+        "target": "christian",
+        "label": "Onkel Justus",
+        "intensity": 50,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_058",
+        "type": "Onkel von",
+        "relation": "Onkel von",
+        "source": "konsul_jean",
+        "target": "klothilde",
+        "label": "seine kleine Nichte",
+        "intensity": 55,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_059",
+        "type": "Cousin von",
+        "relation": "Cousin von",
+        "source": "jakob_kroeger",
+        "target": "thomas",
+        "label": "Kröger-Vetter, im Alter von Tom",
+        "intensity": 50,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_060",
+        "type": "Cousin von",
+        "relation": "Cousin von",
+        "source": "juergen_kroeger",
+        "target": "christian",
+        "label": "Kröger-Vetter, im Alter von Christian",
+        "intensity": 50,
+        "art": "Verwandtschaft"
+      },
+      {
+        "id": "rel_061",
+        "type": "Erzieherin von",
+        "relation": "Erzieherin von",
+        "source": "ida_jungmann",
+        "target": "antonie",
+        "label": "Mamsell Jungmann, Erzieherin Tonys",
+        "intensity": 70,
+        "art": "Beruf"
+      },
+      {
+        "id": "rel_062",
+        "type": "Erzieherin von",
+        "relation": "Erzieherin von",
+        "source": "ida_jungmann",
+        "target": "thomas",
+        "label": "Erzieherin der Knaben",
+        "intensity": 60,
+        "art": "Beruf"
+      },
+      {
+        "id": "rel_063",
+        "type": "Erzieherin von",
+        "relation": "Erzieherin von",
+        "source": "ida_jungmann",
+        "target": "christian",
+        "label": "Erzieherin der Knaben",
+        "intensity": 65,
+        "art": "Beruf"
+      },
+      {
+        "id": "rel_064",
+        "type": "Erzieherin von",
+        "relation": "Erzieherin von",
+        "source": "ida_jungmann",
+        "target": "klothilde",
+        "label": "Erzieherin Klothildes",
+        "intensity": 60,
+        "art": "Beruf"
+      },
+      {
+        "id": "rel_065",
+        "type": "Bedienstete von",
+        "relation": "Bedienstete von",
+        "source": "ida_jungmann",
+        "target": "johann_buddenbrook",
+        "label": "Dienstverhältnis im Hause Buddenbrook",
+        "intensity": 35,
+        "art": "Beruf"
+      },
+      {
+        "id": "rel_066",
+        "type": "Hausfreund von",
+        "relation": "Hausfreund von",
+        "source": "hoffstede",
+        "target": "johann_buddenbrook",
+        "label": "alter Freund und Dichter der Stadt",
+        "intensity": 82,
+        "art": "Freundschaft"
+      },
+      {
+        "id": "rel_067",
+        "type": "Hausfreund von",
+        "relation": "Hausfreund von",
+        "source": "graetjens",
+        "target": "johann_buddenbrook",
+        "label": "Makler und Kunstkenner",
+        "intensity": 72,
+        "art": "Freundschaft"
+      },
+      {
+        "id": "rel_068",
+        "type": "Hausfreund von",
+        "relation": "Hausfreund von",
+        "source": "langhals",
+        "target": "konsul_jean",
+        "label": "langjähriger Freund des Hauses",
+        "intensity": 78,
+        "art": "Freundschaft"
+      },
+      {
+        "id": "rel_069",
+        "type": "Hausfreund von",
+        "relation": "Hausfreund von",
+        "source": "koeppen",
+        "target": "johann_buddenbrook",
+        "label": "Gast und Weinhändler",
+        "intensity": 68,
+        "art": "Freundschaft"
+      },
+      {
+        "id": "rel_070",
+        "type": "Arzt von",
+        "relation": "Arzt von",
+        "source": "grabow",
+        "target": "konsul_jean",
+        "label": "Hausarzt der Familie",
+        "intensity": 75,
+        "art": "Beruf"
+      },
+      {
+        "id": "rel_071",
+        "type": "Geistlicher von",
+        "relation": "Geistlicher von",
+        "source": "wunderlich",
+        "target": "johann_buddenbrook",
+        "label": "Pastor und Hausfreund",
+        "intensity": 78,
+        "art": "Beruf"
+      },
+      {
+        "id": "rel_072",
+        "type": "Hausfreund von",
+        "relation": "Hausfreund von",
+        "source": "wunderlich",
+        "target": "johann_buddenbrook",
+        "label": "vertrauter Freund des Hauses",
+        "intensity": 78,
+        "art": "Freundschaft"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "generation",
+          "function": "linear",
+          "range": [
+            0.8,
+            2.2
+          ]
+        },
+        "color": {
+          "source": "layer",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        },
+        "position": {
+          "source": "position",
+          "function": "constant"
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "art",
+          "function": "categorical"
+        },
+        "thickness": {
+          "source": "intensity",
+          "function": "linear",
+          "range": [
+            0.05,
+            0.25
+          ]
+        }
+      }
+    }
+  }
+}

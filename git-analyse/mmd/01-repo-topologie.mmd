@@ -1,0 +1,20 @@
+%% Nodges - Repo-Topologie: Arbeitsumgebungen <-> GitHub
+flowchart LR
+    subgraph WIN["Windows-Host"]
+        W1["C:\\...\\_projects\\Nodges<br/>Windows-Arbeitskopie"]
+        W2["C:\\...\\_projects\\Nodges_Pi<br/>Compose-Projekt (kanonisch)"]
+    end
+    subgraph WSL["WSL-Host"]
+        W3["/home/unixusername/nodges"]
+    end
+    subgraph CTR["Pi-Container"]
+        C1["/workspace (git)"]
+        C2["/workspace/Nodges_Pi<br/>Git-Snapshot, kein .git"]
+        C3["/home/.pi<br/>gitconfig + ssh + credentials"]
+    end
+    G["GitHub<br/>Banixx/Nodges"]
+    W1 -->|git push/pull| G
+    W3 -.->|Bind-Mount, dasselbe Verzeichnis| C1
+    W2 -.->|startet| CTR
+    C1 -->|git push/pull (SSH, aktuell defekt)| G
+    C2 -.->|"Kopie von W2 (manuell)"| W2

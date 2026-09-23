@@ -1,0 +1,8 @@
+%% Nodges - Repo-Vererbung / Historie (identische Commit-Hashes)
+flowchart TD
+    A["ATrunBoing/Nodge11<br/>Feb-Jun 2025<br/>32 Commits, master"] -->|"Vorlaeufer,<br/>eigene Linie"| B["ATrunBoing/Nodge-0.78<br/>30.06.2025<br/>3 Commits: 0.78/0.81"]
+    B -->|gleiche SHAs| C["ATrunBoing/Nodges<br/>22.07.2025<br/>main 34 + acli 36 Commits<br/>bis 0.92.19"]
+    C -->|"gleiche SHAs<br/>weitergefuehrt"| D["Banixx/Nodges<br/>erstellt 19.12.2025<br/>139/147/102 Commits"]
+    C -.->|"acli: 0.92.19 (b9397a7)<br/>nur hier vorhanden"| C
+    note1["Keine GitHub-Fork:<br/>fork=false, forks_count=0"]
+    D --- note1

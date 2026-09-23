@@ -1,0 +1,13 @@
+%% Nodges - Ablauf: wie ein Commit entsteht und ankommt
+sequenceDiagram
+    participant W as Windows-Host
+    participant G as GitHub (Banixx/Nodges)
+    participant C as Pi-Container (/workspace)
+    W->>W: arbeiten, git commit (Banixx / Nodges Bot)
+    W->>G: git push (main / feature/multi-build)
+    G-->>G: Actions "Deploy Vite to Pages"
+    G-->>G: Pages-Deployment (seit 2026-07-19 fehlerhaft)
+    C->>C: arbeiten, git commit (Pi Agent, Branch pi)
+    C--xG: git push (SSH) -- aktuell FEHLER: Host key verification failed
+    W->>G: git pull / PR (main)
+    Note over C,G: Sync nur ueber GitHub; kein direkter Kontakt Host<->Container

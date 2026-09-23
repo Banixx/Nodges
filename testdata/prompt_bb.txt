@@ -1,0 +1,1 @@
+Erstelle ein Netzwerk aller Protagonisten. erfasse in den beziehungen unter den protagonisten die beziehungen auf den ebenen des verwandschaftsgrades, zuneigung, gefühle und die historie.

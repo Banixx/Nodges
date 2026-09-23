@@ -1,0 +1,7 @@
+%% Nodges - Ist-Stand: main vs. pi (divergiert)
+flowchart LR
+    M["main @ 476bf6c<br/>(+1 Commit: chore)"] --> MB["Merge-Basis<br/>1d177e5 (0.103)"]
+    P["pi @ d4391c0<br/>(+9 Commits Pi Agent)"] --> MB
+    MB --> OLD["... v0.102.x ... 0.78"]
+    classDef diverge fill:#ffe0f0,stroke:#c060a0
+    class M,P diverge

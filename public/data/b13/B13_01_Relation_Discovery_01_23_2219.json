@@ -1,0 +1,413 @@
+{
+  "entities": [
+    "Ehepartner",
+    "Vater",
+    "Mutter",
+    "Kind",
+    "Geschwister",
+    "Stiefmutter",
+    "Stiefkind",
+    "Stiefbruder",
+    "Schwiegermutter",
+    "Schwiegertochter",
+    "Enkel",
+    "Großvater",
+    "Großmutter",
+    "Onkel",
+    "Nichte",
+    "Neffe",
+    "Cousin",
+    "Hausfreund",
+    "Familie",
+    "Bedienstete",
+    "Dienstherr",
+    "Erzieherin",
+    "Arzt",
+    "Patient",
+    "Geistlicher",
+    "Gemeinde",
+    "Schwager"
+  ],
+  "relations": [
+    {
+      "id": "EHEPARTNER",
+      "label": "Ehepartner",
+      "description": "Eheliche Verbindung zwischen zwei Personen.",
+      "sourceTypes": [
+        "Ehepartner"
+      ],
+      "targetTypes": [
+        "Ehepartner"
+      ],
+      "directional": false,
+      "examples": [
+        "Madame Antoinette Buddenbrook, geborene Duchamps, kicherte in genau derselben Weise wie ihr Gatte.",
+        "Die Konsulin Elisabeth Buddenbrook, eine geborene Kröger, lachte das Kröger'sche Lachen.",
+        "Holzgroßhändler Oeverdieck nebst Frau, ein altes, zärtliches Ehepaar."
+      ],
+      "confidence": 0.95,
+      "occurrences": 6,
+      "enabled": true
+    },
+    {
+      "id": "VATER",
+      "label": "Vater von",
+      "description": "Leiblicher oder rechtlicher Vater einer Person.",
+      "sourceTypes": [
+        "Vater"
+      ],
+      "targetTypes": [
+        "Kind"
+      ],
+      "directional": true,
+      "examples": [
+        "Sein Sohn weiß übrigens besser mit solchen Daten Bescheid.",
+        "Es ist ein Brief von Gotthold gekommen... Papa ihm beantwortet.",
+        "Justus, sein Sohn."
+      ],
+      "confidence": 0.9,
+      "occurrences": 6,
+      "enabled": true
+    },
+    {
+      "id": "MUTTER",
+      "label": "Mutter von",
+      "description": "Leibliche oder rechtliche Mutter einer Person.",
+      "sourceTypes": [
+        "Mutter"
+      ],
+      "targetTypes": [
+        "Kind"
+      ],
+      "directional": true,
+      "examples": [
+        "Pardon, lieber Herr Pastor … Auf zwei Worte, Mama!",
+        "Die Konsulin ... fragte sie Ida: 'Sind die Knaben aus der Schule gekommen?'"
+      ],
+      "confidence": 0.9,
+      "occurrences": 4,
+      "enabled": true
+    },
+    {
+      "id": "GESCHWISTER",
+      "label": "Geschwister",
+      "description": "Geschwisterliche Beziehung zwischen zwei Personen (Bruder/Schwester).",
+      "sourceTypes": [
+        "Geschwister"
+      ],
+      "targetTypes": [
+        "Geschwister"
+      ],
+      "directional": false,
+      "examples": [
+        "Tom und Christian kommen die Johannisstraße herauf …",
+        "mit den Brüdern den Jerusalemsberg hinunterfuhr"
+      ],
+      "confidence": 0.9,
+      "occurrences": 5,
+      "enabled": true
+    },
+    {
+      "id": "STIEFMUTTER",
+      "label": "Stiefmutter von",
+      "description": "Stiefmutter eines Kindes aus einer früheren Ehe des Vaters.",
+      "sourceTypes": [
+        "Stiefmutter"
+      ],
+      "targetTypes": [
+        "Stiefkind"
+      ],
+      "directional": true,
+      "examples": [
+        "Gotthold glaubt, daß ich, seine Stiefmutter, nur für meine eigenen Kinder sorge"
+      ],
+      "confidence": 0.95,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "STIEFBRUDER",
+      "label": "Stiefbruder",
+      "description": "Stiefbrüderliche Beziehung (Halbbruder) zwischen zwei Personen.",
+      "sourceTypes": [
+        "Stiefbruder"
+      ],
+      "targetTypes": [
+        "Stiefbruder"
+      ],
+      "directional": false,
+      "examples": [
+        "Es soll nicht aussehen, als ob ich, der Stiefbruder, mich bei den Eltern eingenistet hätte"
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "SCHWIEGERMUTTER",
+      "label": "Schwiegermutter von",
+      "description": "Schwiegermutter einer Person (Mutter des Ehepartners).",
+      "sourceTypes": [
+        "Schwiegermutter"
+      ],
+      "targetTypes": [
+        "Schwiegertochter"
+      ],
+      "directional": true,
+      "examples": [
+        "Die Konsulin Buddenbrook, neben ihrer Schwiegermutter"
+      ],
+      "confidence": 0.95,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "SCHWIEGERTOCHTER",
+      "label": "Schwiegertochter von",
+      "description": "Schwiegertochter einer Person (Ehefrau des Sohnes).",
+      "sourceTypes": [
+        "Schwiegertochter"
+      ],
+      "targetTypes": [
+        "Schwiegermutter"
+      ],
+      "directional": true,
+      "examples": [
+        "Ihre Schwiegertochter, die Konsulin Elisabeth Buddenbrook"
+      ],
+      "confidence": 0.95,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "ENKEL",
+      "label": "Enkel von",
+      "description": "Enkelkind einer Person.",
+      "sourceTypes": [
+        "Enkel"
+      ],
+      "targetTypes": [
+        "Großvater",
+        "Großmutter"
+      ],
+      "directional": true,
+      "examples": [
+        "die der Großvater am Fenster auf den Knien hielt",
+        "Ach ja, erzählen Sie, Großmama!"
+      ],
+      "confidence": 0.9,
+      "occurrences": 3,
+      "enabled": true
+    },
+    {
+      "id": "GROSSVATER",
+      "label": "Großvater von",
+      "description": "Großvater einer Person.",
+      "sourceTypes": [
+        "Großvater"
+      ],
+      "targetTypes": [
+        "Enkel"
+      ],
+      "directional": true,
+      "examples": [
+        "die der Großvater am Fenster auf den Knien hielt"
+      ],
+      "confidence": 0.95,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "GROSSMUTTER",
+      "label": "Großmutter von",
+      "description": "Großmutter einer Person.",
+      "sourceTypes": [
+        "Großmutter"
+      ],
+      "targetTypes": [
+        "Enkel"
+      ],
+      "directional": true,
+      "examples": [
+        "Ach ja, erzählen Sie, Großmama!"
+      ],
+      "confidence": 0.95,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "ONKEL",
+      "label": "Onkel von",
+      "description": "Onkel einer Person (Bruder eines Elternteils).",
+      "sourceTypes": [
+        "Onkel"
+      ],
+      "targetTypes": [
+        "Nichte",
+        "Neffe"
+      ],
+      "directional": true,
+      "examples": [
+        "der Konsul aber streichelte seiner kleinen Nichte die Wange",
+        "eines bei Rostock als Gutsinspektor ansässigen Neffen des alten Herrn Buddenbrook"
+      ],
+      "confidence": 0.9,
+      "occurrences": 2,
+      "enabled": true
+    },
+    {
+      "id": "NICHTE",
+      "label": "Nichte von",
+      "description": "Nichte einer Person (Tochter eines Geschwisters).",
+      "sourceTypes": [
+        "Nichte"
+      ],
+      "targetTypes": [
+        "Onkel",
+        "Tante"
+      ],
+      "directional": true,
+      "examples": [
+        "der Konsul aber streichelte seiner kleinen Nichte die Wange"
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "COUSIN",
+      "label": "Cousin von",
+      "description": "Cousin oder Cousine einer Person (Kind eines Onkels oder einer Tante).",
+      "sourceTypes": [
+        "Cousin"
+      ],
+      "targetTypes": [
+        "Cousin"
+      ],
+      "directional": false,
+      "examples": [
+        "Konsul Krögers mit ihren Söhnen Jakob und Jürgen, die im Alter von Tom und Christian standen."
+      ],
+      "confidence": 0.7,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "HAUSFREUND",
+      "label": "Hausfreund von",
+      "description": "Freund des Hauses, der regelmäßig am Familienleben teilnimmt.",
+      "sourceTypes": [
+        "Hausfreund"
+      ],
+      "targetTypes": [
+        "Familie"
+      ],
+      "directional": true,
+      "examples": [
+        "ein paar gute Hausfreunde auf ein ganz einfaches Mittagbrot gebeten",
+        "Auch Senator Doktor Langhals nebst Frau kamen an, langjährige Freunde des Hauses"
+      ],
+      "confidence": 0.9,
+      "occurrences": 6,
+      "enabled": true
+    },
+    {
+      "id": "BEDIENTESTE",
+      "label": "Bedienstete von",
+      "description": "Person im Dienst einer Familie oder eines Haushalts.",
+      "sourceTypes": [
+        "Bedienstete"
+      ],
+      "targetTypes": [
+        "Dienstherr"
+      ],
+      "directional": true,
+      "examples": [
+        "Ida Jungmann, die kürzlich für die Kleinen engagierte Mamsell aus Marienwerder",
+        "Trina hat fast nichts zu tun brauchen"
+      ],
+      "confidence": 0.9,
+      "occurrences": 3,
+      "enabled": true
+    },
+    {
+      "id": "ERZIEHERIN",
+      "label": "Erzieherin von",
+      "description": "Erzieherin, die für die Betreuung und Erziehung von Kindern angestellt ist.",
+      "sourceTypes": [
+        "Erzieherin"
+      ],
+      "targetTypes": [
+        "Kind"
+      ],
+      "directional": true,
+      "examples": [
+        "Ida Jungmann, die kürzlich für die Kleinen engagierte Mamsell aus Marienwerder"
+      ],
+      "confidence": 0.95,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "ARZT",
+      "label": "Arzt von",
+      "description": "Hausarzt, der die Familie medizinisch betreut.",
+      "sourceTypes": [
+        "Arzt"
+      ],
+      "targetTypes": [
+        "Patient"
+      ],
+      "directional": true,
+      "examples": [
+        "Doktor Grabow, der Hausarzt"
+      ],
+      "confidence": 0.95,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "GEISTLICHER",
+      "label": "Geistlicher von",
+      "description": "Geistlicher, der die Familie seelsorgerisch begleitet.",
+      "sourceTypes": [
+        "Geistlicher"
+      ],
+      "targetTypes": [
+        "Gemeinde"
+      ],
+      "directional": true,
+      "examples": [
+        "Pastor Wunderlich langte an, ein untersetzter alter Herr"
+      ],
+      "confidence": 0.9,
+      "occurrences": 1,
+      "enabled": true
+    },
+    {
+      "id": "SCHWAGER",
+      "label": "Schwager von",
+      "description": "Schwager einer Person (Ehemann der Schwester oder Bruder des Ehepartners).",
+      "sourceTypes": [
+        "Schwager"
+      ],
+      "targetTypes": [
+        "Schwager"
+      ],
+      "directional": false,
+      "examples": [
+        "Ihr Mann bekommt schon jetzt, bei Papas Lebzeiten, eine Abstandssumme"
+      ],
+      "confidence": 0.8,
+      "occurrences": 1,
+      "enabled": true
+    }
+  ],
+  "questions": [
+    "Ist Elisabeth Buddenbrook die leibliche Tochter von Lebrecht Kröger oder eine andere Verwandte aus der Kröger-Familie?",
+    "Ist die Schwester in Frankfurt die leibliche Tochter von Johann Buddenbrook und Antoinette?",
+    "Soll die Beziehung zwischen Jean und Gotthold als 'Stiefbruder' oder präziser als 'Halbbruder' bezeichnet werden?",
+    "Sind Jakob und Jürgen Kröger leibliche Söhne von Justus Kröger und somit Cousins von Tony, Tom und Christian?",
+    "Gibt es weitere Beziehungen zwischen den Protagonisten, die aus dem Text ableitbar, aber nicht explizit genannt sind (z.B. Schwägerschaft zwischen Elisabeth und Gotthold)?"
+  ]
+}

@@ -1,0 +1,19 @@
+%% Nodges - GitHub-Konten und Commit-Identitaeten
+flowchart LR
+    subgraph KONTEN["GitHub-Konten"]
+        BX["Banixx (90242722)<br/>2021-09-07"]
+        AT["ATrunBoing (213479335)<br/>2025-05-26"]
+        RB["rhoggs-bot-test-account (22551806)<br/>2016-09-30"]
+    end
+    subgraph AUTOREN["Commit-Identitaeten"]
+        A1["Banixx banidoesch@gmail.com (35)"]
+        A2["bani 90242722+Banixx@... (11)"]
+        A3["Arbreska Trun arbereskatrun@proton.me (34)"]
+        A4["Nodges Bot bot@example.com (59)"]
+        A5["Pi Agent pi-agent@localhost (9, nur pi)"]
+    end
+    A1 --> BX
+    A2 --> BX
+    A3 --> AT
+    A4 --> RB
+    A5 -->|"lokal im Container"| CTR["kein GitHub-Konto"]
