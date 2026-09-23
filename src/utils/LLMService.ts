@@ -539,8 +539,24 @@ export class LLMService {
             if (error.name === 'AbortError' || (error.message && error.message.toLowerCase().includes('aborted'))) {
                 throw new Error('Die Anfrage an die KI hat zu lange gedauert und wurde abgebrochen (Timeout). Bitte versuche ein anderes Modell oder eine kürzere Anfrage.');
             }
-            // Ansonsten den Fehler weiterwerfen
-            throw error;
+            // Diagnose: Adresse, Anbieter und Payload-Groesse mitprotokollieren,
+            // damit der ErrorLog zeigt, welche Verbindung genau scheitert.
+            const payloadSize = (systemPrompt?.length || 0) + (userPrompt?.length || 0);
+            console.error(
+                `[LLMService] Fetch fehlgeschlagen -> Provider=${provider}, URL=${apiUrl}, ` +
+                `Model=${model}, Modus=${usingOpenRouterProxy ? 'Proxy' : 'direkt'}, ` +
+                `Payload=${payloadSize} Zeichen (~${(payloadSize / 1024).toFixed(0)} KB)`,
+                error
+            );
+            let finalMessage = `Netzwerkfehler (${provider} -> ${apiUrl}, Modus: ${usingOpenRouterProxy ? 'Proxy' : 'direkt'}): ${error.message || error}`;
+
+            // Gezielter Hinweis: Ohne eigenen API-Key laeuft die Anfrage ueber den
+            // Deno-Free-Proxy, der deutlich kleinere Datenmengen (Payload) verkraftet.
+            const payloadKB = payloadSize / 1024;
+            if (usingOpenRouterProxy && payloadKB > 100) {
+                finalMessage += `\n\nHINWEIS: Ohne eigenen API-Key gelten die Grenzen des Proxy-Servers (Proxy = zwischengeschalteter Vermittlungs-Server). Die Anfrage war ca. ${payloadKB.toFixed(0)} KB gross. Loesung: Trage einen eigenen OpenRouter-API-Key (Zugangscode) in die Datei .env.local ein (VITE_OPENROUTER_API_KEY=...) ODER verwende einen kuerzeren Text.`;
+            }
+            throw new Error(finalMessage);
         }
 
         if (!responseText) {

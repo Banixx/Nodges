@@ -63,3 +63,9 @@ Ndrive/
 # Grosse Dateien und Rohdaten
 /Switzerland.jpg
 Griech_V3.csv
+
+# Windows/WSL Download-Marker (NTFS Zone.Identifier) – kein Repo-Inhalt
+*:Zone.Identifier
+
+# Fehlerprotokolle (ErrorLogs) aus lokalen Tests – gross, nicht versionieren
+testdata/Nodges_ErrorLog_*.json
