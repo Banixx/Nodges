@@ -1,30 +1,38 @@
 # Setup Nodges — Multi-Harness Arbeitsumgebung
 
-**Stand:** 2026-09-24 · **Verantwortlich:** piCon (Container) + winAnt (Antigravity Windows) + conT (Antigravity W:)
+**Stand:** 2026-09-24 · **Verantwortlich:** piCon (Container) + conT (Antigravity auf `W:`)
+**Abgekoppelt:** winAnt (war Antigravity auf Windows NTFS, ersetzt durch conT)
 **Dies ist die technische Kurzanleitung.** Der ausfuehrliche Bericht und Dialog steht in **`bericht.md`**.
 
 ---
 
-## 1. Architektur: Multi-Harness Arbeitsumgebung (winAnt, piCon, conT)
+## 1. Architektur (verbindlich: Ein Arbeitsort, zwei Zugriffe)
 
-**Befund Praxistest & Erweiterung (2026-09-24):** Der direkte Zugriff der Antigravity-IDE auf den UNC-Netzwerkpfad (`\\wsl.localhost\...`) stuerzte frueher ab. Daher existieren nun zwei komplementaere Windows-Arbeitsweisen plus Container:
+**Beschluss des Benutzers 2026-09-24: `winAnt` wird abgekoppelt und ist durch `conT` ersetzt.**
+
+Es gibt **nur noch einen physischen Arbeitsort**. piCon und conT teilen sich **dieselben Dateien** — ein Git-Sync zwischen ihnen ist **nicht** noetig.
 
 ```
-[winAnt: Antigravity Windows 11]           [piCon: Pi im Container]           [conT: Antigravity Windows 11]
-C:\Users\ich\Desktop\code\_projects\Nodges      /workspace (WSL2 ext4)          W:\ (Netzlaufwerk auf WSL2)
-                 │                                        │                                   │
-                 ▼                                        │                                   │ (Direktzugriff
-             (via sgc / git push)                         │                                   │  auf WSL2-ext4)
-                 │                                        ▼                                   ▼
-                 └──────────────► GitHub ◄────────────────┴───────────────────────────────────┘
-                              (origin/main)
+        /home/unixusername/nodges   (WSL2, ext4)  <-- EIN Arbeitsort
+                    |
+        +-----------+-----------+
+        |                       |
+   /workspace              W:\  (Netzlaufwerk)
+   [piCon, Container]      [conT, Antigravity Windows 11]
+        |                       |
+        +-----------+-----------+
+                    |
+              GitHub zum Backup
+
+winAnt (C:\...\Nodges, NTFS) = ABGEKOPPELT - nicht mehr verwenden
 ```
 
 **Arbeitsaufteilung:**
-- **winAnt (Antigravity Windows):** Entwickelt auf Windows `C:\Users\ich\Desktop\code\_projects\Nodges` (Frontend, Three.js, Dokumentation; Sync via Git).
-- **piCon (Pi-Agent):** Entwickelt im Container `/workspace` (Vite 5173, LightRAG 8000, Linux-Skripte; physisch auf WSL2 ext4).
-- **conT (Antigravity W:):** Entwickelt auf Windows ueber Netzlaufwerk `W:\` (`\\wsl.localhost\Ubuntu\home\unixusername\nodges`). Greift direkt auf dieselben Dateien wie piCon zu (kein lokaler Git-Sync zwischen conT und piCon noetig). Das rote "X" im Windows Explorer ist rein kosmetisch (Lazy Reconnect / Plan9).
-- **Synchronisation:** Erfolgt diszipliniert und automatisiert ueber Git auf Branch `main`. Da `doc/` freigegeben ist und LF-Zeilenenden repo-weit gelten, dauert der Sync nur 2 bis 3 Sekunden.
+- **piCon:** Container-Dienste, Vite (5173), LightRAG (8000), Linux-Skripte, Backup & Git-Pflege.
+- **conT:** Architektur, Frontend, Three.js, Dokumentation — **auf denselben Dateien** wie piCon.
+- **GitHub:** Sicherung und Historie, nicht primaere Bruecke.
+
+**Warum `W:\` und nicht der UNC-Pfad?** Antigravity (Electron/VS-Code) startet einen **File-Watcher** (Datei-Ueberwachungsdienst), der unter Windows die API `ReadDirectoryChangesW` nutzt. Das WSL-Dateisystem laeuft ueber das **9P-Protokoll**, das diese Benachrichtigungen nicht standardkonform unterstuetzt → Absturz beim **direkten** UNC-Zugriff. Ein **zugeordnetes Netzlaufwerk** umgeht das. Details: `bericht.md` Teil E und F.
 
 **Alle Dienste laufen weiterhin im Linux-Container:**
 
@@ -46,7 +54,8 @@ C:\Users\ich\Desktop\code\_projects\Nodges      /workspace (WSL2 ext4)          
 | Branch `pi` | **GELOSCHT** — vollstaendig in `main` aufgegangen. Alle Dokus/Rituale muessen `main` statt `pi` sagen! |
 | Erstes Tag | `v0.106.0` auf `51af1f4` |
 | Zugang piCon | SSH-Key `id_ed25519` (Kommentar `nodges-container`) |
-| Zugang winAnt | HTTPS ueber Windows Credential Manager |
+| Zugang conT | direkt auf dieselben Dateien (`W:`), Git ueber Windows Credential Manager |
+| ~~Zugang winAnt~~ | **abgekoppelt** — nicht mehr verwenden |
 
 **Verifiziert:** `fetch`, `push` und `push --dry-run` laufen fehlerfrei (Lesen und Schreiben).
 
@@ -90,7 +99,7 @@ plus `binary`-Ausnahmen fuer PNG/JPG/PDF/ZIP/WOFF und eine **CRLF-Ausnahme fuer 
 
 | Datei | Zweck |
 |---|---|
-| **`bericht.md`** (Root) | Gemeinsamer Bericht und Dialog piCon + winAnt |
+| **`bericht.md`** (Root) | Gemeinsamer Bericht und Dialog piCon + conT (Historie mit winAnt in Teil A–E dokumentiert) |
 | **`setup.md`** (Root) | Diese technische Anleitung |
 | `doc/` | Arbeitsdokumente von winAnt (mit Versionspraeefix, z. B. `0_106_0_...md`) |
 | `docs/` | Weitere Projektdoku |
@@ -140,7 +149,7 @@ winAnt hat zwar 24 MCP-Werkzeuge verfuegbar, nutzt sie aber fuer Git-Sync **nich
 
 1. Dieses `setup.md` lesen, dann `bericht.md` (Detailfragen).
 2. `git fetch` und `git status` pruefen — **nie** auf veraltetem Stand arbeiten.
-3. Immer ueber `\\wsl.localhost\Ubuntu\home\unixusername\nodges` arbeiten.
+3. conT arbeitet ueber `W:\`; piCon ueber `/workspace`. Beide zeigen auf **dieselben** Dateien.
 4. `git` nur in Linux ausfuehren.
 5. Keine Secrets (`.env`, Schluessel) ins Repo — sie bleiben lokal und ignoriert.
 6. Vor groesseren Schritten den Benutzer fragen; keine stillen Veraenderungen an fremder Arbeit.
@@ -155,7 +164,7 @@ curl -s http://localhost:5173/lightrag-api/health
 
 ## 8. Status der offenen Punkte
 
-- **Windows-Workspace `C:\...\Nodges`:** Bleibt als aktiver, stabiler Antigravity-Workspace dauerhaft bestehen (Praxistest am 2026-09-24 bestaetigt).
+- **winAnt / Windows-Workspace `C:\...\Nodges`:** **ABGEKOPPELT** (Beschluss 2026-09-24). Ersetzt durch **conT** auf `W:\`. Kann nach Sicherung archiviert werden.
 - **Branch-Strategie:** **ALLE Harnesses arbeiten auf `main`.** Branch `pi` ist geloescht (Beschluss des Benutzers, `bericht.md` Teil D). Es gibt keinen Merge mehr nach `main` — `main` IST der Arbeitsbranch.
 - **Veraltetes in fremden Dokus:** winAnts Dokumente (`0_106_0_entscheidung_dual_harness...`, `0_106_0_analyse_unc_absturz...`) nennen noch `origin/pi`. Inhaltlich relevant, aber die Branch-Angabe ist ueberholt.
 - **Absturz-Ursache geklaert:** conT nutzt **`W:\`** als Netzlaufwerk (nicht den rohen UNC-Pfad) und laeuft stabil. winAnts Absturz betraf den direkten UNC-Zugriff der IDE.
@@ -167,4 +176,4 @@ curl -s http://localhost:5173/lightrag-api/health
 ---
 
 *Verfasst von **piCon** (Pi-Coding-Agent im Container `pi-harness`, WSL2 auf Windows 11), 2026-09-24.
-Ergaenzungen durch **winAnt** (Antigravity) ausdruecklich erwuenscht.*
+Ergaenzungen durch **conT** (Antigravity auf `W:`) ausdruecklich erwuenscht.*

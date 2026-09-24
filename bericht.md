@@ -892,3 +892,50 @@ Unabhaengig von der Modellfrage sind diese Errungenschaften gesichert:
 - CRLF-Ausnahme fuer `.cmd`/`.bat`/`.ps1` → Container-Startskript bleibt ausfuehrbar.
 - 258 Ballast-Dateien entfernt.
 
+
+---
+
+## Teil F — winAnt wird abgekoppelt: conT ersetzt ihn (Beschluss des Benutzers, 2026-09-24)
+
+### F.1 Die Entscheidung
+
+Der Benutzer hat entschieden:
+
+> **„zu 1. und 2.: winant wird abgekoppelt. er ist durch cont ersetzt."**
+
+Damit ist der **Dual-Harness-Vorschlag von winAnt (Teil E.2) gegenstandslos**. Es gilt **ausschliesslich das conT-Modell**:
+
+| Harness | Arbeitsbereich | Verhaeltnis zu den Dateien |
+|---|---|---|
+| **piCon** (Pi im Container) | `/workspace` — gemountet aus `/home/unixusername/nodges` | **direkt** auf WSL2 ext4 |
+| **conT** (Antigravity Windows 11) | `W:\` — Netzlaufwerk auf **dasselbe** Verzeichnis | **direkt**, dieselben physischen Dateien |
+| **winAnt** (alt) | ~~`C:\Users\ich\Desktop\code\_projects\Nodges`~~ | **ABGEKOPPELT — nicht mehr in Benutzung** |
+
+**Konsequenz:** Es gibt ab jetzt **nur noch einen Arbeitsort**. piCon und conT teilen sich physisch dieselben Dateien. Ein **Git-Sync zwischen ihnen ist nicht mehr noetig** — Aenderungen des einen sind fuer den anderen sofort sichtbar.
+
+GitHub bleibt **Sicherung und Austausch** (Backup, Historie, Tags), ist aber nicht mehr die primaere Bruecke.
+
+### F.2 Was das fuer Variante B bedeutet
+
+Die Variante B (Linux als alleinige Wahrheitsquelle) ist damit **vollstaendig erreicht** — auf einem anderen Weg als urspruenglich gedacht:
+
+- Nicht durch Oeffnen des UNC-Pfads in der IDE (das stuerzte ab, siehe E.1).
+- Sondern ueber ein **zugeordnetes Netzlaufwerk `W:\`**, das denselben WSL2-Ordner anbindet.
+
+Damit ist der Konflikt aus E.3 (3) geloest: **Kein Dual-Harness-Modell, sondern ein Arbeitsort mit zwei Zugriffswegen.**
+
+### F.3 Aufgeraeumt
+
+| Was | Status |
+|---|---|
+| Branch `pi` (remote) | bereits geloescht — nur noch `main` |
+| Branch `pi` (lokal) | Bestand noch, da kein lokaler Verweis mehr benoetigt wird → zur Aufraeumung vorgemerkt |
+| Verweise auf `origin/pi` in fremden Dokus | Als **veraltet** markiert in `setup.md` Abschnitt 8 |
+| Windows-Workspace `C:\...\Nodges` | **nicht mehr verwendet** — kann nach Sicherung archiviert werden |
+
+### F.4 Die Arbeitsregel ab jetzt
+
+> **piCon und conT arbeiten direkt auf denselben Dateien. Vor Arbeitsbeginn kurz pruefen (`git status`), ob der andere noch etwas offen hat. Vor groesseren Schritten den Benutzer fragen. Keine stillen Ueberschreibungen fremder Arbeit.**
+
+Da beide auf denselben Dateien arbeiten, ist ein **`git commit`** weiterhin sinnvoll (Sicherungspunkt), ein **`git push`** aber nur noch fuer GitHub als Backup — nicht mehr als Synchronisation.
+
