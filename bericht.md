@@ -677,3 +677,55 @@ piCon wird gebeten, folgende Punkte bei der naechsten Session zu beantworten:
 
 ---
 *Erstellt in enger Abstimmung zwischen winAnt und piCon fuer den Lead Developer Banixx.*
+
+
+---
+
+## Teil C — Stand von winAnt nach der Konsolidierung (Commit `5c0a2ac`)
+
+*Zusammengefasst aus winAnts drei Berichten: `0_106_0_orientierung_neuer_stand_bericht_und_setup.md`, `0_106_0_status_abgleich_bericht_und_setup.md`, `0_106_0_anleitung_wechsel_antigravity_auf_wsl.md`.*
+
+### C.1 Systemstatus — alle drei Orte synchron
+
+| Komponente | Windows Host | WSL2 Linux | GitHub (`origin/pi`) |
+|---|---|---|---|
+| **Branch** | `pi` | `pi` | `pi` |
+| **Commit** | `f1ef5bf` | `f1ef5bf` | `f1ef5bf` |
+
+Beide Arbeitskopien und GitHub sind auf `f1ef5bf` identisch.
+
+### C.2 Massnahmen von winAnt (verifiziert durch piCon)
+
+| Massnahme | Status | Verifikation durch piCon |
+|---|---|---|
+| Ballastbereinigung auf Windows nachvollzogen | erledigt | Windows-Arbeitsbaum sauber |
+| `core.fileMode = false` im WSL-Repo | **bestaetigt** | `git config core.fileMode` → `false`. Verhindert Schein-Aenderungen durch abweichende Dateiberechtigungen zwischen Windows und Linux. |
+| `safe.directory` fuer UNC-Pfad | gesetzt | behebt Git-Berechtigungswarnungen unter Windows |
+| LF-Standard repo-weit | etabliert | Root-`.gitattributes` vorhanden |
+
+### C.3 KORREKTUR durch piCon — fehlende CRLF-Ausnahme fuer Windows-Skripte
+
+winAnt beschrieb die LF-Regel in seinem Statusbericht als *„automatisches LF fuer Textdateien und CRLF fuer Windows-Skripte"*. **Pruefung durch piCon ergab: diese Ausnahme fehlte tatsaechlich.**
+
+Befund vor der Korrektur:
+- Beide `start_pi_container.cmd` (Root und `Nodges_Pi/`) trugen **LF**.
+- CMD-Dateien benoetigen **CRLF**. Windows CMD fuehrt Skripte mit reinem LF unzuverlaessig aus — und genau diese Datei startet den Container.
+- Der Container lief nur deshalb noch, weil das Skript vor der Umstellung ausgefuehrt worden war.
+
+**Behoben mit Commit `5c0a2ac`:**
+- In der **Root-`.gitattributes`** und in **`Nodges_Pi/.gitattributes`** ergaenzt:
+  ```
+  *.cmd text eol=crlf
+  *.bat text eol=crlf
+  *.ps1 text eol=crlf
+  ```
+- Beide Skripte wurden neu ausgecheckt und tragen jetzt **CRLF**.
+
+> **Lehre fuer beide Harnesses:** Eine untergeordnete `.gitattributes` (hier `Nodges_Pi/`) **ueberschreibt** die Root-Datei. Ausnahmen muessen in **beiden** Dateien stehen.
+
+### C.4 Offene Rueckfragen von winAnt
+
+1. **Branch-Strategie:** Soll `pi` dauerhaft gemeinsamer Entwicklungsbranch sein und `main` nur verifizierte Versionstags bekommen?
+2. **Physischer Wechsel:** Soll winAnt kuenftig direkt auf `\\wsl.localhost\Ubuntu\home\unixusername\nodges` lesen und schreiben und der Windows-Ordner unberuehrt bleiben? (**Antwort piCon: Ja — das ist der Kern von Variante B.**)
+3. **LightRAG-Backup:** Soll fuer `lightrag-backend/rag_storage/` ein lokales Backup-Skript entstehen, da die Daten nicht in Git liegen?
+

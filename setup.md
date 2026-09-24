@@ -64,7 +64,9 @@ Es gibt eine **Root-`.gitattributes`**:
 * text=auto eol=lf
 ```
 
-plus `binary`-Ausnahmen fuer PNG/JPG/PDF/ZIP/WOFF. Damit gilt reposweit **LF**.
+plus `binary`-Ausnahmen fuer PNG/JPG/PDF/ZIP/WOFF und eine **CRLF-Ausnahme fuer Windows-Skripte** (`*.cmd`, `*.bat`, `*.ps1`). Damit gilt reposweit **LF** — ausser fuer CMD-Dateien, die zwingend CRLF brauchen, weil sie den Container starten.
+
+> **Achtung:** Eine untergeordnete `.gitattributes` (z. B. `Nodges_Pi/.gitattributes`) **ueberschreibt** die Root-Datei. Ausnahmen muessen in **beiden** stehen.
 
 **Warum das noetig war:** Beim Freigeben von `doc/` meldete Git bei Dutzenden Dateien `CRLF will be replaced by LF`. Die Windows-Seite hatte CRLF geschrieben. Ohne diese Regel meldet Git Dateien als geaendert, deren Inhalt identisch ist.
 
@@ -82,6 +84,17 @@ plus `binary`-Ausnahmen fuer PNG/JPG/PDF/ZIP/WOFF. Damit gilt reposweit **LF**.
 **Wichtig:** `doc/` ist seit 2026-09-24 **nicht mehr** in der `.gitignore` — es ist versioniert, damit beide Harnesses die Berichte sehen. Beim Freigeben wurde ein Secrets-Scan durchgefuehrt: sauber (nur Platzhalter, keine echten Schluessel).
 
 **Ballast ist bereits bereinigt** (Commit `a844ac5`): `doc/archiv_history/` (252 Dateien), ein Windows-Duplikat („Kopie von …") und fuenf experimentelle `tuned1-5.json` wurden entfernt. `doc/` hat jetzt 333 statt 591 Dateien. Geloeschtes bleibt in der Git-Historie abrufbar.
+
+---
+
+## 4b. Windows-spezifische Git-Einstellungen (von winAnt gesetzt, verifiziert)
+
+| Einstellung | Wert | Zweck |
+|---|---|---|
+| `safe.directory` | `\\wsl.localhost\Ubuntu\home\unixusername\nodges` | Unterdrueckt Git-Berechtigungswarnungen beim Zugriff ueber den UNC-Pfad |
+| `core.fileMode` | `false` (im WSL-Repo) | Verhindert Schein-Aenderungen durch abweichende Dateiberechtigungen zwischen Windows und Linux |
+
+Falls Windows-Git den WSL-Pfad meldet als *„dubious ownership“*, ist `safe.directory` nicht gesetzt.
 
 ---
 
