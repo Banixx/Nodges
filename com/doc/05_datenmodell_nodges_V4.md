@@ -119,4 +119,4 @@ Das Schema wird per `npm run export:schema` aus den Zod-Definitionen erzeugt und
 
 ---
 
-*Weiter: `/workspace/doc/06_state_management_nodges_V4.md`.*
+*Weiter: `/workspace/com/doc/06_state_management_nodges_V4.md`.*

@@ -66,4 +66,4 @@ Führt `tsc` (Typprüfung) und `vite build` aus. Ausgabe: `dist/` (mit `sourcema
 
 ---
 
-*Weiter: `/workspace/doc/13_tests_qualitaet_nodges_V4.md`.*
+*Weiter: `/workspace/com/doc/13_tests_qualitaet_nodges_V4.md`.*

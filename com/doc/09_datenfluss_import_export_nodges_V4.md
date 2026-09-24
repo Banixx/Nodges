@@ -77,4 +77,4 @@ Für POST-Endpunkte wird `bodyParser.json({limit:'50mb'})` eingesetzt. Diese API
 
 ---
 
-*Weiter: `/workspace/doc/10_ui_komponenten_nodges_V4.md`.*
+*Weiter: `/workspace/com/doc/10_ui_komponenten_nodges_V4.md`.*

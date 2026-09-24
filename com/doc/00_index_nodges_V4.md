@@ -72,4 +72,4 @@ Die Dokumentation ist in einzelne, in sich abgeschlossene Markdown-Dateien aufge
 
 - Basis: Stand des Repositories auf Branch `pi`, Commit `5b355b9` (0.103.1).
 - Erstellt: nach manueller Code-Inspektion im Container `/workspace`.
-- Die V4-Dokumentationsreihe ersetzt/erweitert die früheren Berichte unter `/workspace/doc/` (Dateien mit Präfix `0_103_0_…`).
+- Die V4-Dokumentationsreihe ersetzt/erweitert die früheren Berichte unter `/workspace/com/doc/` (Dateien mit Präfix `0_103_0_…`).

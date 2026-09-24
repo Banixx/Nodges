@@ -97,4 +97,4 @@ HMR (`import.meta.hot.accept`) zerstört die alte Instanz über `destroy()` und 
 
 ---
 
-*Weiter: `/workspace/doc/05_datenmodell_nodges_V4.md`.*
+*Weiter: `/workspace/com/doc/05_datenmodell_nodges_V4.md`.*

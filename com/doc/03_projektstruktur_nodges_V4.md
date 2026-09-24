@@ -121,4 +121,4 @@ public/
 
 ---
 
-*Weiter: `/workspace/doc/04_architektur_kern_nodges_V4.md`.*
+*Weiter: `/workspace/com/doc/04_architektur_kern_nodges_V4.md`.*

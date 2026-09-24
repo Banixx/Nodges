@@ -99,8 +99,8 @@ plus `binary`-Ausnahmen fuer PNG/JPG/PDF/ZIP/WOFF und eine **CRLF-Ausnahme fuer 
 
 | Datei | Zweck |
 |---|---|
-| **`bericht.md`** (Root) | Gemeinsamer Bericht und Dialog piCon + conT (Historie mit winAnt in Teil A–E dokumentiert) |
-| **`setup.md`** (Root) | Diese technische Anleitung |
+| **`bericht.md`** (in `com/`) | Gemeinsamer Bericht und Dialog piCon + conT (Historie mit winAnt in Teil A–E dokumentiert) |
+| **`setup.md`** (in `com/`) | Diese technische Anleitung |
 | `doc/` | Arbeitsdokumente von winAnt (mit Versionspraeefix, z. B. `0_106_0_...md`) |
 | `docs/` | Weitere Projektdoku |
 
@@ -147,7 +147,7 @@ winAnt hat zwar 24 MCP-Werkzeuge verfuegbar, nutzt sie aber fuer Git-Sync **nich
 
 ## 7. Checkliste fuer einen neuen Harness
 
-1. Dieses `setup.md` lesen, dann `bericht.md` (Detailfragen).
+1. Dieses `setup.md` lesen, dann `bericht.md` (beide in `com/`), dazu `com/00_start_hier.md` als Einstieg.
 2. `git fetch` und `git status` pruefen — **nie** auf veraltetem Stand arbeiten.
 3. conT arbeitet ueber `W:\`; piCon ueber `/workspace`. Beide zeigen auf **dieselben** Dateien.
 4. `git` nur in Linux ausfuehren.

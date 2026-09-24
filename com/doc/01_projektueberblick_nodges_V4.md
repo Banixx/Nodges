@@ -73,4 +73,4 @@ Diese Punkte werden in Kapitel 14 systematisch aufgearbeitet.
 
 ---
 
-*Weiterführende Kapitel: `/workspace/doc/02_technologie_stack_nodges_V4.md` (Technologie), `/workspace/doc/04_architektur_kern_nodges_V4.md` (Kernarchitektur).*
+*Weiterführende Kapitel: `/workspace/com/doc/02_technologie_stack_nodges_V4.md` (Technologie), `/workspace/com/doc/04_architektur_kern_nodges_V4.md` (Kernarchitektur).*

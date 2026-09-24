@@ -69,4 +69,4 @@
 
 ---
 
-*Weiter: `/workspace/doc/11_llm_und_backend_nodges_V4.md`.*
+*Weiter: `/workspace/com/doc/11_llm_und_backend_nodges_V4.md`.*

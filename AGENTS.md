@@ -1,83 +1,160 @@
-# Projektkontext und Arbeitsregeln
+# Projektkontext und Arbeitsregeln (Multi-Harness)
 
-## Projekt
-- **Projektname:** nodges
-- **Technologie:** TypeScript / Vite / Three.js
-- **Frontend:** 3D-Netzwerk-Visualisierung
-- **Backend:** LightRAG-API (Python/FastAPI, `lightrag-backend/main.py`)
-- **Repository:** Host-Pfad `/home/unixusername/nodges` (WSL), gemountet als `/workspace` im Container.
+Dieses Dokument dient als zentrale, verbindliche Referenz fuer alle beteiligten KI-Agenten und Harnesses am Projekt **Nodges**.
 
-## Container & Umgebung
-- **Arbeitsverzeichnis:** `/workspace` (DevContainer-Standard, nicht umbenennenswert innerhalb des Containers).
-- **Pi-Agent-Home im Container:** `/home/piuser/.pi/agent/` (Sessions, Settings, globale Skills etc.). Eine globale `AGENTS.md` existiert dort aktuell nicht. Der WSL-Ordner `.pi` auf dem Host hat hier keine direkte Verbindung.
-- **Globales Pi-Home (permanent):** `/home/.pi` – Dies ist das globale, persistente Pi-Verzeichnis, das über Container-Neustarts hinweg erhalten bleibt (Mount vom Host). Pi-Settings und globale Kontexte können dort hinterlegt werden.
-- **Container-Startbefehl (PID 1):** `npm run dev`.
-- **npm install:** Wird ueber `postCreateCommand` in `.devcontainer/devcontainer.json` vor dem Container-Start ausgefuehrt.
-- **Vite** wird automatisch beim Containerstart auf Port 5173 gestartet (daher standardmaessig belegt).
-- **Kanonische Compose-Quelle:** Der Pi-Container wird auf Windows ueber `C:\Users\ich\Desktop\code\_projects\Nodges_Pi\docker-compose.yml` gestartet. `/workspace/Nodges_Pi` ist nur der Git-Snapshot im Repo und wird von Docker nicht direkt verwendet. Aenderungen daran muessen nach Windows kopiert werden (siehe `resetup.md`).
-- **Container hat kein `ps`, `pgrep`, `pkill`, `ss`, `docker`:** Prozess-Status muss ueber `/proc` abgefragt werden (`/proc/*/cmdline`, `/proc/net/tcp`).
+---
 
-## Ports & Services
-| Port | Service | Status beim Containerstart | Start/Stop |
-|------|---------|---------------------------|------------|
-| 5173 | Vite Dev-Server | ✅ automatisch (via Container-CMD) | `node /workspace/node_modules/.bin/vite` (z.B. PID 55/56) |
-| 5174 | Vite (manuell) | ❌ nicht automatisch | `npm run dev -- --port 5174` (falls 5173 belegt) |
-| 8000 | LightRAG Backend | ✅ via `postStartCommand` | `.devcontainer/start-lightrag.sh` bzw. `npm run lightrag` |
-| 9222 | Chrome CDP | ❌ nicht automatisch | Benoetigt `start-vnc.sh`, welches scheitert (Tools nicht installiert) |
-| 6080 | noVNC / VNC | ❌ nicht automatisch | Benoetigt `start-vnc.sh`, welches scheitert (Tools nicht installiert) |
+## 1. Uebersicht der Harnesses und Rollen
 
-### LightRAG-Details
-- **venv-Pfad:** `/workspace/lightrag-backend/venv`
-- **Abhaengigkeiten:** `fastapi`, `uvicorn`, `lightrag-hku`, `pydantic`, `python-dotenv` (installiert im venv).
-- **LightRAG:** Laeuft **im Container** auf Port 8000. Start automatisch via `postStartCommand` (`.devcontainer/start-lightrag.sh`) oder manuell mit `npm run lightrag`. Das Frontend erreicht es ueber den Vite-Proxy `/lightrag-api` (Ziel `http://localhost:8000`).
-- **Speicherort (Working Dir):** `LIGHTRAG_WORKING_DIR`, sonst Fallback `lightrag-backend/rag_storage`. Datenbanken liegen unter `<WorkingDir>/databases`; `lightrag-backend/rag_storage/databases` wird als Altbestand mitgelesen. Laufzeitdaten sind per `.gitignore` ausgeschlossen.
-- **Embeddings:** Laufen ueber OpenRouter (`qwen/qwen3-embedding-8b`, native dim 4096, ueberschreibbar via `EMBEDDING_MODEL`/`EMBEDDING_DIM`). Verifiziert: `POST https://openrouter.ai/api/v1/embeddings` liefert HTTP 200. Die frueher vermutete Einschraenkung "OpenRouter bietet keine Embeddings" ist falsch. Modellwechsel erfordert Neu-Einspielen aller Dokumente (Vektoren sind nicht kompatibel).
-- **Externe Host-Instanz (optional):** Wer LightRAG weiter auf dem Windows-Host betreiben will, setzt `VITE_LIGHTRAG_PROXY_TARGET=http://host.docker.internal:8000` und laesst `.devcontainer/start-lightrag.sh` aus, damit sich nicht zwei Instanzen Port 8000 teilen.
+| Harness | Umgebung | Arbeitsverzeichnis | Aufgaben | Status |
+|---|---|---|---|---|
+| **conT** | Antigravity (Windows 11) | `W:/` (gemappt auf WSL2) | Architektur, Frontend/Three.js, UI, Dokumentation | [aktiv] |
+| **piCon** | Pi-Agent im Docker-Container `pi-harness` | `/workspace` | Container-Dienste, Vite, LightRAG, Linux-Skripte, Backup | [aktiv] |
+| ~~**winAnt**~~ | ~~Antigravity (Windows Host)~~ | ~~`C:/Users/ich/Desktop/code/_projects/Nodges`~~ | ~~Urspruenglicher Windows-NTFS-Workspace~~ | **[abgekoppelt]** (ersetzt durch conT) |
 
-## Bekannte Probleme & Fixes
+---
 
-### 1. Windows-Pfad im LightRAG-npm-Script
-- **Problem:** Das urspruengliche `package.json`-Script `lightrag` enthielt `.\\lightrag-backend\\venv\\Scripts\\python.exe`, was im Linux-Container fehlschlug.
-- **Fix:** Korrigiert zu `cd lightrag-backend && ./venv/bin/python main.py`.
+## 2. Physische Architektur und Single Source of Truth (SSoT)
 
-### 2. Fehlende Python-venv beim ersten Start
-- **Problem:** `lightrag-backend/venv` fehlte, daher startete LightRAG nicht.
-- **Fix:** venv manuell erstellt und Requirements installiert (`python3 -m venv venv && ./venv/bin/pip install -r requirements.txt`).
+Es gibt **nur einen einzigen physischen Arbeitsort** fuer dieses Projekt:
 
-### 3. Port 5173 bereits belegt
-- **Problem:** Vite startet automatisch beim Containerstart auf 5173. Ein zweiter `npm run dev` schlaegt fehl.
-- **Fix:** Alternativer Port verwenden (`--port 5174`).
+```
+        /home/unixusername/nodges   (WSL2 Linux, ext4)  <-- Single Source of Truth
+                    |
+        +-----------+-----------+
+        |                       |
+   /workspace                  W:/  (Netzlaufwerk)
+   [piCon im Container]        [conT in Antigravity Windows 11]
+        |                       |
+        +-----------+-----------+
+                    |
+              GitHub Remote
+       (Sicherung & Tag-Archiv)
+```
 
-### 4. Prozess-Management ohne Standard-Tools
-- **Problem:** `pgrep`, `pkill`, `ps`, `ss` sind nicht verfuegbar.
-- **Workaround:** Prozesse ueber `/proc` finden und mit `kill <PID>` beenden.
-  ```bash
-  # Vite PID finden
-  for p in $(ls /proc | grep -E '^[0-9]+$'); do
-    cmdline=$(cat /proc/$p/cmdline 2>/dev/null | tr '\0' ' ')
-    if echo "$cmdline" | grep -qE 'vite'; then
-      echo "PID $p: $cmdline"
-    fi
-  done
-  ```
+- **Dateisystem-Identitaet:** `conT` (ueber das Netzlaufwerk [W:/](file:///W:/)) und `piCon` (ueber `/workspace`) greifen direkt auf exakt dieselben physischen ext4-Inodes zu.
+- **Kein Git-Sync fuer lokale Arbeit:** Aenderungen, die von `conT` oder `piCon` vorgenommen werden, sind auf der Gegenseite unmittelbar im Dateisystem praesent. Es ist kein `git commit` oder `git push` erforderlich, um Zwischenschritte zwischen den beiden Agenten auszutauschen.
+- **Netzlaufwerk W:** Ein eventuelles rotes Kreuz im Windows Explorer beim Netzlaufwerk `W:` ist ein rein kosmetischer Effekt (Windows Lazy Reconnect) und beeintraechtigt weder Datei- noch Git-Operationen.
 
-### 5. `host.docker.internal` (geklaert)
-- **Status:** Behoben bzw. nicht reproduzierbar. `host.docker.internal` loest im Container auf (192.168.65.254), Port 8000 ist offen. Der Health-Check ueber die Vite-Proxy-Kette liefert `status: online` und `lightrag_engine_active: true`.
-- **Pruefbefehl:**
+---
+
+## 3. Git- und Branch-Strategie
+
+| Eigenschaft | Vorgabe |
+|---|---|
+| Remote | `git@github.com:Banixx/Nodges.git` (SSH) bzw. `https://github.com/Banixx/Nodges.git` (HTTPS) |
+| Primaerer Arbeitsbranch | **`main`** (alleiniger Zweig fuer alle Harnesses) |
+| Branch `pi` | **Geloescht** — vollstaendig in `main` aufgegangen, darf nicht mehr verwendet werden |
+| Rolle von GitHub | Externes Backup und Historie, nicht primaere Synchronisationsbruecke |
+| Versionstags | Stabile Meilensteine werden als Git-Tag gesichert (z.B. `v0.106.0`) |
+
+### Automatisierte Git-Workflows
+- **`sgc` (Push & Handover):** Erhoeht die Patch-Version in `package.json`, fuehrt `git add .` aus, committet mit der Versionsnummer und pusht zu `origin/main`.
+- **`sgp` (Pull & Takeover):** Fuehrt `git pull origin main` aus und meldet den Versions- und Commit-Stand.
+
+---
+
+## 4. Dienste, Ports und Laufzeitumgebung
+
+Alle Kern-Dienste laufen im Linux-Container:
+
+| Port | Dienst | Status beim Start | Verwaltung |
+|---|---|---|---|
+| 5173 | Vite Dev-Server | [aktiv] automatisch via Container-CMD | Start via PID 1; im Container: `node /workspace/node_modules/.bin/vite` |
+| 5174 | Vite (manuell) | [inaktiv] | Manueller Ausweich-Port: `npm run dev -- --port 5174` |
+| 8000 | LightRAG Backend | [aktiv] via `postStartCommand` | `.devcontainer/start-lightrag.sh` bzw. `npm run lightrag` |
+| 5173 `/lightrag-api` | Vite-Proxy auf LightRAG | [aktiv] | Proxy-Kette leitet Anfragen an `http://localhost:8000` weiter |
+| 9222 | Chrome CDP | [inaktiv] | Nicht verfuegbar (Pakete im Pi-Image fehlen) |
+| 6080 | noVNC / VNC | [inaktiv] | Nicht verfuegbar (Pakete im Pi-Image fehlen) |
+
+### LightRAG-Konfiguration
+- **Virtuelle Umgebung:** `/workspace/lightrag-backend/venv` bzw. [W:/lightrag-backend/venv](file:///W:/lightrag-backend/venv).
+- **Abhaengigkeiten:** `fastapi`, `uvicorn`, `lightrag-hku`, `pydantic`, `python-dotenv`.
+- **Speicherort:** `LIGHTRAG_WORKING_DIR`, Fallback auf `lightrag-backend/rag_storage`. Vektordaten liegen lokal in Linux und sind in `.gitignore` ausgeschlossen.
+- **Embeddings:** OpenRouter Modell `qwen/qwen3-embedding-8b` (Dimension 4096).
+- **Health-Check:**
   ```bash
   curl -s http://localhost:5173/lightrag-api/health
   ```
-- **Hinweis:** Liefert der Health-Check `status: offline`, laeuft das LightRAG-Backend nicht. Im Container mit `.devcontainer/start-lightrag.sh` starten (Log: `/tmp/lightrag.log`). Der Vite-Proxy antwortet in diesem Fall mit HTTP 503.
 
-### 6. VNC / Chrome (CDP) nicht verfuegbar
-- **Problem:** Die benoetigten Pakete (`Xvfb`, `fluxbox`, `x11vnc`, `websockify`, `google-chrome-stable`) sind im Container nicht installiert. Daher starten weder noVNC (Port 6080) noch Chrome/CDP (Port 9222). Ein Rebuild behebt das **nicht**, weil der fuer den Pi-Container verwendete `Nodges_Pi/Dockerfile` diese Pakete nicht enthaelt; nur `.devcontainer/Dockerfile` (VS-Code-Devcontainer-Pfad) tut das. VNC muesste in `Nodges_Pi/Dockerfile` ergaenzt werden.
-- **Hintergrund:** Der Container laeuft als `piuser`, nicht als `node` (der in `devcontainer.json` konfigurierte `remoteUser` existiert nicht im Image).
+### Docker-Compose-Besonderheit
+- Die wirksame Compose-Datei wird unter Windows verwaltet:
+  `C:/Users/ich/Desktop/code/_projects/Nodges_Pi/docker-compose.yml`
+- Der Ordner [W:/Nodges_Pi/](file:///W:/Nodges_Pi/) im Repository ist ein Git-Snapshot. Aenderungen muessen bei Bedarf nach Windows synchronisiert werden.
 
-## Arbeitsregeln
-- Pfade und Mounts muessen aus Sicht des Containers geprueft werden.
-- Aenderungen am Projekt erfolgen unter `/workspace`.
-- Pi laedt `AGENTS.md` automatisch aus dem aktuellen Arbeitsverzeichnis (`/workspace`). Die projektspezifische `AGENTS.md` ist somit die korrekte Stelle fuer Projekt-Kontext.
-- Vor Aenderungen pruefe ich die relevanten Dateien, die Projektstruktur und vorhandene Tests.
-- Ich kommuniziere ausschliesslich auf Deutsch und verwende keine Emojis.
-- Wenn eine Nutzeranfrage eine Frage ist, beantworte ich sie direkt im ersten Satz, wenn moeglich mit `Ja` oder `Nein` am Anfang.
-- Bei einer Frage fuehre ich noch keine Code-Aenderungen durch, sofern die Anfrage nicht zusaetzlich ausdruecklich eine Aenderung verlangt.
+### Prozess-Management im Container
+- Standardtools wie `ps`, `pgrep`, `pkill`, `ss` fehlen im Image.
+- Prozesspruefungen erfolgen direkt ueber `/proc` (z.B. `/proc/*/cmdline`, `/proc/net/tcp`).
+
+---
+
+## 5. Dateisystem- und Dokumentationskonventionen
+
+### Gemeinsamer Wissensspeicher `com/` (verbindlicher Einstieg)
+
+Alle Harnesses lesen ihre Arbeitsgrundlage aus dem Ordner **[W:/com/](file:///W:/com/)** — piCon ueber `/workspace/com/`, conT ueber `W:\com\`. Beide zeigen auf **denselben** Ordner.
+
+**Lesereihenfolge bei jedem Arbeitsbeginn:**
+
+1. Dieses `AGENTS.md` (Root) — die Regeln.
+2. [W:/com/todo.md](file:///W:/com/todo.md) — was gerade offen ist.
+3. [W:/com/plan/](file:///W:/com/plan/) — laufende Vorhaben (nur Dateinamen reichen zum Ueberblick).
+4. [W:/com/entscheidungen.md](file:///W:/com/entscheidungen.md) — Beschluesse des Benutzers, bindend.
+5. [W:/com/ideen.md](file:///W:/com/ideen.md) — ungepruefte Einfaelle.
+6. Erst bei Detailfragen: `com/bericht.md` (Historie) bzw. `com/setup.md` (Technik).
+
+Der vollstaendige Einstieg steht in **[W:/com/00_start_hier.md](file:///W:/com/00_start_hier.md)**.
+
+**Inhalte von `com/` (alle versioniert, nichts in `.gitignore`):**
+
+| Datei / Ordner | Zweck |
+|---|---|
+| `00_start_hier.md` | Einstieg und Lesereihenfolge |
+| `todo.md` | offene Punkte, kurz |
+| `plan/` | laufende Vorhaben, ein File je Vorhaben |
+| `ideen.md` | Ideensammlung, ungeprueft |
+| `entscheidungen.md` | Beschluesse des Benutzers (bindend) |
+| `bericht.md` | Gesamtbericht und Dialogprotokoll (Historie) |
+| `setup.md` | technische Kurzanleitung Setup/Git |
+| `doc/` | Archiv aller bisherigen Berichte (273 Dateien) |
+
+### Verzeichnisstruktur fuer Dokumentation
+- **[W:/com/doc/](file:///W:/com/doc/):** Arbeitsdokumente, Plaene, Analysen und Architekturberichte von Antigravity.
+  - Dateinamen tragen als Praefix die bereinigte Versionsnummer aus `package.json` (z.B. `0_106_3_mein_bericht.md`).
+  - `com/doc/` ist **vollstaendig versioniert** und nicht in `.gitignore`.
+  - Gezielt suchen (`grep`), nicht pauschal lesen — der Ordner ist gross.
+- **[W:/docs/](file:///W:/docs/):** Dauerhafte Leitfaeden und statische Projektdokumentation.
+- **Verlinkte Gesamtdokumente (liegen in `com/`):**
+  - [W:/com/bericht.md](file:///W:/com/bericht.md): Ausfuehrlicher Gesamtbericht und fortlaufendes Dialogprotokoll zwischen den Agenten.
+  - [W:/com/setup.md](file:///W:/com/setup.md): Technische Kurzanleitung und Setup-Referenz.
+- **Root-Dokument:**
+  - [W:/AGENTS.md](file:///W:/AGENTS.md): Dieses Dokument (Arbeitsregeln und Agenten-Kontext).
+
+### Zeilenenden und Git-Attribute
+- **Root-`.gitattributes`:** Erzwingt repo-weit `* text=auto eol=lf`.
+- **Skript-Ausnahmen:** Windows-Startskripte (`*.cmd`, `*.bat`, `*.ps1`) werden zwingend mit `eol=crlf` ausgecheckt, um die Ausfuehrbarkeit des Startskripts [W:/start_pi_container.cmd](file:///W:/start_pi_container.cmd) sicherzustellen.
+- **Berechtigungen:** `core.fileMode = false` und `safe.directory` sind fuer den WSL-Pfad konfiguriert.
+
+---
+
+## 6. Arbeitsregeln fuer Agenten (conT und piCon)
+
+1. **Pfad-Perspektive beachten:**
+   - conT arbeitet mit absoluten Windows-Pfaden auf Laufwerk `W:/` (z.B. [W:/src/main.ts](file:///W:/src/main.ts)).
+   - piCon arbeitet mit Linux-Pfaden im Container (z.B. `/workspace/src/main.ts`).
+   - Beide Pfade referenzieren dieselbe Datei.
+2. **Kommunikationsregeln:**
+   - Ausschliesslich auf Deutsch kommunizieren.
+   - Kein Sz (immer "ss" verwenden).
+   - Striktestes Verbot von Emojis, Emoticons oder grafischen Unicode-Symbolen in Antworten und generierten Dokumenten.
+3. **Frage-Modus:**
+   - Wenn eine Nutzeranfrage ein Fragezeichen ("?") enthaelt, handelt es sich um eine Frage.
+   - Fragen sind **direkt im ersten Satz** zu beantworten (sofern passend mit `Ja` oder `Nein` am Satzanfang).
+   - Bei reinen Fragen werden **keine Code-Aenderungen** ausgefuehrt.
+4. **Planungs- und Dokumentationsmodus:**
+   - Plaene, Analysen und Berichte sind selbststaendig als Markdown-Dateien im Ordner [W:/com/doc/](file:///W:/com/doc/) mit dem Versionspraefix zu speichern.
+   - Im Planungsmodus (`planning_mode`) sind Aenderungen am Dateisystem ausserhalb von `com/` strikt untersagt.
+   - Ein Arbeitsergebnis **sollte** (Empfehlung, keine Pflicht) zusaetzlich dort festgehalten werden, wo es hingehort: Ergebnisbericht nach `com/doc/`, offener naechster Schritt nach `com/todo.md`, mehrschrittiges Vorhaben nach `com/plan/`, ein Beschluss des Benutzers nach `com/entscheidungen.md`. Ein Faustregel gilt: Was laenger als eine Antwort ueberdauert, gehoert in `com/` — eine Antwort im Chat allein ist fuer das andere Harness spaeter nicht auffindbar.
+5. **Sorgfaltspflicht vor Aenderungen:**
+   - Vor Aenderungen muessen relevante Dateien, die Projektstruktur, `git status` und vorhandene Tests geprueft werden.
+   - Vor groesseren Eingriffen oder Loeschungen ist die Rueckfrage an den Benutzer erforderlich. Keine stillen Ueberschreibungen fremder Arbeit.

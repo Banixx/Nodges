@@ -77,4 +77,4 @@ Im `App` registriert ein DOM-Listener (`nodges-deep-dive`) den Handler `handleDe
 
 ---
 
-*Weiter: `/workspace/doc/12_entwicklung_build_deploy_nodges_V4.md`.*
+*Weiter: `/workspace/com/doc/12_entwicklung_build_deploy_nodges_V4.md`.*

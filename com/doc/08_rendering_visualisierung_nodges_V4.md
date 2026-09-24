@@ -86,4 +86,4 @@ Die Minimap wird über `src/ui/MinimapUI.ts` + eine Ortho-Kamera (Top-Down) real
 
 ---
 
-*Weiter: `/workspace/doc/09_datenfluss_import_export_nodges_V4.md`.*
+*Weiter: `/workspace/com/doc/09_datenfluss_import_export_nodges_V4.md`.*

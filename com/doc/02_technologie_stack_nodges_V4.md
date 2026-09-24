@@ -86,4 +86,4 @@ Siehe `vitest.config.ts`:
 
 ---
 
-*Weiter: `/workspace/doc/03_projektstruktur_nodges_V4.md`.*
+*Weiter: `/workspace/com/doc/03_projektstruktur_nodges_V4.md`.*

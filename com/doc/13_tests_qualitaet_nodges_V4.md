@@ -70,4 +70,4 @@ npm run export:schema # nur Schema-Export-Test
 
 ---
 
-*Weiter: `/workspace/doc/14_verbesserungsvorschlaege_nodges_V4.md`.*
+*Weiter: `/workspace/com/doc/14_verbesserungsvorschlaege_nodges_V4.md`.*

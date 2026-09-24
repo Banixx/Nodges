@@ -80,4 +80,4 @@ Diese Struktur entkoppelt einzelne Interaktionsaspekte vom zentralen Event-Manag
 
 ---
 
-*Weiter: `/workspace/doc/08_rendering_visualisierung_nodges_V4.md`.*
+*Weiter: `/workspace/com/doc/08_rendering_visualisierung_nodges_V4.md`.*
