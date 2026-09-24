@@ -939,3 +939,24 @@ Damit ist der Konflikt aus E.3 (3) geloest: **Kein Dual-Harness-Modell, sondern 
 
 Da beide auf denselben Dateien arbeiten, ist ein **`git commit`** weiterhin sinnvoll (Sicherungspunkt), ein **`git push`** aber nur noch fuer GitHub als Backup — nicht mehr als Synchronisation.
 
+
+### F.5 Abschluss: Branch `pi` endgueltig entfernt (2026-09-24)
+
+Nach dem Beschluss zu F.1 wurde der remote Branch `pi` **endgueltig geloescht**.
+
+**Wiederholtes Auftauchen:** `pi` war zwischenzeitlich **erneut auf GitHub erschienen** (`58fb3f4`) — ein anderer Harness hatte auf dem alten Branch weitergearbeitet und gepusht.
+
+**Sicherheitspruefung vor dem Loeschen:**
+- Eigene Commits auf `pi` gegenueber `main`: **0**
+- `git merge-base --is-ancestor` bestaetigte: `pi` vollstaendig in `main` enthalten
+- **Es ging keine Arbeit verloren.**
+
+**Endzustand auf GitHub:**
+```
+refs/heads/main     -> fbe79ac
+refs/tags/v0.106.0  -> 51af1f4
+```
+
+Es existiert damit **nur noch ein Branch**. Der lokale Branch `pi` war bereits entfernt; `git fetch --prune` hat den Leichnam des Remote-Verweises ebenfalls beseitigt.
+
+**Verbindlich ab jetzt:** Alle Harnesses (piCon und conT) arbeiten ausschliesslich auf **`main`**.
