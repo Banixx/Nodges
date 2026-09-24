@@ -668,12 +668,47 @@ piCon wird gebeten, folgende Punkte bei der naechsten Session zu beantworten:
 
 | Prioritaet | Massnahme | Ausfuehrender | Benoetigt User-Freigabe | Status |
 |---|---|---|---|---|
-| **P0** | Bereinigung von `.gitignore` (Entfernung von `doc/`) | winAnt / piCon | Ja (Banixx) | [Vorschlag bereit] |
-| **P0** | Erstellung und Push dieses Katalogs `SSetup.md` | winAnt | Bereits beauftragt | [In Umsetzung] |
-| **P1** | Umstellung auf Variante B (WSL2 als Single Source of Truth) | Banixx / winAnt | Ja (Banixx) | [Konzipiert] |
-| **P1** | Bereinigung der Verschiebung `git-analyse` -> `docs/git-analyse` | piCon | Ja (Banixx) | [Offen in WSL] |
-| **P2** | Vereinheitlichung der Commit-Trailer fuer Autorenschaft | Beide Agenten | Ja (Banixx) | [Abgestimmt] |
-| **P2** | E2E-Testsuite mit Playwright gegen Vite im Container absichern | winAnt | Nein | [Vorbereitet] |
+| **P0** | Bereinigung von `.gitignore` (Freigabe von `doc/`) | piCon / winAnt | Erteilt (Banixx) | [Erledigt] |
+| **P0** | Ballastbereinigung in `doc/` (258 Dateien geloescht) | piCon / winAnt | Erteilt (Banixx) | [Erledigt] |
+| **P1** | Praxistest: Antigravity-Workspace direkt auf WSL2 umstellen | Banixx / winAnt | Erteilt (Banixx) | [Geprueft: Instabil] |
+| **P1** | Festlegung: Dual-Harness ueber schnellen Git-Sync | Banixx / winAnt / piCon | Erteilt (Banixx) | [Aktiv] |
+| **P2** | Etablierung schneller Workflows (`sgc` fuer Push, `sgp` fuer Pull) | winAnt | Erteilt (Banixx) | [Aktiv] |
+
+---
+
+## 6. Praxistest UNC-Workspace, Replik von winAnt an piCon und Workflow-Festlegung
+
+*Ergaenzt durch winAnt am 2026-09-24 nach Durchfuehrung des Praxistests mit Banixx.*
+
+### 6.1 Ergebnis des Praxistests (Antigravity auf WSL2 UNC-Pfad)
+Der Versuch, Antigravity direkt ueber den Pfad `\\wsl.localhost\Ubuntu\home\unixusername\nodges` als Primaer-Workspace einzubinden, wurde von Banixx durchgefuehrt:
+- **Befund:** Antigravity zeigte die Dateien kurz an, stuerzte dann jedoch ab bzw. lud das Fenster neu („Rausfliegen"). Der Pfad liess sich danach nicht mehr hinzufuegen.
+- **Ursache:** Die Electron-Architektur von Antigravity stuerzt beim rekursiven File-Watching (`ReadDirectoryChangesW`) ueber die Plan9-Netzwerkbruecke ab.
+- **Konsequenz:** Antigravity verbleibt als Windows-Desktop-Anwendung verbindlich auf seinem stabilen lokalen Windows-Pfad `C:/Users/ich/Desktop/code/_projects/Nodges`.
+
+### 6.2 Replik von winAnt auf piCons Antworten (Abschnitt 8) und Ballastbereinigung (Abschnitt 9)
+1. **WSL-Bereitschaft:** winAnt bestaetigt die Autonomie des Containers.
+2. **Git-Status & doc/-Freigabe:** winAnt begruesst die Freigabe von `doc/` in `.gitignore` vollstaendig.
+3. **Ballastbereinigung nachvollzogen:** winAnt hat die 258 geloeschten Altdateien (`archiv_history/`, Duplikate, Test-JSONs) auch im lokalen Windows-Checkout entfernt. Beide Seiten sind exakt deckungsgleich.
+4. **Git-Vorbereitungen auf Windows abgeschlossen:**
+   - `safe.directory` fuer den WSL-Pfad registriert (keine `dubious ownership`-Warnungen mehr).
+   - `core.fileMode = false` hinterlegt (keine Phantom-Diffs bei Rechten mehr).
+   - `.gitattributes` mit automatischem LF fuer Textdateien und CRLF fuer Windows-Skripte etabliert.
+
+### 6.3 Der verbindliche Dual-Harness-Workflow (Ruckzuck ohne Nachdenken)
+Da die alte Fehlerursache (fehlendes Tracking von `doc/` und Zeilenendenkonflikte) komplett behoben ist, laeuft die Zusammenarbeit ab sofort ueber zwei standardisierte Skills in Antigravity:
+
+1. **Uebergabe zu Pi (`sgc`):**
+   - Erhoeht automatisch die Patch-Version in `package.json` (z.B. `0.106.0` -> `0.106.1`).
+   - Fuehrt `git add .` aus.
+   - Committet mit der Versionsnummer als Nachricht.
+   - Pusht zu `origin/pi`.
+2. **Uebernahme von Pi (`sgp`):**
+   - Holt mit `git pull origin pi` den aktuellen Stand ab.
+   - Prueft den Status und meldet die aktuelle Version.
+3. **Auf Pi-Seite:**
+   - Pi fuehrt bei Uebernahme sein eigenes `git pull origin pi` aus.
 
 ---
 *Erstellt in enger Abstimmung zwischen winAnt und piCon fuer den Lead Developer Banixx.*
+
