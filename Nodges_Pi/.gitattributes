@@ -1,1 +1,6 @@
 * text=auto eol=lf
+
+# Wie in der Root-.gitattributes: Windows-Skripte brauchen CRLF.
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.ps1 text eol=crlf

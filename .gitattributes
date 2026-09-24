@@ -10,6 +10,15 @@
 
 * text=auto eol=lf
 
+# Windows-Skripte MUESSEN CRLF behalten.
+# Begruendung: Die CMD-Dateien starten den Docker-Container. Windows CMD
+# kann Skripte mit reinem LF unzuverlaessig ausfuehren. Diese Ausnahme gilt
+# NUR fuer Windows-Skripte; alle uebrigen Textdateien bleiben auf LF.
+# (Ergaenzt am 2026-09-24, nach Hinweis von piCon auf fehlende Ausnahme.)
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
 # Binaerdateien ausdruecklich ausschliessen (nicht umwandeln!).
 # Ein Zeilenenden-Umbau wuerde diese Dateien zerstoeren.
 *.png binary
