@@ -38,12 +38,15 @@ GitHub (Banixx/Nodges) = Sicherung und Austausch, NICHT Arbeitsort.
 | Was | Wert |
 |---|---|
 | Remote | `git@github.com:Banixx/Nodges.git` (SSH) |
-| Arbeitsbranch (beide Harnesses) | **`pi`** |
-| Zweiter Branch | `main` |
+| Arbeitsbranch (beide Harnesses) | **`main`** (einziger Branch, beschlossen 2026-09-24) |
+| Branch `pi` | **geloescht** — vollstaendig in `main` aufgegangen |
+| Erstes Tag | `v0.106.0` auf `51af1f4` |
 | Zugang piCon | SSH-Key `id_ed25519` (Kommentar `nodges-container`) |
 | Zugang winAnt | HTTPS ueber Windows Credential Manager |
 
 **Verifiziert:** `fetch`, `push` und `push --dry-run` laufen fehlerfrei (Lesen und Schreiben).
+
+**Versionstags:** Ein Tag (Etikett) ist ein fester Name fuer einen Commit — eine Momentaufnahme, die sich nie verschiebt. Wenn der Benutzer sagt *"das ist jetzt stabil"*: `git tag v0.106.0 && git push --tags`. Danach ist dieser Stand dauerhaft wiederfindbar. Aktuelle Version laut `package.json`: `0.106.0`.
 
 **Ablauf — zwingend:**
 ```
