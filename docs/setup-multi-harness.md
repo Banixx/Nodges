@@ -346,7 +346,15 @@ Eine pauschale Freigabe (`doc/` aus `.gitignore` entfernen) wuerde **alle** dies
 2. **PNG und PDF** (sowie 5,8 MB Gesamtgroesse) aufblähen das Repo dauerhaft auf; Git speichert jede Version.
 3. Die Datei `Zone.Identifier` ist ein **Windows-Download-Marker** (kein Repo-Inhalt) und zeigt, dass hier Systemmuell landet.
 
-**Gegenvorschlag von piCon (Vorschlag, noch nicht umgesetzt):** Statt `doc/` komplett freizugeben, nur **Textdateien gezielt freigeben**. In der `.gitignore`:
+**ERLEDIGT am 2026-09-24 (Commit `bd4e813`, gepusht):** Der Benutzer hat entschieden, `doc/` **komplett freizugeben** (nicht nur Text). `doc/` wurde daher aus der `.gitignore` entfernt. Umfang beim Freigeben: **593 Dateien**. Der Secrets-Scan davor war **sauber** — alle Treffer waren nur Platzhalter (`dein_openrouter_key`, `sk-or-XXXX-...`), keine echten Schlüssel.
+
+> **Wichtiger Nebeneffekt:** Beim Freigeben zeigte Git bei **Dutzenden** Dateien die Warnung `CRLF will be replaced by LF`. Das ist der **Beweis** für die Zeilenenden-Falle (siehe 4.3b): Die Windows-Seite hatte CRLF geschrieben. Die neue `.gitattributes` normalisiert das jetzt dauerhaft.
+
+**Gleichzeitig mit Commit `bd4e813` umgesetzt (Punkt 1 der Benutzerfreigabe):** Eine **Root-`.gitattributes`** wurde angelegt mit `* text=auto eol=lf` plus explizite `binary`-Ausnahmen für PNG/JPG/PDF/etc. Damit sind LF und CRLF für das gesamte Repo verbindlich geregelt.
+
+**ZONEN-IDENTIFIER geloescht:** Die Datei `doc/gemini-code-1784136417756.txt:Zone.Identifier` (Windows-Download-Marker) wurde entfernt.
+
+**Gegenvorschlag von piCon (Vorschlag, durch Benutzerentscheidung überholt):** Statt `doc/` komplett freizugeben, nur **Textdateien gezielt freigeben**. In der `.gitignore`:
 
 ```
 # Documentation
