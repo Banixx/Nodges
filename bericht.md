@@ -12,7 +12,7 @@ Dies ist ab jetzt die **einzige** gemeinsame Berichtsdatei im Projektstamm.
 > Beide Vorgaengerdateien wurden geloescht. Die technische Kurzanleitung
 > (wie das System einzurichten ist) liegt separat in **`setup.md`**.
 
-**Autoren:** piCon (Pi-Coding-Agent im Container `pi-harness`) und winAnt (Antigravity auf Windows 11).
+**Autoren:** piCon (Pi-Coding-Agent im Container `pi-harness`), winAnt (Antigravity auf Windows 11) und conT (Antigravity auf Netzlaufwerk W:).
 
 ---
 
@@ -469,6 +469,12 @@ Dieses Dokument dient als verbindlicher, themenbezogener Katalog und strukturier
    - Rolle: Lead Architect, Product Owner und menschliche Entscheidungsinstanz.
    - Verantwortungsbereich: Freigabe von Architekturentscheidungen, Bereinigung von Dateisystem-Konflikten und Vorgabe von Entwicklungszielen.
 
+4. **conT (Antigravity ueber Netzlaufwerk W:)**:
+   - Ausfuehrungsumgebung: Windows 11 Host-Ebene (Antigravity Agent).
+   - Arbeitsverzeichnis: `W:/` gemappt auf `\\wsl.localhost\Ubuntu\home\unixusername\nodges`.
+   - Primaere Aufgaben: Direkte Bearbeitung auf dem WSL2-Linux-Dateisystem (ext4), Frontend- und Komponentenentwicklung synchron mit dem Container ohne Git-Zwischenschritt zu piCon.
+   - Status: Voll einsatzbereit; das rote X im Windows Explorer ist rein kosmetischer Natur (Lazy Reconnect).
+
 ---
 
 ## 2. Themenbezogener Katalog und Chat-Protokoll
@@ -808,7 +814,81 @@ Die aktuelle „Stimmung" aus `package.json` ist **`0.106.0`**. Der erste Tag `v
 
 ### D.3 Verbindliche Regel ab jetzt
 
-> **Beide Harnesses arbeiten ausschliesslich auf `main`.**
+> **Alle Harnesses arbeiten ausschliesslich auf `main`.**
 
 Nichts Neues mehr auf `pi`. Der Grund fuer die fruehere Trennung (piCon im Container, winAnt auf Windows) ist mit Variante B entfallen — es gibt nur noch **einen** Arbeitsort.
+
+### D.4 Hinzunahme der dritten Instanz: conT ueber Netzlaufwerk W:\
+
+Am 2026-09-24 wurde als dritte Instanz **conT** eingerichtet:
+- **Rolle:** conT ist eine Antigravity-Instanz auf Windows 11, die als Workspace das gemappte Netzlaufwerk `W:\` verwendet (`\\wsl.localhost\Ubuntu\home\unixusername\nodges`).
+- **Physische Kopplung mit Container:** conT greift direkt auf dieselbe WSL2-ext4-Speicherebene zu wie `piCon` (`/workspace`). Aenderungen sind auf beiden Seiten unmittelbar praesent, ohne dass dafuer ein Git-Sync zwischen conT und piCon notwendig ist.
+- **Befund Netzlaufwerk W:\:** Das rote Kreuz und die Beschriftung „Nichtverbundenes Netzlaufwerk (W:)“ im Windows Explorer sind rein kosmetischer Natur (bedingt durch Windows Lazy Reconnect und das Fehlen klassischer SMB-Heartbeats beim WSL2 Plan9-Redirector). Lese-, Schreib- und Git-Operationen laufen vollstaendig fehlerfrei.
+- **Zusammenspiel aller drei Instanzen:**
+  - `winAnt`: Windows-Workspace (`C:/Users/ich/Desktop/code/_projects/Nodges`), synchronisiert per Git ueber `origin/main`.
+  - `piCon`: Docker-Container (`/workspace`), laeuft auf WSL2.
+  - `conT`: Windows-Workspace ueber Netzlaufwerk `W:\`, arbeitet direkt auf WSL2.
+
+
+---
+
+## Teil E — UNC-Absturz, Dual-Harness-Vorschlag und der dritte Harness conT
+
+*Zusammengefasst aus winAnts Dokumenten `0_106_0_analyse_unc_absturz_und_empfohlene_loesung.md` und `0_106_0_entscheidung_dual_harness_und_naechste_schritte.md`.*
+
+### E.1 Der UNC-Praxistest ist GESCHEITERT
+
+winAnt hat den Praxistest durchgefuehrt und meldet: **Antigravity stuerzt beim Laden des WSL-Pfads ab.**
+
+**Technische Ursache (winAnts Analyse):**
+- Antigravity basiert auf der Electron-/VS-Code-Architektur.
+- Beim Oeffnen eines Projektordners startet ein **File Watcher** (Datei-Ueberwachungsdienst), der rekursiv das Dateisystem ueberwacht.
+- Unter Windows nutzt dieser Dienst die API `ReadDirectoryChangesW`.
+- Der WSL-Pfad ist aber keine echte Windows-Freigabe, sondern eine virtuelle Freigabe ueber das **9P-Protokoll** (Plan9, die WSL-Dateisystembruecke).
+- 9P unterstuetzt die Windows-Dateibenachrichtigungen nicht standardkonform. Beim Ueberwachen grosser Baeume (`node_modules`, `.git`) laeuft der Watcher in einen **unhandled Exception**-Fehler → Absturz.
+- Zusaetzlich blockiert die IDE den Pfad nach einem Absturz haeufig (Workspace Trust / Sitzungsverwaltung).
+
+### E.2 winAnts Gegenmodell: Pragmatischer Dual-Harness
+
+Wegen dieses Absturzes schlaegt winAnt **eine Abkehr von Variante B** vor — zurueck zu **zwei getrennten Arbeitskopien mit Git als Bruecke**:
+
+| Harness | Arbeitsbereich | Zustaendigkeit |
+|---|---|---|
+| **winAnt** | `C:/Users/ich/Desktop/code/_projects/Nodges` (NTFS) | Architektur, Frontend, Three.js, Doku (`doc/`) |
+| **piCon** | `/workspace` aus `/home/unixusername/nodges` (WSL2 ext4) | Container, Vite, LightRAG, Linux-Skripte |
+| Bruecke | GitHub `main` | Ritual: Push vor dem Wechsel, Pull nach dem Wechsel (2–3 Sekunden) |
+
+winAnts Argument: Die frueheren Gegengruende seien **ausgeraeumt** — `doc/` ist freigegeben, LF erzwungen, `core.fileMode = false` aktiv, Ballast geloescht. Deshalb sei Git-Sync jetzt reibungslos.
+
+### E.3 KRITISCHER WIDERSPRUCH — drei ungeklaerte Punkte
+
+piCon weist auf drei **diskrepanzte** Punkte hin. Diese muessen vom Benutzer und conT geklaert werden:
+
+**(1) conT arbeitet offenbar ERFOLGREICH auf dem WSL-Pfad.**
+Der Benutzer meldete: *„inzwischen ist auch conT als dritter Benutzer aufgetaucht. Er ist Antigravity in Windows, jedoch neu mit `\\wsl.localhost\Ubuntu\home\unixusername\nodges` als Dateibasis in WSL."*
+Das **steht im direkten Widerspruch** zu E.1. Moegliche Erklaerungen:
+- conT ist eine **andere Antigravity-Konfiguration** (z. B. mit deaktiviertem File-Watcher oder ohne Workspace-Cache), die stabil laeuft.
+- Oder conT nutzt den WSL-Pfad nur als **Dateibasis zum Lesen/Schreiben**, nicht als vollstaendig ueberwachten IDE-Workspace.
+- Oder das Problem tritt nur beim **erstmaligen Indexieren** grosser Baeume auf und conT hat einen anderen Startzustand.
+
+**→ GEKLAERT durch conT selbst (in `setup.md`):** conT arbeitet **nicht** auf dem rohen UNC-Pfad, sondern ueber ein **zugeordnetes Netzlaufwerk `W:\`** (`\\wsl.localhost\Ubuntu\home\unixusername\nodges`). Genau das umgeht den Absturz: Der File-Watcher der IDE greift ueber einen anderen Mechanismus zu. Das rote „X" im Windows-Explorer ist laut conT kosmetisch (Lazy Reconnect des 9P-Protokolls).
+
+**→ Offene Frage:** Soll **winAnt** ebenfalls auf `W:\` umgestellt werden? Dann koennte der getrennte Windows-Workspace entfallen und Variante B waere fuer beide Windows-Harnesses erreicht.
+
+**(2) Branch-Benennung ist veraltet.**
+winAnt schreibt in beiden Dokumenten: Synchronisation *„auf dem Branch `pi`"*. **`pi` existiert nicht mehr** — er wurde mit Commit `d4c7b3f` geloescht und vollstaendig nach `main` ueberfuehrt (siehe Teil D).
+**→ Korrektur noetig:** Alle Rituale muessen `main` statt `pi` verwenden. Falls winAnt noch lokal auf `pi` ist: `git push` (mergen), dann `git checkout main`.
+
+**(3) Variante B ist durch E.2 in Frage gestellt.**
+Teil D und `setup.md` beschreiben Variante B (Linux-SSoT, ein Arbeitsort) noch als verbindlich. E.2 schlaegt faktisch **zwei** Arbeitsorte vor.
+**→ Entscheidung noetig:** Gilt weiterhin Variante B (ein Ort), oder wird das Dual-Harness-Modell aus E.2 beschlossen?
+
+### E.4 Bewaehrtes bleibt bestehen (beide Modelle)
+
+Unabhaengig von der Modellfrage sind diese Errungenschaften gesichert:
+- `doc/` ist versioniert → Berichte erreichen beide Seiten.
+- LF repo-weit erzwungen → keine Phantom-Diffs.
+- `core.fileMode = false` → keine Berechtigungskonflikte.
+- CRLF-Ausnahme fuer `.cmd`/`.bat`/`.ps1` → Container-Startskript bleibt ausfuehrbar.
+- 258 Ballast-Dateien entfernt.
 

@@ -1,29 +1,30 @@
 # Setup Nodges — Multi-Harness Arbeitsumgebung
 
-**Stand:** 2026-09-24 · **Verantwortlich:** piCon (Container) + winAnt (Antigravity)
+**Stand:** 2026-09-24 · **Verantwortlich:** piCon (Container) + winAnt (Antigravity Windows) + conT (Antigravity W:)
 **Dies ist die technische Kurzanleitung.** Der ausfuehrliche Bericht und Dialog steht in **`bericht.md`**.
 
 ---
 
-## 1. Architektur: Pragmatischer Dual-Harness ueber schnellen Git-Sync
+## 1. Architektur: Multi-Harness Arbeitsumgebung (winAnt, piCon, conT)
 
-**Befund Praxistest (2026-09-24):** Der direkte Zugriff der Antigravity-IDE auf den UNC-Netzwerkpfad (`\\wsl.localhost\...`) scheitert an der Windows/Electron-Dateisystemueberwachung (File-Watcher-Absturz). Daher gilt ab sofort verbindlich:
+**Befund Praxistest & Erweiterung (2026-09-24):** Der direkte Zugriff der Antigravity-IDE auf den UNC-Netzwerkpfad (`\\wsl.localhost\...`) stuerzte frueher ab. Daher existieren nun zwei komplementaere Windows-Arbeitsweisen plus Container:
 
 ```
-[winAnt: Antigravity auf Windows 11]           [piCon: Pi im Container]
-C:\Users\ich\Desktop\code\_projects\Nodges      /workspace (WSL2 ext4)
-                 │                                        │
-                 ▼                                        ▼
-             (via sgc / git push)                  (via git push)
-                 │                                        │
-                 └──────────────► GitHub ◄────────────────┘
-                              (origin/pi)
+[winAnt: Antigravity Windows 11]           [piCon: Pi im Container]           [conT: Antigravity Windows 11]
+C:\Users\ich\Desktop\code\_projects\Nodges      /workspace (WSL2 ext4)          W:\ (Netzlaufwerk auf WSL2)
+                 │                                        │                                   │
+                 ▼                                        │                                   │ (Direktzugriff
+             (via sgc / git push)                         │                                   │  auf WSL2-ext4)
+                 │                                        ▼                                   ▼
+                 └──────────────► GitHub ◄────────────────┴───────────────────────────────────┘
+                              (origin/main)
 ```
 
 **Arbeitsaufteilung:**
-- **winAnt (Antigravity):** Entwickelt auf Windows `C:\Users\ich\Desktop\code\_projects\Nodges` (Frontend, Three.js, Dokumentation).
-- **piCon (Pi-Agent):** Entwickelt im Container `/workspace` (Vite 5173, LightRAG 8000, Linux-Skripte).
-- **Synchronisation:** Erfolgt diszipliniert und automatisiert ueber Git auf Branch `pi`. Da `doc/` freigegeben ist und LF-Zeilenenden repo-weit gelten, dauert der Sync nur 2 bis 3 Sekunden.
+- **winAnt (Antigravity Windows):** Entwickelt auf Windows `C:\Users\ich\Desktop\code\_projects\Nodges` (Frontend, Three.js, Dokumentation; Sync via Git).
+- **piCon (Pi-Agent):** Entwickelt im Container `/workspace` (Vite 5173, LightRAG 8000, Linux-Skripte; physisch auf WSL2 ext4).
+- **conT (Antigravity W:):** Entwickelt auf Windows ueber Netzlaufwerk `W:\` (`\\wsl.localhost\Ubuntu\home\unixusername\nodges`). Greift direkt auf dieselben Dateien wie piCon zu (kein lokaler Git-Sync zwischen conT und piCon noetig). Das rote "X" im Windows Explorer ist rein kosmetisch (Lazy Reconnect / Plan9).
+- **Synchronisation:** Erfolgt diszipliniert und automatisiert ueber Git auf Branch `main`. Da `doc/` freigegeben ist und LF-Zeilenenden repo-weit gelten, dauert der Sync nur 2 bis 3 Sekunden.
 
 **Alle Dienste laufen weiterhin im Linux-Container:**
 
@@ -41,8 +42,8 @@ C:\Users\ich\Desktop\code\_projects\Nodges      /workspace (WSL2 ext4)
 | Was | Wert |
 |---|---|
 | Remote | `git@github.com:Banixx/Nodges.git` (SSH) |
-| Arbeitsbranch (beide Harnesses) | **`main`** (einziger Branch, beschlossen 2026-09-24) |
-| Branch `pi` | **geloescht** — vollstaendig in `main` aufgegangen |
+| Arbeitsbranch (ALLE Harnesses) | **`main`** (einziger Branch, beschlossen 2026-09-24) |
+| Branch `pi` | **GELOSCHT** — vollstaendig in `main` aufgegangen. Alle Dokus/Rituale muessen `main` statt `pi` sagen! |
 | Erstes Tag | `v0.106.0` auf `51af1f4` |
 | Zugang piCon | SSH-Key `id_ed25519` (Kommentar `nodges-container`) |
 | Zugang winAnt | HTTPS ueber Windows Credential Manager |
@@ -59,8 +60,12 @@ Ein **Commit** wirkt nur im lokalen Checkout. **Push** laedt hoch. **Pull** holt
 GitHub wird **nicht** automatisch aktualisiert.
 
 **Automatisierte Antigravity-Skills (ruckzuck ohne Nachdenken):**
-- **`sgc` (Push & Handover):** Erhoeht automatisch die Patch-Version in `package.json` um 1 (z.B. `0.106.0` -> `0.106.1`), fuehrt `git add .` aus, committet ausschliesslich mit der Versionsnummer als Message und pusht direkt zu `origin/pi`.
-- **`sgp` (Pull & Takeover):** Holt den neuesten Stand mit `git pull origin pi` ab, prueft `git status` und meldet die aktuelle Version sowie den Commit.
+> **KORREKTUR durch piCon (2026-09-24):** Diese Skills zeigten auf **`origin/pi`**, der Branch existiert aber nicht mehr (siehe Teil D in `bericht.md`). Sie wuerden **ins Leere laufen**. Korrigierte Fassung:
+
+- **`sgc` (Push & Handover):** Erhoeht automatisch die Patch-Version in `package.json` um 1 (z.B. `0.106.0` -> `0.106.1`), fuehrt `git add .` aus, committet ausschliesslich mit der Versionsnummer als Message und pusht direkt zu **`origin/main`**.
+- **`sgp` (Pull & Takeover):** Holt den neuesten Stand mit **`git pull origin main`** ab, prueft `git status` und meldet die aktuelle Version sowie den Commit.
+
+> Fuer conT gilt das Gleiche: **`main` statt `pi`** verwenden.
 
 
 ---
@@ -151,7 +156,10 @@ curl -s http://localhost:5173/lightrag-api/health
 ## 8. Status der offenen Punkte
 
 - **Windows-Workspace `C:\...\Nodges`:** Bleibt als aktiver, stabiler Antigravity-Workspace dauerhaft bestehen (Praxistest am 2026-09-24 bestaetigt).
-- **Branch-Strategie:** Beide Harnesses arbeiten aktiv auf dem Branch `pi`. Bei Erreichen stabiler Meilensteine erfolgt ein Merge nach `main`.
+- **Branch-Strategie:** **ALLE Harnesses arbeiten auf `main`.** Branch `pi` ist geloescht (Beschluss des Benutzers, `bericht.md` Teil D). Es gibt keinen Merge mehr nach `main` — `main` IST der Arbeitsbranch.
+- **Veraltetes in fremden Dokus:** winAnts Dokumente (`0_106_0_entscheidung_dual_harness...`, `0_106_0_analyse_unc_absturz...`) nennen noch `origin/pi`. Inhaltlich relevant, aber die Branch-Angabe ist ueberholt.
+- **Absturz-Ursache geklaert:** conT nutzt **`W:\`** als Netzlaufwerk (nicht den rohen UNC-Pfad) und laeuft stabil. winAnts Absturz betraf den direkten UNC-Zugriff der IDE.
+- **Offen:** Soll winAnt ebenfalls auf `W:\` umgestellt werden, oder bleibt es beim Windows-Workspace + Git-Sync?
 - **`docker-compose.yml`:** Liegt noch in `C:\Users\ich\Desktop\code\_projects\Nodges_Pi` (wird bei Gelegenheit im Repo harmonisiert).
 - **LightRAG-Daten (`lightrag-backend/rag_storage/`):** Bleiben lokal im Linux-Container; Backup-Skript bei Bedarf ergaenzen.
 
