@@ -1,6 +1,0 @@
-- [x] Robusten Datenzugriff mit stateVector-Präfix-Entfernung in `BuildFormatUtils.ts` implementieren
-- [x] migrateFields in `DataParser.ts` entfernen, so dass fields erhalten bleiben
-- [x] WorkerNode in `WorkerTypes.ts` um `type` und `behavior` erweitern
-- [x] LayoutManager.ts anpassen, um `type` und `behavior` an den Worker zu übermitteln
-- [x] layout-worker.ts anpassen, um euklidische Felder mit Radien und behavior-Filterung zu berechnen
-- [x] Tests ausführen und Funktionalität verifizieren
