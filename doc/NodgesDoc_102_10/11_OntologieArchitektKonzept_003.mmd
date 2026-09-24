@@ -1,0 +1,30 @@
+graph TD
+    subgraph BEFORE["Vor Build 5: LLM als einfacher Listengenerator"]
+        OLD_P["Prompt:\n'Erstelle mir Knoten'"]
+        OLD_R["Antwort:\n[ {name:'Alice'}, {name:'Bob'} ]\nkeine Typen\nkeine Ontologie\nkeine Beziehungsdefinitionen"]
+        OLD_P --> OLD_R
+        OLD_PROB["Problem:\nDas LLM denkt sich Attribute aus\ndie nirgends definiert wurden\nMapping ist unmoеglich"]
+    end
+
+    subgraph ARCH["Build 5: LLM als Ontologie-Architekt (2-Phasen)"]
+        direction TB
+        PH1["Phase 1: Schema-Erfindung\n'Analysiere das Thema und entwirf\nein vollstaendiges Metadaten-Schema'"]
+        PH1 --> SCHEMA["LLM erfindet:\nnodeTypes: [person, company]\nedgeTypes: [works_for, owns]\nproperties: [influence, founded]"]
+        SCHEMA --> ZOD_DYN["Nodges baut dynamisch\nein Zod-Laufzeit-Schema\naus der LLM-Erfindung"]
+
+        ZOD_DYN --> PH2["Phase 2: Instanz-Befuellung\n'Generiere die echten Daten\nstreng nach deinem Schema'"]
+        PH2 --> DATA["LLM befuellt:\nentities: [...]\nrelationships: [...]\nNur Attribute die es selbst\nin Phase 1 definiert hat"]
+    end
+
+    subgraph GAIN["Architektonischer Gewinn"]
+        G1["Halluzinations-Firewall\nLLM kann Phase-2-Attribute\nnicht mehr erfinden"]
+        G2["Dynamische Ontologien\njeder Prompt erschafft\nein neues Schema"]
+        G3["Korrektes Visual Mapping\nnur definierte Properties\nerscbeinen in Dropdowns"]
+    end
+
+    BEFORE --> ARCH
+    ARCH --> GAIN
+
+    style BEFORE fill:#3a1a1a,stroke:#e53935,color:#ffcdd2
+    style ARCH fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style GAIN fill:#1a3a1a,stroke:#43a047,color:#c8e6c9

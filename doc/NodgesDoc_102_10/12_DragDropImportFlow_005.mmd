@@ -1,0 +1,42 @@
+sequenceDiagram
+    actor User
+    participant Browser
+    participant App
+    participant DataParser
+    participant Zod
+    participant GDM as GraphDataManager
+    participant SM as SceneManager
+
+    User->>Browser: JSON-Datei per Drag and Drop\nins Browserfenster ziehen
+
+    Browser->>App: dragover Event → preventDefault\n(verhindert Browser-Standard-Download-Dialog)
+    Browser->>App: drop Event → file: File
+
+    App->>App: FileReader.readAsText(file)
+    App->>App: JSON.parse(rawText)
+
+    App->>DataParser: detectSchemaVersion(json)
+    note over DataParser: schemaVersion aus JSON lesen\noder Struktur heuristisch analysieren
+    DataParser-->>App: Build 10 / Schema 5.0 erkannt
+
+    App->>Zod: GraphDataSchema.parse(json)
+
+    alt Validierung erfolgreich
+        Zod-->>App: typisiertes GraphData-Objekt
+
+        App->>GDM: update(entities, relationships, dataModel)
+        GDM->>GDM: interne Maps bereinigen\nneue Entitaeten indexieren
+
+        App->>SM: clearScene()
+        SM->>SM: alle .dispose() Aufrufe\nGeometrie + Material + Textur\nVRAM freigeben
+
+        App->>SM: buildScene(graphData)
+        SM->>SM: InstancedMesh aufbauen\nMatrix-Buffer befuellen
+
+        App-->>User: Toast gruen: 'Graph geladen'\nNeue 3D-Szene sichtbar
+
+    else Validierungsfehler
+        Zod-->>App: ZodError (fehlende Felder\nfalsche Typen\ndoppelte IDs)
+        App-->>User: Toast rot mit Fehlerdetail\nalte Szene bleibt unveraendert
+        note over App: White-Screen-Verbot:\nclearScene NICHT aufgerufen
+    end

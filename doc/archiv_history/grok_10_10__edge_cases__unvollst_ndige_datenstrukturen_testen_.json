@@ -1,0 +1,581 @@
+{
+  "_testMeta": {
+    "iteration": "10. Edge Cases (Unvollständige Datenstrukturen testen)",
+    "prompt": "Ein magisches Universum mit Knoten ohne Kanten, oder Kanten ohne Eigenschaften, und völlig ungewöhnlichen, extrem extrem langen Typnamen.",
+    "model": "x-ai/grok-4.20",
+    "durationMs": 24044,
+    "durationSec": 24.04,
+    "entityCount": 20,
+    "relationshipCount": 25,
+    "timestamp": "2026-07-12T10:32:30.279Z"
+  },
+  "system": "Ein magisches Universum mit Knoten ohne Kanten, oder Kanten ohne Eigenschaften, und völlig ungewöhnlichen, extrem extrem langen Typnamen.",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "A dense semantic network representing a magical universe featuring extraordinarily long entity type names, nodes without edges in parts of the graph, and edges without any properties.",
+    "competencyQuestions": [
+      "Welche magischen Entitäten existieren in diesem Universum und welche semantischen Eigenschaften definieren sie?",
+      "Wie sind die ultra-lang benannten magischen Kreaturen, Artefakte und Phänomene durch semantische Beziehungen verbunden?",
+      "Welche kontinuierlichen magischen Werte (z.B. Machtstärke, zeitliche Dauer, Einflussradius) charakterisieren die Entitäten?",
+      "Welche kategorialen Klassifikationen (z.B. Ursprung, Affinität) erlauben die Unterscheidung der magischen Elemente?"
+    ],
+    "apiResponse": {
+      "id": "gen-1783852319-jaerOSloABx6Oyb1qyLZ",
+      "created": 1783852319,
+      "model": "x-ai/grok-4.20-20260309",
+      "usage": {
+        "prompt_tokens": 1611,
+        "completion_tokens": 4348,
+        "total_tokens": 5959,
+        "cost": 0.01127095,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 1536,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.01127095,
+          "upstream_inference_prompt_cost": 0.00040095,
+          "upstream_inference_completions_cost": 0.01087
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "SupraQuantumEtherealManifestationOfAncientCelestialEnchantment": {
+        "properties": {
+          "magischeMachtstaerke": {
+            "type": "continuous",
+            "range": [
+              0,
+              1000
+            ]
+          },
+          "ursprungsRealm": {
+            "type": "categorical",
+            "categories": [
+              "AstralVoid",
+              "NebulaOfForgottenDreams",
+              "EternalCrystalCore"
+            ]
+          },
+          "zeitlicheExistenzdauerInAonen": {
+            "type": "continuous",
+            "range": [
+              1,
+              999999
+            ]
+          }
+        }
+      },
+      "HyperDimensionalTranscendentalArtifactOfInfiniteMysticalResonance": {
+        "properties": {
+          "magischeMachtstaerke": {
+            "type": "continuous",
+            "range": [
+              0,
+              1000
+            ]
+          },
+          "ursprungsRealm": {
+            "type": "categorical",
+            "categories": [
+              "AstralVoid",
+              "NebulaOfForgottenDreams",
+              "EternalCrystalCore"
+            ]
+          },
+          "einflussRadiusInParsec": {
+            "type": "continuous",
+            "range": [
+              0.1,
+              5000
+            ]
+          }
+        }
+      },
+      "OmniTemporalSpectralEntityWithUnfathomableCosmicWisdom": {
+        "properties": {
+          "magischeMachtstaerke": {
+            "type": "continuous",
+            "range": [
+              0,
+              1000
+            ]
+          },
+          "affinitätElement": {
+            "type": "categorical",
+            "categories": [
+              "Aether",
+              "VoidShadow",
+              "PrimalLight",
+              "ChronoFlux"
+            ]
+          },
+          "alterInMillennien": {
+            "type": "continuous",
+            "range": [
+              0,
+              100000
+            ]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes": {
+        "properties": {}
+      },
+      "TranscendentCausalInfluencePropagationPathWithoutProperties": {
+        "properties": {}
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "ent_001",
+        "type": "SupraQuantumEtherealManifestationOfAncientCelestialEnchantment",
+        "label": "Luminara",
+        "magischeMachtstaerke": 874,
+        "ursprungsRealm": "AstralVoid",
+        "zeitlicheExistenzdauerInAonen": 12457
+      },
+      {
+        "id": "ent_002",
+        "type": "SupraQuantumEtherealManifestationOfAncientCelestialEnchantment",
+        "label": "Nexorath",
+        "magischeMachtstaerke": 652,
+        "ursprungsRealm": "EternalCrystalCore",
+        "zeitlicheExistenzdauerInAonen": 873
+      },
+      {
+        "id": "ent_003",
+        "type": "HyperDimensionalTranscendentalArtifactOfInfiniteMysticalResonance",
+        "label": "The Eternal Prism",
+        "magischeMachtstaerke": 945,
+        "ursprungsRealm": "NebulaOfForgottenDreams",
+        "einflussRadiusInParsec": 2341.7
+      },
+      {
+        "id": "ent_004",
+        "type": "HyperDimensionalTranscendentalArtifactOfInfiniteMysticalResonance",
+        "label": "Sable Orb",
+        "magischeMachtstaerke": 321,
+        "ursprungsRealm": "AstralVoid",
+        "einflussRadiusInParsec": 45.2
+      },
+      {
+        "id": "ent_005",
+        "type": "OmniTemporalSpectralEntityWithUnfathomableCosmicWisdom",
+        "label": "Zephyros",
+        "magischeMachtstaerke": 789,
+        "affinitätElement": "Aether",
+        "alterInMillennien": 1248
+      },
+      {
+        "id": "ent_006",
+        "type": "OmniTemporalSpectralEntityWithUnfathomableCosmicWisdom",
+        "label": "Vorthak the Timeless",
+        "magischeMachtstaerke": 567,
+        "affinitätElement": "VoidShadow",
+        "alterInMillennien": 87456
+      },
+      {
+        "id": "ent_007",
+        "type": "SupraQuantumEtherealManifestationOfAncientCelestialEnchantment",
+        "label": "Aurelia Veil",
+        "magischeMachtstaerke": 432,
+        "ursprungsRealm": "NebulaOfForgottenDreams",
+        "zeitlicheExistenzdauerInAonen": 65432
+      },
+      {
+        "id": "ent_008",
+        "type": "HyperDimensionalTranscendentalArtifactOfInfiniteMysticalResonance",
+        "label": "Crystal of Unending Echoes",
+        "magischeMachtstaerke": 998,
+        "ursprungsRealm": "EternalCrystalCore",
+        "einflussRadiusInParsec": 4123
+      },
+      {
+        "id": "ent_009",
+        "type": "OmniTemporalSpectralEntityWithUnfathomableCosmicWisdom",
+        "label": "Elyndra",
+        "magischeMachtstaerke": 712,
+        "affinitätElement": "PrimalLight",
+        "alterInMillennien": 342
+      },
+      {
+        "id": "ent_010",
+        "type": "SupraQuantumEtherealManifestationOfAncientCelestialEnchantment",
+        "label": "Klytharion",
+        "magischeMachtstaerke": 156,
+        "ursprungsRealm": "AstralVoid",
+        "zeitlicheExistenzdauerInAonen": 234567
+      },
+      {
+        "id": "ent_011",
+        "type": "HyperDimensionalTranscendentalArtifactOfInfiniteMysticalResonance",
+        "label": "The Shimmering Abyss",
+        "magischeMachtstaerke": 876,
+        "ursprungsRealm": "NebulaOfForgottenDreams",
+        "einflussRadiusInParsec": 987.4
+      },
+      {
+        "id": "ent_012",
+        "type": "OmniTemporalSpectralEntityWithUnfathomableCosmicWisdom",
+        "label": "Quorath",
+        "magischeMachtstaerke": 234,
+        "affinitätElement": "ChronoFlux",
+        "alterInMillennien": 12567
+      },
+      {
+        "id": "ent_013",
+        "type": "SupraQuantumEtherealManifestationOfAncientCelestialEnchantment",
+        "label": "Sylphara",
+        "magischeMachtstaerke": 543,
+        "ursprungsRealm": "EternalCrystalCore",
+        "zeitlicheExistenzdauerInAonen": 987
+      },
+      {
+        "id": "ent_014",
+        "type": "HyperDimensionalTranscendentalArtifactOfInfiniteMysticalResonance",
+        "label": "Voidheart Relic",
+        "magischeMachtstaerke": 678,
+        "ursprungsRealm": "AstralVoid",
+        "einflussRadiusInParsec": 12.8
+      },
+      {
+        "id": "ent_015",
+        "type": "OmniTemporalSpectralEntityWithUnfathomableCosmicWisdom",
+        "label": "Mythralis",
+        "magischeMachtstaerke": 889,
+        "affinitätElement": "Aether",
+        "alterInMillennien": 45678
+      },
+      {
+        "id": "ent_016",
+        "type": "SupraQuantumEtherealManifestationOfAncientCelestialEnchantment",
+        "label": "Thalorion",
+        "magischeMachtstaerke": 345,
+        "ursprungsRealm": "NebulaOfForgottenDreams",
+        "zeitlicheExistenzdauerInAonen": 6543
+      },
+      {
+        "id": "ent_017",
+        "type": "HyperDimensionalTranscendentalArtifactOfInfiniteMysticalResonance",
+        "label": "Aetherial Keystone",
+        "magischeMachtstaerke": 721,
+        "ursprungsRealm": "EternalCrystalCore",
+        "einflussRadiusInParsec": 673.9
+      },
+      {
+        "id": "ent_018",
+        "type": "OmniTemporalSpectralEntityWithUnfathomableCosmicWisdom",
+        "label": "Vorathian",
+        "magischeMachtstaerke": 912,
+        "affinitätElement": "VoidShadow",
+        "alterInMillennien": 231
+      },
+      {
+        "id": "ent_019",
+        "type": "SupraQuantumEtherealManifestationOfAncientCelestialEnchantment",
+        "label": "Celestria",
+        "magischeMachtstaerke": 654,
+        "ursprungsRealm": "AstralVoid",
+        "zeitlicheExistenzdauerInAonen": 4321
+      },
+      {
+        "id": "ent_020",
+        "type": "HyperDimensionalTranscendentalArtifactOfInfiniteMysticalResonance",
+        "label": "Echo of the First Flame",
+        "magischeMachtstaerke": 432,
+        "ursprungsRealm": "NebulaOfForgottenDreams",
+        "einflussRadiusInParsec": 1567.2
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel_001",
+        "type": "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes",
+        "source": "ent_001",
+        "target": "ent_003",
+        "label": "resonates with"
+      },
+      {
+        "id": "rel_002",
+        "type": "TranscendentCausalInfluencePropagationPathWithoutProperties",
+        "source": "ent_003",
+        "target": "ent_005",
+        "label": "influences"
+      },
+      {
+        "id": "rel_003",
+        "type": "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes",
+        "source": "ent_005",
+        "target": "ent_002",
+        "label": "binds"
+      },
+      {
+        "id": "rel_004",
+        "type": "TranscendentCausalInfluencePropagationPathWithoutProperties",
+        "source": "ent_002",
+        "target": "ent_008",
+        "label": "empowers"
+      },
+      {
+        "id": "rel_005",
+        "type": "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes",
+        "source": "ent_008",
+        "target": "ent_006",
+        "label": "anchors"
+      },
+      {
+        "id": "rel_006",
+        "type": "TranscendentCausalInfluencePropagationPathWithoutProperties",
+        "source": "ent_006",
+        "target": "ent_009",
+        "label": "guides"
+      },
+      {
+        "id": "rel_007",
+        "type": "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes",
+        "source": "ent_009",
+        "target": "ent_004",
+        "label": "harmonizes"
+      },
+      {
+        "id": "rel_008",
+        "type": "TranscendentCausalInfluencePropagationPathWithoutProperties",
+        "source": "ent_004",
+        "target": "ent_011",
+        "label": "awakens"
+      },
+      {
+        "id": "rel_009",
+        "type": "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes",
+        "source": "ent_011",
+        "target": "ent_012",
+        "label": "echoes"
+      },
+      {
+        "id": "rel_010",
+        "type": "TranscendentCausalInfluencePropagationPathWithoutProperties",
+        "source": "ent_012",
+        "target": "ent_007",
+        "label": "transmutes"
+      },
+      {
+        "id": "rel_011",
+        "type": "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes",
+        "source": "ent_007",
+        "target": "ent_015",
+        "label": "protects"
+      },
+      {
+        "id": "rel_012",
+        "type": "TranscendentCausalInfluencePropagationPathWithoutProperties",
+        "source": "ent_015",
+        "target": "ent_017",
+        "label": "imbues"
+      },
+      {
+        "id": "rel_013",
+        "type": "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes",
+        "source": "ent_017",
+        "target": "ent_010",
+        "label": "stabilizes"
+      },
+      {
+        "id": "rel_014",
+        "type": "TranscendentCausalInfluencePropagationPathWithoutProperties",
+        "source": "ent_010",
+        "target": "ent_018",
+        "label": "catalyzes"
+      },
+      {
+        "id": "rel_015",
+        "type": "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes",
+        "source": "ent_018",
+        "target": "ent_013",
+        "label": "reflects"
+      },
+      {
+        "id": "rel_016",
+        "type": "TranscendentCausalInfluencePropagationPathWithoutProperties",
+        "source": "ent_013",
+        "target": "ent_019",
+        "label": "illuminates"
+      },
+      {
+        "id": "rel_017",
+        "type": "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes",
+        "source": "ent_019",
+        "target": "ent_014",
+        "label": "preserves"
+      },
+      {
+        "id": "rel_018",
+        "type": "TranscendentCausalInfluencePropagationPathWithoutProperties",
+        "source": "ent_014",
+        "target": "ent_020",
+        "label": "charges"
+      },
+      {
+        "id": "rel_019",
+        "type": "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes",
+        "source": "ent_020",
+        "target": "ent_016",
+        "label": "connects"
+      },
+      {
+        "id": "rel_020",
+        "type": "TranscendentCausalInfluencePropagationPathWithoutProperties",
+        "source": "ent_016",
+        "target": "ent_001",
+        "label": "returns to"
+      },
+      {
+        "id": "rel_021",
+        "type": "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes",
+        "source": "ent_005",
+        "target": "ent_008",
+        "label": "fuses"
+      },
+      {
+        "id": "rel_022",
+        "type": "TranscendentCausalInfluencePropagationPathWithoutProperties",
+        "source": "ent_012",
+        "target": "ent_015",
+        "label": "merges"
+      },
+      {
+        "id": "rel_023",
+        "type": "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes",
+        "source": "ent_009",
+        "target": "ent_017",
+        "label": "amplifies"
+      },
+      {
+        "id": "rel_024",
+        "type": "TranscendentCausalInfluencePropagationPathWithoutProperties",
+        "source": "ent_018",
+        "target": "ent_020",
+        "label": "echoes through"
+      },
+      {
+        "id": "rel_025",
+        "type": "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes",
+        "source": "ent_006",
+        "target": "ent_011",
+        "label": "shadows"
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "SupraQuantumEtherealManifestationOfAncientCelestialEnchantment": {
+        "size": {
+          "source": "magischeMachtstaerke",
+          "function": "linear",
+          "range": [
+            0.8,
+            4.2
+          ]
+        },
+        "color": {
+          "source": "ursprungsRealm",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "dodecahedron"
+          }
+        }
+      },
+      "HyperDimensionalTranscendentalArtifactOfInfiniteMysticalResonance": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1.6
+          }
+        },
+        "color": {
+          "source": "ursprungsRealm",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "OmniTemporalSpectralEntityWithUnfathomableCosmicWisdom": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1.2
+          }
+        },
+        "color": {
+          "source": "affinitätElement",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "box"
+          }
+        }
+      },
+      "SymbioticEnergeticResonanceLinkWithoutAnyAdditionalAttributes": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#00FFAA"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.12
+          }
+        }
+      },
+      "TranscendentCausalInfluencePropagationPathWithoutProperties": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#FF44DD"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.08
+          }
+        }
+      }
+    }
+  }
+}

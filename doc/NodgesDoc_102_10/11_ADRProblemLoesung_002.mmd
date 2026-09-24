@@ -1,0 +1,44 @@
+graph TD
+    B14["BUILD 1-4\nGekoppelte Render-Logik\ntype === 'Server' → renderCube\ntype === 'Router' → renderBox"]
+
+    B14 -->|"PROBLEM:\njeder neue Datensatz\nbraucht Code-Aenderung\nSkalierbarkeit = 0"| ADR1
+
+    ADR1(["ADR-01: Entkopplung"])
+
+    ADR1 --> B5["BUILD 5\nglobal_node / global_edge\nVisual Mapping zur Laufzeit\nLLM als Ontologie-Architekt"]
+
+    B5 -->|"PROBLEM:\nLLMs halten sich\nnicht ans Schema\nJSON bricht oder fehlt"| ADR2
+
+    ADR2(["ADR-02: Strukturzwang"])
+
+    ADR2 --> B6["BUILD 6\nZod + JSON Schema Mode\nLLM physisch unfaehig\nvom Schema abzuweichen"]
+
+    B6 -->|"PROBLEM:\nStruktur perfekt\naber Fakten falsch\nHalluzinierte Jahreszahlen"| ADR3
+
+    ADR3(["ADR-03: Grounding"])
+
+    ADR3 --> B8["BUILD 8\nWikidata SPARQL\nLLM schreibt Queries\nstatt Fakten zu raten"]
+
+    B8 -->|"PROBLEM:\nGrosse Graphen\nenthalten Duplikate\n'Apple' und 'Apple Inc.'"| ADR4
+
+    ADR4(["ADR-04: Semantik"])
+
+    ADR4 --> B9["BUILD 9\nEmbeddings + Kosinus\nKnoten > 0.95 Aehnlichkeit\nwerden verschmolzen"]
+
+    B9 -->|"PROBLEM:\nStarre Code-Pfade\npro Build\nNutzer hat keine Wahl"| ADR5
+
+    ADR5(["ADR-05: Modularisierung"])
+
+    ADR5 --> B10["BUILD 10\nKonfigurierbare Pipeline\nNutzer kombiniert selbst\nQuelle + Grounding + QA + Rating"]
+
+    style B14 fill:#3a1a1a,stroke:#e53935,color:#ffcdd2
+    style B5 fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style B6 fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style B8 fill:#2a2a1a,stroke:#f9a825,color:#fff9c4
+    style B9 fill:#2a1a3a,stroke:#9c27b0,color:#e1bee7
+    style B10 fill:#1a3a3a,stroke:#00897b,color:#b2dfdb
+    style ADR1 fill:#1a1a1a,stroke:#aaa,color:#fff
+    style ADR2 fill:#1a1a1a,stroke:#aaa,color:#fff
+    style ADR3 fill:#1a1a1a,stroke:#aaa,color:#fff
+    style ADR4 fill:#1a1a1a,stroke:#aaa,color:#fff
+    style ADR5 fill:#1a1a1a,stroke:#aaa,color:#fff

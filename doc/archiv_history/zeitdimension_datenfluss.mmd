@@ -1,0 +1,73 @@
+---
+title: "Nodges Zeitdimension -- Datenfluss"
+---
+graph TB
+    subgraph Daten["System-Definition"]
+        Nodes["Nodes mit Startwerten"]
+        Edges["Edges mit Temporal-Regeln"]
+        SimConfig["Simulations-Konfiguration"]
+    end
+
+    subgraph TimeEngine["TimeEngine"]
+        Clock["Clock -- tickRate, currentTick"]
+        Rules["Wirkungs-Regeln"]
+        History["State-History -- Snapshots pro Tick"]
+        Triggers["Schwellwert-Trigger"]
+    end
+
+    subgraph Transport["Transport Controls"]
+        Play["Play"]
+        Pause["Pause"]
+        Seek["Seek / Scrub"]
+        Speed["Geschwindigkeit 0.1x-10x"]
+        SkipFwd["Vorwaerts"]
+        SkipBck["Rueckwaerts"]
+    end
+
+    subgraph Tick["Pro Tick"]
+        EvalEdge["Edge-Regeln auswerten"]
+        ApplyEffect["Effekt auf Target anwenden"]
+        EvalDecay["Node-Decay auswerten"]
+        CheckThresh["Schwellwerte pruefen"]
+        FireTrigger["Trigger-Events feuern"]
+        SaveState["Zustand in History speichern"]
+    end
+
+    subgraph Visualisierung["Visuelle Abbildung"]
+        NodeGrow["Node waechst/schrumpft"]
+        NodeColor["Farbe wechselt"]
+        NodeFade["Node verblasst"]
+        NodeVibrate["Node vibriert"]
+        EdgeFlow["Flow-Animation"]
+        EdgeThicken["Edge wird dicker"]
+        EdgeBreak["Edge bricht"]
+        TimelineBar["Timeline-Bar am Bildschirmrand"]
+    end
+
+    subgraph UserInteraction["User-Eingriffe"]
+        ManualEdit["Wert manuell aendern"]
+        CutEdge["Edge kappen"]
+        AddEdge["Edge hinzufuegen"]
+        FreezeNode["Node einfrieren"]
+        Bookmark["Snapshot speichern"]
+        WhatIf["What-If Szenario starten"]
+    end
+
+    Nodes --> TimeEngine
+    Edges --> TimeEngine
+    SimConfig --> Clock
+
+    Transport --> Clock
+    Clock --> Tick
+
+    EvalEdge --> ApplyEffect
+    ApplyEffect --> EvalDecay
+    EvalDecay --> CheckThresh
+    CheckThresh --> FireTrigger
+    FireTrigger --> SaveState
+
+    Tick --> Visualisierung
+    SaveState --> History
+
+    UserInteraction --> TimeEngine
+    History --> Seek

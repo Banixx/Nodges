@@ -1,0 +1,28 @@
+graph TD
+    subgraph BREATHING["Breathing Glow (Selektion)"]
+        B1["Sinus-Oszillator im Render-Loop"]
+        B2["Intensity = Base + Amplitude x sin(Time x Frequency)"]
+        B3["Standard: 0.5 Hz\nweicher Uebergang\nPremium-Gefuehl vs. hartes Blinken"]
+        B1 --> B2 --> B3
+        B3 --> B4["emissive Color\nin Three.js Material\nglow wirkt von innen"]
+    end
+
+    subgraph HALO["Halo-Technik (Outline)"]
+        H1["Original Mesh"]
+        H2["Klon-Mesh\n+40% groesser skaliert"]
+        H3["opacity: 0.3\ndepthWrite: false\nimmer hinter Original gerendert"]
+        H4["weicher geisterhafter Schein\nohne teuren Sobel-Filter\nkaum GPU-Kosten"]
+        H1 --> H2 --> H3 --> H4
+    end
+
+    subgraph BACKUP["Material-Backup-System"]
+        MB1["vor Highlight:\nOriginalzustand sichern"]
+        MB2["Highlight anwenden\nMaterial aendern"]
+        MB3["nach Highlight:\nBackup exakt wiederherstellen"]
+        MB4["verhindert:\nMaterial-Leaks\nGeister-Materialien"]
+        MB1 --> MB2 --> MB3 --> MB4
+    end
+
+    style BREATHING fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7
+    style HALO fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style BACKUP fill:#2a1a1a,stroke:#e53935,color:#ffcdd2

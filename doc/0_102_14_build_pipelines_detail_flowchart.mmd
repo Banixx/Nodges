@@ -1,0 +1,47 @@
+flowchart TD
+    %% Detail-Ablaufdiagramm fuer Build 10 und DataParser Verarbeitung
+
+    subgraph Build10_Detail ["Build 10: Erweitertes SPARQL Pipeline Detail"]
+        direction TB
+        B10_Start(["Start: User Prompt"]) --> B10_KW_Prompt["Lade build_10_keyword_prompt.md"]
+        B10_KW_Prompt --> B10_KW_LLM["LLM: Extrahiere Keywords (Entities & Properties)"]
+        B10_KW_LLM --> B10_WD_Search["HTTP: Wikidata API wbsearchentities (Q-IDs & P-IDs)"]
+        B10_WD_Search --> B10_SP_Prompt["Lade build_10_sparql_prompt.md"]
+        B10_SP_Prompt --> B10_SP_LLM["LLM: Generiere SPARQL (inkl. thought_process CoT)"]
+        B10_SP_LLM --> B10_SP_Exec["HTTP POST: query.wikidata.org/sparql"]
+
+        B10_SP_Exec --> B10_Check{"SPARQL erfolgreich & Bindings > 0?"}
+        B10_Check -- "Nein (Fehler / 0 Ergebnisse)" --> B10_Retry_Check{"Versuche < maxRetries (2)?"}
+        B10_Retry_Check -- "Ja" --> B10_Add_Error["Fuege Server-Fehlermeldung zu Prompt hinzu"]
+        B10_Add_Error --> B10_SP_LLM
+        B10_Retry_Check -- "Nein" --> B10_FB["Fallback auf Build 6 Single-Pass"]
+
+        B10_Check -- "Ja (Bindings ok)" --> B10_Map_Prompt["Lade build_10_prompt.md (Mapping)"]
+        B10_Map_Prompt --> B10_Map_LLM["LLM: Transformiere Bindings -> Nodges JSON"]
+
+        B10_Map_LLM --> B10_QA_Check{"Quality Assurance aktiv?"}
+        B10_QA_Check -- "critic" --> B10_Critic_LLM["LLM: Pruefe verwaiste Kanten & Range-Verletzungen"]
+        B10_QA_Check -- "none" --> B10_Embed_Check{"Rating Method == embeddings?"}
+        B10_Critic_LLM --> B10_Embed_Check
+
+        B10_Embed_Check -- "Ja" --> B10_Calc_Embed["Embedding-API: Kosinus-Aehnlichkeit -> rel.strength"]
+        B10_Embed_Check -- "Nein" --> B10_Finish(["Ende Build 10 -> Uebergabe an DataParser"])
+        B10_Calc_Embed --> B10_Finish
+    end
+
+    subgraph DataParser_Detail ["DataParser: Validerungs- & Normalisierungs-Pipeline"]
+        direction TB
+        DP_Start(["Eingabe: Raw JSON"]) --> DP_Unwrap["Unwrap Response Wrappers (graphData, data.data)"]
+        DP_Unwrap --> DP_Ver["Pruefe schemaVersion (Fallback auf 5.0)"]
+        DP_Ver --> DP_Sync["Sync Relationships (start/end <-> source/target)"]
+        DP_Sync --> DP_Temp["Synthetisiere temporal-Objekte aus flachen Zeitfeldern"]
+        DP_Temp --> DP_VM["Normalisiere Visual Mappings Presets & generiere Kategorie-Farben"]
+        DP_VM --> DP_Zod{"Zod Validation: GraphDataSchema.safeParse()"}
+
+        DP_Zod -- "Fehler" --> DP_Err["Throw Error: Data Validation Failed"]
+        DP_Zod -- "Erfolg" --> DP_Values["parseValues(): Typ-Konvertierung & Range-Clamping"]
+        DP_Values --> DP_Metrics["calculateNetworkMetrics(): inbound, outbound, degree"]
+        DP_Metrics --> DP_End(["Ausgabe: Valider GraphData Object"])
+    end
+
+    B10_Finish --> DP_Start

@@ -1,0 +1,29 @@
+stateDiagram-v2
+    [*] --> Anfrage: generateGraphData aufgerufen
+
+    Anfrage --> Erfolg: HTTP 200 + valides JSON
+    Anfrage --> Ratelimit: HTTP 429
+    Anfrage --> Timeout: Netzwerk-Timeout
+    Anfrage --> ZodFehler: JSON invalide / Schema-Bruch
+
+    Ratelimit --> ExponentialBackoff: warten (1s → 2s → 4s)
+    Timeout --> ExponentialBackoff
+
+    ExponentialBackoff --> Anfrage: Retry-Versuch (max 3x)
+    ExponentialBackoff --> FallbackVorschlag: nach 3 Fehlversuchen
+
+    FallbackVorschlag --> OllamaFallback: Nutzer bestaetigt Wechsel zu lokal
+    FallbackVorschlag --> Abbruch: Nutzer bricht ab
+
+    OllamaFallback --> Anfrage: neue Anfrage an localhost:11434
+
+    ZodFehler --> ErrorHandler: ZodError weitergeleitet
+    ErrorHandler --> ToastRot: Toast-Notification (rot)
+    ToastRot --> SzeneErhalten: clearScene wird NICHT ausgefuehrt
+    SzeneErhalten --> [*]: alte Szene bleibt sichtbar
+
+    Erfolg --> ZodParse: GraphDataSchema.parse
+    ZodParse --> loadGraphData: Daten valide
+    loadGraphData --> [*]: neue 3D-Szene gerendert
+
+    Abbruch --> [*]

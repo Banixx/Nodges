@@ -1,0 +1,31 @@
+graph LR
+    subgraph POS["Positive Darstellung\n(Standard-Modus)"]
+        P1["Was IST da?"]
+        P2["Knoten A vorhanden\nKnoten B vorhanden"]
+        P3["Kante A→B vorhanden\nsolide Linie\ngewichtet"]
+        P1 --> P2 --> P3
+        P_FRAGE["Frage:\n'Was existiert in diesem System?'"]
+    end
+
+    subgraph NEG["Negative Darstellung\n(Inversions-Modus)"]
+        N1["Was FEHLT oder sollte existieren?"]
+        N2["Erwartete Kante A→C\nnicht im Datensatz\n→ als gestrichelte Phantom-Linie"]
+        N3["Erwarteter Knoten D\nnicht vorhanden\n→ als transparentes Ghost-Mesh"]
+        N4["Fehlende Verbindung\nhat eigene Farbe (rot/grau)\nund opacity: 0.3"]
+        N1 --> N2 --> N4
+        N1 --> N3 --> N4
+        N_FRAGE["Frage:\n'Was ist strukturell absent?'"]
+    end
+
+    subgraph USECASE["Anwendungsfaelle"]
+        U1["Cybersecurity:\nfehlendes Firewall-Segment\nleuchtet als roter Phantom-Bogen"]
+        U2["Supply-Chain:\nerwarteter Lieferant\nist nicht verbunden"]
+        U3["Sozialnetz:\nerwartete Beziehung\nzwischen Personen fehlt"]
+    end
+
+    POS -->|"Invertierung\nder Logik"| NEG
+    NEG --> USECASE
+
+    style POS fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style NEG fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7
+    style USECASE fill:#2a1a3a,stroke:#9c27b0,color:#e1bee7

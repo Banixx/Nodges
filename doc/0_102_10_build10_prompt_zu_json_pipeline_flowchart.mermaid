@@ -1,0 +1,46 @@
+flowchart TD
+    Start([User-Prompt zu beliebigem Thema]) --> Settings[/Einstellungs-UI:<br/>Nutzer wählt Bausteine/]
+
+    subgraph Modul1["Baustein 1: Modell-Quelle"]
+        M1a[Cloud-LLM<br/>BYOK API-Key]
+        M1b[Lokales LLM<br/>LM Studio / Ollama<br/>12 GB VRAM]
+    end
+
+    subgraph Modul2["Baustein 2: Grounding / Wissensquelle"]
+        M2a[Kein Grounding<br/>Schema-Constrained]
+        M2b[Wikidata Zwei-Schritt<br/>oder Agentic Tool-Use]
+        M2c[RAG: Web-/Wiki-Text]
+        M2d[Vektordatenbank<br/>extern oder lokal]
+    end
+
+    subgraph Modul3["Baustein 3: Qualitätssicherung"]
+        M3a[Keine zusätzliche Prüfung]
+        M3b[Ensemble/Voting]
+        M3c[Generator + Kritiker]
+        M3d[Human-in-the-loop Review]
+    end
+
+    subgraph Modul4["Baustein 4: Bewertungsmethode<br/>Intensität/Stärke"]
+        M4a[LLM-Schätzung]
+        M4b[Kontrolliertes Vokabular/Skala]
+        M4c[Embedding-Kosinus-Ähnlichkeit]
+    end
+
+    Settings --> Modul1
+    Settings --> Modul2
+    Settings --> Modul3
+    Settings --> Modul4
+
+    Modul1 --> Generate[JSON-Generierung<br/>gemäß gewählter Bausteine]
+    Modul2 --> Generate
+    Modul3 --> Generate
+    Modul4 --> Generate
+
+    Generate --> Valid{Schema-Validierung<br/>erfolgreich?}
+    Valid -- Nein --> Retry[Retry / Reparatur-Loop] --> Generate
+    Valid -- Ja --> Final([Validiertes JSON:<br/>Entitäten + Eigenschaften/Intensität<br/>+ Beziehungen/Art+Stärke])
+
+    Final --> Nodges[Transformation in<br/>nodes/edges Struktur]
+    Nodges --> Render[Nodges 3D-Visualisierung]
+
+    Render -.optional Feedback.-> Settings

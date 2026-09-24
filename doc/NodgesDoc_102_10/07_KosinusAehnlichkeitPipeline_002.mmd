@@ -1,0 +1,31 @@
+graph LR
+    TEXT["Knoten-Text\nlabel + description\nz.B. 'Albert Einstein'\n'Relativitaetstheorie'"]
+
+    TEXT --> EMB["Embedding-Modell\ntext-embedding-3-small\noder Ollama lokal"]
+
+    EMB --> VEC_A["Vektor A\n[0.12, -0.87, 0.43, ...]\n1536 Dimensionen"]
+    EMB --> VEC_B["Vektor B\n[0.09, -0.91, 0.51, ...]\n1536 Dimensionen"]
+
+    VEC_A & VEC_B --> COS["Kosinus-Aehnlichkeit\ncos(theta) = A·B / ||A||·||B||"]
+
+    COS --> SCORE["Score: 0.0 bis 1.0\n0.0 = komplett gegensaetzlich\n1.0 = identisch"]
+
+    SCORE --> NORM["Normalisierung\n0.0–1.0 → 0–100\nals semantic_weight"]
+
+    NORM --> EDGE["Kanten-Property\nproperties.semantic_weight = 87"]
+
+    EDGE --> VMAP["Visual Mapping\nsemantic_weight → Kantenbreite\nsemantic_weight → Helligkeit"]
+
+    VMAP --> SCENE["3D-Szene\nhoch-aehnliche Kanten\ndicker + leuchtender"]
+
+    subgraph DEDUP["Parallel: Deduplizierung Build 9"]
+        D1["Score > 0.95?"]
+        D1 -->|"ja"| D2["Knoten fusionieren\nalle Kanten umleiten"]
+        D1 -->|"nein"| D3["Knoten behalten"]
+    end
+
+    SCORE --> D1
+
+    style DEDUP fill:#2a1a1a,stroke:#e53935,color:#ffcdd2
+    style SCENE fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7
+    style EDGE fill:#1a3a1a,stroke:#43a047,color:#c8e6c9

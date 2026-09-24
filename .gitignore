@@ -51,7 +51,9 @@ build/
 .antigravityignore
 
 # Documentation
-doc/
+# doc/ wird NICHT mehr ignoriert (Freigabe Benutzer 2026-09-24).
+# Arbeitsdokumente muessen zwischen beiden Harnesses (piCon + Antigravity)
+# ueber GitHub verfuegbar sein. Siehe docs/setup-multi-harness.md Abschnitt 8.
 
 download/
 

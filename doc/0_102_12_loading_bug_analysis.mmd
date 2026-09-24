@@ -1,0 +1,35 @@
+graph TD
+    %% Prozess Start
+    Start((Generierung<br/>starten)) --> LLM[LLMService: generiert GraphData JSON]
+    LLM --> JSON[Generierte JSON enthält 'type: text' in dataModel]
+    
+    %% UI Update (Vorab)
+    JSON --> UI_Update[CreatePanel: Aktualisiert MappingUI]
+    UI_Update --> UI_State[User sieht Mappings im Panel<br/>z.B. 'position']
+    
+    %% Daten laden & Validierung
+    UI_Update --> App_Load[App: loadGraphData aufgerufen]
+    App_Load --> Parser[DataParser: Zod Schema Validierung]
+    
+    %% Validierungsprüfung
+    Parser --> Check{PropertySchema<br/>Validierung}
+    
+    %% Fehlerhafter Pfad (Vor dem Fix)
+    Check -- "Erwartet: string, continuous, etc.<br/>Gefunden: text" --> Error[Zod ValidationError: Invalid Enum Value]
+    Error --> Abort[Ladevorgang bricht hart ab]
+    Abort --> EmptyScene[StateManager wird nicht aktualisiert.<br/>Szene bleibt komplett leer!]
+    
+    %% Erfolgreicher Pfad (Nach dem Fix)
+    Check -- "Fix: 'text' zum Enum hinzugefügt" --> Success[Parsen erfolgreich]
+    Success --> State[StateManager: loadGraph]
+    State --> Render[NodeManager & TimePlayerUI<br/>rendern Nodes, Edges und Slider korrekt]
+    
+    %% Styling
+    classDef error fill:#ffebee,stroke:#ef5350,stroke-width:2px,color:#000;
+    classDef success fill:#e8f5e9,stroke:#66bb6a,stroke-width:2px,color:#000;
+    classDef state fill:#e3f2fd,stroke:#42a5f5,stroke-width:2px,color:#000;
+    classDef default fill:#fafafa,stroke:#bdbdbd,stroke-width:1px,color:#000;
+
+    class Error,Abort,EmptyScene error;
+    class Success,State,Render success;
+    class UI_Update,UI_State state;

@@ -1,0 +1,30 @@
+graph TD
+    subgraph PROMPT_AUFBAU["Anatomie eines guten Nodges-Prompts"]
+        PA["Themen-Kontext\n'Zeichne mir das Oekosystem\neines europaeischen Waldes.'"]
+        PB["Beziehungs-Direktive\n'Wer frisst wen?\nWer lebt wo?'"]
+        PC["Quantitative Anker (optional)\n'Schätze die Populationsgroesse\nund den Einfluss jeder Art.'"]
+        PD["Visualisierungs-Hinweis (optional)\n'Nutze die Groesse der Knoten\nfuer Biomasse.'"]
+
+        PA --> PB --> PC --> PD
+    end
+
+    subgraph SCAFFOLDING["Scaffolding-Prinzip (Cold Start)"]
+        S1["Autor liefert\nkuratierten Basis-Prompt\nals Einstiegspunkt"]
+        S2["Betrachter sieht\nstrukturierten Startgraph\nkeine Ueberforderung\nvor leerem Canvas"]
+        S3["Aus Instruktion\nwird Konstruktion:\nNutzer aendert Mapping\ntestet Hypothesen live"]
+        S1 --> S2 --> S3
+    end
+
+    subgraph TIPPS["Prompt-Qualitaet"]
+        T1["Konkret statt abstrakt\nSchlecht: 'Mach einen Graphen'\nGut: 'Zeige Machtstrukturen\nim roemischen Senat 50 v.Chr.'"]
+        T2["Beziehungen explizit\nfordern\n'Welche Person beeinflusste\nwen auf welche Weise?'"]
+        T3["Property-Fuellgebot\n'Fuelle bei JEDEM Knoten\ndas Feld influence\nmit einem Wert 1-100'"]
+        T4["Modell-Match\nKomplexer Prompt\n→ grosses Modell (GPT-4o)\nEinfacher Prompt\n→ kleines Modell (phi3)"]
+    end
+
+    PROMPT_AUFBAU --> SCAFFOLDING
+    SCAFFOLDING --> TIPPS
+
+    style PROMPT_AUFBAU fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style SCAFFOLDING fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style TIPPS fill:#2a2a1a,stroke:#f9a825,color:#fff9c4

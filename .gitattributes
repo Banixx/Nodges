@@ -1,10 +1,23 @@
-# Auto-detect text files and normalize line endings to LF on commit
+# Zeilenenden verbindlich auf LF festlegen.
+# Grund: Mehrere Harnesses (piCon im Linux-Container, Antigravity auf Windows)
+# arbeiten am selben Repo. Ohne diese Regel schreibt die Windows-Seite CRLF,
+# die Linux-Seite LF, und Git meldet Dateien als geaendert, deren Inhalt
+# sich gar nicht geaendert hat (LF/CRLF-Gemisch).
+#
+# "text=auto"  = Git erkennt selbst, ob eine Datei Text oder Binaer ist.
+# "eol=lf"     = Im Arbeitsverzeichnis (Working Tree) immer LF verwenden.
+# Im Index (der Repo-Datenbank) speichert Git ohnehin immer LF.
+
 * text=auto eol=lf
 
-# Explicitly ensure shell scripts use LF
-*.sh text eol=lf
-
-# Windows-specific scripts
-*.cmd text eol=crlf
-*.bat text eol=crlf
-*.ps1 text eol=crlf
+# Binaerdateien ausdruecklich ausschliessen (nicht umwandeln!).
+# Ein Zeilenenden-Umbau wuerde diese Dateien zerstoeren.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.woff binary
+*.woff2 binary

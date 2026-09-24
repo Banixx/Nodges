@@ -1,0 +1,672 @@
+{
+  "_testMeta": {
+    "iteration": "6. Abstrakte Konzepte",
+    "prompt": "Die Entwicklung philosophischer Strömungen und deren gegenseitige Beeinflussung über die Zeit. Sehr abstrakt mit vielen Beziehungen.",
+    "model": "x-ai/grok-4.20",
+    "durationMs": 20930,
+    "durationSec": 20.93,
+    "entityCount": 19,
+    "relationshipCount": 24,
+    "timestamp": "2026-07-14T09:04:37.921Z"
+  },
+  "system": "Die Entwicklung philosophischer Strömungen und deren gegenseitige Beeinflussung über die Zeit",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Abstraktes Netzwerk philosophischer Strömungen, Denker und deren zeitliche und konzeptionelle Beeinflussungen",
+    "competencyQuestions": [
+      "Welche Philosophen und Strömungen sind zentrale Knotenpunkte der Beeinflussung?",
+      "Wie hat sich eine philosophische Idee (z.B. Rationalismus) über die Jahrhunderte von einer Strömung zur nächsten weiterentwickelt?",
+      "Welche gegenwärtigen Strömungen sind das Ergebnis mehrerer historischer Einflüsse?",
+      "Welche zeitlichen Epochen sind durch besonders dichte philosophische Interaktionen gekennzeichnet?",
+      "Welche konzeptionellen Ideen (z.B. Freiheit, Existenz) verbinden unterschiedliche philosophische Traditionen?"
+    ],
+    "apiResponse": {
+      "id": "gen-1784019850-pDaATqx5So9A8Dm5Amcw",
+      "created": 1784019850,
+      "model": "x-ai/grok-4.20",
+      "usage": {
+        "prompt_tokens": 1872,
+        "completion_tokens": 3741,
+        "total_tokens": 5613,
+        "cost": 0.0114909,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 192,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0114909,
+          "upstream_inference_prompt_cost": 0.0021384,
+          "upstream_inference_completions_cost": 0.0093525
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Philosopher": {
+        "properties": {
+          "kategorie": {
+            "type": "categorical"
+          },
+          "geburtsjahr": {
+            "type": "continuous",
+            "range": [
+              -600,
+              2000
+            ]
+          },
+          "sterbejahr": {
+            "type": "continuous",
+            "range": [
+              -500,
+              2025
+            ]
+          },
+          "epoche": {
+            "type": "categorical"
+          },
+          "einflussgrad": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      },
+      "Strömung": {
+        "properties": {
+          "kategorie": {
+            "type": "categorical"
+          },
+          "entstehungsjahr": {
+            "type": "continuous",
+            "range": [
+              -600,
+              2000
+            ]
+          },
+          "region": {
+            "type": "categorical"
+          },
+          "zentralesKonzept": {
+            "type": "categorical"
+          },
+          "einflussgrad": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      },
+      "Konzept": {
+        "properties": {
+          "kategorie": {
+            "type": "categorical"
+          },
+          "thematischerBereich": {
+            "type": "categorical"
+          },
+          "abstraktionsgrad": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "beeinflusst": {
+        "properties": {
+          "einflussstaerke": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          },
+          "zeitlicheDistanz": {
+            "type": "continuous",
+            "range": [
+              0,
+              300
+            ]
+          }
+        }
+      },
+      "gehoert_zu": {
+        "properties": {}
+      },
+      "entwickelt_aus": {
+        "properties": {
+          "kontinuitaetsgrad": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      },
+      "kritisiert": {
+        "properties": {
+          "kritikintensitaet": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      },
+      "beinhaltet": {
+        "properties": {}
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "p1",
+        "label": "Sokrates",
+        "kategorie": "Philosopher",
+        "geburtsjahr": -470,
+        "sterbejahr": -399,
+        "epoche": "Antike",
+        "einflussgrad": 92
+      },
+      {
+        "id": "p2",
+        "label": "Platon",
+        "kategorie": "Philosopher",
+        "geburtsjahr": -428,
+        "sterbejahr": -348,
+        "epoche": "Antike",
+        "einflussgrad": 95
+      },
+      {
+        "id": "p3",
+        "label": "Aristoteles",
+        "kategorie": "Philosopher",
+        "geburtsjahr": -384,
+        "sterbejahr": -322,
+        "epoche": "Antike",
+        "einflussgrad": 96
+      },
+      {
+        "id": "p4",
+        "label": "Immanuel Kant",
+        "kategorie": "Philosopher",
+        "geburtsjahr": 1724,
+        "sterbejahr": 1804,
+        "epoche": "Aufklärung",
+        "einflussgrad": 94
+      },
+      {
+        "id": "p5",
+        "label": "René Descartes",
+        "kategorie": "Philosopher",
+        "geburtsjahr": 1596,
+        "sterbejahr": 1650,
+        "epoche": "Frühe Neuzeit",
+        "einflussgrad": 88
+      },
+      {
+        "id": "p6",
+        "label": "Friedrich Nietzsche",
+        "kategorie": "Philosopher",
+        "geburtsjahr": 1844,
+        "sterbejahr": 1900,
+        "epoche": "19. Jahrhundert",
+        "einflussgrad": 89
+      },
+      {
+        "id": "p7",
+        "label": "Jean-Paul Sartre",
+        "kategorie": "Philosopher",
+        "geburtsjahr": 1905,
+        "sterbejahr": 1980,
+        "epoche": "20. Jahrhundert",
+        "einflussgrad": 82
+      },
+      {
+        "id": "p8",
+        "label": "Martin Heidegger",
+        "kategorie": "Philosopher",
+        "geburtsjahr": 1889,
+        "sterbejahr": 1976,
+        "epoche": "20. Jahrhundert",
+        "einflussgrad": 85
+      },
+      {
+        "id": "s1",
+        "label": "Idealismus",
+        "kategorie": "Strömung",
+        "entstehungsjahr": -400,
+        "region": "Griechenland",
+        "zentralesKonzept": "Formen",
+        "einflussgrad": 85
+      },
+      {
+        "id": "s2",
+        "label": "Rationalismus",
+        "kategorie": "Strömung",
+        "entstehungsjahr": 1600,
+        "region": "Europa",
+        "zentralesKonzept": "Vernunft",
+        "einflussgrad": 78
+      },
+      {
+        "id": "s3",
+        "label": "Empirismus",
+        "kategorie": "Strömung",
+        "entstehungsjahr": 1650,
+        "region": "England",
+        "zentralesKonzept": "Erfahrung",
+        "einflussgrad": 76
+      },
+      {
+        "id": "s4",
+        "label": "Existentialismus",
+        "kategorie": "Strömung",
+        "entstehungsjahr": 1940,
+        "region": "Europa",
+        "zentralesKonzept": "Existenz",
+        "einflussgrad": 81
+      },
+      {
+        "id": "s5",
+        "label": "Phänomenologie",
+        "kategorie": "Strömung",
+        "entstehungsjahr": 1900,
+        "region": "Deutschland",
+        "zentralesKonzept": "Bewusstsein",
+        "einflussgrad": 79
+      },
+      {
+        "id": "s6",
+        "label": "Poststrukturalismus",
+        "kategorie": "Strömung",
+        "entstehungsjahr": 1960,
+        "region": "Frankreich",
+        "zentralesKonzept": "Macht",
+        "einflussgrad": 68
+      },
+      {
+        "id": "k1",
+        "label": "Dialektik",
+        "kategorie": "Konzept",
+        "thematischerBereich": "Logik",
+        "abstraktionsgrad": 85
+      },
+      {
+        "id": "k2",
+        "label": "Freiheit",
+        "kategorie": "Konzept",
+        "thematischerBereich": "Ethik",
+        "abstraktionsgrad": 92
+      },
+      {
+        "id": "k3",
+        "label": "Sein",
+        "kategorie": "Konzept",
+        "thematischerBereich": "Metaphysik",
+        "abstraktionsgrad": 95
+      },
+      {
+        "id": "k4",
+        "label": "Erkenntnis",
+        "kategorie": "Konzept",
+        "thematischerBereich": "Epistemologie",
+        "abstraktionsgrad": 88
+      },
+      {
+        "id": "k5",
+        "label": "Wille zur Macht",
+        "kategorie": "Konzept",
+        "thematischerBereich": "Ethik",
+        "abstraktionsgrad": 78
+      }
+    ],
+    "relationships": [
+      {
+        "id": "r1",
+        "source": "p1",
+        "target": "p2",
+        "label": "Lehrer von",
+        "type": "beeinflusst",
+        "einflussstaerke": 95,
+        "zeitlicheDistanz": 40
+      },
+      {
+        "id": "r2",
+        "source": "p2",
+        "target": "p3",
+        "label": "Lehrer von",
+        "type": "beeinflusst",
+        "einflussstaerke": 90,
+        "zeitlicheDistanz": 35
+      },
+      {
+        "id": "r3",
+        "source": "p2",
+        "target": "s1",
+        "label": "Begründet",
+        "type": "gehoert_zu",
+        "einflussstaerke": 100,
+        "zeitlicheDistanz": 0
+      },
+      {
+        "id": "r4",
+        "source": "p3",
+        "target": "s1",
+        "label": "Kritisiert und entwickelt weiter",
+        "type": "beeinflusst",
+        "einflussstaerke": 70,
+        "zeitlicheDistanz": 60
+      },
+      {
+        "id": "r5",
+        "source": "p5",
+        "target": "s2",
+        "label": "Begründer",
+        "type": "gehoert_zu",
+        "einflussstaerke": 95,
+        "zeitlicheDistanz": 0
+      },
+      {
+        "id": "r6",
+        "source": "p4",
+        "target": "s2",
+        "label": "Synthese",
+        "type": "entwickelt_aus",
+        "kontinuitaetsgrad": 65
+      },
+      {
+        "id": "r7",
+        "source": "s2",
+        "target": "p4",
+        "label": "Beeinflusste",
+        "type": "beeinflusst",
+        "einflussstaerke": 85,
+        "zeitlicheDistanz": 120
+      },
+      {
+        "id": "r8",
+        "source": "s3",
+        "target": "p4",
+        "label": "Herausforderung",
+        "type": "kritisiert",
+        "kritikintensitaet": 80
+      },
+      {
+        "id": "r9",
+        "source": "p6",
+        "target": "s4",
+        "label": "Vorläufer",
+        "type": "beeinflusst",
+        "einflussstaerke": 75,
+        "zeitlicheDistanz": 60
+      },
+      {
+        "id": "r10",
+        "source": "p7",
+        "target": "s4",
+        "label": "Hauptvertreter",
+        "type": "gehoert_zu",
+        "einflussstaerke": 90,
+        "zeitlicheDistanz": 0
+      },
+      {
+        "id": "r11",
+        "source": "p8",
+        "target": "s5",
+        "label": "Begründer",
+        "type": "gehoert_zu",
+        "einflussstaerke": 95,
+        "zeitlicheDistanz": 0
+      },
+      {
+        "id": "r12",
+        "source": "p8",
+        "target": "p7",
+        "label": "Beeinflusste",
+        "type": "beeinflusst",
+        "einflussstaerke": 65,
+        "zeitlicheDistanz": 20
+      },
+      {
+        "id": "r13",
+        "source": "s5",
+        "target": "s4",
+        "label": "Grundlage",
+        "type": "entwickelt_aus",
+        "kontinuitaetsgrad": 70
+      },
+      {
+        "id": "r14",
+        "source": "s4",
+        "target": "s6",
+        "label": "Reaktion",
+        "type": "kritisiert",
+        "kritikintensitaet": 55
+      },
+      {
+        "id": "r15",
+        "source": "p3",
+        "target": "k1",
+        "label": "Entwickelte",
+        "type": "beinhaltet",
+        "einflussstaerke": 90
+      },
+      {
+        "id": "r16",
+        "source": "p4",
+        "target": "k2",
+        "label": "Definierte",
+        "type": "beinhaltet",
+        "einflussstaerke": 85
+      },
+      {
+        "id": "r17",
+        "source": "p8",
+        "target": "k3",
+        "label": "Zentrales Thema",
+        "type": "beinhaltet",
+        "einflussstaerke": 92
+      },
+      {
+        "id": "r18",
+        "source": "p5",
+        "target": "k4",
+        "label": "Neue Grundlage",
+        "type": "beinhaltet",
+        "einflussstaerke": 80
+      },
+      {
+        "id": "r19",
+        "source": "p6",
+        "target": "k5",
+        "label": "Entwickelte",
+        "type": "beinhaltet",
+        "einflussstaerke": 88
+      },
+      {
+        "id": "r20",
+        "source": "s1",
+        "target": "s5",
+        "label": "Historischer Einfluss",
+        "type": "beeinflusst",
+        "einflussstaerke": 45,
+        "zeitlicheDistanz": 2300
+      },
+      {
+        "id": "r21",
+        "source": "k3",
+        "target": "s4",
+        "label": "Grundkonzept",
+        "type": "beinhaltet"
+      },
+      {
+        "id": "r22",
+        "source": "k2",
+        "target": "s4",
+        "label": "Zentrales Thema",
+        "type": "beinhaltet"
+      },
+      {
+        "id": "r23",
+        "source": "p4",
+        "target": "p6",
+        "label": "Wichtiger Gegenpol",
+        "type": "kritisiert",
+        "kritikintensitaet": 70
+      },
+      {
+        "id": "r24",
+        "source": "s2",
+        "target": "s3",
+        "label": "Gegensatz",
+        "type": "kritisiert",
+        "kritikintensitaet": 75
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "einflussgrad",
+          "function": "linear",
+          "range": [
+            0.8,
+            2.4
+          ]
+        },
+        "color": {
+          "source": "kategorie",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "kategorie",
+          "function": "categorical",
+          "params": {
+            "Philosopher": "dodecahedron",
+            "Strömung": "sphere",
+            "Konzept": "box"
+          }
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "thickness": {
+          "source": "einflussstaerke",
+          "function": "linear",
+          "range": [
+            0.04,
+            0.18
+          ]
+        }
+      },
+      "beeinflusst": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#4A90E2"
+          }
+        },
+        "thickness": {
+          "source": "einflussstaerke",
+          "function": "linear",
+          "range": [
+            0.05,
+            0.2
+          ]
+        }
+      },
+      "gehoert_zu": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#27AE60"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "value": 0.1
+          }
+        }
+      },
+      "entwickelt_aus": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#F39C12"
+          }
+        },
+        "thickness": {
+          "source": "kontinuitaetsgrad",
+          "function": "linear",
+          "range": [
+            0.06,
+            0.16
+          ]
+        }
+      },
+      "kritisiert": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#E74C3C"
+          }
+        },
+        "thickness": {
+          "source": "kritikintensitaet",
+          "function": "linear",
+          "range": [
+            0.07,
+            0.19
+          ]
+        }
+      },
+      "beinhaltet": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#9B59B5"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "value": 0.08
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+graph TD
+    APP["App\nHauptcontroller"]
+
+    APP --> CANVAS["WebGL Canvas\n3D-Szene (Three.js)"]
+    APP --> SIDEBAR["Sidebar\nGlassmorphism-Overlay\nbackdrop-filter: blur"]
+
+    SIDEBAR --> CREATE["CreatePanel\nPipeline-Steuerung"]
+    CREATE --> PSEL["pipelineSelect\nBuild 6 / 8 / 9 / 10"]
+    CREATE --> B10CFG["build10ConfigContainer\nnur sichtbar bei Build 10"]
+    B10CFG --> TOGGLE["Provider-Toggle\nCloud / Local"]
+    B10CFG --> GRSEL["Grounding-Select\nWikidata / RAG / None"]
+    B10CFG --> EVALSEL["Evaluations-Methode\nCosine / Taxonomie / LLM"]
+    CREATE --> GENBTN["Generieren-Button"]
+
+    SIDEBAR --> MAPPING["MappingPanel\nlil-gui basiert"]
+    MAPPING --> DRP1["Farbe-Dropdown\ndynamisch aus properties"]
+    MAPPING --> DRP2["Groesse-Dropdown\ndynamisch aus properties"]
+    MAPPING --> DRP3["Position-Dropdown\n+ Achsen-Toggle X/Y/Z"]
+    MAPPING --> DRP4["Form-Dropdown\nGeometrie-Typen"]
+
+    APP --> TOASTS["Toast-System\nasynchrone Notifications"]
+    TOASTS --> TI["Info (blau)"]
+    TOASTS --> TW["Warnung (orange)\nz.B. Ratelimit 429"]
+    TOASTS --> TE["Fehler (rot)\nZod-Validierung"]
+    TOASTS --> TS["Erfolg (gruen)"]
+
+    APP --> SPINNER["Spinner-Overlay\nStatus-Meldungen"]
+    SPINNER --> S1["Generiere Ontologie..."]
+    SPINNER --> S2["Frage Wikidata ab..."]
+    SPINNER --> S3["Generiere Embeddings..."]
+
+    APP --> MODAL["Human-in-the-loop Modal\nnur bei QA = Human"]
+
+    style APP fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7
+    style CANVAS fill:#0a0a1a,stroke:#444,color:#888
+    style SIDEBAR fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style CREATE fill:#1a3a2a,stroke:#43a047,color:#c8e6c9
+    style MAPPING fill:#2a1a3a,stroke:#9c27b0,color:#e1bee7
+    style TOASTS fill:#3a2a1a,stroke:#fb8c00,color:#ffe0b2
+    style SPINNER fill:#2a2a1a,stroke:#f9a825,color:#fff9c4
+    style MODAL fill:#3a1a1a,stroke:#e53935,color:#ffcdd2

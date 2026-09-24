@@ -1,0 +1,34 @@
+graph TD
+    subgraph S1["Saule 1: Ontologie (Das Schema)"]
+        O1["dataModel"]
+        O1 --> O2["nodeTypes\n→ id, label, properties"]
+        O1 --> O3["edgeTypes\n→ id, label, properties"]
+        O4["type = nur logische Kategorie\nkeine visuelle Vorschrift"]
+    end
+
+    subgraph S2["Saule 2: Daten (Der Graph)"]
+        D1["entities\n→ flaches Array"]
+        D2["relationships\n→ flaches Array"]
+        D3["properties-Objekt\n→ maximaler Datenreichtum\nunabhaengig von Darstellung"]
+        D1 --> D3
+    end
+
+    subgraph S3["Saule 3: Visual Mapping (Die Repraesentation)"]
+        V1["visualMappings"]
+        V1 --> V2["nodes.color\n→ property + scale"]
+        V1 --> V3["nodes.size\n→ property + scale"]
+        V1 --> V4["edges.*\n→ weight, opacity ..."]
+        V5["Nutzer aendert Mapping live\nohne Reload der Rohdaten"]
+    end
+
+    S1 -->|"Ontologie informiert"| S3
+    S2 -->|"Daten werden gemappt"| S3
+    S3 -->|"rendert"| SCENE["3D-Szene\nThree.js InstancedMesh"]
+
+    NOTE["Entkopplung:\nderselbe Datensatz\nbeliebig viele Ansichten\nz.B. nach Abteilung oder nach Budget"]
+
+    style S1 fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style S2 fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style S3 fill:#3a1a3a,stroke:#9c27b0,color:#e1bee7
+    style SCENE fill:#2a2a1a,stroke:#f9a825,color:#fff9c4
+    style NOTE fill:#1a1a1a,stroke:#555,color:#aaa

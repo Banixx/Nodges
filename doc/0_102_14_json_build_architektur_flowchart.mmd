@@ -1,0 +1,104 @@
+flowchart TD
+    %% Gesamtsystem- und Build-Auswahl-Architektur fuer Nodges
+
+    subgraph UserInput ["1. Benutzereingabe"]
+        UP["User Prompt / Thema"]
+        BF["Ausgewaehltes Build-Format (options.buildFormat)"]
+    end
+
+    subgraph Router ["2. LLMService Dispatcher"]
+        DISPATCH{"Build-Format Router"}
+    end
+
+    subgraph Builds ["3. Build Pipelines"]
+        direction TB
+        subgraph B5 ["Build 5: 3-Pass Pipeline"]
+            B5_1["Step 1: Ontologie Prompt"] --> B5_LLM1["LLM Call (Ontology)"]
+            B5_LLM1 --> B5_2["Step 2: Data Prompt + Ontologie"]
+            B5_2 --> B5_LLM2["LLM Call (Data)"]
+            B5_LLM2 --> B5_3["Step 3: Visual Prompt + Daten"]
+            B5_3 --> B5_LLM3["LLM Call (Visual Mappings)"]
+            B5_LLM3 --> B5_MERGE["Deep Merge (DataParser.parsePartialResult)"]
+        end
+
+        subgraph B6 ["Build 6: Single Pass (Default)"]
+            B6_1["build_6_prompt.md + Zod JSON-Schema"] --> B6_LLM["LLM Call (Structured Output / json_object)"]
+        end
+
+        subgraph B8 ["Build 8: SPARQL Pipeline"]
+            B8_1["Keyword Extraction"] --> B8_API["Wikidata Search API (Q-IDs / P-IDs)"]
+            B8_API --> B8_2["SPARQL Generation Prompt"]
+            B8_2 --> B8_EXEC["Wikidata SPARQL Endpoint (HTTP POST)"]
+            B8_EXEC --> B8_3["Mapping Prompt (Bindings -> JSON)"]
+            B8_3 --> B8_LLM["LLM Call (Mapping)"]
+        end
+
+        subgraph B10 ["Build 10: Enhanced SPARQL"]
+            B10_1["Keyword Extraction & Wikidata Search"] --> B10_2["SPARQL Gen (with CoT thought_process)"]
+            B10_2 --> B10_EXEC["Execute SPARQL"]
+            B10_EXEC -- "Fehler / 0 Ergebnisse" --> B10_RETRY["Retry Loop (max 2)"]
+            B10_RETRY --> B10_2
+            B10_EXEC -- "Erfolg (max 30 Bindings)" --> B10_MAP["JSON Mapping Prompt"]
+            B10_MAP --> B10_QA{"Quality Assurance?"}
+            B10_QA -- "critic" --> B10_CRITIC["Critic LLM Pass"]
+            B10_QA -- "none" --> B10_RATE{"Rating Method?"}
+            B10_CRITIC --> B10_RATE
+            B10_RATE -- "embeddings" --> B10_EMB["Embedding Cosine Similarity"]
+            B10_RATE -- "llm/taxonomy" --> B10_OUT["GraphData"]
+            B10_EMB --> B10_OUT
+        end
+
+        subgraph B12 ["Build 12: LightRAG Pipeline"]
+            B12_1["LightRAG Hybrid Query"] --> B12_RAG["LightRAG Python Backend"]
+            B12_RAG --> B12_MAP["build_6_prompt.md + RAG Context"]
+            B12_MAP --> B12_LLM["LLM Call (Structured Output)"]
+        end
+
+        subgraph SE ["Self-Employed"]
+            SE_1["Raw Zod Schema as Prompt"] --> SE_LLM["LLM Call (json_object)"]
+        end
+    end
+
+    subgraph ErrorHandling ["4. Fallback & Fehlerbehandlung"]
+        FB["Fallback auf Build 6 (Single Pass)"]
+    end
+
+    subgraph Parser ["5. DataParser (Normalisierung & Validierung)"]
+        DP_UNWRAP["Step 0: Unwrap Response Wrapper"]
+        DP_VER["Step 1: Schema-Version Check (3.0 / 4.0 / 5.0)"]
+        DP_REL["Step 2: Relationship Sync (start/end <-> source/target)"]
+        DP_TEMP["Step 3: Temporal Synthesis (flache Zeitfelder -> temporal{})"]
+        DP_VM["Step 4: Visual Mappings Normalization & Category Gen"]
+        DP_ZOD["Step 5: Zod Schema Validation (GraphDataSchema.safeParse)"]
+        DP_VAL["Step 6: Value Parsing & Range Clamping"]
+        DP_MET["Step 7: Network Metrics Calculation (degree, inbound, outbound)"]
+
+        DP_UNWRAP --> DP_VER --> DP_REL --> DP_TEMP --> DP_VM --> DP_ZOD --> DP_VAL --> DP_MET
+    end
+
+    subgraph Output ["6. Ausgabe & Visualisierung"]
+        GD["GraphData Objekt (Schema Version 5.2)"]
+        3D["3D Three.js Renderer / UI"]
+    end
+
+    UP & BF --> DISPATCH
+    DISPATCH -->|Build 5| B5
+    DISPATCH -->|Build 6| B6
+    DISPATCH -->|Build 8| B8
+    DISPATCH -->|Build 10| B10
+    DISPATCH -->|Build 12| B12
+    DISPATCH -->|Self-Employed| SE
+
+    B8 -- "SPARQL Fehler" --> FB
+    B10 -- "Pipeline Fehler" --> FB
+    B12 -- "RAG Fehler" --> FB
+    FB --> B6
+
+    B5_MERGE --> DP_UNWRAP
+    B6_LLM --> DP_UNWRAP
+    B8_LLM --> DP_UNWRAP
+    B10_OUT --> DP_UNWRAP
+    B12_LLM --> DP_UNWRAP
+    SE_LLM --> DP_UNWRAP
+
+    DP_MET --> GD --> 3D

@@ -1,0 +1,10 @@
+graph TD
+    A[VisualMappingPanel (Benutzeroberfläche)] -->|onUpdate| B[UIManager (UI-Manager)]
+    B -->|updateVisualMappings| C[App (Hauptanwendung)]
+    C -->|setVisualMappings| D[VisualMappingEngine (Mapping-Engine)]
+    C -->|updateNodes| E[NodeManager (Knoten-Manager)]
+    C -->|updateEdges| F[EdgeObjectsManager (Kanten-Manager)]
+    E -->|applyToEntity| D
+    F -->|applyToRelationship| D
+    E -->|updateMesh| G[ThreeJS_Szene (Three.js 3D-Szene)]
+    F -->|updateMesh| G

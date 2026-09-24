@@ -1,0 +1,18 @@
+graph TD
+    BEFORE["Build 1-4: Gekoppelte Architektur\ntype === 'Server' → renderCube\ntype === 'Router' → renderBox\njeder neue Datensatz braucht Code-Aenderung"]
+
+    BEFORE -->|"Build 5 Pivot"| AFTER
+
+    subgraph AFTER["Build 5+: Entkoppelte Architektur"]
+        A1["global_node\nGenerisches Sphere-Mesh"]
+        A2["global_edge\nGenerische TubeGeometry"]
+        A1 -->|"Visual Mapping\nwird zur Laufzeit angewendet"| A3["Scale aus properties.influence"]
+        A1 -->|"Visual Mapping"| A4["Color aus properties.category"]
+        A2 -->|"Visual Mapping"| A5["Breite aus properties.weight"]
+    end
+
+    AFTER --> FLEX["Flexibilitaet\nBeliebige Datensaetze\nohne Code-Aenderung\nNur JSON + Mapping-Konfiguration"]
+
+    style BEFORE fill:#3a1a1a,stroke:#e53935,color:#ffcdd2
+    style AFTER fill:#1a2a1a,stroke:#43a047,color:#c8e6c9
+    style FLEX fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7

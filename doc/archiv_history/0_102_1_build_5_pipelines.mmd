@@ -1,0 +1,36 @@
+flowchart TD
+    %% Styling
+    classDef default fill:#1A1A24,stroke:#4CAF50,stroke-width:2px,color:#FFFFFF
+    classDef stage fill:#2B2B3C,stroke:#00BCD4,stroke-width:2px,color:#FFFFFF
+    classDef user fill:#333344,stroke:#FF9800,stroke-width:2px,color:#FFFFFF,stroke-dasharray: 5 5
+
+    User[Nutzer Eingabe\n'Prompt im Create Panel']:::user
+
+    User --> Mode1{Waehlt Generierungs-Modus}
+    
+    Mode1 -->|Neu: Build 5| B5[3-stufige Pipeline]
+    Mode1 -->|Update: Iterativ| Ref[1-stufige Pipeline]
+
+    subgraph Pipeline_Build5 ["Pipeline: Neu (Build 5)"]
+        direction TB
+        S1[Schritt 1: Ontologie\nLLM entwirft das Schema\n'dataModel']:::stage
+        S2[Schritt 2: Daten\nLLM generiert Datensaetze auf\nBasis des neuen Schemas]:::stage
+        S3[Schritt 3: Visual Mapping\nLLM definiert 1-zu-1 Mappings\nfuer die Visualisierung]:::stage
+        
+        S1 --> S2
+        S2 --> S3
+    end
+
+    subgraph Pipeline_Refine ["Pipeline: Update (Refine)"]
+        direction TB
+        R_In[Aktuelles Netzwerk\n'Schema & bestehende Knoten']:::stage
+        R1[Schritt 1: Daten anpassen\nLLM veraendert, loescht oder\nfuegt Knoten/Kanten hinzu]:::stage
+        
+        R_In --> R1
+    end
+
+    B5 --> Pipeline_Build5
+    Ref --> Pipeline_Refine
+
+    Pipeline_Build5 --> Out((Nodges\nVisualizer)):::user
+    Pipeline_Refine --> Out

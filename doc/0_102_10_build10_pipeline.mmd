@@ -1,0 +1,40 @@
+graph TD
+    A[Start: Build 10 Generierung] --> B{Modell-Quelle}
+    B -->|Cloud API| C1[OpenRouter / OpenAI / Anthropic]
+    B -->|Lokales LLM| C2[Ollama / LM Studio]
+    
+    C1 --> D{Grounding}
+    C2 --> D
+    
+    D -->|Kein Grounding| E1[Basis Prompt]
+    D -->|Wikidata Live| E2[SPARQL Abfrage & Daten]
+    D -->|RAG| E3[Text / URL Einbindung]
+    D -->|Vektor-Deduplizierung| E4[Semantische Konsolidierung]
+    
+    E1 --> S1[(Speichern: Schritt 1 - Grounding JSON)]
+    E2 --> S1
+    E3 --> S1
+    E4 --> S1
+    
+    S1 --> F{Qualitätssicherung}
+    
+    F -->|Keine| G1[Direkte Weitergabe]
+    F -->|Generator + Kritiker| G2[Review durch LLM-Kritiker]
+    F -->|Human-in-the-loop| G3[UI Review durch Benutzer]
+    
+    G1 --> S2[(Speichern: Schritt 2 - QA JSON)]
+    G2 --> S2
+    G3 --> S2
+    
+    S2 --> H{Bewertungsmethode}
+    
+    H -->|LLM-Schätzung| I1[Gewichtungen vom LLM]
+    H -->|Feste Taxonomie| I2[Regelbasierte Gewichtung]
+    H -->|Kosinus-Ähnlichkeit| I3[Embedding Similarity Calculation]
+    
+    I1 --> S3[(Speichern: Schritt 3 - Rating JSON)]
+    I2 --> S3
+    I3 --> S3
+    
+    S3 --> J[App.loadGraphData]
+    J --> K[Visualisierung in 3D-Szene]

@@ -1,0 +1,186 @@
+{
+  "system": "Schweizer Politik",
+  "metadata": {
+    "schemaVersion": "4.0",
+    "description": "Ein Netzwerk der wichtigsten politischen Parteien und Institutionen in der Schweiz (LLM generiert)",
+    "author": "AI",
+    "map": { "image": "Map.jpg", "referenceWidth": 1000, "referenceHeight": 1000 }
+  },
+  "dataModel": {
+    "entities": {
+      "Partei": {
+        "properties": {
+          "ausrichtung": { "type": "categorical", "values": ["Links", "Mitte", "Rechts"] },
+          "waehleranteil": { "type": "continuous", "range": [0, 40] }
+        }
+      },
+      "Institution": {
+        "properties": {
+          "gewalt": { "type": "categorical", "values": ["Exekutive", "Legislative", "Judikative"] },
+          "bedeutung": { "type": "continuous", "range": [1, 10] }
+        }
+      }
+    },
+    "relationships": {
+      "Koalition": { "properties": {} },
+      "Kontrolle": { "properties": {} }
+    }
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Partei": {
+        "color": { "source": "ausrichtung", "function": "categorical" },
+        "size": { "source": "waehleranteil", "function": "linear", "range": [0.5, 1.5] }
+      },
+      "Institution": {
+        "color": { "source": "gewalt", "function": "categorical" },
+        "size": { "source": "bedeutung", "function": "linear", "range": [0.5, 1.5] }
+      },
+      "Koalition": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#aaaaaa" } },
+        "thickness": { "source": "constant", "function": "constant", "range": [0.08, 0.08] }
+      },
+      "Kontrolle": {
+        "color": { "source": "constant", "function": "constant", "params": { "color": "#ff0000" } },
+        "thickness": { "source": "constant", "function": "constant", "range": [0.08, 0.08] }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "svp",
+        "type": "Partei",
+        "label": "SVP",
+        "ausrichtung": "Rechts",
+        "waehleranteil": 28,
+        "mapX": 700,
+        "mapY": 500,
+        "temporal": {
+          "validFrom": 1971,
+          "validTo": null,
+          "history": [
+            { "timestamp": 1999, "changes": { "waehleranteil": 22.5 } },
+            { "timestamp": 2015, "changes": { "waehleranteil": 29.4 } }
+          ]
+        }
+      },
+      {
+        "id": "sp",
+        "type": "Partei",
+        "label": "SP",
+        "ausrichtung": "Links",
+        "waehleranteil": 18,
+        "mapX": 300,
+        "mapY": 500,
+        "temporal": {
+          "validFrom": 1888,
+          "validTo": null,
+          "history": [
+            { "timestamp": 1995, "changes": { "waehleranteil": 21.8 } }
+          ]
+        }
+      },
+      {
+        "id": "fdp",
+        "type": "Partei",
+        "label": "FDP",
+        "ausrichtung": "Rechts",
+        "waehleranteil": 15,
+        "mapX": 600,
+        "mapY": 400,
+        "temporal": {
+          "validFrom": 1894,
+          "validTo": null,
+          "history": [
+            { "timestamp": 2003, "changes": { "waehleranteil": 17.3 } }
+          ]
+        }
+      },
+      {
+        "id": "mitte",
+        "type": "Partei",
+        "label": "Die Mitte",
+        "ausrichtung": "Mitte",
+        "waehleranteil": 14,
+        "mapX": 500,
+        "mapY": 450,
+        "temporal": {
+          "validFrom": 2021,
+          "validTo": null,
+          "history": []
+        }
+      },
+      {
+        "id": "gruene",
+        "type": "Partei",
+        "label": "Gruene",
+        "ausrichtung": "Links",
+        "waehleranteil": 10,
+        "mapX": 250,
+        "mapY": 600,
+        "temporal": {
+          "validFrom": 1983,
+          "validTo": null,
+          "history": [
+            { "timestamp": 2019, "changes": { "waehleranteil": 13.2 } }
+          ]
+        }
+      },
+      {
+        "id": "bundesrat",
+        "type": "Institution",
+        "label": "Bundesrat",
+        "gewalt": "Exekutive",
+        "bedeutung": 10,
+        "mapX": 500,
+        "mapY": 300,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        }
+      },
+      {
+        "id": "nationalrat",
+        "type": "Institution",
+        "label": "Nationalrat",
+        "gewalt": "Legislative",
+        "bedeutung": 8,
+        "mapX": 450,
+        "mapY": 200,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        }
+      },
+      {
+        "id": "staenderat",
+        "type": "Institution",
+        "label": "Staenderat",
+        "gewalt": "Legislative",
+        "bedeutung": 8,
+        "mapX": 550,
+        "mapY": 200,
+        "temporal": {
+          "validFrom": 1848,
+          "validTo": null,
+          "history": []
+        }
+      }
+    ],
+    "relationships": [
+      { "id": "rel1", "type": "Koalition", "source": "svp", "target": "fdp", "temporal": { "validFrom": 2000, "validTo": null } },
+      { "id": "rel2", "type": "Koalition", "source": "sp", "target": "gruene", "temporal": { "validFrom": 2000, "validTo": null } },
+      { "id": "rel3", "type": "Kontrolle", "source": "nationalrat", "target": "bundesrat", "temporal": { "validFrom": 1848, "validTo": null } },
+      { "id": "rel4", "type": "Kontrolle", "source": "staenderat", "target": "bundesrat", "temporal": { "validFrom": 1848, "validTo": null } },
+      { "id": "rel5", "type": "Koalition", "source": "mitte", "target": "fdp", "temporal": { "validFrom": 2021, "validTo": null } },
+      { "id": "rel6", "type": "Kontrolle", "source": "svp", "target": "nationalrat", "temporal": { "validFrom": 1971, "validTo": null } },
+      { "id": "rel7", "type": "Kontrolle", "source": "sp", "target": "nationalrat", "temporal": { "validFrom": 1888, "validTo": null } },
+      { "id": "rel8", "type": "Kontrolle", "source": "fdp", "target": "nationalrat", "temporal": { "validFrom": 1894, "validTo": null } },
+      { "id": "rel9", "type": "Kontrolle", "source": "mitte", "target": "nationalrat", "temporal": { "validFrom": 2021, "validTo": null } },
+      { "id": "rel10", "type": "Kontrolle", "source": "gruene", "target": "nationalrat", "temporal": { "validFrom": 1983, "validTo": null } }
+    ]
+  }
+}

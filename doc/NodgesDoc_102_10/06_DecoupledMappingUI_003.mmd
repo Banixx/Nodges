@@ -1,0 +1,32 @@
+graph LR
+    subgraph LOAD["Neuer Graph geladen"]
+        L1["JSON mit entities[]\nund dataModel"]
+    end
+
+    L1 --> SCAN["Background-Analyse\nalle properties aller Knoten\nwerden gescannt"]
+
+    SCAN --> POOL["Property-Pool\nz.B.: influence, age,\ncategory, region, revenue"]
+
+    POOL --> UI["MappingPanel\nDropdowns dynamisch generiert"]
+
+    subgraph UI["MappingPanel (lil-gui)"]
+        DD_C["Farbe-Dropdown\n→ influence / category / region"]
+        DD_S["Groesse-Dropdown\n→ influence / age / revenue"]
+        DD_P["Position-Dropdown\n→ revenue / age / ..."]
+        DD_P --> AXIS["Achsen-Toggle\nX / Y / Z auswaehlbar"]
+    end
+
+    DD_C -->|"Nutzer waehlt 'category'"| MAP_C["color = kategorisch\nverschiedene Hues\npro Typ"]
+    DD_S -->|"Nutzer waehlt 'influence'"| MAP_S["size = linear\n0-100 → klein-gross"]
+    AXIS -->|"Nutzer waehlt Y + 'revenue'"| MAP_P["Y-Achse = Umsatz\nPhysik auf Y gesperrt"]
+
+    MAP_C --> SCENE["3D-Szene\nMatrizen + Farben\nim GPU-Buffer aktualisiert"]
+    MAP_S --> SCENE
+    MAP_P --> SCENE
+
+    NOTE["Rohdaten unveraendert\nkein Reload noetig\nnur Buffer-Update"]
+
+    style LOAD fill:#1a2a1a,stroke:#43a047,color:#c8e6c9
+    style UI fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style SCENE fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7
+    style NOTE fill:#1a1a1a,stroke:#555,color:#aaa

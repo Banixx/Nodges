@@ -1,0 +1,32 @@
+graph LR
+    subgraph WRONG["Anti-Pattern: Verschachtelung (FALSCH)"]
+        direction TB
+        W_FIRM["Knoten: Firma\n───────────────\nemployees: [\n  { id:1, name: Alice },\n  { id:2, name: Bob }\n]"]
+        W_NOTE["Problem:\nPhysik-Engine kann\nArrays nicht raeumlich anordnen\nkein visuelles Clustering moeglich\nkeine Kanten-Properties"]
+    end
+
+    subgraph RIGHT["Flat-Graph-Modell (KORREKT)"]
+        direction TB
+        R_FIRM["Knoten: Firma\nid: firma_1"]
+        R_ALICE["Knoten: Alice\nid: person_1"]
+        R_BOB["Knoten: Bob\nid: person_2"]
+        R_E1["Kante: works_for\nsource: person_1\ntarget: firma_1\nproperties: { since: 2020 }"]
+        R_E2["Kante: works_for\nsource: person_2\ntarget: firma_1\nproperties: { since: 2022 }"]
+
+        R_ALICE --> R_E1
+        R_E1 --> R_FIRM
+        R_BOB --> R_E2
+        R_E2 --> R_FIRM
+    end
+
+    subgraph GAIN["Gewinn durch Flat-Graph"]
+        G1["Physik-Engine kann\nKraefte auf alle Knoten anwenden"]
+        G2["Kanten tragen eigene Properties\nz.B. since, weight, type"]
+        G3["Clustering nach Gruppen\noeffentlich sichtbar in 3D"]
+    end
+
+    RIGHT --> GAIN
+
+    style WRONG fill:#3a1a1a,stroke:#e53935,color:#ffcdd2
+    style RIGHT fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style GAIN fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb

@@ -1,0 +1,23 @@
+flowchart LR
+    subgraph GitHub["GitHub (Remote: origin)"]
+        direction TB
+        GH_Main["main (v0.103)<br/>Commit: 476bf6c"]
+        GH_Pi["pi (v0.105.2)<br/>Commit: d4391c0"]
+        GH_Feature["feature/multi-build (v0.102.3)<br/>Commit: ec2109d"]
+    end
+
+    subgraph Local["Lokales Verzeichnis (Desktop/code/_projects/Nodges)"]
+        direction TB
+        L_Main["main<br/>Commit: 1d177e5 (1 Commit hinter origin/main)"]
+        L_Pi["pi<br/>Commit: d4391c0 (synchron mit origin/pi)"]
+        L_Multi["feature/multi-build<br/>Commit: ec2109d (synchron)"]
+        L_Gem31["refactor/pi-gem31 [AKTIV]<br/>Commit: d4391c0 (Basis: pi)"]
+        L_Stab["refactor/pi-stabilization<br/>Commit: 4691500 (6 Commits vor pi)"]
+        L_VerA["VersionA / VersionB<br/>Archivstaende (v0.98.x)"]
+    end
+
+    GH_Main -. 1 Commit voraus .-> L_Main
+    GH_Pi <== Synchron ==> L_Pi
+    GH_Feature <== Synchron ==> L_Multi
+    L_Pi --> L_Gem31
+    L_Pi --> L_Stab

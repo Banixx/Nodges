@@ -1,0 +1,50 @@
+flowchart TD
+    Start([User-Prompt zu beliebigem Thema]) --> Settings[/Einstellungs-UI:<br/>Nutzer waehlt Bausteine/]
+
+    subgraph Modul1["Baustein 1: Modell-Quelle (Inferenz)"]
+        M1a["Cloud-LLM (BYOK API-Key)"]
+        M1b["Lokales LLM (LM Studio / Ollama)"]
+    end
+
+    subgraph Modul2["Baustein 2: Grounding / Wissensquelle"]
+        M2a["Kein Grounding (Schema-Constrained)"]
+        M2b["Wikidata Live (Suche + SPARQL)"]
+        M2c["RAG (Web / Wiki / Eigener Text)"]
+        M2d["Vektor-Deduplizierung (Embedding-Matching)"]
+    end
+
+    subgraph Modul3["Baustein 3: Qualitaetssicherung"]
+        M3a["Keine Zusatzpruefung (Direkt)"]
+        M3b["Generator + Kritiker (Zwei-Agenten)"]
+        M3c["Human-in-the-loop (UI-Review)"]
+    end
+
+    subgraph Modul4["Baustein 4: Bewertungsmethode"]
+        M4a["LLM-Schaetzung (Freie Skala)"]
+        M4b["Feste Taxonomie (Kontrolliertes Vokabular)"]
+        M4c["Kosinus-Aehnlichkeit (Embeddings)"]
+    end
+
+    Settings --> Modul1
+    Settings --> Modul2
+    Settings --> Modul3
+    Settings --> Modul4
+
+    Modul1 --> Pipeline["Konstruktion des dynamic Prompts & Ausfuehrung"]
+    Modul2 --> Pipeline
+    Modul3 --> Pipeline
+    Modul4 --> Pipeline
+
+    Pipeline --> QA{Qualitaetssicherung active?}
+    
+    QA -- Ja: Generator+Kritiker --> Critic["Kritiker-LLM prueft und korrigiert"] --> Valid
+    QA -- Ja: Human-in-the-loop --> ReviewUI["Tabelle zur manuellen Freigabe"] --> Valid
+    QA -- Nein --> Valid{Schema-Validierung<br/>erfolgreich?}
+    
+    Valid -- Nein --> Retry["Retry / Reparatur-Loop"] --> Pipeline
+    Valid -- Ja --> Final([Validiertes JSON:<br/>Entitaeten + Eigenschaften<br/>+ Beziehungen])
+
+    Final --> Nodges["Ingestion in Nodges (Schema 5.0)"]
+    Nodges --> Render["3D-Visualisierung & Physics Force-Layout"]
+
+    Render -. optionales Feedback .-> Settings

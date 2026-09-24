@@ -1,0 +1,107 @@
+flowchart TD
+
+subgraph group_runtime["Runtime"]
+  node_app["App<br/>frontend entry<br/>[App.ts]"]
+end
+
+subgraph group_data["Data/Input"]
+  node_public_data[("Sample Data<br/>seed datasets")]
+end
+
+subgraph group_core["Core Services"]
+  node_service_container["Service Container<br/>composition root"]
+  node_data_parser["Data Parser<br/>ingestion<br/>[DataParser.ts]"]
+  node_state_manager[("State Manager<br/>app state<br/>[StateManager.ts]")]
+  node_event_bus(("Event Bus<br/>event distribution"))
+  node_mapping_engine["Mapping Engine<br/>visual mapping"]
+  node_layout_manager["Layout Manager<br/>graph layout<br/>[LayoutManager.ts]"]
+  node_interaction_manager["Interaction Manager<br/>input orchestration"]
+  node_ui_manager["UI Manager<br/>panel coordination<br/>[UIManager.ts]"]
+end
+
+subgraph group_viz["Visualization"]
+  node_node_manager["Node Manager<br/>scene nodes<br/>[NodeManager.ts]"]
+  node_edge_manager["Edge Manager<br/>scene edges"]
+  node_layout_worker(("Layout Worker<br/>off-thread compute<br/>[layout-worker.ts]"))
+end
+
+subgraph group_ui["UI/Tools"]
+  node_file_panel["File Panel<br/>import/export UI<br/>[FilePanelUI.ts]"]
+  node_mapping_panel["Mapping Panel<br/>mapping UI<br/>[MappingUI.ts]"]
+  node_view_panel["View Panel<br/>view controls<br/>[ViewPanel.ts]"]
+  node_info_panel["Info Panel<br/>inspection UI<br/>[InfoPanelUI.ts]"]
+  node_data_editor["Data Editor<br/>dataset editing<br/>[DataEditor.ts]"]
+  node_import_manager["Import Manager<br/>file import<br/>[ImportManager.ts]"]
+  node_export_manager["Export Manager<br/>file export<br/>[ExportManager.ts]"]
+  node_llm_service["LLM Service<br/>optional AI<br/>[LLMService.ts]"]
+end
+
+node_app -->|"bootstraps"| node_service_container
+node_service_container -->|"wires"| node_data_parser
+node_service_container -->|"wires"| node_state_manager
+node_service_container -->|"wires"| node_event_bus
+node_service_container -->|"wires"| node_mapping_engine
+node_service_container -->|"wires"| node_layout_manager
+node_service_container -->|"wires"| node_node_manager
+node_service_container -->|"wires"| node_edge_manager
+node_service_container -->|"wires"| node_interaction_manager
+node_service_container -->|"wires"| node_ui_manager
+node_public_data -->|"loads"| node_import_manager
+node_import_manager -->|"parses"| node_data_parser
+node_file_panel -->|"triggers"| node_import_manager
+node_file_panel -->|"triggers"| node_export_manager
+node_data_editor -->|"edits"| node_state_manager
+node_state_manager -->|"publishes"| node_event_bus
+node_event_bus -->|"updates"| node_mapping_engine
+node_event_bus -->|"updates"| node_layout_manager
+node_layout_manager -->|"offloads"| node_layout_worker
+node_layout_manager -->|"positions"| node_node_manager
+node_layout_manager -->|"positions"| node_edge_manager
+node_mapping_engine -->|"styles"| node_node_manager
+node_mapping_engine -->|"styles"| node_edge_manager
+node_interaction_manager -->|"emits"| node_event_bus
+node_interaction_manager -->|"mutates"| node_state_manager
+node_ui_manager -->|"hosts"| node_view_panel
+node_ui_manager -->|"hosts"| node_mapping_panel
+node_ui_manager -->|"hosts"| node_info_panel
+node_ui_manager -->|"hosts"| node_file_panel
+node_ui_manager -->|"hosts"| node_data_editor
+node_ui_manager -.->|"optionally uses"| node_llm_service
+node_ui_manager -->|"configures"| node_interaction_manager
+node_interaction_manager -->|"targets"| node_node_manager
+node_interaction_manager -->|"targets"| node_edge_manager
+
+click node_app "https://github.com/banixx/nodges/blob/main/src/App.ts"
+click node_service_container "https://github.com/banixx/nodges/blob/main/src/core/di/ServiceContainer.ts"
+click node_data_parser "https://github.com/banixx/nodges/blob/main/src/core/DataParser.ts"
+click node_state_manager "https://github.com/banixx/nodges/blob/main/src/core/StateManager.ts"
+click node_event_bus "https://github.com/banixx/nodges/blob/main/src/core/CentralEventManager.ts"
+click node_mapping_engine "https://github.com/banixx/nodges/blob/main/src/core/VisualMappingEngine.ts"
+click node_layout_manager "https://github.com/banixx/nodges/blob/main/src/core/LayoutManager.ts"
+click node_node_manager "https://github.com/banixx/nodges/blob/main/src/core/NodeManager.ts"
+click node_edge_manager "https://github.com/banixx/nodges/blob/main/src/core/EdgeObjectsManager.ts"
+click node_interaction_manager "https://github.com/banixx/nodges/blob/main/src/core/InteractionManager.ts"
+click node_layout_worker "https://github.com/banixx/nodges/blob/main/src/workers/layout-worker.ts"
+click node_ui_manager "https://github.com/banixx/nodges/blob/main/src/core/UIManager.ts"
+click node_file_panel "https://github.com/banixx/nodges/blob/main/src/ui/FilePanelUI.ts"
+click node_mapping_panel "https://github.com/banixx/nodges/blob/main/src/ui/MappingUI.ts"
+click node_view_panel "https://github.com/banixx/nodges/blob/main/src/ui/ViewPanel.ts"
+click node_info_panel "https://github.com/banixx/nodges/blob/main/src/ui/InfoPanelUI.ts"
+click node_data_editor "https://github.com/banixx/nodges/blob/main/src/ui/DataEditor.ts"
+click node_import_manager "https://github.com/banixx/nodges/blob/main/src/utils/ImportManager.ts"
+click node_export_manager "https://github.com/banixx/nodges/blob/main/src/utils/ExportManager.ts"
+click node_llm_service "https://github.com/banixx/nodges/blob/main/src/utils/LLMService.ts"
+click node_public_data "https://github.com/banixx/nodges/tree/main/public/data"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_app toneBlue
+class node_public_data toneAmber
+class node_service_container,node_data_parser,node_state_manager,node_event_bus,node_mapping_engine,node_layout_manager,node_interaction_manager,node_ui_manager toneMint
+class node_node_manager,node_edge_manager,node_layout_worker toneRose
+class node_file_panel,node_mapping_panel,node_view_panel,node_info_panel,node_data_editor,node_import_manager,node_export_manager,node_llm_service toneIndigo

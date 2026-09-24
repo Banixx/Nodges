@@ -1,0 +1,25 @@
+graph LR
+    subgraph ORG["Organismus-Metapher  |  Oekosysteme und Gesundheit"]
+        O_K[Knoten = Organe]
+        O_K -->|Groesse| O_G[Gesundheitswert]
+        O_K -->|Farbe| O_F["Zustand: gruen / rot"]
+        O_K -->|Kanten| O_A[Nervenbahnen + Flow-Animation]
+    end
+
+    subgraph STADT["Stadt-Metapher  |  Infrastruktur und Logistik"]
+        S_K[Knoten = Gebaeude]
+        S_K -->|"Y-Achse gesperrt"| S_H[Hoehe = Hierarchie]
+        S_K -->|"X/Z gesperrt"| S_P[Position = geografisch]
+        S_K -->|Kanten| S_B[Strassenbreite = Kapazitaet]
+    end
+
+    subgraph GALAX["Galaxie-Metapher  |  Soziale Netzwerke und Einfluss"]
+        G_K[Knoten = Sterne]
+        G_K -->|Groesse| G_M[Masse / Einfluss]
+        G_K -->|Glow-Effekt| G_A[Aktivitaet / Pulsieren]
+        G_K -->|Kanten| G_C[transparente Gravitationsfelder]
+    end
+
+    style ORG fill:#1a3a1a,stroke:#4caf50,color:#c8e6c9
+    style STADT fill:#1a2a3a,stroke:#2196f3,color:#bbdefb
+    style GALAX fill:#1a1a3a,stroke:#9c27b0,color:#e1bee7

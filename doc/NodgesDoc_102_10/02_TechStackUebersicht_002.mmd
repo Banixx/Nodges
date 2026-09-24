@@ -1,0 +1,36 @@
+graph LR
+    subgraph CORE["Frontend Core"]
+        HTML["HTML5 + Vanilla CSS\nindex.css\nGlassmorphismus, Micro-Animations"]
+        TS["TypeScript\nstrikte Typisierung\nInterfaces fuer LLM-Daten"]
+        VITE["Vite\nDev-Server + Build-Tool"]
+    end
+
+    subgraph ENGINE["Engine und Rendering"]
+        THREE["Three.js v0.161\nWebGL-Renderer\nInstancing, TubeGeometry\nPerspectiveCamera"]
+    end
+
+    subgraph LOGIC["Logik und Hilfssysteme"]
+        ZOD["Zod v3.22\nLaufzeitvalidierung\nSchema-Definition"]
+        Z2J["zod-to-json-schema\nJSON Schema Export\nfuer LLM Structured Outputs"]
+        LILGUI["lil-gui v0.19\nSidebar-Interface\nSlider, Dropdowns, Color-Picker"]
+        VITEST["Vitest\nUnit Tests\nCoverage-Analyse"]
+    end
+
+    subgraph PRINCIPLES["Architektur-Prinzipien"]
+        P1["Zero Data Retention\nkein Backend\nAPI-Keys nur im LocalStorage"]
+        P2["Local-First Ready\nCloud → Ollama / LM Studio"]
+        P3["Decoupled UI\nUI unabhaengig von Render-Loop"]
+    end
+
+    HTML --> THREE
+    TS --> ZOD
+    ZOD --> Z2J
+    VITE --> HTML
+    THREE --> LILGUI
+    VITEST -.->|"testet"| ZOD
+    VITEST -.->|"testet"| THREE
+
+    style CORE fill:#1a2a1a,stroke:#43a047,color:#c8e6c9
+    style ENGINE fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7
+    style LOGIC fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style PRINCIPLES fill:#2a1a1a,stroke:#e53935,color:#ffcdd2

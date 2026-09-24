@@ -1,0 +1,66 @@
+flowchart TD
+    subgraph GITHUB["GitHub Repository: Banixx/Nodges (Fork: Nein | Forks: 0)"]
+        direction TB
+        OMAIN["origin/main (Default)<br/>476bf6c: stop tracking .tmp.driveupload"]
+        OPI["origin/pi<br/>d4391c0: 0.105.1"]
+        OMULTI["origin/feature/multi-build<br/>ec2109d: 0.102.3 Build 5"]
+    end
+
+    subgraph LOCAL["Lokaler Rechner (C:/Users/ich/Desktop/code/_projects/Nodges)"]
+        direction TB
+        LMAIN["main<br/>1d177e5: 0.103"]
+        LPI["pi<br/>d4391c0: 0.105.1"]
+        LREF["refactor/pi-stabilization (HEAD)<br/>ca41a9d: 3-layer architecture"]
+        UNCOMMITTED["Working Tree (uncommittet)<br/>App.ts, DataManager, RenderEngine"]
+    end
+
+    subgraph COMMITS["Commit-Verlauf"]
+        direction TB
+        C_BASE["1d177e5: 0.103 (Gemeinsame Basis)"]
+        
+        %% Main-Strang
+        C_MAIN_REMOTE["476bf6c: chore driveupload"]
+        
+        %% Pi-Strang
+        C_PI_1["5b355b9: 0.103.1 von Pi"]
+        C_PI_2["91138a5: 104"]
+        C_PI_3["cfe5658: zwuetschged"]
+        C_PI_4["d8bef5b: 0.105.0"]
+        C_PI_5["2e44e67 .. 346d9c2: 0.105.1 & zueglete"]
+        C_PI_6["2b3a97b: key restriction"]
+        C_PI_7["10d6c50: LightRAG im Container"]
+        C_PI_8["d4391c0: 0.105.1 (origin/pi)"]
+
+        %% Refactor-Strang (Nur lokal)
+        C_REF_1["54a5f9e: cleanup large json files"]
+        C_REF_2["1c918f1: gitignore graph dumps"]
+        C_REF_3["2df4044: perf defuse glob import"]
+        C_REF_4["8d60d9b: remove deno-proxy"]
+        C_REF_5["ca41a9d: 3-layer refactoring"]
+    end
+
+    %% Kanten Main
+    C_BASE --> C_MAIN_REMOTE
+    C_MAIN_REMOTE --> OMAIN
+    C_BASE -.-> LMAIN
+
+    %% Kanten Pi
+    C_BASE --> C_PI_1
+    C_PI_1 --> C_PI_2 --> C_PI_3 --> C_PI_4 --> C_PI_5 --> C_PI_6 --> C_PI_7 --> C_PI_8
+    C_PI_8 --> OPI
+    C_PI_8 -.-> LPI
+
+    %% Kanten Refactor
+    C_PI_8 --> C_REF_1 --> C_REF_2 --> C_REF_3 --> C_REF_4 --> C_REF_5
+    C_REF_5 --> LREF
+    LREF --> UNCOMMITTED
+
+    classDef github fill:#e8f4fd,stroke:#1e88e5,stroke-width:2px;
+    classDef local fill:#fbe9e7,stroke:#d84315,stroke-width:2px;
+    classDef unpushed fill:#fff3e0,stroke:#f57c00,stroke-width:2px,stroke-dasharray: 5 5;
+    classDef commit fill:#f5f5f5,stroke:#757575,stroke-width:1px;
+
+    class OMAIN,OPI,OMULTI github;
+    class LMAIN,LPI,LREF local;
+    class C_REF_1,C_REF_2,C_REF_3,C_REF_4,C_REF_5,UNCOMMITTED unpushed;
+    class C_BASE,C_PI_1,C_PI_2,C_PI_3,C_PI_4,C_PI_5,C_PI_6,C_PI_7,C_PI_8,C_MAIN_REMOTE commit;

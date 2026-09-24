@@ -1,0 +1,941 @@
+{
+  "_testMeta": {
+    "iteration": "3. Temporale Objekte",
+    "prompt": "Die Geschichte Roms. Nutze explizit temporale Eigenschaften (Startjahr, Endjahr) für die Knoten und Kanten, um Epochen abzubilden.",
+    "model": "x-ai/grok-4.20",
+    "durationMs": 26893,
+    "durationSec": 26.89,
+    "entityCount": 24,
+    "relationshipCount": 30,
+    "timestamp": "2026-07-11T18:09:40.234Z"
+  },
+  "system": "Die Geschichte Roms",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Vollständiges semantisches Netzwerk der römischen Geschichte mit Fokus auf temporale Entwicklung von Epochen, Herrschern, Ereignissen und Institutionen.",
+    "competencyQuestions": [
+      "Welche Herrscher und Ereignisse charakterisieren eine bestimmte Epoche der römischen Geschichte?",
+      "Wie lange dauerte eine spezifische Epoche oder Herrschaftszeit und welche temporalen Überlappungen existierten?",
+      "Welche politischen Institutionen und militärischen Konflikte waren in welcher Periode relevant?",
+      "Welche Einflussbeziehungen und Nachfolgebeziehungen existierten zwischen Schlüsselfiguren und Institutionen?",
+      "Wie veränderten sich territoriale Kontrolle und Machtstrukturen über die Jahrhunderte?"
+    ],
+    "apiResponse": {
+      "id": "gen-1783793346-aIMnk5eHk1ZNv9JdyyNi",
+      "created": 1783793346,
+      "model": "x-ai/grok-4.20-20260309",
+      "usage": {
+        "prompt_tokens": 1618,
+        "completion_tokens": 4379,
+        "total_tokens": 5997,
+        "cost": 0.01129,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 1600,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.01129,
+          "upstream_inference_prompt_cost": 0.0003425,
+          "upstream_inference_completions_cost": 0.0109475
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Epoch": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          },
+          "endYear": {
+            "type": "continuous",
+            "range": [
+              -700,
+              600
+            ]
+          },
+          "influence": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      },
+      "Ruler": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -100,
+              500
+            ]
+          },
+          "endYear": {
+            "type": "continuous",
+            "range": [
+              -50,
+              600
+            ]
+          },
+          "reignLength": {
+            "type": "continuous",
+            "range": [
+              0,
+              50
+            ]
+          },
+          "prestige": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      },
+      "Event": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          },
+          "endYear": {
+            "type": "continuous",
+            "range": [
+              -700,
+              600
+            ]
+          },
+          "impact": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      },
+      "Institution": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              400
+            ]
+          },
+          "endYear": {
+            "type": "continuous",
+            "range": [
+              -500,
+              600
+            ]
+          },
+          "stability": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      },
+      "Territory": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -300,
+              400
+            ]
+          },
+          "endYear": {
+            "type": "continuous",
+            "range": [
+              -200,
+              500
+            ]
+          },
+          "strategicValue": {
+            "type": "continuous",
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "RuledDuring": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -100,
+              500
+            ]
+          },
+          "endYear": {
+            "type": "continuous",
+            "range": [
+              -50,
+              600
+            ]
+          }
+        }
+      },
+      "Triggered": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              500
+            ]
+          }
+        }
+      },
+      "Succeeded": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -100,
+              500
+            ]
+          }
+        }
+      },
+      "Established": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              400
+            ]
+          }
+        }
+      },
+      "Conquered": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -300,
+              400
+            ]
+          }
+        }
+      },
+      "Reformed": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -100,
+              300
+            ]
+          }
+        }
+      },
+      "PartOf": {
+        "properties": {
+          "startYear": {
+            "type": "continuous",
+            "range": [
+              -800,
+              400
+            ]
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "e1",
+        "type": "Epoch",
+        "label": "Königszeit",
+        "startYear": -753,
+        "endYear": -509,
+        "influence": 65
+      },
+      {
+        "id": "e2",
+        "type": "Epoch",
+        "label": "Republik",
+        "startYear": -509,
+        "endYear": -27,
+        "influence": 85
+      },
+      {
+        "id": "e3",
+        "type": "Epoch",
+        "label": "Prinzipat",
+        "startYear": -27,
+        "endYear": 284,
+        "influence": 90
+      },
+      {
+        "id": "e4",
+        "type": "Epoch",
+        "label": "Dominat",
+        "startYear": 284,
+        "endYear": 476,
+        "influence": 70
+      },
+      {
+        "id": "r1",
+        "type": "Ruler",
+        "label": "Romulus",
+        "startYear": -753,
+        "endYear": -716,
+        "reignLength": 37,
+        "prestige": 80
+      },
+      {
+        "id": "r2",
+        "type": "Ruler",
+        "label": "Numa Pompilius",
+        "startYear": -715,
+        "endYear": -672,
+        "reignLength": 43,
+        "prestige": 65
+      },
+      {
+        "id": "r3",
+        "type": "Ruler",
+        "label": "Julius Caesar",
+        "startYear": -49,
+        "endYear": -44,
+        "reignLength": 5,
+        "prestige": 95
+      },
+      {
+        "id": "r4",
+        "type": "Ruler",
+        "label": "Augustus",
+        "startYear": -27,
+        "endYear": 14,
+        "reignLength": 41,
+        "prestige": 100
+      },
+      {
+        "id": "r5",
+        "type": "Ruler",
+        "label": "Trajan",
+        "startYear": 98,
+        "endYear": 117,
+        "reignLength": 19,
+        "prestige": 88
+      },
+      {
+        "id": "r6",
+        "type": "Ruler",
+        "label": "Constantinus I.",
+        "startYear": 306,
+        "endYear": 337,
+        "reignLength": 31,
+        "prestige": 92
+      },
+      {
+        "id": "ev1",
+        "type": "Event",
+        "label": "Gründung Roms",
+        "startYear": -753,
+        "endYear": -753,
+        "impact": 100
+      },
+      {
+        "id": "ev2",
+        "type": "Event",
+        "label": "Vertreibung der Tarquinier",
+        "startYear": -509,
+        "endYear": -509,
+        "impact": 75
+      },
+      {
+        "id": "ev3",
+        "type": "Event",
+        "label": "Gallischer Sack Roms",
+        "startYear": -390,
+        "endYear": -390,
+        "impact": 60
+      },
+      {
+        "id": "ev4",
+        "type": "Event",
+        "label": "Punische Kriege",
+        "startYear": -264,
+        "endYear": -146,
+        "impact": 85
+      },
+      {
+        "id": "ev5",
+        "type": "Event",
+        "label": "Iden des März",
+        "startYear": -44,
+        "endYear": -44,
+        "impact": 90
+      },
+      {
+        "id": "ev6",
+        "type": "Event",
+        "label": "Schlacht bei Actium",
+        "startYear": -31,
+        "endYear": -31,
+        "impact": 80
+      },
+      {
+        "id": "i1",
+        "type": "Institution",
+        "label": "Senat",
+        "startYear": -509,
+        "endYear": 600,
+        "stability": 75
+      },
+      {
+        "id": "i2",
+        "type": "Institution",
+        "label": "Konsulat",
+        "startYear": -509,
+        "endYear": 14,
+        "stability": 70
+      },
+      {
+        "id": "i3",
+        "type": "Institution",
+        "label": "Prätorianergarde",
+        "startYear": -27,
+        "endYear": 312,
+        "stability": 55
+      },
+      {
+        "id": "i4",
+        "type": "Institution",
+        "label": "Christentum als Staatsreligion",
+        "startYear": 380,
+        "endYear": 476,
+        "stability": 80
+      },
+      {
+        "t1": "type",
+        "type": "Territory",
+        "label": "Italien",
+        "startYear": -509,
+        "endYear": 476,
+        "strategicValue": 95
+      },
+      {
+        "id": "t2",
+        "type": "Territory",
+        "label": "Gallien",
+        "startYear": -58,
+        "endYear": 476,
+        "strategicValue": 70
+      },
+      {
+        "id": "t3",
+        "type": "Territory",
+        "label": "Britannien",
+        "startYear": 43,
+        "endYear": 410,
+        "strategicValue": 60
+      },
+      {
+        "id": "t4",
+        "type": "Territory",
+        "label": "Ägypten",
+        "startYear": -30,
+        "endYear": 476,
+        "strategicValue": 85
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel1",
+        "type": "PartOf",
+        "source": "r1",
+        "target": "e1",
+        "label": "Gründer",
+        "startYear": -753
+      },
+      {
+        "id": "rel2",
+        "type": "PartOf",
+        "source": "r2",
+        "target": "e1",
+        "label": "König",
+        "startYear": -715
+      },
+      {
+        "id": "rel3",
+        "type": "RuledDuring",
+        "source": "r3",
+        "target": "e2",
+        "label": "Diktator",
+        "startYear": -49,
+        "endYear": -44
+      },
+      {
+        "id": "rel4",
+        "type": "Succeeded",
+        "source": "r3",
+        "target": "r4",
+        "label": "Nachfolger",
+        "startYear": -27
+      },
+      {
+        "id": "rel5",
+        "type": "RuledDuring",
+        "source": "r4",
+        "target": "e3",
+        "label": "Princeps",
+        "startYear": -27,
+        "endYear": 14
+      },
+      {
+        "id": "rel6",
+        "type": "RuledDuring",
+        "source": "r5",
+        "target": "e3",
+        "label": "Imperator",
+        "startYear": 98,
+        "endYear": 117
+      },
+      {
+        "id": "rel7",
+        "type": "RuledDuring",
+        "source": "r6",
+        "target": "e4",
+        "label": "Imperator",
+        "startYear": 306,
+        "endYear": 337
+      },
+      {
+        "id": "rel8",
+        "type": "Triggered",
+        "source": "ev1",
+        "target": "e1",
+        "label": "Beginn",
+        "startYear": -753
+      },
+      {
+        "id": "rel9",
+        "type": "Triggered",
+        "source": "ev2",
+        "target": "e2",
+        "label": "Gründung Republik",
+        "startYear": -509
+      },
+      {
+        "id": "rel10",
+        "type": "Triggered",
+        "source": "ev3",
+        "target": "e2",
+        "label": "Krise",
+        "startYear": -390
+      },
+      {
+        "id": "rel11",
+        "type": "Triggered",
+        "source": "ev4",
+        "target": "e2",
+        "label": "Expansion",
+        "startYear": -264
+      },
+      {
+        "id": "rel12",
+        "type": "Triggered",
+        "source": "ev5",
+        "target": "e3",
+        "label": "Ende Republik",
+        "startYear": -44
+      },
+      {
+        "id": "rel13",
+        "type": "Triggered",
+        "source": "ev6",
+        "target": "e3",
+        "label": "Beginn Prinzipat",
+        "startYear": -31
+      },
+      {
+        "id": "rel14",
+        "type": "Established",
+        "source": "r4",
+        "target": "i3",
+        "label": "Einrichtung",
+        "startYear": -27
+      },
+      {
+        "id": "rel15",
+        "type": "Reformed",
+        "source": "r6",
+        "target": "i1",
+        "label": "Reform",
+        "startYear": 312
+      },
+      {
+        "id": "rel16",
+        "type": "Established",
+        "source": "r6",
+        "target": "i4",
+        "label": "Förderung",
+        "startYear": 313
+      },
+      {
+        "id": "rel17",
+        "type": "Conquered",
+        "source": "r3",
+        "target": "t2",
+        "label": "Eroberung",
+        "startYear": -58
+      },
+      {
+        "id": "rel18",
+        "type": "Conquered",
+        "source": "r4",
+        "target": "t4",
+        "label": "Eroberung",
+        "startYear": -30
+      },
+      {
+        "id": "rel19",
+        "type": "Conquered",
+        "source": "r5",
+        "target": "t3",
+        "label": "Eroberung",
+        "startYear": 43
+      },
+      {
+        "id": "rel20",
+        "type": "PartOf",
+        "source": "t1",
+        "target": "e2",
+        "label": "Kerngebiet",
+        "startYear": -509
+      },
+      {
+        "id": "rel21",
+        "type": "PartOf",
+        "source": "t2",
+        "target": "e3",
+        "label": "Provinz",
+        "startYear": -50
+      },
+      {
+        "id": "rel22",
+        "type": "PartOf",
+        "source": "i1",
+        "target": "e2",
+        "label": "Zentralorgan",
+        "startYear": -509
+      },
+      {
+        "id": "rel23",
+        "type": "PartOf",
+        "source": "i2",
+        "target": "e2",
+        "label": "Exekutive",
+        "startYear": -509
+      },
+      {
+        "id": "rel24",
+        "type": "Reformed",
+        "source": "r4",
+        "target": "i2",
+        "label": "Umwandlung",
+        "startYear": -27
+      },
+      {
+        "id": "rel25",
+        "type": "Succeeded",
+        "source": "r4",
+        "target": "r5",
+        "label": "Dynastische Linie",
+        "startYear": 98
+      },
+      {
+        "id": "rel26",
+        "type": "Triggered",
+        "source": "ev4",
+        "target": "t1",
+        "label": "Ausdehnung",
+        "startYear": -200
+      },
+      {
+        "id": "rel27",
+        "type": "Established",
+        "source": "ev2",
+        "target": "i1",
+        "label": "Institutionalisierung",
+        "startYear": -509
+      },
+      {
+        "id": "rel28",
+        "type": "PartOf",
+        "source": "i3",
+        "target": "e3",
+        "label": "Sicherheitsorgan",
+        "startYear": -27
+      },
+      {
+        "id": "rel29",
+        "type": "Triggered",
+        "source": "ev5",
+        "target": "r4",
+        "label": "Machtergreifung",
+        "startYear": -27
+      },
+      {
+        "id": "rel30",
+        "type": "Succeeded",
+        "source": "r5",
+        "target": "r6",
+        "label": "Vorbild",
+        "startYear": 306
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "Epoch": {
+        "size": {
+          "source": "influence",
+          "function": "linear",
+          "range": [
+            1.2,
+            4
+          ]
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "dodecahedron"
+          }
+        }
+      },
+      "Ruler": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1.8
+          }
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "sphere"
+          }
+        }
+      },
+      "Event": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1
+          }
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "box"
+          }
+        }
+      },
+      "Institution": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1.4
+          }
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "octahedron"
+          }
+        }
+      },
+      "Territory": {
+        "size": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 1.6
+          }
+        },
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "geometry": "icosahedron"
+          }
+        }
+      },
+      "RuledDuring": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#44AAFF"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.08
+          }
+        }
+      },
+      "Triggered": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#FF6644"
+          }
+        },
+        "thickness": {
+          "source": "impact",
+          "function": "linear",
+          "range": [
+            0.05,
+            0.3
+          ]
+        }
+      },
+      "Succeeded": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#99EE77"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.12
+          }
+        }
+      },
+      "Established": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#EECC22"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.1
+          }
+        }
+      },
+      "Conquered": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#CC2255"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.15
+          }
+        }
+      },
+      "Reformed": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#77CCFF"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.09
+          }
+        }
+      },
+      "PartOf": {
+        "color": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "color": "#AAAAAA"
+          }
+        },
+        "thickness": {
+          "source": "constant",
+          "function": "constant",
+          "params": {
+            "size": 0.07
+          }
+        }
+      }
+    }
+  }
+}

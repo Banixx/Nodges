@@ -1,0 +1,72 @@
+{
+  "system": "Sonnensystem",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Modell unseres Sonnensystems mit Sternen, Planeten, Zwergplaneten und Monden sowie ihren physikalischen und orbitalen Eigenschaften.",
+    "author": "AI",
+    "competencyQuestions": [
+      "Welche Himmelkoerper umkreisen welche anderen und in welcher Distanz?",
+      "Wie unterscheiden sich die Planeten in Masse, Groesse und Zusammensetzung?",
+      "Welche Planeten haben die meisten Monde und wie verteilen sich diese?",
+      "Wie hat sich das Sonnensystem zeitlich entwickelt (Entdeckungen, Statusaenderungen)?",
+      "Welche Gruppierungen lassen sich erkennen (innere vs. aeussere Planeten, Gasriesen vs. Gesteinsplaneten)?"
+    ],
+    "map": { "image": "Map.jpg", "referenceWidth": 1000, "referenceHeight": 1000 }
+  },
+  "dataModel": {
+    "entities": {
+      "Stern": {
+        "properties": {
+          "Spektralklasse": { "type": "categorical", "values": ["G", "K", "M", "F", "A"] },
+          "Masse_Sonnenmassen": { "type": "continuous", "range": [0.01, 100] },
+          "Temperatur_K": { "type": "continuous", "range": [2000, 40000] }
+        }
+      },
+      "Planet": {
+        "properties": {
+          "Kategorie": { "type": "categorical", "values": ["Gesteinsplanet", "Gasriese", "Eisriese"] },
+          "Masse_Erdmassen": { "type": "continuous", "range": [0.01, 400] },
+          "Radius_km": { "type": "continuous", "range": [1000, 80000] },
+          "Orbitalperiode_Jahre": { "type": "continuous", "range": [0.1, 200] },
+          "Distanz_AE": { "type": "continuous", "range": [0.1, 50] },
+          "Anzahl_Monde": { "type": "continuous", "range": [0, 100] },
+          "Ringsystem": { "type": "categorical", "values": ["Ja", "Nein"] }
+        }
+      },
+      "Zwergplanet": {
+        "properties": {
+          "Kategorie": { "type": "categorical", "values": ["Kuiperguertel", "Asteroidenguertel", "Gestreutes Objekt"] },
+          "Masse_Erdmassen": { "type": "continuous", "range": [0.0001, 0.01] },
+          "Distanz_AE": { "type": "continuous", "range": [1, 100] }
+        }
+      },
+      "Mond": {
+        "properties": {
+          "Typ": { "type": "categorical", "values": ["Regulaer", "Irregulaer", "Eingefangen"] },
+          "Radius_km": { "type": "continuous", "range": [1, 3000] },
+          "Masse_Mondmassen": { "type": "continuous", "range": [0.0001, 2] }
+        }
+      }
+    },
+    "relationships": {
+      "UMKREIST": {
+        "properties": {
+          "Orbitalperiode_Tage": { "type": "continuous", "range": [0.5, 100000] },
+          "Exzentrizitaet": { "type": "continuous", "range": [0, 1] }
+        }
+      },
+      "ENTDECKT_VON": {
+        "properties": {}
+      },
+      "GRAVITATIV_BEEINFLUSST": {
+        "properties": {
+          "Staerke": { "type": "continuous", "range": [0, 1] }
+        }
+      }
+    }
+  },
+  "data": {
+    "entities": [],
+    "relationships": []
+  }
+}

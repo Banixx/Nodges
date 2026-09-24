@@ -1,0 +1,40 @@
+graph TD
+    START(["Problem bemerkt\nWas sehe ich?"])
+
+    START --> S1{"Roter Toast\nbeim Generieren?"}
+    START --> S2{"Weisser Bildschirm\nnach Laden?"}
+    START --> S3{"Graph ruckelt\n< 30 FPS?"}
+    START --> S4{"Mapping hat\nkeine Wirkung?"}
+    START --> S5{"Knoten fliegen\nchaotisch auseinander?"}
+
+    S1 --> S1A{"Steht 'CORS'\nim Fetch-Error?"}
+    S1A -->|"JA"| FIX_CORS["CORS-Problem\nOllama neu starten:\n$env:OLLAMA_ORIGINS='*'\nollama serve"]
+    S1A -->|"NEIN"| S1B{"Steht 'Zod'\noder 'JSON Parse'?"}
+    S1B -->|"JA"| FIX_ZOD["LLM-Halluzination\nGrosseres Modell nutzen\nGPT-4o / Claude 3.5"]
+    S1B -->|"NEIN"| FIX_429["429 Ratelimit?\nAPI-Key aufladen\noder zu Ollama wechseln"]
+
+    S2 --> S2A{"Passiert nach\ngroßem Graphen?"}
+    S2A -->|"JA"| FIX_VRAM["VRAM-Leak\nSceneManager.ts pruefen\n.dispose() bei allen\nGeo + Mat + Tex\ndann Ctrl+F5"]
+    S2A -->|"NEIN"| FIX_JS["JavaScript-Fehler\nBrowser DevTools\nConsole pruefen"]
+
+    S3 --> S3A{"Viele Kanten\n> 500?"}
+    S3A -->|"JA"| FIX_EDGES["GPU-Last\nAntialiasing abschalten\noder Graphen verkleinern"]
+    S3A -->|"NEIN"| FIX_PHYS["Physik-Engine\nCooldown setzen\noder Force reduzieren"]
+
+    S4 --> FIX_NULL["Ontologie-Instanz-Divergenz\nKnoten anklicken\nRohdaten pruefen\nob Property null ist\nPrompt mit Pflicht-Anweisung\nneu generieren"]
+
+    S5 --> S5A{"Graph hat\nverbundene Islands?"}
+    S5A -->|"JA"| FIX_ISLAND["Unverbundene Teilgraphen\nkeine Link-Force\nzwischen Islands\nPrompt: mehr Verbindungen fordern"]
+    S5A -->|"NEIN"| FIX_CHARGE["Charge-Force\nzu hoch\nCharge Strength Slider\nim Physik-Panel reduzieren"]
+
+    style START fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7
+    style FIX_CORS fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style FIX_ZOD fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style FIX_429 fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style FIX_VRAM fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style FIX_JS fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style FIX_EDGES fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style FIX_PHYS fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style FIX_NULL fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style FIX_ISLAND fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style FIX_CHARGE fill:#1a3a1a,stroke:#43a047,color:#c8e6c9

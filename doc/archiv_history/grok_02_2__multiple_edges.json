@@ -1,0 +1,528 @@
+{
+  "_testMeta": {
+    "iteration": "2. Multiple Edges",
+    "prompt": "Ein soziales Netzwerk, in dem Personen MEHRERE verschiedene Beziehungen zueinander haben (z.B. 'kennt', 'arbeitet_mit', 'hasst'). Nutze multiple edges zwischen den gleichen Knoten.",
+    "model": "x-ai/grok-4.20",
+    "durationMs": 20920,
+    "durationSec": 20.92,
+    "entityCount": 16,
+    "relationshipCount": 30,
+    "timestamp": "2026-07-14T09:03:22.755Z"
+  },
+  "system": "Soziales Netzwerk",
+  "metadata": {
+    "schemaVersion": "5.0",
+    "description": "Ein dichtes soziales Netzwerk mit Personen, Gruppen und multiplen Beziehungstypen (kennt, arbeitet_mit, hasst, ist_verwandt_mit).",
+    "competencyQuestions": [
+      "Welche Personen gehören zu welcher sozialen Gruppe und welche Beziehungen existieren zwischen ihnen?",
+      "Welche Personen arbeiten miteinander zusammen und in welchen Gruppen sind sie aktiv?",
+      "Wer hasst wen und welche gegenseitigen oder einseitigen negativen Beziehungen existieren?",
+      "Wer kennt wen über mehrere Gruppen hinweg und welche Verwandtschaftsverhältnisse bestehen?"
+    ],
+    "apiResponse": {
+      "id": "gen-1784019773-I5uCkBL28bSlMgVHITRe",
+      "created": 1784019773,
+      "model": "x-ai/grok-4.20",
+      "usage": {
+        "prompt_tokens": 1892,
+        "completion_tokens": 3122,
+        "total_tokens": 5014,
+        "cost": 0.0099684,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 192,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0099684,
+          "upstream_inference_prompt_cost": 0.0021634,
+          "upstream_inference_completions_cost": 0.007805
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "system_fingerprint": null
+    }
+  },
+  "dataModel": {
+    "entities": {
+      "Person": {
+        "properties": {
+          "kategorie": {
+            "type": "categorical",
+            "values": [
+              "Person"
+            ]
+          },
+          "alter": {
+            "type": "continuous",
+            "range": [
+              18,
+              65
+            ]
+          },
+          "einfluss": {
+            "type": "continuous",
+            "range": [
+              0.1,
+              9.8
+            ]
+          }
+        }
+      },
+      "Gruppe": {
+        "properties": {
+          "kategorie": {
+            "type": "categorical",
+            "values": [
+              "Gruppe"
+            ]
+          },
+          "groesse": {
+            "type": "continuous",
+            "range": [
+              3,
+              18
+            ]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "kennt": {
+        "properties": {
+          "intensitaet": {
+            "type": "continuous",
+            "range": [
+              0.2,
+              0.9
+            ]
+          }
+        }
+      },
+      "arbeitet_mit": {
+        "properties": {
+          "intensitaet": {
+            "type": "continuous",
+            "range": [
+              0.4,
+              1
+            ]
+          }
+        }
+      },
+      "hasst": {
+        "properties": {
+          "intensitaet": {
+            "type": "continuous",
+            "range": [
+              0.6,
+              1
+            ]
+          }
+        }
+      },
+      "ist_verwandt_mit": {
+        "properties": {
+          "intensitaet": {
+            "type": "continuous",
+            "range": [
+              0.3,
+              0.95
+            ]
+          }
+        }
+      },
+      "gehoert_zu": {
+        "properties": {}
+      }
+    }
+  },
+  "data": {
+    "entities": [
+      {
+        "id": "p1",
+        "label": "Anna",
+        "kategorie": "Person",
+        "alter": 28,
+        "einfluss": 7.2
+      },
+      {
+        "id": "p2",
+        "label": "Ben",
+        "kategorie": "Person",
+        "alter": 34,
+        "einfluss": 8.9
+      },
+      {
+        "id": "p3",
+        "label": "Clara",
+        "kategorie": "Person",
+        "alter": 25,
+        "einfluss": 4.1
+      },
+      {
+        "id": "p4",
+        "label": "David",
+        "kategorie": "Person",
+        "alter": 41,
+        "einfluss": 6.5
+      },
+      {
+        "id": "p5",
+        "label": "Elena",
+        "kategorie": "Person",
+        "alter": 29,
+        "einfluss": 5.8
+      },
+      {
+        "id": "p6",
+        "label": "Felix",
+        "kategorie": "Person",
+        "alter": 37,
+        "einfluss": 9.1
+      },
+      {
+        "id": "p7",
+        "label": "Greta",
+        "kategorie": "Person",
+        "alter": 22,
+        "einfluss": 3.4
+      },
+      {
+        "id": "p8",
+        "label": "Hannah",
+        "kategorie": "Person",
+        "alter": 45,
+        "einfluss": 8.2
+      },
+      {
+        "id": "p9",
+        "label": "Ivan",
+        "kategorie": "Person",
+        "alter": 31,
+        "einfluss": 2.9
+      },
+      {
+        "id": "p10",
+        "label": "Julia",
+        "kategorie": "Person",
+        "alter": 26,
+        "einfluss": 6.7
+      },
+      {
+        "id": "p11",
+        "label": "Kai",
+        "kategorie": "Person",
+        "alter": 39,
+        "einfluss": 7.8
+      },
+      {
+        "id": "p12",
+        "label": "Lena",
+        "kategorie": "Person",
+        "alter": 24,
+        "einfluss": 4.6
+      },
+      {
+        "id": "g1",
+        "label": "StartupX",
+        "kategorie": "Gruppe",
+        "groesse": 8
+      },
+      {
+        "id": "g2",
+        "label": "UmweltAktiv",
+        "kategorie": "Gruppe",
+        "groesse": 12
+      },
+      {
+        "id": "g3",
+        "label": "FamilieSchmitt",
+        "kategorie": "Gruppe",
+        "groesse": 5
+      },
+      {
+        "id": "g4",
+        "label": "TechMeetup",
+        "kategorie": "Gruppe",
+        "groesse": 15
+      }
+    ],
+    "relationships": [
+      {
+        "id": "r1",
+        "source": "p1",
+        "target": "p2",
+        "type": "kennt",
+        "label": "kennt",
+        "intensitaet": 0.85
+      },
+      {
+        "id": "r2",
+        "source": "p2",
+        "target": "p1",
+        "type": "kennt",
+        "label": "kennt",
+        "intensitaet": 0.85
+      },
+      {
+        "id": "r3",
+        "source": "p1",
+        "target": "p2",
+        "type": "arbeitet_mit",
+        "label": "arbeitet_mit",
+        "intensitaet": 0.95
+      },
+      {
+        "id": "r4",
+        "source": "p1",
+        "target": "p3",
+        "type": "kennt",
+        "label": "kennt",
+        "intensitaet": 0.6
+      },
+      {
+        "id": "r5",
+        "source": "p3",
+        "target": "p1",
+        "type": "kennt",
+        "label": "kennt",
+        "intensitaet": 0.75
+      },
+      {
+        "id": "r6",
+        "source": "p2",
+        "target": "p4",
+        "type": "hasst",
+        "label": "hasst",
+        "intensitaet": 0.8
+      },
+      {
+        "id": "r7",
+        "source": "p4",
+        "target": "p2",
+        "type": "hasst",
+        "label": "hasst",
+        "intensitaet": 0.65
+      },
+      {
+        "id": "r8",
+        "source": "p5",
+        "target": "p1",
+        "type": "ist_verwandt_mit",
+        "label": "ist_verwandt_mit",
+        "intensitaet": 0.9
+      },
+      {
+        "id": "r9",
+        "source": "p1",
+        "target": "p5",
+        "type": "ist_verwandt_mit",
+        "label": "ist_verwandt_mit",
+        "intensitaet": 0.9
+      },
+      {
+        "id": "r10",
+        "source": "p6",
+        "target": "p7",
+        "type": "kennt",
+        "label": "kennt",
+        "intensitaet": 0.4
+      },
+      {
+        "id": "r11",
+        "source": "p7",
+        "target": "p8",
+        "type": "arbeitet_mit",
+        "label": "arbeitet_mit",
+        "intensitaet": 0.7
+      },
+      {
+        "id": "r12",
+        "source": "p8",
+        "target": "p9",
+        "type": "hasst",
+        "label": "hasst",
+        "intensitaet": 0.75
+      },
+      {
+        "id": "r13",
+        "source": "p9",
+        "target": "p10",
+        "type": "kennt",
+        "label": "kennt",
+        "intensitaet": 0.55
+      },
+      {
+        "id": "r14",
+        "source": "p10",
+        "target": "p11",
+        "type": "arbeitet_mit",
+        "label": "arbeitet_mit",
+        "intensitaet": 0.92
+      },
+      {
+        "id": "r15",
+        "source": "p11",
+        "target": "p12",
+        "type": "ist_verwandt_mit",
+        "label": "ist_verwandt_mit",
+        "intensitaet": 0.45
+      },
+      {
+        "id": "r16",
+        "source": "p1",
+        "target": "g1",
+        "type": "gehoert_zu",
+        "label": "gehoert_zu"
+      },
+      {
+        "id": "r17",
+        "source": "p2",
+        "target": "g1",
+        "type": "gehoert_zu",
+        "label": "gehoert_zu"
+      },
+      {
+        "id": "r18",
+        "source": "p5",
+        "target": "g1",
+        "type": "gehoert_zu",
+        "label": "gehoert_zu"
+      },
+      {
+        "id": "r19",
+        "source": "p6",
+        "target": "g2",
+        "type": "gehoert_zu",
+        "label": "gehoert_zu"
+      },
+      {
+        "id": "r20",
+        "source": "p7",
+        "target": "g2",
+        "type": "gehoert_zu",
+        "label": "gehoert_zu"
+      },
+      {
+        "id": "r21",
+        "source": "p8",
+        "target": "g3",
+        "type": "gehoert_zu",
+        "label": "gehoert_zu"
+      },
+      {
+        "id": "r22",
+        "source": "p9",
+        "target": "g3",
+        "type": "gehoert_zu",
+        "label": "gehoert_zu"
+      },
+      {
+        "id": "r23",
+        "source": "p10",
+        "target": "g4",
+        "type": "gehoert_zu",
+        "label": "gehoert_zu"
+      },
+      {
+        "id": "r24",
+        "source": "p11",
+        "target": "g4",
+        "type": "gehoert_zu",
+        "label": "gehoert_zu"
+      },
+      {
+        "id": "r25",
+        "source": "p4",
+        "target": "g2",
+        "type": "gehoert_zu",
+        "label": "gehoert_zu"
+      },
+      {
+        "id": "r26",
+        "source": "p3",
+        "target": "g4",
+        "type": "gehoert_zu",
+        "label": "gehoert_zu"
+      },
+      {
+        "id": "r27",
+        "source": "p12",
+        "target": "g2",
+        "type": "gehoert_zu",
+        "label": "gehoert_zu"
+      },
+      {
+        "id": "r28",
+        "source": "p5",
+        "target": "p8",
+        "type": "kennt",
+        "label": "kennt",
+        "intensitaet": 0.7
+      },
+      {
+        "id": "r29",
+        "source": "p6",
+        "target": "p2",
+        "type": "arbeitet_mit",
+        "label": "arbeitet_mit",
+        "intensitaet": 0.55
+      },
+      {
+        "id": "r30",
+        "source": "p4",
+        "target": "p10",
+        "type": "hasst",
+        "label": "hasst",
+        "intensitaet": 0.85
+      }
+    ]
+  },
+  "visualMappings": {
+    "defaultPresets": {
+      "global_node": {
+        "size": {
+          "source": "einfluss",
+          "function": "linear",
+          "range": [
+            1,
+            3
+          ]
+        },
+        "color": {
+          "source": "kategorie",
+          "function": "categorical"
+        },
+        "geometry": {
+          "source": "kategorie",
+          "function": "categorical",
+          "params": {
+            "Person": "sphere",
+            "Gruppe": "box"
+          }
+        }
+      },
+      "global_edge": {
+        "color": {
+          "source": "type",
+          "function": "categorical"
+        },
+        "thickness": {
+          "source": "intensitaet",
+          "function": "linear",
+          "range": [
+            0.03,
+            0.18
+          ]
+        }
+      }
+    }
+  }
+}

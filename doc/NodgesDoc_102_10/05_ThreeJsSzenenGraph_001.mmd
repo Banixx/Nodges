@@ -1,0 +1,29 @@
+graph TD
+    SCENE["THREE.Scene\nWurzel aller Objekte"]
+
+    SCENE --> CAM["PerspectiveCamera\nFOV: 75°\nFar-Clipping dynamisch\nan Bounding-Box angepasst"]
+
+    SCENE --> LIGHTS["Beleuchtung (3-Punkt-Setup)"]
+    LIGHTS --> AL["AmbientLight\nIntensitaet: 0.4\nweiches Grundlicht"]
+    LIGHTS --> DL["DirectionalLight (Key Light)\nhartes gerichtetes Licht\nSpecular Highlights + Schatten"]
+    LIGHTS --> HL["HemisphereLight\nHimmel + Boden-Reflektion\nnaturalistischer Look"]
+
+    SCENE --> NODES["NodeManager\nInstancedMesh"]
+    NODES --> GEO_N["SphereGeometry\n(nur 1x an GPU gesendet)"]
+    NODES --> MAT_N["MeshStandardMaterial\n(nur 1x an GPU gesendet)"]
+    NODES --> BUF["Matrix-Buffer\nArray mit N Transformationen\nPosition + Rotation + Scale + Farbe\n→ 1 einziger Draw Call fuer N Knoten"]
+
+    SCENE --> EDGES["EdgeObjectsManager\nTubeGeometry pro Kante"]
+    EDGES --> BEZ["QuadraticBezierCurve3\nkurve zwischen Source und Target"]
+    EDGES --> TUBE["TubeGeometry\nentlang der Bezier-Kurve extrudiert\nBreite = weight"]
+    EDGES --> MULTI["Multi-Edge Offset\nbei mehreren Kanten\nzwischen denselben Knoten\nalgorithmischer Kontrollpunkt-Offset"]
+
+    SCENE --> RENDERER["WebGLRenderer"]
+    RENDERER --> OPT1["antialias: true\nMSAA-Glaettung"]
+    RENDERER --> OPT2["logarithmicDepthBuffer: true\nverhindert Z-Fighting"]
+
+    style SCENE fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7
+    style NODES fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style EDGES fill:#1a3a2a,stroke:#43a047,color:#c8e6c9
+    style LIGHTS fill:#3a2a1a,stroke:#fb8c00,color:#ffe0b2
+    style RENDERER fill:#2a1a1a,stroke:#e53935,color:#ffcdd2

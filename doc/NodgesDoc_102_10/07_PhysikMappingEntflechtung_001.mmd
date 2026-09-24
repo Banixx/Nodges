@@ -1,0 +1,29 @@
+graph TD
+    START["Neuer Graph geladen\nVisual Mapping konfiguriert"]
+
+    START --> CHECK{"Welche Achsen\nsind gemappt?"}
+
+    CHECK -->|"X + Y + Z\nalle drei belegt"| SA["Szenario A\nVollstaendiges Mapping"]
+    CHECK -->|"nur X + Y\nZ offen"| SB["Szenario B\nTeilweises Mapping"]
+    CHECK -->|"keine Achse\ngemappt"| SC["Szenario C\nKein Mapping"]
+
+    SA --> SA1["X-Achse: Physik gesperrt\nKoordinate = Datenwert"]
+    SA --> SA2["Y-Achse: Physik gesperrt\nKoordinate = Datenwert"]
+    SA --> SA3["Z-Achse: Physik gesperrt\nKoordinate = Datenwert"]
+    SA1 & SA2 & SA3 --> SA_OUT["Knoten liegen exakt\nan Datenpositionen\nPhysik-Engine deaktiviert"]
+
+    SB --> SB1["X-Achse: gesperrt"]
+    SB --> SB2["Y-Achse: gesperrt"]
+    SB --> SB3["Z-Achse: FREI\n1D-Force-Layout aktiv"]
+    SB3 --> SB_OUT["Physik verschiebt Knoten\nnur auf Z-Achse\nverhindert Ueberlappungen\nin der Tiefe"]
+
+    SC --> SC1["Charge-Force\nKnoten stossen sich ab"]
+    SC --> SC2["Link-Force\nKanten ziehen wie Federn"]
+    SC1 & SC2 --> SC_OUT["Organisches Cluster-Layout\ntopologische Anordnung\nGestaltgesetz der Naehe"]
+
+    style SA fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style SB fill:#2a2a1a,stroke:#f9a825,color:#fff9c4
+    style SC fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7
+    style SA_OUT fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style SB_OUT fill:#2a2a1a,stroke:#f9a825,color:#fff9c4
+    style SC_OUT fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7

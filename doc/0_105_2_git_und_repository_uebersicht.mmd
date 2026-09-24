@@ -1,0 +1,39 @@
+flowchart TD
+    subgraph Remote["GitHub: Banixx/Nodges und Vorgaenger"]
+        AT["ATrunBoing/Nodges (Juli 2025)<br/>Ersteller: Arbreska Trun<br/>Commit 0.78 bis 0.92.18"] --> InitialBanixx["Banixx/Nodges (Dezember 2025)<br/>Fortfuehrung des selben Git-Trees"]
+        InitialBanixx --> GHMain["origin/main (476bf6c)<br/>chore: stop tracking .tmp.driveupload"]
+        InitialBanixx --> GHPull1["PR #1: Feature/multi-build (Gemmerged 2026-06-29)"]
+        InitialBanixx --> GHPi["origin/pi (d4391c0)<br/>Stand: 0.105.1"]
+        InitialBanixx --> GHMulti["origin/feature/multi-build (ec2109d)<br/>Stand: 0.102.3 Build 5"]
+    end
+
+    subgraph Timeline["Historische Entwicklungsphasen"]
+        P1["Phase 1: Juni - Sept 2025<br/>Autor: Arbreska Trun (34 Commits)<br/>v0.78 bis v0.92.18"]
+        P2["Phase 2: Jan - Feb 2026<br/>Autor: Banixx (35 Commits)<br/>v0.97.5 bis v0.98 rebuild"]
+        P3["Phase 3: Maerz - Juli 2026<br/>Autor: Nodges Bot (68 Commits)<br/>v0.98.1 bis v0.103"]
+        P4["Phase 4: Aug - Sept 2026<br/>Autor: Pi Agent im Container (9 Commits)<br/>v0.103.1 bis v0.105.1"]
+        P5["Phase 5: Aktuell (Sept 2026)<br/>Autor: bani / Antigravity<br/>Refactoring und Bereinigung"]
+        P1 --> P2 --> P3 --> P4 --> P5
+    end
+
+    subgraph LocalWorkspaces["Lokale Umgebungen und Dateisystem"]
+        subgraph WinProjects["C:/Users/ich/Desktop/code/_projects"]
+            WinNodges["Nodges (Haupt-Workspace)<br/>Branch: refactor/pi-gem31<br/>Basis: d4391c0 (0.105.1)<br/>Lokale Branches: main, pi, refactor/*, VersionA, VersionB"]
+            WinNodgesPi["Nodges_Pi<br/>Docker-Compose Konfiguration fuer Pi Container<br/>Steuert Mount von WSL nach /workspace"]
+            WinNodgesPiSnap["Nodges_Pi_2026_08_31<br/>Snapshot-Backup der Container-Konfiguration"]
+            WinNodgesPiAlt["Nodges_Pi_alt<br/>Alte Doku & Notizen (pi_savety, pi_shortcuts)"]
+        end
+
+        subgraph WSL["WSL2: Ubuntu"]
+            WSLNodges["/home/unixusername/nodges<br/>Branch: pi (d4391c0)<br/>Arbeitsstand: Modifiziert in src/utils/LLMService.ts<br/>Gemountet als /workspace im Pi-Container"]
+        end
+
+        subgraph Worktrees["Antigravity Worktrees"]
+            WTFix["fix-math-calculation-logic-20260712<br/>In .gemini/antigravity/worktrees/Nodges/"]
+        end
+    end
+
+    GHPi --> WinNodges
+    GHPi --> WSLNodges
+    WinNodgesPi -.->|steuert Start von| WSLNodges
+    WinNodges -.->|Worktree-Verbindung| WTFix

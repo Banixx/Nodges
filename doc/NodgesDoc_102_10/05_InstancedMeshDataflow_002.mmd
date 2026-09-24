@@ -1,0 +1,32 @@
+sequenceDiagram
+    participant GM as GraphDataManager
+    participant NM as NodeManager
+    participant DUM as Dummy Object3D
+    participant BUF as InstancedMesh Buffer
+    participant GPU as GPU (WebGL)
+
+    GM->>NM: buildNodes(entities[])
+    NM->>NM: InstancedMesh erstellen\ncount = entities.length\nGeometrie + Material 1x allozieren
+
+    loop fuer jeden Knoten i
+        NM->>DUM: position.set(x, y, z)
+        NM->>DUM: scale.setScalar(radius)
+        NM->>DUM: updateMatrix()
+        DUM-->>NM: 4x4 Transformationsmatrix
+
+        NM->>BUF: setMatrixAt(i, matrix)
+        NM->>BUF: setColorAt(i, color)
+    end
+
+    NM->>BUF: instanceMatrix.needsUpdate = true
+    NM->>BUF: instanceColor.needsUpdate = true
+
+    note over BUF,GPU: naechster requestAnimationFrame
+    BUF->>GPU: gesamter Buffer wird uebertragen\n1 Draw Call fuer ALLE Knoten
+
+    GPU-->>GPU: N Knoten gerendert\nin einem einzigen Renderpass
+
+    note over NM: Live-Update (Visual Mapping geaendert)
+    GM->>NM: updateVisualMapping(mappingConfig)
+    NM->>BUF: nur setColorAt / setMatrixAt\nfuer betroffene Indizes
+    NM->>BUF: needsUpdate = true

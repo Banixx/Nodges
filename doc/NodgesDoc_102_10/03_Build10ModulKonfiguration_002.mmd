@@ -1,0 +1,39 @@
+graph TD
+    START([User: Prompt eingeben]) --> MOD
+
+    subgraph MOD["Modul 1: Modell-Quelle"]
+        M1["Cloud API\nOpenRouter / OpenAI / Anthropic\nmax. Intelligenz"]
+        M2["Lokal\nOllama localhost:11434\nLM Studio localhost:1234\n100% Privacy, kein API-Key"]
+    end
+
+    MOD --> GRD
+
+    subgraph GRD["Modul 2: Grounding-Strategie"]
+        G1["Kein Grounding\nNur Modellgewichte\nwie Build 6"]
+        G2["Wikidata Live\nSPARQL-Abfrage\nverifizierte RDF-Triples\nwie Build 8"]
+        G3["RAG\nURL oder PDF einlesen\nals Kontext-Basis"]
+        G4["Vektor-Deduplizierung\nEmbeddings + Kosinus\nduplikate verschmelzen\nwie Build 9"]
+    end
+
+    GRD --> QA
+
+    subgraph QA["Modul 3: Qualitaetssicherung"]
+        Q1["Keine QA\nSchneller Single-Pass"]
+        Q2["Generator + Kritiker\nZweiter LLM-Agent\nprueft und korrigiert\nvor UI-Ausgabe"]
+        Q3["Human-in-the-loop\nModal-Review durch Nutzer\nEditieren / Loeschen\nvor Visualisierung"]
+    end
+
+    QA --> RATE
+
+    subgraph RATE["Modul 4: Kanten-Bewertung"]
+        R1["LLM-Schaetzung\nModell raet Kantenstaerke"]
+        R2["Feste Taxonomie\nKlassen = fixe Gewichte"]
+        R3["Kosinus-Aehnlichkeit\nEmbeddings berechnen\nsemanische Naehe als Weight"]
+    end
+
+    RATE --> OUT([App.loadGraphData\n→ 3D-Szene])
+
+    style MOD fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style GRD fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style QA fill:#3a2a1a,stroke:#fb8c00,color:#ffe0b2
+    style RATE fill:#3a1a3a,stroke:#9c27b0,color:#e1bee7
