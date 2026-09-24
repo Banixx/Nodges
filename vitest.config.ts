@@ -6,6 +6,8 @@ export default defineConfig({
         globals: true,
         environment: 'node', // Für Three.js/Logik-Tests ohne DOM
         setupFiles: './src/tests/setup.ts',
+        include: ['src/tests/**/*.{test,spec}.ts'],
+        exclude: ['e2e/**', 'node_modules/**', 'dist/**'],
         coverage: {
             provider: 'v8',
             reporter: ['text', 'json', 'html'],
