@@ -960,3 +960,48 @@ refs/tags/v0.106.0  -> 51af1f4
 Es existiert damit **nur noch ein Branch**. Der lokale Branch `pi` war bereits entfernt; `git fetch --prune` hat den Leichnam des Remote-Verweises ebenfalls beseitigt.
 
 **Verbindlich ab jetzt:** Alle Harnesses (piCon und conT) arbeiten ausschliesslich auf **`main`**.
+
+
+---
+
+## Teil G — Doku-Bestand `Nodges_Pi/doc/` versioniert (Version 0.106.3)
+
+*Durchgefuehrt von piCon gemaess dem Berichtswesen (`/home/.pi/AGENTS.md`), conT-matching.*
+
+### G.1 Ausgangslage
+
+`Nodges_Pi/doc/` war der **letzte unversionierte Rest** im Arbeitsbaum (`??` in `git status`). Der Benutzer hat die Dateien mit `git add .` zum Commit vorgemerkt und piCon gebeten, den **Versionierungsablauf** (Version erhoehen, committen, pushen) durchzufuehren.
+
+### G.2 Inhalt
+
+**30 Dateien**, zusammen **767 Zeilen** — ausschliesslich Markdown und eine Mermaid-Datei:
+- 28 `.md` und 1 `.mmd` aus `Nodges_Pi/doc/` (Doku des Container-Setups: `1_0_0_docker_*`, `1_0_0_wsl_*`, `1_0_0_pi_*`)
+- 1 geaenderte Datei: `package.json` (Version)
+
+Namensmuster der Dateien: Praefix `1_0_0_` bzw. `1_` — historische Setup-Doku zum Docker-/WSL-Thema.
+
+### G.3 Sicherheitspruefung (wie bei der frueheren `doc/`-Freigabe)
+
+Vor dem Commit wurde ein **Secrets-Scan** ueber alle 30 Dateien durchgefuehrt — analog zu Abschnitt 8:
+
+```bash
+git diff --cached --name-only | xargs grep -lEIn "sk-[A-Za-z0-9]{16,}|ghp_...|Bearer ...|api_key..."
+```
+
+**Ergebnis: sauber.** Keine echten Schluessel oder Tokens. Damit war die Freigabe unbedenklich.
+
+### G.4 Versionierung
+
+| Datei | alt | neu |
+|---|---|---|
+| `package.json` | `0.106.2` | **`0.106.3`** |
+| `package-lock.json` | `0.106.2` | **`0.106.3`** |
+
+Die Patch-Version wurde erhoeht — passend zum conT-Workflow (`sgc`), bei dem die Version vor jedem Push automatisch um 1 steigt.
+
+### G.5 Ergebnis
+
+- Commit erstellt und nach **`origin/main`** gepusht.
+- Der Arbeitsbaum ist damit **vollstaendig sauber** — keine unversionierten Dateien mehr.
+
+> **Hinweis:** `Nodges_Pi/` ist der **Git-Snapshot** des Compose-Projekts. Die echte, wirksame Compose-Datei liegt weiterhin ausserhalb des Repos unter `C:\Users\ich\Desktop\code\_projects\Nodges_Pi` (siehe `resetup.md`). Die Doku hier ist also beschreibend, nicht ausfuehrend.

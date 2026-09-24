@@ -1,0 +1,98 @@
+---
+title: Nodges_Pi - System Architektur
+---
+graph TB
+    subgraph WIN11["Windows 11 Host"]
+        direction TB
+
+        subgraph APPS["Installierte Software (Host)"]
+            NODE24["Node.js v24.18.1"]
+            GIT_WIN["Git for Windows"]
+            DD["Docker Desktop"]
+        end
+
+        subgraph REPO["Git Repository"]
+            REPO_DIR["c:/Users/ich/Desktop/code/_projects/Nodges_Pi"]
+            BRANCH_MAIN["branch: main"]
+            BRANCH_DEV["branch: dev / feature-*"]
+            DOTENV[".env (API-Keys, nicht in Git)"]
+            DOCKERFILE["Dockerfile"]
+            COMPOSE["docker-compose.yml"]
+        end
+
+        BROWSER["Browser\nlocalhost:5173"]
+        PSHELL["PowerShell\n(docker exec ...)"]
+    end
+
+    subgraph WSL2["WSL2 (Debian/Ubuntu Kernel-Schicht)"]
+        WSL_NET["Netzwerk-Bridge\n(networkingMode=mirrored)"]
+    end
+
+    subgraph DOCKER["Docker Engine (via WSL2)"]
+        direction TB
+
+        subgraph CONTAINER["Container: pi-harness"]
+            direction TB
+            NODE22["Node.js 22 (slim)"]
+            PY311["Python 3.11"]
+            GIT_CTR["Git (im Container)"]
+
+            subgraph PROCESSES["Laufende Prozesse"]
+                VITE["Vite Dev Server\n:5173"]
+                PI["Pi Coding Agent\n(@earendil-works/pi-coding-agent)"]
+            end
+
+            subgraph LIGHTRAG["LightRAG DB"]
+                LRAG_PY["LightRAG Python-Service"]
+                LRAG_STORE["./lightrag_storage/\n(Vektoren, Graphen)"]
+            end
+
+            MOUNT["/workspace\n(Volume Mount)"]
+        end
+    end
+
+    subgraph GIT_REMOTE["Remote Git (optional)"]
+        GITHUB["GitHub / GitLab\nRemote Repository"]
+    end
+
+    %% Verbindungen Host <-> Docker
+    DD -->|"startet / verwaltet"| WSL2
+    WSL2 -->|"stellt Kernel bereit"| DOCKER
+    REPO_DIR <-->|"Volume Mount\n(Aenderungen sofort sichtbar)"| MOUNT
+    DOTENV -->|".env wird vom Container\nals Umgebungsvariablen geladen"| CONTAINER
+    DOCKERFILE -->|"docker compose build"| CONTAINER
+    COMPOSE -->|"docker compose up -d"| CONTAINER
+
+    %% Netzwerk
+    BROWSER <-->|"HTTP :5173"| WSL_NET
+    WSL_NET <-->|"port forward"| VITE
+    PSHELL -->|"docker exec -it pi-harness bash"| CONTAINER
+
+    %% Git-Flow
+    GIT_WIN -->|"git push/pull"| GITHUB
+    GITHUB -->|"git pull (im Container via Mount)"| GIT_CTR
+    GIT_CTR -->|"arbeitet auf gemounteten Dateien\n= Host-Repository"| MOUNT
+    BRANCH_MAIN & BRANCH_DEV --> REPO_DIR
+
+    %% Interne Container-Verbindungen
+    PI -->|"liest/schreibt Dateien"| MOUNT
+    PI -->|"Kontext-Queries"| LRAG_PY
+    LRAG_PY <-->|"persistiert"| LRAG_STORE
+    NODE22 -->|"fuehrt aus"| VITE
+    NODE22 -->|"fuehrt aus"| PI
+    PY311 -->|"fuehrt aus"| LRAG_PY
+
+    %% Styling
+    classDef host fill:#1e3a5f,stroke:#4a90d9,color:#e8f4fd
+    classDef wsl fill:#2d1b4e,stroke:#9b59b6,color:#f0e6ff
+    classDef docker fill:#1a3c34,stroke:#27ae60,color:#e8f8f0
+    classDef process fill:#3d2b00,stroke:#f39c12,color:#fff8e6
+    classDef git fill:#3b1f1f,stroke:#e74c3c,color:#fde8e8
+    classDef data fill:#1a2a3a,stroke:#3498db,color:#e8f4fd
+
+    class WIN11,APPS,NODE24,GIT_WIN,DD,BROWSER,PSHELL host
+    class WSL2,WSL_NET wsl
+    class DOCKER,CONTAINER,NODE22,PY311,GIT_CTR,MOUNT docker
+    class PROCESSES,VITE,PI,LIGHTRAG,LRAG_PY,LRAG_STORE process
+    class REPO,REPO_DIR,BRANCH_MAIN,BRANCH_DEV,DOTENV,DOCKERFILE,COMPOSE git
+    class GIT_REMOTE,GITHUB data
