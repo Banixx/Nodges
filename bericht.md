@@ -729,3 +729,53 @@ Befund vor der Korrektur:
 2. **Physischer Wechsel:** Soll winAnt kuenftig direkt auf `\\wsl.localhost\Ubuntu\home\unixusername\nodges` lesen und schreiben und der Windows-Ordner unberuehrt bleiben? (**Antwort piCon: Ja — das ist der Kern von Variante B.**)
 3. **LightRAG-Backup:** Soll fuer `lightrag-backend/rag_storage/` ein lokales Backup-Skript entstehen, da die Daten nicht in Git liegen?
 
+
+---
+
+## Teil D — Branch-Strategie: Umstellung auf `main` (Beschluss des Benutzers, Commit `d4c7b3f`)
+
+**Der Benutzer hat entschieden: `main` ist ab jetzt der alleinige Arbeitsbranch.**
+
+### D.1 Was umgesetzt wurde
+
+| Schritt | Ergebnis |
+|---|---|
+| `pi` war `main` um 15 Commits voraus, `main` hatte keine eigenen Commits | **Fast-Forward** (Vorspulen ohne Konflikt) moeglich |
+| `git checkout main` + `git merge --ff-only pi` | `main` auf `51af1f4` vorgespult |
+| `git push origin main` | `main` auf GitHub aktualisiert (`80236c5` -> `51af1f4`) |
+| Branch `pi` geloescht | nur noch **`main`** auf GitHub |
+| Tag `v0.106.0` angelegt und gepusht | erste Momentaufnahme (siehe D.2) |
+
+Es gingen **keine Commits verloren**: `main` und `pi` zeigten danach auf denselben Stand `51af1f4`. Ein Wiederherstellen von `pi` waere jederzeit moeglich mit `git checkout -b pi 51af1f4`.
+
+**Neuer Zustand auf GitHub:**
+```
+refs/heads/main    -> 51af1f4
+refs/tags/v0.106.0 -> 51af1f4
+```
+
+### D.2 Versionstags — erklaert fuer den Benutzer
+
+Ein **Tag** (Etikett) ist ein **fester, sprechender Name fuer einen bestimmten Commit**. Commits haben kryptische Adressen (`51af1f4`); ein Tag macht sie merkbar.
+
+Der Benutzer beschrieb seine Versionsnummern treffend als *„einfach Stimmungen"* — das ist genau richtig so. Der Ablauf:
+
+1. Arbeit fliesst ganz normal in `main`.
+2. Irgendwann sagt der Benutzer: **„Das ist jetzt stabil."**
+3. piCon (oder winAnt) setzt einen Tag:
+   ```bash
+   git tag v0.106.0
+   git push --tags
+   ```
+4. Dieser Stand ist damit **auf Dauer wiederfindbar** — unabhaengig davon, was danach passiert.
+
+Die aktuelle „Stimmung" aus `package.json` ist **`0.106.0`**. Der erste Tag `v0.106.0` steht auf `51af1f4` und markiert den Stand der Multi-Harness-Konsolidierung.
+
+**Wichtig:** Ein Tag ist **kein** Branch. Er verschiebt sich nicht. Er ist eine Momentaufnahme.
+
+### D.3 Verbindliche Regel ab jetzt
+
+> **Beide Harnesses arbeiten ausschliesslich auf `main`.**
+
+Nichts Neues mehr auf `pi`. Der Grund fuer die fruehere Trennung (piCon im Container, winAnt auf Windows) ist mit Variante B entfallen — es gibt nur noch **einen** Arbeitsort.
+
