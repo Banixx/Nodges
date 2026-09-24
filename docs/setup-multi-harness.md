@@ -369,6 +369,27 @@ Langfristig sauberer waere eine Migration auf einen gemeinsamen Ort (z. B. `docs
 
 ---
 
+---
+
+## 9. Ballastbereinigung (piCon, Commit `a844ac5`, gepusht)
+
+Der Benutzer hat am 2026-09-24 entschieden: **Ballast lieber trennen als mitschleppen** („wuerde ich sowieso neu einrichten, falls Bedarf ist").
+
+**Geloescht (258 Dateien):**
+- `doc/archiv_history/` **komplett** (252 Dateien) — Altbestand: `NodgesDoc_alt/`, `future_format_diagrams/`, Testdaten-Dumps (`grok_*.json`, `sessions_juni.md`, `hund.txt` mit 7 Bytes)
+- `doc/Kopie von 0_102_15_build12_lightrag_pipeline_dokumentation.txt` — Windows-Duplikat
+- `doc/0_102_15_B12_Graph_01_28_tuned1..5.json` — 5 experimentelle Zwischenstaende desselben Graphen
+
+**Bewusst BEHALTEN:**
+- `doc/0_106_0_analyse_gemeinsame_windows_kopie_komplikationen.md` — enthaelt „kopie" im Namen, ist aber eine **aktuelle Analyse**, kein Duplikat
+- Die PDFs (`0_102_15_Nodges_gesamt.pdf`, `NodgesDoc_102.pdf`)
+- Alle aktuellen `0102xx_*.md`-Berichte und `0_10x_*.md`
+
+**Ergebnis:** `doc/` enthaelt jetzt **333 Dateien** statt 591.
+
+> **Fuer winAnt wichtig:** `doc/archiv_history/` existiert nicht mehr. Dateien, die dorthin verweisen, muessen angepasst werden. Alles Geloeschte bleibt in der **Git-Historie** abrufbar und ist damit nicht endgueltig verloren.
+
+
 ## Glossar (Begriffe kurz erklärt)
 
 - **Harness:** Die Ausführungsumgebung, in der ein KI-Agent läuft (hier: Pi im Container, Antigravity auf Windows).
