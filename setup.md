@@ -5,31 +5,34 @@
 
 ---
 
-## 1. Architektur (verbindlich: Variante B)
+## 1. Architektur: Pragmatischer Dual-Harness ueber schnellen Git-Sync
 
-**Linux (WSL2) ist die alleinige Wahrheitsquelle (Single Source of Truth).**
+**Befund Praxistest (2026-09-24):** Der direkte Zugriff der Antigravity-IDE auf den UNC-Netzwerkpfad (`\\wsl.localhost\...`) scheitert an der Windows/Electron-Dateisystemueberwachung (File-Watcher-Absturz). Daher gilt ab sofort verbindlich:
 
 ```
-EIN physischer Speicherort:  /home/unixusername/nodges   (WSL2, ext4)
-   |
-   +-- gemountet als /workspace          -> piCon (Container pi-harness)
-   |
-   +-- fuer Windows erreichbar als
-       \\wsl.localhost\Ubuntu\home\unixusername\nodges
-                                         -> winAnt (Antigravity)
-
-GitHub (Banixx/Nodges) = Sicherung und Austausch, NICHT Arbeitsort.
+[winAnt: Antigravity auf Windows 11]           [piCon: Pi im Container]
+C:\Users\ich\Desktop\code\_projects\Nodges      /workspace (WSL2 ext4)
+                 │                                        │
+                 ▼                                        ▼
+             (via sgc / git push)                  (via git push)
+                 │                                        │
+                 └──────────────► GitHub ◄────────────────┘
+                              (origin/pi)
 ```
 
-**Alle Dienste laufen in Linux**, auch LightRAG. Es gibt kein separates Windows-Backend mehr.
+**Arbeitsaufteilung:**
+- **winAnt (Antigravity):** Entwickelt auf Windows `C:\Users\ich\Desktop\code\_projects\Nodges` (Frontend, Three.js, Dokumentation).
+- **piCon (Pi-Agent):** Entwickelt im Container `/workspace` (Vite 5173, LightRAG 8000, Linux-Skripte).
+- **Synchronisation:** Erfolgt diszipliniert und automatisiert ueber Git auf Branch `pi`. Da `doc/` freigegeben ist und LF-Zeilenenden repo-weit gelten, dauert der Sync nur 2 bis 3 Sekunden.
+
+**Alle Dienste laufen weiterhin im Linux-Container:**
 
 | Dienst | Port | Wo |
 |---|---|---|
 | Vite / Nodges Dev-Server | 5173 | Container |
-| LightRAG API | 8000 | Container (intern, nicht nach aussen veroeffentlicht) |
+| LightRAG API | 8000 | Container (intern) |
 | Vite-Proxy auf LightRAG | 5173 `/lightrag-api` | Container |
 
-**Veraltet / nicht mehr benutzen:** Der alte Windows-Checkout `C:\Users\ich\Desktop\code\_projects\Nodges` ist eine redundante Kopie. Nach Abschluss der Migration loeschen oder umbenennen.
 
 ---
 
@@ -55,7 +58,10 @@ Datei aendern -> git add -> git commit (lokal) -> git push -> GitHub aktuell
 Ein **Commit** wirkt nur im lokalen Checkout. **Push** laedt hoch. **Pull** holt in einen anderen Checkout.
 GitHub wird **nicht** automatisch aktualisiert.
 
-**Kein `git` mit Windows-Git auf dem UNC-Pfad ausfuehren** — die 9P-Bruecke ist sehr langsam. Git-Befehle gehoeren in die Linux-Seite (WSL oder Container).
+**Automatisierte Antigravity-Skills (ruckzuck ohne Nachdenken):**
+- **`sgc` (Push & Handover):** Erhoeht automatisch die Patch-Version in `package.json` um 1 (z.B. `0.106.0` -> `0.106.1`), fuehrt `git add .` aus, committet ausschliesslich mit der Versionsnummer als Message und pusht direkt zu `origin/pi`.
+- **`sgp` (Pull & Takeover):** Holt den neuesten Stand mit `git pull origin pi` ab, prueft `git status` und meldet die aktuelle Version sowie den Commit.
+
 
 ---
 
@@ -142,13 +148,13 @@ curl -s http://localhost:5173/lightrag-api/health
 
 ---
 
-## 8. Bekannte offene Punkte
+## 8. Status der offenen Punkte
 
-- Windows-Altcopy `C:\...\Nodges` aufloesen (nach Migration).
-- `docker-compose.yml` liegt noch ausserhalb des Repos in `C:\Users\ich\Desktop\code\_projects\Nodges_Pi`.
-- Letzte Windows-Pfad-Referenz: `.devcontainer/devcontainer.json` (`C:/users/ich/desktop/code/ASSETS/`) — betrifft nur den VS-Code-Pfad, nicht den laufenden Container.
-- Branch-Strategie `main` vs. `pi` endgueltig festlegen.
-- LightRAG-Daten (`lightrag-backend/rag_storage/`) sind **nicht** versioniert — kein Backup ueber GitHub.
+- **Windows-Workspace `C:\...\Nodges`:** Bleibt als aktiver, stabiler Antigravity-Workspace dauerhaft bestehen (Praxistest am 2026-09-24 bestaetigt).
+- **Branch-Strategie:** Beide Harnesses arbeiten aktiv auf dem Branch `pi`. Bei Erreichen stabiler Meilensteine erfolgt ein Merge nach `main`.
+- **`docker-compose.yml`:** Liegt noch in `C:\Users\ich\Desktop\code\_projects\Nodges_Pi` (wird bei Gelegenheit im Repo harmonisiert).
+- **LightRAG-Daten (`lightrag-backend/rag_storage/`):** Bleiben lokal im Linux-Container; Backup-Skript bei Bedarf ergaenzen.
+
 
 ---
 
