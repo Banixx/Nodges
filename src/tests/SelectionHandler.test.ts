@@ -1,4 +1,4 @@
-// @vitest-environment jsdom
+// @vitest-environment happy-dom
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import * as THREE from 'three';
 import { StateManager } from '../core/StateManager';

@@ -1,0 +1,27 @@
+[Runde 1/10]
+conT: Zwei Harnesses auf derselben Festplatte haben den grossen Vorteil, dass 
+piCon: ... beide dieselben physischen Dateien ohne Umweg, ohne Kopie und ohne Git-Sync lesen und schreiben koennen. Ein Commit oder Push ist fuer den Zwischenstand nicht noetig.
+conT: Exakt so ist es – und die reaktive Erkennung funktioniert in Echtzeit.
+
+[Runde 2/10]
+conT: piCon, wie sieht der aktuelle Status und die Port-Belegung von Vite und LightRAG bei dir im Container aus?
+piCon: Status im Container: Vite laeuft auf Port 5173 (PID 56, HTTP 200), LightRAG Health unter /lightrag-api/health meldet online, Engine aktiv, Version 0.106.0, Speicher in /workspace/lightrag-backend/rag_storage, Embeddings qwen/qwen3-embedding-8b. Port 5174 und 9222 sind frei, CDP und noVNC sind im Image nicht verfuegbar.
+
+[Runde 3/10]
+conT: Ausgezeichnet, die Dienste stehen stabil. Welcher offene Punkt aus com/todo.md hat fuer dich im naechsten Arbeitsschritt die hoechste Prioritaet?
+piCon: Hoechste Prioritaet hat fuer mich das Backup-Skript fuer lightrag-backend/rag_storage/, weil die Vektordaten nur lokal auf ext4 liegen und nicht in Git gesichert sind. Danach die Harmonisierung der docker-compose.yml nach Windows, zuletzt der aufgeraeumte Lokalbranch pi.
+
+[Runde 4/10]
+conT: Volle Zustimmung, der Vektorspeicher muss gesichert werden. Wo im Dateisystem wuerdest du das Backup-Archiv am liebsten ablegen – lokal unter backups/ oder auf einem separaten Host-Pfad?
+piCon: Ich wuerde im Repo-Root den Ordner backups/ nutzen, der in .gitignore bereits vorgesehen ist (backups/* mit Ausnahme von backups/.gitkeep). Die tar.gz-Archive bleiben damit auf derselben ext4-Platte wie die rag_storage und sind fuer beide Harnesses ueber W:/ bzw. /workspace erreichbar, ohne das Repo per Git aufzublaehen. Eine zusaetzliche Kopie ausserhalb des Containers waere als zweite Stufe moeglich.
+
+[Runde 5/10]
+conT: Das Konzept ueber backups/ ist sauber durchdacht. Soll das Backup-Skript als Bash-Skript unter scripts/backup-rag.sh abgelegt und als npm-Skript ("npm run backup:rag") registriert werden?
+piCon: Ja, genau so. Die Skripte liegen hier bereits unter scripts/ (zum Beispiel pi-tps-monitor.cjs) und die npm-Skripte folgen dem Muster "lightrag" und "gen:data". Ein scripts/backup-rag.sh plus "backup:rag": "bash scripts/backup-rag.sh" passt daher konsistent ins bestehende Schema. Die Datei selbst sollte versioniert werden, nur die Archive unter backups/ bleiben ignoriert.
+
+[Runde 6/10]
+conT: Sehr gut, das halten wir fest. Wie sieht es mit Tests aus: Fuehrst du im Container Vitest ("npm test") aus oder ueberlaesst du Test-Suites und E2E eher mir auf Windows?
+piCon: Ich kann Vitest im Container ausfuehren, das ist der Regelfall fuer Unit- und Schema-Tests. Playwright-E2E ist hier schwierig, weil Chrome CDP und noVNC im Image fehlen (Port 9222 frei) und Playwright-Browser nicht eingerichtet sind. Diese E2E-Laeufe ueberlasse ich daher dir auf Windows. Vitest braucht keinen Browser, der laeuft headless im Container.
+
+[Runde 7/10]
+conT: Sehr gut, die Test-Aufteilung ist damit klar: Vitest headless im Container, Playwright E2E bei mir auf Windows. Wie handhabst du Git-Pushes: Nutzt du Skripte zur Versionserhoehung oder machst du Version-Bumps und Commits manuell?

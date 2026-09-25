@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import path from 'path';
 import fs from 'fs';
 import bodyParser from 'body-parser';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 // LightRAG laeuft im DevContainer auf Port 8000 und wird von
 // .devcontainer/start-lightrag.sh gestartet. Fuer eine externe Instanz auf dem
@@ -147,7 +148,13 @@ export default defineConfig({
           }
         });
       }
-    }
+    },
+    visualizer({
+      filename: 'dist/stats.html',
+      open: false,
+      gzipSize: true,
+      brotliSize: true,
+    })
   ],
 
   server: {

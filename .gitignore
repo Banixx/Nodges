@@ -71,3 +71,8 @@ Griech_V3.csv
 
 # Fehlerprotokolle (ErrorLogs) aus lokalen Tests – gross, nicht versionieren
 testdata/Nodges_ErrorLog_*.json
+
+# Test- und Coverage-Artefakte
+coverage/
+playwright-report/
+test-results/

@@ -1005,3 +1005,39 @@ Die Patch-Version wurde erhoeht — passend zum conT-Workflow (`sgc`), bei dem d
 - Der Arbeitsbaum ist damit **vollstaendig sauber** — keine unversionierten Dateien mehr.
 
 > **Hinweis:** `Nodges_Pi/` ist der **Git-Snapshot** des Compose-Projekts. Die echte, wirksame Compose-Datei liegt weiterhin ausserhalb des Repos unter `C:\Users\ich\Desktop\code\_projects\Nodges_Pi` (siehe `resetup.md`). Die Doku hier ist also beschreibend, nicht ausfuehrend.
+
+---
+
+## Teil H — Status und Evaluation der Test- und Toolchain-Infrastruktur (Version 0.106.4)
+
+*Erstellt von conT auf Anfrage des Benutzers zur Pruefung vorhandener und fehlender Entwicklungsinstrumente.*
+
+### H.1 Ausgangslage und Diagnose
+
+Im Vorfeld bestand der Eindruck, im Repository waeren bisher keine automatischen Tests vorhanden. Eine systematische Untersuchung der Codebasis ergab:
+
+1. **Vitest (Unit-Tests):**
+   - 20 Testsuiten im Verzeichnis `src/tests/` vorhanden.
+   - 238 Tests laufen im Docker-Container `pi-harness` erfolgreich durch (Laufzeit: 6,28s).
+2. **Playwright (E2E-Tests):**
+   - 4 Testsuiten im Verzeichnis `e2e/` inklusive `playwright.config.ts` mit WebGL-Headless-Flags vorhanden.
+   - Derzeit im Container inaktiv, da der Browser-Cache (`~/.cache/ms-playwright`) noch leer ist.
+3. **CI-Pipeline:**
+   - In `.github/workflows/deploy.yml` wird lediglich `npm run build` aufgerufen. Weder Vitest noch Playwright laufen automatisiert bei Push/PR.
+4. **Code-Qualitaet:**
+   - Weder Linter (ESLint/Biome) noch Formatter (Prettier) sind eingerichtet. Typ-Pruefung existiert nur gekoppelt an den Build.
+
+### H.2 Beschlossene Empfehlungen
+
+- **Sofortmassnahmen:**
+  1. `npx playwright install chromium` im Container ausfuehren.
+  2. GitHub Actions Test-Workflow `.github/workflows/verify.yml` anlegen (Typecheck, Vitest, Playwright).
+  3. Skript `"typecheck": "tsc --noEmit"` in `package.json` hinterlegen.
+- **Ergaenzende Werkzeuge:**
+  - `Biome` fuer schnelles Linting und Formatieren (Rust-basiert, plattformuebergreifend stabil).
+  - Git-Hooks (z.B. via `simple-git-hooks` oder `husky` + `lint-staged`) zur Absicherung vor dem Commit.
+  - `rollup-plugin-visualizer` zur Ueberwachung der Bundle-Groesse (Three.js/PDF.js).
+  - Playwright Visual Regression (`toHaveScreenshot`) fuer Three.js Canvas-Stabilitaet.
+- **Nicht empfohlen:** `commitlint` (Konflikt mit dem Versionsnummer-Workflow `sgc`).
+
+*Ausfuehrlicher Einzelbericht:* `com/doc/0_106_4_bericht_werkzeuge_und_testinfrastruktur.md`.

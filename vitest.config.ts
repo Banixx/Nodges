@@ -11,6 +11,7 @@ export default defineConfig({
         coverage: {
             provider: 'v8',
             reporter: ['text', 'json', 'html'],
+            include: ['src/**/*.ts'],
             exclude: [
                 'node_modules/',
                 'src/tests/',
@@ -19,6 +20,12 @@ export default defineConfig({
                 '**/mockData',
                 'dist/',
             ],
+            thresholds: {
+                lines: 15,
+                functions: 20,
+                branches: 25,
+                statements: 15,
+            },
         },
     },
     resolve: {

@@ -1,10 +1,5 @@
+// @vitest-environment jsdom
 import { describe, it, expect, beforeEach } from 'vitest';
-// @ts-ignore -- jsdom hat keine Typdeklaration
-import { JSDOM } from 'jsdom';
-
-// DOMParser global bereitstellen fuer ImportManager
-const dom = new JSDOM('');
-(globalThis as any).DOMParser = dom.window.DOMParser;
 
 import { ImportManager } from '../utils/ImportManager';
 
