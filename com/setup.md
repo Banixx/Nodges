@@ -179,12 +179,11 @@ curl -s http://localhost:5173/lightrag-api/health
 
 ## 8. Status der offenen Punkte
 
-- **winAnt / Windows-Workspace `C:\...\Nodges`:** **ABGEKOPPELT** (Beschluss 2026-09-24). Ersetzt durch **conT** auf `W:\`. Kann nach Sicherung archiviert werden.
+- **winAnt / Windows-Workspace `C:/.../Nodges`:** **ABGEKOPPELT** (Beschluss 2026-09-24). Ersetzt durch **conT** auf `W:/`. Definitiv Vergangenheit, Workspace ist archiviert.
 - **Branch-Strategie:** **ALLE Harnesses arbeiten auf `main`.** Branch `pi` ist geloescht (Beschluss des Benutzers, `bericht.md` Teil D). Es gibt keinen Merge mehr nach `main` — `main` IST der Arbeitsbranch.
 - **Veraltetes in fremden Dokus:** winAnts Dokumente (`0_106_0_entscheidung_dual_harness...`, `0_106_0_analyse_unc_absturz...`) nennen noch `origin/pi`. Inhaltlich relevant, aber die Branch-Angabe ist ueberholt.
-- **Absturz-Ursache geklaert:** conT nutzt **`W:\`** als Netzlaufwerk (nicht den rohen UNC-Pfad) und laeuft stabil. winAnts Absturz betraf den direkten UNC-Zugriff der IDE.
-- **Offen:** Soll winAnt ebenfalls auf `W:\` umgestellt werden, oder bleibt es beim Windows-Workspace + Git-Sync?
-- **`docker-compose.yml`:** Liegt noch in `C:\Users\ich\Desktop\code\_projects\Nodges_Pi` (wird bei Gelegenheit im Repo harmonisiert).
+- **Absturz-Ursache geklaert:** conT nutzt **`W:/`** als Netzlaufwerk (nicht den rohen UNC-Pfad) und laeuft stabil. winAnts Absturz betraf den direkten UNC-Zugriff der IDE.
+- **`docker-compose.yml`:** Liegt noch in `C:/Users/ich/Desktop/code/_projects/Nodges_Pi` (wird bei Gelegenheit im Repo harmonisiert).
 - **LightRAG-Daten (`lightrag-backend/rag_storage/`):** Bleiben lokal im Linux-Container; Backup-Skript bei Bedarf ergaenzen.
 
 
