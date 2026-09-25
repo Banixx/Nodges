@@ -68,13 +68,28 @@ Datei aendern -> git add -> git commit (lokal) -> git push -> GitHub aktuell
 Ein **Commit** wirkt nur im lokalen Checkout. **Push** laedt hoch. **Pull** holt in einen anderen Checkout.
 GitHub wird **nicht** automatisch aktualisiert.
 
-**Automatisierte Antigravity-Skills (ruckzuck ohne Nachdenken):**
-> **KORREKTUR durch piCon (2026-09-24):** Diese Skills zeigten auf **`origin/pi`**, der Branch existiert aber nicht mehr (siehe Teil D in `bericht.md`). Sie wuerden **ins Leere laufen**. Korrigierte Fassung:
+**Automatisierter Git-Workflow (verbindlich seit Version 0.106.5):**
+> **Ersetzung durch piCon (2026-09-25):** Die alten Handover-Skills `sgc` (in jeder Version pushen) und
+> `sgp` (Pull) sind abgeloest. `sgc` zeigte historisch auf **`origin/pi`** — dieser Branch ist geloescht,
+> der Skill wuerde **ins Leere laufen**. Heute gilt ein einziges Skript fuer **beide** Harnesses:
+> `tools/nodges-git.sh`. conT und piCon rufen identisch auf, damit es keine Abweichungen gibt.
 
-- **`sgc` (Push & Handover):** Erhoeht automatisch die Patch-Version in `package.json` um 1 (z.B. `0.106.0` -> `0.106.1`), fuehrt `git add .` aus, committet ausschliesslich mit der Versionsnummer als Message und pusht direkt zu **`origin/main`**.
-- **`sgp` (Pull & Takeover):** Holt den neuesten Stand mit **`git pull origin main`** ab, prueft `git status` und meldet die aktuelle Version sowie den Commit.
+```bash
+bash tools/nodges-git.sh status    # Stand anzeigen, aendert nichts
+bash tools/nodges-git.sh save      # Patch +1, lokaler Commit, KEIN Push
+bash tools/nodges-git.sh release   # Minor (Patch auf 0) + Tag + Push nach origin/main
+```
 
-> Fuer conT gilt das Gleiche: **`main` statt `pi`** verwenden.
+- **`status`** ersetzt **`sgp`**: Da conT (`W:/`) und piCon (`/workspace`) dieselbe Arbeitskopie teilen,
+  gibt es nichts zu holen, solange lokal gearbeitet wird. Ein `git pull` suggerierte das faelschlich.
+- **`save`** ist der normale Arbeitsschritt. Version steigt um 1, `git add -A`, Commit mit der reinen
+  Versionsnummer. **GitHub bleibt unberuehrt.**
+- **`release`** ist der einzige Weg nach GitHub: Minor-Sprung, Typecheck und Unit-Tests, Commit, Tag
+  `v0.107.0`, Push von `main` und Tag. Ein `pre-push`-Hook blockiert Pushes mit Patch-Version.
+
+> **Fuer conT genau gleich:** dieselben drei Befehle, aufzurufen im Workspace `W:/`.
+> Vorsicht: Solange local Commits **voraus** liegen, waere ein Zuruecksetzen auf `origin/main`
+> ein Datenverlust.
 
 
 ---

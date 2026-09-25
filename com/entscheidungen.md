@@ -16,9 +16,18 @@ Ergaenzende Begruendungen stehen in `bericht.md` (Teile D, E, F) und `setup.md`.
 | 2026-09-24 | **`com/` wird eingefuehrt** als gemeinsamer Wissensspeicher. `bericht.md`, `setup.md` und `doc/` ziehen dorthin um; die `AGENTS.md` verweist darauf. Neue Dateien fuer Todo, Plan, Ideen, Entscheidungen. | dieser Umbau, Version `0.106.3` |
 | 2026-09-24 | Das Anlegen von Plaenen/Todos durch piCon ist eine **Empfehlung, keine Pflicht** (Beschluss auf Rueckfrage). | `com/00_start_hier.md` |
 
+| 2026-09-25 | **Speichern und Freigeben sind getrennt:** `save` = Patch +1 und lokaler Commit, **kein Push**. `release` = Minor-Version + Git-Tag + Push nach `origin/main`. GitHub ist damit das Meilenstein-Archiv, nicht der Zwischenspeicher. | `tools/nodges-git.sh`, `git-hooks/pre-push`, `AGENTS.md` Abschnitt 3 |
+| 2026-09-25 | **Beide Harnesses rufen dasselbe Skript** `tools/nodges-git.sh` auf. Die Skills sind nur duenne Verweise, damit conT und piCon nicht auseinanderdriften. | `AGENTS.md` Abschnitt 3 |
+| 2026-09-25 | **Die conT-Skills liegen versioniert** unter `W:/.agents/skills/<name>/SKILL.md` (= `/workspace/.agents/skills/`). `.agents/skills/` ist deshalb aus der `.gitignore` ausgenommen; der Rest von `.agents/` bleibt draussen. | Antigravity-Discovery laut Benutzer, `.gitignore` Abschnitt AI and Tooling |
+| 2026-09-25 | **`sgc` und `sgp` sind abgeloest.** `sgc` pushte jeden Zwischenschritt und zeigte zuletzt auf den geloeschten Branch `origin/pi`; `sgp` zog per Pull, obwohl zwischen den Harnesses nichts zu holen ist. Ersetzt durch `save`, `release`, `status`. | `com/setup.md` Abschnitt 2 |
+
 ## Offen — noch nicht vom Benutzer entschieden
 
 Diese Punkte stehen bewusst hier und **nicht** bei den Beschluessen, weil sie nur vorgeschlagen sind:
 
 - `Co-authored-by: Antigravity <antigravity@internal>` als Commit-Trailer (`setup.md` Abschnitt 5).
+  Offene Variante dazu: stattdessen ein `Harness: conT` bzw. `Harness: piCon` unter der Commit-Nachricht,
+  damit erkennbar bleibt, wer gesichert hat. Bisher gilt weiter "Nachricht ist nur die Versionsnummer".
 - Ob `resetup.md` und `Plan_v4_*.md` aus dem Root ebenfalls in eine Struktur wandern.
+- Ob `release` kuenftig auch die **E2E-Tests** (`npm run test:e2e`) erzwingen soll. Heute: Typecheck und
+  Unit-Tests; `--skip-checks` ueberspringt beides bewusst.

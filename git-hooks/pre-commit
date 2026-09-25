@@ -1,0 +1,30 @@
+#!/bin/sh
+# pre-commit — Schranke vor jedem Commit (gilt fuer piCon und conT gleichermassen).
+# Prueft: richtiger Branch, keine Geheimnisse in der Stage, Versionsnummer mitgezogen.
+# Abbrechen mit NODGES_ALLOW=1 (nur bewusst einsetzen).
+
+ausnahme() {
+  [ "${NODGES_ALLOW:-}" = "1" ] && exit 0
+  return 1
+}
+
+branch="$(git symbolic-ref --quiet --short HEAD || echo '(kein Branch)')"
+if [ "$branch" != "main" ]; then
+  echo "ABBRUCH: Branch ist '$branch', erwartet wird 'main'." >&2
+  ausnahme || exit 1
+fi
+
+# Geheimnisse: .env-Dateien, private Schluessel, Zertifikate
+verdaechtig="$(git diff --cached --name-only | grep -E '(^|/)\.env($|\.)|id_(rsa|ed25519)|\.(pem|key|p12)$' || true)"
+if [ -n "$verdaechtig" ]; then
+  echo "ABBRUCH: moegliches Geheimnis in der Stage:" >&2
+  echo "$verdaechtig" >&2
+  ausnahme || exit 1
+fi
+
+# Versionsnummer soll mit jedem Commit steigen
+if ! git diff --cached --name-only | grep -qx 'package.json'; then
+  echo "HINWEIS: package.json ist nicht dabei — die Version wurde nicht erhoeht." >&2
+fi
+
+exit 0

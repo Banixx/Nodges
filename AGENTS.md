@@ -45,12 +45,48 @@ Es gibt **nur einen einzigen physischen Arbeitsort** fuer dieses Projekt:
 | Remote | `git@github.com:Banixx/Nodges.git` (SSH) bzw. `https://github.com/Banixx/Nodges.git` (HTTPS) |
 | Primaerer Arbeitsbranch | **`main`** (alleiniger Zweig fuer alle Harnesses) |
 | Branch `pi` | **Geloescht** — vollstaendig in `main` aufgegangen, darf nicht mehr verwendet werden |
-| Rolle von GitHub | Externes Backup und Historie, nicht primaere Synchronisationsbruecke |
+| Rolle von GitHub | **Meilenstein-Archiv** — dorthin gehen nur Minor- und Major-Versionen, nicht primaere Synchronisationsbruecke |
 | Versionstags | Stabile Meilensteine werden als Git-Tag gesichert (z.B. `v0.106.0`) |
 
-### Automatisierte Git-Workflows
-- **`sgc` (Push & Handover):** Erhoeht die Patch-Version in `package.json`, fuehrt `git add .` aus, committet mit der Versionsnummer und pusht zu `origin/main`.
-- **`sgp` (Pull & Takeover):** Fuehrt `git pull origin main` aus und meldet den Versions- und Commit-Stand.
+### Verbindlicher Git-Workflow (gueltig seit Version 0.106.5)
+
+Die Ablaeufe liegen **ausfuehrbar** im Repo: `tools/nodges-git.sh`. conT und piCon rufen dasselbe Skript auf
+und interpretieren nichts selbst. Damit ist Drift zwischen den beiden Seiten ausgeschlossen. Die Skills
+(siehe unten) sind nur duenne Verweise darauf.
+
+| Befehl | Wirkung | Push |
+|---|---|---|
+| `bash tools/nodges-git.sh status` | Stand: Branch, Version, Tag, Abstand zu GitHub, offene Dateien. Aendert nichts. | nein |
+| `bash tools/nodges-git.sh save` | Patch-Version +1 (`0.106.4` -> `0.106.5`), `git add -A`, Commit mit der reinen Versionsnummer. Sichert Zwi| nein |
+| `bash tools/nodges-git.sh release` | Minor-Version (`0.106.9` -> `0.107.0`), Typecheck und Unit-Tests, Commit, Tag `v0.107.0`, Push nach `origin| ja |
+| `bash tools/nodges-git.sh hooks` | Richtet die versionierten Git-Hooks ein (`core.hooksPath = git-hooks`). | nein |
+
+**Regel: Zwischenstaende bleiben lokal. Nur eine Minor- oder Major-Version geht nach GitHub.**
+
+### Versionierte Git-Hooks (`git-hooks/`, aktiv ueber `core.hooksPath`)
+
+conT und piCon teilen **dieselbe `.git`-Verwaltung**, deshalb gelten die Hooks automatisch fuer beide Seiten.
+
+| Hook | Wirkung |
+|---|---|
+| `pre-commit` | Abbruch bei falschem Branch und bei moeglichen Geheimnissen in der Stage; Hinweis, wenn die Version nicht mitgezogen wurde |
+| `pre-push` | **Blockiert jeden Push mit einer Patch-Version.** Ausnahme nur bewusst: `NODGES_ALLOW_PUSH=1` |
+| `post-commit` | Kurzmeldung: Version, Commit, wie viele Commits nur lokal vorliegen |
+
+### Skills beider Harnesses
+
+| Harness | Ort | Inhalt |
+|---|---|---|
+| conT (Antigravity) | `W:/.agents/skills/<name>/SKILL.md` (= `/workspace/.agents/skills/...`) | `save`, `release`, `status` — duenne Verweise auf `tools/nodges-git.sh` |
+| piCon (Container) | `/home/.pi/agent/skills/<name>/SKILL.md` | dieselben drei Griffe; `uupdate` bleibt als Alt-Name fuer `save` erhalten |
+
+> **Vorsicht:** `.agents/` ist bis auf `.agents/skills/` in der `.gitignore` ausgeschlossen. Die Skills
+> selbst sind versioniert, andere Agenten-Konfigurationen dort bleiben privat.
+
+### Vorsicht beim Zuruecksetzen
+
+Solange `status` meldet, dass Commits **lokal voraus** liegen, waere `git reset --hard origin/main` oder
+„Zurueck auf den GitHub-Stand" ein Datenverlust. Erst `release` ausfuehren oder bewusst lokal bleiben.
 
 ---
 

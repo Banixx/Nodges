@@ -1,0 +1,31 @@
+#!/bin/sh
+# pre-push — erzingt die Regel: nach GitHub gehen nur Minor- oder Major-Versionen.
+# Zwischenstaende bleiben lokal (tools/nodges-git.sh save).
+# Ausnahme: NODGES_ALLOW_PUSH=1
+
+[ "${NODGES_ALLOW_PUSH:-}" = "1" ] && exit 0
+
+# Version aus dem Commit lesen, der gerade gepusht wird (kein node noetig, damit der
+# Hook auch unter Git fuer Windows bei conT laeuft).
+version="$(git show HEAD:package.json 2>/dev/null \
+  | sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' \
+  | head -n 1)"
+
+if [ -z "$version" ]; then
+  echo "ABBRUCH: Version aus HEAD:package.json nicht lesbar." >&2
+  exit 1
+fi
+
+patch="$(printf '%s' "$version" | sed 's/.*\.//')"
+tag="$(git tag --points-at HEAD 2>/dev/null | head -n 1)"
+
+if [ "$patch" != "0" ] && [ -z "$tag" ]; then
+  echo "PUSH BLOCKIERT: Version $version ist eine Patch-Version (Zwischenstand)." >&2
+  echo "" >&2
+  echo "  Zwischenstand sichern:   tools/nodges-git.sh save" >&2
+  echo "  Nach GitHub bringen:     tools/nodges-git.sh release   (Minor + Tag + Push)" >&2
+  echo "  Trotzdem pushen (Notfall): NODGES_ALLOW_PUSH=1 git push origin main" >&2
+  exit 1
+fi
+
+exit 0

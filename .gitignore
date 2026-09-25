@@ -46,7 +46,10 @@ build/
 
 # AI and Tooling
 .agent/
-.agents/
+# .agents/skills/ wird VERSIONIERT: die Workspace-Skills von conT liegen dort und
+mussen fuer beide Harnesses im Git gesichert sein. Alles andere unter .agents/ bleibt draussen.
+.agents/*
+!.agents/skills/
 .clinerules
 .antigravityignore
 

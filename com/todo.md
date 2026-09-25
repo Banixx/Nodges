@@ -33,9 +33,15 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
   Uebernahme der Regeln (Git nur von einer Instanz, Datei-Eigentum, LightRAG nur einmal) nach `AGENTS.md`.
 - Kein Anspruch aktiv. Anspruchsliste wird hier gefuehrt: `- [in Arbeit | <instanz>] <pfad oder thema>`.
 
-### Git-Workflow (neu)
-- Einheitlicher Workflow beider Harnesses: `save` (Patch + lokaler Commit, kein Push) und `release` (Minor + Tag + Push).
-  Bestandsaufnahme und Vorschlag: `com/doc/0_106_5_git_workflow_vereinheitlichung.md`. Offen: fuenf Benutzerfragen in Abschnitt 4.
+### Git-Workflow (neu, umgesetzt in 0.106.5)
+- Eingefuehrt: `tools/nodges-git.sh` mit `save` (Patch + lokaler Commit, kein Push), `release` (Minor + Tag + Push)
+  und `status` (Standbericht statt Pull). Versionierte Hooks in `git-hooks/`, aktiv ueber `core.hooksPath`.
+- conT liest Workspace-Skills aus `W:/.agents/skills/<name>/SKILL.md`; dort liegen `save`, `release`, `status`
+  versioniert. piCon spiegelt sie unter `/home/.pi/agent/skills/`; `uupdate` bleibt Alt-Name fuer `save`.
+- Dokumentation: `com/doc/0_106_5_git_workflow_vereinheitlichung.md` (Abschnitt 6 = Umsetzung).
+- Noch zu pruefen im Betrieb: greifen die Hooks auch auf der **Windows-Seite** (`core.hooksPath` relativ)?
+  Falls dort nicht aufloesbar, laufen die Hooks bei conT stillschweigend nicht (Git bricht nicht ab).
+- Offen (Benutzer): Trailer `Harness:` in Commits? `release` mit E2E-Tests erzwingen?
 
 ### Gemeinsam / unklar
 - `bericht.md` Teil H.2 ueberschreibt die Werkzeugempfehlungen mit "Beschlossene Empfehlungen", in `com/entscheidungen.md` steht dazu aber nichts. Wortlaut harmonisieren oder Benutzerbeschluss einholen.

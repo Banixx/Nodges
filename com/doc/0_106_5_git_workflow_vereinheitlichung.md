@@ -143,10 +143,72 @@ Vorschlag: neuer Ordner `git-hooks/` im Repo (versioniert), aktivierung mit `git
 
 ## 5. Vorgeschlagene Reihenfolge
 
-- [ ] Fragen aus Abschnitt 4 beantworten.
-- [ ] `tools/nodges-git.sh` anlegen (`status`, `save`, `release`).
-- [ ] `git-hooks/` plus `core.hooksPath` einrichten und mit einem Test-Push absichern.
-- [ ] `uupdate` (piCon) auf das Skript umstellen.
-- [ ] conT-Skills angleichen, sobald der Pfad bekannt ist.
-- [ ] `AGENTS.md`, `com/setup.md` und `com/todo.md` nachziehen.
-- [ ] Probe im Betrieb: `save` dreimal hintereinander, danach `release` auf `0.107.0`, Kontrolle per `status`.
+- [x] Fragen aus Abschnitt 4 weitgehend beantwortet (siehe Abschnitt 6.1).
+- [x] `tools/nodges-git.sh` angelegt (`status`, `save`, `release`, `hooks`).
+- [x] `git-hooks/` plus `core.hooksPath` eingerichtet und in einer Wegwerf-Kopie getestet.
+- [x] `uupdate` (piCon) umgestellt, zusaetzlich die drei Griffe `save` / `release` / `status`.
+- [x] conT-Skills unter `W:/.agents/skills/` angelegt (Pfad vom Benutzer bestaetigt).
+- [x] `AGENTS.md`, `com/setup.md`, `com/entscheidungen.md` und `com/todo.md` nachgezogen.
+
+---
+
+## 6. Umsetzung (2026-09-25, piCon)
+
+### 6.1 Stand der Fragen aus Abschnitt 4
+
+| Frage | Stand |
+|---|---|
+| 1. Wo liest conT Skills | **`W:/.agents/skills/<name>/SKILL.md`** (vom Benutzer bestaetigt). Im Container identisch mit `/workspace/.agents/skills/` |
+| 2. Tag bei jedem Push | ja — `release` setzt immer `v<Version>` |
+| 3. Trailer im Commit | **offen**, Regel bleibt bis auf Weiteres "Nachricht ist nur die Versionsnummer" |
+| 4. Tests vor dem Push | ja — `release` erzwingt `npm run typecheck` und `npm test -- --run`; `--skip-checks` als bewusster Ausweg |
+| 5. Harte Abbrueche | ja fuer Branch und Geheimnisse sowie `pre-push`; Hinweis (kein Abbruch) bei fehlendem Versionsbump |
+
+### 6.2 Neue Dateien
+
+| Datei | Zweck |
+|---|---|
+| `tools/nodges-git.sh` | das einzige verbindliche Ritual: `status`, `save`, `release`, `hooks` |
+| `tools/nodges-version.mjs` | schreibt die Version exakt an die drei vorgesehenen Stellen (`package.json` einmal, `package-lock.json` zweimal) |
+| `git-hooks/pre-commit` | Branch muss `main`; blockiert Geheimnisse (`.env`, Schluessel, Zertifikate); Hinweis bei fehlendem Versionsbump |
+| `git-hooks/pre-push` | **blockiert jeden Push einer Patch-Version**; Ausnahme `NODGES_ALLOW_PUSH=1` |
+| `git-hooks/post-commit` | Kurzmeldung mit Version, Commit und Abstand zu GitHub |
+| `.agents/skills/save/SKILL.md` | conT-Skill |
+| `.agents/skills/release/SKILL.md` | conT-Skill |
+| `.agents/skills/status/SKILL.md` | conT-Skill |
+
+### 6.3 Geaendert
+
+- `.gitignore`: `.agents/*` plus Ausnahme `!.agents/skills/` — die conT-Skills sind damit versioniert und gesichert.
+- `AGENTS.md` Abschnitt 3: neuer Abschnitt "Verbindlicher Git-Workflow", Rolle von GitHub als Meilenstein-Archiv, Warnung vor `git reset --hard origin/main`.
+- `com/setup.md` Abschnitt 2: `sgc`/`sgp` sind abgeloest, drei Befehle stattdessen.
+- `com/entscheidungen.md`: vier neue Beschluesse.
+- `com/todo.md`: Arbeitsstand plus zwei offene Punkte.
+- piCon-Skills `/home/.pi/agent/skills/`: `save`, `release`, `status` neu; `uupdate` jetzt Verweis (Alt-Name fuer `save`).
+
+### 6.4 Testergebnis (Wegwerf-Kopie unter `/home/piuser/wgtest`, danach geloescht)
+
+| Pruefung | Ergebnis |
+|---|---|
+| `status` | korrekte Ausgabe, keine Netzwerkzugriffe |
+| `save` | Version `0.106.4` -> `0.106.5`, alle drei Stellen geschrieben, Commit-Nachricht exakt `0.106.5`, kein Push |
+| `git push` nach `save` | **blockiert** durch `pre-push` |
+| `release --skip-checks` | Version `0.106.5` -> `0.107.0`, Tag `v0.107.0`, Push von `main` und Tag, danach 0 Commits vor GitHub |
+| `save` bei sauberem Baum | "Nichts zu sichern", kein Leer-Commit |
+| Commit auf Branch `experiment` | abgebrochen |
+| `.env` in der Stage | abgebrochen |
+| nicht auffindbarer `core.hooksPath` | Git laeuft weiter, Hooks werden nur uebersprungen — das ist der Fall, falls die Windows-Seite den relativen Pfad nicht aufloest |
+
+### 6.5 Nebenbefund waehrend der Arbeit
+
+conT hat waehrend dieser Untersuchung selbst committet: `8441e81` mit der Nachricht
+`"0.106.4: CI-Workflow, Biome-Tooling und Testinfrastruktur eingerichtet"`. piCon haette denselben Stand
+mit der Nachricht `"0.106.4"` versehen. Das ist der sichtbare Beleg fuer die Drift, die das gemeinsame
+Skript beendet: **eine Quelle, beide Seiten rufen sie auf.**
+
+### 6.6 Offen
+
+- Wirken die Hooks auch unter **Git fuer Windows** bei conT? Bitte einmal gegenpruefen: auf `W:/` eine
+  Datei aendern, `save` ausfuehren und prufen, ob die Rueckmeldung `Gesichert: Version ...` erscheint.
+- Benutzerentscheidung `Harness:`-Trailer (Frage 3 aus Abschnitt 4).
+- Benutzerentscheidung, ob `release` kuenftig auch die E2E-Tests erzwingt.
