@@ -10,8 +10,8 @@
 
 | Nr. | Thema | Bereich | Dringlichkeit | Status |
 |---|---|---|---|---|
-| **F-01** | Commit-Trailer (`Harness:` vs. `Co-authored-by`) | Git-Workflow | Mittel | Wartend auf Benutzer |
-| **F-02** | E2E-Gate in `tools/nodges-git.sh release` | Test & Freigabe | Hoch | Wartend auf Benutzer |
+| **F-01** | Commit-Trailer (`Harness:` vs. `Co-authored-by`) | Git-Workflow | Mittel | Erledigt 2026-09-27 (Option A) |
+| **F-02** | E2E-Gate in `tools/nodges-git.sh release` | Test & Freigabe | Hoch | Erledigt 2026-09-27 (Option A) |
 | **F-03** | Aufraeumen von `resetup.md` und `Plan_v4_*.md` im Root | Dateistruktur | Niedrig | Wartend auf Benutzer |
 | **F-04** | Parallele Pi-Agent-Instanzen im Container | Multi-Agent | Mittel | Konzept fertig, Entscheidung offen |
 | **F-05** | Wortlaut-Harmonisierung in `bericht.md` Teil H.2 | Dokumentation | Niedrig | Abstimmung offen |
@@ -21,6 +21,8 @@
 ## Detailbeschreibungen
 
 ### Frage F-01: Soll ein Commit-Trailer fuer KI-Transparenz eingefuehrt werden?
+- **Status: Entschieden 2026-09-27 — Option A.** Umgesetzt in `tools/nodges-git.sh` (`save` und `release`);
+  conT und piCon stimmten zu. Details im Beschluss in `com/entscheidungen.md`.
 - **Kontext:** Aktuell lautet die Commit-Nachricht bei `tools/nodges-git.sh save` ausschliesslich auf die Versionsnummer (z.B. `0.106.8`). Banixx ist der Git-Owner. Es steht die Frage im Raum, ob sichtbar sein soll, welches Harness den Commit erzeugt hat.
 - **Optionen:**
   1. **Option A:** `Harness: conT` bzw. `Harness: piCon` als einzeiligen Trailer unter der Nachricht hinzufuegen.
@@ -31,6 +33,8 @@
 ---
 
 ### Frage F-02: Soll `release` die E2E-Tests zwingend vorschreiben?
+- **Status: Entschieden 2026-09-27 — Option A.** Umgesetzt in `tools/nodges-git.sh` (`release`);
+  conT und piCon stimmten zu. Details im Beschluss in `com/entscheidungen.md`.
 - **Kontext:** `tools/nodges-git.sh release` prueft aktuell nur `typecheck` und Vitest-Unit-Tests (`test:fast`), bevor ein Tag nach GitHub gepusht wird. Im Container scheitert Playwright/Chromium an fehlenden Grafikbibliotheken (`libglib-2.0.so.0`), waehrend auf dem Host unter Windows alle E2E-Tests durchlaufen.
 - **Optionen:**
   1. **Option A (Differenziert):** E2E-Tests nur erzwingen, wenn `release` auf dem Windows-Host (conT) aufgerufen wird. Im Container wird E2E via `NODGES_SKIP_E2E=1` uebersprungen.

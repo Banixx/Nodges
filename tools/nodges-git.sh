@@ -5,7 +5,13 @@
 #   status   zeigt Stand: Branch, Version, Tag, Abstand zu origin/main, offene Dateien
 #   save     Patch-Version +1, alles sichern, lokaler Commit — KEIN Push
 #   release  Minor-Version (Patch auf 0), Tag, Push nach origin/main — nur so geht Arbeit zu GitHub
+#            E2E-Gate (Beschluss F-02, Option A): Pflicht auf dem Windows-Host (conT),
+#            im Container (piCon) uebersprungen. NODGES_SKIP_E2E=1 / NODGES_FORCE_E2E=1 steuern das.
 #   hooks    richtet die versionierten Git-Hooks ein (core.hooksPath)
+#
+# Commits tragen einen Harness-Trailer (Beschluss F-01, Option A):
+#   Harness: conT  bzw.  Harness: piCon
+# Das Harness wird aus NODGES_HARNESS oder dem Betriebssystem erkannt.
 #
 # Dieses Skript ist die einzige verbindliche Quelle fuer das Ritual. Die Skills beider
 # Harnesses rufen es auf und interpretieren nichts selbst. Damit handeln conT und piCon
@@ -60,6 +66,19 @@ abstand_zu_github() {
 
 offene_dateien() { git status --porcelain | wc -l | tr -d ' '; }
 
+# Ermittelt das Harness fuer den Commit-Trailer (F-01). Explizit per NODGES_HARNESS
+# uebersteuerbar; sonst gilt: Windows-Shell (Git Bash/MSYS/Cygwin) = conT, sonst piCon.
+harness_name() {
+  if [ -n "${NODGES_HARNESS:-}" ]; then
+    printf '%s\n' "$NODGES_HARNESS"
+    return
+  fi
+  case "$(uname -s 2>/dev/null || printf unknown)" in
+    MINGW*|MSYS*|CYGWIN*) printf 'conT\n' ;;
+    *) printf 'piCon\n' ;;
+  esac
+}
+
 # ---------------------------------------------------------------------------
 case "${1:-}" in
 
@@ -97,16 +116,19 @@ save)
   neu="$(node "$VERSION_WERKZEUG" bump patch | tail -n 1)"
 
   git add -A
-  git commit -m "$neu" || fehler "Commit abgelehnt (siehe Meldung darueber)"
+  git commit -m "$neu" -m "Harness: $(harness_name)" || fehler "Commit abgelehnt (siehe Meldung darueber)"
 
   hinweis ""
   hinweis "Lokal gesichert: $alt -> $neu  (Commit $(git rev-parse --short HEAD))"
+  hinweis "Harness-Trailer: $(harness_name)"
   hinweis "Nicht auf GitHub: $(abstand_zu_github) Commit(s) — gewollt, 'release' schiebt sie spaeter."
   ;;
 
 release)
   brauchbar
   laufendes_git
+
+  har="$(harness_name)"
 
   checks="${2:-}"
   if [ "$checks" != "--skip-checks" ]; then
@@ -115,6 +137,17 @@ release)
       npm run typecheck || fehler "Typecheck fehlgeschlagen — kein Release. (--skip-checks ueberspringt das)"
       npm test -- --run || fehler "Unit-Tests fehlgeschlagen — kein Release. (--skip-checks ueberspringt das)"
     fi
+
+    # E2E-Gate (Beschluss F-02, Option A): volles E2E nur auf dem Windows-Host (conT).
+    # Im Container (piCon) fehlen die Chromium-Systembibliotheken, dort wird uebersprungen.
+    # NODGES_SKIP_E2E=1 erzwingt das Ueberspringen; NODGES_FORCE_E2E=1 erzwingt E2E auch im Container.
+    if [ "${NODGES_SKIP_E2E:-}" = "1" ] || { [ "$har" != "conT" ] && [ "${NODGES_FORCE_E2E:-}" != "1" ]; }; then
+      hinweis "E2E-Tests uebersprungen (Harness: $har)."
+    else
+      hinweis "Pruefe E2E-Tests (Playwright) ..."
+      npm run test:e2e || fehler "E2E-Tests fehlgeschlagen — kein Release. (--skip-checks ueberspringt das)"
+    fi
+
     hinweis "Pruefungen bestanden."
   fi
 
@@ -122,7 +155,7 @@ release)
   neu="$(node "$VERSION_WERKZEUG" bump minor | tail -n 1)"
 
   git add -A
-  git commit -m "$neu" || fehler "Commit abgelehnt (siehe Meldung darueber)"
+  git commit -m "$neu" -m "Harness: $har" || fehler "Commit abgelehnt (siehe Meldung darueber)"
 
   tag="v$neu"
   if git rev-parse --verify --quiet "refs/tags/$tag" >/dev/null 2>&1; then
@@ -156,6 +189,7 @@ hooks)
   rot "  status   Stand anzeigen, nichts veraendern"
   rot "  save     Patch +1, lokaler Commit, kein Push"
   rot "  release  Minor (Patch 0), Tag, Push nach GitHub   [ --skip-checks ]"
+  rot "           E2E auf conT Pflicht, sonst NODGES_SKIP_E2E=1"
   rot "  hooks    versionierte Git-Hooks einrichten"
   exit 1
   ;;

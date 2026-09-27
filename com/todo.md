@@ -43,8 +43,7 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 - Vorhaben angelegt: `com/plan/0_106_4_parallele_pi_instanzen.md` (parallele pi-Instanzen im Container `pi-agent`).
   Technik geprueft und machbar; offen sind Benutzerentscheidung (Anzahl, Rollen, Variante A bis D) sowie die
   Uebernahme der Regeln (Git nur von einer Instanz, Datei-Eigentum, LightRAG nur einmal) nach `AGENTS.md`.
-- Anspruch aktiv:
-  - `- [in Arbeit | conT, piCon, dopi] Autostart und Persistenz des COM-Bus-Waechters im Container (Tri-Harness, 3 Runden). Rapport: com/plan/autostart_com_bus/rapport_autostart_com_bus.md. Aktueller Turnus: piCon.`
+  - `- [in Arbeit | conT, piCon, dopi] Autostart und Persistenz des COM-Bus-Waechters im Container (Tri-Harness, 3 Runden). Rapport: com/plan/autostart_com_bus/rapport_autostart_com_bus.md. Aktueller Turnus: conT (Runde 2, Konsolidierung).`
 
 ### Git-Workflow (neu, umgesetzt in 0.106.5)
 - Eingefuehrt: `tools/nodges-git.sh` mit `save` (Patch + lokaler Commit, kein Push), `release` (Minor + Tag + Push)
@@ -54,7 +53,10 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 - Dokumentation: `com/doc/0_106_5_git_workflow_vereinheitlichung.md` (Abschnitt 6 = Umsetzung).
 - Noch zu pruefen im Betrieb: greifen die Hooks auch auf der **Windows-Seite** (`core.hooksPath` relativ)?
   Falls dort nicht aufloesbar, laufen die Hooks bei conT stillschweigend nicht (Git bricht nicht ab).
-- Offen (Benutzer): Trailer `Harness:` in Commits? `release` mit E2E-Tests erzwingen?
+- **Erledigt (2026-09-27, F-01 Option A):** `tools/nodges-git.sh` haengt in `save` und `release` einen
+  `Harness: conT` / `Harness: piCon`-Trailer an. Erkannt per `NODGES_HARNESS` oder Betriebssystem.
+- **Erledigt (2026-09-27, F-02 Option A):** `release` erzwingt E2E nur auf conT (Windows); im Container
+  uebersprungen, steuerbar per `NODGES_SKIP_E2E=1` / `NODGES_FORCE_E2E=1`.
 
 ### Build 14 - LightRAG (Stand 27.09.2026)
 - **Backend erledigt (piCon):** `lightrag-backend/main.py` liefert jetzt Query-Teilgraphen (Seeds per
@@ -68,12 +70,15 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 - **Erledigt (conT):** Skript `test:backend` in `package.json` hinterlegt und erfolgreich verifiziert (27 Tests gruen).
 - **Erledigt (conT):** Frontend-Mapping der neuen DTO-Felder in `src/utils/LightRAGService.ts` (`weight`, `keywords`, `description`, `sources`), Kantenexpansion, Schema 5.2 Visual Mappings und `CreatePanel.ts` Pipeline-Anbindung.
 - **Erledigt (conT):** Edge- & Node-Inspector in `src/ui/InfoPanelUI.ts` (hervorgehobene Text-Evidenz, Quellen-Badges, Keywords) und Tooltips in `src/ui/HoverInfoPanel.ts`.
-- **Offen:** Entscheidung, ob `release` `npm run test:e2e` erzwingt - im Container fehlen Systembibliotheken (`libglib-2.0.so.0`), Chromium startet nicht (6 E2E-Fehler). Vorschlag piCon: Flag `NODGES_SKIP_E2E=1`.
+- **Erledigt (2026-09-27, F-02 Option A):** `release` erzwingt `npm run test:e2e` nur auf dem Windows-Host
+  (conT). Im Container (piCon) wird E2E uebersprungen, weil Chromium an fehlenden Systembibliotheken
+  (`libglib-2.0.so.0`) scheitert. Steuerung: `NODGES_SKIP_E2E=1` / `NODGES_FORCE_E2E=1`.
 - **Erledigt (piCon, 27.09.2026):** `app.on_event("startup")` in `main.py` auf einen Lifespan-Handler
   (`asynccontextmanager`) umgestellt; die DeprecationWarning ist damit weg (Import mit
   `-W error::DeprecationWarning` geprueft).
 
 ### Gemeinsam / unklar
 - `bericht.md` Teil H.2 ueberschreibt die Werkzeugempfehlungen mit "Beschlossene Empfehlungen", in `com/entscheidungen.md` steht dazu aber nichts. Wortlaut harmonisieren oder Benutzerbeschluss einholen.
-- Soll ein **`Co-authored-by`-Trailer** in Commits eingefuehrt werden, damit Banixx Repo-Owner bleibt und KI-Beitraege transparent sind? (`setup.md` Abschnitt 5).
+- **Erledigt (2026-09-27, F-01 Option A):** Kein `Co-authored-by`-Trailer; stattdessen der Harness-Trailer
+  `Harness: conT` / `Harness: piCon` in `tools/nodges-git.sh`. Banixx bleibt Autor/Committer.
 - Kein GitHub-MCP beschlossen; fuer Issues/PRs stattdessen die `gh` CLI nutzen.

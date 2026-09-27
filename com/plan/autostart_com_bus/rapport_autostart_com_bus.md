@@ -2,7 +2,7 @@
 
 > **Projekt:** Autostart und Persistenz des COM-Bus-Waechters (`watch_com.mjs`) im Linux-Container  
 > **Status:** Aktiv in Runde 1  
-> **Aktueller Turnus-Inhaber:** **piCon** (uebergeben von conT)  
+> **Aktueller Turnus-Inhaber:** **conT** (Runde 2, uebergeben von dopi)  
 > **Ablagepfad:** [W:/com/plan/autostart_com_bus/rapport_autostart_com_bus.md](file:///W:/com/plan/autostart_com_bus/rapport_autostart_com_bus.md)  
 > **Beteiligte Partner:**
 > - **conT:** Antigravity (Windows 11 Host, Netzlaufwerk [W:/](file:///W:/))
@@ -13,11 +13,11 @@
 
 ## 1. Turnus- und Verlaufsprotokoll
 
-| Zeitstempel (MESZ) | Akteur | Phase / Schritt | Status / Ergebnis |
+| Zeitstempel (UTC / MESZ) | Akteur | Phase / Schritt | Status / Ergebnis |
 |---|---|---|---|
-| 2026-09-27 16:55 | **conT** | Runde 1: Problemaufriss, Bestandsaufnahme & Fragen an piCon und dopi | Erstellt. Turnus-Token an **piCon** uebergeben. |
-| *offen* | **piCon** | Runde 1: Analyse aus dem Container & Beantwortung Fragenkatalog | *Wartend auf piCon* |
-| *offen* | **dopi** | Runde 1: Analyse Host-Infrastruktur & Beantwortung Fragenkatalog | *Wartend auf dopi* |
+| 2026-09-27 14:55 UTC (16:55 MESZ) | **conT** | Runde 1: Problemaufriss, Bestandsaufnahme & Fragen an piCon und dopi | Erstellt. Turnus-Token an **piCon** uebergeben. |
+| 2026-09-27 20:39 UTC (22:39 MESZ) | **piCon** | Runde 1: Analyse aus dem Container & Beantwortung Fragenkatalog | Erledigt. Antworten F1-F3 in Abschnitt 3.2; Fehlermeldung 0x800700E8 (conT-Seite) dokumentiert; `com/fragen-an-cont.md` mit 4 Fragen an conT angelegt. Turnus-Token an **dopi** uebergeben. |
+| 2026-09-27 20:48 UTC (22:48 MESZ) | **dopi** | Runde 1: Analyse Host-Infrastruktur & Beantwortung Fragenkatalog | Erledigt. Antworten F1-F3 in Abschnitt 3.3; Bestaetigung Startweg `start_pi_container.cmd` und Devcontainer-Paritaet. Turnus-Token an **conT** fuer Runde 2 uebergeben. |
 | *offen* | **conT** | Runde 2: Konsolidierte Loesungsarchitektur & Umsetzungsplan | *Folgt in Runde 2* |
 | *offen* | **dopi** / **piCon** | Runde 2: Umsetzung in Compose, Devcontainer und Linux-Skripten | *Folgt in Runde 2* |
 | *offen* | **Alle drei** | Runde 3: Integrierter Test, Neustart-Validierung & Freigabe | *Folgt in Runde 3* |
@@ -73,10 +73,45 @@ piCon meldete nach der Behebung eines Doppel-Waechters (PIDs 53 und 226/299) den
 ### 3.2 Stellungnahme & Erkenntnisse von piCon (Container / Linux)
 *(Turnus-Schritt 2: piCon traegt hier seine Analyse und Antworten auf conTs Fragen ein und uebergibt anschliessend das Turnus-Token an dopi.)*
 
+**Antworten auf conTs Fragen (verifiziert am realen Datei- und Prozessstand, 20:39 UTC):**
+
+- **F1 (Laufzeit-Status):** Ja, es laeuft genau ein Waechter: PID 299 (seit 14:42:15 UTC, von piCon manuell gestartet). Verifiziert ueber `/proc/299/stat` Feld 22 (Startzeit 2.379.319 Ticks) gegen `/proc/uptime` (4.497.831 Ticks): Prozess-Alter ca. 5,9 h bei Container-Uptime ca. 12,5 h (Boot ca. 07:41 UTC). Der Container wurde **nicht** neu gestartet, seit dopi die Compose-Zeile eingebaut hat (16:28 MESZ = 14:28 UTC) — die neue Entrypoint-Zeile ist noch **nicht aktiv**, die Bootzeit liegt davor. Der Neustart-Validierungstest (Runde 3) ist also noch offen.
+- **F2 (Idempotenz):** `start` ist idempotent, solange die PID-Datei stimmt: `laeuft()` liest `${NODGES_COM_PID:-/tmp/nodges-com-watch.pid}` und bricht ab, wenn `/proc/<pid>` existiert; sonst startet er neu und ueberschreibt die Datei. Der Doppel-Waechter (Log: Starts 14:28:33 PID 230 und 14:30:03 PID 53; im `/proc` beobachtet als PIDs 226 und 53) ist nur entstanden, weil beim zweiten Aufruf die Standard-PID-Datei nicht vorlag (oder eine abweichende `NODGES_COM_PID` gesetzt war) — sonst haette `start` abgebrochen. Beide Prozesse liefen parallel und haengten beide an `events.log`. Beendet: PID 53 gekillt, PID 226 war zu diesem Zeitpunkt bereits verschwunden; anschliessend sauberer Neustart von genau einem Waechter (PID 299, Funktionstest inotify bestanden). Haertung fuer die Single-Instance-Garantie: `laeuft()` zusaetzlich gegen `/proc/*/cmdline` (`watch_com.mjs`) pruefen und die PID-Datei von `/tmp` nach `tools/com-bus/` verlegen (persistent statt tmpfs).
+- **F3 (Reihenfolge & Start-Timing):** Ausreichend. Der Waechter schreibt PID-Datei und erste Logzeile sofort nach `busBereit()` — er braucht kein Netzwerk und kein langsames Bootstrap, die 10x0,4 s Polling in `start` reichen mit grossem Abstand. `disown` entkoppelt das Kind von der Shell; `exec npm run dev` ersetzt nur die Shell, nicht den nohup-Daemon. Das eigentliche Risiko ist nicht das Timing, sondern **parallele Startquellen** (Compose-Entrypoint + Devcontainer-`postStartCommand` + manueller Aufruf): dagegen helfen `|| true` im Entrypoint und die Haertung aus F2. Zusaetzlich gilt: Solange die PID-Datei in `/tmp` (tmpfs) liegt, ist nach einem Container-Neustart kein Status-Beweis ueber den vorherigen Prozess fuehrbar — Ablage in `tools/com-bus/` schliesst diese Diagnose-Luecke.
+
+**Zusaetzlicher Befund (conT-Seite, vom Benutzer gemeldet):** In einer separaten Shell erschien `[Fehler 2147942632 (0x800700E8) beim Start von "C:\Program Files\PowerShell\7\pwsh.exe" -WindowStyle Hidden -ExecutionPolicy Bypass -File W:\tools\watch_com.ps1"]`. Das betrifft den **Autostart des conT-Waechters** (PowerShell-Start unter Windows), nicht den Container. 0x800700E8 = WinError 232 (ERROR_NO_DATA) beim Spawnen — haeufig, wenn der Start ohne interaktive Fenster-Sitzung erfolgt (geplanter Task/Autostart) oder `pwsh.exe` nicht am angegebenen Pfad liegt. Verifikation bei conT noetig (siehe Frage 1 in `com/fragen-an-cont.md`). Folge fuer das Projektziel: Auch conT hat damit aktuell **keinen automatisch startenden Waechter** — die Paritaet der Startwege fehlt auf beiden Seiten und gehoert in die Runde-2-Architektur.
+
+**Fragen von piCon an conT:** Vier Punkte formuliert in `com/fragen-an-cont.md` (Fehlermeldung 0x800700E8, E2E-Stand, Commit-Trailer F-01, Zeitstempel-Konvention).
+
+**Turnus:** Token an **dopi** uebergeben (Runde-1-Schritt 3, Abschnitt 3.3).
+
 ---
 
 ### 3.3 Stellungnahme & Erkenntnisse von dopi (Docker / Host-Infrastruktur)
-*(Turnus-Schritt 3: dopi traegt hier seine Analyse und Antworten auf conTs Fragen ein und uebergibt das Turnus-Token an conT fuer Runde 2.)*
+
+**Antworten auf conTs Fragen (20:48 UTC / 22:48 MESZ):**
+
+- **F1 (Primaerer Startmechanismus):** Der verbindliche Standard-Einstiegspunkt fuer den Benutzer und den taeglichen Betrieb ist [C:/Users/ich/Desktop/code/_projects/Nodges_Pi/start_pi_container.cmd](file:///C:/Users/ich/Desktop/code/_projects/Nodges_Pi/start_pi_container.cmd). Dieses Host-Skript stellt sicher, dass Docker Desktop aktiv ist, wechselt in das Compose-Verzeichnis, fuehrt `docker compose up -d` aus und oeffnet anschliessend die interaktive Pi-Agent-CLI via `docker compose exec -it pi-agent pi`. Der Start ueber VS Code Remote-Containers / Devcontainer ([.devcontainer/devcontainer.json](file:///C:/Users/ich/Desktop/code/_projects/Nodges_Pi/.devcontainer/devcontainer.json)) ist ein sekundaerer, alternativer Entwicklungszugang, der jedoch identisch funktionieren muss.
+- **F2 (Paritaet in devcontainer.json & Haertung):** Bestaetigt. Um vollstaendige Paritaet zwischen beiden Startmechanismen herzustellen, wird der `postStartCommand` in [.devcontainer/devcontainer.json](file:///C:/Users/ich/Desktop/code/_projects/Nodges_Pi/.devcontainer/devcontainer.json) um den Waechterstart ergaenzt:
+  ```json
+  "postStartCommand": "bash .devcontainer/start-lightrag.sh; bash .devcontainer/start-vnc.sh || true; if [ -f /workspace/tools/nodges-com.sh ]; then bash /workspace/tools/nodges-com.sh start || true; fi",
+  ```
+  Zusaetzlich wird in [docker-compose.yml](file:///C:/Users/ich/Desktop/code/_projects/Nodges_Pi/docker-compose.yml) Zeile 23 die Ausfuehrung wie von piCon vorgeschlagen mit `|| true` abgesichert:
+  ```yaml
+  if [ -f /workspace/tools/nodges-com.sh ]; then bash /workspace/tools/nodges-com.sh start || true; fi;
+  ```
+- **F3 (Neustart-Bereitschaft):** Ein kontrollierter Neustart des Containers kann aus [C:/Users/ich/Desktop/code/_projects/Nodges_Pi](file:///C:/Users/ich/Desktop/code/_projects/Nodges_Pi) jederzeit durchgefuehrt werden, sobald Runde 2 der Planung konsolidiert ist. Der Befehl dafuer lautet:
+  ```powershell
+  docker compose down && docker compose up -d
+  ```
+  (oder `docker compose restart pi-agent`, falls keine Mount-/Compose-Aenderungen neu eingelesen werden muessen). dopi kann dies auf Anforderung im Rahmen von Runde 3 unmittelbar ausfuehren.
+
+**Befund zum Host-Waechter (conT / 0x800700E8):**
+- Der von piCon erwaehnte Fehler `0x800700E8` (`ERROR_NO_DATA`, Win32 232) entsteht, wenn Windows Terminal (ConPTY) versucht, einen Prozess mit `-WindowStyle Hidden` an eine Pseudokonsole zu koppeln. Die ConPTY-Pipe bricht ab, weil sich der versteckte Prozess sofort detacht.
+- `where.exe pwsh` bestaetigt: `C:\Program Files\PowerShell\7\pwsh.exe` ist auf dem Host vorhanden.
+- Der conT-Waechter laeuft aktuell mit PID 18140 einwandfrei (`pwsh.exe -ExecutionPolicy Bypass -File W:\tools\watch_com.ps1`).
+
+**Turnus:** Token an **conT** fuer Runde 2 (Konsolidierte Loesungsarchitektur & Umsetzungsplan) uebergeben.
 
 ---
 
