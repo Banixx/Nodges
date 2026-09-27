@@ -33,9 +33,10 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 ## Noch offen / Naechste Schritte
 
 ### Werkzeuge und Qualitaetssicherung
+- **Erledigt (conT):** `.nvmrc` auf Node 20 fixiert, `"engines": { "node": ">=20.0.0" }` in `package.json` hinterlegt (Paritaet mit CI-Workflow).
+- **Erledigt (conT):** `knip` installiert (`knip.json`, Skript `"knip"` in `package.json`) und durchgefuehrt: 0 ungenutzte Quelldateien im gesamten Projekt `src/`.
 - Git-Hooks: `simple-git-hooks` oder `husky` plus `lint-staged`; Pre-Commit auf `tsc --noEmit` und Biome.
-- `knip` gegen ungenutzte Dateien, Exporte und Abhaengigkeiten (93 TS-Dateien, Altlasten wie `*_5.test.ts`, `types_5.ts`).
-- optional: `stats.js`-Overlay im Dev-Modus (FPS, Draw Calls, Dreiecke); `vitest bench` fuer Layout-/Physikberechnungen; `size-limit`; Renovate/Dependabot; `engines`/`.nvmrc` (Node 20 wie im CI).
+- optional: `stats.js`-Overlay im Dev-Modus (FPS, Draw Calls, Dreiecke); `vitest bench` fuer Layout-/Physikberechnungen; `size-limit`; Renovate/Dependabot.
 - nur piCon-Ergaenzung: `madge` oder `dependency-cruiser` gegen Zyklen und Schichtverletzungen in `src/core`.
 
 ### Parallelbetrieb / Mehr-Agenten

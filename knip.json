@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/knip@5/overview/schema.json",
+  "entry": [
+    "src/workers/layout-worker.js"
+  ],
+  "project": [
+    "src/**/*.{ts,js}"
+  ],
+  "ignoreDependencies": [
+    "lil-gui",
+    "@testing-library/dom"
+  ]
+}
