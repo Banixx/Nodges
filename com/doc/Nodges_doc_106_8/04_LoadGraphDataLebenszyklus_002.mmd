@@ -1,0 +1,47 @@
+sequenceDiagram
+    actor User
+    participant App
+    participant GraphDataManager
+    participant SceneManager
+    participant MappingPanel
+
+    User->>App: JSON laden (Upload / Drag and Drop / LLM-Response)
+
+    rect rgb(20, 30, 50)
+        note over App: Schritt 1 – Ingestion und Parse
+        App->>App: JSON.parse(rawString)
+    end
+
+    rect rgb(20, 50, 30)
+        note over App: Schritt 2 – Validation
+        App->>App: GraphDataSchema.parse(json)
+        alt Zod-Fehler
+            App-->>User: ErrorHandler → Toast rot
+            note over App: clearScene wird NICHT aufgerufen\nalte Szene bleibt erhalten
+        end
+    end
+
+    rect rgb(40, 30, 20)
+        note over GraphDataManager: Schritt 3 – State Update
+        App->>GraphDataManager: update(entities, relationships, dataModel)
+        GraphDataManager->>GraphDataManager: interne Datenbank bereinigen\nneue Entitaeten eintragen
+    end
+
+    rect rgb(50, 20, 30)
+        note over SceneManager: Schritt 4 – Scene Cleardown
+        App->>SceneManager: clearScene()
+        SceneManager->>SceneManager: Geometrien dispose()\nMaterialien dispose()\nTexturen dispose()\nVRAM freigeben
+    end
+
+    rect rgb(20, 20, 50)
+        note over SceneManager: Schritt 5 – Re-Instantiation
+        App->>SceneManager: buildScene(graphData)
+        SceneManager->>SceneManager: InstancedMesh aufbauen\nTubeGeometry fuer Kanten\nMatrix-Buffer befuellen
+    end
+
+    rect rgb(30, 20, 50)
+        note over MappingPanel: Schritt 6 – UI-Sync
+        App->>MappingPanel: refresh(dataModel)
+        MappingPanel->>MappingPanel: Dropdowns neu generieren\nbasierend auf verfuegbaren Properties
+        MappingPanel-->>User: UI aktualisiert
+    end

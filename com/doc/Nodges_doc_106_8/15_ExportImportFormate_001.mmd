@@ -1,0 +1,30 @@
+graph LR
+    subgraph NODGES_JSON["Nodges JSON (Intern)"]
+        NE["entities:\n- id: node_1\n  type: person\n  label: Alice\n  properties:\n    influence: 80\n    age: 30"]
+        NR["relationships:\n- id: edge_1\n  source: node_1\n  target: node_2\n  type: knows\n  properties:\n    weight: 5"]
+    end
+
+    subgraph GEXF_XML["GEXF XML (Export)"]
+        GH["<graph defaultedgetype='directed'>"]
+        GA["<attributes class='node'>\n  <attribute id='0' title='influence'\n    type='integer'/>\n  <attribute id='1' title='age'\n    type='integer'/>\n</attributes>"]
+        GN["<nodes>\n  <node id='node_1' label='Alice'>\n    <attvalues>\n      <attvalue for='0' value='80'/>\n      <attvalue for='1' value='30'/>\n    </attvalues>\n  </node>\n</nodes>"]
+        GE["<edges>\n  <edge id='edge_1'\n    source='node_1'\n    target='node_2'\n    type='knows'\n    weight='5'/>\n</edges>"]
+
+        GH --> GA
+        GH --> GN
+        GH --> GE
+    end
+
+    subgraph MAPPING["Uebersetzungsregeln"]
+        R1["entities → nodes\nid bleibt id\nlabel bleibt label"]
+        R2["properties.*\n→ attribute + attvalue\nnumerisch: integer/float\ntext: string\nkategorisch: string"]
+        R3["relationships → edges\nsource + target Referenzen\nbleiben unveraendert\nweight aus properties.weight"]
+    end
+
+    NE -->|"Export"| MAPPING
+    NR -->|"Export"| MAPPING
+    MAPPING --> GEXF_XML
+
+    style NODGES_JSON fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7
+    style GEXF_XML fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style MAPPING fill:#1a3a1a,stroke:#43a047,color:#c8e6c9

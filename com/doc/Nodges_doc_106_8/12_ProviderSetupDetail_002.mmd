@@ -1,0 +1,30 @@
+graph TD
+    START(["Nodges öffnen\nSettings-Zahnrad klicken"])
+
+    START --> CHOICE{"Inferenz-Backend?"}
+
+    CHOICE -->|"Cloud"| CLOUD["Cloud-Provider waehlen"]
+    CLOUD --> CR1["OpenRouter\nZugang zu vielen Modellen\nvia einen Key"]
+    CLOUD --> CR2["OpenAI direkt\ngpt-4o, gpt-4o-mini"]
+    CLOUD --> CR3["Anthropic direkt\nClaude 3.5 Sonnet"]
+
+    CR1 & CR2 & CR3 --> KEYINPUT["API-Key eintragen\nim Settings-Feld"]
+
+    KEYINPUT --> STORAGE["localStorage\ndes Browsers\nKey verlässt Rechner nur\nRichtung Provider\nkein Umweg ueber Nodges-Server\n(Zero Data Retention)"]
+
+    CHOICE -->|"Lokal"| LOCAL["Lokalen Provider waehlen"]
+    LOCAL --> LC1["Ollama\nlocalhost:11434\nollama run llama3\nollama run phi3"]
+    LOCAL --> LC2["LM Studio\nlocalhost:1234\nGUI-basiertes Tool"]
+
+    LC1 & LC2 --> CORS["CORS pruefen!\nOllama benoetigt:\n$env:OLLAMA_ORIGINS='*'\nollama serve"]
+
+    CORS --> NOKEY["Kein API-Key noetig\n100% Privacy\nnull Token-Kosten"]
+
+    STORAGE --> READY(["Provider bereit\nCreate Panel nutzen"])
+    NOKEY --> READY
+
+    style CLOUD fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style LOCAL fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style STORAGE fill:#2a1a3a,stroke:#9c27b0,color:#e1bee7
+    style NOKEY fill:#1a3a3a,stroke:#00897b,color:#b2dfdb
+    style CORS fill:#3a2a1a,stroke:#fb8c00,color:#ffe0b2

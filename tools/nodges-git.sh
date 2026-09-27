@@ -17,7 +17,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 SOLL_BRANCH="main"
-VERSION_WERKZEUG="tools/nodges-version.mjs"
+VERSION_WERKZEUG="tools/nodges-git-version.mjs"
 HOOK_ORDNER="git-hooks"
 
 rot() { printf '%s\n' "$*"; }
@@ -89,6 +89,9 @@ save)
     hinweis "Nichts zu sichern — der Arbeitsbaum ist sauber. Kein Commit erzeugt."
     exit 0
   fi
+
+  hinweis "Aenderungen im Arbeitsbaum vor dem Sichern:"
+  git status --short
 
   alt="$(version)"
   neu="$(node "$VERSION_WERKZEUG" bump patch | tail -n 1)"

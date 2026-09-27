@@ -1,0 +1,33 @@
+graph TD
+    subgraph RAY["Raycasting: 2D → 3D"]
+        R1["Mausposition in Pixeln\nx: 840, y: 320"]
+        R2["NDC-Normalisierung\n-1 bis +1 Raum\nx: 0.31, y: -0.08"]
+        R3["Strahl-Projektion\nvon Kameraposition\ndurch NDC-Punkt"]
+        R4["Intersektion\nmit Bounding-Boxen\naller Objekte"]
+        R5["Sortierung nach Distanz\nvorderstes Objekt gewinnt"]
+        R1 --> R2 --> R3 --> R4 --> R5
+    end
+
+    subgraph INST["InstancedMesh Problem"]
+        I1["10.000 Knoten\n= 1 einziges Objekt fuer Three.js"]
+        I2["Raycast-Ergebnis:\nnur 'InstancedMesh getroffen'\nkein direkter Knoten-Bezug"]
+        I3["instanceId abfragen\n= Matrix-Index des Treffers"]
+        I4["Lookup-Table\ninstanceId → entity.id\nO(1) Zugriffszeit"]
+        I1 --> I2 --> I3 --> I4
+    end
+
+    subgraph CAM["Kamera-Steuerung"]
+        C1["OrbitControls\nOrbit / Pan / Zoom"]
+        C2["Fly-To Animation (TWEEN.js)\nSanfte Interpolation zum Ziel\nSmoothStep Easing"]
+        C3["Kontext-Zoom\nZoom-Schritt proportional\nzur Distanz zum Ziel\nverhindert Clipping"]
+        C1 --> C2
+        C1 --> C3
+    end
+
+    R5 --> INST
+    I4 --> CEM["CentralEventManager\nKlick / Hover / Drag-Entscheidung"]
+    CEM --> CAM
+
+    style RAY fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style INST fill:#2a1a3a,stroke:#9c27b0,color:#e1bee7
+    style CAM fill:#1a3a1a,stroke:#43a047,color:#c8e6c9

@@ -1,0 +1,26 @@
+graph TD
+    TOPO["Netzwerk-Topologie\nals Eingabe"]
+
+    TOPO --> PR["PageRank\nWelche Knoten sind\nam einflussreichsten?\nbasierend auf Kanten-Topologie"]
+
+    TOPO --> BC["Betweenness Centrality\nWelche Knoten sind\n'Bruecken' zwischen Clustern?\nohne sie bricht das Netz auseinander"]
+
+    TOPO --> CC["Clustering Coefficient\nWie dicht ist die\nnachbarschaft eines Knotens?"]
+
+    PR --> INJ["Injizierung als\nneue Properties"]
+    BC --> INJ
+    CC --> INJ
+
+    INJ --> POOL["Property-Pool\nproperties.pagerank = 0.87\nproperties.betweenness = 0.34\nproperties.clustering = 0.91"]
+
+    POOL --> MAP["Visual Mapping\nwie jede andere Property\nGroesse / Farbe / Transparenz"]
+
+    MAP --> SCENE["3D-Szene\nBruecken-Knoten leuchten\nEinfluss-Knoten sind groesser\nCluster-Dichte als Farbe"]
+
+    IMPL["Implementierung\nvia WebWorker\nHauptthread blockierungsfrei\nberechnet parallel im Hintergrund"]
+
+    style TOPO fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style INJ fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style POOL fill:#2a1a3a,stroke:#9c27b0,color:#e1bee7
+    style SCENE fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7
+    style IMPL fill:#2a2a1a,stroke:#f9a825,color:#fff9c4

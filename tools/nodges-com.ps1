@@ -25,7 +25,7 @@ switch ($Command) {
             New-Item -ItemType Directory -Path $BUS | Out-Null
         }
         $zieldatei = Join-Path $BUS "ping-$Target.md"
-        $msg = "# PING von conT an $Target — $((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))`n$($Text -join ' ')"
+        $msg = "# PING von conT an $Target - $((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))`n$($Text -join ' ')"
         Set-Content -Path $zieldatei -Value $msg
         Write-Host "PING abgelegt: $zieldatei" -ForegroundColor Magenta
     }
@@ -45,8 +45,16 @@ switch ($Command) {
             Write-Host "Protokoll existiert noch nicht."
         }
     }
+    "sync" {
+        $syncScript = Join-Path $ROOT "tools\sync_com.ps1"
+        if (Test-Path $syncScript) {
+            & $syncScript
+        } else {
+            Write-Host "FEHLER: $syncScript nicht gefunden." -ForegroundColor Red
+        }
+    }
     "help" {
-        Write-Host "Befehle fuer conT:`n  ping <ziel> <text> : Weckruf senden (z.B. piCon)`n  status             : Bus-Status anzeigen`n  read               : Letzte Logeintraege ansehen" -ForegroundColor Cyan
+        Write-Host "Befehle fuer conT:`n  sync               : One-Way-Sync nach Desktop ausfuehren`n  ping <ziel> <text> : Weckruf senden (z.B. piCon)`n  status             : Bus-Status anzeigen`n  read               : Letzte Logeintraege ansehen" -ForegroundColor Cyan
     }
     default {
         Write-Host "Unbekannter Befehl: $Command" -ForegroundColor Red

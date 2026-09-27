@@ -19,6 +19,17 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 - **Branch-Bereinigung**: Lokaler Branch `pi` existiert weder auf `W:/` noch im Container; nur `main` ist aktiv.
 - **LightRAG Storage Backup**: Skript `lightrag-backend/backup_storage.sh` angelegt und erfolgreich verifiziert.
 
+## Erledigt in 0.106.8 (2026-09-27)
+
+- **Multi-Harness Ping-Pong Evaluation**: 5 Runden Ping-Pong zwischen conT und piCon in `com/test/rapport_pingpong.md` erfolgreich abgeschlossen.
+- **Benutzerbeschluesse umgesetzt**:
+  - Domaenenzustaendigkeiten (conT: `src/`, `e2e/`; piCon: `lightrag-backend/`, `tools/`) verbindlich in `AGENTS.md` verankert.
+  - Dokumentenrangfolge (`entscheidungen.md` > `plan/` > `todo.md`) und Frage-Modus-Ausnahme in `AGENTS.md` kodifiziert.
+  - Benutzerprofil (Banixx, Amateurprogrammierer, "ç"-Trigger) als Single Source of Truth direkt in `AGENTS.md` integriert; keine separate `user.md` erforderlich.
+  - Testketten in `package.json` entkoppelt: `"test:fast"` fuer Container (L0+L1+L3) und `"test:all"` fuer Host (L0+L1+L2).
+  - Schutz vor unabsichtlichem Staging: `tools/nodges-git.sh save` zeigt vor dem Commit `git status --short` an.
+  - Pfad-Drift bereinigt: `tools/com-bus/piCon.seen` in `AGENTS.md`.
+
 ## Noch offen / Naechste Schritte
 
 ### Werkzeuge und Qualitaetssicherung
@@ -31,7 +42,8 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 - Vorhaben angelegt: `com/plan/0_106_4_parallele_pi_instanzen.md` (parallele pi-Instanzen im Container `pi-agent`).
   Technik geprueft und machbar; offen sind Benutzerentscheidung (Anzahl, Rollen, Variante A bis D) sowie die
   Uebernahme der Regeln (Git nur von einer Instanz, Datei-Eigentum, LightRAG nur einmal) nach `AGENTS.md`.
-- Kein Anspruch aktiv. Anspruchsliste wird hier gefuehrt: `- [in Arbeit | <instanz>] <pfad oder thema>`.
+- Anspruch aktiv:
+  - `- [in Arbeit | conT, piCon, dopi] Autostart und Persistenz des COM-Bus-Waechters im Container (Tri-Harness, 3 Runden). Rapport: com/plan/autostart_com_bus/rapport_autostart_com_bus.md. Aktueller Turnus: piCon.`
 
 ### Git-Workflow (neu, umgesetzt in 0.106.5)
 - Eingefuehrt: `tools/nodges-git.sh` mit `save` (Patch + lokaler Commit, kein Push), `release` (Minor + Tag + Push)
@@ -42,6 +54,23 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 - Noch zu pruefen im Betrieb: greifen die Hooks auch auf der **Windows-Seite** (`core.hooksPath` relativ)?
   Falls dort nicht aufloesbar, laufen die Hooks bei conT stillschweigend nicht (Git bricht nicht ab).
 - Offen (Benutzer): Trailer `Harness:` in Commits? `release` mit E2E-Tests erzwingen?
+
+### Build 14 - LightRAG (Stand 27.09.2026)
+- **Backend erledigt (piCon):** `lightrag-backend/main.py` liefert jetzt Query-Teilgraphen (Seeds per
+  `entities_vdb.query`, dann BFS ueber `get_knowledge_graph(node_label, max_depth, max_nodes)`)
+  statt Vollgraph-Hardslicing; Kanten/Knoten als standardisiertes DTO (`weight`, `keywords`,
+  `description`, `sources`), live verifiziert. Siehe `com/plan/build14/rapport_build14.md` Abschnitt 6.
+- **Backend-Tests erweitert (piCon, 27.09.2026):** `lightrag-backend/tests/test_api.py` jetzt 27 Tests gruen
+  (neu: `create`/`select`/`delete` der Datenbank-Endpunkte sowie Pfad-Traversal-Schutz, mit isolierten
+  tmp-Verzeichnissen und deaktivierter Engine). Ohne API-Kosten. Siehe
+  `com/plan/Test_Setup_Plan/rapport_test_setup.md` Abschnitt 11.
+- **Erledigt (conT):** Skript `test:backend` in `package.json` hinterlegt und erfolgreich verifiziert (27 Tests gruen).
+- **Erledigt (conT):** Frontend-Mapping der neuen DTO-Felder in `src/utils/LightRAGService.ts` (`weight`, `keywords`, `description`, `sources`), Kantenexpansion, Schema 5.2 Visual Mappings und `CreatePanel.ts` Pipeline-Anbindung.
+- **Erledigt (conT):** Edge- & Node-Inspector in `src/ui/InfoPanelUI.ts` (hervorgehobene Text-Evidenz, Quellen-Badges, Keywords) und Tooltips in `src/ui/HoverInfoPanel.ts`.
+- **Offen:** Entscheidung, ob `release` `npm run test:e2e` erzwingt - im Container fehlen Systembibliotheken (`libglib-2.0.so.0`), Chromium startet nicht (6 E2E-Fehler). Vorschlag piCon: Flag `NODGES_SKIP_E2E=1`.
+- **Erledigt (piCon, 27.09.2026):** `app.on_event("startup")` in `main.py` auf einen Lifespan-Handler
+  (`asynccontextmanager`) umgestellt; die DeprecationWarning ist damit weg (Import mit
+  `-W error::DeprecationWarning` geprueft).
 
 ### Gemeinsam / unklar
 - `bericht.md` Teil H.2 ueberschreibt die Werkzeugempfehlungen mit "Beschlossene Empfehlungen", in `com/entscheidungen.md` steht dazu aber nichts. Wortlaut harmonisieren oder Benutzerbeschluss einholen.

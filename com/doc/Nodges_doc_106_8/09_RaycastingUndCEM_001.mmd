@@ -1,0 +1,44 @@
+sequenceDiagram
+    actor User
+    participant Browser
+    participant CEM as CentralEventManager
+    participant RC as THREE.Raycaster
+    participant LUT as Lookup-Table
+    participant HM as HighlightManager
+
+    User->>Browser: Maus bewegt sich (mousemove)
+
+    Browser->>CEM: mousemove Event
+
+    note over CEM: Hover-Throttling\nEvent nur alle 50ms verarbeiten\n= 20 Checks pro Sekunde
+
+    CEM->>CEM: NDC-Normalisierung\nPixel (x,y) → NDC (-1 bis +1)
+
+    CEM->>RC: setFromCamera(ndc, camera)
+    RC->>RC: Strahl von Kamera\ndurch NDC-Punkt\nin 3D-Unendlichkeit
+
+    RC->>RC: intersectObject(instancedMesh)
+    RC-->>CEM: Treffer: { instanceId: 47, distance: 12.3 }
+
+    CEM->>LUT: resolve(instanceId: 47)
+    LUT-->>CEM: entityId: "node_einstein"
+
+    CEM->>HM: setHover("node_einstein")
+    HM->>HM: Material-Backup erstellen
+    HM->>HM: Helligkeit +30% setzen
+
+    User->>Browser: Maustaste druecken (mousedown)
+    Browser->>CEM: mousedown + Koordinaten puffern
+
+    User->>Browser: Maustaste loslassen (mouseup)
+    Browser->>CEM: mouseup + neue Koordinaten
+
+    CEM->>CEM: Distanz berechnen\n= sqrt(dx² + dy²)
+
+    alt Distanz < 5 Pixel
+        CEM->>CEM: KLICK erkannt
+        CEM->>HM: setSelection("node_einstein")
+        HM->>HM: Glow + Breathing-Animation
+    else Distanz > 5 Pixel
+        CEM->>CEM: DRAG erkannt\nKlick ignoriert\nnur Kamera-Rotation
+    end

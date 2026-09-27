@@ -1,6 +1,7 @@
 import os
 import json
 import asyncio
+from contextlib import asynccontextmanager
 from typing import Optional, List, Dict, Any
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -63,7 +64,26 @@ except ValueError:
 # Beschreibungen). LightRAG standardmaessig "English"; hier deutschsprachig.
 SUMMARY_LANGUAGE = os.getenv("SUMMARY_LANGUAGE", "German")
 
-app = FastAPI(title="LightRAG Local API for Nodges", version=APP_VERSION)
+# LightRAG-Instanz und Verfuegbarkeit. Bewusst vor der App-Definition angelegt,
+# damit der Lifespan-Handler sie beim Start kennt.
+LIGHTRAG_AVAILABLE = False
+rag_instance = None
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    """Startup/Shutdown ueber den Lifespan-Handler statt des veralteten
+    @app.on_event("startup") (behebt die DeprecationWarning)."""
+    if rag_instance is not None:
+        try:
+            await rag_instance.initialize_storages()
+            print("[LightRAG Backend] Storages initialized successfully.")
+        except Exception as e:
+            print(f"[LightRAG Backend] Storage init error: {e}")
+    yield
+
+
+app = FastAPI(title="LightRAG Local API for Nodges", version=APP_VERSION, lifespan=lifespan)
 
 # CORS-Einstellungen fuer Kommunikation mit Nodges Frontend
 app.add_middleware(
@@ -82,9 +102,6 @@ class InsertRequest(BaseModel):
     text: str
 
 # LightRAG Instanziierung (optional mit Fallback)
-LIGHTRAG_AVAILABLE = False
-rag_instance = None
-
 try:
     from lightrag import LightRAG, QueryParam
     from lightrag.llm.openai import openai_complete_if_cache
@@ -143,19 +160,145 @@ try:
 except Exception as e:
     print(f"[LightRAG Backend Warning] LightRAG engine not fully initialized (using fallback/mock mode): {e}")
 
-@app.on_event("startup")
-async def startup_event():
-    global rag_instance
-    if rag_instance is not None:
-        try:
-            await rag_instance.initialize_storages()
-            print("[LightRAG Backend] Storages initialized successfully.")
-        except Exception as e:
-            print(f"[LightRAG Backend] Storage init error: {e}")
-
 # Begrenzung des extrahierten Wissensgraphen (Fix 3)
 MAX_GRAPH_NODES = int(os.getenv("LIGHTRAG_MAX_GRAPH_NODES", "150"))
 MAX_GRAPH_EDGES = int(os.getenv("LIGHTRAG_MAX_GRAPH_EDGES", "300"))
+
+# Build 14: Gezielte Subgraph-Extraktion. Statt den Gesamtgraphen ("*") zu
+# laden und hart abzuschneiden, werden die semantisch treffendsten
+# Startknoten per Vektorsuche bestimmt und von dort eine BFS-Nachbarschaft
+# (K-Hop) aus dem nativen LightRAG-Graphstorage geholt.
+QUERY_SEED_TOP_K = int(os.getenv("LIGHTRAG_QUERY_SEEDS", "5"))
+SUBGRAPH_MAX_DEPTH = int(os.getenv("LIGHTRAG_SUBGRAPH_DEPTH", "2"))
+
+# Feldtrenner, mit dem LightRAG mehrere Quell-Chunk-IDs in source_id buendelt.
+LIGHTRAG_GRAPH_FIELD_SEP = "<SEP>"
+
+
+def _split_field_list(value: Any, separators=(LIGHTRAG_GRAPH_FIELD_SEP, ",")) -> List[str]:
+    """Normalisiert LightRAG-Listenfelder (source_id, keywords) zu einer Liste."""
+    if value is None:
+        return []
+    if isinstance(value, (list, tuple)):
+        return [str(v).strip() for v in value if str(v).strip()]
+    text = str(value)
+    for sep in separators:
+        text = text.replace(sep, "\n")
+    return [part.strip() for part in text.split("\n") if part.strip()]
+
+
+def _parse_weight(value: Any) -> Optional[float]:
+    """Wandelt das LightRAG-Kantengewicht robust in eine Zahl um."""
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _build_node_dto(node_id: str, props: Dict[str, Any]) -> Dict[str, Any]:
+    """Standardisiertes Knoten-DTO (Build 14). properties bleibt als Rohblock
+    erhalten, damit das Frontend rueckwaertskompatibel bleibt."""
+    label = props.get("entity_name") or props.get("label") or node_id
+    return {
+        "id": node_id,
+        "label": str(label),
+        "entity_type": props.get("entity_type") or None,
+        "description": props.get("description") or None,
+        "sources": _split_field_list(props.get("source_id")),
+        "properties": props,
+    }
+
+
+def _build_edge_dto(source: str, target: str, props: Dict[str, Any]) -> Dict[str, Any]:
+    """Standardisiertes Kanten-DTO (Build 14): weight als Zahl, keywords und
+    sources als Arrays, description explizit. properties bleibt als Rohblock."""
+    relation = (
+        props.get("relation") or props.get("relation_type") or props.get("predicate")
+        or props.get("label") or props.get("keywords") or props.get("description")
+        or "verknuepft"
+    )
+    return {
+        "id": f"{source}->{target}",
+        "source": source,
+        "target": target,
+        "relation": str(relation),
+        "weight": _parse_weight(props.get("weight")),
+        "keywords": _split_field_list(props.get("keywords")),
+        "description": props.get("description") or None,
+        "sources": _split_field_list(props.get("source_id")),
+        "properties": props,
+    }
+
+
+async def _find_query_seed_nodes(query_text: str) -> List[str]:
+    """Findet die semantisch treffendsten Entitaeten zur Query ueber die
+    Vektordatenbank (entities_vdb) und liefert deren Knotennamen."""
+    try:
+        results = await rag_instance.entities_vdb.query(query_text, top_k=QUERY_SEED_TOP_K)
+    except Exception as seed_err:
+        print(f"[LightRAG Warning] Seed-Suche fehlgeschlagen: {seed_err}")
+        return []
+    seeds: List[str] = []
+    for hit in results or []:
+        name = hit.get("entity_name") or hit.get("id")
+        if name:
+            name = str(name).strip('"')
+            if name and name not in seeds:
+                seeds.append(name)
+    return seeds
+
+
+async def _extract_query_graph(query_text: str) -> tuple:
+    """Baut den Query-Teilgraphen: Seeds per Vektorsuche, dann native BFS-
+    Subgraphen (K-Hop) je Seed, zusammengefuehrt und dedupliziert.
+    Faellt auf den Gesamtgraphen ("*") zurueck, wenn keine Seeds gefunden
+    werden. Rueckgabe: (nodes, edges, meta)."""
+    graph_store = getattr(rag_instance, "chunk_entity_relation_graph", None)
+    if not graph_store:
+        return [], [], {"mode": "unavailable"}
+
+    nodes_by_id: Dict[str, Dict[str, Any]] = {}
+    edges_by_id: Dict[str, Dict[str, Any]] = {}
+    truncated = False
+
+    def _merge(kg_data) -> None:
+        nonlocal truncated
+        if getattr(kg_data, "is_truncated", False):
+            truncated = True
+        for node in kg_data.nodes:
+            n_id = str(node.id).strip('"')
+            if n_id in nodes_by_id:
+                continue
+            props = dict(node.properties) if node.properties else {}
+            nodes_by_id[n_id] = _build_node_dto(n_id, props)
+        for edge in kg_data.edges:
+            e_src = str(edge.source).strip('"')
+            e_tgt = str(edge.target).strip('"')
+            e_id = f"{e_src}->{e_tgt}"
+            if e_id in edges_by_id:
+                continue
+            e_props = dict(edge.properties) if edge.properties else {}
+            edges_by_id[e_id] = _build_edge_dto(e_src, e_tgt, e_props)
+
+    seeds = await _find_query_seed_nodes(query_text)
+    mode = "subgraph"
+    if seeds:
+        for seed in seeds:
+            try:
+                kg_data = await graph_store.get_knowledge_graph(
+                    seed, max_depth=SUBGRAPH_MAX_DEPTH, max_nodes=MAX_GRAPH_NODES
+                )
+                _merge(kg_data)
+            except Exception as sub_err:
+                print(f"[LightRAG Warning] Subgraph fuer Seed '{seed}' fehlgeschlagen: {sub_err}")
+    if not nodes_by_id:
+        # Fallback: bisheriges Verhalten (Gesamtgraph, nach Grad begrenzt)
+        mode = "full_graph_fallback"
+        kg_data = await graph_store.get_knowledge_graph("*", max_depth=SUBGRAPH_MAX_DEPTH, max_nodes=MAX_GRAPH_NODES)
+        _merge(kg_data)
+
+    meta = {"mode": mode, "seeds": seeds, "depth": SUBGRAPH_MAX_DEPTH, "truncated": truncated}
+    return list(nodes_by_id.values()), list(edges_by_id.values()), meta
 
 @app.get("/")
 @app.get("/health")
@@ -183,34 +326,13 @@ async def process_query(request: QueryRequest):
         try:
             from lightrag import QueryParam
             res = await rag_instance.aquery(request.query, param=QueryParam(mode=request.mode))
-            # Wissensgraph-Knoten und -Kanten aus LightRAG abrufen
+            # Wissensgraph als gezielten Query-Teilgraphen abrufen (Build 14)
             kg_nodes = []
             kg_edges = []
+            graph_meta: Dict[str, Any] = {}
             
             try:
-                if hasattr(rag_instance, "chunk_entity_relation_graph") and rag_instance.chunk_entity_relation_graph:
-                    kg_data = await rag_instance.chunk_entity_relation_graph.get_knowledge_graph("*")
-                    for node in kg_data.nodes:
-                        n_id = str(node.id).strip('"')
-                        props = dict(node.properties) if node.properties else {}
-                        n_label = props.get("entity_name") or props.get("label") or n_id
-                        kg_nodes.append({
-                            "id": n_id,
-                            "label": str(n_label),
-                            "properties": props
-                        })
-                    
-                    for edge in kg_data.edges:
-                        e_src = str(edge.source).strip('"')
-                        e_tgt = str(edge.target).strip('"')
-                        e_props = dict(edge.properties) if edge.properties else {}
-                        e_rel = e_props.get("relation") or e_props.get("relation_type") or e_props.get("predicate") or e_props.get("label") or e_props.get("keywords") or e_props.get("description") or "verknuepft"
-                        kg_edges.append({
-                            "source": e_src,
-                            "target": e_tgt,
-                            "relation": str(e_rel),
-                            "properties": e_props
-                        })
+                kg_nodes, kg_edges, graph_meta = await _extract_query_graph(request.query)
             except Exception as kg_err:
                 print(f"[LightRAG Warning] Knowledge Graph Extraction Error: {kg_err}")
 
@@ -236,7 +358,8 @@ async def process_query(request: QueryRequest):
                 "mock": False,
                 "graph_context": {
                     "nodes": kg_nodes,
-                    "edges": kg_edges
+                    "edges": kg_edges,
+                    "meta": graph_meta
                 }
             }
         except Exception as err:

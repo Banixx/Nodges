@@ -1,0 +1,26 @@
+graph TD
+    SYM(["Symptom: White Screen\nnach Laden eines grossen Graphen"])
+
+    SYM --> C1["clearScene wurde aufgerufen"]
+    C1 --> C2{"Wurden alle Objekte\nkorrekt disposed?"}
+
+    C2 -->|"NEIN — haeufig"| LEAK["VRAM-Leak\nAltes Material bleibt im GPU-Speicher\nneues Mesh + altes Material\n= Speicher wächst"]
+
+    LEAK --> L1["Geometrien nicht disposed\nnew SphereGeometry() verbleibt\nim GPU-Buffer"]
+    LEAK --> L2["Materialien nicht disposed\nnew MeshStandardMaterial() verbleibt\nim VRAM"]
+    LEAK --> L3["Texturen nicht disposed\nImageBitmap oder Canvas-Textur\nim VRAM eingefroren"]
+
+    L1 & L2 & L3 --> OOM["Out-of-Memory\nGrafikkarte hat keinen VRAM mehr\nDriver-Reset oder Tab-Crash"]
+
+    OOM --> FIX["Diagnose und Fix"]
+    FIX --> F1["SceneManager.ts pruefen:\njede Geometrie → .dispose()\njedes Material → .dispose()\njede Textur → .dispose()"]
+    FIX --> F2["Ctrl + F5\nerzwingt vollstaendigen\nBrowser-GPU-Kontext-Reset"]
+    FIX --> F3["Regel:\nclearScene ist erst fertig\nwenn ALLE .dispose()-Calls\nausgefuehrt wurden"]
+
+    C2 -->|"JA"| SAFE["clearScene sauber\nVRAM freigegeben\nneue Szene kann aufgebaut werden"]
+
+    style SYM fill:#3a1a1a,stroke:#e53935,color:#ffcdd2
+    style LEAK fill:#3a2a1a,stroke:#fb8c00,color:#ffe0b2
+    style OOM fill:#3a1a1a,stroke:#e53935,color:#ffcdd2
+    style FIX fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style SAFE fill:#1a3a1a,stroke:#43a047,color:#c8e6c9

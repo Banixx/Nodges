@@ -1,0 +1,28 @@
+graph TD
+    subgraph JSON["JSON: metadata.map Objekt"]
+        M1["metadata:\n  map: 'world_mercator'\n  mapX: 'longitude'\n  mapY: 'latitude'"]
+    end
+
+    subgraph EBENE_2D["2D-Ebene: Karte (XZ-Ebene, Y=0)"]
+        K1["Knoten A\nBerlin\nmapX: 13.4\nmapY: 52.5\nPhysik deaktiviert\nPosition fest gepinnt"]
+        K2["Knoten B\nParis\nmapX: 2.3\nmapY: 48.9\nPhysik deaktiviert"]
+        K3["Knoten C\nWarschau\nmapX: 21.0\nmapY: 52.2\nPhysik deaktiviert"]
+    end
+
+    subgraph EBENE_3D["3D-Raum: Kanten als Paraboloid-Bögen"]
+        E1["Kante: Berlin → Paris\nQuadraticBezierCurve3\nKontrollpunkt: Y = +200\nwölbt sich ÜBER die Karte"]
+        E2["Kante: Paris → Warschau\nKontrollpunkt: Y = +150\nkreuzt Berlin-Paris\nohne Verdeckung"]
+        E3["Vorteil:\nAlle Kanten sichtbar\nkeine 2D-Ueberlappung\nräumliche Tiefe trennt\nKreuzungen"]
+    end
+
+    JSON --> EBENE_2D
+    EBENE_2D --> EBENE_3D
+
+    K1 --> E1
+    K2 --> E1
+    K2 --> E2
+    K3 --> E2
+
+    style JSON fill:#2a2a1a,stroke:#f9a825,color:#fff9c4
+    style EBENE_2D fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style EBENE_3D fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7

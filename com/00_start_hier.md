@@ -9,9 +9,10 @@ Es liegt direkt im Projekt-Root und ist damit ueber `/workspace/com/` (piCon) wi
 2. **`todo.md`** — was gerade offen ist. Kurz halten, vor jeder Aufgabe lesen.
 3. **`plan/`** — laufende Vorhaben. Nur die **Dateinamen** reichen zum Ueberblick; Inhalt nur bei Bedarf.
 4. **`entscheidungen.md`** — Beschluesse des Benutzers. Diese sind bindend und haben Vorrang vor Vermutungen.
-5. **`ideen.md`** — ungepruefte Einfaelle. Keine Verpflichtung.
-6. **`bericht.md`** und **`setup.md`** — die ausfuehrlichen Gesamtdokumente (Historie bzw. Technik). Nur bei Detailfragen, nicht komplett einlesen.
-7. **`doc/`** — das Archiv aller bisherigen Berichte (273 Dateien). Gezielt suchen, nicht pauschal lesen.
+5. **`offene-fragen.md`** — offene Fragen und Entscheidungsvorlagen fuer den Benutzer (bei "fragen"-Abfragen).
+6. **`ideen.md`** — ungepruefte Einfaelle. Keine Verpflichtung.
+7. **`bericht.md`** und **`setup.md`** — die ausfuehrlichen Gesamtdokumente (Historie bzw. Technik). Nur bei Detailfragen, nicht komplett einlesen.
+8. **`doc/`** — das Archiv aller bisherigen Berichte (273 Dateien). Gezielt suchen, nicht pauschal lesen.
 
 > Wichtig: Die Dateien in `com/` sind bewusst **klein und steuernd**. Ein Harness soll sie vollstaendig einlesen koennen.
 > Alles Umfangreiche gehoert nach `com/doc/` mit Versionspraefix.
@@ -23,8 +24,9 @@ com/
   00_start_hier.md    <- dieses File: Einstieg und Lesereihenfolge
   todo.md             <- offene Punkte (sollte vor jeder Aufgabe gelesen werden)
   plan/               <- laufende Vorhaben, ein File je Vorhaben
-  ideen.md            <- Ideensammlung, ungeprueft
   entscheidungen.md   <- Beschluesse des Benutzers (bindend)
+  offene-fragen.md    <- offene Fragen fuer den Benutzer (Orientierung bei "fragen")
+  ideen.md            <- Ideensammlung, ungeprueft
   bericht.md          <- Gesamtbericht und Dialogprotokoll (Historie)
   setup.md            <- technische Kurzanleitung Setup/Git
   doc/                <- Archiv: alle bisherigen Berichte (versioniert, 273 Dateien)
@@ -38,6 +40,7 @@ com/
 | Etwas bleibt offen, naechster Schritt unklar | `com/todo.md` |
 | Es gibt ein absehbares Vorhaben mit mehreren Schritten | eigene Datei in `com/plan/` |
 | Der Benutzer hat etwas beschlossen | `com/entscheidungen.md` (mit Datum und wenn moeglich Commit/Tag) |
+| Eine Frage oder Entscheidungsvorlage fuer den Benutzer | `com/offene-fragen.md` (wird bei Benutzer-Prompt "fragen" konsultiert) |
 | Ein Einfall, noch ungeprueft | `com/ideen.md` |
 | Zusammenfassung groesserer Zusammenhaenge | Anhang an `bericht.md` (neuer Teil H, I, ...) |
 

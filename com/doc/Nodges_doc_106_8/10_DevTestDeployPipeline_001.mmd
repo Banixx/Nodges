@@ -1,0 +1,39 @@
+graph LR
+    subgraph DEV["Lokale Entwicklung"]
+        D1["npm install\nNode.js >= 18"]
+        D2["npm run dev\nVite Dev-Server\nlocalhost:5173\nHMR aktiv"]
+        D3["Ollama lokal\nllama3 / phi3\nkeine Token-Kosten\nbeim Prompt-Testing"]
+        D1 --> D2
+        D2 -.->|"optional"| D3
+    end
+
+    subgraph TEST["Testing und QA"]
+        T1["npm run test\nVitest Watch-Modus\nTDD-Zyklus"]
+        T2["npm run test:ui\nVitest Browser-Dashboard\nGraph-Strukturen debuggen"]
+        T3["npm run test:coverage\nV8 Coverage-Report\nZiel: >80% fuer Manager + Utils"]
+        T4["npm run export:schema\nZod → JSON-Schema\nfuer LLM Structured Outputs"]
+        T1 & T2 & T3 --> T4
+    end
+
+    subgraph BUILD["Build und Deployment"]
+        B1["npm run build\ntsc Typecheck\n+ vite build"]
+        B2["/dist\nminifiziert\nCSS extrahiert\nThree.js tree-shaked"]
+        B3["Statisches Hosting\nGitHub Pages\nVercel / Netlify / S3\nkein Backend noetig"]
+        B1 --> B2 --> B3
+    end
+
+    subgraph BYOK["BYOK-Architektur"]
+        K1["User traegt API-Key\nin Nodges-UI ein"]
+        K2["Key wird gespeichert\nNUR im localStorage\nnicht auf Server"]
+        K3["Browser sendet\ndirekt an LLM-Provider\nkein Umweg ueber Host"]
+        K1 --> K2 --> K3
+    end
+
+    DEV --> TEST
+    TEST --> BUILD
+    BUILD --> BYOK
+
+    style DEV fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style TEST fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style BUILD fill:#2a1a3a,stroke:#9c27b0,color:#e1bee7
+    style BYOK fill:#3a2a1a,stroke:#fb8c00,color:#ffe0b2

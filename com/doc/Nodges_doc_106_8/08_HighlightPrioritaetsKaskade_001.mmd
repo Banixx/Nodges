@@ -1,0 +1,40 @@
+stateDiagram-v2
+    [*] --> Neutral: Knoten im Ruhezustand
+
+    Neutral --> Hover: Maus bewegt sich ueber Objekt
+    Hover --> Neutral: Maus verlässt Objekt
+
+    Hover --> Selection: Nutzer klickt
+
+    Selection --> Neutral: Klick auf leeren Raum\noder Escape
+
+    Neutral --> Search: Suche aktiv\nObjekt ist Treffer
+    Search --> Neutral: Suche zurueckgesetzt
+
+    Neutral --> Path: Shortest-Path berechnet\nObjekt liegt auf Pfad
+    Path --> Neutral: Pfad aufgehoben
+
+    state Hover {
+        HoverNode: Node +30% Helligkeit
+        HoverEdge: Edge leuchtet blaeulich
+    }
+
+    state Selection {
+        SelGlow: emissive Color Glow-Effekt
+        SelPulse: Breathing-Animation\n0.5 Hz Sinus-Oszillator\nIntensity = Base + A * sin(t * f)
+        SelPanel: Seitenpanel geoeffnet
+    }
+
+    state Search {
+        SrchColor: Kontrastfarbe Gelb / Magenta
+        SrchGhost: alle anderen Knoten\nopacity 0.1 (Ghosting)
+    }
+
+    state Path {
+        PathEdge: Kanten-Kette hervorgehoben
+        PathGhost: nicht-beteiligte Elemente\nopacity 0.1
+    }
+
+    note right of Selection: Hoechste Prioritaet\nueberschreibt alle anderen
+
+    note right of Path: Ghosting-Effekt:\nnur der Pfad bleibt\nvoll sichtbar

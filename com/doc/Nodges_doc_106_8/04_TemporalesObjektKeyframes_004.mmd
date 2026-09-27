@@ -1,0 +1,22 @@
+graph TD
+    ENT["Entity oder Relationship\n{ id, type, label, properties, ... }"]
+
+    ENT -->|"optional"| TEMP["temporal: { ... }"]
+
+    TEMP --> VF["validFrom: 1990\nKnoten existiert ab diesem Zeitpunkt\n→ wird vorher nicht gerendert"]
+    TEMP --> VT["validTo: 2025\nKnoten stirbt an diesem Zeitpunkt\n→ wird danach ausgeblendet"]
+    TEMP --> HIST["history: [ Keyframe, ... ]"]
+
+    HIST --> KF1["Keyframe 1\ntimestamp: 2000\nchanges: { influence: 95 }"]
+    HIST --> KF2["Keyframe 2\ntimestamp: 2010\nchanges: { influence: 60, status: 'declining' }"]
+    HIST --> KFN["Keyframe N\ntimestamp: ...\nchanges: nur Deltas\nnicht alle Properties"]
+
+    KF1 --> DELTA["Delta-Prinzip:\nNur veraenderte Werte\nwerden gespeichert\nkein redundantes Duplizieren"]
+
+    DELTA --> ENGINE["TimeEngine\ninterpoliert zwischen Keyframes\nbewegt Zeitstrahl-Slider\nanimiert Properties in 3D"]
+
+    style ENT fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style TEMP fill:#2a1a3a,stroke:#9c27b0,color:#e1bee7
+    style HIST fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style DELTA fill:#3a2a1a,stroke:#fb8c00,color:#ffe0b2
+    style ENGINE fill:#1a3a3a,stroke:#00897b,color:#b2dfdb

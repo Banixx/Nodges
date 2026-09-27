@@ -1,0 +1,25 @@
+graph LR
+    subgraph NEAR["Nahe Zukunft"]
+        N1["TimeEngine\nZeitdimension + Simulation\nPlay/Pause/Rewind-Slider\ndecay + thresholds + Edge-Effekte"]
+        N2["Geospatial Mapping\nKarten-Integration\nfeste mapX/mapY Koordinaten\n3D-Boegen ueber Weltkarte"]
+        N3["d3-force-3d\nBarnes-Hut Octree\nO(N log N) statt O(N²)\nbis 50.000 Knoten fluessig"]
+    end
+
+    subgraph MID["Mittelfristig"]
+        M1["1-zu-n Kanten\ntargets-Array in Edges\nsternfoermiges Kraftmodell\nfuer Broadcast-Systeme"]
+        M2["RAG + Vektordatenbanken\nPinecone / ChromaDB\nInfinite Canvas\ndynamisches Nachladen"]
+        M3["Edit vs. View Modus\nGUI faehrt aus dem Bild\nkinoreife Immersions-Praesentation"]
+    end
+
+    subgraph VISION["Langfristige Vision"]
+        V1["Audio-visuelle Synopsie\nKnoten erzeugen Klaenge\nDissonanz = roter Status"]
+        V2["WebXR Haptik\nController vibrieren\nbeim Durchschneiden von Kanten"]
+        V3["Fraktale Nodes\nKnoten = Sub-Netzwerk\nbei extremem Heranzoomen"]
+        V4["Negative Darstellung\nfehlende Verbindungen\nals gestrichelte Geister-Linien"]
+    end
+
+    NEAR --> MID --> VISION
+
+    style NEAR fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style MID fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style VISION fill:#2a1a3a,stroke:#9c27b0,color:#e1bee7

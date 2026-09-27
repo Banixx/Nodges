@@ -1,0 +1,34 @@
+sequenceDiagram
+    actor User
+    participant App
+    participant LLMService
+    participant LLM as LLM (Cloud oder Lokal)
+    participant Zod
+
+    User->>App: Prompt eingeben + Generieren klicken
+
+    rect rgb(20, 40, 60)
+        note over App,LLM: Phase 1 – Ontologie-Phase
+        App->>LLMService: generateOntology(prompt)
+        LLMService->>LLM: System-Prompt: "Entwirf Schema fuer dieses Thema"
+        LLM-->>LLMService: JSON { dataModel, visualMappings, entities:[], relationships:[] }
+        LLMService->>Zod: Erstelle dynamisches Zod-Schema aus dataModel
+        Zod-->>LLMService: Laufzeit-Schema bereit
+    end
+
+    rect rgb(20, 50, 30)
+        note over App,LLM: Phase 2 – Instanz-Phase
+        LLMService->>LLM: System-Prompt + JSON-Schema als Constraint
+        note right of LLM: LLM kann nur Attribute\ngenerieren die es selbst\nin Phase 1 definiert hat
+        LLM-->>LLMService: JSON { entities:[...], relationships:[...] }
+        LLMService->>Zod: GraphDataSchema.parse(response)
+        alt Validierung erfolgreich
+            Zod-->>LLMService: valides GraphData-Objekt
+            LLMService-->>App: GraphData
+            App->>App: loadGraphData(graphData)
+        else Validierungsfehler
+            Zod-->>LLMService: ZodError
+            LLMService-->>App: ErrorHandler → Toast (rot)
+            note over App: Alte Szene bleibt erhalten\nkein White-Screen
+        end
+    end

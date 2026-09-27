@@ -1,8 +1,9 @@
 # Setup Nodges — Multi-Harness Arbeitsumgebung
 
-**Stand:** 2026-09-24 · **Verantwortlich:** piCon (Container) + conT (Antigravity auf `W:`)
+**Stand:** 2026-09-27 · **Verantwortlich:** piCon (Container) + conT (Antigravity auf `W:`)
 **Abgekoppelt:** winAnt (war Antigravity auf Windows NTFS, ersetzt durch conT)
 **Dies ist die technische Kurzanleitung.** Der ausfuehrliche Bericht und Dialog steht in **`bericht.md`**.
+Eine detaillierte Gesamtdarstellung der Skripte und Kommunikation liegt unter [W:/com/setup/multi_harness_setup_und_kommunikation.md](file:///W:/com/setup/multi_harness_setup_und_kommunikation.md).
 
 ---
 
@@ -59,7 +60,7 @@ winAnt (C:\...\Nodges, NTFS) = ABGEKOPPELT - nicht mehr verwenden
 
 **Verifiziert:** `fetch`, `push` und `push --dry-run` laufen fehlerfrei (Lesen und Schreiben).
 
-**Versionstags:** Ein Tag (Etikett) ist ein fester Name fuer einen Commit — eine Momentaufnahme, die sich nie verschiebt. Wenn der Benutzer sagt *"das ist jetzt stabil"*: `git tag v0.106.0 && git push --tags`. Danach ist dieser Stand dauerhaft wiederfindbar. Aktuelle Version laut `package.json`: `0.106.0`.
+**Versionstags:** Ein Tag (Etikett) ist ein fester Name fuer einen Commit — eine Momentaufnahme, die sich nie verschiebt. Wenn der Benutzer sagt *"das ist jetzt stabil"*: `git tag v0.106.0 && git push --tags`. Danach ist dieser Stand dauerhaft wiederfindbar. Aktuelle Version laut `package.json`: `0.106.8`.
 
 **Ablauf — zwingend:**
 ```
@@ -90,6 +91,38 @@ bash tools/nodges-git.sh release   # Minor (Patch auf 0) + Tag + Push nach origi
 > **Fuer conT genau gleich:** dieselben drei Befehle, aufzurufen im Workspace `W:/`.
 > Vorsicht: Solange local Commits **voraus** liegen, waere ein Zuruecksetzen auf `origin/main`
 > ein Datenverlust.
+
+
+---
+
+## 2b. Der COM-Bus und die Multi-Harness-Kommunikation
+
+Grundsatz fuer alle Agenten: **"Die Datei ist der Inhalt, der Ping ist nur die Klingel."**
+
+### Die zwei Saeulen der Kommunikation:
+
+1. **Inhaltsebene (Harness-Chat via Rapport):**
+   - Groessere Abstimmungen laufen ueber standardisierte Rapport-Dateien: `com/plan/<thema>/rapport_<thema>.md`.
+   - Die Blaupause dafuer ist [W:/com/setup/harness_chat_setup.md](file:///W:/com/setup/harness_chat_setup.md).
+   - Fester Ablauf im **3-Runden-Ping-Pong:** Runde 1 (Schnittstellen & DTOs) → Runde 2 (Datenvertrag & Expansion) → Runde 3 (Visualisierung & Verifikation).
+
+2. **Klingelebene (COM-Bus):**
+   - Liegt unter [W:/tools/com-bus/](file:///W:/tools/com-bus/) (ausserhalb von `com/`, um Rekursion zu vermeiden).
+   - Protokoll: `tools/com-bus/events.log`.
+   - Weckruf: `ping-<ziel>.md` (`conT`, `piCon` oder `all`).
+   - piCon nutzt die Agent-Extension `/home/.pi/agent/extensions/nodges-com.ts` fuer Prompt-Einblendungen.
+   - conT liest `com/todo.md`, die Rapport-Dateien und prueft Pings in `tools/com-bus/`.
+
+### Werkzeuge des COM-Busses:
+
+| Werkzeug | Harness | Plattform | Befehle |
+|---|---|---|---|
+| [W:/tools/nodges-com.sh](file:///W:/tools/nodges-com.sh) | piCon | Bash (Linux) | `start`, `stop`, `status`, `read`, `ack`, `ping`, `watch` |
+| [W:/tools/watch_com.mjs](file:///W:/tools/watch_com.mjs) | piCon | Node.js (Linux) | Daemon fuer Linux-Events und `events.log` |
+| [W:/tools/test-com.sh](file:///W:/tools/test-com.sh) | piCon / conT | Bash | 8-stufiger Regressionstest ohne Seiteneffekte |
+| [W:/tools/nodges-com.ps1](file:///W:/tools/nodges-com.ps1) | conT | PowerShell | `ping`, `status`, `read`, `sync` |
+| [W:/tools/watch_com.ps1](file:///W:/tools/watch_com.ps1) | conT | PowerShell | Hintergrunddienst fuer Windows, Heartbeat-Fallback und Sync-Trigger |
+| [W:/tools/sync_com.ps1](file:///W:/tools/sync_com.ps1) | System | PowerShell | One-Way-Spiegelung via `robocopy /MIR` nach `C:/Users/ich/Desktop/code/_Nodges_Com_Sync` |
 
 
 ---
@@ -177,17 +210,19 @@ curl -s http://localhost:5173/lightrag-api/health
 
 ---
 
-## 8. Status der offenen Punkte
+## 8. Status der offenen Punkte (Stand 2026-09-27)
 
-- **winAnt / Windows-Workspace `C:/.../Nodges`:** **ABGEKOPPELT** (Beschluss 2026-09-24). Ersetzt durch **conT** auf `W:/`. Definitiv Vergangenheit, Workspace ist archiviert.
-- **Branch-Strategie:** **ALLE Harnesses arbeiten auf `main`.** Branch `pi` ist geloescht (Beschluss des Benutzers, `bericht.md` Teil D). Es gibt keinen Merge mehr nach `main` — `main` IST der Arbeitsbranch.
-- **Veraltetes in fremden Dokus:** winAnts Dokumente (`0_106_0_entscheidung_dual_harness...`, `0_106_0_analyse_unc_absturz...`) nennen noch `origin/pi`. Inhaltlich relevant, aber die Branch-Angabe ist ueberholt.
-- **Absturz-Ursache geklaert:** conT nutzt **`W:/`** als Netzlaufwerk (nicht den rohen UNC-Pfad) und laeuft stabil. winAnts Absturz betraf den direkten UNC-Zugriff der IDE.
-- **`docker-compose.yml`:** Liegt noch in `C:/Users/ich/Desktop/code/_projects/Nodges_Pi` (wird bei Gelegenheit im Repo harmonisiert).
-- **LightRAG-Daten (`lightrag-backend/rag_storage/`):** Bleiben lokal im Linux-Container; Backup-Skript bei Bedarf ergaenzen.
-
+- **winAnt / Windows-Workspace `C:/.../Nodges`:** **ABGEKOPPELT** (Beschluss 2026-09-24). Ersetzt durch **conT** auf `W:/`. Workspace ist archiviert.
+- **Branch-Strategie:** **ALLE Harnesses arbeiten auf `main`.** Branch `pi` ist geloescht.
+- **Git-Workflow (0.106.5+):** `tools/nodges-git.sh` verbindlich fuer conT und piCon. Zwischenstaende bleiben lokal (`save`), Releases bringen Minor-Sprung und Push (`release`).
+- **Build 14 (LightRAG Query-Subgraphen & DTOs):** Abgeschlossen und integriert (3 Runden Ping-Pong zwischen conT und piCon).
+- **Backend-Tests:** In `package.json` hinterlegt (`"test:backend"`). 18 Pytest-Tests im Backend gruen, ohne externe API-Kosten.
+- **`test:all`:** Offen. Soll L0/L1 buendeln. E2E muss im Container via `NODGES_SKIP_E2E=1` uebersprungen werden, da Chromium im Container an fehlenden Systembibliotheken scheitert.
+- **E2E-Gate in `release`:** Offene Benutzerentscheidung in `com/entscheidungen.md`.
+- **E2E-Suiten:** `05-visual-regression` und `06-lightrag-integration` in Ausarbeitung durch conT.
+- **Lifespan-Handler in `main.py`:** Folgethema im Backend (DeprecationWarning beheben).
+- **LightRAG-Daten (`lightrag-backend/rag_storage/`):** Vektordaten bleiben lokal im Linux-Container; Backup-Skript `backup_storage.sh` verifiziert.
 
 ---
 
-*Verfasst von **piCon** (Pi-Coding-Agent im Container `pi-harness`, WSL2 auf Windows 11), 2026-09-24.
-Ergaenzungen durch **conT** (Antigravity auf `W:`) ausdruecklich erwuenscht.*
+*Verfasst von **piCon** (2026-09-24), umfassend aktualisiert und ergaenzt von **conT** (2026-09-27).*

@@ -20,14 +20,14 @@ Ergaenzende Begruendungen stehen in `bericht.md` (Teile D, E, F) und `setup.md`.
 | 2026-09-25 | **Beide Harnesses rufen dasselbe Skript** `tools/nodges-git.sh` auf. Die Skills sind nur duenne Verweise, damit conT und piCon nicht auseinanderdriften. | `AGENTS.md` Abschnitt 3 |
 | 2026-09-25 | **Die conT-Skills liegen versioniert** unter `W:/.agents/skills/<name>/SKILL.md` (= `/workspace/.agents/skills/`). `.agents/skills/` ist deshalb aus der `.gitignore` ausgenommen; der Rest von `.agents/` bleibt draussen. | Antigravity-Discovery laut Benutzer, `.gitignore` Abschnitt AI and Tooling |
 | 2026-09-25 | **`sgc` und `sgp` sind abgeloest.** `sgc` pushte jeden Zwischenschritt und zeigte zuletzt auf den geloeschten Branch `origin/pi`; `sgp` zog per Pull, obwohl zwischen den Harnesses nichts zu holen ist. Ersetzt durch `save`, `release`, `status`. | `com/setup.md` Abschnitt 2 |
+| 2026-09-27 | **Domaenenzustaendigkeiten verankert:** conT primaer `src/`, `e2e/`; piCon primaer `lightrag-backend/`, `tools/`. Gemeinsame Dateien (`package.json`, `AGENTS.md`, `com/`) nur mit Ansage/Ping. Keine starren Sperren, sondern Zustaendigkeit mit Ansagepflicht. | `com/test/rapport_pingpong.md`, Beschluss Punkt 1 |
+| 2026-09-27 | **Pfadkorrektur, Rangfolge und Ping-Ausnahme:** Pfad `tools/com-bus/` verbindlich; Dokumentenrangfolge `entscheidungen.md > plan/ > todo.md`; Frage-Modus ("?") schuetzt vor ungefragten Codeaenderungen, gilt aber nicht fuer Arbeitsauftraege/Pings im Rapport. | `com/test/rapport_pingpong.md`, Beschluss Punkt 2 |
+| 2026-09-27 | **Benutzerprofil in `AGENTS.md` integriert:** Keine separate Datei `user.md` noetig; Profil (`Banixx`, Amateurprogrammierer, Erklaerungsmodus "ç", Farbvorlieben) direkt in `AGENTS.md` als zentrale Single Source of Truth verankert. | `com/test/rapport_pingpong.md`, Beschluss Punkt 3 |
+| 2026-09-27 | **Entkopplung der Testketten:** `package.json` erhaelt `test:fast` fuer den Container (L0+L1+L3) und `test:all` fuer den Windows-Host (L0+L1+L2). E2E bleibt bis auf Weiteres ausserhalb des automatischen `release`-Gates. | `com/test/rapport_pingpong.md`, Beschluss Punkt 4 |
+| 2026-09-27 | **Schutz vor unabsichtlichem Staging bei `save`:** `tools/nodges-git.sh save` zeigt vor dem Commit zwingend `git status --short` an, um unfertige Zwischenstaende der anderen Domaene sichtbar zu machen. | `com/test/rapport_pingpong.md`, Beschluss Punkt 5 |
+| 2026-09-27 | **Rolle und Einbindung von dopi:** dopi (Host- & Docker-Orchestrator in `C:/Users/ich/Desktop/code/_projects/Nodges_Pi`) redet grundsaetzlich nur mit, wenn es um das Setup / die Container-Infrastruktur geht (und auch dann nicht immer). Kein fixer Turnus; dopi muss von conT oder piCon explizit aufgerufen werden. | Benutzerbeschluss (Chat) |
 
-## Offen — noch nicht vom Benutzer entschieden
+---
 
-Diese Punkte stehen bewusst hier und **nicht** bei den Beschluessen, weil sie nur vorgeschlagen sind:
+> **Hinweis zu offenen Fragen:** Saemtliche noch nicht entschiedenen Fragen, Vorschlaege und Diskussionspunkte wurden nach [W:/com/offene-fragen.md](file:///W:/com/offene-fragen.md) ausgelagert. Dieses Dokument enthaelt ausschliesslich verbindliche Beschluesse.
 
-- `Co-authored-by: Antigravity <antigravity@internal>` als Commit-Trailer (`setup.md` Abschnitt 5).
-  Offene Variante dazu: stattdessen ein `Harness: conT` bzw. `Harness: piCon` unter der Commit-Nachricht,
-  damit erkennbar bleibt, wer gesichert hat. Bisher gilt weiter "Nachricht ist nur die Versionsnummer".
-- Ob `resetup.md` und `Plan_v4_*.md` aus dem Root ebenfalls in eine Struktur wandern.
-- Ob `release` kuenftig auch die **E2E-Tests** (`npm run test:e2e`) erzwingen soll. Heute: Typecheck und
-  Unit-Tests; `--skip-checks` ueberspringt beides bewusst.

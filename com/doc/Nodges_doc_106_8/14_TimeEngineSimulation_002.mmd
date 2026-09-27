@@ -1,0 +1,38 @@
+graph TD
+    subgraph KNOTEN["Knoten-Eigenschaften (TimeEngine)"]
+        K1["Entity: 'Wald'\nvalue: 80\ndecay: 2.0\n(verliert pro Zeiteinheit 2 Punkte)"]
+        K2["Entity: 'Boden'\nvalue: 60\nthresholds: [\n  { at: 20, effect: 'Erosion' }\n]"]
+    end
+
+    subgraph KANTE["Kanten-Impuls-Mechanik"]
+        E1["Relationship: 'verschmutzt'\nsource → Boden\ninterval: 5\noperation: subtract\nvalue: 8"]
+        E2["Beziehung sendet alle 5 Zeitschritte\neinen Impuls an den Zielknoten:\nBoden.value -= 8"]
+    end
+
+    subgraph LOOP["Simulations-Loop"]
+        T1["Time-Tick +1"]
+        T2["Alle Knoten:\nvalue = value - decay"]
+        T3["Alle Kanten pruefen:\nTickCount mod interval == 0?"]
+        T4["Ja → operation auf\nZielknoten anwenden"]
+        T5["Alle Knoten pruefen:\nvalue < threshold.at?"]
+        T6["Ja → Effekt ausloesen\nFarb-Flip / Fade-Out / Label-Aenderung"]
+        T7["Visuelles Update:\nGPU-Buffer neu schreiben"]
+
+        T1 --> T2 --> T3 --> T4 --> T5 --> T6 --> T7 --> T1
+    end
+
+    subgraph UI["Time Slider UI"]
+        U1["Play / Pause"]
+        U2["Rewind"]
+        U3["Time-Warp Regler\nGeschwindigkeit x1 x10 x100"]
+        U4["Szene zeigt\nZustand zum Zeitpunkt T"]
+    end
+
+    KNOTEN --> LOOP
+    KANTE --> LOOP
+    LOOP --> UI
+
+    style KNOTEN fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style KANTE fill:#3a2a1a,stroke:#fb8c00,color:#ffe0b2
+    style LOOP fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7
+    style UI fill:#1a3a3a,stroke:#00897b,color:#b2dfdb

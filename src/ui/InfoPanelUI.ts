@@ -130,8 +130,30 @@ export class InfoPanelUI {
             `;
 
             if (nodeData) {
+                if (nodeData.entity_type) {
+                    content += `<p><strong>Entitaets-Typ:</strong> <span style="color: var(--accent-color, #4ea8de); font-weight: bold;">${nodeData.entity_type}</span></p>`;
+                }
+                if (nodeData.description) {
+                    content += `
+                        <div style="margin: 8px 0; padding: 6px 10px; background: rgba(255,255,255,0.06); border-left: 3px solid #10b981; border-radius: 4px;">
+                            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.7; margin-bottom: 2px;">Beschreibung</div>
+                            <div style="font-size: 12px; line-height: 1.4;">${nodeData.description}</div>
+                        </div>
+                    `;
+                }
+                if (Array.isArray(nodeData.sources) && nodeData.sources.length > 0) {
+                    content += `
+                        <div style="margin: 6px 0;">
+                            <span style="font-size: 11px; opacity: 0.7;">Quellen-Chunks (${nodeData.sources.length}):</span>
+                            <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px;">
+                                ${nodeData.sources.map((s: string) => `<span style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px; font-size: 11px; font-family: monospace;">${s}</span>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
                 const customProps = Object.entries(nodeData).filter(([key]) => {
-                    return !['id', 'type', 'label', 'name', 'position'].includes(key);
+                    return !['id', 'type', 'label', 'name', 'position', 'entity_type', 'description', 'sources', 'belegzahl', 'herkunft', 'properties'].includes(key);
                 });
                 if (customProps.length > 0) {
                     content += `<hr style="border: 0; border-top: 1px dashed rgba(255,255,255,0.15); margin: 8px 0;">`;
@@ -147,21 +169,53 @@ export class InfoPanelUI {
             const edgeData = object.userData.edge;
             const sourceInfo = edgeData ? (edgeData.source || edgeData.start) : 'Unknown';
             const targetInfo = edgeData ? (edgeData.target || edgeData.end) : 'Unknown';
+            const relText = edgeData?.relation || edgeData?.label || name || 'Unbenannt';
 
             content = `
-                <p><strong>Typ:</strong> Edge</p>
-                <p><strong>Name:</strong> ${name || edgeData?.label || 'Unbenannt'}</p>
-                <p><strong>Verbindung:</strong> ${sourceInfo} ↔ ${targetInfo}</p>
-                <p><strong>Index:</strong> ${index !== undefined ? index : 'Unbekannt'}</p>
+                <p><strong>Typ:</strong> Kante (Edge)</p>
+                <p><strong>Relation:</strong> <span style="color: var(--accent-color, #4ea8de); font-weight: bold;">${relText}</span></p>
+                <p><strong>Verbindung:</strong> ${sourceInfo} &rarr; ${targetInfo}</p>
+                ${edgeData?.weight !== undefined && edgeData?.weight !== null ? `<p><strong>Gewicht:</strong> ${edgeData.weight}</p>` : ''}
+                ${edgeData?.belegzahl ? `<p><strong>Belegzahl:</strong> ${edgeData.belegzahl}</p>` : ''}
+                ${index !== undefined ? `<p style="opacity: 0.6; font-size: 11px;">Index: ${index}</p>` : ''}
             `;
+
+            // Build 14: Evidenz / Textbeleg
+            const evidence = edgeData?.evidence || edgeData?.description;
+            if (evidence) {
+                content += `
+                    <div style="margin: 10px 0; padding: 8px 10px; background: rgba(255,255,255,0.06); border-left: 3px solid var(--accent-color, #4ea8de); border-radius: 4px;">
+                        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.7; margin-bottom: 4px;">Evidenz / Textbeleg</div>
+                        <div style="font-size: 12px; line-height: 1.4; font-style: italic;">"${evidence}"</div>
+                    </div>
+                `;
+            }
+
+            // Build 14: Quellen-Chunks
+            if (Array.isArray(edgeData?.sources) && edgeData.sources.length > 0) {
+                content += `
+                    <div style="margin: 8px 0;">
+                        <span style="font-size: 11px; opacity: 0.7;">Quellen-Chunks (${edgeData.sources.length}):</span>
+                        <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px;">
+                            ${edgeData.sources.map((s: string) => `<span style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px; font-size: 11px; font-family: monospace;">${s}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Build 14: Keywords
+            if (edgeData?.keywords_all || (Array.isArray(edgeData?.keywords) && edgeData.keywords.length > 0)) {
+                const kwText = edgeData.keywords_all || edgeData.keywords.join(', ');
+                content += `<p style="font-size: 12px; margin-top: 6px;"><strong>Keywords:</strong> <span style="opacity: 0.85;">${kwText}</span></p>`;
+            }
 
             if (edgeData) {
                 const customProps = Object.entries(edgeData).filter(([key]) => {
-                    return !['id', 'type', 'label', 'name', 'source', 'target', 'start', 'end', 'offset'].includes(key);
+                    return !['id', 'type', 'label', 'name', 'source', 'target', 'start', 'end', 'offset', 'relation', 'weight', 'evidence', 'evidence_all', 'evidence_parts', 'description', 'sources', 'source_id', 'keywords', 'keywords_all', 'keyword_raw', 'belegzahl', 'paarung', 'typisiert', 'herkunft', 'file_path', 'properties'].includes(key);
                 });
                 if (customProps.length > 0) {
                     content += `<hr style="border: 0; border-top: 1px dashed rgba(255,255,255,0.15); margin: 8px 0;">`;
-                    content += `<p style="font-weight: bold; color: var(--accent-color); margin-bottom: 4px;">Daten-Attribute:</p>`;
+                    content += `<p style="font-weight: bold; color: var(--accent-color); margin-bottom: 4px;">Weitere Attribute:</p>`;
                     customProps.forEach(([key, val]) => {
                         const displayVal = typeof val === 'object' ? JSON.stringify(val) : val;
                         content += `<p><strong>${key}:</strong> ${displayVal}</p>`;

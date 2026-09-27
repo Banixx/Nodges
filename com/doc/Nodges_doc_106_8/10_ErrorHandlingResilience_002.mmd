@@ -1,0 +1,36 @@
+stateDiagram-v2
+    [*] --> Laufend: App aktiv
+
+    Laufend --> APICall: LLM-Anfrage gestartet
+
+    APICall --> Erfolg: HTTP 200\nJSON valide
+
+    APICall --> Fehler429: HTTP 429\nRatelimit erreicht
+    APICall --> FehlerNetz: Netzwerk-Timeout\nkein Ergebnis
+    APICall --> FehlerZod: JSON erhalten\nZod-Validierung fehlgeschlagen
+
+    Fehler429 --> WarnungToast: Toast orange\n"Ratelimit erreicht\nbitte lokales Modell nutzen"
+    FehlerNetz --> ErrorToast: Toast rot\nRetry-Logik (3x)
+    FehlerZod --> ErrorToast: Toast rot\nSchema-Fehler anzeigen
+
+    state Fehler429 {
+        F1: Warnung sichtbar
+        F1 --> F2: Nutzer wechselt\nzu Ollama lokal
+    }
+
+    WarnungToast --> Laufend: alte Szene bleibt\nerhalten
+    ErrorToast --> Laufend: clearScene\nNICHT aufgerufen\nTransaktionssicherheit
+
+    Erfolg --> Transaktion: loadGraphData\nall-or-nothing
+
+    state Transaktion {
+        T1: Zod parse
+        T2: GraphDataManager update
+        T3: SceneManager clearScene
+        T4: Scene rebuild
+        T1 --> T2 --> T3 --> T4
+    }
+
+    Transaktion --> Laufend: neue Szene aktiv
+
+    note right of ErrorToast: White-Screen-Verbot:\nFehler darf niemals\nRender-Loop zum Absturz bringen

@@ -10,6 +10,7 @@ Dieses Dokument dient als zentrale, verbindliche Referenz fuer alle beteiligten 
 |-|-|-|-|-|
 |**conT**|Antigravity (Windows 11)|`W:/` (gemappt auf WSL2)|Architektur, Frontend/Three.js, UI, Dokumentation|\[aktiv]|
 |**piCon**|Pi-Agent im Docker-Container `pi-harness`|`/workspace`|Container-Dienste, Vite, LightRAG, Linux-Skripte, Backup|\[aktiv]|
+|**dopi**|Docker- & Host-Orchestrator|`C:/Users/ich/Desktop/code/_projects/Nodges_Pi`|Host- & Docker-Setup, Compose, Startskripte, Container-Infrastruktur|\[Bedarf] (redet nur bei Setup mit, kein fester Turnus, expliziter Aufruf)|
 |<b>~~winAnt~~</b>|~~Antigravity (Windows Host)~~|~~`C:/Users/ich/Desktop/code/\_projects/Nodges`~~|~~Urspruenglicher Windows-NTFS-Workspace~~|**\[abgekoppelt]** (ersetzt durch conT)|
 
 \---
@@ -50,7 +51,7 @@ Es gibt **nur einen einzigen physischen Arbeitsort** fuer dieses Projekt:
 
 ### Verbindlicher Git-Workflow (gueltig seit Version 0.106.5)
 
-Die Ablaeufe liegen **ausfuehrbar** im Repo: `tools/nodges-git.sh`. conT und piCon rufen dasselbe Skript auf
+Die Ablaeufe liegen **ausfuehrbar** im Repo: `tools/nodges-git.sh` (mit Hilfsskript `tools/nodges-git-version.mjs` fuer die Versionsverwaltung). conT und piCon rufen dasselbe Skript auf
 und interpretieren nichts selbst. Damit ist Drift zwischen den beiden Seiten ausgeschlossen. Die Skills
 (siehe unten) sind nur duenne Verweise darauf.
 
@@ -141,10 +142,16 @@ Alle Harnesses lesen ihre Arbeitsgrundlage aus dem Ordner [**W:/com/**](file:///
 2. [W:/com/todo.md](file:///W:/com/todo.md) — was gerade offen ist.
 3. [W:/com/plan/](file:///W:/com/plan/) — laufende Vorhaben (nur Dateinamen reichen zum Ueberblick).
 4. [W:/com/entscheidungen.md](file:///W:/com/entscheidungen.md) — Beschluesse des Benutzers, bindend.
-5. [W:/com/ideen.md](file:///W:/com/ideen.md) — ungepruefte Einfaelle.
-6. Erst bei Detailfragen: `com/bericht.md` (Historie) bzw. `com/setup.md` (Technik).
+5. [W:/com/offene-fragen.md](file:///W:/com/offene-fragen.md) — offene Fragen an den Benutzer (Orientierung bei "fragen"-Abfragen).
+6. [W:/com/ideen.md](file:///W:/com/ideen.md) — ungepruefte Einfaelle.
+7. Erst bei Detailfragen: `com/bericht.md` (Historie) bzw. `com/setup.md` (Technik).
 
 Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/com/00_start_hier.md).
+
+**Verbindliche Dokumenten-Rangfolge bei inhaltlichen Konflikten:**
+1. [W:/com/entscheidungen.md](file:///W:/com/entscheidungen.md) (Rang 1: Beschluesse des Benutzers, bindend)
+2. [W:/com/plan/](file:///W:/com/plan/) (Rang 2: Verbindliche Fachvertraege und DTOs des laufenden Vorhabens)
+3. [W:/com/todo.md](file:///W:/com/todo.md) (Rang 3: Offene Aufgaben und Empfehlungen; darf Rang 1 und 2 niemals ueberstimmen)
 
 **Inhalte von `com/` (alle versioniert, nichts in `.gitignore`):**
 
@@ -153,8 +160,9 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
 |`00\_start\_hier.md`|Einstieg und Lesereihenfolge|
 |`todo.md`|offene Punkte, kurz|
 |`plan/`|laufende Vorhaben, ein File je Vorhaben|
-|`ideen.md`|Ideensammlung, ungeprueft|
 |`entscheidungen.md`|Beschluesse des Benutzers (bindend)|
+|`offene-fragen.md`|offene Fragen fuer den Benutzer (Orientierung bei "fragen")|
+|`ideen.md`|Ideensammlung, ungeprueft|
 |`bericht.md`|Gesamtbericht und Dialogprotokoll (Historie)|
 |`setup.md`|technische Kurzanleitung Setup/Git|
 |`doc/`|Archiv aller bisherigen Berichte (273 Dateien)|
@@ -183,7 +191,22 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
 
 \---
 
-## 6\. Arbeitsregeln fuer Agenten (conT und piCon)
+## 6\. Arbeitsregeln fuer Agenten (conT, piCon und dopi)
+
+### Domaenenzustaendigkeiten (Zustaendigkeit mit Ansagepflicht)
+
+| Bereich | Primaere Zustaendigkeit | Pfade |
+|---|---|---|
+| Frontend, 3D-Canvas & E2E-Tests | **conT** (Host / Windows 11) | `src/`, `e2e/`, `playwright.config.ts` |
+| Backend, Python-Venv & Container-Tools | **piCon** (Docker-Container / Linux) | `lightrag-backend/`, `tools/*.sh`, `tools/*.mjs`, `tools/watch_com.mjs` |
+| Host-Docker & Container-Infrastruktur | **dopi** (Host / Bedarfs-Harness) | `C:/Users/ich/Desktop/code/_projects/Nodges_Pi` (`docker-compose.yml`, `Dockerfile`, `.devcontainer/`, `start_pi_container.cmd`) |
+| Gemeinsame Dateien | **conT & piCon** (nur mit vorheriger Ansage/Ping) | `package.json`, `AGENTS.md`, `com/`, `tools/nodges-git.sh`, `git-hooks/` |
+
+*Regeln:*
+* Wer ausnahmsweise in der Domaene des anderen arbeiten muss, kuendigt dies vorher kurz per Notiz in `com/todo.md` oder via COM-Ping an.
+* **Sonderregel fuer dopi:** dopi hat grundsaetzlich nur mitzureden, wenn es um das Setup (Host-Docker, Compose, Startskripte, Infrastruktur) geht – und auch dann nicht immer. Es gibt keinen fixen Turnus fuer dopi. Dopi wird nur bei explizitem Bedarf von conT oder piCon aufgerufen.
+
+---
 
 1. **Pfad-Perspektive beachten:**
 
@@ -200,6 +223,7 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
    * Wenn eine Nutzeranfrage ein Fragezeichen ("?") enthaelt, handelt es sich um eine Frage.
    * Fragen sind **direkt im ersten Satz** zu beantworten (sofern passend mit `Ja` oder `Nein` am Satzanfang).
    * Bei reinen Fragen werden **keine Code-Aenderungen** ausgefuehrt.
+   * *Ausnahme:* Rueckfragen innerhalb eines initiierten Multi-Harness-Rapports (z.B. in `com/plan/` oder `com/test/`) sind Arbeitsaufgaben zwischen den Agenten und unterliegen nicht der Code-Aenderungssperre.
 4. **Planungs- und Dokumentationsmodus:**
 
    * Plaene, Analysen und Berichte sind selbststaendig als Markdown-Dateien im Ordner [W:/com/doc/](file:///W:/com/doc/) mit dem Versionspraefix zu speichern.
@@ -209,6 +233,15 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
 
    * Vor Aenderungen muessen relevante Dateien, die Projektstruktur, `git status` und vorhandene Tests geprueft werden.
    * Vor groesseren Eingriffen oder Loeschungen ist die Rueckfrage an den Benutzer erforderlich. Keine stillen Ueberschreibungen fremder Arbeit.
+6. **Benutzerprofil und Interaktionsregeln (Single Source of Truth):**
+
+   * **Benutzer:** `Banixx` (GitHub), Windows-Benutzer `ich`.
+   * **Erfahrung:** Amateurprogrammierer.
+   * **Erklaerungs-Trigger ("ç"):** Wenn der Benutzer im Prompt das Zeichen **"ç"** (mit Cedille) verwendet, werden Fachbegriffe grosszuegig in Klammern mit deutschsprachigen Synonymen oder in maximal zwei Saetzen erklaert. Fehlt das Zeichen, bleibt die Kommunikation technisch praezise, direkt und kompakt.
+   * **Farbvorlieben:** Violette und rosafarbene Schrift fuer Terminal- und UI-Gestaltung (gilt nicht fuer Markdown- oder Code-Repo-Inhalte).
+   * **Wahrheitsgebot:** Nichts ungeprueft behaupten — fremde Angaben am realen Code und Dateistand verifizieren.
+   * **Zurueckhaltung:** Vor groesseren Refactorings, strukturellen Umbauten oder Loeschungen immer zuerst den Benutzer fragen.
+   * **Fragen-Trigger ("fragen"):** Wenn der Benutzer in einer Session nach "fragen" fragt (z.B. "Welche Fragen sind offen?", "gibt es offene fragen?", "fragen"), orientiert sich das LLM verbindlich an [W:/com/offene-fragen.md](file:///W:/com/offene-fragen.md) und praesentiert die offenen Entscheidungsvorlagen strukturiert und kompakt.
 
 \---
 
@@ -230,7 +263,7 @@ andere dort etwas abgelegt hat, laeuft auf jeder Seite ein Waechter (Dateibeobac
 3. Die Erweiterung `/home/.pi/agent/extensions/nodges-com.ts` schaut bei **jedem Prompt** (Ereignis
 `before\_agent\_start`) in diese Liste und stellt alles Neue als `COM\_UPDATE`-Nachricht in den Chat.
 piCon muss also nicht nachfragen — die Meldung erscheint von selbst.
-4. Der Zaehlerstand `com/.bus/piCon.seen` merkt, was schon gemeldet wurde.
+4. Der Zaehlerstand `tools/com-bus/piCon.seen` merkt, was schon gemeldet wurde.
 
 **Gezielter Weckruf (Ping):** `bash tools/nodges-com.sh ping conT "Bitte Datei X lesen"` legt
 `tools/com-bus/ping-conT.md` ab. Der Waechter meldet ihn einmal und nimmt die Datei dann weg. Pings landen im Chat des Empfaengers als eigener, vorrangiger Block.

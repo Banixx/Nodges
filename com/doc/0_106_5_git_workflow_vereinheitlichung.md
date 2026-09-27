@@ -169,7 +169,7 @@ Vorschlag: neuer Ordner `git-hooks/` im Repo (versioniert), aktivierung mit `git
 | Datei | Zweck |
 |---|---|
 | `tools/nodges-git.sh` | das einzige verbindliche Ritual: `status`, `save`, `release`, `hooks` |
-| `tools/nodges-version.mjs` | schreibt die Version exakt an die drei vorgesehenen Stellen (`package.json` einmal, `package-lock.json` zweimal) |
+| `tools/nodges-git-version.mjs` | schreibt die Version exakt an die drei vorgesehenen Stellen (`package.json` einmal, `package-lock.json` zweimal) |
 | `git-hooks/pre-commit` | Branch muss `main`; blockiert Geheimnisse (`.env`, Schluessel, Zertifikate); Hinweis bei fehlendem Versionsbump |
 | `git-hooks/pre-push` | **blockiert jeden Push einer Patch-Version**; Ausnahme `NODGES_ALLOW_PUSH=1` |
 | `git-hooks/post-commit` | Kurzmeldung mit Version, Commit und Abstand zu GitHub |

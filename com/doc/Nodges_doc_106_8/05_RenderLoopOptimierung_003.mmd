@@ -1,0 +1,19 @@
+stateDiagram-v2
+    [*] --> Aktiv: requestAnimationFrame gestartet
+
+    Aktiv --> Rendering: Kamera bewegt sich\noder Physik lauft noch
+
+    Rendering --> FrameCheck: animate() aufgerufen
+    FrameCheck --> FrustumCull: Bounding-Sphere pruefung
+    FrustumCull --> DrawCall: Objekte im Sichtfeld
+    FrustumCull --> Skip: Objekte ausserhalb\ndes Sichtfelds
+
+    DrawCall --> GCVermeidung: keine new-Aufrufe im Loop\nstatische Hilfsvariablen recyceln\nz.B. _tempVector = new THREE.Vector3()
+    GCVermeidung --> Rendering: Frame fertig < 16ms\n→ 60 FPS
+
+    Aktiv --> OnDemand: Kamera still\nPhysik zur Ruhe gekommen
+
+    OnDemand --> Pause: GPU-Loop gestoppt\nBatterie schonen
+    Pause --> Aktiv: Nutzer-Interaktion\noder neue Daten
+
+    note right of GCVermeidung: Goldene Regel:\nNIE 'new' im Render-Loop\num GC-Ruckler zu vermeiden

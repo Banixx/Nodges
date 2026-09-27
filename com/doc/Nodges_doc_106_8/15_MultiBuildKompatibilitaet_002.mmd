@@ -1,0 +1,37 @@
+sequenceDiagram
+    actor User
+    participant App
+    participant DP as DataParser
+    participant ZU as Zod Union Schema
+    participant BFU as BuildFormatUtils
+    participant SM as SceneManager
+
+    User->>App: JSON-Datei laden\n(Build 2 oder Build 10 egal)
+
+    App->>DP: detectSchemaVersion(json)
+
+    note over DP: Strategie 1: schemaVersion-Feld lesen\nStrategie 2: Knotenstruktur heuristisch analysieren\nz.B. stateVector vorhanden? → alter Build\nflache properties? → Build 5+
+
+    DP-->>App: version: 'build_2' oder 'schema_5.0'
+
+    App->>ZU: z.union([\n  Build2Schema,\n  Build5Schema,\n  Build10Schema\n]).parse(json)
+
+    note over ZU: Zod probiert jedes Schema\nder Reihe nach\nerste erfolgreiche Validierung\ngewinnt\nkein Schema wird forciert
+
+    alt Build 2 Schema matched
+        ZU-->>App: typed Build2Data
+        App->>BFU: normalize(build2Data)
+        note over BFU: BuildFormatUtils übersetzt\nLegacy-Felder auf moderne\nDatenstruktur\nz.B. node.stateVector.value\n→ node.properties.value
+    else Schema 5.0 matched
+        ZU-->>App: typed GraphData
+        App->>BFU: normalize(graphData)
+        note over BFU: Modernes Format\nfast kein Umbau noetig
+    else kein Schema matched
+        ZU-->>App: ZodError
+        App-->>User: Toast rot:\n'Unbekanntes Schema-Format'
+    end
+
+    BFU-->>App: normalisiertes GraphData-Objekt\n(immer identische Struktur\nunabhaengig vom Build)
+
+    App->>SM: buildScene(normalizedData)
+    note over SM: SceneManager weiss NICHT\nwelchen Build er zeichnet\ner sieht nur normalisierte Daten

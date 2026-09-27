@@ -1,0 +1,23 @@
+gantt
+    title Evolution der Nodges Datenpipelines
+    dateFormat YYYY
+    axisFormat %Y
+
+    section Findungsphase
+    Build 1-4 (Gekoppelte Architektur)   :done, b14, 2023, 2024
+
+    section Architektur-Pivot
+    Build 5 (Entkopplung + Ontologie-Architekt)  :milestone, b5, 2024-01, 0d
+    Build 5 (global_node, Visual Mapping)         :done, b5d, 2024-01, 2024-03
+
+    section Qualitaetssicherung
+    Build 6 (Zod + JSON Schema Mode)              :done, b6, 2024-03, 2024-05
+
+    section Grounding
+    Build 8 (Wikidata Live + SPARQL)              :done, b8, 2024-05, 2024-08
+
+    section Semantik
+    Build 9 (Embeddings + Vektor-Deduplizierung)  :done, b9, 2024-08, 2024-10
+
+    section Modularisierung
+    Build 10 (Konfigurierbare Pipeline)           :active, b10, 2024-10, 2025-01

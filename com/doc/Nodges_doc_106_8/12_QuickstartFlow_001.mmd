@@ -1,0 +1,56 @@
+graph TD
+    START([Nodges oeffnen]) --> SETUP
+
+    subgraph SETUP["Schritt 1: Provider konfigurieren"]
+        S1["Zahnrad-Symbol klicken"]
+        S2{"Cloud oder Lokal?"}
+        S3["Cloud: API-Key eintragen\nOpenRouter / OpenAI / Anthropic\nKey bleibt im localStorage"]
+        S4["Lokal: Ollama oder LM Studio\nkein API-Key noetig\nlocalhost:11434 muss laufen"]
+        S1 --> S2
+        S2 -->|Cloud| S3
+        S2 -->|Lokal| S4
+    end
+
+    SETUP --> GEN
+
+    subgraph GEN["Schritt 2: Ersten Graphen generieren"]
+        G1["Create Panel oeffnen"]
+        G2["Pipeline: Build 10 waehlen"]
+        G3["Grounding: Keines\nQA: Generator + Kritiker"]
+        G4["Prompt eingeben\nz.B. Oekosystem europaeischer Wald"]
+        G5["Generieren klicken\nToasts zeigen Phasen\nOntologie → Instanzen"]
+        G1 --> G2 --> G3 --> G4 --> G5
+    end
+
+    GEN --> NAV
+
+    subgraph NAV["Schritt 3: Navigation im 3D-Raum"]
+        N1["Linke Maustaste + Ziehen\n→ Orbit / Rotieren"]
+        N2["Mausrad\n→ Zoomen"]
+        N3["Rechte Maustaste + Ziehen\n→ Pannen"]
+        N4["Knoten anklicken\n→ Info-Panel + Rohdaten"]
+    end
+
+    NAV --> MAP
+
+    subgraph MAP["Schritt 4: Visual Mapping"]
+        M1["Mapping Panel oeffnen"]
+        M2["Scale Dropdown\n→ numerischen Wert waehlen\nz.B. influence"]
+        M3["Color Dropdown\n→ kategoriale Eigenschaft\nz.B. species oder habitat"]
+        M4["Position Dropdown + Achse\nz.B. Y = Lebensdauer\nPhysik auf Y-Achse sperrt"]
+    end
+
+    MAP --> IMPORT
+
+    subgraph IMPORT["Schritt 5: Eigene JSON-Datei"]
+        I1["JSON per Drag and Drop\nins Browserfenster ziehen"]
+        I2["Automatische Zod-Validierung\nSchema 5.0 erwartet"]
+        I3["Sofort gerendert"]
+        I1 --> I2 --> I3
+    end
+
+    style SETUP fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style GEN fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style NAV fill:#2a1a3a,stroke:#9c27b0,color:#e1bee7
+    style MAP fill:#2a2a1a,stroke:#f9a825,color:#fff9c4
+    style IMPORT fill:#1a3a3a,stroke:#00897b,color:#b2dfdb

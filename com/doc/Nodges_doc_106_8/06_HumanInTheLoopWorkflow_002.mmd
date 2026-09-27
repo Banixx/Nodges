@@ -1,0 +1,31 @@
+stateDiagram-v2
+    [*] --> Generierung: Nutzer klickt Generieren\nQA = Human-in-the-loop
+
+    Generierung --> LLMWaiting: LLM-Anfrage lauft\nSpinner-Overlay sichtbar
+
+    LLMWaiting --> ModalOffen: LLM-Response erhalten\nZod-Validierung bestanden\nclearScene noch NICHT aufgerufen
+
+    state ModalOffen {
+        [*] --> ReviewListe
+        ReviewListe --> EntitaetenTabelle: Entitaeten anzeigen
+        ReviewListe --> RelationenTabelle: Relationen anzeigen
+
+        EntitaetenTabelle --> EditEntity: Nutzer editiert Zeile
+        EntitaetenTabelle --> DeleteEntity: Nutzer loescht Zeile
+        RelationenTabelle --> EditRel: Nutzer editiert Zeile
+        RelationenTabelle --> DeleteRel: Nutzer loescht Zeile
+
+        EditEntity --> EntitaetenTabelle: gespeichert
+        DeleteEntity --> EntitaetenTabelle: entfernt
+        EditRel --> RelationenTabelle: gespeichert
+        DeleteRel --> RelationenTabelle: entfernt
+    }
+
+    ModalOffen --> Abgebrochen: Nutzer klickt Abbrechen
+    ModalOffen --> Visualisieren: Nutzer klickt Visualisieren
+
+    Visualisieren --> GraphDataManager: State wird freigegeben\nfinal validiertes JSON
+    GraphDataManager --> SceneRebuild: clearScene + buildScene
+    SceneRebuild --> [*]: 3D-Szene mit\ngeprueften Daten gerendert
+
+    Abgebrochen --> [*]: Szene unveraendert

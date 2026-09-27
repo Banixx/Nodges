@@ -1,6 +1,6 @@
 {
     "name": "nodges",
-    "version": "0.106.8",
+    "version": "0.106.9",
     "description": "3D Network Visualization with Three.js",
     "type": "module",
     "scripts": {
@@ -13,11 +13,14 @@
         "test": "vitest",
         "test:ui": "vitest --ui",
         "test:coverage": "vitest --coverage",
+        "test:backend": "cd lightrag-backend && ./venv/bin/pytest tests/",
         "export:schema": "vitest run src/tests/exportSchema.test.ts",
         "lightrag": "cd lightrag-backend && ./venv/bin/python main.py",
         "test:e2e": "playwright test",
         "test:e2e:ui": "playwright test --ui",
-        "test:e2e:headed": "playwright test --headed"
+        "test:e2e:headed": "playwright test --headed",
+        "test:fast": "tsc --noEmit && vitest run && npm run test:backend",
+        "test:all": "tsc --noEmit && vitest run && playwright test"
     },
     "dependencies": {
         "@tweenjs/tween.js": "^18.6.4",

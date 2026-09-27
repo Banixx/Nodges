@@ -6,10 +6,10 @@
 // Verschachtelte Versionsnummern von Abhaengigkeiten werden nie angefasst.
 //
 // Aufrufe:
-//   node tools/nodges-version.mjs show
-//   node tools/nodges-version.mjs bump patch
-//   node tools/nodges-version.mjs bump minor
-//   node tools/nodges-version.mjs check-release
+//   node tools/nodges-git-version.mjs show
+//   node tools/nodges-git-version.mjs bump patch
+//   node tools/nodges-git-version.mjs bump minor
+//   node tools/nodges-git-version.mjs check-release
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -112,7 +112,7 @@ if (befehl === 'show') {
   process.stdout.write(`release:${version}\n`);
 } else {
   process.stderr.write(
-    'Aufruf: node tools/nodges-version.mjs show | bump patch | bump minor | check-release\n',
+    'Aufruf: node tools/nodges-git-version.mjs show | bump patch | bump minor | check-release\n',
   );
   process.exit(1);
 }

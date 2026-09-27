@@ -72,6 +72,13 @@ export class GraphGenerationService {
                 reviewRequired: true,
                 relationSetAppliedBeforeGraphGeneration: true
             };
+        } else if (pipeline === 'build14_lightrag') {
+            buildParams.lightrag = { mode: 'hybrid', service: 'LightRAGService', build: 14 };
+            buildParams.evidenceGraph = {
+                expandedEdges: true,
+                provenanceTracking: true,
+                strictEvidence: true
+            };
         }
 
         graphData.metadata.buildParameters = buildParams;

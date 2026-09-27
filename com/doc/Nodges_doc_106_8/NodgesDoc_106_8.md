@@ -1,0 +1,1528 @@
+﻿# 00 Inhaltsverzeichnis und Gesamtueberblick der Nodges-Dokumentation (Version 0.106.8)
+
+Dieses Dokument bildet den zentralen Einstiegspunkt und das strukturierte Inhaltsverzeichnis der technischen und konzeptionellen Gesamtdokumentation des Projekts **Nodges** (3D/4D Network Visualization with Three.js). Die Dokumentation spiegelt den vollstaendigen Architektur-, Code- und Betriebsstand der Version **0.106.8** wider.
+
+Alle Kapitel wurden gegenueber der frueheren Dokumentationsreihe (Stand 0.102.10 und V4/0.103.1) grundlegend ueberarbeitet, um wesentliche Meilensteine wie das Multi-Harness-Paradigma (conT und piCon), die Vereinheitlichung auf den primaeren Git-Branch `main`, den standardisierten Git-Workflow (`tools/nodges-git.sh`), das Biome-Tooling, Playwright-E2E-Tests, den COM-Bus sowie die vollintegrierte LightRAG-Backend-Pipeline abzubilden.
+
+---
+
+## 1. Projektsteckbrief
+
+| Attribut | Wert / Festlegung |
+|---|---|
+| **Projektname** | Nodges |
+| **Beschreibung** | Webbasierte interaktive 3D-/4D-Visualisierung komplexer Systeme, Wissensgraphen und ontologischer Netzwerke (*explore, filter, explain*) |
+| **Aktuelle Version** | `0.106.8` (gemaess [W:/package.json](file:///W:/package.json)) |
+| **Single Source of Truth (SSoT)** | `/home/unixusername/nodges` (WSL2 ext4, physischer lokaler Arbeitsort) |
+| **Harness conT** | Antigravity auf Windows 11 ueber Netzlaufwerk [W:/](file:///W:/) (Architektur, Three.js, UI, Dokumentation) |
+| **Harness piCon** | Pi-Agent im Docker-Container `pi-harness` ueber `/workspace` (Dienste, Vite, LightRAG, Linux-Skripte) |
+| **Historischer Harness winAnt** | Vollstaendig abgekoppelt und stillgelegt (keine getrennten Windows-Host-Checkouts mehr) |
+| **Git Remote & Branch** | `git@github.com:Banixx/Nodges.git` / alleiniger Arbeitsbranch ist **`main`** (Branch `pi` vollstaendig geloescht) |
+| **Git-Workflow** | Versioniert ueber `tools/nodges-git.sh` (`status`, `save`, `release`, `hooks`) mit Versionstags als Meilenstein-Archiv |
+| **Inter-Harness-Bus** | COM-Bus via `tools/watch_com.mjs` (Linux) und `W:/tools/watch_com.ps1` (Windows), Ereignisprotokoll in `tools/com-bus/events.log` |
+| **Frontend Core & Language** | TypeScript 5.3.3, Vite 5.1.4, reines CSS (Glassmorphism, kein Tailwind) |
+| **3D-Engine & UI** | Three.js 0.161.0 (InstancedMesh, Custom Shader, Minimap), lil-gui 0.19.1 |
+| **Validierung & Schemas** | Zod 3.22.4, zod-to-json-schema (Graph-Schema 3.0 bis 5.2, Fallback 5.0) |
+| **Qualitaetssicherung & Tests** | Vitest 1.6.1 (Unit-Tests), Playwright 1.58.2 (E2E-Tests), Biome 1.9.4 (Linter und Formatter) |
+| **Backend & KI-Dienste** | LightRAG Backend (FastAPI auf Port 8000, Vite Proxy auf Port 5173 `/lightrag-api`, OpenRouter Embedding `qwen/qwen3-embedding-8b` mit Dimension 4096) |
+
+---
+
+## 2. Strukturierte Kapiteluebersicht
+
+Die Gesamtdokumentation ist modular in sechzehn in sich geschlossene, thematisch aufsteigende Kapitel gegliedert. Jedes Kapitel ist als eigene Markdown-Datei im Ordner [W:/com/doc/Nodges_doc_106_8/](file:///W:/com/doc/Nodges_doc_106_8/) abgelegt und referenziert zugehoerige Mermaid-Architekturdiagramme (`.mmd`).
+
+| Nr. | Dateiname | Titel und Kernschwerpunkte |
+|---|---|---|
+| **00** | [0_106_8_00_inhalt.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_00_inhalt.md) | **Inhaltsverzeichnis und Gesamtueberblick:** Projektsteckbrief, Architekturkonventionen, Lesepfade und Datenstand. |
+| **01** | [0_106_8_01_Philosophie_und_Kognition.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_01_Philosophie_und_Kognition.md) | **Philosophie, Kognition und Visuelle Kommunikation:** Spatial Literacy, Cognitive Offloading, die 7 Dimensionen der Kommunikation und Neurodiversitaet. |
+| **02** | [0_106_8_02_Systemarchitektur.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_02_Systemarchitektur.md) | **Vision und Systemarchitektur:** Drei-Saeulen-Architektur (Ontologie, flache Daten, Visual Mapping), Multi-Harness-Modell und ServiceContainer. |
+| **03** | [0_106_8_03_Datenpipelines_und_LLM.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_03_Datenpipelines_und_LLM.md) | **LLM-Integration und Datenpipelines:** Zweistufiger Prompt-Workflow, LLMService-Architektur, BYOK-Prinzip und Ausfallsicherheit. |
+| **04** | [0_106_8_04_Datenmodell_und_Validierung.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_04_Datenmodell_und_Validierung.md) | **Datenmodell und Validierung:** JSON-Schema, flache Entitaeten/Relationen, Zod-Validierung, Schema-Evolution und Lebenszyklus von `loadGraphData`. |
+| **05** | [0_106_8_05_Visual_Mapping_und_Szenen_Management.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_05_Visual_Mapping_und_Szenen_Management.md) | **3D-Rendering und Szenen-Management:** Three.js Szenengraph, VisualMappingEngine, InstancedMesh-Dataflow und Render-Loop-Optimierung. |
+| **06** | [0_106_8_06_Benutzeroberflaeche_und_Interaktion.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_06_Benutzeroberflaeche_und_Interaktion.md) | **Benutzeroberflaeche, Interaktion und State Management:** lil-gui Steuerung, StateManager-Kategorien, Human-in-the-Loop-Workflows und Time-Player (4D). |
+| **07** | [0_106_8_07_Layout_Engine_und_Physik.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_07_Layout_Engine_und_Physik.md) | **Algorithmen, Layout Engine und Physik:** Force-Directed Layout im Web Worker, Physik-Mapping-Entflechtung und raeumliche Clusterbildung. |
+| **08** | [0_106_8_08_Visuelle_Effekte_und_Feedback.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_08_Visuelle_Effekte_und_Feedback.md) | **Visuelle Effekte und Feedback-Systeme:** Shader, Breathing Glow, Kantenpartikel-Flow, Minimap und visuelle Hierarchiekaskaden. |
+| **09** | [0_106_8_09_Interaktions_Design_und_Input_Processing.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_09_Interaktions_Design_und_Input_Processing.md) | **Interaktions-Design und Input-Processing:** CentralEventManager, Raycasting, Selektionsmodi (Box/Multi), Kamera-Fokus und Gesten. |
+| **10** | [0_106_8_10_Entwicklung_und_Deployment.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_10_Entwicklung_und_Deployment.md) | **Entwicklungs-Guide, Tooling und Deployment:** Docker-Container-Setup, Biome-Tooling, Vitest, Playwright, CI/CD-Pipelines und GitHub-Releases. |
+| **11** | [0_106_8_11_Historie_und_Entscheidungen.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_11_Historie_und_Entscheidungen.md) | **Historie und Architektur-Entscheidungen (ADRs):** Entwicklung von Build 1 bis Build 12, Abkopplung von winAnt, Etablierung des SSoT-Prinzips. |
+| **12** | [0_106_8_12_Quickstart_und_Tutorial.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_12_Quickstart_und_Tutorial.md) | **Quickstart und Tutorial:** Schritt-fuer-Schritt-Anleitung fuer Entwickler, Erstkonfiguration, Drag-and-Drop Datenimport und Visual Mapping. |
+| **13** | [0_106_8_13_Troubleshooting_und_FAQ.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_13_Troubleshooting_und_FAQ.md) | **Troubleshooting und FAQ:** Haeufige Probleme (WebGL Context Loss, VRAM-Management, CORS/Ollama, Container-Mount, Portkonflikte). |
+| **14** | [0_106_8_14_Ideen_und_Roadmap.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_14_Ideen_und_Roadmap.md) | **Ideen und Roadmap (Future Concepts):** Barnes-Hut-Optimierung, hierarchische Abstraktionslevel, VR/XR-Support und Time-Engine-Ausbau. |
+| **15** | [0_106_8_15_Interoperabilitaet_und_Export.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_15_Interoperabilitaet_und_Export.md) | **Interoperabilitaet, Export und Multi-Build Formate:** JSON-, CSV-, GraphML-Exporte, Schema-Rueckwaertskompatibilitaet und API-Endpunkte. |
+| **16** | [0_106_8_16_LightRAG_Backend_und_Multi_Harness.md](file:///W:/com/doc/Nodges_doc_106_8/0_106_8_16_LightRAG_Backend_und_Multi_Harness.md) | **LightRAG Backend und Multi-Harness-Kollaboration:** Python-FastAPI Backend, OpenRouter Embeddings, Vektorspeicher und COM-Bus-Mechanik. |
+
+---
+
+## 3. Empfohlene Lesepfade
+
+Je nach Aufgabengebiet und Rolle im Projekt empfiehlt sich ein gezielter Einstieg:
+
+```
+[Systemarchitektur & Einstieg]
+Kapitel 01 ──► Kapitel 02 ──► Kapitel 04 ──► Kapitel 12
+     │
+     ▼
+[3D-Engine & Rendering]
+Kapitel 05 ──► Kapitel 07 ──► Kapitel 08 ──► Kapitel 09
+     │
+     ▼
+[KI, Pipelines & Backend]
+Kapitel 03 ──► Kapitel 16
+     │
+     ▼
+[Entwicklung, Testing & Betrieb]
+Kapitel 10 ──► Kapitel 13 ──► Kapitel 11
+     │
+     ▼
+[Zukunft & Roadmap]
+Kapitel 14 ──► Kapitel 15
+```
+
+- **Neuer Entwickler / Gesamtueberblick:** Kapitel `01` (Philosophie) -> `02` (Systemarchitektur) -> `12` (Quickstart) -> `10` (Entwicklungs-Guide).
+- **Core-Engine & Grafikentwickler:** Kapitel `02` (Architektur) -> `04` (Datenmodell) -> `05` (3D-Rendering) -> `07` (Layout/Physik) -> `08` (Effekte) -> `09` (Input/Events).
+- **KI- & Backend-Spezialist:** Kapitel `03` (LLM-Pipelines) -> `16` (LightRAG-Backend) -> `04` (Datenmodell & Schemas).
+- **Maintenance, CI/CD und QA:** Kapitel `10` (Testing & Deployment) -> `13` (Troubleshooting) -> `11` (Historie/ADRs).
+
+---
+
+## 4. Kernarchitektur-Prinzipien (Stand 0.106.8)
+
+1. **Strikte Entkopplung von Ontologie, Daten und Visual Mapping (Build 5 Pivot):**
+   Rohdaten duerfen niemals fest an Geometrien oder Farben gebunden sein. Die VisualMappingEngine steuert die visuelle Uebersetzung zur Laufzeit unabhaengig vom Datensatz.
+2. **Flache Datenstrukturen (No Nested Entities):**
+   Verschachtelungen sind im Graphen verboten. Sub-Objekte werden ausnahmslos als eigenstaendige Entitaeten mit gerichteten Relationen modelliert.
+3. **Single Source of Truth (SSoT) auf WSL2 ext4:**
+   Alle Harnesses (conT auf `W:/` und piCon in `/workspace`) operieren physisch auf demselben ext4-Dateisystem. Zwischen ihnen existiert kein Git-Divergenz-Risiko.
+4. **Verbindlicher Git-Workflow (`tools/nodges-git.sh`):**
+   Alle Zwischenschritte werden ueber `bash tools/nodges-git.sh save` als lokale Patch-Versionen gesichert. Nur verifizierte Releases (Minor/Major) werden mit `release` nach GitHub gepusht.
+5. **Autonomer Ereignisaustausch ueber den COM-Bus:**
+   Aenderungen im Verzeichnis [W:/com/](file:///W:/com/) werden dateisystemseitig ueberwacht und automatisch im naechsten Prompt des jeweils anderen Agenten praesentiert.
+
+---
+
+## 5. Datenstand und Changelog-Kontext
+
+- **Dokumentationsversion:** `0.106.8` (abgelegt in [W:/com/doc/Nodges_doc_106_8/](file:///W:/com/doc/Nodges_doc_106_8/)).
+- **Basis-Repository:** Commit `ae6e44c` auf Branch `main`.
+- **Ersatz frueherer Staende:** Diese Serie aktualisiert und konsolidiert sowohl die fruehere Serie `0_102_10_` als auch die Serie `V4` (`0_103_1`).
+
+
+---------------------------------------------------------
+
+# 01 Philosophie, Kognition und Visuelle Kommunikation
+
+Dieses Kapitel bildet das konzeptionelle Fundament von Nodges. Es thematisiert nicht vordergruendig Code-Implementierungen oder APIs, sondern die Kernfrage: **Warum existiert Nodges?** Es buendelt die paedagogische Methodik, die kognitionspsychologischen Konzepte zur visuellen Kommunikation, die Ueberwindung zweidimensionaler Informationsgrenzen und die Wertschaetzung neurodiverser Denkweisen.
+
+---
+
+## 1. Die Kernvision: Spatial Analytics statt Flat Data
+
+> **Visualisierung:** Siehe [01_SpatialLiteracyFlow_003.mmd](01_SpatialLiteracyFlow_003.mmd)
+
+Klassische Informationsdarstellungen zwingen mehrdimensionale Zusammenhaenge in tabellarische Raster, lineare Dokumente oder aufeinanderfolgende zweidimensionale Diagramme. Dieses Paradigma fuehrt bei komplexen Wissensnetzwerken unweigerlich zu schneller kognitiver Ermuedung ("Flat Data Syndrome").
+
+**Der Loesungsansatz: Spatial Literacy.**  
+Die menschliche Kognition ist evolutionaer darauf spezialisiert, raeumliche Muster, Distanzen, Ausreisser, Dichten und Schwarmformationen im dreidimensionalen Raum in Bruchteilen einer Sekunde praeattentiv (vorbewusst) zu verarbeiten. Nodges uebersetzt abstrakte relationale Netzwerke in begehbare 3D- und 4D-Datenraeume:
+- **Entzerrung des Hairball-Problems:** Was in 2D als undurchdringliches Kantenknaeuel kollabiert, gewinnt durch die Z-Achse an Tiefe und Differenzierbarkeit.
+- **Aktive Raumwahrnehmung:** Der Betrachter blickt nicht passiv auf eine statische Flaeche, sondern navigiert explorativ durch das System (Zoom, Orbit, Pan, Fokus).
+
+---
+
+## 2. Executable Storytelling und der Bruch des Monologs
+
+Traditionelle Diagramme fungieren als statische Monologe des Autors. Nodges ersetzt diese Einweg-Kommunikation durch ein interaktives Lern- und Analysegeruest:
+
+- **Scaffolding (Kuriertes Lerngeruest):**  
+  Der Einstieg in einen unbekannten Graphen erfolgt ueber ein durchdachtes Start-Setup ("Cold Start Scaffolding"). Der Betrachter wird anhand von Basiseinstellungen (Farbschemata, vordefinierten Clustern und Startperspektiven) an die Hand genommen, um Orientierungslosigkeit vor grossen Datenmengen zu vermeiden.
+- **Inquiry-based Learning (Forschendes Lernen):**  
+  Der Benutzer bleibt kein passiver Empfaenger. Er kann die vorbereitete Praesentation jederzeit anhalten, Mappings veraendern, Attribute isolieren und Hypothesen im laufenden System testen ("Was-waere-wenn"-Szenarien). Aus Instruktion wird Konstruktion.
+
+---
+
+## 3. Cognitive Offloading (Kognitive Entlastung)
+
+Das menschliche Arbeitsgedaechtnis hat eng begrenzte Kapazitaeten. Nodges verlagert analytische Rechenarbeit aus dem Gehirn in das visuelle Wahrnehmungssystem:
+
+- **Semantisches Mapping:**  
+  Komplexe Kennzahlen (wie Systemlast, Relevanz, Finanzfluss oder Einfluss) werden unmittelbar in Wahrnehmungsdimensionen kodiert. Ein pulsierendes Leuchten (*Breathing Glow*) oder die physische Skalierung eines Knotens vermitteln Dringlichkeit ohne die Notwendigkeit, numerische Tabellen zu studieren.
+- **Signal-Rausch-Verhaeltnis via Ghosting:**  
+  Irrelevante oder herausgefilterte Knoten werden nicht zwingend geloescht, sondern ueber Transparenz-Mapping (*Opacity*) in den Hintergrund versetzt (*Ghosting*). Dadurch bleibt der globale Systemkontext erhalten, waehrend die untersuchte Signalstruktur plastisch hervortritt.
+
+---
+
+## 4. Die Diversitaet der Kognition: Textanalyzer vs. Visualizer
+
+Nodges passt sich flexibel unterschiedlichen Denk- und Wahrnehmungsstilen an. Menschen verarbeiten Information grundverschieden:
+
+### Textanalyzer (Logisch-strukturierte Kognition)
+Analytisch gepraegte Nutzer fokussieren sich auf strukturierte Taxonomien, exakte Metadaten, formale Labels und orthogonale Achsenfixierungen. Sie nutzen die Dateninspektion im Detail-Panel und strukturierte Filter.
+
+### Visualizer (Ganzheitlich-assoziative Kognition)
+Visuell und raeumlich denkende Menschen erfassen komplexe Zusammenhaenge primaer ueber Farbkodierungen, organische Cluster (Gestaltgesetze der Naehe durch Physiksimulation) sowie Kantenstaerken und Flussrichtungen.
+
+### Neurodiversitaet und individuelle innere Bilder
+Klassische Business-Tools setzen haeufig Textkompetenz und lineare Praesentationslogik voraus. Fuer neurodiverse Personen (unter anderem im Autismus-Spektrum, mit ADHS oder Legasthenie) stellt dies oft eine Barriere dar.  
+Nodges oeffnet das Verstaendnis fuer komplexe Zusammenhaenge durch freie raeumliche Navigation, intuitive Kausalitaetsketten und multidimensionale Metaphern.
+
+---
+
+## 5. Zielgruppen und Anwendungsszenarien
+
+Nodges dient als universelles Werkzeug fuer wissensintensive Domaenen:
+- **Mentale Entlastung und Gedankenstuetze:** Auslagerung eigener Gedankenmodelle in einen persistierbaren, begehbaren 3D-Graph.
+- **Kollaboration und Konsensfindung:** Schaffung einer gemeinsamen visuellen Bezugsbasis bei komplexen Architekturentscheidungen.
+- **Systemmodellierung und Ursachenanalyse:** Aufdecken verdeckter Abhaengigkeiten und Kaskadeneffekte in IT-Infrastrukturen oder Organisationen.
+- **KI-unterstuetzte Wissenserschliessung:** Exploratives Durchforsten von Graph-RAG-Datenbanken (LightRAG) mit direktem semantischem Feedback.
+
+---
+
+## 6. Die 7 Dimensionen der visuellen Kommunikation
+
+> **Visualisierung:** Siehe [01_SiebenDimensionenVisuell_001.mmd](01_SiebenDimensionenVisuell_001.mmd)
+
+Nodges unterstuetzt das gleichzeitige Kodieren von Informationen auf bis zu sieben sensorischen Kanaelen:
+
+| Dimension | Visueller Kanal | Kognitive Wahrnehmung | Optimale Eignung |
+|---|---|---|---|
+| **1. Raum** | Position (X, Y, Z) | Unmittelbar, praeattentiv | Raeumliche Naehe, Zeitstrahl, Topologie |
+| **2. Groesse** | Skalierung / Radius | Unmittelbar, praeattentiv | Quantitativ, kontinuierliche Metriken (Gewicht, Umsatz) |
+| **3. Farbe** | Farbton (Hue), Saettigung | Unmittelbar, praeattentiv | Kategoriale Klassen (Typ, Status) oder Spektren |
+| **4. Form** | Geometrie (Kugel, Wuerfel, etc.) | Bewusst, diskriminativ | Diskrete Entitaetstypen (Systemkomponenten) |
+| **5. Dynamik** | Flow-Animation, Partikel, Puls | Aufmerksamkeitsbindend | Aktivitaet, Kausalitaet, Datenflussrate |
+| **6. Transparenz**| Opacity (Alpha, Ghosting) | Fokussierend | Relevanz, Filterstatus, Verlaesslichkeit |
+| **7. Text** | 3D- und 2D-Labels | Analytisch, sequenziell | Eindeutige Bezeichner, Detailangaben |
+
+> [!IMPORTANT]
+> **Kognitive Belastungsregel (Cognitive Load Limit):**  
+> Um eine Ueberflutung des Wahrnehmungsapparates zu verhindern, sollten selten mehr als vier Dimensionen simultan fuer unterschiedliche Kennzahlen belegt werden. Eine bewaehrte Standardkombination lautet: Raum (Cluster) + Farbe (Kategorie) + Groesse (Bedeutung) + Dynamik (Aktivitaet).
+
+---
+
+## 7. Die Metaphern-Bibliothek
+
+> **Visualisierung:** Siehe [01_MetaphernBibliothek_002.mmd](01_MetaphernBibliothek_002.mmd)
+
+Um abstrakte Systemzusammenhaenge intuitiv zugaenglich zu machen, unterstuetzt Nodges verschiedene konzeptionelle Grundmetaphern:
+
+1. **Die Organismus-Metapher:**  
+   Geeignet fuer lebendige Oekosysteme und Softwarearchitekturen. Knoten fungieren als Organe (Groesse = Vitalitaet, Farbe = Gesundheitsstatus), Kanten als pulsierende Nervenbahnen mit Flussanimationen.
+2. **Die Stadt-Metapher:**  
+   Geeignet fuer Infrastruktur und Logistik. Knoten sind Gebaeude unterschiedlicher Hoehe auf der Y-Achse; Positionen folgen realen oder logischen Geodaten; Kanten repraesentieren Strassennetze mit kapazitaetsabhaengiger Breite.
+3. **Die Galaxie-Metapher:**  
+   Geeignet fuer Wissens- und Einflussnetzwerke. Zentrale Themen bilden gravitative Zentren mit leuchtendem Kern (*Glow*); Trabanten kreisen in thematischen Clustern; Kanten repraesentieren Gravitationskraefte.
+
+
+---------------------------------------------------------
+
+# 02 Vision und Systemarchitektur
+
+Dieses Kapitel beschreibt die technische Kernarchitektur, die Infrastrukturprinzipien und die Systemkomponenten von Nodges in der Version **0.106.8**. Es erlaeutert die strukturelle Trennung zwischen Daten und Visualisierung, die Multi-Harness-Betriebsumgebung und das Zusammenspiel der zentralen Manager-Klassen.
+
+---
+
+## 1. Die Drei-Saeulen-Architektur (Der Build 5 Pivot)
+
+> **Visualisierung:** Siehe [02_DreiSaeulenArchitektur_001.mmd](02_DreiSaeulenArchitektur_001.mmd) und [02_Build5PivotEntkopplung_003.mmd](02_Build5PivotEntkopplung_003.mmd)
+
+Ein fundamentaler Architekturmeilenstein von Nodges ist die strikte funktionale Entflechtung von Ontologie, Instanzdaten und visueller Praesentation:
+
+```
+┌────────────────────────────────────────────────────────┐
+│ 1. Ontologie (Metadaten & Taxonomie)                   │
+│    Definiert Typen, Kategorieregeln und Attribute      │
+└───────────────────────────┬────────────────────────────┘
+                            │ strukturiert
+┌───────────────────────────▼────────────────────────────┐
+│ 2. Flache Daten (Entities & Relationships)             │
+│    Reine Faktenebene ohne implizite Styling-Vorgaben   │
+└───────────────────────────┬────────────────────────────┘
+                            │ wird interpretiert durch
+┌───────────────────────────▼────────────────────────────┐
+│ 3. Visual Mapping Engine (Dynamische Repraesentation)  │
+│    Uebersetzt Daten live in Geometrie, Farbe & Glow    │
+└────────────────────────────────────────────────────────┘
+```
+
+### 1.1 Die Ontologie (Schema-Ebene)
+Definiert die Struktur der modellierten Welt: Welche Entitaetstypen existieren? Welche Relationstypen sind zulaessig? Welche Datenfelder muessen oder koennen vorhanden sein? Die Ontologie enthaelt keinerlei Vorschriften ueber 3D-Geometrien, Koordinaten oder Farben.
+
+### 1.2 Die Rohdaten (Graph-Instanzen)
+Die Datenstruktur ist vollstaendig flach (`flat graph structure`). Verschachtelte Sub-Objekte innerhalb von Knoten sind unzulaessig; hierarchische Beziehungen werden ueber explizite Kanten abgebildet. Jeder Knoten traegt ein generisches `properties`-Dictionary fuer semantischen Detailreichtum.
+
+### 1.3 Die Visual Mapping Engine (Darstellungsebene)
+Die `VisualMappingEngine` bildet Rohdaten dynamisch auf 3D-Eigenschaften ab. Veraendert der Nutzer in der Benutzeroberflaeche das Farbschema oder die Groessenmetrik, wird ausschliesslich das Mapping neu berechnet. Der Graph selbst bleibt unveraendert im Speicher erhalten.
+
+---
+
+## 2. Multi-Harness-Infrastruktur und Single Source of Truth (SSoT)
+
+> **Visualisierung:** Siehe [W:/AGENTS.md](file:///W:/AGENTS.md) und [02_TechStackUebersicht_002.mmd](02_TechStackUebersicht_002.mmd)
+
+Ab Version 0.106.x setzt Nodges auf ein deterministisches Multi-Harness-Entwicklungsmodell mit einem einzigen lokalen Wahrheitsort:
+
+```
+        /home/unixusername/nodges   (WSL2 Linux, ext4)  <── Single Source of Truth
+                    │
+        ┌───────────┴───────────┐
+        │                       │
+   /workspace                  W:/  (Netzlaufwerk)
+  [piCon im Container]        [conT in Antigravity Windows 11]
+        │                       │
+        └───────────┬───────────┘
+                    │
+              GitHub Remote
+         (git@github.com:Banixx/Nodges.git)
+```
+
+- **Dateisystem-Identitaet:** conT (ueber Netzlaufwerk `W:/`) und piCon (im Docker-Container unter `/workspace`) arbeiten auf denselben physischen ext4-Inodes. Lokale Aenderungen sind auf beiden Seiten ohne Git-Sync sofort sichtbar.
+- **Abkopplung von winAnt:** Das fruehere, fehleranfaellige Setup mit getrenntem Windows-Host-Checkout wurde vollstaendig eliminiert.
+- **Git-Branch-Strategie:** Der alleinige Entwicklungszweig ist `main` (Branch `pi` ist geloescht). Versionierte Zwischenschritte werden per `tools/nodges-git.sh save` als Patch-Commits lokal gesichert; nur qualitaetsgepruefte Releases (`release`) gehen nach GitHub.
+- **COM-Bus:** Inter-Harness-Kommunikation erfolgt ueber Dateisystem-Waechter (`tools/watch_com.mjs` und `W:/tools/watch_com.ps1`) auf Basis des Verzeichnisses `W:/com/`.
+
+---
+
+## 3. Frontend- und Engine-Architektur
+
+Das Frontend ist als hochperformante Single-Page-Applikation ohne schwere UI-Frameworks konzipiert:
+
+### 3.1 Technologie-Stack
+- **TypeScript 5.3.3:** Gewaehrleistet durchgaengige Typsicherheit ueber Datenmodelle, Events und Three.js-Bindings.
+- **Three.js 0.161.0:** Kern der 3D-Visualisierung mit InstancedMesh fuer Tausende Knoten, TubeGeometrien fuer Kanten und Raycasting.
+- **Vite 5.1.4:** Ultraschneller Entwicklungsserver mit Hot-Module-Replacement und integrierter Reverse-Proxy-Kette fuer Backend-Dienste.
+- **Biome 1.9.4:** Blitzschnelles Tooling fuer Linting (`npm run lint`) und Quelltext-Formatierung (`npm run format`).
+- **lil-gui 0.19.1:** Schlanke, direkt in den Render-Kontext integrierte Steuerungspanels ohne DOM-Overhead.
+- **Vanilla CSS (`index.css`):** Reines Modern-CSS mit Glassmorphism-Design fuer Dialoge, HUD und Overlays.
+
+### 3.2 Modulare Manager-Architektur (ServiceContainer)
+Die Anwendungslogik in `src/App.ts` und den zugeordneten Modulen ist modular aufgebaut:
+
+| Manager / Service | Primaere Verantwortung |
+|---|---|
+| `StateManager` | Zentrale Zustandsverwaltung (Graphdaten, Filter, Selektionen, UI-Flags) mit typisierten Subscriber-Kategorien. |
+| `CentralEventManager` | Entkoppeltes Event-Bussystem fuer Benutzerinteraktionen, Klicks und Tastaturereignisse. |
+| `VisualMappingEngine` | Dynamische Transformation von Datenwerten in Farben, Skalierungen, Geometrien und Transparenzen. |
+| `NodeManager` | Instanziierung, Transformation und Lifecycle-Verwaltung der 3D-Knoten (InstancedMesh). |
+| `EdgeObjectsManager` | Generierung von 3D-Kanten (Linien, Splines, Zylinder) mit Pfeilspitzen und Flussanimationen. |
+| `LayoutManager` | Ausfuehrung von Layout-Algorithmen (u. a. Force-Directed 3D) ueber dedizierte Background-Worker. |
+| `CameraManager` | Orbit-Steuerung, Fokus-Fahrten, sanfte Tweenings und Minimap-Ausrichtung. |
+| `SelectionManager` | Verwaltung selektierter Knoten, Kanten, Nachbarschafts-Highlights und Box-Auswahl. |
+| `TimeManager` | 4D-Temporalleiste, Keyframe-Interpolation und zeitliches Ein-/Ausblenden von Entitaeten. |
+| `MinimapManager` | Orthografische Szenenprojektion zur Orientierung in weitlaeufigen 3D-Raeumen. |
+| `LLMService` | Kommunikationsbruecke zu Inferenz-Providern (OpenRouter, OpenAI, Anthropic, Ollama). |
+
+---
+
+## 4. Backend- und KI-Architektur
+
+Ergaenzend zum reinen Browser-Client verfuegt Nodges ueber optionale, modulare Backend-Dienste:
+
+### 4.1 LightRAG Backend (Graph Retrieval Augmented Generation)
+- **Umgebung:** Python 3.10+ Virtual Environment in `lightrag-backend/venv`.
+- **Server:** FastAPI mit Uvicorn auf Port 8000.
+- **Vite Proxy:** Zugriff ueber den Vite-Dev-Server auf `http://localhost:5173/lightrag-api`.
+- **Embeddings:** OpenRouter Modell `qwen/qwen3-embedding-8b` (Vektordimension 4096).
+- **Speicher:** Lokale Vektordatenbank im Container unter `lightrag-backend/rag_storage`.
+
+### 4.2 BYOK-Prinzip (Bring Your Own Key)
+Nodges speichert keine API-Schluessel serverseitig. Nutzer tragen ihre Schluessel direkt im Frontend ein, wo sie verschluesselt im `localStorage` verbleiben.
+
+
+---------------------------------------------------------
+
+# 03 LLM-Integration und Datenpipelines
+
+Dieses Kapitel erlaeutert die Datengenerierungs-, Extraktions- und Anreicherungspipelines von Nodges. Es beschreibt, wie Large Language Models (LLMs) nicht als einfache Textgeneratoren, sondern als agentische Ontologie-Architekten und Wissensextraktoren eingesetzt werden, um unstrukturierte Eingaben in praezise 3D-/4D-Netzwerke zu transformieren.
+
+---
+
+## 1. Die Methodik: Der zweistufige Generierungs-Workflow
+
+> **Visualisierung:** Siehe [03_ZweistufigenGenerierungsWorkflow_001.mmd](03_ZweistufigenGenerierungsWorkflow_001.mmd)
+
+Eine zentrale Herausforderung bei der automatisierten Grapherstellung durch LLMs stellen Halluzinationen und ungueltige JSON-Strukturen dar. In fruehen Entwicklungsphasen neigten Modelle dazu, uneinheitliche Attribute zu erfinden oder Relationen syntaktisch unvollstaendig zurueckzugeben.  
+Nodges loest diese Problematik durch einen **zweistufigen Erstellungsprozess**:
+
+```
+[Benutzereingabe / Thema]
+           │
+           ▼
+┌────────────────────────────────────────────────────────┐
+│ Phase 1: Ontologie-Design (ontology_prompt.md)         │
+│ - Extraktion von Kategoriestrukturen & Typen           │
+│ - Definition der Datenattribute (dataModel)            │
+│ - Erstellung initialer Mapping-Regeln                  │
+│ * Datenarrays (entities, relationships) bleiben LEER * │
+└──────────────────────────┬─────────────────────────────┘
+                           │
+                           ▼
+                  [Zod-Schema Erzeugung]
+                           │
+                           ▼
+┌────────────────────────────────────────────────────────┐
+│ Phase 2: Instanziierungs-Phase                         │
+│ - Zod-Schema dient als harter struktureller Constraint │
+│ - Extraktion konkreter Entities & Relationships        │
+│ - Syntaktisch garantierte Typentreue                   │
+└──────────────────────────┬─────────────────────────────┘
+                           │
+                           ▼
+               [Valider 3D-Graphdatensatz]
+```
+
+### 1.1 Phase 1: Ontologie-Phase
+Das Modell analysiert die domaenenspezifische Aufgabenstellung. Es definiert das Metamodell der neuen Datenwelt: Welche Knotentypen existieren? Welche Beziehungstypen verbinden sie? Welche quantitativen Attribute sind sinnvoll? Die Datenarrays fuer Knoten und Kanten bleiben in dieser Phase strikt leer. Aus der Antwort generiert das System zur Laufzeit dynamische Zod-Validatoren.
+
+### 1.2 Phase 2: Instanziierungs-Phase
+Das in Phase 1 festgelegte Schema wird dem LLM als restriktiver Constraint (ueber *Structured Outputs* bzw. *JSON Schema Mode*) vorgegeben. Das Modell generiert die eigentlichen Instanzdaten (`entities` und `relationships`). Ein Ausbrechen aus dem zuvor definierten Schema ist technisch ausgeschlossen.
+
+---
+
+## 2. Evolution der Datenpipelines (Build 6 bis Build 12 / 0.106.8)
+
+> **Visualisierung:** Siehe [03_PipelineEvolution_003.mmd](03_PipelineEvolution_003.mmd)
+
+Die Dateninfrastruktur von Nodges wurde kontinuierlich erweitert:
+
+### 2.1 Build 6: JSON Schema Constraint Mode
+Etablierte Zod als primaeres Validierungsrueckgrat. Garantiert syntaktische Korrektheit, basiert jedoch rein auf dem parametrischen Trainingswissen des Sprachmodells.
+
+### 2.2 Build 8: Faktenverankerung via Semantic Web (Wikidata)
+Ergaenzte eine Live-Abfrage ueber die SPARQL-Schnittstelle von Wikidata. Entitaeten werden anhand verifizierter RDF-Tripel extrahiert, wodurch Faktentreue bei historischen, wissenschaftlichen oder geografischen Daten gewaehrleistet wird.
+
+### 2.3 Build 9: Vektorbasierte Deduplizierung
+Verhindert Redundanzen bei inkrementell wachsenden Netzwerken. Vor der Aufnahme in den Szenengraphen berechnet das System Vektor-Embeddings der Entitaeten; bei einer Kosinus-Aehnlichkeit oberhalb eines Schwellenwerts (typischerweise > 95 %) werden Knoten semantisch verschmolzen.
+
+### 2.4 Build 10: Die modulare Inferenz- und Evaluierungs-Pipeline
+
+> **Visualisierung:** Siehe [03_Build10ModulKonfiguration_002.mmd](03_Build10ModulKonfiguration_002.mmd)
+
+Das `CreatePanel` erlaubt die freie Orchestrierung von vier Kernstufen:
+
+1. **Inferenz-Quelle:**
+   - *Cloud (BYOK):* Anbindung ueber OpenRouter, OpenAI oder Anthropic (z. B. Claude 3.5 Sonnet, GPT-4o).
+   - *Lokal (Local-First):* Lokale Inferenz via Ollama (`http://localhost:11434`) oder LM Studio fuer absolute Datensouveraenitaet und kostenfreie Nutzung.
+2. **Grounding-Strategie:**
+   - *Ohne Grounding:* Reines Modellwissen.
+   - *Wikidata Live:* Faktencheck ueber strukturierte Wissensdatenbanken.
+   - *LightRAG / Dokumenten-RAG:* Wissensextraktion aus lokalen Dokumenten oder URLs.
+3. **Qualitaetssicherung (Multi-Pass / Human-in-the-Loop):**
+   - *Single-Pass:* Schnelle Direktgenerierung.
+   - *Kritiker-Agent (Generator-Critic-Loop):* Ein zweiter LLM-Aufruf evaluiert Logikbrueche und korrigiert Kantenrelationen vor der Visualisierung.
+   - *Human-in-the-Loop:* Review-Modal erlaubt das Pruefen, Editieren und Loeschen von Entitaeten vor dem 3D-Rendern.
+4. **Kantenbewertung (Edge Weighting):**
+   - *Semantische Schaetzung:* Heuristische Bewertung durch das Modell.
+   - *Taxonomische Klassen:* Feste Kantenstaerken nach Relationstyp.
+   - *Kosinus-Distanz:* Automatische Berechnung der Kantengewichte aus Embedding-Distanzen.
+
+### 2.5 Build 12 / 0.106.8: LightRAG Graph Retrieval Backend
+Erweiterung um ein dediziertes Python-FastAPI Backend (`lightrag-backend/`), das Graph-basiertes RAG bereitstellt. Knoten und semantische Relationen werden aus unstrukturierten Textkorpora extrahiert und ueber das OpenRouter Embedding-Modell `qwen/qwen3-embedding-8b` (4096 Dimensionen) indexiert.
+
+---
+
+## 3. Implementierungsarchitektur im Code
+
+### 3.1 Zentralisierung im `LLMService.ts`
+Jegliche Netzwerkkommunikation mit KI-Providern ist strikt im `LLMService` gekapselt:
+- **Keine dezentralen Aufrufe:** UI-Elemente und 3D-Manager duerfen keine eigenen Inferenz-Fetches durchfuehren.
+- **Provider-Abstraktion:** Der Aufrufer uebergibt standardisierte Prompt- und Schemastrukturen; `LLMService` kuemmert sich um Provider-spezifische Header, Authentifizierung und JSON-Extraktion.
+
+### 3.2 Fehlertoleranz und Ausfallsicherheit (Resilience)
+
+> **Visualisierung:** Siehe [03_LLMServiceFehlerbehandlung_004.mmd](03_LLMServiceFehlerbehandlung_004.mmd)
+
+- **Exponential Backoff:** Automatischer Neuversuch bei temporaeren Verbindungsabbruechen oder HTTP-Status 429 (Rate Limit).
+- **Graceful Fallback:** Bei Ausfall externer APIs kann das System auf vordefinierte Fallback-Provider oder lokale Instanzen umschalten.
+- **Schutz der 3D-Szene:** Validierungsfehler fuehren nicht zum Absturz des Renderers. Bestehende Visualisierungen bleiben unangetastet; Fehler werden als Feedback ueber das Benachrichtigungssystem (Toasts/Modals) ausgegeben.
+
+
+---------------------------------------------------------
+
+# 04 Datenmodell und Validierung
+
+Dieses Kapitel dokumentiert das zugrunde liegende Datenmodell von Nodges in Version **0.106.8**, die Mechanismen der Schema-Normalisierung ueber den `DataParser`, die zeitliche Modellierung (4D) und die strikte Laufzeitvalidierung mittels Zod.
+
+---
+
+## 1. Das Graphen-Paradigma: Flach und Beziehungszentriert
+
+> **Visualisierung:** Siehe [04_FlatvsDeeplyNested_003.mmd](04_FlatvsDeeplyNested_003.mmd)
+
+Nodges erzwingt eine strikte, flache Organisation saemtlicher Graphdaten. Verschachtelte Baumstrukturen oder eingebettete Arrays stellen in einer dreidimensionalen Netzwerksimulation ein gravierendes Anti-Pattern dar:
+
+```
+[Anti-Pattern: Verschachtelt]               [Nodges-Standard: Flach]
+┌───────────────────────────────┐           ┌──────────────┐     ┌──────────────┐
+│ Entity: "Konzern"             │           │ Entity:      │────►│ Entity:      │
+│   ├── subDepartments: [...]   │           │ "Konzern"    │     │ "Abteilung"  │
+│   └── employees: [...]        │           └──────────────┘     └──────┬───────┘
+└───────────────────────────────┘                   ▲                   │
+(Nicht raeumlich layoutbar)                         │     works_in      │
+                                                    └───────────────────┘
+                                                  (Explizite Kantenfedern)
+```
+
+### 1.1 Verbot verschachtelter Entitaeten
+- Beziehungen zwischen Entitaeten duerfen **niemals** als Sub-Objektlisten innerhalb eines Knotens hinterlegt werden.
+- **Begruendung:** Physik- und Layout-Engines (z. B. Force-Directed 3D) koennen Kraefte und Abstaende ausschliesslich zwischen diskreten Knotenpunkten ueber Kantenfedern berechnen. Verschachtelungen wuerden das topologische Gefuege fuer Algorithmen unsichtbar machen.
+
+### 1.2 Kanten als vollwertige Entitaeten (First-Class Relationships)
+Kanten sind eigenstaendige Datenelemente mit eindeutiger ID, Typisierung und eigenem `properties`-Dictionary. Dadurch koennen Attribute wie Uebertragungskapazitaet, Vertrauensindex, Frequenz oder historische Dauer direkt an der Kante visualisiert werden (z. B. ueber Liniendicke, Farbspektrum oder Partikel-Flussgeschwindigkeit).
+
+---
+
+## 2. Das JSON-Graphschema (Version 5.0 / 5.2)
+
+> **Visualisierung:** Siehe [04_JsonSchemaStruktur_001.mmd](04_JsonSchemaStruktur_001.mmd)
+
+Das Datenformat gliedert sich in vier klar getrennte Sektionen:
+
+```json
+{
+  "dataModel": {
+    "nodeTypes": [
+      { "id": "server", "label": "Server-Knoten", "properties": [] }
+    ],
+    "edgeTypes": [
+      { "id": "connects_to", "label": "Verbindung", "properties": [] }
+    ]
+  },
+  "visualMappings": {
+    "nodes": {
+      "color": { "property": "type", "scale": "categorical" },
+      "size": { "property": "load", "scale": "linear" }
+    },
+    "edges": {
+      "width": { "property": "bandwidth", "scale": "linear" }
+    }
+  },
+  "entities": [
+    {
+      "id": "srv_01",
+      "type": "server",
+      "label": "Auth-Gateway",
+      "properties": { "load": 78, "region": "eu-central" },
+      "temporal": {
+        "validFrom": 2024,
+        "validTo": 2026
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "rel_01",
+      "source": "srv_01",
+      "target": "srv_02",
+      "type": "connects_to",
+      "properties": { "bandwidth": 1000 }
+    }
+  ]
+}
+```
+
+### 2.1 Temporale Datenmodellierung (4D-Keyframes)
+
+> **Visualisierung:** Siehe [04_TemporalesObjektKeyframes_004.mmd](04_TemporalesObjektKeyframes_004.mmd)
+
+Sowohl Knoten als auch Kanten unterstuetzen das optionale `temporal`-Objekt fuer zeitbasierte Analysen:
+- **`validFrom` / `validTo`:** Bestimmt das zeitliche Existenzintervall eines Elements im Szenengraphen. Ausserhalb dieses Intervalls wird das Element ueber Ghosting ausgeblendet oder vollstaendig aus dem Rendering entfernt.
+- **`history`:** Eine chronologische Liste von Keyframes. Nodges vermeidet Datenredundanz durch Speicherung von **Deltas**: Nur Eigenschaften, die sich zu einem bestimmten Zeitstempel aendern, sind im `changes`-Dictionary hinterlegt.
+
+---
+
+## 3. Laufzeitvalidierung und Schema-Normalisierung
+
+### 3.1 Zod-Laufzeitpruefung
+TypeScript-Typen bieten ausschliesslich Pruefung zur Entwicklungszeit (Compile-Time). Da Daten dynamisch ueber APIs, Datei-Uploads oder Drag-and-Drop in den Client fliessen, sichert **Zod 3.22.4** die Systemstabilitaet zur Laufzeit:
+- Alle Payloads muessen `GraphDataSchema.parse()` erfolgreich durchlaufen.
+- Syntaxfehler, ungueltige Datentypen oder verwaiste Kantenreferenzen (Kanten, deren `source` oder `target` im `entities`-Array fehlt) fuehren zu einem kontrollierten Abbruch mit klarer Fehlermeldung, bevor Three.js-Aufrufe stattfinden.
+
+### 3.2 Rueckwaertskompatibilitaet im `DataParser`
+Der `DataParser` unterstuetzt Altdatenformate (Schemata 3.0 bis 5.0) und normalisiert eingehende Datenstrukturen verlustfrei auf den aktuellen Standard 5.2.
+
+### 3.3 Automatischer JSON-Schema Export
+Ueber den Build-Befehl:
+```bash
+npm run export:schema
+```
+wird das Zod-Schema automatisch in standardisierte JSON-Schema-Dateien uebersetzt. Diese Dateien dienen KI-Providern als restriktive Parameter (`response_format`) fuer deterministische Ausgaben.
+
+---
+
+## 4. Der Lebenszyklus beim Laden von Graphdaten (`loadGraphData`)
+
+> **Visualisierung:** Siehe [04_LoadGraphDataLebenszyklus_002.mmd](04_LoadGraphDataLebenszyklus_002.mmd)
+
+Der Ladevorgang in `App.ts` folgt einer strikten Sequenz, um Speicherlecks (VRAM-Leaks) in WebGL auszuschliessen:
+
+1. **Ingestion & Parsing:** Einlesen des JSON-Strings via `DataParser`.
+2. **Schema-Validierung:** Pruefung gegen das Zod-Schema.
+3. **State-Aktualisierung:** Uebergabe an den `StateManager`, der als Single Source of Truth im Frontend fungiert und Subscriber benachrichtigt.
+4. **VRAM Cleardown:** Gezieltes Freigeben alter GPU-Ressourcen ueber `.dispose()` auf Geometrien, Materialien und Shadern.
+5. **Re-Instanziierung:** Aufbau der neuen 3D-Meshes (InstancedMesh) im `NodeManager` und `EdgeObjectsManager`.
+6. **UI-Synchronisation:** Dynamische Aktualisierung der Mapping-Panels und Slider auf Basis des neu geladenen `dataModel`.
+
+
+---------------------------------------------------------
+
+# 05 3D-Rendering und Szenen-Management
+
+Dieses Kapitel beschreibt die Grafik- und Rendering-Engine von Nodges in Version **0.106.8**. Es erlaeutert die Three.js-Szenenarchitektur, High-Performance-Techniken wie `InstancedMesh`, die mathematische Modellierung von Kanten ueber Bezier-Kurven sowie Optimierungsstrategien fuer den Render-Loop.
+
+---
+
+## 1. Three.js Integration und Szenen-Setup
+
+> **Visualisierung:** Siehe [05_ThreeJsSzenenGraph_001.mmd](05_ThreeJsSzenenGraph_001.mmd)
+
+Die Kapselung des WebGL-Renderers erfolgt im `SceneManager` in enger Abstimmung mit dem `NodeManager` und dem `EdgeObjectsManager`.
+
+### 1.1 Der Szenengraph
+- **Scene:** Zentraler Knotenpunkt fuer alle 3D-Objekte, Kameras und Lichter.
+- **PerspectiveCamera:** Standardmaessiges Field of View von 75 Grad. Die Clipping-Planes (`near` und `far`) werden dynamisch anhand der raeumlichen Bounding-Box des aktuellen Graphen skaliert, um Z-Fighting im Nahbereich zu verhindern und dennoch riesige kosmische Netzwerke erfassen zu koennen.
+- **WebGLRenderer:**
+  - `antialias: true`: Multi-Sample Anti-Aliasing (MSAA) fuer saubere Kantenglaettung.
+  - `logarithmicDepthBuffer: true`: Unverzichtbar bei Netzwerken mit grosser raeumlicher Tiefenausdehnung, um Artefakte bei ueberlappenden Geometrien zu eliminieren.
+  - `powerPreference: "high-performance"`: Erzwingt die Nutzung dedizierter Grafikkarten auf Multi-GPU-Geraeten.
+
+### 1.2 Beleuchtungskonzept (3-Punkt-Setup)
+Licht dient der Tiefenwahrnehmung und plastischen Differenzierung:
+1. **AmbientLight:** Gleichmaessige Grundaufhellung (Intensitaet ca. 0.4), damit Knoten im Schatten nicht vollstaendig schwarz werden.
+2. **DirectionalLight (Key Light):** Erzeugt harte Glanzpunkte (Specular Highlights) auf gekruemmten Oberflaechen und verankert die Raumorientierung.
+3. **HemisphereLight:** Simuliert diffuse Lichtreflexionen zwischen virtuellem Himmel und Boden fuer einen natuerlichen Materialeindruck.
+
+---
+
+## 2. High-Performance Rendering: InstancedMesh
+
+> **Visualisierung:** Siehe [05_InstancedMeshDataflow_002.mmd](05_InstancedMeshDataflow_002.mmd)
+
+Ein relationales Netzwerk mit zehntausend Knoten wuerde bei separaten `THREE.Mesh`-Objekten zehntausend Draw-Calls pro Frame erzeugen und die Bildrate im Browser drastisch senken.
+
+### 2.1 Das Instancing-Prinzip
+Nodges setzt im `NodeManager` konsequent auf **GPU-Instancing (`THREE.InstancedMesh`)**:
+- Geometrie (z. B. SphereBufferGeometry) und Shadermaterial werden nur **ein einziges Mal** in den GPU-Speicher uebertragen.
+- Jede Entitaet wird ausschliesslich durch einen Eintrag in einem linearen Transformations-Matrix-Buffer (4x4 Matrix fuer Position, Rotation, Skalierung) und einem Farb-Buffer repraesentiert.
+- Der gesamte Graph mit tausenden Knoten wird in einem **einzigen Draw-Call** gerendert.
+
+### 2.2 Der Matrix-Update-Zyklus
+```
+[Entitaets-Daten] ──► [Dummy Object3D] ──► dummy.updateMatrix()
+                                                │
+                                                ▼
+                                    setMatrixAt(i, matrix)
+                                    setColorAt(i, color)
+                                                │
+                                                ▼
+                                    instanceMatrix.needsUpdate = true
+                                    instanceColor.needsUpdate = true
+```
+1. Ein wiederverwendbares, unsichtbares `THREE.Object3D` ("Dummy") berechnet die lokale Transformation jedes Knotens.
+2. Die resultierende Transformationsmatrix wird mit `setMatrixAt(i, dummy.matrix)` in den Buffer geschrieben.
+3. Nach Durchlauf aller sichtbaren Knoten setzt das System `instanceMatrix.needsUpdate = true`, wodurch Three.js den Buffer zur GPU transferiert.
+
+---
+
+## 3. Kanten-Visualisierung: Bezier-Kurven und TubeGeometries
+
+Verbindungen zwischen Knoten erfordern geometrische Flexibilitaet:
+
+- **Bézier-Kurven (`QuadraticBezierCurve3`):** Statt starrer Liniensegmente nutzt Nodges geschwungene Kurven. Dadurch wird die visuelle Lesbarkeit bei dichten Netzwerken erhoeht.
+- **Multi-Edge Handling (Kabelstrang-Effekt):** Existieren mehrere Kanten zwischen zwei identischen Knoten (z. B. unterschiedliche Beziehungstypen), berechnet das System kontrollierte Auslenkungen im Scheitelpunkt. Die Kanten verlaufen parallel bauchig nebeneinander, statt zu ueberlappen.
+- **TubeGeometry & Ribbons:** Kanten mit hohem Gewicht (`weight`) oder besonderer semantischer Bedeutung koennen als vollwertige 3D-Zylinder (`TubeGeometry`) gerendert werden, um den Datenfluss plastisch hervorzuheben.
+
+---
+
+## 4. Render-Loop Optimierung
+
+> **Visualisierung:** Siehe [05_RenderLoopOptimierung_003.mmd](05_RenderLoopOptimierung_003.mmd)
+
+Um eine stabile Bildwiederholrate von 60 FPS (Frame-Budget < 16,6 ms) zu gewaehrleisten, gelten strenge Regeln fuer die `requestAnimationFrame`-Schleife:
+
+1. **Garbage Collection Vermeidung:**  
+   Innerhalb des Render-Loops werden keinerlei neue Objekte mit `new` instanziiert. Mathematische Hilfsobjekte (wie temporaere `Vector3`, `Matrix4` oder `Quaternion`) liegen als vorab allokierte statische Modulvariablen vor und werden wiederverwendet.
+2. **Frustum Culling:**  
+   Three.js prueft anhand raeumlicher Begrenzungskugeln (`BoundingSphere`), welche Knoten und Kanten sich tatsaechlich im Sichtkegel der Kamera befinden; Objekte ausserhalb werden von der GPU verworfen.
+3. **On-Demand Rendering & FPS-Drosselung:**  
+   Wenn die Physiksimulation ruht und keine Kamera- oder Interaktionsereignisse anstehen, schaltet Nodges in einen ressourcenschonenden Ruhemodus, um CPU/GPU-Last auf mobilen Geraeten zu minimieren.
+
+---
+
+## 5. Das Entkoppelte Visual Mapping
+
+Die VisualMappingEngine steuert saemtliche sichtbaren Attribute voellig dynamisch:
+- Jeder Knoten startet als generische Instanz im Mesh.
+- Entsprechend der aktiven Mapping-Konfiguration (Farbe nach Eigenschaft, Groesse nach Metrik, Form nach Typ) berechnet die Engine die Werte zur Laufzeit neu.
+- Das Umschalten von Darstellungsmodi erfordert kein Neuladen des Graphen, sondern lediglich ein gezieltes Neubeschreiben der GPU-Instanzbuffer.
+
+
+---------------------------------------------------------
+
+# 06 Benutzeroberflaeche und Interaktion
+
+Dieses Kapitel beschreibt das User-Interface-Design, die Interaktionsarchitektur und die UX-Konzepte von Nodges in Version **0.106.8**. Im Zentrum steht das Prinzip der "Progressiven Offenlegung" (*Progressive Disclosure*), um hoechste funktionale Dichte bei minimaler kognitiver Belastung zu realisieren.
+
+---
+
+## 1. Design System und visuelle Aesthetik
+
+> **Visualisierung:** Siehe [06_UIKomponentenStruktur_001.mmd](06_UIKomponentenStruktur_001.mmd)
+
+Das visuelle Erscheinungsbild von Nodges folgt einer modernen, transparenten Designsprache, die sich harmonisch ueber den 3D-Datenraum legt.
+
+### 1.1 Glassmorphismus und Tiefenwirkung
+- **Semi-transparente Overlays:** Saemtliche Dialoge, Modals und Sidebar-Container nutzen `backdrop-filter: blur(12px)` in Kombination mit dezenten, halbtransparenten Hintergrundfarben (`rgba(18, 24, 38, 0.75)`). Dadurch bleibt die 3D-Szene selbst bei geoeffneten Menues im peripheren Sichtfeld praesent.
+- **Reines Vanilla CSS (`index.css`):** Nodges verzichtet bewusst auf CSS-Frameworks wie TailwindCSS. Alle Layouts basieren auf modularem CSS-Grid und Flexbox mit CSS-Variablen fuer Themes, Kantenradien und Schatten.
+- **Mikro-Animationen:** Zustandswechsel (Hover-Effekte, Akkordeon-Aufklappen, Fokus-Highlights) sind mit weichen Transitions (200 ms bis 300 ms, `cubic-bezier(0.16, 1, 0.3, 1)`) versehen, was dem Interface ein praezises, taktiles Feedback verleiht.
+
+### 1.2 Die lil-gui Sidebar-Integration
+Fuer das interaktive Parameter-Tuning nutzt Nodges die Bibliothek **lil-gui 0.19.1**:
+- Extrem schlank, DOM-effizient und ohne Virtual-DOM-Overhead direkt an den Anwendungs-State angebunden.
+- Dynamische Generierung von Kontrollgruppen (Ordner, Slider, Farbwahl-Elemente, Dropdowns), die sich bei Datenwechseln automatisch rekonfigurieren.
+
+---
+
+## 2. Die Decoupled Mapping UI
+
+> **Visualisierung:** Siehe [06_DecoupledMappingUI_003.mmd](06_DecoupledMappingUI_003.mmd)
+
+Klassische Datenwerkzeuge verlangen oft die manuelle Eingabe abstrakter Attributnamen. Nodges implementiert eine entkoppelte, introspektive Mapping-UI:
+
+### 2.1 Dynamische Attribut-Erkennung
+Sobald ein Graph geladen wird, durchsucht das System die `properties`-Dictionaries aller Entitaeten und Kanten. Das Mapping-Panel erzeugt automatisch kontextbezogene Auswahllisten:
+- **Numerische Attribute:** Werden fuer Skalierung (Groesse), Kantenbreite, Gravitationsstaerke oder Achsenkoordinaten angeboten.
+- **Kategoriale Attribute:** Werden fuer diskrete Farbpaletten oder geometrische Formen (Kugel, Wuerfel) vorgeschlagen.
+
+### 2.2 Der raeumliche Positions-Kanal
+Die Positionierung im 3D-Raum wird als gebuendelte Eigenschaft verwaltet. Waehlt der Nutzer ein Datenfeld (z. B. "Gruendungsjahr" oder "Budget"), erlaubt ein kompakter Achsen-Umschalter die direkte Zuweisung auf die X-, Y- oder Z-Achse. Dies ermoeglicht den blitzschnellen Wechsel zwischen freien physikalischen Clustern und strukturierten Koordinatengittern.
+
+---
+
+## 3. Das CreatePanel (Pipeline-Orchestrierung)
+
+Das `CreatePanel` bildet die Steuerzentrale fuer generative KI-Workflows:
+
+### 3.1 Konfigurator fuer modulare Pipelines
+Der Nutzer stellt den Generierungsprozess interaktiv zusammen:
+- **Provider-Auswahl:** Umschalten zwischen Cloud-Providern (OpenRouter, OpenAI, Anthropic via BYOK) und lokalen Inferenz-Servern (Ollama unter `http://localhost:11434`, LM Studio) fuer maximale Datensouveraenitaet.
+- **Grounding-Optionen:** Zukonfigurieren von Faktenpruefungen ueber Wikidata-SPARQL oder lokale Dokumenten-RAG-Dienste.
+- **Kanten-Metrik:** Festlegung, ob Beziehungen heuristisch abgeschaetzt oder ueber Kosinus-Distanzen berechnet werden sollen.
+
+### 3.2 Human-in-the-Loop (Das Review-Modal)
+
+> **Visualisierung:** Siehe [06_HumanInTheLoopWorkflow_002.mmd](06_HumanInTheLoopWorkflow_002.mmd)
+
+Ist die Qualitaetssicherungsstufe "Human-in-the-Loop" aktiv, wird das Generierungsergebnis vor dem 3D-Rendering in einem Pruefdialog abgefangen:
+1. Das Rendering neuer Elemente wird pausiert.
+2. Ein modales Glassmorphism-Fenster praesentiert Entitaeten und Relationen in tabellarischer Uebersicht.
+3. Der Benutzer kann fehlerhafte Knoten loeschen, Bezeichnungen korrigieren oder Kantenrelationen nachjustieren.
+4. Erst mit der expliziten Bestaetigung ("Visualisieren") werden die bereinigten Daten an den `StateManager` uebergeben.
+
+---
+
+## 4. Status- und Feedback-Systeme
+
+Da KI-Inferenz und RAG-Extraktionen mehrsekundige Berechnungszeiten beanspruchen koennen, informiert ein mehrstufiges Feedback-System den Nutzer:
+- **Toast-Benachrichtigungen:** Nicht-blockierende Meldungen fuer Hintergrundereignisse (Erfolg = Gruen, Warnungen/Rate-Limits = Gelb, Validierungsfehler = Rot).
+- **Fortschritts-Overlays:** Feingliedrige Statusanzeigen waehrend der Pipeline-Phasen ("Ontologie wird analysiert...", "SPARQL-Tripel werden verifiziert...", "3D-Instanzen werden aufgebaut...").
+- **Fehlerresilienz:** Im Falle ungueltiger Payloads stuerzt das Frontend nicht ab; die bestehende 3D-Szene bleibt vollstaendig erhalten.
+
+
+---------------------------------------------------------
+
+# 07 Algorithmen, Layout Engine und Physik
+
+Dieses Kapitel beschreibt die mathematischen und algorithmischen Grundlagen von Nodges in Version **0.106.8**. Es erlaeutert das Zusammenspiel zwischen physikalischer Kraeftesimulation (Force-Directed Layout), selektiver Koordinatenfixierung durch Daten-Mappings und semantischen Vektoralgorithmen (Kosinus-Aehnlichkeit, Deduplizierung).
+
+---
+
+## 1. Die Rolle der Physik-Engine
+
+> **Visualisierung:** Siehe [07_PhysikMappingEntflechtung_001.mmd](07_PhysikMappingEntflechtung_001.mmd)
+
+In herkoemmlichen Graph-Visualisierern entscheidet ausschliesslich eine physikalische Kraeftesimulation (wie Barnes-Hut oder D3-Force 3D) ueber die Raumkoordinaten. In Nodges hingegen ist der dreidimensionale Raum (`X`, `Y`, `Z`) ein primaerer Datenkanal. Die Physik-Engine dient daher als **intelligentes Fallback- und Entflechtungssystem**:
+
+```
+                  ┌───────────────────────────────┐
+                  │ Eingehender Knoten mit Daten  │
+                  └──────────────┬────────────────┘
+                                 │
+             ┌───────────────────┴───────────────────┐
+             │ Sind Achsen durch Mappings belegt?    │
+             └───────────────────┬───────────────────┘
+                                 │
+         ┌───────────────────────┼───────────────────────┐
+         ▼                       ▼                       ▼
+[Vollstaendiges Mapping] [Teilweises Mapping]     [Kein Mapping]
+- Alle Achsen fixiert    - z.B. X & Y fixiert,    - Volle 3D-Simulation
+- Physik vollstaendig      Z frei fuer Kraefte    - Kantenfedern &
+  deaktiviert            - 1D-Kollisionsabbau       Knotenabstossung
+```
+
+### 1.1 Entflechtung von Physik und Attribut-Mapping
+1. **Szenario A (Vollstaendiges Achsen-Mapping):**  
+   Mappt der Nutzer beispielhaft "Jahresumsatz" auf Y und "Gruendungsdatum" auf X sowie "Region" auf Z, werden die Positionen exakt gemaess den Datenskalierungen fixiert. Die physikalische Krafteinwirkung wird fuer diese Entitaeten vollstaendig unterbunden, um ein stabiles Koordinatengitter zu gewaehrleisten.
+2. **Szenario B (Partielles Mapping / 1D-Force):**  
+   Sind lediglich X und Y durch Attribute festgelegt, bleibt die Z-Achse flexibel. Die Physik-Engine darf Knoten entlang der Z-Achse verschieben, um visuelle Ueberlagerungen aufzuloesen (*Kollisionsvermeidung*).
+3. **Szenario C (Topologisches Clustering):**  
+   Liegt kein raeumliches Attribut-Mapping vor, greift die klassische 3D-Kraefteraum-Simulation: Knoten stossen sich elektrostatisch ab (*Charge/Repulsion*), waehrend Kanten wie elastische Federn wirken (*Link Tension*). Stark vernetzte Subgraphen bilden organische, topologische Ballungsraeume.
+
+---
+
+## 2. Web Worker Auslagerung fuer ruckelfreie Interaktion
+
+Die Berechnung von $N$-Koerper-Simulationen besitzt typischerweise eine Komplexitaet von $\mathcal{O}(N \log N)$ (Barnes-Hut) oder $\mathcal{O}(N^2)$. Um den JavaScript-Hauptthread (Main Thread) nicht zu blockieren und das 60-FPS-Renderziel nicht zu gefaehrden, ist die Layout-Engine im `LayoutManager` als **Web Worker** gekapselt:
+- Der Worker empfaengt Positions- und Topologiematrizen ueber `postMessage` (unter Verwendung von `SharedArrayBuffer` bzw. transferierbaren TypedArrays).
+- Er iteriert die physikalischen Zeitschritte (Ticks) asynchron im Hintergrund.
+- Nach jedem Rechenschritt oder in festen Intervallen werden die aktualisierten Positionskoordinaten an den `NodeManager` uebertragen, welcher die GPU-Instanzbuffer aktualisiert.
+
+---
+
+## 3. Semantische Vektoralgorithmen und NLP-Verfahren
+
+> **Visualisierung:** Siehe [07_KosinusAehnlichkeitPipeline_002.mmd](07_KosinusAehnlichkeitPipeline_002.mmd)
+
+Zur semantischen Analyse relationaler Netze nutzt Nodges hochdimensionale Embeddings:
+
+### 3.1 Vektor-Repraesentation
+Beschreibungen, Bezeichnungen und Kontextdaten werden ueber ein Embedding-Modell (in Version 0.106.8 standardmaessig OpenRouter `qwen/qwen3-embedding-8b` mit 4096 Dimensionen, alternativ lokale Modelle) in Vektoren ueberfuehrt.
+
+### 3.2 Kosinus-Aehnlichkeit (Cosine Similarity)
+Fuer je zwei Knotenvektoren $\vec{A}$ und $\vec{B}$ berechnet das System die Aehnlichkeit ueber das Skalarprodukt geteilt durch das Produkt der Normen:
+
+$$\text{similarity} = \cos(\theta) = \frac{\vec{A} \cdot \vec{B}}{\|\vec{A}\| \|\vec{B}\|}$$
+
+- **Semantische Kantenstaerken:**  
+  Der berechnete Aehnlichkeitswert (normiert auf $0$ bis $100$) wird als `semantic_weight` auf Kanten abgelegt. Das Visual Mapping greift diesen Wert auf und verstaerkt hochgradig verwandte Relationen visuell (erhoehte Liniendicke, hellerer Farbton, beschleunigter Kantenfluss).
+- **Vektorgestuetzte Deduplizierung:**  
+  Bei inkrementellen Wissensgraphen-Importen prueft der Algorithmus die Aehnlichkeit aller neu hinzukommenden Entitaeten. Bei einer Uebereinstimmung von $> 95\,\%$ werden Entitaeten fusioniert, um Duplikate deterministisch zu eliminieren.
+
+---
+
+## 4. Topologische Netzwerkanalysen (Graph-Metriken)
+
+> **Visualisierung:** Siehe [07_NetzwerkMetrikenPotenzial_003.mmd](07_NetzwerkMetrikenPotenzial_003.mmd)
+
+Die Architektur unterstuetzt die lokale Berechnung klassischer Netzwerkkennzahlen direkt im Browser:
+- **Degree Centrality:** Anzahl der ein- und ausgehenden Kanten zur schnellen Identifikation hochgradig vernetzter Hubs.
+- **Betweenness Centrality:** Haeufigkeit, mit der ein Knoten auf kuerzesten Pfaden zwischen anderen Knotenpaaren liegt (Identifikation von Schluesselbruecken).
+- **PageRank:** Rekursive Relevanzbewertung anhand der Qualitaet eingehender Verbindungen.
+
+Errechnete Metriken werden automatisch als neue Eigenschaften in das `properties`-Dictionary der Entitaeten injiziert und stehen sofort fuer Mappings und Filterregeln zur Verfuegung.
+
+
+---------------------------------------------------------
+
+# 08 Visuelle Effekte und Feedback-Systeme
+
+Dieses Kapitel behandelt die visuelle Rueckkopplung und Feedback-Architektur von Nodges in Version **0.106.8**. Es beschreibt, wie differenzierte Hervorhebungen (*Highlights*), prozedurale Shader, Pulsationseffekte und Kantenstroeme dem Anwender intuitive Orientierung in dreidimensionalen Informationsraeumen bieten.
+
+---
+
+## 1. Das Highlight-System (`HighlightManager`)
+
+Der `HighlightManager` koordiniert saemtliche visuellen Selektions-, Hover- und Fokus-Zustaende von Knoten und Kanten, um visuelle Konflikte und Speicherlecks (Material-Leaks) auszuschliessen.
+
+### 1.1 Zustandssicherung und Material-Wiederherstellung
+Bevor ein Objekt durch Farbe, Leuchten (*Emissive*) oder Skalierung hervorgehoben wird, sichert der Manager den urspruenglichen Materialzustand im internen Zwischenspeicher. Nach Beendigung der Interaktion (z. B. Unhover oder Deselektion) wird exakt der Ausgangszustand wiederhergestellt. Dadurch wird verhindert, dass temporaere Effekte permanente Materialaenderungen im Szenengraphen hinterlassen.
+
+### 1.2 Die Prioritaeten-Kaskade
+
+> **Visualisierung:** Siehe [08_HighlightPrioritaetsKaskade_001.mmd](08_HighlightPrioritaetsKaskade_001.mmd)
+
+Da ein Element gleichzeitig mehrere Gruende fuer ein optisches Feedback aufweisen kann (z. B. Teil eines Suchergebnisses waehrend des Maus-Hoverns), greift eine deterministische Prioritaetenordnung:
+
+```
+[1. SELECTION] (Hoechste Prioritaet) ──► Aktiver Benutzerfokus & Detailanalyse
+      ▲
+[2. SEARCH]                          ──► Relevanztreffer einer Filterabfrage
+      ▲
+[3. PATH]                            ──► Pfadverbindung / kuerzeste Route
+      ▲
+[4. HOVER]     (Niedrigste Prioritaet)──► Kurzzeitige Mauszeiger-Beruehrung
+```
+
+1. **SELECTION (Prioritaet 1):** Das Objekt ist aktiv selektiert. Dieses Highlight ueberschreibt alle anderen Darstellungsformen und bleibt auch bei Mausbewegungen stabil erhalten.
+2. **SEARCH (Prioritaet 2):** Hebt Knoten hervor, die einer aktiven Such- oder Filterabfrage entsprechen (z. B. leuchtendes Cyan oder Magenta).
+3. **PATH (Prioritaet 3):** Visualisiert Kausal- oder Verbindungsrouten. Alle nicht auf dem Pfad liegenden Knoten werden gedaempft (*Ghosting*).
+4. **HOVER (Prioritaet 4):** Gibt fluechtiges Feedback ueber die Interaktionsfaehigkeit eines Elements unter dem Cursor.
+
+---
+
+## 2. Highlight-Modi und Wahrnehmungspsychologie
+
+### 2.1 Hover-Modus (Feedback der Erreichbarkeit)
+- **Knoten:** Erhoehung der Helligkeit (Luminanzboost um ca. 30 %) der Grundfarbe signalisiert: "Dieses Element reagiert auf Klick".
+- **Kanten:** Aufhellung und Verstaerkung des Linienkontrasts bei gleichzeitiger Hervorhebung der beiden Endknoten.
+
+### 2.2 Selection-Modus (Aufmerksamkeitsanker)
+- **Emissive Glow:** Der Knoten erhaelt einen intensiven Leuchtwert ueber das Three.js-Material.
+- **Nachbarschafts-Aufhellung (1st-Degree Neighbors):** Um den lokalen Systemkontext offenzulegen, werden alle direkt verbundenen Nachbarknoten und Inzidenzkanten mitsamt ihren Labels hervorgehoben, waehrend entfernte Netzwerkteile dezent abgedunkelt werden.
+
+### 2.3 Ghosting-Effekt (Fokussierung bei Such- und Pfadmodi)
+Anstatt unbeteiligte Knoten vollstaendig auszublenden (was die raeumliche Gesamtstruktur zerstoeren wuerde), reduziert Nodges deren Deckkraft auf `opacity: 0.1` bis `0.15`. Der Anwender behaelt die globale Landmarken-Orientierung, waehrend der informative Pfad kontrastreich im Vordergrund steht.
+
+---
+
+## 3. Shader und Atmosphaerische Effekte
+
+> **Visualisierung:** Siehe [08_ShaderUndEffekte_002.mmd](08_ShaderUndEffekte_002.mmd)
+
+### 3.1 Der "Breathing" Glow-Oszillator
+Um selektierten Entitaeten eine organische, lebendige Praesenz zu verleihen, moduliert ein mathematischer Sinus-Oszillator die Leuchtintensitaet:
+
+$$\text{Intensity}(t) = I_{\text{base}} + A \cdot \sin(2\pi \cdot f \cdot t)$$
+
+- **Standardfrequenz:** $f = 0{,}5\text{ Hz}$ (ein vollstaendiger Atemzyklus alle zwei Sekunden).
+- Dieser weiche, sinusfoermige Verlauf wirkt beruhigend und hochwertig, waehrend ein hartes Rechteck-Blinken kognitive Irritationen erzeugen wuerde.
+
+### 3.2 Performante Halo-Geometrien (Outline-Alternative)
+Schwere Post-Processing-Sobel-Shader zur Kantenhervorhebung wuerden auf mobilen Geraeten und Laptops spuerbare Bildratenverluste verursachen. Nodges setzt fuer Entitaets-Outlines auf eine ressourcenschonende Geometrie-Technik:
+- Ein dupliziertes Mesh wird um ca. 35 % bis 40 % groesser skaliert.
+- Dem Klon wird ein transparentes Material (`opacity: 0.25`, `depthWrite: false`) zugewiesen.
+- Der Halo wird hinter dem Hauptknoten gezeichnet und erzeugt einen weichen, diffusen Glashof bei minimaler GPU-Last.
+
+### 3.3 Kanten-Partikelfluss (Flow Animation)
+Auf Kanten koennen prozedurale Partikel oder Shader-Textur-Verschiebungen aktiviert werden, die entlang der Bezier-Kurve stroemen. Die Frequenz und Geschwindigkeit spiegeln dynamische Datenwerte wider (z. B. Paketuebertragungsrate, Geldflussvolumen oder neuronale Signalstaerke).
+
+
+---------------------------------------------------------
+
+# 09 Interaktions-Design und Input-Processing
+
+Dieses Kapitel beschreibt die Interaktionsarchitektur von Nodges in Version **0.106.8**. Es erlaeutert die mathematische Abbildung von 2D-Zeigerkoordinaten in den dreidimensionalen Szenenraum (Raycasting), das Zusammenspiel des `CentralEventManager` mit Hardware-Ereignissen und kinoreife Kamerafahrten (*Fly-To Animations*).
+
+---
+
+## 1. Raycasting: Die Bruecke zwischen 2D-Bildschirm und 3D-Datenraum
+
+> **Visualisierung:** Siehe [09_InputSystemUebersicht_002.mmd](09_InputSystemUebersicht_002.mmd)
+
+Klassische Monitore liefern ausschliesslich zweidimensionale Pixelkoordinaten $(X, Y)$. Die Netzwerkentitaeten liegen jedoch als dreidimensionale Vektoren $(X, Y, Z)$ im Raum. Nodges uebersetzt Benutzereingaben ueber den **Raycasting-Algorithmus** von Three.js (`THREE.Raycaster`):
+
+```
+[Mauszeiger (Pixel X, Y)]
+           │
+           ▼
+[Normalized Device Coordinates (NDC, -1 bis +1)]
+           │
+           ▼
+[Raycaster: Strahl von Kamera-Projektionszentrum durch NDC]
+           │
+           ▼
+[Schnittpunkt-Berechnung mit Geometrien im Szenengraph]
+           │
+           ▼
+[Sortierung nach Distanz: Vorderstes sichtbares Objekt selektiert]
+```
+
+### 1.1 Mathematischer Ablauf
+1. **Koordinaten-Normalisierung:** Umrechnung der absoluten Mausposition auf dem Viewport in den NDC-Bereich $[-1, +1]$.
+2. **Strahl-Projektion:** Der Raycaster emittiert einen unsichtbaren Vektor vom optischen Zentrum der Kamera durch die normalisierte Linsenkoordinate in die Tiefe des 3D-Szenengraphen.
+3. **Intersektions-Berechnung:** Pruefung auf Schnittpunkte mit den Bounding-Spheres und Dreiecken der geometrischen Objekte.
+4. **Tiefensortierung:** Die Schnittpunkte werden aufsteigend nach ihrer Entfernung zur Kamera geordnet; das vorderste, nicht-transparente Objekt loest das Ereignis aus.
+
+### 1.2 Raycasting auf `InstancedMesh`
+Da Tausende Knoten im `NodeManager` als ein einziges `THREE.InstancedMesh` gerendert werden, liefert ein nativer Raycast zunaechst nur den Treffer auf das uebergeordnete Gesamt-Mesh.  
+Nodges extrahiert aus dem Schnittpunkt-Ergebnis die Eigenschaft `instanceId` (den Zeilenindex im Matrix-Buffer) und ermittelt ueber eine lineare O(1)-Lookup-Table unmittelbar die zugehoerige Daten-ID der Entitaet.
+
+---
+
+## 2. Der `CentralEventManager` (CEM)
+
+> **Visualisierung:** Siehe [09_RaycastingUndCEM_001.mmd](09_RaycastingUndCEM_001.mmd)
+
+Der CEM entkoppelt rohe Betriebssystem-Ereignisse (`pointerdown`, `mousemove`, `keydown`) vollstaendig von der Geschaeftslogik der Visualisierung (`selectNode`, `filterSubtree`, `openInspector`).
+
+### 2.1 Unterscheidung von Klick und Kamera-Drag
+Ein verbreitetes Usability-Problem in 3D-Anwendungen ist das unbeabsichtigte Ausloesen von Klick-Ereignissen beim Rotieren der Kamera. Laesst der Nutzer nach einer Drehbewegung den Mauszeiger zufaellig ueber einem Knoten los, wuerde ein naives `click`-Event den Knoten faelschlicherweise markieren.  
+**Die Entprell-Logik des CEM:**
+- Bei `pointerdown` puffert das System die Startkoordinaten.
+- Bei `pointerup` wird die euklidische Distanz $\Delta d = \sqrt{\Delta x^2 + \Delta y^2}$ berechnet.
+- Liegt $\Delta d \le 5\text{ Pixel}$, wird ein praeziser **Klick** erkannt und der Selektions-Raycast ausgefuehrt.
+- Liegt $\Delta d > 5\text{ Pixel}$, wird die Aktion als **Kamera-Drehung (Drag)** klassifiziert und kein Klickereignis generiert.
+
+### 2.2 Hover-Drosselung (Throttling)
+Raycast-Berechnungen bei jedem einzelnen Pixel der Mausbewegung wuerden die CPU-Hauptschleife ueberlasten. Der CEM drosselt `pointermove`-Pruefungen auf ein Zeitfenster von ca. 50 ms (20 Pruefungen pro Sekunde). Dies garantiert fluessiges taktiles Feedback ohne Beeintraechtigung des 60-FPS-Renderbudgets.
+
+### 2.3 Mehrfach- und Box-Selektion
+Ueber Tastaturmodifikatoren (z. B. Halten der `Shift`-Taste) koennen Nutzer mehrere Knoten nacheinander zur Auswahlliste hinzufuegen oder ueber ein 2D-Rechteck auf dem Bildschirm (*Marquee / Box-Selection*) ganze Teilnetzwerke gleichzeitig selektieren.
+
+---
+
+## 3. Kamera-Fuehrung und Cinematic Navigation
+
+Die Szenenkamera (`THREE.PerspectiveCamera`) wird im Normalbetrieb ueber erweiterte `OrbitControls` gefuehrt, verfuegt jedoch ueber automatisierte Navigationshilfen:
+
+### 3.1 Sanfte Fokus-Fahrten (Fly-To via Tweening)
+Waehlt der Nutzer einen Knoten ueber das Suchfeld oder das Datenpanel aus, springt die Kamera nicht abrupt um:
+- **Interpolierte Kurven:** Nodges berechnet die Zielkoordinaten und animiert Kameraposition und Blickpunkt ueber sanfte Easing-Funktionen (`cubic-bezier` / SmoothStep).
+- **Kollisionsfreier Abstand:** Die Kamera faehrt nicht in das Objekt hinein, sondern stoppt kontrolliert vor der Bounding-Sphere des Knotens unter Beibehaltung des bisherigen Blickwinkels.
+
+### 3.2 Kontext-adaptiver Zoom
+Beim Zoomen mit dem Mausrad skaliert die Schrittweite dynamisch mit der Distanz zum Orbit-Zentrum: In grosser Entfernung bewegt sich die Kamera in weiten Schritten durch den Gesamtraum; in unmittelbarer Naehe eines Knotens verfeinert sich der Vorschub automatisch. Dadurch wird das versehentliche Durchqueren von Geometrien im Nahbereich zuverlaessig verhindert.
+
+
+---------------------------------------------------------
+
+# 10 Entwicklungs-Guide, Testing und Deployment
+
+Dieses Kapitel dokumentiert die Entwicklungsstandards, die Testinfrastruktur, das Linter- und Formatter-Tooling sowie den verbindlichen Git- und Release-Workflow von Nodges in Version **0.106.8**.
+
+---
+
+## 1. Lokale Entwicklungsumgebung und Multi-Harness
+
+> **Visualisierung:** Siehe [10_DevTestDeployPipeline_001.mmd](10_DevTestDeployPipeline_001.mmd)
+
+Nodges basiert auf einer Single Source of Truth (SSoT) auf WSL2 ext4 (`/home/unixusername/nodges`), auf die zwei Arbeitsumgebungen synchron zugreifen:
+- **conT:** Antigravity auf Windows 11 ueber das Netzlaufwerk `W:/`.
+- **piCon:** Pi-Coding-Agent im Docker-Container `pi-harness` unter `/workspace`.
+
+### 1.1 Entwicklungsbefehle (`package.json`)
+```bash
+# Vite-Entwicklungsserver starten (Standard-Port 5173)
+npm run dev
+
+# Manuelle Typenpruefung ohne Build
+npm run typecheck
+
+# Code-Analyse und Linting via Biome
+npm run lint
+
+# Automatische Formatierung via Biome
+npm run format
+
+# Vitest Unit-Tests im Watch-Modus
+npm run test
+
+# Vitest grafisches Dashboard im Browser
+npm run test:ui
+
+# Vitest Code-Coverage-Report
+npm run test:coverage
+
+# Playwright End-to-End Tests
+npm run test:e2e
+
+# Playwright interaktives UI-Dashboard
+npm run test:e2e:ui
+
+# Zod JSON-Schema Export
+npm run export:schema
+
+# LightRAG Backend-Server starten (Port 8000)
+npm run lightrag
+```
+
+---
+
+## 2. Tooling: Biome und Typensicherheit
+
+Seit Version 0.106.4 ersetzt **Biome 1.9.4** fruehere Einzellinter (wie ESLint/Prettier):
+- **Geschwindigkeit:** Biome analysiert und formatiert das gesamte Repository in Millisekunden.
+- **Konfiguration (`biome.json`):** Einheitliche Einrueckungen (4 Spaces), Verbot ungenutzter Variablen, strenge Typpruefungen und automatische Import-Sortierung.
+- **TypeScript 5.3.3:** Strikte Compiler-Optionen (`strict: true`, `noImplicitAny: true`) in `tsconfig.json` verhindern unbemerkte Typen-Divergenzen.
+
+---
+
+## 3. Qualitaetssicherung und Test-Pyramide
+
+Die Teststrategie von Nodges gliedert sich in drei Saeulen:
+
+```
+          / \
+         /   \      Playwright E2E-Tests (Browser-Rendering, Interaktion)
+        / E2E \     npm run test:e2e
+       /───────\
+      /  Integ  \   Zod-Schema Export & Parser-Tests
+     /───────────\  npm run export:schema
+    /    Unit     \ Vitest Unit-Tests (Manager, Utils, State)
+   /───────────────\npm run test
+```
+
+### 3.1 Unit-Tests mit Vitest 1.6.1
+- Tests liegen unter `src/tests/` und spiegeln die Modulstruktur wider.
+- **Mocking externer Inferenz:** Reale Netzwerkaufrufe zu LLM-Providern sind in der Test-Suite verboten. `LLMService` wird ueber standardisierte Mocks simuliert, um deterministisches Verhalten bei JSON-Fehlern, Netzwerkabbruechen (HTTP 500) und Rate-Limits (HTTP 429) zu verifizieren.
+
+### 3.2 End-to-End Tests mit Playwright 1.58.2
+- Prueft das Zusammenspiel zwischen WebGL-Canvas, Three.js-Szenengraph und UI-Overlays im echten Headless-Browser.
+- Validiert, dass Klicks auf Knoten das Informationspanel oeffnen und das Laden von JSON-Dateien zu gueltigen `InstancedMesh`-Strukturen fuehrt.
+
+---
+
+## 4. Der verbindliche Git- und Release-Workflow (`tools/nodges-git.sh`)
+
+Um Fehlkonfigurationen und Branch-Divergenzen zwischen den Harnesses auszuschliessen, gilt seit Version 0.106.5 ein streng standardisierter Ablauf:
+
+| Befehl | Auswirkung | Remote-Push |
+|---|---|---|
+| `bash tools/nodges-git.sh status` | Zeigt Branch, Version, Git-Tag, Commit-Abstand zu GitHub und geaenderte Dateien. | Nein |
+| `bash tools/nodges-git.sh save` | Erhoeht die Patch-Version (`0.106.7` -> `0.106.8`), fuehrt `git add -A` aus und committet lokal mit der Versionsnummer als Nachricht. | Nein |
+| `bash tools/nodges-git.sh release` | Erhoeht die Minor-Version (`0.106.8` -> `0.107.0`), fuehrt Typecheck und Tests aus, setzt ein Git-Tag `v0.107.0` und pusht nach `origin/main`. | **Ja** |
+| `bash tools/nodges-git.sh hooks` | Aktiviert die versionierten Git-Hooks (`core.hooksPath = git-hooks`). | Nein |
+
+### 4.1 Versionierte Git-Hooks (`git-hooks/`)
+- **`pre-commit`:** Verhindert Commits auf falschen Branches, blockiert sensible Zugangsdaten (API-Keys) in der Stage und prueft den Versionsabgleich.
+- **`pre-push`:** Blockiert jeden Push von Patch-Versionen nach GitHub (Ausnahme nur bei explizitem `NODGES_ALLOW_PUSH=1`). **Regel: Zwischenstaende bleiben lokal; nur Minor- und Major-Releases gehen nach GitHub.**
+- **`post-commit`:** Informiert ueber den aktuellen lokalen Commit-Vorsprung gegenueber dem GitHub-Meilenstein-Archiv.
+
+---
+
+## 5. Fehlertoleranz und Ausfallsicherheit (Resilience)
+
+> **Visualisierung:** Siehe [10_ErrorHandlingResilience_002.mmd](10_ErrorHandlingResilience_002.mmd)
+
+- **Transaktionssichere Szene:** Schlaegt das Einlesen oder Parsen neuer Graphdaten fehl, bricht `App.loadGraphData` ab, ohne die bestehende 3D-Visualisierung zu leeren (`clearScene` erfolgt erst nach erfolgreicher Validierung).
+- **Zentraler Error-Bus:** Alle Fehler werden an den `CentralEventManager` und das Toast-System uebergeben, um Benutzer ueber Netzwerk- oder Schemaprobleme zu informieren, ohne die Anwendung einfrieren zu lassen.
+
+
+---------------------------------------------------------
+
+# 11 Historie und Entscheidungen (ADRs)
+
+Dieses Kapitel dokumentiert die historische Entwicklung, die wesentlichen Wendepunkte (Pivots) und die Architektur-Entscheidungen (Architecture Decision Records - ADRs) von Nodges vom fruehen Prototyp bis zur aktuellen Version **0.106.8**. Es erlaeutert das rationale Fundament vergangener Entscheidungen, um zukuenftige Fehlentwicklungen zu vermeiden.
+
+---
+
+## 1. Die Findungsphase: Build 1 bis Build 4
+
+> **Visualisierung:** Siehe [11_BuildEvolutionsTimeline_001.mmd](11_BuildEvolutionsTimeline_001.mmd)
+
+In der Anfangsphase war Nodges als komponentenbasiertes 3D-Dashboard konzipiert:
+- **Das Problem:** Datenattribute waren hart an 3D-Geometrien gekoppelt (z. B. `if (type === 'Server') renderCylinder()`).
+- **Der Pain Point:** Jeder neue Datensatz (Wirtschaftsnetzwerke, Biologie, Soziologie) erforderte Quelltext-Modifikationen mit neuen Verzweigungen im Renderer. Eine Skalierung auf beliebige Domaenen war unmoeglich.
+
+---
+
+## 2. Der grosse Pivot: Build 5 (Die Drei-Saeulen-Entkopplung)
+
+> **Visualisierung:** Siehe [11_OntologieArchitektKonzept_003.mmd](11_OntologieArchitektKonzept_003.mmd)
+
+Build 5 markiert den wichtigsten konzeptionellen Meilenstein in der Geschichte von Nodges:
+- **Entscheidung:** Vollstaendige Entkopplung von Ontologie, Instanzdaten und Visual Mapping.
+- **Wirkung:** Das Attribut `type` verlor seine grafische Deutungshoheit. Daten wurden vollstaendig flach organisiert.
+- **Geburt des Visual Mappings:** Farben, Skalierungen, Geometrien und Transparenzen wurden als dynamische Mappings definiert, die der Benutzer zur Laufzeit ohne Datenverlust modifizieren kann.
+
+---
+
+## 3. Der Kampf gegen Halluzinationen: Build 6
+
+> **Visualisierung:** Siehe [11_ADRProblemLoesung_002.mmd](11_ADRProblemLoesung_002.mmd)
+
+Waehrend Build 5 visuelle Flexibilitaet schuf, produzierten LLMs haeufig defekte JSON-Payloads oder erfanden Attribute, die nirgends definiert waren.
+- **Entscheidung:** Einfuehrung strikter Laufzeit-Validierung ueber Zod.
+- **Wirkung:** Der "JSON Schema Mode" zwang Inferenz-Modelle deterministisch in die Zielstruktur; syntaktisch unzulaessige Daten wurden blockiert, bevor sie Three.js erreichten.
+
+---
+
+## 4. Grounding und semantische Tiefe: Build 8 und Build 9
+
+- **Build 8 (Wikidata-Grounding):** Extraktion verifizierter RDF-Tripel ueber Live-SPARQL-Abfragen. Faktische Falschangaben (z. B. historische Lebensdaten oder geografische Distanzen) wurden eliminiert.
+- **Build 9 (Vektor-Deduplizierung):** Einfuehrung von Text-Embeddings und Kosinus-Aehnlichkeitskalkulationen, um synonyme Entitaeten ("USA" und "Vereinigte Staaten") automatisch zusammenzufuehren.
+
+---
+
+## 5. Die modulare Pipeline: Build 10
+
+- **Entscheidung:** Abloesung starrer Pipeline-Monolithen durch ein frei konfigurierbares Baukastensystem im `CreatePanel`.
+- **Wirkung:** Nutzer koennen Inferenz-Provider (Cloud vs. lokal via Ollama), Grounding-Methoden, Evaluierungsstufen (Human-in-the-Loop) und Kantenbewertungen modular kombinieren.
+
+---
+
+## 6. Build 12: LightRAG Graph Retrieval Backend
+
+- **Kontext:** Fuer die Analyse umfangreicher unstrukturierter Dokumente reichten reine Prompt-Fenster nicht mehr aus.
+- **Entscheidung:** Etablierung eines lokalen Python-FastAPI Backends (`lightrag-backend/`) mit Vektorspeicher und semantischer Graph-Indizierung.
+- **Modellstandard:** OpenRouter Embedding-Modell `qwen/qwen3-embedding-8b` mit 4096 Dimensionen.
+
+---
+
+## 7. Der Multi-Harness Pivot und SSoT-Standard (Version 0.106.x)
+
+Im September 2026 erreichte das Projekt einen entscheidenden Wendepunkt in der Entwicklungsorganisation:
+
+### 7.1 Das Scheitern des 3-Checkout-Modells (winAnt)
+Zuvor existierten drei getrennte Checkouts (Windows-Host `winAnt`, Linux-Container `piCon` und GitHub). Dies fuehrte zu kontinuierlichen Zeilenenden-Konflikten (CRLF vs. LF), Commit-Divergenzen und Synchronisationsverlusten.
+- **ADR (2026-09-24):** Der Windows-Host-Workspace `winAnt` wird vollstaendig abgekoppelt und stillgelegt.
+- **Die Loesung (conT):** Antigravity auf Windows 11 greift ueber das Netzlaufwerk `W:/` direkt auf das WSL2 ext4-Dateisystem (`/home/unixusername/nodges`) zu.
+- **Single Source of Truth (SSoT):** conT und piCon arbeiten auf denselben physischen Inodes. Lokale Zwischenstaende erfordern keinen Git-Sync.
+
+### 7.2 Branch-Konsolidierung auf `main`
+- Der fruehere Entwicklungsbranch `pi` wurde vollstaendig in `main` ueberfuehrt und geloescht. `main` ist nun der einzige Arbeitszweig fuer alle Harnesses.
+
+### 7.3 Standardisierter Git-Workflow (`tools/nodges-git.sh`)
+- GitHub fungiert als reines Meilenstein-Archiv fuer stabile Minor- und Major-Versionen.
+- Lokale Zwischenschritte werden mit `bash tools/nodges-git.sh save` als Patch-Versionen festgehalten.
+- Git-Hooks (`pre-push`) blockieren versehentliche Pushes von Patch-Versionen.
+
+### 7.4 Der COM-Bus (Version 0.106.7)
+- Einfuehrung dateisystembasierter Waechter (`tools/watch_com.mjs` und `W:/tools/watch_com.ps1`), die Aenderungen im gemeinsamen Ordner `W:/com/` erfassen und als Benachrichtigungen in die Chat-Sessions der Agenten einspielen.
+
+### 7.5 Tooling-Vereinheitlichung via Biome (Version 0.106.4)
+- Abloesung langsamer Altlinter durch **Biome 1.9.4** fuer konsistentes Linting und Formatting in Millisekunden sowie Einfuehrung von Playwright fuer automatisierte End-to-End Browsertests.
+
+
+---------------------------------------------------------
+
+# 12 Quickstart und Tutorial
+
+Dieses Tutorial fuehrt Anwender und Entwickler Schritt fuer Schritt durch die grundlegende Bedienung von Nodges in Version **0.106.8** – von der Konfiguration der Inferenz-Provider ueber die agentische Grapherstellung bis zur dynamischen 3D-Navigation und dem Visual Mapping.
+
+---
+
+## 1. Erstes Setup und Provider-Konfiguration
+
+> **Visualisierung:** Siehe [12_QuickstartFlow_001.mmd](12_QuickstartFlow_001.mmd) und [12_ProviderSetupDetail_002.mmd](12_ProviderSetupDetail_002.mmd)
+
+Nodges operiert nach dem Prinzip **BYOK ("Bring Your Own Key")** und ist vollstaendig Local-First-faehig. Es ist keine Registrierung bei zentralen Cloud-Diensten erforderlich:
+
+1. **Einstellungsmenue oeffnen:** Klicken Sie in der oberen rechten Menueleiste auf das Einstellungen-Symbol (Settings).
+2. **Inferenz-Provider konfigurieren:**
+   - **Cloud-Modus:** Waehlen Sie *OpenRouter*, *OpenAI* oder *Anthropic* und hinterlegen Sie Ihren personlichen API-Key. Der Schluessel wird verschluesselt im lokalen Browserspeicher (`localStorage`) abgelegt und ausschliesslich fuer direkte API-Aufrufe an den Provider genutzt.
+   - **Lokaler Modus (Local-First):** Waehlen Sie *Local (Ollama)* oder *LM Studio*. Stellen Sie sicher, dass Ihr lokaler Inferenz-Server laeuft (z. B. Ollama standardmaessig auf `http://localhost:11434`). Ein API-Key ist im lokalen Betrieb nicht erforderlich.
+
+---
+
+## 2. Den ersten Graphen generieren (Build 10 / CreatePanel)
+
+> **Visualisierung:** Siehe [12_PromptEngineering_006.mmd](12_PromptEngineering_006.mmd)
+
+Die Kernstaerke von Nodges liegt in der agentischen Wissensextraktion ueber das modulare `CreatePanel`:
+
+1. Oeffnen Sie das **CreatePanel** ueber die Seitenleiste.
+2. **Modulkonfiguration festlegen:**
+   - *Inferenz-Quelle:* Waehlen Sie Ihren vorkonfigurierten Provider.
+   - *Grounding-Strategie:* Waehlen Sie fuer freie Exploration "Keines" oder fuer verifizierte Fakten "Wikidata Live" bzw. "LightRAG".
+   - *Qualitaetssicherung:* Aktivieren Sie "Generator + Kritiker" oder "Human-in-the-Loop", wenn Sie Daten vor dem Rendern pruefen moechten.
+3. **Prompt eingeben:** Formulieren Sie Ihre Aufgabenstellung praezise, zum Beispiel:  
+   *"Modelliere das europaeische Stromnetz mit Uebertragungsnetzbetreibern, Hauptkraftwerken, Speichern und Interkonnektoren. Zeige Abhaengigkeiten und Kapazitaeten."*
+4. **Generierung ausloesen:** Klicken Sie auf **"Generieren"**. Die Toast-Benachrichtigungen informieren Sie ueber den zweistufigen Ablauf: Phase 1 (Ontologie-Design) gefolgt von Phase 2 (Instanziierung und Zod-Validierung).
+
+---
+
+## 3. Navigation und Raumorientierung in 3D
+
+> **Visualisierung:** Siehe [12_KameraNavigationKontrollen_003.mmd](12_KameraNavigationKontrollen_003.mmd)
+
+Nach dem Ladevorgang entfaltet sich der Graph im 3D-Raum:
+
+- **Rotieren (Orbit):** Linke Maustaste gedrueckt halten und ueber den Canvas ziehen.
+- **Verschieben (Pan):** Rechte Maustaste gedrueckt halten (oder `Shift` + linke Maustaste) und ziehen.
+- **Zoomen:** Mausrad drehen oder Touchpad-Gesten nutzen. Der Zoom passt seine Geschwindigkeit automatisch an die Objektdistanz an.
+- **Inspektion:** Klicken Sie auf einen beliebigen Knoten, um das Seiten-Panel zu oeffnen und saemtliche Attribute (`properties`) sowie verbundene Relationen einzusehen.
+- **Fokus-Fahrt:** Ein Doppelklick auf einen Knoten animiert die Kamera in einer weichen Fly-To-Bewegung direkt vor das ausgewaehlte Element.
+
+---
+
+## 4. Das Visual Mapping beherrschen
+
+> **Visualisierung:** Siehe [12_VisualMappingMechanik_004.mmd](12_VisualMappingMechanik_004.mmd)
+
+Das `MappingPanel` erlaubt die freie Uebersetzung von Datenattributen in visuelle Kanaele:
+
+- **Groesse (Scale):** Waehlen Sie im Dropdown fuer Skalierung eine kontinuierliche Metrik (z. B. "Kapazitaet" oder "Bedeutung"). Die Knoten passen ihren Radius in Echtzeit an.
+- **Farbe (Color):** Mappen Sie eine kategoriale Eigenschaft (z. B. "Energietyp" oder "Land"), um das Netzwerk automatisch chromatisch zu clustern.
+- **Achsensperrung (Position X / Y / Z):** Waehlen Sie ein Attribut wie "Baujahr" und legen Sie es auf die `X`-Achse. Die Physik-Engine sperrt fuer diese Dimension die Kraefte; die Knoten ordnen sich auf einer horizontalen Zeitachse an, waehrend sie auf Y und Z weiterhin topologisch floaten.
+
+---
+
+## 5. Eigene Datensaetze importieren (Drag & Drop)
+
+> **Visualisierung:** Siehe [12_DragDropImportFlow_005.mmd](12_DragDropImportFlow_005.mmd)
+
+Neben generativen KI-Pipelines unterstuetzt Nodges den direkten Import lokaler Graphdaten:
+- Ziehen Sie eine standardkonforme `.json`-Datei (Schema 5.0 oder 5.2) per Drag & Drop direkt auf den Browser-Canvas.
+- Der `DataParser` prueft und normalisiert das Dokument automatisch.
+- Bei erfolgreicher Zod-Validierung wird die bisherige Szene bereinigt und der neue Graph instantan instanziiert.
+
+
+---------------------------------------------------------
+
+# 13 Troubleshooting und FAQ
+
+> **Visualisierung:** Siehe [13_TroubleshootingUebersicht_001.mmd](13_TroubleshootingUebersicht_001.mmd)
+
+Dieses Dokument fasst bewaehrte Loesungswege fuer haeufige Probleme in den Bereichen KI-Inferenz, WebGL-Rendering, Datenmodellierung und Multi-Harness-Betrieb in Version **0.106.8** zusammen.
+
+---
+
+## 1. LLM-Inferenz und Pipeline-Fehler
+
+### Fehler: "JSON Parse Error" oder "Zod Validation Failed"
+- **Symptom:** Die Pipeline bricht mit einer roten Toast-Meldung ab; der bisherige Graph bleibt unveraendert im Canvas erhalten.
+- **Ursache:** Das Sprachmodell hat den JSON-Codeblock durch unstrukturierten Text beschraenkt, zulaessige Typen verletzt oder Relationen mit ungueltigen `source`/`target`-IDs generiert.
+- **Loesung:**
+  1. Bei kleinen Modellen (z. B. 8B-Parameter) auf leistungsfaehigere Modelle (Claude 3.5 Sonnet, GPT-4o) umschalten, da diese komplexe JSON-Constraints ueber hunderte Zeilen zuverlaessiger einhalten.
+  2. Im Prompt explizite Instruktionen ergaenzen: *"Antworte ausschliesslich mit dem validierten JSON-Objekt ohne Einleitung oder Markdown-Erlaeuterungen ausserhalb des Blocks."*
+
+### Fehler: CORS-Blockade bei lokaler Ollama-Inferenz
+
+> **Visualisierung:** Siehe [13_CORSArchitekturOllama_003.mmd](13_CORSArchitekturOllama_003.mmd)
+
+- **Symptom:** Netzwerkfehler (`Failed to fetch`) beim Ansprechen von `http://localhost:11434`.
+- **Ursache:** Lokale Inferenz-Server blockieren standardmaessig herkunftsuebergreifende Anfragen aus dem Browser (`localhost:5173`).
+- **Loesung:** Ollama mit CORS-Freigabe starten:
+  - Unter Windows (PowerShell): `$env:OLLAMA_ORIGINS="*"; ollama serve`
+  - Unter Linux / Container: `OLLAMA_ORIGINS="*" ollama serve`
+
+### Fehler: HTTP 429 (Too Many Requests)
+- **Symptom:** Abbruch der Inferenz mit Rate-Limit-Status.
+- **Ursache:** Erschoepfte Token-Quoten oder providerseitige Frequenzlimits (z. B. Free-Tier bei OpenRouter).
+- **Loesung:** Guthaben aufladen oder im `CreatePanel` temporaer auf den lokalen Provider (Ollama) umschalten.
+
+---
+
+## 2. WebGL, Grafikspeicher und Performance
+
+### Symptom: Bildrate sinkt deutlich ab (< 30 FPS)
+- **Ursache 1:** Zu viele ungebufferte 3D-Kanten oder komplexe Bezier-TubeGeometrien bei dichten Graphen.
+- **Ursache 2:** Die Physiksimulation laeuft kontinuierlich auf der CPU weiter.
+- **Loesung:**
+  - Im Einstellungsmenue die Kraeftesimulation nach Erreichen eines stabilen Zustands einfrieren (*Cooldown / Pause*).
+  - Kantenqualitaet auf einfache Linien zurueckstellen.
+  - Antialiasing auf schwaecherer Hardware deaktivieren.
+
+### Symptom: "WebGL Context Lost" oder White Screen of Death
+
+> **Visualisierung:** Siehe [13_VRAMLeakKausalkette_001.mmd](13_VRAMLeakKausalkette_001.mmd)
+
+- **Ursache:** Ueberlauf des Grafikspeichers (VRAM-Leak), weil beim Graphwechsel Geometrien, Materialien und Shader nicht ordnungsgemaess freigegeben wurden.
+- **Loesung:**
+  - Pruefen, dass vor jedem Neuaufbau in `App.loadGraphData` saemtliche Three.js-Objekte mit `.dispose()` behandelt werden.
+  - Browser-Tab mit `Strg + F5` neu laden, um den WebGL-Kontext sauber zurueckzusetzen.
+
+---
+
+## 3. Daten, Mappings und Raumverhalten
+
+### Symptom: Farb- oder Groessen-Mappings zeigen keine optische Wirkung
+
+> **Visualisierung:** Siehe [13_OntologieInstanzDivergenz_002.mmd](13_OntologieInstanzDivergenz_002.mmd)
+
+- **Ursache:** Das Attribut wurde zwar in der Ontologie (`dataModel`) deklariert, in den konkreten Knoten (`entities`) vom LLM jedoch als `null`, `undefined` oder mit falschem Datentyp ausgegeben.
+- **Loesung:** Knoten im 3D-Raum anklicken und im Inspektionspanel die tatsaechlich vorhandenen Rohdaten pruefen. Gegebenenfalls den Prompt praezisieren.
+
+### Symptom: Knoten driften chaotisch auseinander
+- **Ursache:** Die elektrostatische Abstossungskraft (*Repulsion/Charge*) ueberwiegt die Federkraft (*Link Tension*) der Kanten massiv.
+- **Loesung:** Im Physik-Panel die Abstossungsstaerke reduzieren oder die Kantenlaenge herabsetzen.
+
+---
+
+## 4. Multi-Harness und Container-Betrieb
+
+### Rotes Kreuz auf Netzlaufwerk W: im Windows Explorer
+- **Ursache:** Kosmetischer Windows Lazy-Reconnect-Effekt nach dem Booten.
+- **Auswirkung:** **Keine.** Der Zugriff von conT und PowerShell auf `W:/` funktioniert transparent.
+
+### Git-Push wird durch Hook abgewiesen (`pre-push hook failed`)
+- **Ursache:** Der versionierte Hook blockiert Pushes von reinen Patch-Versionen (`0.106.x`).
+- **Loesung:** Pushes nach GitHub sind fuer Minor- und Major-Releases reserviert. Verwenden Sie `bash tools/nodges-git.sh release` fuer echte Meilensteine.
+
+### LightRAG Backend antwortet nicht (Port 8000)
+- **Pruefung:** `curl -s http://localhost:5173/lightrag-api/health`
+- **Loesung:** Backend im Container mit `npm run lightrag` oder `.devcontainer/start-lightrag.sh` neu starten.
+
+
+---------------------------------------------------------
+
+# 14 Ideen und Roadmap (Future Concepts)
+
+> **Visualisierung:** Siehe [14_RoadmapFeatureHorizonte_001.mmd](14_RoadmapFeatureHorizonte_001.mmd)
+
+Dieses Kapitel buendelt Zukunftskonzepte, methodische Erweiterungen und experimentelle Architektur-Entwuerfe fuer Nodges jenseits der Version **0.106.8**. Es dient als strategischer Leitfaden fuer kommende Entwicklungszyklen.
+
+---
+
+## 1. Die Zeitdimension und Systemsimulation (TimeEngine)
+
+> **Visualisierung:** Siehe [14_TimeEngineSimulation_002.mmd](14_TimeEngineSimulation_002.mmd)
+
+Waehrend Version 0.106.8 temporale Datenstrukturen (`validFrom`, `validTo`, Keyframe-Deltas) schemaseitig validiert und im Time-Player abbildet, zielt die naechste Ausbaustufe auf eine interaktive **Echtzeit-Systemsimulation**:
+
+- **Dynamische Attribut-Deltas:** Knoten erhalten Zerfallsraten (*Decay Rate*), Kanten uebertragen kausale Impulse in periodischen Intervallen.
+- **Kaskadeneffekte:** Faellt ein zentraler Netzknoten aus oder ueberschreitet eine definierte Lastgrenze (*Threshold*), propagiert der Schaden ueber inzidente Relationen durch das Gesamtsystem.
+- **Time-Warp Steuerung:** Eine Scrubbing-Zeitleiste erlaubt das stufenlose Vor- und Zurueckspulen von Systemzustaenden mit automatischer Interpolation zwischen diskreten Messpunkten.
+
+---
+
+## 2. Geospatial Mapping (Hybride 3D-Kartenwelten)
+
+> **Visualisierung:** Siehe [14_GeospatialMappingArchitektur_004.mmd](14_GeospatialMappingArchitektur_004.mmd)
+
+Fuer Datensaetze mit realer geografischer Verankerung (z. B. internationale Lieferketten, Unterseekabel oder Flugrouten) wird das klassische topologische Layout durch Geokoordinaten ergaenzt:
+
+- **Geodaten-Fixierung (`mapX`, `mapY` / Lat-Long):** Knoten werden auf einer referenzierten 2D-/3D-Weltkarte arretiert.
+- **Parabolische 3D-Boegen:** Um Ueberlappungen und Sichtblockaden auf der Kartenoberflaeche zu vermeiden, woelben sich Kanten als Hoehenkurven (Bezier-Splines) in den Z-Raum. Die Scheitelpunkthoehe kodiert zusaetzliche Metriken wie Distanz oder Transportvolumen.
+
+---
+
+## 3. High-Scale Physik-Optimierung via Barnes-Hut (`d3-force-3d`)
+
+> **Visualisierung:** Siehe [14_BarnesHutSkalierung_003.mmd](14_BarnesHutSkalierung_003.mmd)
+
+Die native Web-Worker-Kraefterechnung skaliert aktuell bei dichten Netzwerken mit quadratischem Aufwand $\mathcal{O}(N^2)$.
+- **Ziel:** Integration des Barnes-Hut-Algorithmus unter Verwendung von dreidimensionalen Octrees (`d3-force-3d`).
+- **Wirkung:** Reduktion der Rechenkomplexitaet auf $\mathcal{O}(N \log N)$. Dies ermoeglicht die simultane raeumliche Anordnung von ueber 50.000 Knoten im Browser ohne spuerbaren Bildratenverlust.
+
+---
+
+## 4. Hyperkanten und 1-zu-N-Beziehungsstrukturen
+
+Aktuell unterstuetzt das Graphmodell binaere Relationen (`source` und `target`).
+- **Erweiterung:** Einfuehrung von Hyperedges mit einem `targets`-Array.
+- **Visualisierung:** Sternfoermige Kantenverzweigungen mit dynamischen Knotenweichen zur adquaten Modellierung von Broadcast-Netzwerken, Konsortien oder multilateralen Vertraegen.
+
+---
+
+## 5. Vollintegrierte Graph-RAG Wissensspeicher
+
+Aufbauend auf dem in Version 0.106.8 etablierten LightRAG-Backend soll die semantische Wissensexploration weiter automatisiert werden:
+- **Live-Nachladen ("Infinite Graph Canvas"):** Durch Klick auf einen Randknoten fragt das System aehnliche Vektoren aus dem lokalen RAG-Speicher ab und erweitert den Graphen nahtlos um neue Satellitenknoten.
+- **Multi-Dokumenten Ingestion:** Direktes Einlesen ganzer PDF- und Markdown-Verzeichnisse in den Vektorspeicher mit automatischer Tripel-Extraktion.
+
+---
+
+## 6. Unkonventionelle Wahrnehmungskanaele und Spatial Computing
+
+> **Visualisierung:** Siehe [14_NegativeDarstellung_005.mmd](14_NegativeDarstellung_005.mmd)
+
+- **WebXR / Spatial Immersion:** Portierung der Three.js-Szenensteuerung auf immersive Headsets (Apple Vision Pro, Meta Quest). Anwender koennen Graphen physisch greifen, durchschreiten und raeumlich skalieren.
+- **Audio-visuelle Synaesthesie:** Prozedurale Klangsynthese beim Ueberstreichen von Clustern. Dichte Knotenverbunde erzeugen harmonische Akkorde, waehrend Fehler- und Ueberlastungszustaende dissonante Frequenzen emittieren.
+- **Fraktale Sub-Netzwerke:** Zoomen in einen Knoten oeffnet nahtlos dessen innere Systemarchitektur (*System-in-System* Abstraktion).
+- **Negative Darstellung (Phantom-Kanten):** Visualisierung antizipierter, aber tatsaechlich fehlender Relationen als gestrichelte "Geisterkanten" fuer Sicherheits- und Lueckenanalysen.
+
+
+---------------------------------------------------------
+
+# 15 Interoperabilitaet, Export und Multi-Build Formate
+
+Dieses Kapitel dokumentiert die Schnittstellen zur Datenportabilitaet, Rueckwaertskompatibilitaet und wissenschaftlichen Nachnutzung von Graphdaten in Nodges (Stand Version **0.106.8**).
+
+---
+
+## 1. Datenexport und Interoperabilitaet mit wissenschaftlichen Tools (GEXF)
+
+> **Visualisierung:** Siehe [15_ExportImportFormate_001.mmd](15_ExportImportFormate_001.mmd)
+
+Nodges versteht sich nicht als proprietaeres Datensilo. Graphen, die ueber generative KI-Pipelines oder manuelle Modellierung entstehen, koennen fuer weiterfuehrende mathematische Analysen an etablierte Desktop-Tools exportiert werden:
+
+### 1.1 Das GEXF-Format (Graph Exchange XML Format)
+- **Gephi-Kompatibilitaet:** *Gephi* gilt als akademischer De-facto-Standard fuer topologische Berechnungen (Modularitaetsklassen, Eigenvector-Centrality, HITS-Algorithmus).
+- **Strukturelle Uebersetzung:**  
+  Nodges-JSON-Entitaeten werden verlustfrei in `<node>`-Elemente und Beziehungen in `<edge>`-Tags ueberfuehrt. Das generische `properties`-Dictionary wird als typisierte `<attribute>`-Liste abgebildet.
+- **Bidirektionaler Workflow:**  
+  1. *Generierung in Nodges:* Schnelle Extraktion von Domaenenwissen mittels LLM.
+  2. *Export nach GEXF:* Ueberfuehrung in Gephi fuer tiefe statistische Netzwerkanalysen.
+  3. *Re-Import in Nodges:* Visualisierung des mathematisch angereicherten Graphen im modernen 3D-Glassmorphism-Design.
+
+---
+
+## 2. Multi-Build Format Kompatibilitaet
+
+> **Visualisierung:** Siehe [15_MultiBuildKompatibilitaet_002.mmd](15_MultiBuildKompatibilitaet_002.mmd)
+
+Die Evolution von Nodges brachte unterschiedliche Schema-Generationen hervor (Schema 3.0 bis 5.2). Das System folgt dem Prinzip: **Keine Gueltigkeit aelterer Datensaetze wird entwertet; Daten werden verlustfrei normalisiert statt zwangskonvertiert.**
+
+### 2.1 Parallele Schema-Erkennung im `DataParser`
+Der `DataParser` identifiziert beim Einlesen automatisch die vorliegende Schema-Generation:
+- **Heuristische Analyse:** Pruefung von Versionsbezeichnern (`schemaVersion`) sowie der Verteilung von `properties`, `stateVector` und temporalen Keyframes.
+- **Zod Union-Validierung:** Die Schemadefinition nutzt `z.union`, um sowohl klassische Strukturen (Attribute direkt im Knotenobjekt) als auch moderne flache Repraesentationen zu parsen.
+- **Interne Normalisierung:** Die Three.js-Render-Engine arbeitet ausschliesslich gegen den normalisierten internen Zustand; Unterschiede frueherer Build-Formate werden vor der Mesh-Erzeugung transparent ausgeglichen.
+
+---
+
+## 3. Automatisierte Information-Extraction-Pipelines (Tripel-Extraktion)
+
+> **Visualisierung:** Siehe [15_IEPipelineTripleExtraktion_003.mmd](15_IEPipelineTripleExtraktion_003.mmd)
+
+Fuer den Import unstrukturierter Fachliteratur (z. B. Forschungsberichte oder PDFs) nutzt Nodges automatisierte Tripel-Extraktoren:
+- **Subjekt-Praedikat-Objekt Extraktion:** Inferenz-Modelle identifizieren Entitaeten und Praedikate direkt aus Fliesstexten.
+- **Deterministische Schema-Erzeugung:** Die extrahierten Relationen werden vollautomatisch in gueltige Nodges-JSON-Knoten und Kanten uebertragen, ohne dass der Anwender manuell JSON-Dateien bearbeiten muss.
+
+
+---------------------------------------------------------
+
+# 16 LightRAG Backend und Multi-Harness Integration
+
+Dieses Kapitel dokumentiert das dedizierte Python-FastAPI Backend (`lightrag-backend`), die Graph-RAG-Pipeline (Retrieval-Augmented Generation) sowie die Kommunikationsmechanik des Multi-Harness COM-Busses in Version **0.106.8**.
+
+---
+
+## 1. Uebersicht und Architektur
+
+Waehrend fruehere Entwicklungsstufen (Build 5 bis 10) primaer auf dem latenten Vorwissen von Sprachmodellen oder statischen SPARQL-Abfragen basierten, ermoeglicht das **LightRAG-Backend** die semantische Indizierung, Vektorisierung und topologische Abfrage eigener Dokumentensammlungen in Echtzeit.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ Nodges Frontend (TypeScript / Three.js / Vite auf Port 5173) │
+│ - CreatePanel UI                                            │
+│ - LightRAGService.ts                                        │
+│ - DataParser.ts (Schema 5.2 Normalisierung)                 │
+└──────────────────────────────┬──────────────────────────────┘
+                               │ Proxy: /lightrag-api
+┌──────────────────────────────▼──────────────────────────────┐
+│ LightRAG Backend (Python FastAPI auf Port 8000)             │
+│ - main.py (REST API Router)                                 │
+│ - lightrag-hku Engine                                       │
+│ - Working Dir: lightrag-backend/rag_storage                 │
+└──────────────────────────────┬──────────────────────────────┘
+                               │ Inferenz & Embeddings
+┌──────────────────────────────▼──────────────────────────────┐
+│ Externe Provider (OpenRouter API)                           │
+│ - Embedding-Modell: qwen/qwen3-embedding-8b (Dim 4096)      │
+│ - LLM-Synthese: Chat-Completions                            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 2. Das Python FastAPI Backend (`lightrag-backend/`)
+
+### 2.1 Laufzeitumgebung und Installation
+- **Virtuelle Umgebung:** `/workspace/lightrag-backend/venv` (im Linux-Container) bzw. `W:/lightrag-backend/venv` (Windows-Zugriff).
+- **Kern-Abhaengigkeiten:** `fastapi`, `uvicorn`, `lightrag-hku`, `pydantic`, `python-dotenv`.
+- **Startskript:** `npm run lightrag` oder `.devcontainer/start-lightrag.sh`.
+
+### 2.2 RESTful API-Endpunkte
+
+| Methode | Endpunkt | Funktion / Beschreibung |
+|---|---|---|
+| `GET` | `/health` | Prueft den Server- und Modellstatus (`{"status": "online", "lightrag_engine_active": true}`). |
+| `POST` | `/query` | Fuehrt eine semantische Graph-RAG-Abfrage aus (`mode`: `hybrid`, `local`, `global`, `naive`). |
+| `POST` | `/insert` | Speist Rohtext oder Dokumenteninhalte in den Vektorspeicher ein. |
+| `GET` | `/databases` | Listet vorhandene Vektor- und Graphdatenbanken auf. |
+
+### 2.3 Proxy-Konfiguration in Vite
+Um CORS-Probleme im Browser zu vermeiden, leitet der Vite-Entwicklungsserver Anfragen ueber eine interne Proxy-Regel transparent weiter:
+```
+http://localhost:5173/lightrag-api/* ──► http://localhost:8000/*
+```
+Der Health-Check kann im Browser oder Terminal geprueft werden:
+```bash
+curl -s http://localhost:5173/lightrag-api/health
+```
+
+---
+
+## 3. Der COM-Bus: Autonome Agenten-Kollaboration
+
+Fuer die synchrone Zusammenarbeit zwischen conT (Antigravity auf Windows 11) und piCon (Pi-Agent im Linux-Container) verfuegt Nodges ueber ein ereignisgesteuertes Kommunikationsnetzwerk:
+
+### 3.1 Komponenten des COM-Busses
+- **Dateisystem-Waechter:**  
+  - Linux-Seite: `tools/watch_com.mjs` (Node.js `fs.watch`).
+  - Windows-Seite: `W:/tools/watch_com.ps1` (PowerShell `FileSystemWatcher`).
+- **Ueberwachtes Verzeichnis:** Ausschliesslich `W:/com/` (versionierte Arbeitsdokumente, Plaene und Berichte).
+- **Ereignis-Log:** `tools/com-bus/events.log` (liegt bewusst ausserhalb von `com/`, um rekursive Rueckkopplungen zu verhindern).
+
+### 3.2 Ablauf einer Benachrichtigung
+1. Ein Agent (z. B. conT) speichert ein Arbeitsdokument in `W:/com/doc/`.
+2. Der Waechter registriert das Dateiereignis unmittelbar und schreibt eine Protokollzeile:
+   `2026-09-27 09:00:15  erstellt  com/doc/...  (4250 B)`
+3. Die Agenten-Erweiterung (`before_agent_start`) liest neue Eintraege automatisch und stellt sie als Kontextblock in den naechsten Prompt des Partner-Agenten.
+4. **Pings:** Gezielte Weckrufe (`bash tools/nodges-com.sh ping conT "Nachricht"`) hinterlegen temporaere Triggerdateien, die vorrangig im Chat signalisiert werden.
+
+
+---------------------------------------------------------
+

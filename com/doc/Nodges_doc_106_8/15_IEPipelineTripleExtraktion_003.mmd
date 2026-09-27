@@ -1,0 +1,30 @@
+graph TD
+    subgraph INPUT["Eingabe: Unstrukturierter Text"]
+        T1["Wissenschaftliches Paper\n(PDF-Upload)"]
+        T2["Rohtext:\n'Albert Einstein entwickelte die\nSpezielle Relativitaetstheorie.\nSie beeinflusst die Quantenmechanik.'"]
+    end
+
+    subgraph IE["IE-Pipeline\n(Information Extraction)"]
+        IE1["NLP-Analyse\nSatz-Tokenisierung\nNER (Named Entity Recognition)"]
+        IE2["Triple-Extraktion\nSubjekt – Praedikat – Objekt"]
+        IE3["Triple 1:\nAlbert Einstein\n→ entwickelte\n→ Spezielle Relativitaetstheorie\n\nTriple 2:\nSpezielle Relativitaetstheorie\n→ beeinflusst\n→ Quantenmechanik"]
+        IE1 --> IE2 --> IE3
+    end
+
+    subgraph MAPPING["Uebersetzung → Nodges Schema"]
+        M1["Subjekte + Objekte\n→ entities\nmit automatisch\ngenerierter ID"]
+        M2["Praedikate\n→ relationships\nmit type = Praedikat-String\nund source + target IDs"]
+        M3["Erkannte Entitaets-Typen\n(Person, Konzept, Ort)\n→ nodeType in dataModel"]
+    end
+
+    subgraph OUTPUT["Nodges-Graph ohne JSON-Kontakt"]
+        O1["Knoten: Albert Einstein (person)\nKnoten: Spez. Relativitaetstheorie (concept)\nKnoten: Quantenmechanik (concept)"]
+        O2["Kante: entwickelte\nsource: einstein\ntarget: relativitaet\n\nKante: beeinflusst\nsource: relativitaet\ntarget: quantenmechanik"]
+    end
+
+    INPUT --> IE --> MAPPING --> OUTPUT
+
+    style INPUT fill:#2a2a1a,stroke:#f9a825,color:#fff9c4
+    style IE fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style MAPPING fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style OUTPUT fill:#1a1a3a,stroke:#7b1fa2,color:#e1bee7

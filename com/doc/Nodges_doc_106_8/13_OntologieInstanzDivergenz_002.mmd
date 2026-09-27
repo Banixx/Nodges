@@ -1,0 +1,28 @@
+graph TD
+    SYM(["Symptom:\nMapping Farbe oder Groesse\nhat keine sichtbare Auswirkung"])
+
+    SYM --> Q1{"Ist das Property\nim dataModel definiert?"}
+
+    Q1 -->|"NEIN"| A1["Property existiert\nnicht in der Ontologie\nDropdown zeigt es gar nicht\nan — kein Fehler dieser Art"]
+
+    Q1 -->|"JA — Property ist im Schema"| Q2{"Ist das Property\nin den entities befuellt?"}
+
+    Q2 -->|"JA — alle Knoten haben Wert"| Q3{"Ist der Wertebereich\nenorm eng?"}
+    Q3 -->|"z.B. alle Werte = 50"| A3["Normalisierung ergibt\nfuer alle Knoten denselben Wert\nMapping wirkt — ist aber\nvisuell nicht unterscheidbar"]
+    Q3 -->|"Werte variieren"| BUG["Moeglicherweise Bug\nin applyMapping-Logik\nSceneManager debuggen"]
+
+    Q2 -->|"NEIN — null oder undefined"| CORE["Kernproblem:\nOntologie-Instanz-Divergenz\n\nDas LLM hat in Phase 1\n'influence' definiert\naber in Phase 2 vergessen\nes bei Knoten zu befuellen"]
+
+    CORE --> WHY["Warum passiert das?\nKleine Modelle verlieren\nbei langen JSONs den Kontext\nund 'vergessen' Properties"]
+
+    WHY --> FIX["Fix-Strategie"]
+    FIX --> F1["Knoten anklicken\nRohdaten im Info-Panel pruefen\nob Feld wirklich null ist"]
+    FIX --> F2["Prompt ergaenzen:\n'Fuelle bei JEDEM Knoten\ninfluence mit Wert 1-100\n— ZWINGEND'"]
+    FIX --> F3["Auf groesseres Modell wechseln\nGPT-4o haelt Constraints\nueber 100+ JSON-Zeilen"]
+
+    style SYM fill:#3a2a1a,stroke:#fb8c00,color:#ffe0b2
+    style CORE fill:#3a1a1a,stroke:#e53935,color:#ffcdd2
+    style WHY fill:#2a1a1a,stroke:#e53935,color:#ffcdd2
+    style FIX fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style A3 fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style BUG fill:#2a1a3a,stroke:#9c27b0,color:#e1bee7

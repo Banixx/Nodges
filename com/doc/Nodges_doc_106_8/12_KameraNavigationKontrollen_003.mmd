@@ -1,0 +1,40 @@
+graph TD
+    subgraph ORBIT["Orbit / Rotieren"]
+        O1["Linke Maustaste\ngedrückt halten + ziehen"]
+        O2["Kamera kreist um\nden Graphen-Mittelpunkt\n(OrbitControls)"]
+        O1 --> O2
+    end
+
+    subgraph ZOOM["Zoomen"]
+        Z1["Mausrad scrollen\noder Pinch-to-Zoom Touchpad"]
+        Z2["Kontext-sensitiver Zoom:\nZoom-Schritt wird\nproportional kleiner\nje naeher man dem Knoten ist\nverhindert Clipping durch Geometrie"]
+        Z1 --> Z2
+    end
+
+    subgraph PAN["Pannen / Verschieben"]
+        P1["Rechte Maustaste\ngedrückt + ziehen\noder Shift + Linke Taste"]
+        P2["Kamera verschiebt sich\nparallel zur Bildebene\nKameraziel wandert mit"]
+        P1 --> P2
+    end
+
+    subgraph CLICK["Knoten anklicken"]
+        C1["Linke Taste druecken + loslassen\nDistanz < 5 Pixel\n= echter Klick"]
+        C2["Raycaster identifiziert\nden naechsten Knoten\nvia instanceId + Lookup-Table"]
+        C3["Info-Panel oeffnet sich\nRohdaten (properties)\nalle Felder des Knotens sichtbar"]
+        C4["HighlightManager:\nGlow + Breathing-Animation\nauf selektiertem Knoten"]
+        C1 --> C2 --> C3
+        C2 --> C4
+    end
+
+    subgraph AUTOFOCUS["Fly-To via Suchergebnis"]
+        F1["Knoten in Suche auswaehlen"]
+        F2["TWEEN.js interpoliert\nKameraposition sanft zum Ziel\nSmoothStep Easing\nlangsam start → schnell mitte → sanft stop"]
+        F3["Kamera haelt an\nBounding-Sphere des Objekts\nnicht im Kern"]
+        F1 --> F2 --> F3
+    end
+
+    style ORBIT fill:#1a2a3a,stroke:#1e88e5,color:#bbdefb
+    style ZOOM fill:#1a3a1a,stroke:#43a047,color:#c8e6c9
+    style PAN fill:#2a1a3a,stroke:#9c27b0,color:#e1bee7
+    style CLICK fill:#2a2a1a,stroke:#f9a825,color:#fff9c4
+    style AUTOFOCUS fill:#1a3a3a,stroke:#00897b,color:#b2dfdb

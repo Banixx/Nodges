@@ -1,0 +1,71 @@
+# Offene Fragen und unentschiedene Punkte
+
+> **Zweck dieses Dokuments:**  
+> Dieses Dokument ist die zentrale Anlaufstelle fuer alle ungeklaerten Fragen, Entwuerfe und Vorschlaege an den Benutzer **Banixx**.  
+> **LLM-Orientierung:** Wenn der Benutzer in einer Session nach *"fragen"* (oder *"offene Fragen"*, *"welche Fragen sind offen?"*) fragt, orientiert sich das LLM an dieser Datei, fasst die offenen Punkte kompakt zusammen oder unterbreitet Entscheidungsvorlagen.
+
+---
+
+## Schnelluebersicht der offenen Themen
+
+| Nr. | Thema | Bereich | Dringlichkeit | Status |
+|---|---|---|---|---|
+| **F-01** | Commit-Trailer (`Harness:` vs. `Co-authored-by`) | Git-Workflow | Mittel | Wartend auf Benutzer |
+| **F-02** | E2E-Gate in `tools/nodges-git.sh release` | Test & Freigabe | Hoch | Wartend auf Benutzer |
+| **F-03** | Aufraeumen von `resetup.md` und `Plan_v4_*.md` im Root | Dateistruktur | Niedrig | Wartend auf Benutzer |
+| **F-04** | Parallele Pi-Agent-Instanzen im Container | Multi-Agent | Mittel | Konzept fertig, Entscheidung offen |
+| **F-05** | Wortlaut-Harmonisierung in `bericht.md` Teil H.2 | Dokumentation | Niedrig | Abstimmung offen |
+
+---
+
+## Detailbeschreibungen
+
+### Frage F-01: Soll ein Commit-Trailer fuer KI-Transparenz eingefuehrt werden?
+- **Kontext:** Aktuell lautet die Commit-Nachricht bei `tools/nodges-git.sh save` ausschliesslich auf die Versionsnummer (z.B. `0.106.8`). Banixx ist der Git-Owner. Es steht die Frage im Raum, ob sichtbar sein soll, welches Harness den Commit erzeugt hat.
+- **Optionen:**
+  1. **Option A:** `Harness: conT` bzw. `Harness: piCon` als einzeiligen Trailer unter der Nachricht hinzufuegen.
+  2. **Option B:** `Co-authored-by: Antigravity <antigravity@internal>` als Git-Trailer gemaess GitHub-Standard.
+  3. **Option C (Status Quo):** Keine Aenderung — die Nachricht bleibt strikt die reine Versionsnummer.
+- **Empfehlung:** Option A (`Harness: conT` / `Harness: piCon`), da dies sofort erklaert, von welcher Seite der Commit stammt, ohne externe E-Mail-Adressen zu fingieren.
+
+---
+
+### Frage F-02: Soll `release` die E2E-Tests zwingend vorschreiben?
+- **Kontext:** `tools/nodges-git.sh release` prueft aktuell nur `typecheck` und Vitest-Unit-Tests (`test:fast`), bevor ein Tag nach GitHub gepusht wird. Im Container scheitert Playwright/Chromium an fehlenden Grafikbibliotheken (`libglib-2.0.so.0`), waehrend auf dem Host unter Windows alle E2E-Tests durchlaufen.
+- **Optionen:**
+  1. **Option A (Differenziert):** E2E-Tests nur erzwingen, wenn `release` auf dem Windows-Host (conT) aufgerufen wird. Im Container wird E2E via `NODGES_SKIP_E2E=1` uebersprungen.
+  2. **Option B (Strict):** `release` erfordert immer alle E2E-Tests; damit kann ein Release nur noch ueber conT auf Windows freigegeben werden.
+  3. **Option C (Status Quo):** E2E bleibt ausserhalb des Release-Gates; `test:fast` genuegt fuer die Freigabe.
+- **Empfehlung:** Option A.
+
+---
+
+### Frage F-03: Wie sollen die historischen Root-Dokumente strukturiert werden?
+- **Kontext:** Im Root-Verzeichnis existieren noch aeltere Dateien wie `resetup.md` und verschiedene `Plan_v4_*.md`.
+- **Optionen:**
+  1. **Option A:** Verschieben nach `com/doc/archiv_v4/`, damit das Root-Verzeichnis aufgeraemt bleibt.
+  2. **Option B (Status Quo):** Im Root belassen.
+- **Empfehlung:** Option A.
+
+---
+
+### Frage F-04: Sollen parallele Pi-Instanzen im Container betrieben werden?
+- **Kontext:** In `com/plan/0_106_4_parallele_pi_instanzen.md` wurde technisch evaluiert, ob mehrere Pi-Agenten im Container parallel arbeiten koennen. Die Technik ist machbar (Varianten A bis D).
+- **Optionen:**
+  1. **Option A:** Bei einem einzigen Pi-Agenten (`piCon`) bleiben (einfach, keine Locks noetig).
+  2. **Option B:** Parallele Instanzen fuer dedizierte Teilaufgaben zulassen (erfordert Regelung fuer Git-Locks und LightRAG-Zugriff).
+- **Empfehlung:** Bei Option A bleiben, solange conT und piCon im Tandem ausreichen.
+
+---
+
+### Frage F-05: Wortlaut in `bericht.md` Teil H.2 harmonisieren?
+- **Kontext:** In `bericht.md` Teil H.2 werden Werkzeugempfehlungen als "Beschlossene Empfehlungen" betitelt, obwohl sie in `com/entscheidungen.md` noch nicht als bindender Benutzerbeschluss registriert sind.
+- **Optionen:**
+  1. **Option A:** Wortlaut in `bericht.md` auf "Vorgeschlagene Empfehlungen" korrigieren.
+  2. **Option B:** Die Punkte explizit vom Benutzer absegnen lassen und nach `entscheidungen.md` uebertragen.
+- **Empfehlung:** Option A.
+
+---
+
+> **Sobald eine Frage entschieden ist:**  
+> Der Beschluss wird mit Datum in [W:/com/entscheidungen.md](file:///W:/com/entscheidungen.md) eingetragen und der entsprechende Punkt hier aus dieser Datei entfernt oder als erledigt markiert.

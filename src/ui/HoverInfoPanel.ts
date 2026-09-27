@@ -307,6 +307,11 @@ export class HoverInfoPanel {
             rows.push(this.createInfoRow('Label', nodeData.label));
         }
 
+        // Entity-Type
+        if (nodeData.entity_type) {
+            rows.push(this.createInfoRow('Typ', nodeData.entity_type));
+        }
+
         // Value
         if (nodeData.val !== undefined) {
             rows.push(this.createInfoRow('Value', nodeData.val.toFixed(2)));
@@ -315,6 +320,13 @@ export class HoverInfoPanel {
         // Group
         if (nodeData.group !== undefined) {
             rows.push(this.createInfoRow('Group', nodeData.group));
+        }
+
+        // Description
+        if (nodeData.description) {
+            const desc = String(nodeData.description);
+            const shortDesc = desc.length > 100 ? desc.slice(0, 97) + '...' : desc;
+            rows.push(this.createInfoRow('Beschreibung', shortDesc));
         }
 
         // Position
@@ -356,14 +368,35 @@ export class HoverInfoPanel {
             rows.push(this.createInfoRow('Value', edgeData.value.toFixed(2)));
         }
 
-        // Label
-        if (edgeData.label) {
+        // Relation / Label
+        if (edgeData.relation) {
+            rows.push(this.createInfoRow('Relation', edgeData.relation));
+        } else if (edgeData.label) {
             rows.push(this.createInfoRow('Label', edgeData.label));
         }
 
         // Type
         if (edgeData.type) {
-            rows.push(this.createInfoRow('Type', edgeData.type));
+            rows.push(this.createInfoRow('Typ', edgeData.type));
+        }
+
+        // Weight / Gewicht
+        if (edgeData.weight !== undefined && edgeData.weight !== null) {
+            const w = typeof edgeData.weight === 'number' ? edgeData.weight.toFixed(2) : edgeData.weight;
+            rows.push(this.createInfoRow('Gewicht', w));
+        }
+
+        // Evidenz / Beschreibung
+        if (edgeData.evidence || edgeData.description) {
+            const ev = String(edgeData.evidence || edgeData.description);
+            const shortEv = ev.length > 100 ? ev.slice(0, 97) + '...' : ev;
+            rows.push(this.createInfoRow('Evidenz', shortEv));
+        }
+
+        // Belege
+        if (edgeData.belegzahl !== undefined || (Array.isArray(edgeData.sources) && edgeData.sources.length > 0)) {
+            const count = edgeData.belegzahl || edgeData.sources?.length || 1;
+            rows.push(this.createInfoRow('Belege', `${count} Quelle(n)`));
         }
 
         this.contentElement.innerHTML = rows.join('');

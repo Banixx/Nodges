@@ -1,0 +1,27 @@
+gantt
+    title Nodges – Architektur-Entscheidungen (ADRs) Build 1 bis Build 10
+    dateFormat YYYY-MM
+    axisFormat Build %Y
+
+    section Findungsphase
+    Build 1-4: Gekoppelte Render-Logik (if type==Server renderCube)   :done, b14, 2023-01, 2024-01
+
+    section Pivot I: Entkopplung
+    ADR-01 type verliert visuelle Dominanz                             :milestone, m1, 2024-01, 0d
+    Build 5: global_node + Visual Mapping + Ontologie-Architekt        :done, b5, 2024-01, 2024-03
+
+    section Pivot II: Qualitaet
+    ADR-02 Zod + JSON Schema Mode eingefuehrt                          :milestone, m2, 2024-03, 0d
+    Build 6: LLM-Constraint via Zod, Halluzinationen strukturell       :done, b6, 2024-03, 2024-05
+
+    section Pivot III: Grounding
+    ADR-03 Wikidata als verifizierbare Fakten-Basis                    :milestone, m3, 2024-05, 0d
+    Build 8: SPARQL-Abfragen, RDF-Triples, harte Fakten               :done, b8, 2024-05, 2024-08
+
+    section Pivot IV: Semantik
+    ADR-04 Embeddings fuer semantische Konsolidierung                  :milestone, m4, 2024-08, 0d
+    Build 9: Vektor-Deduplizierung, Kosinus-Aehnlichkeit              :done, b9, 2024-08, 2024-10
+
+    section Pivot V: Modularisierung
+    ADR-05 Monolithische Pipelines durch modulares System ersetzen     :milestone, m5, 2024-10, 0d
+    Build 10: Konfigurierbare Pipeline (4 Module)                      :active, b10, 2024-10, 2025-01

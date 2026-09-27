@@ -6,21 +6,26 @@ oder durch einen Eintrag in `plan/`.
 
 ## Quellen dieser Sammlung
 
-Die Inhalte stammen aus zwei Bestandsdateien, die hier zusammengefuehrt wurden — dort stehen die
-ausfuehrlichen Begruendungen:
+Die Inhalte stammen aus zwei Bestandsdateien, die hier zusammengefuehrt wurden:
 
 - **`com/doc/idee_nodges.md`** — die konzeptionelle Idee (Luhmann-Ansatz, Primat der Kanten).
-- **`com/doc/14_verbesserungsvorschlaege_nodges_V4.md`** — die technische Sammlung A1–A10 und B1–B12.
-- Ergaenzend: `com/doc/0_106_2_ergaenzungsvorschlag_conT_bericht_setup.md`, `com/doc/idee_nodges.md`.
+  **Am 2026-09-27 vollstaendig in Teil 1 dieser Datei uebernommen; die Quelldatei wurde danach geloescht.**
+- **`com/doc/14_verbesserungsvorschlaege_nodges_V4.md`** — die technische Sammlung A1–A10 und B1–B12;
+  dort stehen die ausfuehrlichen Begruendungen.
+- Ergaenzend: `com/doc/0_106_2_ergaenzungsvorschlag_conT_bericht_setup.md`.
 
-> Wichtig: Diese Datei ist ein **Verzeichnis**, kein Ersatz. Geloescht oder ueberschrieben werden die
-> Quellen dadurch nicht — sie bleiben im Archiv `com/doc/`.
+> Wichtig: Diese Datei ist ein **Verzeichnis**, kein Ersatz. Fuer Teil 2 bleiben die Quellen im Archiv
+> `com/doc/` erhalten. Fuer Teil 1 ist die Quelle `idee_nodges.md` dagegen inzwischen entfernt — dieser
+> Text hier ist nunmehr der einzige Ort.
 
 ---
 
-## Teil 1 — Konzeptionelle Ideen (aus `idee_nodges.md`)
+## Teil 1 — Konzeptionelle Ideen (uebernommen aus `idee_nodges.md`)
 
-### Raumordnung nach Luhmann: Primat der Kanten
+### Kernkonzept
+
+In Anlehnung an Niklas Luhmanns Systemtheorie („Die Beziehungen bilden das System“) gilt:
+
 - **Beziehungsbasierte Raumordnung:** Die Position im 3D-Raum wird primaer durch Beziehungsdichte und
   Kantenstruktur bestimmt (Force-Directed Graph / Directed Force), nicht durch Einzelfakten.
 - **Primat der Kanten:** Eigenstaendige Konzepte, Rollen und Organisationseinheiten (Parteizugehoerigkeit,
@@ -28,7 +33,10 @@ ausfuehrlichen Begruendungen:
   eigenstaendigen Knoten modelliert statt als Attribut.
 - **Keine Isolations-Attribute:** Fakten mit Struktur-Relevanz duerfen nicht als Freitext in einem
   Einzelknoten verschwinden — sonst gehen Netzwerktopologie und automatisches Clustering verloren.
-- **Property-to-Edge Promotion (spaeter):** Automatische Inferenz, die Knoten-Attribute bei unvollstaendigen
+
+### Zukuenftige Ausbaustufe (Property-to-Edge Promotion)
+
+- **Automatische Inferenz (spaeter):** Analysiert Knoten-Attribute bei unvollstaendigen
   Quelldaten analysiert und daraus synthetische Kanten plus Ankerknoten erzeugt.
 
 ---
@@ -90,5 +98,6 @@ Vorschlaege, die beim Anlegen von `com/` entstanden sind — betreffen die Zusam
   (`curl localhost:8000/health`, `curl localhost:5173/lightrag-api/health`, Vite auf 5173).
 - **`sgc`/`uupdate` fragt optional nach einem Tag:** Statt spaeter separat ein Git-Tag zu setzen, koennte der
   Skill beim Push fragen, ob der Stand als Meilenstein markiert wird.
-- **Abgleich `vision_104.md` gegen `idee_nodges.md`:** Die Saetze in Teil 1 sind teils aelter als die Vision;
-  bei Gelegenheit auf Widersprueche prüfen.
+- **Abgleich `vision_104.md` gegen Teil 1 dieser Datei:** Die Saetze in Teil 1 sind teils aelter als die
+  Vision; bei Gelegenheit auf Widersprueche pruefen. (Die frueher dafuer genutzte `idee_nodges.md` ist
+  geloescht, der Inhalt steht jetzt oben.)

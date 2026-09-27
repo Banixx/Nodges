@@ -1,0 +1,70 @@
+erDiagram
+    GraphData {
+        object dataModel
+        object visualMappings
+        array entities
+        array relationships
+    }
+
+    DataModel {
+        array nodeTypes
+        array edgeTypes
+    }
+
+    NodeType {
+        string id
+        string label
+        array properties
+    }
+
+    EdgeType {
+        string id
+        string label
+        array properties
+    }
+
+    VisualMappings {
+        object nodes
+        object edges
+    }
+
+    VisualChannel {
+        string property
+        string scale
+    }
+
+    Entity {
+        string id
+        string type
+        string label
+        object properties
+        object temporal
+    }
+
+    Relationship {
+        string id
+        string source
+        string target
+        string type
+        object properties
+        object temporal
+    }
+
+    Temporal {
+        number validFrom
+        number validTo
+        array history
+    }
+
+    GraphData ||--|| DataModel : "enthaelt"
+    GraphData ||--|| VisualMappings : "enthaelt"
+    GraphData ||--o{ Entity : "entities"
+    GraphData ||--o{ Relationship : "relationships"
+    DataModel ||--o{ NodeType : "nodeTypes"
+    DataModel ||--o{ EdgeType : "edgeTypes"
+    VisualMappings ||--o{ VisualChannel : "nodes.*"
+    VisualMappings ||--o{ VisualChannel : "edges.*"
+    Entity ||--o| Temporal : "optional temporal"
+    Relationship ||--|| Entity : "source-ID"
+    Relationship ||--|| Entity : "target-ID"
+    Relationship ||--o| Temporal : "optional temporal"

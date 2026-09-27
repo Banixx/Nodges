@@ -834,6 +834,7 @@ export class CreatePanel {
         this.pipelineSelect.style.borderRadius = '4px';
 
         const pipelines = [
+            { value: 'build14_lightrag', label: 'Build 14: Belegte Beziehungen (LightRAG Evidenz-Graph)' },
             { value: 'build13_lightrag', label: 'Build 13: LightRAG + automatische Relation Discovery (Standard)' },
             { value: 'build12_lightrag', label: 'Build 12: LightRAG (Lokaler Graph-RAG Microservice)' },
             { value: 'build10', label: 'Build 10 (Modulare Pipeline - Konfigurierbar)' },
@@ -2175,6 +2176,85 @@ export class CreatePanel {
                     approvedRelations: reviewedDiscovery.relations.filter(relation => relation.enabled),
                     userAnswers: reviewedDiscovery.answers
                 };
+            } else if (pipeline === 'build14_lightrag') {
+                onProgressWithLog('Build 14, Schritt 1/4: Pruefe LightRAG Server-Status...');
+                const health = await LightRAGService.checkHealth();
+                if (!health.online) {
+                    throw new Error('LightRAG-Server nicht erreichbar. Starte das Backend (lightrag-backend/main.py) und versuche es erneut.');
+                }
+                const engineInMockMode = !health.engineActive;
+                if (engineInMockMode) {
+                    onProgressWithLog('WARNUNG: LightRAG-Engine inaktiv. Der Server antwortet im Mock-Modus - Ergebnisse sind Platzhalter ohne echte Wissensbasis.');
+                }
+
+                const activeDbName = this.lrDatabaseSelect?.value || 'default';
+                if (activeDbName === 'default') {
+                    onProgressWithLog('Build 14, Schritt 2/4: Verwende Default-Datenbank.');
+                } else {
+                    onProgressWithLog(`Build 14, Schritt 2/4: Aktiviere Datenbank '${activeDbName}'...`);
+                    try {
+                        await LightRAGService.selectDatabase(activeDbName);
+                    } catch (dbErr: any) {
+                        console.warn('[CreatePanel] Datenbank-Aktivierung fehlgeschlagen:', dbErr);
+                        onProgressWithLog(`WARNUNG: Datenbank '${activeDbName}' konnte nicht aktiviert werden (${dbErr.message}). Verwende Default.`);
+                    }
+                }
+
+                if (ragText) {
+                    onProgressWithLog('Build 14, Schritt 2/4: Speise Rohdaten in Wissensbasis ein...');
+                    await LightRAGService.insertText(ragText);
+                    if (saveSteps) {
+                        try {
+                            await this.saveGraphFile(`../b14/B14_01_Dokumente_${fileSuffix}.txt`, ragText);
+                        } catch (e) { console.warn('[CreatePanel] Speichern von B14 Rohdaten fehlgeschlagen:', e); }
+                    }
+                }
+
+                onProgressWithLog('Build 14, Schritt 3/4: Frage belegten Query-Teilgraphen ab und expandiere Kanten...');
+                const activeRelationLabels = this.getActiveRelationLabels();
+                const lightRagResult = await LightRAGService.queryGraphBuild14(prompt, 'hybrid', undefined, activeRelationLabels);
+
+                onProgressWithLog(`Build 14, Schritt 4/4: ${lightRagResult.graphData.data.entities.length} Knoten und ${lightRagResult.graphData.data.relationships.length} belegte Kanten erfasst.`);
+                if (lightRagResult.mock) {
+                    onProgressWithLog('WARNUNG: Die Antwort stammt aus dem Mock-Modus. Das Ergebnis wird als Mock gekennzeichnet.');
+                }
+
+                graphData = {
+                    metadata: lightRagResult.graphData.metadata || { schemaVersion: "5.2" },
+                    dataModel: lightRagResult.graphData.dataModel || { entities: {}, relationships: {} },
+                    visualMappings: lightRagResult.graphData.visualMappings || { defaultPresets: {} },
+                    data: lightRagResult.graphData.data
+                };
+
+                const buildConfig = {
+                    grounding: this.b10GroundingSelect?.value,
+                    qualityAssurance: this.b10QaSelect?.value,
+                    ratingMethod: this.b10RatingSelect?.value
+                };
+                GraphGenerationService.enrichGraphMetadata(graphData, pipeline, prompt, provider, model, mode, ragText, startTime, buildConfig);
+
+                if (lightRagResult.mock) {
+                    graphData.metadata.mock = true;
+                    if (graphData.metadata.generationDetails) {
+                        graphData.metadata.generationDetails.mock = true;
+                    }
+                }
+                graphData.metadata.activeDatabase = activeDbName;
+
+                // Immer unter public/data/b14/ sichern
+                try {
+                    await this.saveGraphFile(`../b14/B14_Graph_${fileSuffix}.json`, JSON.stringify(graphData, null, 2));
+                    onProgressWithLog(`Build-14-Datei unter public/data/b14/B14_Graph_${fileSuffix}.json gespeichert.`);
+                } catch (e) {
+                    console.warn('[CreatePanel] Fehler beim Speichern der B14 Graph-Datei:', e);
+                }
+
+                if (saveSteps) {
+                    try {
+                        await this.saveGraphFile(`../b14/B14_02_Antwort_${fileSuffix}.json`, JSON.stringify(lightRagResult, null, 2));
+                    } catch (e) { console.warn('[CreatePanel] Speichern von Zwischenschritt fehlgeschlagen:', e); }
+                    this.app.exportManager?.downloadFile(JSON.stringify(graphData, null, 2), `B14_Graph_${fileSuffix}.json`, 'application/json');
+                }
             } else if (pipeline === 'build12_lightrag') {
                 // Fix 1: Healthcheck vor dem Build - Abbruch bei Offline, Warnung bei Mock-Engine
                 onProgressWithLog('Pruefe LightRAG Server-Status...');
@@ -2295,8 +2375,8 @@ export class CreatePanel {
             generationLog.status = 'success';
 
             // --- Inject generation metadata directly into the JSON graphData ---
-            // Fix 2: Fuer build12_lightrag bereits im Pipeline-Block injiziert (dort vor dem Serverspeichern noetig)
-            if (pipeline !== 'build12_lightrag') {
+            // Fix 2: Fuer build12_lightrag und build14_lightrag bereits im Pipeline-Block injiziert (dort vor dem Serverspeichern noetig)
+            if (pipeline !== 'build12_lightrag' && pipeline !== 'build14_lightrag') {
                 const buildConfig = {
                     grounding: this.b10GroundingSelect?.value,
                     qualityAssurance: this.b10QaSelect?.value,

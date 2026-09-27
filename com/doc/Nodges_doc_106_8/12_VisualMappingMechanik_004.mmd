@@ -1,0 +1,50 @@
+sequenceDiagram
+    actor User
+    participant MP as MappingPanel
+    participant GDM as GraphDataManager
+    participant NM as NodeManager
+    participant GPU as GPU Buffer
+
+    note over User,GPU: Ausgangszustand: Graph geladen, alle Knoten grau, gleich gross
+
+    User->>MP: Scale-Dropdown: 'influence' waehlen
+
+    MP->>GDM: getPropertyRange('influence')
+    GDM-->>MP: min: 10, max: 95
+
+    MP->>NM: applyScaleMapping(property:'influence', min:10, max:95)
+
+    loop fuer jeden Knoten i
+        NM->>GDM: getEntityProperty(i, 'influence')
+        GDM-->>NM: Wert z.B. 72
+        NM->>NM: normalisieren → 0.0 bis 1.0\nradius = lerp(minRadius, maxRadius, 0.72)
+        NM->>GPU: setMatrixAt(i, neueMatrix mit neuem Scale)
+    end
+
+    NM->>GPU: instanceMatrix.needsUpdate = true
+    note over GPU: naechster Frame: alle Knoten\nhaben neue Groessen\nRohdaten unveraendert
+
+    User->>MP: Color-Dropdown: 'habitat' waehlen (kategorisch)
+
+    MP->>GDM: getUniqueValues('habitat')
+    GDM-->>MP: ['Wald', 'See', 'Wiese', 'Luft']
+
+    MP->>NM: applyCategoricalColorMapping(property:'habitat', values:[...])
+
+    loop fuer jeden Knoten i
+        NM->>GDM: getEntityProperty(i, 'habitat')
+        GDM-->>NM: z.B. 'See'
+        NM->>NM: Hue-Index aus Palette\nz.B. HSL(200, 80%, 55%)
+        NM->>GPU: setColorAt(i, color)
+    end
+
+    NM->>GPU: instanceColor.needsUpdate = true
+
+    User->>MP: Position Y: 'lebensdauer' waehlen
+
+    MP->>GDM: getPropertyRange('lebensdauer')
+    MP->>NM: lockAxis(Y, property:'lebensdauer')
+    NM->>NM: Y-Koordinate jedes Knotens\nwird auf Datenwert gesetzt\nPhysik-Engine: Y-Achse gesperrt
+    NM->>GPU: alle Matrizen aktualisieren
+
+    note over User,GPU: Kein Reload der Rohdaten\nnur GPU-Buffer-Updates
