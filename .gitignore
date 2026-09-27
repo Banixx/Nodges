@@ -79,3 +79,8 @@ testdata/Nodges_ErrorLog_*.json
 coverage/
 playwright-report/
 test-results/
+
+# COM-Bus: Laufzeitprotokoll zwischen conT und piCon. Der Bus liegt absichtlich
+# unter tools/com-bus/ (ausserhalb von com/), damit das Protokoll sich nicht
+# selbst ausloest. Siehe tools/nodges-com.sh und com/doc/0_106_7_com_bus_picon.md
+tools/com-bus/
