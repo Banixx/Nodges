@@ -1,8 +1,8 @@
 # Tri-Harness Rapport: Autostart und Persistenz des COM-Bus-Waechters
 
 > **Projekt:** Autostart und Persistenz des COM-Bus-Waechters (`watch_com.mjs`) im Linux-Container  
-> **Status:** Aktiv in Runde 1  
-> **Aktueller Turnus-Inhaber:** **conT** (Runde 2, uebergeben von dopi)  
+> **Status:** Aktiv in Runde 2 (piCon-Teil erledigt)  
+> **Aktueller Turnus-Inhaber:** **dopi / alle** (Runde 3, Container-Neustart & Freigabe)  
 > **Ablagepfad:** [W:/com/plan/autostart_com_bus/rapport_autostart_com_bus.md](file:///W:/com/plan/autostart_com_bus/rapport_autostart_com_bus.md)  
 > **Beteiligte Partner:**
 > - **conT:** Antigravity (Windows 11 Host, Netzlaufwerk [W:/](file:///W:/))
@@ -18,9 +18,9 @@
 | 2026-09-27 14:55 UTC (16:55 MESZ) | **conT** | Runde 1: Problemaufriss, Bestandsaufnahme & Fragen an piCon und dopi | Erstellt. Turnus-Token an **piCon** uebergeben. |
 | 2026-09-27 20:39 UTC (22:39 MESZ) | **piCon** | Runde 1: Analyse aus dem Container & Beantwortung Fragenkatalog | Erledigt. Antworten F1-F3 in Abschnitt 3.2; Fehlermeldung 0x800700E8 (conT-Seite) dokumentiert; `com/fragen-an-cont.md` mit 4 Fragen an conT angelegt. Turnus-Token an **dopi** uebergeben. |
 | 2026-09-27 20:48 UTC (22:48 MESZ) | **dopi** | Runde 1: Analyse Host-Infrastruktur & Beantwortung Fragenkatalog | Erledigt. Antworten F1-F3 in Abschnitt 3.3; Bestaetigung Startweg `start_pi_container.cmd` und Devcontainer-Paritaet. Turnus-Token an **conT** fuer Runde 2 uebergeben. |
-| *offen* | **conT** | Runde 2: Konsolidierte Loesungsarchitektur & Umsetzungsplan | *Folgt in Runde 2* |
-| *offen* | **dopi** / **piCon** | Runde 2: Umsetzung in Compose, Devcontainer und Linux-Skripten | *Folgt in Runde 2* |
-| *offen* | **Alle drei** | Runde 3: Integrierter Test, Neustart-Validierung & Freigabe | *Folgt in Runde 3* |
+| 2026-09-27 21:38 UTC | **conT** | Runde 2: Konsolidierte Loesungsarchitektur, Host-Umsetzung & Arbeitsauftrag an piCon | Erledigt. Loesungsarchitektur in Abschnitt 4 ausformuliert. dopi-Anpassungen in `docker-compose.yml` und `devcontainer.json` auf Host vollzogen. Turnus-Token an **piCon** uebergeben. |
+| 2026-09-27 21:48 UTC | **piCon** | Runde 2: Umsetzung in Linux-Skripten (`tools/nodges-com.sh`, `tools/watch_com.mjs`) | Erledigt. PID-Datei nach `tools/com-bus/` verlegt, `laeuft()` zweistufig gehaertet, Funktionstest bestanden (Abschnitt 4.4). Turnus-Token an **dopi** fuer Runde 3. |
+| *offen* | **dopi** / **alle** | Runde 3: Integrierter Test, Container-Neustart & Freigabe | *Wartet auf Container-Neustart via dopi* |
 
 ---
 
@@ -116,9 +116,137 @@ piCon meldete nach der Behebung eines Doppel-Waechters (PIDs 53 und 226/299) den
 ---
 
 ## 4. Runde 2: Loesungsarchitektur & Umsetzung
-*(Wird von conT nach Abschluss von Runde 1 konsolidiert; anschliessend arbeitsteilige Umsetzung durch dopi und piCon)*
+
+### 4.1 Konsolidierte Architekturprinzipien (conT)
+
+Aus den Analysen von conT, piCon und dopi in Runde 1 ergibt sich ein klares Bild. Alle drei Partner sind sich ueber die technischen Stellschrauben einig:
+
+1. **Persistente PID- und Statusverwaltung im gemeinsamen Bus:**
+   - **Problem:** Die Standard-PID-Datei lag bisher unter `/tmp/nodges-com-watch.pid`. Weil `/tmp` als `tmpfs` konfiguriert ist, wird das Verzeichnis bei jedem Container-Stopp vollstaendig geleert. Nach einem Neustart existiert keine Information mehr darueber, ob und welche PID zuvor aktiv war.
+   - **Loesung:** Die PID-Datei zieht standardmaessig um nach `tools/com-bus/nodges-com-watch.pid` (konfigurierbar ueber `NODGES_COM_PID`). `tools/com-bus/` liegt auf dem WSL2/ext4-Dateisystem, ist persistent und wird zwischen den Harnesses geteilt (bleibt aber via `.gitignore` aus dem Git-Tracking ausgeschlossen).
+   - **Vorteil:** Nach einem Neustart kann das Skript sofort erkennen, ob eine verwaiste PID-Datei vorliegt, und diese nach Validierung gegen `/proc` sauber bereinigen.
+
+2. **Robuste Single-Instance-Garantie & Schutz vor Doppel-Waechtern:**
+   - **Problem:** Der fruehere Doppel-Waechter (PIDs 53 und 226) entstand, weil bei inkonsistenten PID-Dateien oder schnellen Folgeaufrufen mehrere Prozesse parallel auf `events.log` schrieben.
+   - **Loesung (Zweistufige Pruefung in `laeuft()`):**
+     1. *PID-Datei-Pruefung mit Befehlszeilen-Check:* Liegt eine PID-Datei vor, prueft `laeuft()` nicht nur `[ -d "/proc/$pid" ]`, sondern validiert den Inhalt von `/proc/$pid/cmdline`. Nur wenn darin der String `watch_com.mjs` enthalten ist, gilt der Waechter als aktiv. Andernfalls (fremde recycelte PID oder toter Prozess) wird die PID-Datei als verwaist entfernt.
+     2. *Fallback-Scan ueber `/proc/*/cmdline`:* Vor einem Neu-Start durchsucht `nodges-com.sh start` alle aktiven Prozesse nach `watch_com.mjs`. Findet sich ein bereits laufender Prozess, wird dessen PID in `tools/com-bus/nodges-com-watch.pid` uebernommen und der Start idempotent mit Erfolgsmeldung beendet.
+   - **Vorteil:** Weder Race Conditions beim Bootstrapping noch unvollstaendige PID-Dateien koennen Doppel-Instanzen erzeugen.
+
+3. **Paritaet aller Container-Startwege (Doppelter Boden):**
+   - **Startweg A (Host / Docker Compose):** In [C:/Users/ich/Desktop/code/_projects/Nodges_Pi/docker-compose.yml](file:///C:/Users/ich/Desktop/code/_projects/Nodges_Pi/docker-compose.yml) (Zeile 23) wird der Start idempotent mit `|| true` gekapselt:
+     ```yaml
+     if [ -f /workspace/tools/nodges-com.sh ]; then bash /workspace/tools/nodges-com.sh start || true; fi;
+     ```
+   - **Startweg B (Devcontainer):** In [C:/Users/ich/Desktop/code/_projects/Nodges_Pi/.devcontainer/devcontainer.json](file:///C:/Users/ich/Desktop/code/_projects/Nodges_Pi/.devcontainer/devcontainer.json) wird der `postStartCommand` identisch erweitert:
+     ```json
+     "postStartCommand": "bash .devcontainer/start-lightrag.sh; bash .devcontainer/start-vnc.sh || true; if [ -f /workspace/tools/nodges-com.sh ]; then bash /workspace/tools/nodges-com.sh start || true; fi",
+     ```
+   - Beide Wege sind nun aufeinander abgestimmt und absolut fehlertolerant.
+
+4. **Host-Persistenz & conT-Waechter (Windows 11):**
+   - Die Fehlerursache `0x800700E8` (`ERROR_NO_DATA` im ConPTY-Subsystem) ist geklaert: Windows Terminal bricht ab, wenn ein Prozess mit `-WindowStyle Hidden` gestartet wird.
+   - Der conT-Waechter laeuft stabil auf dem Host (PID 18140 via `pwsh.exe -ExecutionPolicy Bypass -File W:\tools\watch_com.ps1`).
+   - Fuer einen automatischen Windows-Start beim Booten des Host-Systems wird eine Windows-Aufgabe (Task Scheduler) ohne ConPTY-Bindung empfohlen.
+
+5. **Dokumentsprache und Zeitstempel-Standard (T-04):**
+   - Alle Harnesses dokumentieren Zeitstempel einheitlich in UTC: `YYYY-MM-DD HH:MM UTC` (optional MESZ in Klammern).
+
+---
+
+### 4.2 Status der Umsetzung in Runde 2
+
+| Komponente / Datei | Zustaendigkeit | Status | Details |
+|---|---|---|---|
+| `docker-compose.yml` (Zeile 23) | **dopi / conT** | **Erledigt** | `|| true` in `C:/Users/ich/Desktop/code/_projects/Nodges_Pi/docker-compose.yml` integriert. |
+| `devcontainer.json` (`postStartCommand`) | **dopi / conT** | **Erledigt** | Aufruf von `nodges-com.sh start || true` in `C:/Users/ich/Desktop/code/_projects/Nodges_Pi/.devcontainer/devcontainer.json` eingebaut. |
+| `com/fragen-an-cont.md` | **conT** | **Erledigt** | Alle 4 Fragen T-01 bis T-04 vollstaendig beantwortet und verifiziert. |
+| `tools/nodges-com.sh` | **piCon** | **Erledigt** | PID-Pfad nach `tools/com-bus/nodges-com-watch.pid` verlegt; `laeuft()` mit `/proc/*/cmdline`-Kontrolle und `/proc`-Fallback-Scan gehaertet. Getestet (Abschnitt 4.4). |
+| `tools/watch_com.mjs` | **piCon** | **Erledigt** | Standard-`PID_DATEI` auf `path.join(BUS, 'nodges-com-watch.pid')` umgestellt. Getestet (Abschnitt 4.4). |
+
+---
+
+### 4.3 Arbeitsauftrag an piCon (Turnus-Uebergabe Runde 2)
+
+piCon (im Linux-Container `/workspace`) fuehrt gemaess Domaenenzustaendigkeit die Skript-Anpassungen aus:
+
+1. **In `tools/nodges-com.sh`:**
+   - Zeile 29 anpassen auf:
+     ```bash
+     PID_DATEI="${NODGES_COM_PID:-$BUS/nodges-com-watch.pid}"
+     ```
+   - Funktion `laeuft()` erweitern:
+     ```bash
+     laeuft() {
+       if [ -f "$PID_DATEI" ]; then
+         local pid
+         pid="$(cat "$PID_DATEI" 2>/dev/null | tr -d ' \n')"
+         if [ -n "$pid" ] && [ -d "/proc/$pid" ]; then
+           if grep -qa 'watch_com.mjs' "/proc/$pid/cmdline" 2>/dev/null; then
+             echo "$pid"
+             return 0
+           fi
+         fi
+       fi
+       # Fallback: Scanne alle Prozesse nach watch_com.mjs
+       local gefundene_pid
+       gefundene_pid="$(grep -la 'watch_com.mjs' /proc/[0-9]*/cmdline 2>/dev/null | sed -E 's#/proc/([0-9]+)/.*#\1#' | head -n 1)"
+       if [ -n "$gefundene_pid" ] && [ -d "/proc/$gefundene_pid" ]; then
+         echo "$gefundene_pid" > "$PID_DATEI" 2>/dev/null || true
+         echo "$gefundene_pid"
+         return 0
+       fi
+       echo ""
+     }
+     ```
+2. **In `tools/watch_com.mjs`:**
+   - Zeile 28 anpassen auf:
+     ```javascript
+     const PID_DATEI = process.env.NODGES_COM_PID || path.join(BUS, 'nodges-com-watch.pid');
+     ```
+3. **Funktionstest im Container:**
+   - `bash tools/nodges-com.sh status`
+   - `bash tools/nodges-com.sh stop`
+   - `bash tools/nodges-com.sh start`
+   - Pruefen, ob die PID-Datei nun unter `tools/com-bus/nodges-com-watch.pid` liegt und Inotify greift.
+4. **Token-Uebergabe:**
+   - Nach erfolgreichem Test Eintrag in `rapport_autostart_com_bus.md` ergaenzen und Token fuer Runde 3 (Container-Neustart via dopi) uebergeben.
+
+---
+
+### 4.4 piCon: Umsetzung und Funktionstest (Runde 2)
+
+**Umgesetzt am 2026-09-27 21:48 UTC (Commit folgt mit `save`):**
+
+- `tools/nodges-com.sh`:
+  - `PID_DATEI="${NODGES_COM_PID:-$BUS/nodges-com-watch.pid}"` — PID-Datei liegt jetzt persistent
+    unter `tools/com-bus/` statt in `/tmp` (tmpfs).
+  - `laeuft()` zweistufig: erst PID-Datei plus Kontrolle ueber `/proc/<pid>/cmdline` (String
+    `watch_com.mjs`); verwaiste oder recycelte PIDs werden entfernt. Danach Fallback-Scan ueber
+    `/proc/*/cmdline`.
+  - **Abweichung von der Vorlage (4.3):** Der Fallback-Scan prueft zusaetzlich `/proc/<pid>/comm` auf
+    `node` bzw. `nodejs`. Die reine `grep`-Loesung aus der Vorlage haette sich wegen des Suchstrings
+    in der eigenen Kommandozeile selbst als Waechter erkennen koennen (falsche PID, kein Start).
+- `tools/watch_com.mjs`:
+  - `const PID_DATEI = process.env.NODGES_COM_PID || path.join(BUS, 'nodges-com-watch.pid');`
+
+**Funktionstest im Container (alle Punkte bestanden):**
+
+| Test | Ergebnis |
+|---|---|
+| `status` mit verwaister PID-Datei | Fallback findet den laufenden Waechter, PID-Datei wird korrekt neu geschrieben |
+| `stop` | Waechter beendet, PID-Datei unter `tools/com-bus/` entfernt |
+| `start` | Waechter startet (PID 545), PID-Datei unter `tools/com-bus/` geschrieben |
+| `start` erneut | idempotent: "laeuft bereits (PID 545)" |
+| Inotify-Test (`com/_waechter_test.md` anlegen/loeschen) | Ereignisse `erstellt` und `verschoben` im Protokoll, Datei danach wieder entfernt |
+| Recycling-Schutz (fremde PID `1` in der Datei) | als verwaist erkannt, Fallback findet die echte PID |
+| Tote PID `999999` | als verwaist erkannt, Fallback findet die echte PID |
+
+Die alte PID-Datei `/tmp/nodges-com-watch.pid` wurde entfernt; es wird nur noch der persistente Pfad genutzt.
+
+**Turnus:** Token an **dopi** fuer Runde 3 (gemeinsamer Container-Neustart-Test).
 
 ---
 
 ## 5. Runde 3: Integrierter Test, Haertung & Freigabe
-*(Abschliessender Funktionstest nach Container-Reboot, Single-Instance-Check und Freigabebeschluss fuer com/entscheidungen.md)*
+*(Abschliessender Funktionstest nach Container-Reboot via docker compose down && docker compose up -d, Single-Instance-Check und Freigabebeschluss fuer com/entscheidungen.md)*

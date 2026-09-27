@@ -12,9 +12,9 @@
 |---|---|---|---|---|
 | **F-01** | Commit-Trailer (`Harness:` vs. `Co-authored-by`) | Git-Workflow | Mittel | Erledigt 2026-09-27 (Option A) |
 | **F-02** | E2E-Gate in `tools/nodges-git.sh release` | Test & Freigabe | Hoch | Erledigt 2026-09-27 (Option A) |
-| **F-03** | Aufraeumen von `resetup.md` und `Plan_v4_*.md` im Root | Dateistruktur | Niedrig | Wartend auf Benutzer |
-| **F-04** | Parallele Pi-Agent-Instanzen im Container | Multi-Agent | Mittel | Konzept fertig, Entscheidung offen |
-| **F-05** | Wortlaut-Harmonisierung in `bericht.md` Teil H.2 | Dokumentation | Niedrig | Abstimmung offen |
+| **F-03** | Aufraeumen von `resetup.md` und `Plan_v4_*.md` im Root | Dateistruktur | Niedrig | Erledigt 2026-09-27 (Geloescht) |
+| **F-04** | Parallele Pi-Agent-Instanzen im Container | Multi-Agent | Mittel | Erledigt 2026-09-27 (Option A) |
+| **F-05** | Wortlaut-Harmonisierung in `bericht.md` Teil H.2 | Dokumentation | Niedrig | Erledigt 2026-09-27 (Option A) |
 
 ---
 
@@ -45,15 +45,18 @@
 ---
 
 ### Frage F-03: Wie sollen die historischen Root-Dokumente strukturiert werden?
-- **Kontext:** Im Root-Verzeichnis existieren noch aeltere Dateien wie `resetup.md` und verschiedene `Plan_v4_*.md`.
+- **Status: Entschieden 2026-09-27 — Geloescht.** Gemaess Benutzerbeschluss wurden `resetup.md` und `Plan_v4_Nodges_Diagnose_Refactoring.md` aus dem Root-Verzeichnis geloescht. Details in `com/entscheidungen.md`.
+- **Kontext:** Im Root-Verzeichnis existierten noch aeltere Dateien wie `resetup.md` und verschiedene `Plan_v4_*.md`.
 - **Optionen:**
   1. **Option A:** Verschieben nach `com/doc/archiv_v4/`, damit das Root-Verzeichnis aufgeraemt bleibt.
   2. **Option B (Status Quo):** Im Root belassen.
+  3. **Option C (Benutzerentscheidung):** Geloescht.
 - **Empfehlung:** Option A.
 
 ---
 
 ### Frage F-04: Sollen parallele Pi-Instanzen im Container betrieben werden?
+- **Status: Entschieden 2026-09-27 — Option A.** Gemaess Benutzerbeschluss bleibt es verbindlich bei einer einzigen Pi-Instanz (`piCon`). Details in `com/entscheidungen.md`.
 - **Kontext:** In `com/plan/0_106_4_parallele_pi_instanzen.md` wurde technisch evaluiert, ob mehrere Pi-Agenten im Container parallel arbeiten koennen. Die Technik ist machbar (Varianten A bis D).
 - **Optionen:**
   1. **Option A:** Bei einem einzigen Pi-Agenten (`piCon`) bleiben (einfach, keine Locks noetig).
@@ -63,9 +66,10 @@
 ---
 
 ### Frage F-05: Wortlaut in `bericht.md` Teil H.2 harmonisieren?
-- **Kontext:** In `bericht.md` Teil H.2 werden Werkzeugempfehlungen als "Beschlossene Empfehlungen" betitelt, obwohl sie in `com/entscheidungen.md` noch nicht als bindender Benutzerbeschluss registriert sind.
+- **Status: Entschieden 2026-09-27 — Option A.** Gemaess Benutzerbeschluss sind Werkzeugempfehlungen aus Berichten Vorschlaege und keine bindenden Beschluesse, solange sie nicht in `com/entscheidungen.md` stehen. In `bericht.md` ist der Abschnitt bereits praezisiert. Details in `com/entscheidungen.md`.
+- **Kontext:** In frueheren Versionen von `bericht.md` Teil H.2 wurden Werkzeugempfehlungen als "Beschlossene Empfehlungen" betitelt, obwohl sie in `com/entscheidungen.md` noch nicht als bindender Benutzerbeschluss registriert sind.
 - **Optionen:**
-  1. **Option A:** Wortlaut in `bericht.md` auf "Vorgeschlagene Empfehlungen" korrigieren.
+  1. **Option A:** Wortlaut auf "Vorgeschlagene Empfehlungen" harmonisieren / Vorschlagscharakter festhalten.
   2. **Option B:** Die Punkte explizit vom Benutzer absegnen lassen und nach `entscheidungen.md` uebertragen.
 - **Empfehlung:** Option A.
 

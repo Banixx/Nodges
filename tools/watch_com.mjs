@@ -25,7 +25,7 @@ const COM = process.env.NODGES_COM_DIR || '/workspace/com';
 const BUS = process.env.NODGES_COM_BUS || '/workspace/tools/com-bus';
 const ROLLE = 'piCon';
 const PROTOKOLL = path.join(BUS, 'events.log');
-const PID_DATEI = process.env.NODGES_COM_PID || '/tmp/nodges-com-watch.pid';
+const PID_DATEI = process.env.NODGES_COM_PID || path.join(BUS, 'nodges-com-watch.pid');
 const POLL_MS = 1500; // nur als Ersatz, wenn fs.watch nicht greift
 const RUHE_MS = 500;  // dieselbe Datei wird in diesem Fenster nur einmal gemeldet
 

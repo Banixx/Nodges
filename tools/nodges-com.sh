@@ -3,7 +3,7 @@
 # nodges-com.sh — der Cross-Harness-Bus fuer com/ (piCon-Seite).
 #
 # Der Waechter (tools/watch_com.mjs) merkt jede Aenderung in com/ und schreibt
-# sie nach com/.bus/events.log. Dieses Skript ist die Fernbedienung dafuer.
+# sie nach tools/com-bus/events.log. Dieses Skript ist die Fernbedienung dafuer.
 #
 #   start                 Waechter im Hintergrund starten (einmalig noetig)
 #   stop                  Waechter anhalten
@@ -26,7 +26,7 @@ COM="${NODGES_COM_DIR:-$ROOT/com}"
 BUS="${NODGES_COM_BUS:-$ROOT/tools/com-bus}"   # ausserhalb von com/ — kein Rueckkoppeln
 PROTOKOLL="$BUS/events.log"
 GESEHEN="$BUS/piCon.seen"   # Zaehlerstand: wie viele Zeilen schon gemeldet wurden
-PID_DATEI="${NODGES_COM_PID:-/tmp/nodges-com-watch.pid}"
+PID_DATEI="${NODGES_COM_PID:-$BUS/nodges-com-watch.pid}"
 DAEMON_LOG="/tmp/nodges-com-watch.log"
 WAECHTER="$ROOT/tools/watch_com.mjs"
 
@@ -56,15 +56,43 @@ gelesen() {
   [ -f "$GESEHEN" ] && cat "$GESEHEN" | tr -d ' \n' || echo 0
 }
 
+# Liefert die PID des laufenden Waechters oder "".
+# Zweistufig: erst die PID-Datei (mit Befehlszeilen-Kontrolle gegen recycelte PIDs),
+# dann ein Scan ueber /proc/*/cmdline als Fallback gegen verwaiste Dateien.
 laeuft() {
   if [ -f "$PID_DATEI" ]; then
     local pid
     pid="$(cat "$PID_DATEI" 2>/dev/null | tr -d ' \n')"
     if [ -n "$pid" ] && [ -d "/proc/$pid" ]; then
-      echo "$pid"
-      return 0
+      if tr '\0' ' ' < "/proc/$pid/cmdline" 2>/dev/null | grep -q 'watch_com\.mjs'; then
+        echo "$pid"
+        return 0
+      fi
     fi
+    # Prozess weg oder PID an einen fremden Prozess recycelt -> Datei ist verwaist.
+    rm -f "$PID_DATEI" 2>/dev/null || true
   fi
+
+  # Fallback-Scan. Nur echte Node-Prozesse zaehlen (Kommandozeile UND Prozessname),
+  # sonst wuerden sich grep/tr oder Shells mit dem Suchstring selbst erkennen.
+  local p inhalt comm
+  for p in /proc/[0-9]*; do
+    p="${p#/proc/}"
+    [ -r "/proc/$p/cmdline" ] || continue
+    comm="$(cat "/proc/$p/comm" 2>/dev/null)"
+    case "$comm" in
+      node|nodejs) ;;
+      *) continue ;;
+    esac
+    inhalt="$(tr '\0' ' ' < "/proc/$p/cmdline" 2>/dev/null)"
+    case "$inhalt" in
+      *watch_com.mjs*)
+        echo "$p" > "$PID_DATEI" 2>/dev/null || true
+        echo "$p"
+        return 0
+        ;;
+    esac
+  done
   echo ""
 }
 

@@ -28,6 +28,9 @@ Ergaenzende Begruendungen stehen in `bericht.md` (Teile D, E, F) und `setup.md`.
 | 2026-09-27 | **Rolle und Einbindung von dopi:** dopi (Host- & Docker-Orchestrator in `C:/Users/ich/Desktop/code/_projects/Nodges_Pi`) redet grundsaetzlich nur mit, wenn es um das Setup / die Container-Infrastruktur geht (und auch dann nicht immer). Kein fixer Turnus; dopi muss von conT oder piCon explizit aufgerufen werden. | Benutzerbeschluss (Chat) |
 | 2026-09-27 | **Commit-Trailer (F-01, Option A):** `tools/nodges-git.sh` (in `save` und `release`) haengt an die Commit-Nachricht eine Leerzeile und `Harness: conT` bzw. `Harness: piCon` an. Das Harness wird aus `NODGES_HARNESS` oder dem Betriebssystem erkannt. | Benutzerbeschluss (Chat), Umsetzung in `tools/nodges-git.sh` |
 | 2026-09-27 | **E2E-Gate (F-02, Option A):** `release` erzwingt das volle E2E (Playwright) nur auf dem Windows-Host (`conT`). Im Container (`piCon`) wird E2E uebersprungen. `NODGES_SKIP_E2E=1` erzwingt das Ueberspringen, `NODGES_FORCE_E2E=1` erzwingt E2E auch im Container. | Benutzerbeschluss (Chat), Umsetzung in `tools/nodges-git.sh` |
+| 2026-09-27 | **Aufraeumen Root-Dateien (F-03):** Die veralteten Root-Dokumente `resetup.md` und `Plan_v4_Nodges_Diagnose_Refactoring.md` wurden gemaess Benutzerbeschluss vollstaendig geloescht. | Benutzerbeschluss (Chat) |
+| 2026-09-27 | **Parallele Pi-Instanzen (F-04, Option A):** Es bleibt verbindlich bei genau einer Pi-Agent-Instanz (`piCon`). Keine parallelen Pi-Agenten im Container, um Locks und Koordinationsrisiken zu vermeiden. | Benutzerbeschluss (Chat) |
+| 2026-09-27 | **Harmonisierung Werkzeugempfehlungen (F-05, Option A):** Werkzeugempfehlungen aus frueheren Reports sind Vorschlaege und keine bindenden Beschluesse, solange sie nicht explizit in dieser Datei eingetragen sind. | Benutzerbeschluss (Chat) |
 
 ---
 

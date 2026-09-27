@@ -32,6 +32,8 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 
 ## Noch offen / Naechste Schritte
 
+- **Hinweis:** Aktuelle Feature‑Entwicklungen finden Sie im Verzeichnis `//wsl.localhost/Ubuntu/home/unixusername/nodges/com/plan` (WSL‑Pfad).
+
 ### Werkzeuge und Qualitaetssicherung
 - **Erledigt (conT):** `.nvmrc` auf Node 20 fixiert, `"engines": { "node": ">=20.0.0" }` in `package.json` hinterlegt (Paritaet mit CI-Workflow).
 - **Erledigt (conT):** `knip` installiert (`knip.json`, Skript `"knip"` in `package.json`) und durchgefuehrt: 0 ungenutzte Quelldateien im gesamten Projekt `src/`.
@@ -40,10 +42,8 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 - nur piCon-Ergaenzung: `madge` oder `dependency-cruiser` gegen Zyklen und Schichtverletzungen in `src/core`.
 
 ### Parallelbetrieb / Mehr-Agenten
-- Vorhaben angelegt: `com/plan/0_106_4_parallele_pi_instanzen.md` (parallele pi-Instanzen im Container `pi-agent`).
-  Technik geprueft und machbar; offen sind Benutzerentscheidung (Anzahl, Rollen, Variante A bis D) sowie die
-  Uebernahme der Regeln (Git nur von einer Instanz, Datei-Eigentum, LightRAG nur einmal) nach `AGENTS.md`.
-  - `- [in Arbeit | conT, piCon, dopi] Autostart und Persistenz des COM-Bus-Waechters im Container (Tri-Harness, 3 Runden). Rapport: com/plan/autostart_com_bus/rapport_autostart_com_bus.md. Aktueller Turnus: conT (Runde 2, Konsolidierung).`
+- **Entschieden (2026-09-27, F-04 Option A):** Es bleibt verbindlich bei einer einzigen Pi-Instanz (`piCon`). Kein Parallelbetrieb im Container noetig (`com/plan/0_106_4_parallele_pi_instanzen.md` abgeschlossen).
+  - `- [in Arbeit | conT, piCon, dopi] Autostart und Persistenz des COM-Bus-Waechters im Container (Tri-Harness, 3 Runden). Rapport: com/plan/autostart_com_bus/rapport_autostart_com_bus.md. Runde 2 (piCon) erledigt: PID-Datei persistent unter tools/com-bus/, laeuft() gehaertet, Funktionstest gruen. Aktueller Turnus: dopi (Runde 3, Container-Neustart & Freigabe).`
 
 ### Git-Workflow (neu, umgesetzt in 0.106.5)
 - Eingefuehrt: `tools/nodges-git.sh` mit `save` (Patch + lokaler Commit, kein Push), `release` (Minor + Tag + Push)
@@ -78,7 +78,9 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
   `-W error::DeprecationWarning` geprueft).
 
 ### Gemeinsam / unklar
-- `bericht.md` Teil H.2 ueberschreibt die Werkzeugempfehlungen mit "Beschlossene Empfehlungen", in `com/entscheidungen.md` steht dazu aber nichts. Wortlaut harmonisieren oder Benutzerbeschluss einholen.
+- **Erledigt (2026-09-27, F-03):** Veraltete Root-Dateien `resetup.md` und `Plan_v4_Nodges_Diagnose_Refactoring.md` geloescht.
+- **Erledigt (2026-09-27, F-04 Option A):** Single-Instance-Betrieb fuer Pi-Agenten beschlossen.
+- **Erledigt (2026-09-27, F-05 Option A):** Harmonisierung Werkzeugempfehlungen: Empfehlungen aus Berichten gelten als Vorschlaege, solange sie nicht in `com/entscheidungen.md` stehen.
 - **Erledigt (2026-09-27, F-01 Option A):** Kein `Co-authored-by`-Trailer; stattdessen der Harness-Trailer
   `Harness: conT` / `Harness: piCon` in `tools/nodges-git.sh`. Banixx bleibt Autor/Committer.
 - Kein GitHub-MCP beschlossen; fuer Issues/PRs stattdessen die `gh` CLI nutzen.
