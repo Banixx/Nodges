@@ -1,8 +1,8 @@
 # Tri-Harness Rapport: Autostart und Persistenz des COM-Bus-Waechters
 
 > **Projekt:** Autostart und Persistenz des COM-Bus-Waechters (`watch_com.mjs`) im Linux-Container  
-> **Status:** Aktiv in Runde 2 (piCon-Teil erledigt)  
-> **Aktueller Turnus-Inhaber:** **dopi / alle** (Runde 3, Container-Neustart & Freigabe)  
+> **Status:** Abgeschlossen (Runde 3 erfolgreich validiert)  
+> **Aktueller Turnus-Inhaber:** **Freigabe erteilt / Alle Partner synchron**  
 > **Ablagepfad:** [W:/com/plan/autostart_com_bus/rapport_autostart_com_bus.md](file:///W:/com/plan/autostart_com_bus/rapport_autostart_com_bus.md)  
 > **Beteiligte Partner:**
 > - **conT:** Antigravity (Windows 11 Host, Netzlaufwerk [W:/](file:///W:/))
@@ -20,7 +20,7 @@
 | 2026-09-27 20:48 UTC (22:48 MESZ) | **dopi** | Runde 1: Analyse Host-Infrastruktur & Beantwortung Fragenkatalog | Erledigt. Antworten F1-F3 in Abschnitt 3.3; Bestaetigung Startweg `start_pi_container.cmd` und Devcontainer-Paritaet. Turnus-Token an **conT** fuer Runde 2 uebergeben. |
 | 2026-09-27 21:38 UTC | **conT** | Runde 2: Konsolidierte Loesungsarchitektur, Host-Umsetzung & Arbeitsauftrag an piCon | Erledigt. Loesungsarchitektur in Abschnitt 4 ausformuliert. dopi-Anpassungen in `docker-compose.yml` und `devcontainer.json` auf Host vollzogen. Turnus-Token an **piCon** uebergeben. |
 | 2026-09-27 21:48 UTC | **piCon** | Runde 2: Umsetzung in Linux-Skripten (`tools/nodges-com.sh`, `tools/watch_com.mjs`) | Erledigt. PID-Datei nach `tools/com-bus/` verlegt, `laeuft()` zweistufig gehaertet, Funktionstest bestanden (Abschnitt 4.4). Turnus-Token an **dopi** fuer Runde 3. |
-| *offen* | **dopi** / **alle** | Runde 3: Integrierter Test, Container-Neustart & Freigabe | *Wartet auf Container-Neustart via dopi* |
+| 2026-09-27 22:03 UTC (2026-09-28 00:03 MESZ) | **dopi / conT** | Runde 3: Integrierter Test, Container-Neustart & Freigabe | **Erfolgreich abgeschlossen.** Container neu gestartet (`down` / `up -d`), Waechter automatisch mit PID 49 gestartet, Single-Instance gewaehrleistet, Inotify live bestaetigt, LightRAG und Vite stabil. Freigabebeschluss dokumentiert. |
 
 ---
 
@@ -249,4 +249,28 @@ Die alte PID-Datei `/tmp/nodges-com-watch.pid` wurde entfernt; es wird nur noch 
 ---
 
 ## 5. Runde 3: Integrierter Test, Haertung & Freigabe
-*(Abschliessender Funktionstest nach Container-Reboot via docker compose down && docker compose up -d, Single-Instance-Check und Freigabebeschluss fuer com/entscheidungen.md)*
+
+**Ausgefuehrt am 2026-09-27 22:03 UTC (2026-09-28 00:03 MESZ):**
+
+Der Container-Neustart wurde via `docker compose down && docker compose up -d` in [C:/Users/ich/Desktop/code/_projects/Nodges_Pi](file:///C:/Users/ich/Desktop/code/_projects/Nodges_Pi) vom Benutzer ausgefuehrt. Anschliessend erfolgte die integrierte Verifikation aller drei Partnersysteme (**conT**, **piCon**, **dopi**).
+
+### 5.1 Testergebnisse der Runde 3
+
+| Pruefpunkt | Erwartung | Gemessener Ist-Zustand | Bewertung |
+|---|---|---|---|
+| **Automatischer Waechter-Start** | `watch_com.mjs` startet beim Container-Boot automatisch ohne manuellen Eingriff | Gestartet um 22:00:26 UTC via `docker-compose.yml` Entrypoint (PID 49) | **BESTANDEN** |
+| **Persistente PID-Datei** | [W:/tools/com-bus/nodges-com-watch.pid](file:///W:/tools/com-bus/nodges-com-watch.pid) enthaelt die korrekte PID des Daemons | Datei enthaelt exakt `49` | **BESTANDEN** |
+| **Single-Instance-Beweis** | Genau ein `watch_com.mjs`-Prozess im Container aktiv | CMDLINE-Scan zeigt exakt eine Instanz (`node /workspace/tools/watch_com.mjs`) | **BESTANDEN** |
+| **Idempotenz bei Folgeaufruf** | Weiterer Aufruf von `nodges-com.sh start` darf keinen zweiten Waechter starten | Rueckmeldung: *"COM-Waechter laeuft bereits (PID 49)."*, PID unveraendert 49 | **BESTANDEN** |
+| **Live-Inotify-Ereignisse** | Aenderungen in `com/` werden sofort auf [W:/tools/com-bus/events.log](file:///W:/tools/com-bus/events.log) gestreamt | Testdatei `com/_autostart_test.md` erzeugte um 22:01:35 UTC sofort das Event `erstellt` (35 B) | **BESTANDEN** |
+| **Container-Dienste-Paritaet** | Vite Dev-Server und LightRAG laufen parallel ungestoert | Vite auf Port 5173 aktiv; LightRAG Health-Check (`/lightrag-api/health`) meldet `online`, Engine aktiv | **BESTANDEN** |
+| **Git-Integritaet** | Sauberer Git-Status auf `main` | Im Container: `working tree clean`, Branch `main`, Version 0.106.12 | **BESTANDEN** |
+
+### 5.2 Fazit und Freigabebeschluss
+
+Die persistente und automatische Initialisierung des COM-Busses ist auf allen Ebenen vollstaendig geloest und praxiserprobt:
+1. Der Container-Waechter startet bei jedem Hochfahren zuverlaessig, transparent und idempotent.
+2. Doppel-Waechter sind durch die zweistufige CMDLINE-Validierung in `laeuft()` mathematisch und prozesstechnisch ausgeschlossen.
+3. Die Persistierung der PID in `tools/com-bus/` schliesst die Luecke ueber Container-Lebenszyklen hinweg.
+4. Alle drei Partner (**conT**, **piCon**, **dopi**) sind synchronisiert. Das Vorhaben gilt hiermit als **vollstaendig abgeschlossen und freigegeben**.
+

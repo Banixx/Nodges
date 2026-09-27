@@ -43,7 +43,7 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 
 ### Parallelbetrieb / Mehr-Agenten
 - **Entschieden (2026-09-27, F-04 Option A):** Es bleibt verbindlich bei einer einzigen Pi-Instanz (`piCon`). Kein Parallelbetrieb im Container noetig (`com/plan/0_106_4_parallele_pi_instanzen.md` abgeschlossen).
-  - `- [in Arbeit | conT, piCon, dopi] Autostart und Persistenz des COM-Bus-Waechters im Container (Tri-Harness, 3 Runden). Rapport: com/plan/autostart_com_bus/rapport_autostart_com_bus.md. Runde 2 (piCon) erledigt: PID-Datei persistent unter tools/com-bus/, laeuft() gehaertet, Funktionstest gruen. Aktueller Turnus: dopi (Runde 3, Container-Neustart & Freigabe).`
+  - `- [erledigt | conT, piCon, dopi] Autostart und Persistenz des COM-Bus-Waechters im Container (Tri-Harness, 3 Runden abgeschlossen). Rapport: com/plan/autostart_com_bus/rapport_autostart_com_bus.md. Runde 3 erfolgreich: Container-Neustart verifiziert, Waechter (PID 49) laeuft automatisch, Single-Instance und Inotify bestaetigt, Freigabe erteilt.`
 
 ### Git-Workflow (neu, umgesetzt in 0.106.5)
 - Eingefuehrt: `tools/nodges-git.sh` mit `save` (Patch + lokaler Commit, kein Push), `release` (Minor + Tag + Push)

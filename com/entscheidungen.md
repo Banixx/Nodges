@@ -31,6 +31,7 @@ Ergaenzende Begruendungen stehen in `bericht.md` (Teile D, E, F) und `setup.md`.
 | 2026-09-27 | **Aufraeumen Root-Dateien (F-03):** Die veralteten Root-Dokumente `resetup.md` und `Plan_v4_Nodges_Diagnose_Refactoring.md` wurden gemaess Benutzerbeschluss vollstaendig geloescht. | Benutzerbeschluss (Chat) |
 | 2026-09-27 | **Parallele Pi-Instanzen (F-04, Option A):** Es bleibt verbindlich bei genau einer Pi-Agent-Instanz (`piCon`). Keine parallelen Pi-Agenten im Container, um Locks und Koordinationsrisiken zu vermeiden. | Benutzerbeschluss (Chat) |
 | 2026-09-27 | **Harmonisierung Werkzeugempfehlungen (F-05, Option A):** Werkzeugempfehlungen aus frueheren Reports sind Vorschlaege und keine bindenden Beschluesse, solange sie nicht explizit in dieser Datei eingetragen sind. | Benutzerbeschluss (Chat) |
+| 2026-09-28 | **Autostart & Single-Instance COM-Bus:** Der COM-Waechter startet bei jedem Container-Boot automatisch via `docker-compose.yml` bzw. `devcontainer.json`. Die PID liegt persistent unter `tools/com-bus/nodges-com-watch.pid`. Doppelte Waechter werden ueber zweistufige CMDLINE-Validierung in `laeuft()` verhindert. Tri-Harness-Rapport Runde 3 erfolgreich validiert. | `com/plan/autostart_com_bus/rapport_autostart_com_bus.md` |
 
 ---
 
