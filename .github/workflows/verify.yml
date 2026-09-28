@@ -24,22 +24,34 @@ jobs:
           node-version: 20
           cache: 'npm'
 
+      - name: Setup Python (L3 Backend)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
       - name: Install Dependencies
         run: npm ci
 
-      - name: Typecheck
+      - name: Install Backend Dependencies
+        run: pip install -r lightrag-backend/requirements.txt pytest httpx
+
+      - name: Typecheck (L0)
         run: npm run typecheck
 
-      - name: Run Linter (Biome)
+      - name: Run Linter (Biome L0)
         run: npm run lint
 
-      - name: Run Unit Tests
+      - name: Run Unit Tests (Vitest L1)
         run: npm test -- --run
+
+      - name: Run Backend Tests (Pytest L3)
+        run: pytest lightrag-backend/tests/
 
       - name: Install Playwright Browsers & System Deps
         run: npx playwright install --with-deps chromium
 
-      - name: Run E2E Tests
+      - name: Run E2E Tests (Playwright L2)
         run: npm run test:e2e
 
       - name: Build Application

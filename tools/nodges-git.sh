@@ -80,6 +80,22 @@ harness_name() {
   esac
 }
 
+# Fuehrt Unit-Tests (L1) plattformpassend aus:
+# Auf Windows (conT) via Docker-Container pi-harness (falls aktiv, Vermeidung von Binaries-Konflikten),
+# sonst direkt lokal (piCon im Container).
+pruefe_unit_tests() {
+  local har="$1"
+  local ziel="${2:-Release}"
+  if [ "$har" = "conT" ]; then
+    if command -v docker >/dev/null 2>&1 && docker ps -q -f name=pi-harness | grep -q .; then
+      hinweis "Fuehre L1-Unit-Tests im Container pi-harness aus (Host-Entkopplung) ..."
+      docker exec -w /workspace pi-harness npm test -- --run || fehler "Unit-Tests im Container fehlgeschlagen — kein $ziel."
+      return 0
+    fi
+  fi
+  npm test -- --run || fehler "Unit-Tests fehlgeschlagen — kein $ziel."
+}
+
 # ---------------------------------------------------------------------------
 case "${1:-}" in
 
@@ -145,7 +161,7 @@ release)
     hinweis "Pruefe Typen und Unit-Tests vor dem Release ..."
     if git rev-parse --verify --quiet HEAD >/dev/null 2>&1; then
       npm run typecheck || fehler "Typecheck fehlgeschlagen — kein Release. (--skip-checks ueberspringt das)"
-      npm test -- --run || fehler "Unit-Tests fehlgeschlagen — kein Release. (--skip-checks ueberspringt das)"
+      pruefe_unit_tests "$har" "Release"
     fi
 
     # E2E-Gate (Beschluss F-02, Option A): volles E2E nur auf dem Windows-Host (conT).
@@ -201,7 +217,7 @@ major)
     hinweis "Pruefe Typen, Unit-Tests und E2E vor dem Major-Release ..."
     if git rev-parse --verify --quiet HEAD >/dev/null 2>&1; then
       npm run typecheck || fehler "Typecheck fehlgeschlagen — kein Major-Release."
-      npm test -- --run || fehler "Unit-Tests fehlgeschlagen — kein Major-Release."
+      pruefe_unit_tests "$har" "Major-Release"
     fi
 
     if [ "${NODGES_SKIP_E2E:-}" = "1" ] || { [ "$har" != "conT" ] && [ "${NODGES_FORCE_E2E:-}" != "1" ]; }; then

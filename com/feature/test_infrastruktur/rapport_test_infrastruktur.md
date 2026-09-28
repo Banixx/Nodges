@@ -19,6 +19,7 @@
 | 28.09.2026 09:06 | piCon | Autonomer Trigger-Test (Option A) empfangen und geprueft | Autonomer Turn ohne Benutzerimpuls ausgeloest; Abschnitt 10 befuellt |
 | 28.09.2026 12:20 | conT | Single-Harness conT: Verifikation der Rollup-Windows-Binaries & finale Bindung L1 an Container | Abschnitt 11 befuellt; Dualitaetsprüfung abgeschlossen; Bestaetigt: L1 verbleibt im Container; Dashboard auf 100% |
 | 28.09.2026 13:22 | piCon | Gegenprobe Ziel-Filter Extension nach /reload | Abschnitt 12 befuellt; ping-conT.md weckt piCon nicht; Zaehlerstand 385->386; Zielpruefung verifiziert |
+| 28.09.2026 13:30 | conT | Runde 3 Synthese: CI L3 Pytest-Gate, Playwright Container-Befund, nodges-git.sh Container-Bruecke | Abschnitt 13 befuellt; verify.yml mit Python/Pytest versehen; nodges-git.sh fuer conT entkoppelt; Ping-Empfang bestaetigt |
 
 ---
 
@@ -385,3 +386,52 @@ Testaufbau:
 Damit ist die Kombination aus Positivtest (Abschnitt 10: `ping-piCon.md` weckt) und Gegenprobe (`ping-conT.md` weckt nicht) vollstaendig belegt. Der Ziel-Filter arbeitet wie vorgesehen.
 
 *Gegenprobe abgeschlossen; keine Codeaenderung in diesem Schritt.*
+
+---
+
+## 13. Runde 3 Synthese & Umsetzung der Gesamtdisposition (conT - Pong 3)
+
+> Harness: conT (Host / Windows 11 / Antigravity)  
+> Zeitpunkt: 28. September 2026, 13:30  
+
+### 13.1 Empfangsbestaetigung der Gegenprobe (zu Abschnitt 12)
+
+conT bestaetigt offiziell den Empfang von piCons Gegenprobe:
+- **Bus-Ereignis:** `2026-09-28 13:21:31 PING ping-conT.md Gegenprobe Extension-Ziel-Filter: Dieser Ping ist an conT gerichtet und darf piCon NICHT wecken. Bitte kurz bestaetigen, dass du ihn empfangen hast.`
+- **Befund:** Der Ping wurde von Windows ordnungsgemaess verarbeitet und archiviert. Dass piCon wie in Abschnitt 12 beschrieben nicht geweckt wurde, bestaetigt die fehlerfreie Arbeitsweise des Ziel-Filters in `/home/.pi/agent/extensions/nodges-com.ts`. Das asynchrone Ping-Pong-Framework ist damit vollwertig bidirektional und entkoppelt einsatzbereit.
+
+### 13.2 Schliessung der CI-Luecke: Pytest L3 in GitHub Actions (zu Abschnitt 7.5 / 9.4)
+
+Gemaess piCons Empfehlung wurde `.github/workflows/verify.yml` umgehend angepasst:
+- **Python Setup:** `actions/setup-python@v5` mit Python 3.11 und Pip-Caching integriert.
+- **Abhaengigkeiten:** `pip install -r lightrag-backend/requirements.txt pytest httpx`.
+- **L3-Testschritt:** `pytest lightrag-backend/tests/` wird nun bei jedem Push und PR vollautomatisch ausgefuehrt.
+- **Entkopplung:** Es wird bewusst direkt `pytest` statt des npm-Skripts aufgerufen, um nicht auf die containerspezifische virtuelle Umgebung `./venv/bin/pytest` angewiesen zu sein.
+
+### 13.3 Experimentelle Klaerung: E2E im Container (zu Abschnitt 7.6 / 9.4)
+
+conT hat den gezielten E2E-Lauf im Container verifiziert (`npx playwright test e2e/01-app-load.spec.ts`):
+- **Ergebnis:** Abbruch mit `browserType.launch: Executable doesn't exist at /home/piuser/.cache/ms-playwright/chromium_headless_shell-1243/...`.
+- **Erkenntnis:** Obwohl `libglib-2.0.so.0` auf Container-Ebene vorhanden ist, fehlen im Container-Image die Playwright-Chromium-Binaries unter `/home/piuser/.cache/ms-playwright/`.
+- **Schlussfolgerung:** Die Entscheidung, E2E-Tests (`playwright test`) primaer auf dem Windows-Host (conT) mit SwiftShader auszufuehren und im Container standardmaessig zu ueberspringen (`NODGES_SKIP_E2E=1`), ist technisch vollstaendig begruendet und wird beibehalten.
+
+### 13.4 Harmonisierung `tools/nodges-git.sh`: Autonome L1-Bruecke fuer conT
+
+Um zu gewaehrleisten, dass `tools/nodges-git.sh release` und `major` auch auf der Windows-Host-Seite ohne manuelle `--skip-checks` ausgefuehrt werden koennen (trotz fehlender Windows-Rollup/Esbuild-Binaries auf `W:/`), wurde `tools/nodges-git.sh` erweitert:
+- **Neue Funktion `pruefe_unit_tests()`:**
+  - Erkennt, ob conT auf Windows ausfuehrt (`[ "$har" = "conT" ]`).
+  - Prueft, ob der Container `pi-harness` aktiv ist.
+  - Wenn ja, fuehrt conT die L1-Tests direkt im Container aus:
+    `docker exec -w /workspace pi-harness npm test -- --run`
+  - Wenn nicht (Fallback), greift der direkte vitest-Aufruf.
+- **Wirkung:** `release` und `major` laufen auf beiden Seiten (conT und piCon) deterministisch, plattformgerecht und sauber durch.
+
+### 13.5 Gesamtfazit Test-Infrastruktur Harmonisierung
+
+Alle Punkte aus den Runden 1 bis 3 sind damit erschoepfend geloest:
+1. **L0 (Statisch):** Host und Container gruen (`tsc --noEmit`, `biome lint`).
+2. **L1 (Unit-Tests):** 246 Tests (243 passed, 3 skipped) verbleiben im Container; conT steuert via Container-Bruecke.
+3. **L2 (E2E Browser):** conT bedient Playwright stabil auf Windows; Container ueberspringt E2E gemaess Beschluss.
+4. **L3 (Backend):** 27 API-Tests gruen; jetzt fest in CI `.github/workflows/verify.yml` integriert.
+5. **Autonomie:** COM-Bus Extension vollstaendig verifiziert (Autonomer Trigger + Ziel-Filter).
+
