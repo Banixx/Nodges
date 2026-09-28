@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Feature test5: Philosophie von Nodges | Multi-Harness Dashboard</title>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --accent-violet: #a855f7;
+      --accent-violet-light: #c084fc;
+      --accent-rose: #f43f5e;
+      --accent-rose-light: #fb7185;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --status-ok: #10b981;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      height: 100vh;
+      max-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 22px;
+      overflow: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 14px;
+    }
+
+    .title-group h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--accent-violet-light);
+      letter-spacing: -0.02em;
+    }
+
+    .title-group p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .header-badges {
+      display: flex;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-violet {
+      background: rgba(168, 85, 247, 0.15);
+      color: var(--accent-violet-light);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+    }
+
+    .badge-rose {
+      background: rgba(244, 63, 94, 0.15);
+      color: var(--accent-rose-light);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+    }
+
+    .badge-status {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 14px;
+      min-height: 0;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .card h2 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent-rose-light);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      font-size: 0.82rem;
+      color: var(--text-main);
+      line-height: 1.4;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .meta-label {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .meta-value {
+      color: var(--accent-violet-light);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .description-text {
+      color: #d1d5db;
+      background: rgba(255, 255, 255, 0.02);
+      border-left: 3px solid var(--accent-violet);
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-top: 6px;
+      font-size: 0.8rem;
+      line-height: 1.45;
+    }
+
+    .goals-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .goal-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 6px 9px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .goal-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent-violet-light);
+      white-space: nowrap;
+    }
+
+    .goal-desc {
+      color: #e5e7eb;
+      font-size: 0.78rem;
+    }
+
+    .progress-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .progress-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.76rem;
+    }
+
+    .progress-name {
+      color: #d1d5db;
+      font-weight: 500;
+    }
+
+    .progress-percent {
+      color: var(--accent-rose-light);
+      font-weight: 700;
+    }
+
+    .progress-bar-bg {
+      height: 6px;
+      background: #1f2937;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-violet), var(--accent-rose));
+      border-radius: 3px;
+    }
+
+    .overall-box {
+      margin-top: 4px;
+      padding: 8px 12px;
+      background: rgba(168, 85, 247, 0.08);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .overall-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent-violet-light);
+    }
+
+    .overall-val {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--accent-rose-light);
+    }
+
+    .status-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .step-item {
+      padding: 6px 9px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 6px;
+      font-size: 0.78rem;
+    }
+
+    .step-label {
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 2px;
+    }
+
+    .step-value {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .link-btn {
+      text-align: center;
+      padding: 6px 8px;
+      border-radius: 5px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--accent-violet-light);
+      transition: all 0.2s ease;
+    }
+
+    .link-btn:hover {
+      background: rgba(168, 85, 247, 0.15);
+      border-color: var(--accent-violet);
+      color: #fff;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px solid var(--card-border);
+      margin-top: 10px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="title-group">
+      <h1>Feature test5: Philosophie von Nodges</h1>
+      <p>Kognition, Spatial Analytics, Neurodiversitaet & Systemarchitektur</p>
+    </div>
+    <div class="header-badges">
+      <span class="badge badge-violet">Multi-Harness</span>
+      <span class="badge badge-rose">conT &amp; piCon</span>
+      <span class="badge badge-status">Initialisiert</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Kachel 1: Name & Beschreibung -->
+    <section class="card">
+      <h2>1. Uebersicht &amp; Leitbild</h2>
+      <div class="card-content">
+        <div class="meta-row">
+          <span class="meta-label">Vorhaben:</span>
+          <span class="meta-value">Feature test5 (Philosophie)</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Beteiligte Partner:</span>
+          <span class="meta-value">conT (Host) &amp; piCon (Container)</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Kategorie:</span>
+          <span class="meta-value">Kognitionspsychologie &amp; Systemphilosophie</span>
+        </div>
+        <div class="description-text">
+          Ueberwindung des 2D-Hairball-Syndroms durch 3D/4D-Raumwahrnehmung (Spatial Literacy). Kognitive Entlastung (Cognitive Offloading) via semantischem Mapping und Ghosting, Executable Storytelling, Inklusion neurodiverser Denkweisen sowie Local-First Datenhoheit auf ext4 SSoT.
+        </div>
+      </div>
+    </section>
+
+    <!-- Kachel 2: Ziele -->
+    <section class="card">
+      <h2>2. Kernziele (Saeulen)</h2>
+      <div class="card-content">
+        <ul class="goals-list">
+          <li class="goal-item">
+            <span class="goal-tag">[Z-01]</span>
+            <span class="goal-desc">Spatial Analytics: 3D/4D statt Flat-Data-Ermuedung.</span>
+          </li>
+          <li class="goal-item">
+            <span class="goal-tag">[Z-02]</span>
+            <span class="goal-desc">Cognitive Offloading: Praeattentive Wahrnehmung &amp; Ghosting.</span>
+          </li>
+          <li class="goal-item">
+            <span class="goal-tag">[Z-03]</span>
+            <span class="goal-desc">Bruch des Monologs: Executable Storytelling &amp; Scaffolding.</span>
+          </li>
+          <li class="goal-item">
+            <span class="goal-tag">[Z-04]</span>
+            <span class="goal-desc">Kognitive Diversitaet: Textanalyzer vs. Visualizer Bruecke.</span>
+          </li>
+          <li class="goal-item">
+            <span class="goal-tag">[Z-05]</span>
+            <span class="goal-desc">7 visuelle Dimensionen &amp; Metaphern-Bibliothek (Organismus, Stadt).</span>
+          </li>
+          <li class="goal-item">
+            <span class="goal-tag">[Z-06]</span>
+            <span class="goal-desc">Systemphilosophie: Local-First, Schema-Stabilitaet &amp; SSoT COM-Bus.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Kachel 3: Fortschritt & Meilensteine -->
+    <section class="card">
+      <h2>3. Fortschritt &amp; Meilensteine</h2>
+      <div class="card-content">
+        <div class="progress-section">
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">M1: Feature-Initialisierung &amp; Setup</span>
+              <span class="progress-percent">100%</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 100%;"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">M2: Ping 1 &amp; Kognitionsaufriss</span>
+              <span class="progress-percent">100%</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 100%;"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">M3: Pong 1 piCon &amp; Backend-Abgleich</span>
+              <span class="progress-percent">50%</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 50%;"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">M4: Synthese &amp; Manifest</span>
+              <span class="progress-percent">25%</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 25%;"></div></div>
+          </div>
+        </div>
+
+        <div class="overall-box">
+          <span class="overall-title">Gesamtfortschritt:</span>
+          <span class="overall-val">68%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kachel 4: Status & Schnellzugriff -->
+    <section class="card">
+      <h2>4. Status &amp; Aktionen</h2>
+      <div class="card-content">
+        <div class="status-steps">
+          <div class="step-item">
+            <div class="step-label">Aktueller Status:</div>
+            <div class="step-value">Ping 1 aktiv im COM-Bus an piCon signalisiert.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-label">Naechste Aktion:</div>
+            <div class="step-value">Pong 1 von piCon (LightRAG, Local-First, VDB) integrieren.</div>
+          </div>
+        </div>
+
+        <div class="links-grid">
+          <a href="./rapport_test5.md" class="link-btn">Multi-Harness Rapport</a>
+          <a href="./dashboard.md" class="link-btn">Markdown Dashboard</a>
+          <a href="../../todo.md" class="link-btn">Todo-Liste</a>
+          <a href="../../entscheidungen.md" class="link-btn">Entscheidungen</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Nodges Multi-Harness Framework</span>
+    <span>Single Source of Truth: W:/com/feature/test5/</span>
+    <span>Host: Windows 11 (conT) | Container: Linux ext4 (piCon)</span>
+  </footer>
+
+</body>
+</html>

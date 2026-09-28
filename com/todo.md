@@ -34,6 +34,9 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 
 - **Hinweis:** Aktuelle Feature‑Entwicklungen finden Sie im Verzeichnis `W:/com/feature/` bzw. `//wsl.localhost/Ubuntu/home/unixusername/nodges/com/feature` (WSL‑Pfad).
 
+### Aktive Features (Multi-Harness)
+- **Aktiv (Feature `test5`):** Philosophie von Nodges (Multi-Harness conT & piCon): Kognitionspsychologisches Leitbild (Spatial Literacy, Cognitive Offloading, 7 Dimensionen, Neurodiversitaet, Metaphern) und Systemphilosophie (Local-First, Schema-Stabilitaet, SSoT ext4, COM-Bus). Dashboard: `com/feature/test5/dashboard.md` bzw. `dashboard.html`. Rapport: `com/feature/test5/rapport_test5.md`. Runde 1 (Ping 1) aktiv im COM-Bus.
+
 ### Werkzeuge und Qualitaetssicherung
 - **Erledigt (conT, Single Harness):** Test-Infrastruktur Harmonisierung: Dashboard auf einer Bildschirmseite eingerichtet (Name, Beschreibung, Ziele, Fortschritt 100%). L1-Laufzeit geklaert: Vitest verbleibt verbindlich im Linux-Container; keine Windows-Binaries im ext4 node_modules; Domaenenteilung (L0/L2 auf Host, L1/L3 im Container) verifiziert. Dashboard: `com/feature/test_infrastruktur/dashboard.md` bzw. `dashboard.html`. Rapport: `com/feature/test_infrastruktur/rapport_test_infrastruktur.md`.
 - **Erledigt (conT):** `.nvmrc` auf Node 20 fixiert, `"engines": { "node": ">=20.0.0" }` in `package.json` hinterlegt (Paritaet mit CI-Workflow).
