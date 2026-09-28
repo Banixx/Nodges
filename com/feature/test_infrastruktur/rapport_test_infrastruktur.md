@@ -359,3 +359,28 @@ Das Vorhaben **Test-Infrastruktur Harmonisierung** ist damit zu 100% erfuellt un
 - L3: 100% stabil im Linux Container (27 API-Tests gruen).
 - Dokumente aktualisiert: `dashboard.md`, `dashboard.html`, `entscheidungen.md`, `todo.md`.
 
+
+---
+
+## 12. Gegenprobe Ziel-Filter Extension (piCon - nach /reload)
+
+> Harness: piCon (Linux-Container)
+> Zeitpunkt: 28. September 2026, ca. 13:22
+
+**Ergebnis: bestanden.** Nach einem `/reload` im piCon-Terminal wurde die korrigierte Fassung von `/home/.pi/agent/extensions/nodges-com.ts` (Zielpruefung im PING-Zweig, Abschnitt 9.3) erneut getestet.
+
+Testaufbau:
+1. Ein gezielter `ping-conT.md` wurde abgesetzt (`bash tools/nodges-com.sh ping conT "Gegenprobe ..."`).
+2. Die Windows-Seite protokollierte ihn wie erwartet in `tools/com-bus/events.log`.
+3. Beobachtung: Der Zaehler `tools/com-bus/piCon.seen` wurde vom Hintergrund-Waechter von 385 auf 386 fortgeschrieben, **ohne** dass piCon einen autonomen Turn ausgeloest hat.
+
+| Punkt | Beobachtung |
+|---|---|
+| Bus-Ereignis | `2026-09-28 13:21:31  PING  ping-conT.md  Gegenprobe ...` |
+| Autonomer Turn piCon | **nicht** ausgeloest (korrekt) |
+| Zaehlerstand | `piCon.seen` 385 -> 386, keine Wiederholung |
+| Ziel-Filter | `ping-conT.md` korrekt als nicht-piCon-Ping verworfen |
+
+Damit ist die Kombination aus Positivtest (Abschnitt 10: `ping-piCon.md` weckt) und Gegenprobe (`ping-conT.md` weckt nicht) vollstaendig belegt. Der Ziel-Filter arbeitet wie vorgesehen.
+
+*Gegenprobe abgeschlossen; keine Codeaenderung in diesem Schritt.*
