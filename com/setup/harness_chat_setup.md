@@ -118,3 +118,13 @@ Fuer Vorhaben mit Backend-, Schnittstellen- und UI-Abhaengigkeiten (wie Build 14
 5. **Ergebnis-Dokumentation:**
    - Abgeschlossene Vorhaben werden in `com/doc/` archiviert (mit Versionspraefix).
    - Offene Todos werden kurz in `com/todo.md` gepflegt.
+
+---
+
+## 5. Standard-Dashboard fuer neue Multi- & Single-Harness-Projekte
+
+Fuer jedes neue Projekt wird standardmaessig das One-Page Dashboard aus [W:/com/setup/dashboard_template/](file:///W:/com/setup/dashboard_template/) initialisiert:
+- **`dashboard.html`**: Universelle HTML-One-Page Ansicht (100vh Bildschirmschnitt, violett/rosa Farbgebung, autark ohne externe CDN-Abhaengigkeiten).
+- **`dashboard.md`**: Kompakte Markdown-Entsprechung.
+- **Portabilitaet:** Durch rein relative Pfade funktioniert die Vorlage sofort durch einfaches Hineinkopieren in jeden beliebigen Projektordner.
+

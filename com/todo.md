@@ -32,18 +32,19 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 
 ## Noch offen / Naechste Schritte
 
-- **Hinweis:** Aktuelle Feature‑Entwicklungen finden Sie im Verzeichnis `//wsl.localhost/Ubuntu/home/unixusername/nodges/com/plan` (WSL‑Pfad).
+- **Hinweis:** Aktuelle Feature‑Entwicklungen finden Sie im Verzeichnis `W:/com/feature/` bzw. `//wsl.localhost/Ubuntu/home/unixusername/nodges/com/feature` (WSL‑Pfad).
 
 ### Werkzeuge und Qualitaetssicherung
+- **Erledigt (conT):** Simbian Test3 (Single Harness conT): Dashboard auf einer Bildschirmseite eingerichtet (Name, Beschreibung, Ziele, Fortschritt/Status). Dashboard: `com/feature/test_infrastruktur/dashboard.md` bzw. `com/feature/test_infrastruktur/dashboard.html`. Rapport: `com/feature/test_infrastruktur/rapport_test_infrastruktur.md`.
 - **Erledigt (conT):** `.nvmrc` auf Node 20 fixiert, `"engines": { "node": ">=20.0.0" }` in `package.json` hinterlegt (Paritaet mit CI-Workflow).
 - **Erledigt (conT):** `knip` installiert (`knip.json`, Skript `"knip"` in `package.json`) und durchgefuehrt: 0 ungenutzte Quelldateien im gesamten Projekt `src/`.
-- Git-Hooks: `simple-git-hooks` oder `husky` plus `lint-staged`; Pre-Commit auf `tsc --noEmit` und Biome.
+- **Erledigt (Feature `git_hooks`):** Git-Hooks (pre-commit, pre-push, post-commit) konfiguriert und repo-weit aktiviert. Push-Restriktion gemaess Beschluss: GitHub-Push ausschliesslich bei Major-Versionen (`X.0.0`) nach expliziter Rueckfrage an den Benutzer (`--bestaetigt-durch-user`). Minor- und Patch-Pushes strikt blockiert. Dashboard: `com/feature/git_hooks/dashboard.md` bzw. `dashboard.html`. Rapport: `com/feature/git_hooks/rapport_git_hooks.md`.
 - optional: `stats.js`-Overlay im Dev-Modus (FPS, Draw Calls, Dreiecke); `vitest bench` fuer Layout-/Physikberechnungen; `size-limit`; Renovate/Dependabot.
 - nur piCon-Ergaenzung: `madge` oder `dependency-cruiser` gegen Zyklen und Schichtverletzungen in `src/core`.
 
 ### Parallelbetrieb / Mehr-Agenten
-- **Entschieden (2026-09-27, F-04 Option A):** Es bleibt verbindlich bei einer einzigen Pi-Instanz (`piCon`). Kein Parallelbetrieb im Container noetig (`com/plan/0_106_4_parallele_pi_instanzen.md` abgeschlossen).
-  - `- [erledigt | conT, piCon, dopi] Autostart und Persistenz des COM-Bus-Waechters im Container (Tri-Harness, 3 Runden abgeschlossen). Rapport: com/plan/autostart_com_bus/rapport_autostart_com_bus.md. Runde 3 erfolgreich: Container-Neustart verifiziert, Waechter (PID 49) laeuft automatisch, Single-Instance und Inotify bestaetigt, Freigabe erteilt.`
+- **Entschieden (2026-09-27, F-04 Option A):** Es bleibt verbindlich bei einer einzigen Pi-Instanz (`piCon`). Kein Parallelbetrieb im Container noetig (`com/feature/0_106_4_parallele_pi_instanzen.md` abgeschlossen).
+  - `- [erledigt | conT, piCon, dopi] Autostart und Persistenz des COM-Bus-Waechters im Container (Tri-Harness, 3 Runden abgeschlossen). Rapport: com/feature/autostart_com_bus/rapport_autostart_com_bus.md. Runde 3 erfolgreich: Container-Neustart verifiziert, Waechter (PID 49) laeuft automatisch, Single-Instance und Inotify bestaetigt, Freigabe erteilt.`
 
 ### Git-Workflow (neu, umgesetzt in 0.106.5)
 - Eingefuehrt: `tools/nodges-git.sh` mit `save` (Patch + lokaler Commit, kein Push), `release` (Minor + Tag + Push)
@@ -62,11 +63,11 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 - **Backend erledigt (piCon):** `lightrag-backend/main.py` liefert jetzt Query-Teilgraphen (Seeds per
   `entities_vdb.query`, dann BFS ueber `get_knowledge_graph(node_label, max_depth, max_nodes)`)
   statt Vollgraph-Hardslicing; Kanten/Knoten als standardisiertes DTO (`weight`, `keywords`,
-  `description`, `sources`), live verifiziert. Siehe `com/plan/build14/rapport_build14.md` Abschnitt 6.
+  `description`, `sources`), live verifiziert. Siehe `com/feature/build14/rapport_build14.md` Abschnitt 6.
 - **Backend-Tests erweitert (piCon, 27.09.2026):** `lightrag-backend/tests/test_api.py` jetzt 27 Tests gruen
   (neu: `create`/`select`/`delete` der Datenbank-Endpunkte sowie Pfad-Traversal-Schutz, mit isolierten
   tmp-Verzeichnissen und deaktivierter Engine). Ohne API-Kosten. Siehe
-  `com/plan/Test_Setup_Plan/rapport_test_setup.md` Abschnitt 11.
+  `com/feature/Test_Setup_Plan/rapport_test_setup.md` Abschnitt 11.
 - **Erledigt (conT):** Skript `test:backend` in `package.json` hinterlegt und erfolgreich verifiziert (27 Tests gruen).
 - **Erledigt (conT):** Frontend-Mapping der neuen DTO-Felder in `src/utils/LightRAGService.ts` (`weight`, `keywords`, `description`, `sources`), Kantenexpansion, Schema 5.2 Visual Mappings und `CreatePanel.ts` Pipeline-Anbindung.
 - **Erledigt (conT):** Edge- & Node-Inspector in `src/ui/InfoPanelUI.ts` (hervorgehobene Text-Evidenz, Quellen-Badges, Keywords) und Tooltips in `src/ui/HoverInfoPanel.ts`.

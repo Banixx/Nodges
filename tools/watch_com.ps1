@@ -23,6 +23,9 @@ if ($SyncNow) {
     exit 0
 }
 
+# Fenstertitel fuer die Taskleiste setzen
+try { $host.UI.RawUI.WindowTitle = "Nodges COM-Watcher" } catch {}
+
 # Single-Instance Schutz fuer Dauermodus (verhindert doppelte Waechter-Prozesse)
 $currentPid = $PID
 $myProc = Get-CimInstance Win32_Process -Filter "ProcessId = $currentPid" -ErrorAction SilentlyContinue

@@ -55,6 +55,7 @@ Das Projekt Nodges nutzt eine Multi-Harness-Entwicklungsumgebung mit strikter ph
 | [W:/start_pi_container.cmd](file:///W:/start_pi_container.cmd) | Benutzer | Windows CMD | Startet den Pi-Harness Docker-Container. Zwingend mit CRLF ausgecheckt. |
 | `.devcontainer/start-lightrag.sh` | Container-System | Bash (Container) | Startet das FastAPI/LightRAG-Backend auf Port 8000. |
 | `lightrag-backend/backup_storage.sh` | piCon | Bash (Container) | Erstellt komprimierte Snapshots des RAG-Vektorspeichers. |
+| [W:/com/setup/dashboard_template/](file:///W:/com/setup/dashboard_template/) | conT & piCon | HTML / Markdown | Universelle One-Page Dashboard-Vorlage fuer neue Multi- & Single-Harness-Projekte. |
 
 ---
 

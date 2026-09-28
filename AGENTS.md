@@ -58,11 +58,12 @@ und interpretieren nichts selbst. Damit ist Drift zwischen den beiden Seiten aus
 |Befehl|Wirkung|Push|
 |-|-|-|
 |`bash tools/nodges-git.sh status`|Stand: Branch, Version, Tag, Abstand zu GitHub, offene Dateien. Aendert nichts.|nein|
-|`bash tools/nodges-git.sh save`|Patch-Version +1 (`0.106.4` -> `0.106.5`), `git add -A`, Commit mit der reinen Versionsnummer. Sichert Zwi|nein|
-|`bash tools/nodges-git.sh release`|Minor-Version (`0.106.9` -> `0.107.0`), Typecheck und Unit-Tests, Commit, Tag `v0.107.0`, Push nach `origin|ja|
+|`bash tools/nodges-git.sh save`|Patch-Version +1 (`0.106.4` -> `0.106.5`), `git add -A`, Commit mit der reinen Versionsnummer. Sichert Zwischenstand.|nein|
+|`bash tools/nodges-git.sh release`|Minor-Version (`0.106.9` -> `0.107.0`), Typecheck und Tests, lokaler Commit, lokales Tag `v0.107.0`.|nein|
+|`bash tools/nodges-git.sh major --bestaetigt-durch-user`|Major-Version (`0.107.0` -> `1.0.0`), Typecheck, Tests, Commit, Tag, Push nach GitHub. **NUR nach Rueckfrage an den Benutzer.**|ja|
 |`bash tools/nodges-git.sh hooks`|Richtet die versionierten Git-Hooks ein (`core.hooksPath = git-hooks`).|nein|
 
-**Regel: Zwischenstaende bleiben lokal. Nur eine Minor- oder Major-Version geht nach GitHub.**
+**Regel: Zwischenstaende und Minor-Releases bleiben strikt lokal. Nach GitHub geht ausschliesslich ein Major-Release und nur nach vorheriger Rueckfrage an den Benutzer.**
 
 ### Versionierte Git-Hooks (`git-hooks/`, aktiv ueber `core.hooksPath`)
 
@@ -71,7 +72,7 @@ conT und piCon teilen **dieselbe `.git`-Verwaltung**, deshalb gelten die Hooks a
 |Hook|Wirkung|
 |-|-|
 |`pre-commit`|Abbruch bei falschem Branch und bei moeglichen Geheimnissen in der Stage; Hinweis, wenn die Version nicht mitgezogen wurde|
-|`pre-push`|**Blockiert jeden Push mit einer Patch-Version.** Ausnahme nur bewusst: `NODGES\_ALLOW\_PUSH=1`|
+|`pre-push`|**Blockiert jeden Push ausser Major-Versionen (X.0.0).** Ausnahme nur bewusst: `NODGES\_ALLOW\_PUSH=1`|
 |`post-commit`|Kurzmeldung: Version, Commit, wie viele Commits nur lokal vorliegen|
 
 ### Skills beider Harnesses
@@ -140,9 +141,9 @@ Alle Harnesses lesen ihre Arbeitsgrundlage aus dem Ordner [**W:/com/**](file:///
 
 1. Dieses `AGENTS.md` (Root) — die Regeln.
 2. [W:/com/todo.md](file:///W:/com/todo.md) — was gerade offen ist.
-3. [W:/com/plan/](file:///W:/com/plan/) — laufende Vorhaben (nur Dateinamen reichen zum Ueberblick).
+3. [W:/com/feature/](file:///W:/com/feature/) — laufende Vorhaben und Features (nur Dateinamen reichen zum Ueberblick).
 4. [W:/com/entscheidungen.md](file:///W:/com/entscheidungen.md) — Beschluesse des Benutzers, bindend.
-5. [W:/com/offene-fragen.md](file:///W:/com/offene-fragen.md) — offene Fragen an den Benutzer (Orientierung bei "fragen"-Abfragen).
+5. [W:/com/fragen_an_user.md](file:///W:/com/fragen_an_user.md) — offene Fragen an den Benutzer (Orientierung bei "fragen"-Abfragen).
 6. [W:/com/ideen.md](file:///W:/com/ideen.md) — ungepruefte Einfaelle.
 7. Erst bei Detailfragen: `com/bericht.md` (Historie) bzw. `com/setup.md` (Technik).
 
@@ -150,7 +151,7 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
 
 **Verbindliche Dokumenten-Rangfolge bei inhaltlichen Konflikten:**
 1. [W:/com/entscheidungen.md](file:///W:/com/entscheidungen.md) (Rang 1: Beschluesse des Benutzers, bindend)
-2. [W:/com/plan/](file:///W:/com/plan/) (Rang 2: Verbindliche Fachvertraege und DTOs des laufenden Vorhabens)
+2. [W:/com/feature/](file:///W:/com/feature/) (Rang 2: Verbindliche Fachvertraege und DTOs des laufenden Vorhabens)
 3. [W:/com/todo.md](file:///W:/com/todo.md) (Rang 3: Offene Aufgaben und Empfehlungen; darf Rang 1 und 2 niemals ueberstimmen)
 
 **Inhalte von `com/` (alle versioniert, nichts in `.gitignore`):**
@@ -159,12 +160,12 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
 |-|-|
 |`00\_start\_hier.md`|Einstieg und Lesereihenfolge|
 |`todo.md`|offene Punkte, kurz|
-|`plan/`|laufende Vorhaben, ein File je Vorhaben|
+|`feature/`|laufende Vorhaben und Features, ein Ordner/File je Vorhaben|
 |`entscheidungen.md`|Beschluesse des Benutzers (bindend)|
-|`offene-fragen.md`|offene Fragen fuer den Benutzer (Orientierung bei "fragen")|
+|`fragen_an_user.md`|offene Fragen fuer den Benutzer (Orientierung bei "fragen")|
 |`ideen.md`|Ideensammlung, ungeprueft|
 |`bericht.md`|Gesamtbericht und Dialogprotokoll (Historie)|
-|`setup.md`|technische Kurzanleitung Setup/Git|
+|`setup.md` / `setup/`|technische Kurzanleitung Setup/Git und Vorlagen|
 |`doc/`|Archiv aller bisherigen Berichte (273 Dateien)|
 
 ### Verzeichnisstruktur fuer Dokumentation
@@ -223,12 +224,12 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
    * Wenn eine Nutzeranfrage ein Fragezeichen ("?") enthaelt, handelt es sich um eine Frage.
    * Fragen sind **direkt im ersten Satz** zu beantworten (sofern passend mit `Ja` oder `Nein` am Satzanfang).
    * Bei reinen Fragen werden **keine Code-Aenderungen** ausgefuehrt.
-   * *Ausnahme:* Rueckfragen innerhalb eines initiierten Multi-Harness-Rapports (z.B. in `com/plan/` oder `com/test/`) sind Arbeitsaufgaben zwischen den Agenten und unterliegen nicht der Code-Aenderungssperre.
+   * *Ausnahme:* Rueckfragen innerhalb eines initiierten Multi-Harness-Rapports (z.B. in `com/feature/`) sind Arbeitsaufgaben zwischen den Agenten und unterliegen nicht der Code-Aenderungssperre.
 4. **Planungs- und Dokumentationsmodus:**
 
    * Plaene, Analysen und Berichte sind selbststaendig als Markdown-Dateien im Ordner [W:/com/doc/](file:///W:/com/doc/) mit dem Versionspraefix zu speichern.
    * Im Planungsmodus (`planning\_mode`) sind Aenderungen am Dateisystem ausserhalb von `com/` strikt untersagt.
-   * Ein Arbeitsergebnis **sollte** (Empfehlung, keine Pflicht) zusaetzlich dort festgehalten werden, wo es hingehort: Ergebnisbericht nach `com/doc/`, offener naechster Schritt nach `com/todo.md`, mehrschrittiges Vorhaben nach `com/plan/`, ein Beschluss des Benutzers nach `com/entscheidungen.md`. Ein Faustregel gilt: Was laenger als eine Antwort ueberdauert, gehoert in `com/` — eine Antwort im Chat allein ist fuer das andere Harness spaeter nicht auffindbar.
+   * Ein Arbeitsergebnis **sollte** (Empfehlung, keine Pflicht) zusaetzlich dort festgehalten werden, wo es hingehort: Ergebnisbericht nach `com/doc/`, offener naechster Schritt nach `com/todo.md`, mehrschrittiges Vorhaben nach `com/feature/`, ein Beschluss des Benutzers nach `com/entscheidungen.md`. Ein Faustregel gilt: Was laenger als eine Antwort ueberdauert, gehoert in `com/` — eine Antwort im Chat allein ist fuer das andere Harness spaeter nicht auffindbar.
 5. **Sorgfaltspflicht vor Aenderungen:**
 
    * Vor Aenderungen muessen relevante Dateien, die Projektstruktur, `git status` und vorhandene Tests geprueft werden.
@@ -241,7 +242,7 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
    * **Farbvorlieben:** Violette und rosafarbene Schrift fuer Terminal- und UI-Gestaltung (gilt nicht fuer Markdown- oder Code-Repo-Inhalte).
    * **Wahrheitsgebot:** Nichts ungeprueft behaupten — fremde Angaben am realen Code und Dateistand verifizieren.
    * **Zurueckhaltung:** Vor groesseren Refactorings, strukturellen Umbauten oder Loeschungen immer zuerst den Benutzer fragen.
-   * **Fragen-Trigger ("fragen"):** Wenn der Benutzer in einer Session nach "fragen" fragt (z.B. "Welche Fragen sind offen?", "gibt es offene fragen?", "fragen"), orientiert sich das LLM verbindlich an [W:/com/offene-fragen.md](file:///W:/com/offene-fragen.md) und praesentiert die offenen Entscheidungsvorlagen strukturiert und kompakt.
+   * **Fragen-Trigger ("fragen"):** Wenn der Benutzer in einer Session nach "fragen" fragt (z.B. "Welche Fragen sind offen?", "gibt es offene fragen?", "fragen"), orientiert sich das LLM verbindlich an [W:/com/fragen_an_user.md](file:///W:/com/fragen_an_user.md) und praesentiert die offenen Entscheidungsvorlagen strukturiert und kompakt.
 
 \---
 

@@ -4,7 +4,8 @@
 #
 #   status   zeigt Stand: Branch, Version, Tag, Abstand zu origin/main, offene Dateien
 #   save     Patch-Version +1, alles sichern, lokaler Commit — KEIN Push
-#   release  Minor-Version (Patch auf 0), Tag, Push nach origin/main — nur so geht Arbeit zu GitHub
+#   release  Minor-Version (Patch auf 0), lokales Tag — KEIN Push
+#   major    Major-Version (X.0.0), Tag, Push nach origin/main — NUR nach Rueckfrage an den Benutzer
 #            E2E-Gate (Beschluss F-02, Option A): Pflicht auf dem Windows-Host (conT),
 #            im Container (piCon) uebersprungen. NODGES_SKIP_E2E=1 / NODGES_FORCE_E2E=1 steuern das.
 #   hooks    richtet die versionierten Git-Hooks ein (core.hooksPath)
@@ -97,7 +98,7 @@ status)
   hinweis "Offene Dateien: $(offene_dateien)"
   if [ "$hinten" != "0" ] && [ "$hinten" != "unbekannt" ]; then
     hinweis ""
-    hinweis "Hinweis: Diese Commits liegen nur lokal. 'release' bringt sie nach GitHub."
+    hinweis "Hinweis: Diese Commits liegen nur lokal. 'release' setzt einen lokalen Meilenstein; 'major' bringt sie nach Rueckfrage nach GitHub."
   fi
   ;;
 
@@ -163,12 +164,65 @@ release)
   fi
   git tag -a "$tag" -m "$neu"
 
-  hinweis "Sende $tag an GitHub ..."
+  hinweis ""
+  hinweis "Lokales Release fertig: $alt -> $neu"
+  hinweis "Tag: $tag (lokal angelegt)"
+  hinweis "Commit: $(git rev-parse --short HEAD)"
+  hinweis "KEIN Push nach GitHub: Gemaess Benutzerbeschluss gehen nur Major-Releases nach GitHub."
+  hinweis "Nicht auf GitHub: $(abstand_zu_github) Commit(s) — gewollt."
+  ;;
+
+major)
+  brauchbar
+  laufendes_git
+
+  har="$(harness_name)"
+
+  # Sicherheitsabfrage gemaess Benutzerbeschluss
+  bestaetigt="${2:-}"
+  if [ "$bestaetigt" != "--bestaetigt-durch-user" ]; then
+    rot "ABBRUCH: Ein Major-Release mit Push nach GitHub darf NUR NACH RUECKFRAGE AN DEN BENUTZER erfolgen."
+    rot "Wenn der Benutzer zugestimmt hat, fuehre aus:"
+    rot "  tools/nodges-git.sh major --bestaetigt-durch-user"
+    exit 1
+  fi
+
+  checks="${3:-}"
+  if [ "$checks" != "--skip-checks" ]; then
+    hinweis "Pruefe Typen, Unit-Tests und E2E vor dem Major-Release ..."
+    if git rev-parse --verify --quiet HEAD >/dev/null 2>&1; then
+      npm run typecheck || fehler "Typecheck fehlgeschlagen — kein Major-Release."
+      npm test -- --run || fehler "Unit-Tests fehlgeschlagen — kein Major-Release."
+    fi
+
+    if [ "${NODGES_SKIP_E2E:-}" = "1" ] || { [ "$har" != "conT" ] && [ "${NODGES_FORCE_E2E:-}" != "1" ]; }; then
+      hinweis "E2E-Tests uebersprungen (Harness: $har)."
+    else
+      hinweis "Pruefe E2E-Tests (Playwright) ..."
+      npm run test:e2e || fehler "E2E-Tests fehlgeschlagen — kein Major-Release."
+    fi
+
+    hinweis "Pruefungen bestanden."
+  fi
+
+  alt="$(version)"
+  neu="$(node "$VERSION_WERKZEUG" bump major | tail -n 1)"
+
+  git add -A
+  git commit -m "$neu" -m "Harness: $har" || fehler "Commit abgelehnt (siehe Meldung darueber)"
+
+  tag="v$neu"
+  if git rev-parse --verify --quiet "refs/tags/$tag" >/dev/null 2>&1; then
+    fehler "Tag $tag existiert schon"
+  fi
+  git tag -a "$tag" -m "$neu"
+
+  hinweis "Sende Major-Release $tag an GitHub ..."
   git push origin main
   git push origin "$tag"
 
   hinweis ""
-  hinweis "Release fertig: $alt -> $neu"
+  hinweis "Major-Release erfolgreich veroeffentlicht: $alt -> $neu"
   hinweis "Tag: $tag"
   hinweis "Commit: $(git rev-parse --short HEAD)"
   hinweis "GitHub ist jetzt auf diesem Stand."
@@ -184,12 +238,13 @@ hooks)
   ;;
 
 *)
-  rot "Aufruf: tools/nodges-git.sh <status|save|release|hooks>"
+  rot "Aufruf: tools/nodges-git.sh <status|save|release|major|hooks>"
   rot ""
   rot "  status   Stand anzeigen, nichts veraendern"
   rot "  save     Patch +1, lokaler Commit, kein Push"
-  rot "  release  Minor (Patch 0), Tag, Push nach GitHub   [ --skip-checks ]"
-  rot "           E2E auf conT Pflicht, sonst NODGES_SKIP_E2E=1"
+  rot "  release  Minor (Patch 0), lokales Tag, KEIN Push   [ --skip-checks ]"
+  rot "  major    Major (X.0.0), Tag, Push nach GitHub      --bestaetigt-durch-user [ --skip-checks ]"
+  rot "           (Push nach GitHub nur nach expliziter Benutzer-Rueckfrage)"
   rot "  hooks    versionierte Git-Hooks einrichten"
   exit 1
   ;;

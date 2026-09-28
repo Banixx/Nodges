@@ -8,33 +8,58 @@ Gueltigkeitsbereich: Windows 11 Host, WSL2, Laufwerk W:
 
 Der Waechter-Dienst [W:/tools/watch_com.ps1](file:///W:/tools/watch_com.ps1) laeuft derzeit aktiv als lautloser Hintergrundprozess unter Windows und synchronisiert kontinuierlich alle Aenderungen in `com/` nach [C:/Users/ich/Desktop/code/_Nodges_Com_Sync](file:///C:/Users/ich/Desktop/code/_Nodges_Com_Sync).
 
-## 2. Autostart-Konfiguration (Persistenz)
+## 2. Autostart-Konfiguration (Persistenz & Kapselung)
 
-Der Autostart wurde direkt in das bestehende Windows-Startup-Skript eingebunden:
-- **Datei:** [C:/Users/ich/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/mount_nodges_w.cmd](file:///C:/Users/ich/AppData/Roaming/Microsoft/Windows/Start%20Menu/Programs/Startup/mount_nodges_w.cmd)
+Der Autostart ist zweistufig gekapselt, damit beim Windows-Start keine Konsolenfenster aufpoppen und der COM-Waechter minimiert in der Taskleiste abrufbar ist:
+- **Autostart-Datei (Windows):** [C:/Users/ich/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/mount_nodges_w.vbs](file:///C:/Users/ich/AppData/Roaming/Microsoft/Windows/Start%20Menu/Programs/Startup/mount_nodges_w.vbs)
+- **Host-Steuerungsskript:** [C:/Users/ich/Desktop/code/_projects/Nodges_Pi/mount_nodges_w.cmd](file:///C:/Users/ich/Desktop/code/_projects/Nodges_Pi/mount_nodges_w.cmd) (Kopie/Sicherung unter [W:/tools/mount_nodges_w.cmd](file:///W:/tools/mount_nodges_w.cmd))
 
-### Vollstaendiger Inhalt des Startup-Skripts:
+### 2.1 Inhalt des Startup-VBSkripts (mount_nodges_w.vbs):
+```vbscript
+Set WshShell = CreateObject("WScript.Shell")
+Set fso = CreateObject("Scripting.FileSystemObject")
+
+cmdScript = "C:\Users\ich\Desktop\code\_projects\Nodges_Pi\mount_nodges_w.cmd"
+
+If fso.FileExists(cmdScript) Then
+    ' Fensterstil 0 = Vollstaendig unsichtbar / Kein Konsolenfenster
+    WshShell.Run "cmd.exe /c " & Chr(34) & cmdScript & Chr(34), 0, False
+Else
+    WshShell.Run "wsl.exe -d Ubuntu -e true", 0, True
+    WshShell.Run "subst W: /D", 0, True
+    WshShell.Run "subst W: \\wsl.localhost\Ubuntu\home\unixusername\nodges", 0, True
+    WScript.Sleep 2000
+    If fso.FileExists("W:\tools\watch_com.ps1") Then
+        WshShell.Run "cmd.exe /c start " & Chr(34) & "Nodges COM-Watcher" & Chr(34) & " /min pwsh.exe -NoExit -WindowStyle Minimized -NoLogo -ExecutionPolicy Bypass -File " & Chr(34) & "W:\tools\watch_com.ps1" & Chr(34), 0, False
+    End If
+End If
+```
+
+### 2.2 Inhalt des Batch-Skripts (mount_nodges_w.cmd):
 ```cmd
 @echo off
 cd /d %USERPROFILE%
-rem Initialisiere WSL Ubuntu, damit der 9P-Netzwerkpfad verfuegbar ist
+
+rem 1. Initialisiere WSL Ubuntu (9P-Netzwerkpfad bereitstellen)
 wsl.exe -d Ubuntu -e true
-rem Trenne altes Mapping, falls vorhanden
+
+rem 2. Trenne altes Mapping, falls vorhanden
 subst W: /D >nul 2>&1
-rem Verbinde Laufwerk W: mit dem Nodges-Verzeichnis
+
+rem 3. Verbinde Laufwerk W: mit dem WSL-Nodges-Verzeichnis
 subst W: \\wsl.localhost\Ubuntu\home\unixusername\nodges
 
-rem Kurze Pause zur Bereitstellung des Laufwerks
+rem 4. Kurze Pause zur Bereitstellung des Laufwerks
 ping 127.0.0.1 -n 3 >nul
 
-rem Starte den COM-Sync-Waechter lautlos im Hintergrund
-if exist "W:\tools\watch_com.ps1" (
-    where pwsh.exe >nul 2>&1
-    if errorlevel 1 (
-        start "" powershell.exe -WindowStyle Hidden -ExecutionPolicy Bypass -File "W:\tools\watch_com.ps1"
-    ) else (
-        start "" pwsh.exe -WindowStyle Hidden -ExecutionPolicy Bypass -File "W:\tools\watch_com.ps1"
-    )
+rem 5. Starte den COM-Sync-Waechter minimiert in der Taskleiste (kein Fokus-Diebstahl, in Taskleiste abrufbar)
+if not exist "W:\tools\watch_com.ps1" goto :eof
+
+where pwsh.exe >nul 2>&1
+if %errorlevel% equ 0 (
+    start "Nodges COM-Watcher" /min pwsh.exe -NoExit -WindowStyle Minimized -NoLogo -ExecutionPolicy Bypass -File "W:\tools\watch_com.ps1"
+) else (
+    start "Nodges COM-Watcher" /min powershell.exe -NoExit -WindowStyle Minimized -NoLogo -ExecutionPolicy Bypass -File "W:\tools\watch_com.ps1"
 )
 ```
 

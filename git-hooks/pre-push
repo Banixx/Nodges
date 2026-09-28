@@ -1,7 +1,7 @@
 #!/bin/sh
-# pre-push — erzingt die Regel: nach GitHub gehen nur Minor- oder Major-Versionen.
-# Zwischenstaende bleiben lokal (tools/nodges-git.sh save).
-# Ausnahme: NODGES_ALLOW_PUSH=1
+# pre-push — erzwingt die Regel: nach GitHub gehen AUSSCHLIESSLICH Major-Versionen (X.0.0).
+# Patch- und Minor-Versionen bleiben lokal.
+# Ausnahme fuer Notfaelle: NODGES_ALLOW_PUSH=1
 
 [ "${NODGES_ALLOW_PUSH:-}" = "1" ] && exit 0
 
@@ -16,15 +16,18 @@ if [ -z "$version" ]; then
   exit 1
 fi
 
-patch="$(printf '%s' "$version" | sed 's/.*\.//')"
+minor="$(printf '%s' "$version" | cut -d'.' -f2 2>/dev/null || true)"
+patch="$(printf '%s' "$version" | cut -d'.' -f3 2>/dev/null || true)"
 tag="$(git tag --points-at HEAD 2>/dev/null | head -n 1)"
 
-if [ "$patch" != "0" ] && [ -z "$tag" ]; then
-  echo "PUSH BLOCKIERT: Version $version ist eine Patch-Version (Zwischenstand)." >&2
+if [ "$minor" != "0" ] || [ "$patch" != "0" ]; then
+  echo "PUSH BLOCKIERT: Version $version ist keine Major-Version (X.0.0)." >&2
   echo "" >&2
-  echo "  Zwischenstand sichern:   tools/nodges-git.sh save" >&2
-  echo "  Nach GitHub bringen:     tools/nodges-git.sh release   (Minor + Tag + Push)" >&2
-  echo "  Trotzdem pushen (Notfall): NODGES_ALLOW_PUSH=1 git push origin main" >&2
+  echo "  Gemaess Benutzerbeschluss duerfen Patch- und Minor-Versionen NICHT nach GitHub gepusht werden." >&2
+  echo "  Zwischenstand sichern:       tools/nodges-git.sh save" >&2
+  echo "  Lokalen Meilenstein setzen:  tools/nodges-git.sh release" >&2
+  echo "  Major-Release vorbereiten:   tools/nodges-git.sh major   (erfordert Benutzerfreigabe)" >&2
+  echo "  Notfall-Override (manuell):  NODGES_ALLOW_PUSH=1 git push origin main" >&2
   exit 1
 fi
 

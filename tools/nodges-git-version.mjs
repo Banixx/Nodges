@@ -93,8 +93,10 @@ if (befehl === 'show') {
     neu = `${haupt}.${neben}.${patch + 1}`;
   } else if (argument === 'minor') {
     neu = `${haupt}.${neben + 1}.0`;
+  } else if (argument === 'major') {
+    neu = `${haupt + 1}.0.0`;
   } else {
-    process.stderr.write(`FEHLER: unbekannte Stufe "${argument}". Erlaubt: patch, minor\n`);
+    process.stderr.write(`FEHLER: unbekannte Stufe "${argument}". Erlaubt: patch, minor, major\n`);
     process.exit(1);
   }
 
@@ -102,7 +104,7 @@ if (befehl === 'show') {
   process.stdout.write(`${neu}\n`);
   process.stderr.write(`Version ${alt} -> ${neu} (${anzahl} Stelle(n) geschrieben)\n`);
 } else if (befehl === 'check-release') {
-  // Eine Version gilt als Release, wenn der Patch-Anteil 0 ist (Minor oder Major).
+  // Eine Version gilt als Meilenstein/Release, wenn der Patch-Anteil 0 ist (Minor oder Major).
   const version = aktuelleVersion();
   const [, , patch] = teilePruefen(version);
   if (patch !== 0) {
@@ -110,9 +112,19 @@ if (befehl === 'show') {
     process.exit(1);
   }
   process.stdout.write(`release:${version}\n`);
+} else if (befehl === 'check-major') {
+  // Prueft, ob die aktuelle Version eine echte Major-Version ist (X.0.0).
+  const version = aktuelleVersion();
+  const [, neben, patch] = teilePruefen(version);
+  if (neben === 0 && patch === 0) {
+    process.stdout.write(`major:${version}\n`);
+    process.exit(0);
+  }
+  process.stdout.write(`kein-major:${version}\n`);
+  process.exit(1);
 } else {
   process.stderr.write(
-    'Aufruf: node tools/nodges-git-version.mjs show | bump patch | bump minor | check-release\n',
+    'Aufruf: node tools/nodges-git-version.mjs show | bump patch | bump minor | bump major | check-release | check-major\n',
   );
   process.exit(1);
 }
