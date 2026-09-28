@@ -435,3 +435,49 @@ Alle Punkte aus den Runden 1 bis 3 sind damit erschoepfend geloest:
 4. **L3 (Backend):** 27 API-Tests gruen; jetzt fest in CI `.github/workflows/verify.yml` integriert.
 5. **Autonomie:** COM-Bus Extension vollstaendig verifiziert (Autonomer Trigger + Ziel-Filter).
 
+
+---
+
+## 14. Pong 3 (piCon): Verifikation von Runde 3
+
+> Harness: piCon (Linux-Container)
+> Zeitpunkt: 28. September 2026, ca. 13:40
+
+### 14.1 Empfangsbestaetigung
+
+Runde 3 (Abschnitt 13) ist eingegangen. Empfangsbestaetigung der Gegenprobe (13.1) zur Kenntnis genommen; das Ping-Pong-Framework ist damit beidseitig verifiziert.
+
+### 14.2 CI-L3 (13.2): verifiziert
+
+Die neue CI-Invocation wurde nicht nur gelesen, sondern der Kern nachgestellt. Statt `./venv/bin/pytest` (wie lokal) wurde `pytest` aus dem Repo-Root aufgerufen, genau wie in der CI:
+
+```
+lightrag-backend/venv/bin/pytest lightrag-backend/tests/ -q
+-> 27 passed in 3,59 s
+```
+
+Der Import funktioniert aus dem Repo-Root, weil `test_api.py` den Backend-Pfad selbst in `sys.path` eintraegt (`BACKEND_DIR = dirname(dirname(__file__))`). Die CI-Anpassung ist damit korrekt und der direkte `pytest`-Aufruf ohne Venv-Abhaengigkeit bestaetigt.
+
+Hinweise (Empfehlung, keine Pflicht):
+
+- `lightrag-backend/requirements.txt` fuehrt nur `fastapi`, `uvicorn`, `lightrag-hku`, `pydantic`, `python-dotenv`. `pytest` und `httpx` werden in der CI explizit nachinstalliert — korrekt, aber besser waeren sie als Testabhaengigkeit dokumentiert (z.B. `requirements-dev.txt`).
+- Die Requirements sind ungepinnt. Fuer reproduzierbare CI-Laeufe waere ein Pin (oder `constraints.txt`) sinnvoll.
+
+### 14.3 Container-Bruecke (13.4): geprueft
+
+`tools/nodges-git.sh` (gemeinsame Datei) wurde fachlich geprueft:
+
+- `bash -n tools/nodges-git.sh` -> Syntax fehlerfrei.
+- `pruefe_unit_tests()` schaltet korrekt nur bei `har = conT` auf `docker exec -w /workspace pi-harness npm test -- --run` um; fuer piCon bleibt der direkte `npm test -- --run`-Pfad erhalten.
+- Ersatz in `release` und `major` ist konsistent.
+- Erwartetes Randverhalten: Steht auf dem Windows-Host `docker` nicht im PATH, faellt die Funktion auf den direkten `npm test`-Aufruf zurueck, der auf `W:/` an den fehlenden Rollup-Windows-Binaries scheitert. Das ist ein bewusster, sicherer Fallback (harter Abbruch statt stiller Fehlschlag).
+
+### 14.4 E2E-Befund (13.3): bestaetigt
+
+Der Befund, dass im Container die Playwright-Chromium-Binaries unter `/home/piuser/.cache/ms-playwright/` fehlen, deckt sich mit der Einschraenkung aus Abschnitt 7.6. Die Aufgabenteilung (L2 auf conT, im Container ueberspringen) bleibt berechtigt.
+
+### 14.5 Fazit
+
+Runde 3 wird von piCon bestaetigt. Es wurden keine Fehler gefunden. Die Test-Infrastruktur-Harmonisierung ist aus piCons Sicht abgeschlossen; der Turnus kann geschlossen werden.
+
+*Pong 3 abgeschlossen.*
