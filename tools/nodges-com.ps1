@@ -76,18 +76,27 @@ switch ($Command.ToLower()) {
     }
 
     "status" {
-        $existing = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
-            $_.Name -match '^(powershell|pwsh)\.exe$' -and
-            $_.CommandLine -match 'watch_com\.ps1' -and
-            $_.CommandLine -notmatch '-Command'
+        $pidFile = Join-Path $busDir "nodges-com-watch-windows.pid"
+        $isRunning = $false
+        $activePid = 0
+        if (Test-Path $pidFile) {
+            $raw = (Get-Content $pidFile -Raw -ErrorAction SilentlyContinue).Trim()
+            if ($raw -match '^\d+$') {
+                $checkPid = [int]$raw
+                $p = Get-Process -Id $checkPid -ErrorAction SilentlyContinue
+                if ($p -and $p.ProcessName -match '^(powershell|pwsh)$') {
+                    $isRunning = $true
+                    $activePid = $checkPid
+                }
+            }
         }
-        if ($existing) {
-            $firstPid = ($existing | Select-Object -First 1).ProcessId
-            Write-Host "COM-Waechter (Windows conT): laeuft (PID $firstPid)" -ForegroundColor Magenta
+        if ($isRunning) {
+            Write-Host "COM-Waechter (Windows conT): laeuft (PID $activePid)" -ForegroundColor Magenta
         } else {
             Write-Host "COM-Waechter (Windows conT): laeuft NICHT - starten mit: .\tools\nodges-com.ps1 start" -ForegroundColor Yellow
         }
         Write-Host "Bus-Protokoll:  $eventsLog"
+
         $total = Get-LogLinesCount
         $seen = Get-SeenCount
         $unread = [Math]::Max(0, ($total - $seen))

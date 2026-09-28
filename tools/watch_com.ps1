@@ -26,21 +26,26 @@ if ($SyncNow) {
 # Fenstertitel fuer die Taskleiste setzen
 try { $host.UI.RawUI.WindowTitle = "Nodges COM-Watcher" } catch {}
 
-# Single-Instance Schutz fuer Dauermodus (verhindert doppelte Waechter-Prozesse)
+# Bus-Pfad tools/com-bus ermitteln
+$busPath = Join-Path $PSScriptRoot "com-bus"
+if (-not (Test-Path $busPath)) {
+    New-Item -ItemType Directory -Path $busPath -Force | Out-Null
+}
+$pidFile = Join-Path $busPath "nodges-com-watch-windows.pid"
+
+# Single-Instance Schutz fuer Dauermodus
 $currentPid = $PID
-$myProc = Get-CimInstance Win32_Process -Filter "ProcessId = $currentPid" -ErrorAction SilentlyContinue
-$parentPid = if ($myProc) { $myProc.ParentProcessId } else { 0 }
-$existing = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
-    $_.ProcessId -ne $currentPid -and
-    $_.ProcessId -ne $parentPid -and
-    $_.Name -match '^(powershell|pwsh)\.exe$' -and
-    $_.CommandLine -match 'watch_com\.ps1' -and
-    $_.CommandLine -notmatch '-Command'
+if (Test-Path $pidFile) {
+    $savedPidRaw = (Get-Content $pidFile -Raw -ErrorAction SilentlyContinue).Trim()
+    if ($savedPidRaw -match '^\d+$') {
+        $savedPid = [int]$savedPidRaw
+        if ($savedPid -ne $currentPid -and (Get-Process -Id $savedPid -ErrorAction SilentlyContinue)) {
+            Write-Host "Ein COM-Waechter laeuft bereits im Hintergrund (PID $savedPid). Beende diesen Aufruf." -ForegroundColor Yellow
+            exit 0
+        }
+    }
 }
-if ($existing) {
-    Write-Host "Ein COM-Waechter laeuft bereits im Hintergrund (PID $(($existing | Select-Object -First 1).ProcessId)). Beende diesen Aufruf." -ForegroundColor Yellow
-    exit 0
-}
+Set-Content -Path $pidFile -Value $currentPid -Force
 
 # Quellpfad com/ ermitteln
 $comPath = "W:\com"
@@ -52,11 +57,6 @@ if (-not (Test-Path $comPath)) {
     exit 1
 }
 
-# Bus-Pfad tools/com-bus ermitteln
-$busPath = Join-Path $PSScriptRoot "com-bus"
-if (-not (Test-Path $busPath)) {
-    New-Item -ItemType Directory -Path $busPath -Force | Out-Null
-}
 
 # Globaler Zustand fuer Synchronisation und Entprellung (Debounce)
 $global:syncDestination = $Destination
