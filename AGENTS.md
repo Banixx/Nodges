@@ -58,12 +58,12 @@ und interpretieren nichts selbst. Damit ist Drift zwischen den beiden Seiten aus
 |Befehl|Wirkung|Push|
 |-|-|-|
 |`bash tools/nodges-git.sh status`|Stand: Branch, Version, Tag, Abstand zu GitHub, offene Dateien. Aendert nichts.|nein|
-|`bash tools/nodges-git.sh save`|Patch-Version +1 (`0.106.4` -> `0.106.5`), `git add -A`, Commit mit der reinen Versionsnummer. Sichert Zwischenstand.|nein|
-|`bash tools/nodges-git.sh release`|Minor-Version (`0.106.9` -> `0.107.0`), Typecheck und Tests, lokaler Commit, lokales Tag `v0.107.0`.|nein|
+|`bash tools/nodges-git.sh save`|Patch-Version +1 (`0.106.4` -> `0.106.5`), `git add -A`, Commit mit der reinen Versionsnummer. Sichert Zwischenstand **selbststaendig**.|nein|
+|`bash tools/nodges-git.sh release --bestaetigt-durch-user`|Minor-Version (`0.106.9` -> `0.107.0`), Typecheck und Tests, lokaler Commit, lokales Tag `v0.107.0`. **NUR nach Ruecksprache mit dem Benutzer.**|nein|
 |`bash tools/nodges-git.sh major --bestaetigt-durch-user`|Major-Version (`0.107.0` -> `1.0.0`), Typecheck, Tests, Commit, Tag, Push nach GitHub. **NUR nach Rueckfrage an den Benutzer.**|ja|
 |`bash tools/nodges-git.sh hooks`|Richtet die versionierten Git-Hooks ein (`core.hooksPath = git-hooks`).|nein|
 
-**Regel: Zwischenstaende und Minor-Releases bleiben strikt lokal. Nach GitHub geht ausschliesslich ein Major-Release und nur nach vorheriger Rueckfrage an den Benutzer.**
+**Regel: Zwischenstaende (Patch) sichern die Agenten selbststaendig. Lokale Minor-Releases erfordern vorherige Ruecksprache mit dem Benutzer. Nach GitHub geht ausschliesslich ein Major-Release und nur nach vorheriger Rueckfrage an den Benutzer.**
 
 ### Versionierte Git-Hooks (`git-hooks/`, aktiv ueber `core.hooksPath`)
 

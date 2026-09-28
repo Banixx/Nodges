@@ -36,8 +36,10 @@ Ergaenzende Begruendungen stehen in `bericht.md` (Teile D, E, F) und `setup.md`.
 | 2026-09-28 | **Feature-Standard & Multi-Harness-Dashboard:** Jedes Feature/Vorhaben wird fortan zwingend mit einem eigenen Ordner unter `com/feature/`, Multi-Harness-Rapport und One-Page-Dashboard (`dashboard.md` / `dashboard.html`) eingerichtet. Vor dem Launch erfolgt die Multi-Harness-Abstimmung. | Benutzerbeschluss (Chat) |
 | 2026-09-28 | **L1-Unit-Tests verbleiben im Container (L1-Dualitaetsbeschluss):** Keine Nachinstallation von Windows-Binaries (`@rollup/rollup-win32-x64-msvc`, `@esbuild/win32-x64`) in das geteilte ext4 `node_modules`. L1-Unit-Tests (Vitest) werden verbindlich im Container (`pi-harness` via `npm run test:fast` / `docker exec`) ausgefuehrt. Host `conT` bedient L0 (`tsc`, `biome`, `knip`) und L2 (Playwright E2E). | `com/feature/test_infrastruktur/dashboard.md` & `rapport_test_infrastruktur.md` |
 | 2026-09-28 | **Git-Hooks & Push-Restriktion:** Git-Hooks werden aktiv erzwungen. Ein Push nach GitHub (`origin/main`) darf ausschliesslich bei Major-Versionen (`X.0.0`) erfolgen. Patch- und Minor-Releases bleiben rein lokal. Auch bei Major-Versionen darf ein Push nur nach expliziter vorheriger Rueckfrage an den Benutzer durchgefuehrt werden. | Benutzerbeschluss (Chat) |
+| 2026-09-28 | **Versionsstufen-Zustaendigkeit:** Patch-Releases (`save`, Ziffer 3) erfolgen selbststaendig durch die Agenten fuer jeden Arbeitsschritt. Minor-Releases (`release`, Ziffer 2) duerfen ausschliesslich nach vorheriger Ruecksprache mit dem Benutzer durchgefuehrt werden (`--bestaetigt-durch-user`). Major-Releases (`major`, Ziffer 1) erfordern zwingend Rueckfrage und explizite Freigabe durch den Benutzer vor dem Push. | Benutzerbeschluss (Chat) |
 
 ---
+
 
 
 > **Hinweis zu offenen Fragen:** Saemtliche noch nicht entschiedenen Fragen, Vorschlaege und Diskussionspunkte wurden nach [W:/com/fragen_an_user.md](file:///W:/com/fragen_an_user.md) ausgelagert. Dieses Dokument enthaelt ausschliesslich verbindliche Beschluesse.

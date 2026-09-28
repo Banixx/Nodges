@@ -57,7 +57,8 @@ Der Benutzer hat verbindlich vorgegeben:
 - Pruefung fuer Major-Release (`check-major`: prueft ob `minor === 0 && patch === 0`).
 
 ### 3.3 Anpassung in `tools/nodges-git.sh`
-- `release`: Minor-Meilenstein (`0.X.0`), Tests, lokaler Commit, lokales Tag. **KEIN PUSH**.
+- `save`: Patch-Zwischenschritt (`0.0.X`), lokaler Commit, kein Push. **Erfolgt selbststaendig durch Agenten.**
+- `release`: Minor-Meilenstein (`0.X.0`), Tests, lokaler Commit, lokales Tag. **KEIN PUSH. NUR NACH RUECKSPRACHE MIT DEM BENUTZER** (`--bestaetigt-durch-user`).
 - `major`: Major-Release (`X.0.0`), Tests, Commit, Tag, Push nach GitHub. **NUR NACH RUECKFRAGE AN DEN BENUTZER** (`--bestaetigt-durch-user`).
 
 ---
@@ -66,9 +67,9 @@ Der Benutzer hat verbindlich vorgegeben:
 
 | Datei | Aenderung | Verifikation |
 |---|---|---|
-| `git-hooks/pre-push` | Pruefung auf `minor == 0 && patch == 0`. Blockiert alle Nicht-Major Pushes. | Live im Container getestet: Blockiert Version 0.106.13 mit Exit Code 1. |
+| `git-hooks/pre-push` | Pruefung auf `minor == 0 && patch == 0`. Blockiert alle Nicht-Major Pushes. | Live im Container und auf Host getestet: Blockiert Nicht-Major-Pushes mit Exit Code 1. |
 | `tools/nodges-git-version.mjs` | `bump major` und `check-major` implementiert. | Getestet: `check-major` meldet `kein-major:0.106.13`. |
-| `tools/nodges-git.sh` | `release` fuehrt keinen Push mehr aus. `major` bricht ohne `--bestaetigt-durch-user` sofort ab. | Getestet: `major` bricht sauber mit Anweisung zur Benutzer-Rueckfrage ab. |
+| `tools/nodges-git.sh` | `save` selbststaendig. `release` und `major` brechen ohne `--bestaetigt-durch-user` sofort ab. | Getestet: Sowohl `release` als auch `major` brechen sauber mit Anweisung zur Benutzer-Rueckfrage ab. |
 | `AGENTS.md` | Dokumentation des Git-Workflows und der Hook-Regeln aktualisiert. | SSoT fuer alle Harnesses synchron. |
 | Git-Hooks Konfiguration | `core.hooksPath = git-hooks` repo-weit aktiv. | Bestaetigt in beiden Harnesses. |
 

@@ -3,8 +3,8 @@
 # nodges-git.sh — der einheitliche Git-Workflow fuer piCon und conT.
 #
 #   status   zeigt Stand: Branch, Version, Tag, Abstand zu origin/main, offene Dateien
-#   save     Patch-Version +1, alles sichern, lokaler Commit — KEIN Push
-#   release  Minor-Version (Patch auf 0), lokales Tag — KEIN Push
+#   save     Patch-Version +1, alles sichern, lokaler Commit — KEIN Push (selbststaendig)
+#   release  Minor-Version (Patch auf 0), lokales Tag — KEIN Push (NUR nach Ruecksprache mit dem Benutzer)
 #   major    Major-Version (X.0.0), Tag, Push nach origin/main — NUR nach Rueckfrage an den Benutzer
 #            E2E-Gate (Beschluss F-02, Option A): Pflicht auf dem Windows-Host (conT),
 #            im Container (piCon) uebersprungen. NODGES_SKIP_E2E=1 / NODGES_FORCE_E2E=1 steuern das.
@@ -131,7 +131,16 @@ release)
 
   har="$(harness_name)"
 
-  checks="${2:-}"
+  # Sicherheitsabfrage gemaess Benutzerbeschluss: Minor-Release nur nach Ruecksprache mit dem Benutzer
+  bestaetigt="${2:-}"
+  if [ "$bestaetigt" != "--bestaetigt-durch-user" ]; then
+    rot "ABBRUCH: Ein Minor-Release (neue Nebenversion) darf NUR NACH RUECKSPRACHE MIT DEM BENUTZER erfolgen."
+    rot "Wenn der Benutzer zugestimmt hat, fuehre aus:"
+    rot "  tools/nodges-git.sh release --bestaetigt-durch-user"
+    exit 1
+  fi
+
+  checks="${3:-}"
   if [ "$checks" != "--skip-checks" ]; then
     hinweis "Pruefe Typen und Unit-Tests vor dem Release ..."
     if git rev-parse --verify --quiet HEAD >/dev/null 2>&1; then
@@ -241,8 +250,9 @@ hooks)
   rot "Aufruf: tools/nodges-git.sh <status|save|release|major|hooks>"
   rot ""
   rot "  status   Stand anzeigen, nichts veraendern"
-  rot "  save     Patch +1, lokaler Commit, kein Push"
-  rot "  release  Minor (Patch 0), lokales Tag, KEIN Push   [ --skip-checks ]"
+  rot "  save     Patch +1, lokaler Commit, kein Push (selbststaendig)"
+  rot "  release  Minor (Patch 0), lokales Tag, KEIN Push   --bestaetigt-durch-user [ --skip-checks ]"
+  rot "           (Minor-Release nur nach Ruecksprache mit dem Benutzer)"
   rot "  major    Major (X.0.0), Tag, Push nach GitHub      --bestaetigt-durch-user [ --skip-checks ]"
   rot "           (Push nach GitHub nur nach expliziter Benutzer-Rueckfrage)"
   rot "  hooks    versionierte Git-Hooks einrichten"

@@ -12,7 +12,7 @@
 | **Projektname** | **Git-Hooks & Release-Gate Absicherung** |
 | **Betriebsmodus** | **Multi-Harness (conT, piCon)** |
 | **Kategorie** | Git-Workflow, Qualitaetssicherung & Versions-Integritaet |
-| **Beschreibung** | Etablierung versionierter Git-Hooks (pre-commit, pre-push, post-commit) fuer conT und piCon. Striktes Verbot automatischer Pushs bei Patch- und Minor-Versionen: Push nach GitHub ist exklusiv Major-Versionen vorbehalten und darf nur nach expliziter Rueckfrage an den Benutzer erfolgen. |
+| **Beschreibung** | Etablierung versionierter Git-Hooks (pre-commit, pre-push, post-commit) fuer conT und piCon. Patch-Versionen (save) sichern Agenten selbststaendig. Minor-Releases (release) erfordern zwingend vorherige Ruecksprache mit dem Benutzer. Push nach GitHub ist exklusiv Major-Versionen vorbehalten und darf nur nach expliziter Rueckfrage an den Benutzer erfolgen. |
 | **Arbeitsverzeichnis** | `W:/com/feature/git_hooks/` |
 
 ---

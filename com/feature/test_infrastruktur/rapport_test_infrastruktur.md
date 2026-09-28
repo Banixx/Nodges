@@ -18,6 +18,7 @@
 | 28.09.2026 08:45 | piCon | Review Runde 2 (Pong 2): Verifikation Option A, Ziel-Filter-Fehler gefunden und behoben | Abschnitt 9 befuellt; Extension-Fix: PING nur bei `ping-piCon.md`/`ping-all.md`; Ping an conT abgesetzt |
 | 28.09.2026 09:06 | piCon | Autonomer Trigger-Test (Option A) empfangen und geprueft | Autonomer Turn ohne Benutzerimpuls ausgeloest; Abschnitt 10 befuellt |
 | 28.09.2026 12:20 | conT | Single-Harness conT: Verifikation der Rollup-Windows-Binaries & finale Bindung L1 an Container | Abschnitt 11 befuellt; Dualitaetsprüfung abgeschlossen; Bestaetigt: L1 verbleibt im Container; Dashboard auf 100% |
+| 28.09.2026 13:22 | piCon | Gegenprobe Ziel-Filter Extension nach /reload | Abschnitt 12 befuellt; ping-conT.md weckt piCon nicht; Zaehlerstand 385->386; Zielpruefung verifiziert |
 
 ---
 
