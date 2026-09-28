@@ -1,0 +1,53 @@
+# Pi-Harness Modellauswahl und Bereinigung der Selected-Liste (Version 0.106.21)
+
+Datum: 28.09.2026  
+Bereich: Pi Coding Agent Harness (`pi-harness` im Docker-Container / `/home/.pi/agent`)
+
+---
+
+## 1. Ausgangslage und Ursachenanalyse
+
+### Was war das Problem ("Durcheinander mit der selected liste")?
+1. **Provider-Ueberschreibung durch Extension:**  
+   Am 22.09.2026 war eine Erweiterung `/home/.pi/agent/extensions/selected-models.ts` (urspruenglich `openrouter-custom.ts`) angelegt worden, die `pi.registerProvider("openrouter", { models: [...] })` mit nur fuenf fest hinterlegten Modellen aufrief.
+2. **Katalog-Verlust:**  
+   Dadurch wurde der vollstaendige, eingebaute OpenRouter-Katalog (394 Modelle) komplett ueberschrieben. Der Benutzer konnte nicht mehr frei aus allen verfuegbaren OpenRouter-Modellen waehlen.
+3. **Muster-Konflikte und Startup-Warnungen:**  
+   Als spaeter weitere Modelle (z. B. DeepSeek- und Qwen-Varianten) in `settings.json` unter `enabledModels` eingetragen wurden, gab Pi beim Start Fehler aus (`Warning: No models match pattern...`), weil diese Modelle in der ueberschriebenen Extension-Liste nicht existierten.
+4. **Deaktivierung:**  
+   Die Extension wurde deshalb auf `.bak` umbenannt (`selected-models.ts.bak`), wodurch der regulaere OpenRouter-Katalog wieder vollstaendig zur Verfuegung stand.
+
+---
+
+## 2. Architektur der Modellauswahl in Pi Coding Agent
+
+Pi besitzt einen nativen Mechanismus zur Trennung zwischen Gesamtkatalog und Vorauswahl:
+
+1. **Gesamtkatalog (`openrouter`):**  
+   Liegt im persistenten Cache `/home/.pi/agent/models-store.json` und enthaelt alle 394 OpenRouter-Modelle. In Pi erreichbar im Modell-Dialog `/model` ueber die Tab-Taste (`[all]`).
+2. **Kuratierte Vorauswahl ("selected liste" / Scoped Models):**  
+   Wird ueber den Schluessel `enabledModels` in `/home/.pi/agent/settings.json` gesteuert (bzw. interaktiv ueber `/scoped-models`).
+   - Steuert den Schnellwechsel ueber Tastenkombination `Ctrl+P`.
+   - Ist der Standard-Reiter (`[scoped]`) beim Oeffnen von `/model`.
+   - Erfordert keine eigene Provider-Extension, wodurch der Gesamtkatalog unberuehrt bleibt.
+
+---
+
+## 3. Durchgefuehrte Massnahmen
+
+1. **Luna 6 in `settings.json` aufgenommen:**  
+   In `/home/.pi/agent/settings.json` wurde unter `enabledModels` der Eintrag `"openrouter/openai/gpt-6-luna"` hinzugefuegt.
+2. **Aktuelle Liste der aktiven `enabledModels` (9 Modelle):**
+   - `openrouter/z-ai/glm-5.3-flash` (Z.ai: GLM 5.3 Flash)
+   - `openrouter/deepseek/deepseek-v4.1-flash` (DeepSeek: DeepSeek V4.1 Flash)
+   - `openrouter/tencent/hy4-preview` (Tencent: Hy4 preview)
+   - `openrouter/deepseek/deepseek-v4-flash-0731` (DeepSeek: DeepSeek V4 Flash 0731)
+   - `openrouter/~deepseek/deepseek-pro-latest` (DeepSeek: DeepSeek Pro Latest)
+   - `openrouter/qwen/qwen3.8-flash` (Qwen: Qwen3.8 Flash)
+   - `openrouter/~z-ai/glm-flash-latest` (Z.ai: GLM Flash Latest)
+   - `openrouter/qwen/qwen3.8-max-0902` (Qwen: Qwen3.8 Max 0902)
+   - `openrouter/openai/gpt-6-luna` (OpenAI: GPT-6 Luna)
+3. **Dokumentation in `selected-models.ts.bak`:**  
+   Die Datei verbleibt deaktiviert als `.bak`, wurde aber um einen klaren Erklaerungskommentar sowie den Eintrag fuer GPT-6 Luna ergaenzt.
+4. **Verifikation:**  
+   Der Pi-interne Modell-Resolver (`resolveModelScopeFromModels`) loest alle 9 Eintraege ohne Warnungen oder Fehler (`diagnostics: []`) gegen den OpenRouter-Katalog auf.

@@ -74,6 +74,8 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 - **Erledigt (conT):** Skript `test:backend` in `package.json` hinterlegt und erfolgreich verifiziert (27 Tests gruen).
 - **Erledigt (conT):** Frontend-Mapping der neuen DTO-Felder in `src/utils/LightRAGService.ts` (`weight`, `keywords`, `description`, `sources`), Kantenexpansion, Schema 5.2 Visual Mappings und `CreatePanel.ts` Pipeline-Anbindung.
 - **Erledigt (conT):** Edge- & Node-Inspector in `src/ui/InfoPanelUI.ts` (hervorgehobene Text-Evidenz, Quellen-Badges, Keywords) und Tooltips in `src/ui/HoverInfoPanel.ts`.
+- **Erledigt (conT):** One-Page Dashboards (`dashboard.md` und `dashboard.html`) in `com/feature/build14/` eingerichtet.
+- **Erledigt (conT):** Ausfuehrlicher Ergebnisbericht `com/doc/0_106_13_build14_dashboard_und_tooling_bericht.md` erstellt; Berichtspflicht in `AGENTS.md` und `com/entscheidungen.md` verbindlich verankert.
 - **Erledigt (2026-09-27, F-02 Option A):** `release` erzwingt `npm run test:e2e` nur auf dem Windows-Host
   (conT). Im Container (piCon) wird E2E uebersprungen, weil Chromium an fehlenden Systembibliotheken
   (`libglib-2.0.so.0`) scheitert. Steuerung: `NODGES_SKIP_E2E=1` / `NODGES_FORCE_E2E=1`.

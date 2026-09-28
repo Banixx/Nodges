@@ -225,11 +225,15 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
    * Fragen sind **direkt im ersten Satz** zu beantworten (sofern passend mit `Ja` oder `Nein` am Satzanfang).
    * Bei reinen Fragen werden **keine Code-Aenderungen** ausgefuehrt.
    * *Ausnahme:* Rueckfragen innerhalb eines initiierten Multi-Harness-Rapports (z.B. in `com/feature/`) sind Arbeitsaufgaben zwischen den Agenten und unterliegen nicht der Code-Aenderungssperre.
-4. **Planungs- und Dokumentationsmodus:**
+4. **Planungs- und Dokumentationsmodus (Berichtspflicht):**
 
-   * Plaene, Analysen und Berichte sind selbststaendig als Markdown-Dateien im Ordner [W:/com/doc/](file:///W:/com/doc/) mit dem Versionspraefix zu speichern.
-   * Im Planungsmodus (`planning\_mode`) sind Aenderungen am Dateisystem ausserhalb von `com/` strikt untersagt.
-   * Ein Arbeitsergebnis **sollte** (Empfehlung, keine Pflicht) zusaetzlich dort festgehalten werden, wo es hingehort: Ergebnisbericht nach `com/doc/`, offener naechster Schritt nach `com/todo.md`, mehrschrittiges Vorhaben nach `com/feature/`, ein Beschluss des Benutzers nach `com/entscheidungen.md`. Ein Faustregel gilt: Was laenger als eine Antwort ueberdauert, gehoert in `com/` — eine Antwort im Chat allein ist fuer das andere Harness spaeter nicht auffindbar.
+   * **Verbindliche Berichtspflicht:** Nach jedem groesseren Arbeitsschritt, Feature-Abschluss oder Meilenstein ist selbststaendig ein ausfuehrlicher Ergebnisbericht als Markdown-Datei im Ordner [W:/com/doc/](file:///W:/com/doc/) mit dem Versionspraefix (z.B. `0_106_13_thema_bericht.md`) zu erstellen und zu speichern. Reine Chat-Antworten fluechtig zu belassen ist untersagt, da sie fuer das andere Harness nicht auffindbar sind.
+   * Im Planungsmodus (`planning_mode`) sind Aenderungen am Dateisystem ausserhalb von `com/` strikt untersagt.
+   * Die Ablage von Arbeitsergebnissen erfolgt verbindlich nach Struktur:
+     - **Ergebnisbericht:** Dauerhafte Dokumentation und Analyse gehoert nach `com/doc/`.
+     - **Laufende Vorhaben & Dashboards:** Werden in `com/feature/<name>/` gefuehrt (`dashboard.md` & `dashboard.html`).
+     - **Offene naechste Schritte:** Gehoeren knapp und praegnant nach `com/todo.md`.
+     - **Benutzerbeschluesse:** Werden sofort verbindlich mit Datum in `com/entscheidungen.md` uebertragen.
 5. **Sorgfaltspflicht vor Aenderungen:**
 
    * Vor Aenderungen muessen relevante Dateien, die Projektstruktur, `git status` und vorhandene Tests geprueft werden.
