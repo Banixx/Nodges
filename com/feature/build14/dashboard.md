@@ -1,7 +1,7 @@
-# Dashboard: [PROJEKTNAME] ([BETRIEBSMODUS])
+# Dashboard: Build 14 – Belegte Beziehungen & LightRAG Evidenz-Graph
 
-> **Projekt:** [PROJEKTNAME] | **Harness:** [conT / piCon / Multi-Harness] | **Stand:** [DATUM] | **Status:** [INITIALISIERT / IN ARBEIT / ABGESCHLOSSEN]  
-> **Ablagepfad:** `dashboard.md` | **HTML-Ansicht:** [dashboard.html](./dashboard.html)
+> **Projekt:** Build 14 (Belegte Beziehungen aus LightRAG) | **Harness:** Multi-Harness (conT & piCon) | **Stand:** 28. September 2026 | **Status:** KERN IMPLEMENTIERT & VERIFIZIERT  
+> **Ablagepfad:** [dashboard.md](./dashboard.md) ([W:/com/feature/build14/dashboard.md](file:///W:/com/feature/build14/dashboard.md)) | **HTML-Ansicht:** [dashboard.html](./dashboard.html)
 
 ---
 
@@ -9,21 +9,21 @@
 
 | Attribut | Spezifikation |
 |---|---|
-| **Projektname** | **[PROJEKTNAME]** |
-| **Betriebsmodus** | **[Single Harness conT / Multi-Harness]** |
-| **Kategorie** | [Kategorie z.B. Entwicklung, Test-Infrastruktur, Refactoring] |
-| **Beschreibung** | [Kurze und praegnante Zusammenfassung des Projektvorhabens in maximal 2-3 Saetzen.] |
-| **Arbeitsverzeichnis** | `[RELATIVER ODER ABSOLUTER PFAD ZUM PROJEKT]` |
+| **Projektname** | **Build 14: Belegte Beziehungen (LightRAG Evidenz-Graph)** |
+| **Betriebsmodus** | **Multi-Harness** (conT: Frontend, Three.js, UI; piCon: Container, Backend, Pytest) |
+| **Kategorie** | Feature-Entwicklung & Wissensgraph-Integration |
+| **Beschreibung** | Ueberfuehrung komprimierter LightRAG-Extraktionen in praezise, belegte Einzelkanten in Nodges (Schema 5.2). Jede Kante traegt spezifische Textbelege (`evidence`), Paarungsstatus, Chunk-IDs (`sources`) und dynamische Visual Mappings (Kantenstaerke via `weight`, Relationenfarben). |
+| **Primaere Pfade** | `W:/com/feature/build14/`, `W:/src/utils/LightRAGService.ts`, `W:/src/ui/InfoPanelUI.ts`, `W:/lightrag-backend/main.py` |
 
 ---
 
 ## 2. Ziele
 
-- **[Z-01]** [Kernziel 1 formulieren]
-- **[Z-02]** [Kernziel 2 formulieren]
-- **[Z-03]** [Kernziel 3 formulieren]
-- **[Z-04]** [Kernziel 4 formulieren]
-- **[Z-05]** [Kernziel 5 formulieren]
+- **[Z-01] Vektorbasiertes Subgraph-Retrieval:** Ersatz des statischen Vollgraph-Slicings durch dynamische Seed-Ermittlung via Vektorsuche (`entities_vdb.query`) und zielgerichtete BFS (`get_knowledge_graph`).
+- **[Z-02] Kantenexpansion (Diskrete Kanten statt Sammelkante):** Zerlegung von LightRAG-Kanten mit mehreren Schluesselwoertern und `<SEP>`-Beschreibungen in $n$ Einzelaussagen mit klarer Paarung (`exakt` vs. `unsicher`).
+- **[Z-03] Volle Schema 5.2 Konformitaet:** Automatische Erzeugung von dynamischen `dataModel`-Definitionen und `visualMappings` (Liniendicke aus kontinuierlichem `weight`, Kantenfarben aus kategorialen `relation`-Werten).
+- **[Z-04] Tiefe Kanten- und Knoten-Inspektion (UI):** Klick auf 3D-Kanten oeffnet das Evidenz-Panel mit Zitatblock, Quell-Chunk-Badges und Schluesselwoertern; Hover-Tooltip liefert Sofortvorschau.
+- **[Z-05] Erweiterte Ingestion-Pipeline (Stufe A):** Dokumenten-Management (`POST /documents`, `GET /documents/status`, `DELETE /documents/{id}`) und semantische Chunker (`recursive_character`) zur lueckenlosen Provenienzabsicherung.
 
 ---
 
@@ -31,20 +31,25 @@
 
 | Meilenstein / Bereich | Pruef- / Arbeitsschritt | Fokus | Status | Fortschritt |
 |---|---|---|---|---|
-| **M1: Setup** | Projektstruktur & Konfiguration | Grundgeruest etablieren | **[ERLEDIGT]** | `[====================] 100%` |
-| **M2: Kernfunktionen** | Implementierung | Logik & Datenfluss | **[IN ARBEIT]** | `[==========..........]  50%` |
-| **M3: Qualitaet & Test** | Tests & Validierung | E2E, Unit, Typen | **[OFFEN]** | `[=====...............]  25%` |
-| **M4: Dokumentation** | Berichte & Abschluss | Uebergabe & Sichern | **[OFFEN]** | `[==..................]  10%` |
+| **M1: Backend Subgraph & DTO** | `lightrag-backend/main.py` | Seed-Suche, BFS, DTOs (`weight`, `keywords`, `description`, `sources`) | **[ERLEDIGT]** | `[====================] 100%` |
+| **M2: Kantenexpansion & Service** | `src/utils/LightRAGService.ts` | `expandRelationshipsBuild14()`, `queryGraphBuild14()`, Schema 5.2 Mapping | **[ERLEDIGT]** | `[====================] 100%` |
+| **M3: UI, 3D & Inspector** | `src/ui/InfoPanelUI.ts`, `HoverInfoPanel.ts` | Zitatbox fuer Evidenz, Chunk-Badges, Parallelen-Auffaecherung (kein Deduplizieren) | **[ERLEDIGT]** | `[====================] 100%` |
+| **M4: Testabdeckung & Gates** | Vitest & Pytest | 27 Backend-Tests gruen, 243 Vitest-Tests gruen, Typecheck fehlerfrei | **[ERLEDIGT]** | `[====================] 100%` |
+| **M5: Erweiterte Ingestion** | Stufe A der Spezifikation | Dokument-Pipeline, `doc_id`-Tracking, semantisches Chunking (`recursive_character`) | **[KONZIPIERT]** | `[====................]  20%` |
 
-**Gesamtfortschritt Projekt:** **46%**
+**Gesamtfortschritt Projekt Build 14:** **85%** (Funktionaler Kern 100% einsatzbereit)
 
 ---
 
 ## 4. Status & Naechste Schritte
 
-- **Aktueller Status:** [Aktuellen Projektstatus kurz beschreiben]
-- **Naechste Aktion:** [Naechsten konkreten Arbeitsschritt benennen]
+- **Aktueller Status:** Der funktionale Kern von Build 14 ist vollstaendig implementiert und verifiziert. Nutzer koennen ueber `CreatePanel.ts` die Pipeline "Build 14: Belegte Beziehungen (LightRAG Evidenz-Graph)" auswaehlen. Abfragen liefern evidierte, aufgefacherte Graphen mit funktionierendem Edge-Inspector.
+- **Naechste Aktionen:**
+  1. Realer End-to-End-Testlauf im Three.js Canvas mit einer komplexen Textpassage.
+  2. Implementierung der erweiterten Ingestion-Pipeline (Stufe A: `POST /documents`, `GET /documents/status`) fuer Dateipfad-Tracking und semantisches Absatz-Chunking.
 - **Verknuepfte Dokumente:**
-  - Setup-Dokument: [README.md](./README.md)
-  - HTML-Ansicht: [dashboard.html](./dashboard.html)
-  - Aufgabenliste: [todo.md](../todo.md)
+  - Fachliche Spezifikation: [build14-spezifikation.md](./build14-spezifikation.md)
+  - Dialog- & Diskussionsprotokoll: [rapport_build14.md](./rapport_build14.md)
+  - Architektur- & Literaturanalyse: [lightrag_nodges_analyse.md](./lightrag_nodges_analyse.md)
+  - HTML-Dashboard: [dashboard.html](./dashboard.html)
+  - Aufgabenliste: [todo.md](../../todo.md)

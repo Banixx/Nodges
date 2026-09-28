@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="page-title">Projekt-Dashboard | Multi-Harness Setup</title>
+  <title>Build 14 Dashboard | Belegte Beziehungen (LightRAG Evidenz-Graph)</title>
   <style>
     :root {
       --bg: #0b0f19;
@@ -165,7 +165,7 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 7px;
     }
 
     .goal-item {
@@ -173,7 +173,7 @@
       align-items: flex-start;
       gap: 8px;
       background: rgba(255, 255, 255, 0.02);
-      padding: 7px 10px;
+      padding: 6px 9px;
       border-radius: 6px;
       border: 1px solid rgba(255, 255, 255, 0.03);
     }
@@ -187,25 +187,25 @@
 
     .goal-desc {
       color: #e5e7eb;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
     }
 
     .progress-section {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .progress-item {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
 
     .progress-header {
       display: flex;
       justify-content: space-between;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
     }
 
     .progress-name {
@@ -233,7 +233,7 @@
 
     .overall-box {
       margin-top: 6px;
-      padding: 10px;
+      padding: 8px 10px;
       background: rgba(168, 85, 247, 0.08);
       border: 1px solid rgba(168, 85, 247, 0.25);
       border-radius: 6px;
@@ -257,19 +257,19 @@
     .status-steps {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 7px;
     }
 
     .step-item {
-      padding: 8px 10px;
+      padding: 7px 9px;
       background: rgba(255, 255, 255, 0.02);
       border-radius: 6px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
     }
 
     .step-label {
       color: var(--text-muted);
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.03em;
       margin-bottom: 2px;
@@ -278,6 +278,7 @@
     .step-value {
       color: #e5e7eb;
       font-weight: 500;
+      line-height: 1.35;
     }
 
     .links-grid {
@@ -289,9 +290,9 @@
 
     .link-btn {
       text-align: center;
-      padding: 6px 8px;
+      padding: 5px 8px;
       border-radius: 5px;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 600;
       text-decoration: none;
       background: rgba(255, 255, 255, 0.04);
@@ -321,150 +322,166 @@
 
   <header>
     <div class="title-group">
-      <h1 id="ui-title">Projektname Vorlage</h1>
-      <p id="ui-subtitle">Dashboard &middot; Multi-Harness / Single-Harness Setup</p>
+      <h1>Build 14: Belegte Beziehungen (LightRAG Evidenz-Graph)</h1>
+      <p>Dashboard &middot; Multi-Harness Kooperation conT (Windows 11) &amp; piCon (Container)</p>
     </div>
     <div class="header-badges">
-      <span class="badge badge-violet" id="ui-badge-harness">Harness: conT / piCon</span>
+      <span class="badge badge-violet">Harness: conT &amp; piCon</span>
       <span class="badge badge-rose">One-Page View</span>
-      <span class="badge badge-status" id="ui-badge-status">Status: Initialisiert</span>
+      <span class="badge badge-status">Kern 100% Einsatzbereit</span>
     </div>
   </header>
 
   <main>
     <!-- Kachel 1: Name & Beschreibung -->
     <div class="card">
-      <h2>Name & Beschreibung <span>[Stammdaten]</span></h2>
+      <h2>Name &amp; Beschreibung <span>[Stammdaten]</span></h2>
       <div class="card-content">
         <div>
           <div class="meta-row">
             <span class="meta-label">Projektname:</span>
-            <span class="meta-value" id="ui-meta-name">Neues Projekt</span>
+            <span class="meta-value">Build 14 (Evidenz-Graph)</span>
           </div>
           <div class="meta-row">
             <span class="meta-label">Betriebsmodus:</span>
-            <span class="meta-value" id="ui-meta-mode">Multi-Harness / Single-Harness</span>
+            <span class="meta-value">Multi-Harness (conT &amp; piCon)</span>
           </div>
           <div class="meta-row">
             <span class="meta-label">Kategorie:</span>
-            <span class="meta-value" id="ui-meta-category">Entwicklung & Stabilisierung</span>
+            <span class="meta-value">Wissensgraph &amp; Evidenz-Mapping</span>
           </div>
           <div class="meta-row">
             <span class="meta-label">Speicherort:</span>
-            <span class="meta-value" id="ui-meta-path">./com/setup/</span>
+            <span class="meta-value">W:/com/feature/build14/</span>
           </div>
         </div>
-        <div class="description-text" id="ui-meta-desc">
-          Dies ist das standardisierte One-Page Projekt-Dashboard. Es buendelt die wichtigsten Eckdaten, Ziele und den kontinuierlichen Fortschritt auf genau einer Bildschirmseite ohne Scrollen.
+        <div class="description-text">
+          Ueberfuehrung komprimierter LightRAG-Kanten in praezise, evidierte Einzelkanten in Nodges (Schema 5.2). Jede Kante traegt spezifische Textbelege (<code>evidence</code>), Paarungsstatus, Chunk-IDs (<code>sources</code>) und dynamische Visual Mappings (Kantenstaerke via <code>weight</code>, Relationenfarben).
         </div>
       </div>
     </div>
 
     <!-- Kachel 2: Ziele -->
     <div class="card">
-      <h2>Projektziele <span>[Meilensteine]</span></h2>
+      <h2>Projektziele <span>[Spezifikation]</span></h2>
       <div class="card-content">
-        <ul class="goals-list" id="ui-goals-list">
+        <ul class="goals-list">
           <li class="goal-item">
             <span class="goal-tag">[Z-01]</span>
-            <span class="goal-desc">Projekt-Setup und Basisstrukturen initialisieren</span>
+            <span class="goal-desc">Vektorbasiertes Subgraph-Retrieval statt Vollgraph-Cut (Seeds via Vektorsuche + BFS)</span>
           </li>
           <li class="goal-item">
             <span class="goal-tag">[Z-02]</span>
-            <span class="goal-desc">Kernarchitektur und Schnittstellen definieren</span>
+            <span class="goal-desc">Kantenexpansion: Diskrete Kanten mit exakter oder unsicherer Evidenz-Paarung</span>
           </li>
           <li class="goal-item">
             <span class="goal-tag">[Z-03]</span>
-            <span class="goal-desc">Implementierung und Testautomatisierung aufbauen</span>
+            <span class="goal-desc">Schema 5.2 Konformitaet: dataModel und visualMappings (weight, relation)</span>
           </li>
           <li class="goal-item">
             <span class="goal-tag">[Z-04]</span>
-            <span class="goal-desc">Dokumentation und kontinuierlichen Sync sicherstellen</span>
+            <span class="goal-desc">Tiefe Kanten- und Knoten-Inspektion in UI &amp; Three.js (Evidenz-Zitatbox, Badges)</span>
           </li>
           <li class="goal-item">
             <span class="goal-tag">[Z-05]</span>
-            <span class="goal-desc">Release- und Meilenstein-Freigabe durchfuehren</span>
+            <span class="goal-desc">Erweiterte Ingestion-Pipeline (Stufe A): Dateipfad-Tracking und semantisches Chunking</span>
           </li>
         </ul>
       </div>
     </div>
 
-    <!-- Kachel 3: Fortschritt & Teststufen -->
+    <!-- Kachel 3: Fortschritt & Meilensteine -->
     <div class="card">
-      <h2>Fortschritt & Kennzahlen <span>[Metriken]</span></h2>
+      <h2>Fortschritt &amp; Meilensteine <span>[Metriken]</span></h2>
       <div class="card-content">
-        <div class="progress-section" id="ui-progress-section">
+        <div class="progress-section">
           <div class="progress-item">
             <div class="progress-header">
-              <span class="progress-name">Meilenstein 1: Setup & Konfiguration</span>
+              <span class="progress-name">M1: Backend Subgraph &amp; DTO (piCon)</span>
               <span class="progress-percent">100% [OK]</span>
             </div>
             <div class="progress-bar-bg">
               <div class="progress-bar-fill" style="width: 100%;"></div>
             </div>
           </div>
+
           <div class="progress-item">
             <div class="progress-header">
-              <span class="progress-name">Meilenstein 2: Kernfunktionen</span>
-              <span class="progress-percent">50% [In Bearbeitung]</span>
+              <span class="progress-name">M2: Kantenexpansion &amp; Service (conT)</span>
+              <span class="progress-percent">100% [OK]</span>
             </div>
             <div class="progress-bar-bg">
-              <div class="progress-bar-fill" style="width: 50%;"></div>
+              <div class="progress-bar-fill" style="width: 100%;"></div>
             </div>
           </div>
+
           <div class="progress-item">
             <div class="progress-header">
-              <span class="progress-name">Meilenstein 3: Testen & Qualitaet</span>
-              <span class="progress-percent">25% [Offen]</span>
+              <span class="progress-name">M3: UI, 3D &amp; Inspector (conT)</span>
+              <span class="progress-percent">100% [OK]</span>
             </div>
             <div class="progress-bar-bg">
-              <div class="progress-bar-fill" style="width: 25%;"></div>
+              <div class="progress-bar-fill" style="width: 100%;"></div>
             </div>
           </div>
+
           <div class="progress-item">
             <div class="progress-header">
-              <span class="progress-name">Meilenstein 4: Dokumentation & Abnahme</span>
-              <span class="progress-percent">10% [Offen]</span>
+              <span class="progress-name">M4: Testabdeckung (27 Pytest, 243 Vitest)</span>
+              <span class="progress-percent">100% [OK]</span>
             </div>
             <div class="progress-bar-bg">
-              <div class="progress-bar-fill" style="width: 10%;"></div>
+              <div class="progress-bar-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">M5: Erweiterte Ingestion (Stufe A)</span>
+              <span class="progress-percent">20% [OFFEN]</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 20%;"></div>
             </div>
           </div>
         </div>
+
         <div class="overall-box">
-          <span class="overall-title">Gesamtfortschritt Projekt</span>
-          <span class="overall-val" id="ui-overall-percent">46%</span>
+          <span class="overall-title">Gesamtfortschritt Build 14 (Kern + Stufe A):</span>
+          <span class="overall-val">85%</span>
         </div>
       </div>
     </div>
 
     <!-- Kachel 4: Status & Naechste Schritte -->
     <div class="card">
-      <h2>Status & Steuerung <span>[Aktionen]</span></h2>
+      <h2>Status &amp; Naechste Schritte <span>[Aktionen]</span></h2>
       <div class="card-content">
         <div class="status-steps">
           <div class="step-item">
-            <div class="step-label">Aktueller Status</div>
-            <div class="step-value" id="ui-status-text">Projekt-Dashboard einsatzbereit. Vorlage kann durch Hineinkopieren in jeden Zielordner direkt verwendet werden.</div>
+            <div class="step-label">Aktueller Status:</div>
+            <div class="step-value">Funktionaler Kern vollstaendig einsatzbereit. CreatePanel bietet Build 14 Pipeline an; Evidenz-Inspector und Three.js Auffaecherung aktiv. 27 Backend- und 243 Unit-Tests gruen.</div>
           </div>
+
           <div class="step-item">
-            <div class="step-label">Naechste Aktion</div>
-            <div class="step-value" id="ui-next-step">Projektstammdaten und Ziele in dashboard.html oder dashboard.md anpassen.</div>
+            <div class="step-label">Naechste Schritte:</div>
+            <div class="step-value">1. Realer Testlauf im Browser mit komplexem Textkorpus.<br>2. Ausbau der Erweiterten Ingestion-Pipeline (Stufe A: POST /documents, GET /documents/status).</div>
           </div>
         </div>
+
         <div class="links-grid">
-          <a class="link-btn" href="./dashboard.md">Markdown-View</a>
-          <a class="link-btn" href="./README.md">Setup-Dokument</a>
-          <a class="link-btn" href="../todo.md">Zentrales Todo</a>
-          <a class="link-btn" href="../entscheidungen.md">Entscheidungen</a>
+          <a href="./dashboard.md" class="link-btn">dashboard.md</a>
+          <a href="./rapport_build14.md" class="link-btn">rapport_build14.md</a>
+          <a href="./build14-spezifikation.md" class="link-btn">Spezifikation</a>
+          <a href="../../todo.md" class="link-btn">todo.md</a>
         </div>
       </div>
     </div>
   </main>
 
   <footer>
-    <span id="ui-footer-left">Nodges Multi-Harness Baukasten &middot; Setup-Vorlage</span>
-    <span>One-Page Dashboard &middot; Keine Emojis &middot; Portable Vorlage</span>
+    <span>Nodges 3D Semantic Graph &middot; Build 14 Feature Dashboard</span>
+    <span>Letzte Aktualisierung: 28.09.2026</span>
   </footer>
 
 </body>
