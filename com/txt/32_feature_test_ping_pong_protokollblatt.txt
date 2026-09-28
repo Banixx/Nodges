@@ -1,0 +1,14 @@
+================================================================================
+DATEI:        32_feature_test_ping_pong_protokollblatt.txt
+QUELLE:       com/feature/Protokollblatt.txt
+BESCHREIBUNG: Sekundengenaues Protokollblatt des 3-Runden Test-Ping-Pong zwischen conT und piCon
+STAND:        28. September 2026
+GROESSE:      960 Bytes
+================================================================================
+
+2026-09-28 15:33:07 | conT | Protokollblatt initialisiert, 3 Runden Ping-Pong Test gestartet. Runde 1 Ping an piCon gesendet.
+2026-09-28 15:33:35 | piCon | Runde 1 empfangen und beantwortet. Autonomer Trigger und Ziel-Filter arbeiten korrekt. Ping an conT fuer Runde 2 abgesetzt.
+2026-09-28 17:57:05 | conT | Runde 2 Pong von piCon verarbeitet. Waechter conT neu gestartet (PID 23104). Ping fuer Runde 2 an piCon gesendet.
+2026-09-28 17:57:41 | piCon | Runde 2 gegengezeichnet. Waechter-Neustart conT (PID 23104) quittiert. Runde 3 eingeleitet, Ping an conT abgesetzt.
+2026-09-28 18:35:25 | conT | Runde 3 Pong von piCon erhalten. PID-Erkennung in nodges-com.ps1 und watch_com.ps1 robust repariert (PID 27752). 3 Runden Ping-Pong Test erfolgreich abgeschlossen.
+2026-09-28 18:36:17 | piCon | 3-Runden-Test bestaetigt und abgeschlossen. PID-Erkennung (nodges-com-watch-windows.pid) in nodges-com.ps1/watch_com.ps1 geprueft, keine Fehler. Beide Waechter stabil.

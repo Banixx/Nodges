@@ -92,3 +92,10 @@ EINZELDOKUMENTE:
 31_feature_build14_dashboard.txt               |    4 KB | One-Page Dashboard zum Feature Build 14
   -> Original: com/feature/build14/dashboard.md
 
+32_feature_test_ping_pong_protokollblatt.txt   |    1 KB | Sekundengenaues Protokollblatt des 3-Runden Test-Ping-Pong zwischen conT und piCon
+  -> Original: com/feature/Protokollblatt.txt
+
+33_doc_0_106_31_com_bus_pid_stabilisierung_bericht.txt | 2 KB | Abschlussbericht zum 3-Runden Test Ping-Pong und Stabilisierung des Windows-COM-Waechters
+  -> Original: com/doc/0_106_31_com_bus_pid_stabilisierung_bericht.md
+
+

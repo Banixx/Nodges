@@ -176,6 +176,56 @@ flowchart TD
 - **Schutz vor Fremdstaging:** Vor dem Ausfuehren von `git add -A` wird zwingend `git status --short` ausgegeben. Beide Agenten sehen sofort, ob unfertige Dateien aus der jeweils anderen Domaene (Frontend vs. Backend) modifiziert sind.
 - **Der `release`-Befehl:** Reserviert fuer stabile Meilensteine. Prueft automatisch Typecheck (`tsc --noEmit`) und Unit-Tests (`vitest run`), vergibt das Git-Tag `v0.107.0` und pusht nach `origin/main`.
 
+### 4.4 Symmetrischer Zwei-Wege-Signalfluss (conT <-> piCon)
+
+Das folgende Diagramm verdeutlicht die voellige Symmetrie und Gleichberechtigung beider Harnesses beim Senden und Empfangen von Weckrufen ueber den gemeinsamen Bus:
+
+```mermaid
+flowchart LR
+    classDef cont fill:#e1d5e7,stroke:#9673a6,stroke-width:2px,color:#000
+    classDef picon fill:#d5e8d4,stroke:#82b366,stroke-width:2px,color:#000
+    classDef bus fill:#fff2cc,stroke:#d6b656,stroke-width:2px,color:#000
+
+    subgraph Host["conT (Windows 11 Host)"]
+        conT_Agent["conT (Antigravity Agent)"]:::cont
+        conT_CLI["tools/nodges-com.ps1 (Sender CLI)"]:::cont
+        conT_Watcher["tools/watch_com.ps1 (Empfaenger Waechter)"]:::cont
+        conT_Auto["mount_nodges_w.cmd (Windows Startup)"]:::cont
+    end
+
+    subgraph Bus["Gemeinsamer COM-Bus (tools/com-bus/ auf ext4 SSoT)"]
+        Ping_to_piCon["Signal: ping-piCon.md"]:::bus
+        Ping_to_conT["Signal: ping-conT.md"]:::bus
+        Events_Log["Protokoll: events.log"]:::bus
+    end
+
+    subgraph Container["piCon (Linux Docker-Container)"]
+        piCon_Agent["piCon (Pi-Agent CLI)"]:::picon
+        piCon_CLI["tools/nodges-com.sh (Sender CLI)"]:::picon
+        piCon_Watcher["tools/watch_com.mjs (Empfaenger Waechter)"]:::picon
+        piCon_Ext["nodges-com.ts (Pi-Erweiterung)"]:::picon
+    end
+
+    %% Daemon Autostart
+    conT_Auto -->|"Startet bei Windows Login"| conT_Watcher
+    Container -->|"Startet bei Container-Boot"| piCon_Watcher
+
+    %% Richtung 1: conT sendet -> piCon empfaengt
+    conT_Agent -->|"1. ping piCon"| conT_CLI
+    conT_CLI -->|"2. Schreibt"| Ping_to_piCon
+    Ping_to_piCon -->|"3. Scan & Abholung"| piCon_Watcher
+    piCon_Watcher -->|"4. Loggt PING & loescht"| Events_Log
+    Events_Log -->|"5. Liest bei Prompt"| piCon_Ext
+    piCon_Ext -->|"6. Injiziert COM_UPDATE"| piCon_Agent
+
+    %% Richtung 2: piCon sendet -> conT empfaengt
+    piCon_Agent -->|"1. ping conT"| piCon_CLI
+    piCon_CLI -->|"2. Schreibt"| Ping_to_conT
+    Ping_to_conT -->|"3. 2s Heartbeat-Scan"| conT_Watcher
+    conT_Watcher -->|"4. Loggt PING & loescht"| Events_Log
+    conT_Watcher -->|"5. Benachrichtigt / Status"| conT_Agent
+```
+
 ---
 
 ## 5. Zusammenfassung und Richtlinien fuer die Agenten
