@@ -1,0 +1,83 @@
+================================================================================
+DATEI:        28_feature_git_hooks_rapport.txt
+QUELLE:       com/feature/git_hooks/rapport_git_hooks.md
+BESCHREIBUNG: Rapport zur Einfuehrung und Verifikation der Git-Hooks (pre-commit, pre-push)
+STAND:        28. September 2026
+GROESSE:      4538 Bytes
+================================================================================
+
+# Multi-Harness Rapport: Git-Hooks & Push-Schutz (Major-Push nur nach Rueckfrage)
+
+> **Projekt:** Etablierung Git-Hooks und strikter Push-Schutz (Major-Push nur nach Benutzer-Rueckfrage)  
+> **Status:** Runde 1 (Problemaufriss & Spezifikation vor Launch)  
+> **Aktueller Turnus-Inhaber:** **conT (Host / Windows 11)**  
+> **Ablagepfad:** [W:/com/feature/git_hooks/rapport_git_hooks.md](file:///W:/com/feature/git_hooks/rapport_git_hooks.md)  
+> **Beteiligte Partner:**
+> - **conT:** Antigravity (Windows 11 Host, Netzlaufwerk [W:/](file:///W:/))
+> - **piCon:** Pi-Agent im Linux-Docker-Container (`/workspace`)
+> - **Benutzer (Banixx):** Letztentscheider fuer Major-Releases und Pushs nach GitHub
+
+---
+
+## 1. Turnus- und Verlaufsprotokoll
+
+| Zeitstempel (UTC / MESZ) | Akteur | Phase / Schritt | Status / Ergebnis |
+|---|---|---|---|
+| 2026-09-28 10:05 UTC (12:05 MESZ) | **conT** | Runde 1: Feature-Initialisierung, Dashboard & Spezifikation der Push-Restriktion | Erstellt. Vorbereitung Multi-Harness-Abstimmung vor Code-Launch. |
+| 2026-09-28 10:16 UTC (12:16 MESZ) | **conT / piCon** | Runde 2: Umsetzung der Git-Hooks, Werkzeuganpassungen & Multi-Harness Verifikation | Erfolgreich umgesetzt und verifiziert. Pushs fuer Minor/Patch strikt blockiert. Major erfordert explizite Benutzerbestaetigung. |
+
+---
+
+## 2. Ausgangslage & Benutzerbeschluss
+
+### 2.1 Der Benutzerbeschluss
+Der Benutzer hat verbindlich vorgegeben:
+1. **Feature-Standard:** Jedes Vorhaben wird ab jetzt immer mit einem neuen Ordner unter `com/feature/`, Multi-Harness-Rapport und One-Page-Dashboard eingerichtet. Vor dem Launch erfolgt die Multi-Harness-Abstimmung.
+2. **Git-Hooks & Push-Regel:**
+   - Git-Hooks (`pre-commit`, `pre-push`, `post-commit`) muessen aktiv greifen.
+   - **Ein Push nach GitHub darf AUSSCHLIESSLICH bei Major-Versionen (`X.0.0`) erfolgen.**
+   - Minor-Versionen (`0.X.0`) und Patch-Versionen (`0.0.X`) duerfen **NICHT** nach GitHub gepusht werden.
+   - Selbst bei einer Major-Version darf der Push **NUR NACH EXPLIZITER RUECKFRAGE AN DEN BENUTZER** ausgefuehrt werden.
+
+### 2.2 Analyse des Ist-Zustands
+1. **`git-hooks/pre-push`:**
+   - Aktuell blockierte Zeile 22 nur Patch-Versionen.
+   - Minor-Versionen (`patch == 0`, z.B. `0.107.0`) wurden ungeprueft durchgewunken.
+2. **`tools/nodges-git.sh`:**
+   - Der Befehl `release` machte frueher automatisch einen Push nach GitHub.
+3. **`tools/nodges-git-version.mjs`:**
+   - Bietet bisher nur `bump patch` und `bump minor`. Ein `bump major` fehlte bisher.
+4. **Git-Hooks Aktivierung:**
+   - `core.hooksPath = git-hooks` muss fuer conT und piCon aktiv sein.
+
+---
+
+## 3. Ziel-Architektur & Spezifikation
+
+### 3.1 Anpassung in `git-hooks/pre-push`
+- Version aus `HEAD:package.json` wird geprueft (`minor` und `patch`).
+- Wenn `minor != 0` ODER `patch != 0`: PUSH WIRD BLOCKIERT.
+- Nur wenn `minor == 0` UND `patch == 0` (Format `X.0.0`) ist ein Push grundsaetzlich erlaubt.
+- Notfall-Override bleibt weiterhin `NODGES_ALLOW_PUSH=1`.
+
+### 3.2 Anpassung in `tools/nodges-git-version.mjs`
+- Unterstuetzung fuer `bump major` (`${haupt + 1}.0.0`).
+- Pruefung fuer Major-Release (`check-major`: prueft ob `minor === 0 && patch === 0`).
+
+### 3.3 Anpassung in `tools/nodges-git.sh`
+- `save`: Patch-Zwischenschritt (`0.0.X`), lokaler Commit, kein Push. **Erfolgt selbststaendig durch Agenten.**
+- `release`: Minor-Meilenstein (`0.X.0`), Tests, lokaler Commit, lokales Tag. **KEIN PUSH. NUR NACH RUECKSPRACHE MIT DEM BENUTZER** (`--bestaetigt-durch-user`).
+- `major`: Major-Release (`X.0.0`), Tests, Commit, Tag, Push nach GitHub. **NUR NACH RUECKFRAGE AN DEN BENUTZER** (`--bestaetigt-durch-user`).
+
+---
+
+## 4. Runde 2: Durchgefuehrte Umsetzung & Testergebnisse
+
+| Datei | Aenderung | Verifikation |
+|---|---|---|
+| `git-hooks/pre-push` | Pruefung auf `minor == 0 && patch == 0`. Blockiert alle Nicht-Major Pushes. | Live im Container und auf Host getestet: Blockiert Nicht-Major-Pushes mit Exit Code 1. |
+| `tools/nodges-git-version.mjs` | `bump major` und `check-major` implementiert. | Getestet: `check-major` meldet `kein-major:0.106.13`. |
+| `tools/nodges-git.sh` | `save` selbststaendig. `release` und `major` brechen ohne `--bestaetigt-durch-user` sofort ab. | Getestet: Sowohl `release` als auch `major` brechen sauber mit Anweisung zur Benutzer-Rueckfrage ab. |
+| `AGENTS.md` | Dokumentation des Git-Workflows und der Hook-Regeln aktualisiert. | SSoT fuer alle Harnesses synchron. |
+| Git-Hooks Konfiguration | `core.hooksPath = git-hooks` repo-weit aktiv. | Bestaetigt in beiden Harnesses. |
+

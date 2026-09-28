@@ -1,0 +1,94 @@
+================================================================================
+INDEX DER EXPORTIERTEN TEXTDATEIEN (com/txt/)
+Stand: 28. September 2026 | Nodges Version 0.106.27
+Gesamtanzahl Dokumente: 28 Dateien
+================================================================================
+
+UEBERSICHTS- UND SAMMELDATEIEN:
+--------------------------------------------------------------------------------
+00_GESAMTSCHAU_NODGES_UEBERBLICK.txt
+  Umfassende Zusammenfassung: Architektur, Kognition, Harnesses, Git-Workflow, Status
+
+NODGES_GESAMTBAND_ALL_IN_ONE.txt
+  Alle 25 Dokumente vollstaendig zusammenhaengend in einer einzigen Textdatei (fuer LLM-Ingestion)
+
+INDEX_DATEIEN.txt
+  Dieses Verzeichnis aller exportierten Dateien
+
+EINZELDOKUMENTE:
+--------------------------------------------------------------------------------
+01_AGENTS.txt                                  |   19 KB | Zentrale Arbeitsregeln, Multi-Harness Architektur (conT & piCon), Single Source of Truth und COM-Bus
+  -> Original: AGENTS.md
+
+02_00_start_hier.txt                           |    3 KB | Verbindlicher Einstieg, Lesereihenfolge und Orientierung fuer alle Agenten
+  -> Original: com/00_start_hier.md
+
+03_entscheidungen.txt                          |    9 KB | Bindende Benutzerbeschluesse mit Datum, Rang 1 der Dokumentenhierarchie
+  -> Original: com/entscheidungen.md
+
+04_todo.txt                                    |   10 KB | Aktueller Aufgabenstand, erledigte Schritte und offene Punkte
+  -> Original: com/todo.md
+
+05_fragen_an_user.txt                          |    6 KB | Offene Entscheidungsvorlagen und Fragen an den Benutzer Banixx
+  -> Original: com/fragen_an_user.md
+
+06_setup.txt                                   |   12 KB | Technische Kurzanleitung, Container-, Git- und Setup-Referenz
+  -> Original: com/setup.md
+
+07_ideen.txt                                   |    6 KB | Ungepruefte Ideensammlung und zukuenftige Ausbaustufen
+  -> Original: com/ideen.md
+
+10_bericht_gesamtschau_und_historie.txt        |   57 KB | Ausfuehrlicher Gesamtbericht, Historie aller Phasen und Multi-Harness Dialogprotokoll (58 KB)
+  -> Original: com/bericht.md
+
+11_nodges_gesamtdokumentation_106_8.txt        |   99 KB | Grosse Gesamtdokumentation ueber alle 16 Kapitel (Architektur, Kognition, Pipeline, UI, Shader, Physik) (101 KB)
+  -> Original: com/doc/Nodges_doc_106_8/NodgesDoc_106_8.md
+
+12_multi_harness_setup_und_kommunikation.txt   |   11 KB | Technische Spezifikation der Multi-Harness-Kommunikation und Infrastruktur
+  -> Original: com/setup/multi_harness_setup_und_kommunikation.md
+
+13_build14_spezifikation_lightrag.txt          |   30 KB | Fachliche Spezifikation fuer Build 14 (LightRAG Backend, DTOs, Graph-Slicing)
+  -> Original: com/feature/build14/build14-spezifikation.md
+
+14_setup_llm_orientierung.txt                  |   30 KB | Konzeptionelles Arbeitspapier zur Orientierung grosser Sprachmodelle im Nodges-Graph
+  -> Original: com/feature/Konzeptionelles/setup-llm-orientierung.md
+
+15_markt_und_datavisualiser_konzept.txt        |   18 KB | Konzeptionelles Arbeitspapier Marktueberblick und 3D-Datenvisualisierung
+  -> Original: com/feature/Konzeptionelles/markt_datavisualiser.md
+
+20_doc_0_106_23_test5_pong1_bericht.txt        |    7 KB | Ergebnisbericht piCon zu Feature test5 (Philosophie von Nodges, Kognition, VDB & Local-First)
+  -> Original: com/doc/0_106_23_test5_pong1_bericht.md
+
+21_doc_0_106_23_test_infrastruktur_bericht.txt |    6 KB | Abschlussbericht conT zu Test-Infrastruktur Harmonisierung und COM-Bus Mechanismen
+  -> Original: com/doc/0_106_23_test_infrastruktur_und_com_bus_mechanismen_bericht.md
+
+22_doc_0_106_13_build14_dashboard_bericht.txt  |    6 KB | Arbeitsbericht zu Build 14 Dashboard, One-Page Visualisierung und Backend-DTOs
+  -> Original: com/doc/0_106_13_build14_dashboard_und_tooling_bericht.md
+
+23_doc_0_106_21_pi_harness_model_liste.txt     |    3 KB | Referenzliste der im Pi-Agenten verfuegbaren LLM-Modelle und Konfigurationen
+  -> Original: com/doc/0_106_21_pi_harness_model_liste.md
+
+24_feature_test5_rapport_philosophie.txt       |   19 KB | Multi-Harness-Rapport test5: Philosophie von Nodges, Kognitionspsychologie und Local-First
+  -> Original: com/feature/test5/rapport_test5.md
+
+25_feature_test5_dashboard.txt                 |    4 KB | One-Page Dashboard zu Feature test5 (Philosophie, Ziele, Metriken)
+  -> Original: com/feature/test5/dashboard.md
+
+26_feature_test_infrastruktur_rapport.txt      |   34 KB | Vollstaendiger Multi-Harness-Rapport (14 Abschnitte) zur Test-Infrastruktur (L0-L3)
+  -> Original: com/feature/test_infrastruktur/rapport_test_infrastruktur.md
+
+27_feature_test_infrastruktur_dashboard.txt    |    4 KB | One-Page Dashboard zur Test-Infrastruktur (100% abgeschlossen)
+  -> Original: com/feature/test_infrastruktur/dashboard.md
+
+28_feature_git_hooks_rapport.txt               |    4 KB | Rapport zur Einfuehrung und Verifikation der Git-Hooks (pre-commit, pre-push)
+  -> Original: com/feature/git_hooks/rapport_git_hooks.md
+
+29_feature_git_hooks_dashboard.txt             |    3 KB | One-Page Dashboard zum Feature Git-Hooks
+  -> Original: com/feature/git_hooks/dashboard.md
+
+30_feature_build14_rapport.txt                 |   14 KB | Multi-Harness-Rapport zu Build 14 (LightRAG Backend-Ingestion & DTO-Pipeline)
+  -> Original: com/feature/build14/rapport_build14.md
+
+31_feature_build14_dashboard.txt               |    4 KB | One-Page Dashboard zum Feature Build 14
+  -> Original: com/feature/build14/dashboard.md
+

@@ -1,0 +1,72 @@
+================================================================================
+GESAMTSCHAU NODGES: ARCHITEKTUR, PHILOSOPHIE, HARNESSES & STATUS
+Stand: 28. September 2026 | Nodges Version 0.106.27
+Ablage: com/txt/00_GESAMTSCHAU_NODGES_UEBERBLICK.txt
+================================================================================
+
+1. PROJEKTIDENTITAET & PHILOSOPHIE
+--------------------------------------------------------------------------------
+Nodges ist ein kognitionspsychologisch fundierter 3D-Netzwerk-Visualisierer auf Basis
+von Three.js (Frontend) und LightRAG (Backend).
+Kernprinzipien:
+* Spatial Literacy & Cognitive Offloading: Nutzung des menschlichen Raeumlichkeits-
+  sinns (3D-Raum, Groesse, Farbe, Dynamik/Textur), um komplexe semantische Netze
+  ohne visuelle Ueberlastung erfassbar zu machen.
+* Local-First & Datensouveraenitaet: Saemtliche Wissensgraphen, Vektorspeicher (VDB)
+  und Graph-Datenbanken verbleiben lokal auf dem Host/Container (keine ungefragte Cloud-Ablage).
+* Single Source of Truth (SSoT): Es gibt genau einen physischen Arbeitsort:
+  /home/unixusername/nodges (WSL2 ext4). Windows 11 greift ueber das Netzlaufwerk
+  W:/ darauf zu, der Docker-Container ueber /workspace. Kein Git-Sync fuer lokale Arbeit.
+
+2. HARNESS-ROLLEN & MULTI-HARNESS-VERBUND
+--------------------------------------------------------------------------------
+* conT (Host / Windows 11 / Antigravity):
+  Verantwortlich fuer UI, 3D-Canvas, Three.js Rendering, Dokumentation und E2E-Tests.
+  Bedient L0 (TypeScript, Biome, Knip) und L2 (Playwright mit SwiftShader).
+* piCon (Linux-Docker-Container 'pi-harness' / /workspace):
+  Verantwortlich fuer Container-Dienste, Vite-Devserver, LightRAG-Backend, Python-Venv
+  und Skripte. Bedient L1 (Vitest Unit-Tests) und L3 (Pytest Backend-Tests).
+* dopi (Docker & Host-Orchestrator, Bedarfsharness):
+  Host-Docker-Setup, Docker Compose, Container-Lifecycle. Kein Dauerturnus.
+* Der COM-Bus (tools/com-bus/):
+  Ereignisbasierter Kommunikations- und Ping-Bus. Dateiaenderungen in com/ werden sofort
+  in events.log erfasst. Pings wecken das Partner-Harness autonom ueber Hintergrund-Waechter.
+
+3. GIT-STRATEGIE & QUALITAETSSTUFEN (L0 BIS L3)
+--------------------------------------------------------------------------------
+* Primaerer Arbeitsbranch: 'main' (Branch 'pi' ist geloescht).
+* 'save' (tools/nodges-git.sh save): Patch-Version +1, lokaler Commit, kein Push.
+* 'release' (tools/nodges-git.sh release --bestaetigt-durch-user): Minor-Release,
+  prueft L0 (Typecheck), L1 (Unit-Tests via Container-Bruecke) und L2 (E2E),
+  setzt lokales Git-Tag (z.B. v0.107.0). KEIN Push nach GitHub.
+* 'major' (tools/nodges-git.sh major --bestaetigt-durch-user): Nur nach expliziter
+  Rueckfrage an den Benutzer geht ein Major-Release (X.0.0) nach GitHub (origin/main).
+* Qualitaetsstufen:
+  - L0 (Statisch): TypeScript ('tsc --noEmit'), Biome Linter/Formatter, Knip Export-Scan.
+  - L1 (Unit-Tests): 246 Vitest-Tests in 20 Testdateien (243 passed, 3 skipped), verbleibt im Container.
+  - L2 (E2E Browser): 4 Playwright-Suiten (Canvas, Sidebar-Tabs, Graph, OrbitControls) auf Windows-Host.
+  - L3 (Backend): 27 Pytest-Tests in lightrag-backend/tests/test_api.py (CRUD, Traversal-Schutz).
+
+4. AKTUELLE FEATURES & VORHABEN (STAND 28.09.2026)
+--------------------------------------------------------------------------------
+* test_infrastruktur (com/feature/test_infrastruktur/):
+  Erfolgreich abgeschlossen (100%). L1 fest an Container gebunden; conT ueber
+  pruefe_unit_tests() in tools/nodges-git.sh entkoppelt; CI-Luecke fuer L3 in verify.yml geschlossen.
+* git_hooks (com/feature/git_hooks/):
+  Erfolgreich eingerichtet (100%). Pre-commit schuetzt Secrets; Pre-push blockiert
+  jeden Push ausser Major-Releases.
+* build14 (com/feature/build14/):
+  LightRAG Backend-Ingestion, standardisierte DTOs (weight, keywords, description, sources),
+  Seeds via entities_vdb.query, BFS-Subgraphen statt Vollgraph-Hardslicing.
+* test5 (com/feature/test5/):
+  Philosophie von Nodges, Kognitionspsychologie und Systemphilosophie (in Bearbeitung).
+
+5. DATEISTRUKTUR DES TEXT-ARCHIVS (com/txt/)
+--------------------------------------------------------------------------------
+Alle Dateien liegen unter com/txt/ als reine, plattformunabhaengige .txt-Dateien vor:
+- 00_GESAMTSCHAU_NODGES_UEBERBLICK.txt  : Diese zusammenfassende Gesamtschau
+- INDEX_DATEIEN.txt                     : Vollstaendiges Verzeichnis aller 25 Textdokumente
+- NODGES_GESAMTBAND_ALL_IN_ONE.txt      : Vollstaendiger Text-Gesamtband (alle Dateien in einer)
+- 01_AGENTS.txt bis 07_ideen.txt        : Die 7 zentralen Steuerungsdateien
+- 10_bericht_... bis 15_markt_...       : Die 6 konzeptionellen Gesamtschau- und Spezifikationspapiere
+- 20_doc_... bis 31_feature_...         : Die 12 neuesten Feature-Rapporte und Berichte

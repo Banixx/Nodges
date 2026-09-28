@@ -1,0 +1,102 @@
+================================================================================
+DATEI:        21_doc_0_106_23_test_infrastruktur_bericht.txt
+QUELLE:       com/doc/0_106_23_test_infrastruktur_und_com_bus_mechanismen_bericht.md
+BESCHREIBUNG: Abschlussbericht conT zu Test-Infrastruktur Harmonisierung und COM-Bus Mechanismen
+STAND:        28. September 2026
+GROESSE:      6123 Bytes
+================================================================================
+
+# Ergebnisbericht: Test-Infrastruktur Harmonisierung & COM-Bus Mechanismen
+
+> **Version:** 0.106.23  
+> **Datum:** 28. September 2026  
+> **Autor / Harness:** conT (Host / Windows 11 / Antigravity)  
+> **Partner:** piCon (Linux-Docker-Container `pi-harness`)  
+> **Status:** Erfolgreich abgeschlossen & beidseitig verifiziert  
+
+---
+
+## 1. Ausgangslage & Zielsetzung
+
+Im Rahmen des Vorhabens **Test-Infrastruktur Harmonisierung** (`com/feature/test_infrastruktur/`) und des anschliessenden Reviews der Kommunikationsmechanismen wurden zwei fundamentale Problemkreise identifiziert und geloest:
+
+1. **L1-Laufzeit auf dem Windows-Host:**
+   Klaerung, ob native Rollup- und Esbuild-Windows-Binaries im gemeinsamen `node_modules` auf ext4 nachinstalliert werden sollen oder ob L1-Unit-Tests verbindlich im Container verbleiben.
+2. **Asymmetrien und Defizite im COM-Bus:**
+   Fehlen einer nativen Windows-Fernbedienung fuer conT, fehlender conT-Lesestatus (`conT.seen`), ungleiche Zeitzonen in `events.log`, hartkodierte Absender in `nodges-com.sh` und fehlende conT-Workspace-Skills.
+
+---
+
+## 2. Technische Untersuchung der Teststufen (L0 bis L3)
+
+### 2.1 Stufe L0 (Statische Analyse)
+* `tsc --noEmit` laeuft auf beiden Seiten fehlerfrei durch (0 Typfehler).
+* `biome lint` prueft Syntax und Codequalitaet einheitlich.
+* `knip` prueft ungenutzte Exporte.
+
+### 2.2 Stufe L1 (Unit- & Modultests via Vitest)
+* **Befund:** Im gemeinsamen ext4-`node_modules` liegen ausschliesslich Linux-ELF-Binaries (`rollup-linux-x64-gnu`, `@esbuild/linux-x64`).
+* **Experimentelle Gegenprobe auf Windows:** Selbst bei manuellem, isoliertem Beistellen von `@rollup/rollup-win32-x64-msvc` und `@esbuild/win32-x64` scheitert Vitest auf Windows an der Modulaufloesung ueber die Windows-WSL-Netzwerkfreigabe `W:/` (`ERR_RESOLVE_PACKAGE_ENTRY_FAIL`). Zudem enthaelt `node_modules/.bin/` ausschliesslich Linux-Symlinks.
+* **Architektur-Beschluss:** Es werden **keine** Windows-Binaries nachinstalliert. L1 verbleibt verbindlich im Linux-Container (`test:fast` bzw. `docker exec`), wo alle 246 Tests (243 passed, 3 skipped in 20 Dateien) in 1,8 Sekunden gruen durchlaufen.
+
+### 2.3 Stufe L2 (Browser E2E via Playwright)
+* **Experimentelle Pruefung im Container:** Aufruf von `npx playwright test e2e/01-app-load.spec.ts` bricht ab mit `browserType.launch: Executable doesn't exist at /home/piuser/.cache/ms-playwright/chromium_headless_shell-1243/...`.
+* **Befund:** Im Container-Image fehlen die Chromium-Binaries.
+* **Architektur-Beschluss:** E2E-Tests werden verbindlich auf dem Windows-Host (conT) mit SwiftShader ausgefuehrt. Im Container wird E2E gemaess Beschluss standardmaessig uebersprungen (`NODGES_SKIP_E2E=1`).
+
+### 2.4 Stufe L3 (Backend-Tests via Pytest)
+* Im Container laufen alle 27 API-Tests in `lightrag-backend/tests/test_api.py` in ca. 3,6 s fehlerfrei durch.
+* **CI-Luecke geschlossen:** In `.github/workflows/verify.yml` wurde ein vollwertiger Python 3.11 Schritt mit `pip install -r lightrag-backend/requirements.txt pytest httpx` und direktem Aufruf von `pytest lightrag-backend/tests/` verankert.
+
+---
+
+## 3. Git-Workflow-Entkopplung (`tools/nodges-git.sh`)
+
+In `tools/nodges-git.sh` wurde die Hilfsfunktion `pruefe_unit_tests()` integriert:
+* Erkennt conT auf Windows (`[ "$har" = "conT" ]`).
+* Delegiert den L1-Vitest-Lauf bei laufendem Container automatisch an `docker exec -w /workspace pi-harness npm test -- --run`.
+* Ermoeglicht conT die fehlerfreie Ausfuehrung von `nodges-git.sh release` und `major` direkt aus Windows heraus, ohne dass Windows-Binaries im geteilten `node_modules` noetig sind.
+
+---
+
+## 4. Korrektur der COM-Bus-Mechanismen
+
+### 4.1 Native Windows-Fernbedienung (`nodges-com.ps1` & `nodges-com.cmd`)
+Unter `tools/` wurden `nodges-com.ps1` und der Batch-Wrapper `nodges-com.cmd` implementiert:
+* `status`: Prueft Hintergrund-Waechter, Gesamte Zeilen, ungelesene Zeilen fuer conT und zeigt die letzten Eintraege.
+* `read`: Zeigt neue Ereignisse seit `conT.seen` an und aktualisiert den Zaehlerstand (mit `-Peek` bleibt der Stand erhalten).
+* `ack`: Quittiert alle Zeilen in `conT.seen`.
+* `ping <ziel> "<text>"`: Legt `tools/com-bus/ping-<ziel>.md` mit standardisiertem Header ab.
+* `watch`: Live-Mitschrift von `events.log`.
+* `start` / `stop`: Verwaltet den Hintergrund-Waechter `watch_com.ps1`.
+
+### 4.2 Zeitzonen-Harmonisierung (`tools/watch_com.mjs`)
+Die Funktion `zeitstempel()` in `watch_com.mjs` wurde auf `timeZone: 'Europe/Berlin'` umgestellt. Damit protokollieren sowohl der Linux-Container als auch der Windows-Host in einheitlicher deutscher Lokalzeit ohne 2-Stunden-Spruenge.
+
+### 4.3 Dynamischer Absender in `tools/nodges-com.sh`
+Der hartkodierte Absender `piCon` im Ping-Header wurde durch `absender="${NODGES_HARNESS:-piCon}"` ersetzt.
+
+### 4.4 conT Workspace-Skills (`W:/.agents/skills/`)
+Die 4 gemaess `AGENTS.md` vorgeschriebenen Skills wurden unter `W:/.agents/skills/` versioniert angelegt:
+* `com/SKILL.md` (COM-Bus Fernbedienung fuer conT)
+* `save/SKILL.md` (Sichern via `nodges-git.sh save`)
+* `release/SKILL.md` (Freigeben via `nodges-git.sh release`)
+* `status/SKILL.md` (Statusbericht via `nodges-git.sh status`)
+
+### 4.5 Dokumentation in `AGENTS.md`
+Abschnitt 7 in `AGENTS.md` wurde um die Windows-Bedienungstabelle und die Funktionsweise von `conT.seen` erweitert.
+
+---
+
+## 5. Verifikation & Praxistest
+
+Nach Freigabe durch den Benutzer wurde der gesamte Ablauf live verifiziert:
+1. conT fuehrte auf Windows folgenden Befehl aus:
+   ```powershell
+   .\tools\nodges-com.ps1 ping piCon "conT hat die Windows-Fernbedienung (tools/nodges-com.ps1 und cmd), Zaehler conT.seen, Workspace-Skills und Zeitzonenharmonisierung in watch_com.mjs erfolgreich etabliert. Test-Infrastruktur Turnus ist beidseitig abgeschlossen."
+   ```
+2. Datei `W:/tools/com-bus/ping-piCon.md` wurde erzeugt.
+3. Der Linux-Waechter im Container erfasste den Ping sofort, trug ihn in `events.log` ein und raeumte die Datei ab.
+4. `nodges-com.ps1 read` und `status` bestaetigten die fehlerfreie Protokollierung.
+
+Das Gesamtsystem ist damit konsistent, entkoppelt und vollstaendig bidirektional einsatzbereit.
