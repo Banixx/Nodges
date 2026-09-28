@@ -1,2 +1,4 @@
 2026-09-28 15:33:07 | conT | Protokollblatt initialisiert, 3 Runden Ping-Pong Test gestartet. Runde 1 Ping an piCon gesendet.
 2026-09-28 15:33:35 | piCon | Runde 1 empfangen und beantwortet. Autonomer Trigger und Ziel-Filter arbeiten korrekt. Ping an conT fuer Runde 2 abgesetzt.
+2026-09-28 17:57:05 | conT | Runde 2 Pong von piCon verarbeitet. Waechter conT neu gestartet (PID 23104). Ping fuer Runde 2 an piCon gesendet.
+2026-09-28 17:57:41 | piCon | Runde 2 gegengezeichnet. Waechter-Neustart conT (PID 23104) quittiert. Runde 3 eingeleitet, Ping an conT abgesetzt.
