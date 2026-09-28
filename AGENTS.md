@@ -268,18 +268,31 @@ andere dort etwas abgelegt hat, laeuft auf jeder Seite ein Waechter (Dateibeobac
 3. Die Erweiterung `/home/.pi/agent/extensions/nodges-com.ts` schaut bei **jedem Prompt** (Ereignis
 `before\_agent\_start`) in diese Liste und stellt alles Neue als `COM\_UPDATE`-Nachricht in den Chat.
 piCon muss also nicht nachfragen — die Meldung erscheint von selbst.
-4. Der Zaehlerstand `tools/com-bus/piCon.seen` merkt, was schon gemeldet wurde.
+4. Der Zaehlerstand `tools/com-bus/piCon.seen` merkt, was piCon schon gemeldet wurde; conT fuehrt analog `tools/com-bus/conT.seen`.
 
-**Gezielter Weckruf (Ping):** `bash tools/nodges-com.sh ping conT "Bitte Datei X lesen"` legt
-`tools/com-bus/ping-conT.md` ab. Der Waechter meldet ihn einmal und nimmt die Datei dann weg. Pings landen im Chat des Empfaengers als eigener, vorrangiger Block.
+**Gezielter Weckruf (Ping):**
+- Aus dem Linux-Container: `bash tools/nodges-com.sh ping conT "Bitte Datei X lesen"`
+- Vom Windows-Host: `.\tools\nodges-com.ps1 ping piCon "Bitte Datei X lesen"` (oder `tools\nodges-com.cmd ping piCon "..."`)
+Der Ping legt `tools/com-bus/ping-<ziel>.md` ab. Der jeweilige Waechter meldet ihn einmal und raeumt die Datei sofort ab.
 
-**Bedienung auf der piCon-Seite (Fernbedienung):**
+**Bedienung auf der conT-Seite (Windows-Fernbedienung):**
+
+|Befehl (PowerShell / CMD)|Wirkung|
+|-|-|
+|`.\tools\nodges-com.ps1 status` / `tools\nodges-com.cmd status`|Laeuft der Windows-Waechter? Wie viele Ereignisse sind fuer conT ungelesen?|
+|`.\tools\nodges-com.ps1 read` / `tools\nodges-com.cmd read`|Neues zeigen und als gelesen markieren (`-Peek` laesst Zaehler stehen)|
+|`.\tools\nodges-com.ps1 ack` / `tools\nodges-com.cmd ack`|Alles fuer conT als gelesen markieren (`conT.seen` nachziehen)|
+|`.\tools\nodges-com.ps1 watch` / `tools\nodges-com.cmd watch`|Die Ereignisse live mitlesen (Abbruch mit Strg+C)|
+|`.\tools\nodges-com.ps1 ping <ziel> "<text>"`|Weckruf an `piCon`, `conT` oder `all`|
+|`.\tools\nodges-com.ps1 stop` / `start`|Windows-Waechter anhalten bzw. starten|
+
+**Bedienung auf der piCon-Seite (Linux-Fernbedienung):**
 
 |Befehl|Wirkung|
 |-|-|
 |`bash tools/nodges-com.sh status`|Laeuft der Waechter? Wie viele Ereignisse sind ungelesen?|
 |`bash tools/nodges-com.sh read`|Neues zeigen und als gelesen markieren (`--peek` laesst den Zaehler stehen)|
-|`bash tools/nodges-com.sh ack`|Alles als gelesen markieren|
+|`bash tools/nodges-com.sh ack`|Alles als gelesen markieren (`piCon.seen`)|
 |`bash tools/nodges-com.sh watch`|Die Ereignisse live mitlesen (Abbruch mit Strg+C)|
 |`bash tools/nodges-com.sh ping <ziel> <text>`|Weckruf an `conT`, `piCon` oder `all`|
 |`bash tools/nodges-com.sh stop` / `start`|Waechter anhalten bzw. starten|

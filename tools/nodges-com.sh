@@ -197,8 +197,9 @@ case "${1:-help}" in
     [ -z "$text" ] && { echo 'FEHLER: Text fehlt. So geht es: bash tools/nodges-com.sh ping conT "bitte Datei X lesen"'; exit 1; }
     mkdir -p "$BUS"
     zieldatei="$BUS/ping-$ziel.md"
+    absender="${NODGES_HARNESS:-piCon}"
     {
-      echo "# PING von piCon an $ziel — $(date '+%Y-%m-%d %H:%M:%S')"
+      echo "# PING von $absender an $ziel — $(date '+%Y-%m-%d %H:%M:%S')"
       echo "$text"
     } > "$zieldatei"
     echo "${ROSA}PING abgelegt:${RESET} $zieldatei"
