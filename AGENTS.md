@@ -60,12 +60,12 @@ und interpretieren nichts selbst. Damit ist Drift zwischen den beiden Seiten aus
 |Befehl|Wirkung|Push|
 |-|-|-|
 |`bash tools/nodges-git.sh status`|Stand: Branch, Version, Tag, Abstand zu GitHub, offene Dateien. Aendert nichts.|nein|
-|`bash tools/nodges-git.sh save`|Patch-Version +1 (`0.106.4` -> `0.106.5`), `git add -A`, Commit mit der reinen Versionsnummer. Sichert Zwischenstand **selbststaendig**.|nein|
+|`bash tools/nodges-git.sh save`|Patch-Version +1 (`0.106.4` -> `0.106.5`), `git add -A`, Commit mit der reinen Versionsnummer. **Auf Anforderung des Benutzers oder am fachlichen Abschluss** — nicht mehr automatisch nach jedem Schritt. Die Datei selbst zu schreiben genuegt; die Versionierung ist sekundaer.|nein|
 |`bash tools/nodges-git.sh release --bestaetigt-durch-user`|Minor-Version (`0.106.9` -> `0.107.0`), Typecheck und Tests, lokaler Commit, lokales Tag `v0.107.0`. **NUR nach Ruecksprache mit dem Benutzer.**|nein|
 |`bash tools/nodges-git.sh major --bestaetigt-durch-user`|Major-Version (`0.107.0` -> `1.0.0`), Typecheck, Tests, Commit, Tag, Push nach GitHub. **NUR nach Rueckfrage an den Benutzer.**|ja|
 |`bash tools/nodges-git.sh hooks`|Richtet die versionierten Git-Hooks ein (`core.hooksPath = git-hooks`).|nein|
 
-**Regel: Zurueckhaltung ist die Grundhaltung (Abschnitt 6). Ausdruecklich vereinbart ist davon das selbststaendige Sichern von Zwischenstaenden (Patch); das aendert aber nichts an der Zurueckhaltung bei inhaltlichen Code-Aenderungen. Lokale Minor-Releases erfordern vorherige Ruecksprache mit dem Benutzer. Nach GitHub geht ausschliesslich ein Major-Release und nur nach vorheriger Rueckfrage an den Benutzer.**
+**Regel: Zurueckhaltung ist die Grundhaltung (Abschnitt 6). Dateien zu schreiben und liegen zu lassen ist der Normalfall — Git-Sicherungen (`save`) erfolgen nur auf Anforderung des Benutzers oder am fachlichen Abschluss eines Vorhabens, nicht nach jedem Arbeitsschritt. Die Versionierung ist sekundaer. Lokale Minor-Releases erfordern vorherige Ruecksprache mit dem Benutzer. Nach GitHub geht ausschliesslich ein Major-Release und nur nach vorheriger Rueckfrage an den Benutzer.**
 
 ### Versionierte Git-Hooks (`git-hooks/`, aktiv ueber `core.hooksPath`)
 
@@ -250,7 +250,7 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
    * **Erklaerungs-Trigger ("ç"):** Wenn der Benutzer im Prompt das Zeichen **"ç"** (mit Cedille) verwendet, werden Fachbegriffe grosszuegig in Klammern mit deutschsprachigen Synonymen oder in maximal zwei Saetzen erklaert. Fehlt das Zeichen, bleibt die Kommunikation technisch praezise, direkt und kompakt.
    * **Farbvorlieben:** Violette und rosafarbene Schrift fuer Terminal- und UI-Gestaltung (gilt nicht fuer Markdown- oder Code-Repo-Inhalte).
    * **Wahrheitsgebot:** Nichts ungeprueft behaupten — fremde Angaben am realen Code und Dateistand verifizieren.
-   * **Zurueckhaltung (Grundhaltung):** Keine inhaltlichen Code-Aenderungen ohne ausdrueckliche Anforderung des Benutzers. Vor groesseren Refactorings, strukturellen Umbauten oder Loeschungen immer zuerst den Benutzer fragen. Ausdruecklich vereinbarte Ausnahmen sind die Git-Sicherung (`save`) und die Berichtspflicht (Abschnitt 6 Punkt 4).
+   * **Zurueckhaltung (Grundhaltung):** Keine inhaltlichen Code-Aenderungen ohne ausdrueckliche Anforderung des Benutzers. Vor groesseren Refactorings, strukturellen Umbauten oder Loeschungen immer zuerst den Benutzer fragen. Einzige ausdruecklich vereinbarte Ausnahme ist die Berichtspflicht (Abschnitt 6 Punkt 4). Git-Sicherungen (`save`) sind kein Automatismus: erst auf Anforderung oder am fachlichen Abschluss.
    * **Benutzerprofil-Datei:** Ergaenzend zu diesem Abschnitt liegt das Benutzerprofil in `/home/.pi/user.md` — das ist die einzige gueltige Profildatei. Sie liegt ausserhalb des Repos; conT erreicht sie nicht ueber `W:/`, fuer conT gilt deshalb der Profiltext in diesem `AGENTS.md`.
    * **Fragen-Trigger ("fragen"):** Wenn der Benutzer in einer Session nach "fragen" fragt (z.B. "Welche Fragen sind offen?", "gibt es offene fragen?", "fragen"), orientiert sich das LLM verbindlich an [W:/com/fragen_an_user.md](file:///W:/com/fragen_an_user.md) und praesentiert die offenen Entscheidungsvorlagen strukturiert und kompakt.
 
