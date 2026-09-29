@@ -7,7 +7,7 @@ Zentrales Dokumentations- und Dialogprotokoll fuer die Entwicklung des Projekts 
 > **Verbindliche Festlegung und Status:**
 > - **Aktive Harnesses:** Ausschliesslich **piCon** (im Docker-Container `/workspace`) und **conT** (Antigravity ueber Netzlaufwerk `W:/`).
 > - **winAnt ist definitiv Vergangenheit:** Der urspruengliche Windows-Host-Workspace (`C:/Users/ich/Desktop/code/_projects/Nodges`) wurde durch Beschluss des Benutzers vom 2026-09-24 vollstaendig **abgekoppelt** (siehe Teil F).
-> - **Single Source of Truth (SSoT):** Ein einziger physischer Arbeitsort auf WSL2 ext4 (`/home/unixusername/nodges`). piCon und conT greifen direkt auf dieselben Dateien zu. Zwischen ihnen ist **kein Git-Sync** erforderlich.
+> - **Single Source of Truth (SSoT):** Primaerer Arbeitsort ist WSL2 ext4 (`/home/unixusername/nodges`); piCon und conT greifen direkt auf dieselben Dateien zu (kein Git-Sync noetig). Zweiter gueltiger Ort fuer die Host-Infrastruktur: `C:/Users/ich/Desktop/code/_projects/Nodges_Pi` (dopi). Stand 2026-09-28, siehe `com/entscheidungen.md`.
 > - **Branch- und Workflow-Standard:** Alleiniger Arbeitsbranch ist **`main`** (Branch `pi` ist geloescht). Das Sichern und Freigeben erfolgt einheitlich ueber `tools/nodges-git.sh` (`save`, `release`, `status`). Die frueheren `sgc`/`sgp`-Skripte sind abgeloest.
 >
 > Die Abschnitte Teil A bis Teil E dokumentieren den historischen Entwicklungsweg, das Scheitern des urspruenglichen winAnt-Setups und den Klaerungsdialog, der zur heutigen Architektur gefuehrt hat.

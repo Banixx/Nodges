@@ -34,19 +34,21 @@
 | **M1: Backend Subgraph & DTO** | `lightrag-backend/main.py` | Seed-Suche, BFS, DTOs (`weight`, `keywords`, `description`, `sources`) | **[ERLEDIGT]** | `[====================] 100%` |
 | **M2: Kantenexpansion & Service** | `src/utils/LightRAGService.ts` | `expandRelationshipsBuild14()`, `queryGraphBuild14()`, Schema 5.2 Mapping | **[ERLEDIGT]** | `[====================] 100%` |
 | **M3: UI, 3D & Inspector** | `src/ui/InfoPanelUI.ts`, `HoverInfoPanel.ts` | Zitatbox fuer Evidenz, Chunk-Badges, Parallelen-Auffaecherung (kein Deduplizieren) | **[ERLEDIGT]** | `[====================] 100%` |
-| **M4: Testabdeckung & Gates** | Vitest & Pytest | 27 Backend-Tests gruen, 243 Vitest-Tests gruen, Typecheck fehlerfrei | **[ERLEDIGT]** | `[====================] 100%` |
-| **M5: Erweiterte Ingestion** | Stufe A der Spezifikation | Dokument-Pipeline, `doc_id`-Tracking, semantisches Chunking (`recursive_character`) | **[KONZIPIERT]** | `[====................]  20%` |
+| **M4: Testabdeckung & Gates** | Vitest & Pytest | 36 Backend-Tests gruen, 243 Vitest-Tests gruen, Typecheck fehlerfrei | **[ERLEDIGT]** | `[====================] 100%` |
+| **M5: Erweiterte Ingestion** | Stufe A der Spezifikation | Dokument-Pipeline (`POST /documents`, `GET /documents/status`, `GET /documents/list`, `DELETE /documents/{doc_id}`), `doc_id`-Tracking, semantisches Absatz-Chunking (`paragraph_semantic` / `recursive_character`) | **[ERLEDIGT]** | `[====================] 100%` |
 
-**Gesamtfortschritt Projekt Build 14:** **85%** (Funktionaler Kern 100% einsatzbereit)
+**Gesamtfortschritt Projekt Build 14:** **100%** (Funktionaler Kern & Ingestion-Pipeline vollstaendig)
 
 ---
 
 ## 4. Status & Naechste Schritte
 
-- **Aktueller Status:** Der funktionale Kern von Build 14 ist vollstaendig implementiert und verifiziert. Nutzer koennen ueber `CreatePanel.ts` die Pipeline "Build 14: Belegte Beziehungen (LightRAG Evidenz-Graph)" auswaehlen. Abfragen liefern evidierte, aufgefacherte Graphen mit funktionierendem Edge-Inspector.
-- **Naechste Aktionen:**
-  1. Realer End-to-End-Testlauf im Three.js Canvas mit einer komplexen Textpassage.
-  2. Implementierung der erweiterten Ingestion-Pipeline (Stufe A: `POST /documents`, `GET /documents/status`) fuer Dateipfad-Tracking und semantisches Absatz-Chunking.
+- **Aktueller Status:** Build 14 ist inklusive Stufe A (Erweiterte Ingestion-Pipeline) vollstaendig implementiert und verifiziert. Nutzer koennen Dokumente strukturiert aufnehmen, den Status abfragen und ueber `CreatePanel.ts` evidierte, aufgefacherte Graphen mit funktionierendem Edge-Inspector und Zitatbloecken explorieren.
+- **Erledigte Aktionen (Stufe A):**
+  1. Endpunkte `POST /documents`, `GET /documents/status`, `GET /documents/list` und `DELETE /documents/{doc_id}` in `lightrag-backend/main.py` implementiert.
+  2. Umstellung von unstrukturiertem Token-Cutting (`rag.ainsert`) auf semantisches Absatz-Chunking via `rag.apipeline_enqueue_documents` mit `doc_id` und `file_path`.
+  3. Integration von `langchain-text-splitters` im Python-Venv fuer `paragraph_semantic` ("P") und `recursive_character` ("R").
+  4. Testabdeckung auf 36/36 Backend-Pytests erweitert (9 neue Tests fuer Stufe A).
 - **Verknuepfte Dokumente:**
   - Fachliche Spezifikation: [build14-spezifikation.md](./build14-spezifikation.md)
   - Dialog- & Diskussionsprotokoll: [rapport_build14.md](./rapport_build14.md)

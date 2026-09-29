@@ -62,3 +62,38 @@ Damit ein Ping-Pong-Test vollautomatisch ablaufen kann, muss die Event-Kette ges
    Wenn conT piCon aufwecken will, reicht kein passiver Ping als Datei. conT (oder ein Host-Skript) muesste im Container einen Befehl absetzen (z.B. via Docker exec: `docker exec pi-harness pi -p "laufblatt: du bist dran"`).
 3. **Option 3: Autonomer Host-Orchestrator (dopi / Skript):**
    Ein einfaches Steuerungsskript auf dem Host ruft abwechselnd conT (via CLI/API) und piCon (via `docker exec`) auf, bis eine Zielzahl erreicht ist.
+
+---
+
+## 5. Nachtrag piCon (verifiziert am 2026-09-29)
+
+Punkt 2.B der Analyse trifft fuer piCon nicht zu. piCon hat eine autonome Schleife; die
+Behauptung "Fehlende autonome Schleife" ist widerlegt.
+
+**Belege aus dem laufenden Betrieb:**
+
+1. `tools/watch_com.mjs` laeuft (Status: PID 59), `events.log` hat 497 Zeilen.
+2. `tools/com-bus/piCon.seen` steht auf **497** — die Erweiterung hat also **jedes** Ereignis
+   verarbeitet, auch die letzten Pings an piCon.
+3. Drei Pings an piCon stehen im Log. Die Reaktionszeit zeigt den autonomen Trigger:
+   - 08:03:08 `ping-piCon.md` "du bist dran mit 2" -> Zahl 2 um 08:03:22 (14 s)
+   - 09:44:54 `ping-piCon.md` "du bist dran mit 4" -> Zahl 4 um 09:45:11 (17 s)
+   - 10:38:53 `ping-piCon.md` "Bericht aktualisiert" -> dieser Nachtrag
+   Kein Benutzerprompt dazwischen.
+
+**Technischer Grund:** `/home/.pi/agent/extensions/nodges-com.ts` startet bei `session_start`
+einen Hintergrundwaechter (`setInterval` 1,5 s plus `fs.watch` auf `tools/com-bus/`). Bei einem
+PING an `piCon` oder `all` loest er ueber `pi.sendMessage(..., { triggerTurn: true,
+deliverAs: "followUp" })` selbsttaetig einen Turn aus. Die Einschraenkung "nur beim
+Benutzer-Prompt" gilt nur fuer den zweiten Pfad der Extension, `before_agent_start`.
+
+**Folge fuer die Ursachenanalyse:** Der Ausfall im Test5 liegt allein auf der conT-Seite
+(Option 1 der Loesungsansaetze). Fuer piCon gibt es nichts zu reparieren; Option 2
+("Pi-CLI-Aufruf") ist ebenfalls nicht noetig, weil der Ping bereits genuegt.
+
+**Einschraenkungen, die bleiben:**
+
+- Der autonome Trigger laeuft nur, solange eine piCon-Session geoeffnet ist (die Timer liegen
+  im Agentenprozess, nicht in einem eigenen Daemon).
+- Ein PING weckt nur, wenn `watch_com.mjs` laeuft (nach Container-Neustart starten).
+- Die Extension weckt nur bei PING, nicht bei blossen Dateiaenderungen (Kostenschutz).

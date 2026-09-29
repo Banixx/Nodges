@@ -219,6 +219,13 @@ def engine_client(main_module):
     fake_rag = MagicMock()
     fake_rag.aquery = AsyncMock(return_value='Hans arbeitet bei Siemens.')
     fake_rag.ainsert = AsyncMock(return_value=None)
+    fake_rag.apipeline_enqueue_documents = AsyncMock(return_value='track_mock_123')
+    fake_rag.apipeline_process_enqueue_documents = AsyncMock(return_value=None)
+    fake_rag.aget_docs_by_track_id = AsyncMock(return_value={'doc_1': {'status': 'processed', 'file_path': 'insert_text.txt'}})
+    fake_rag.get_processing_status = AsyncMock(return_value={'pending': 0, 'processed': 1})
+    fake_rag.get_docs_by_status = AsyncMock(return_value={})
+    fake_rag.aget_docs_by_ids = AsyncMock(return_value={'doc_1': {'status': 'processed'}})
+    fake_rag.adelete_by_doc_id = AsyncMock(return_value='Deleted')
     fake_rag.initialize_storages = AsyncMock(return_value=None)
     fake_rag.chunk_entity_relation_graph = graph_store
     fake_rag.entities_vdb = entities_vdb
@@ -382,3 +389,94 @@ def test_aktive_datenbank_kann_nicht_geloescht_werden(db_client):
 
 def test_unbekannte_datenbank_loeschen_404(db_client):
     assert db_client.delete('/databases/gibtesnicht').status_code == 404
+
+
+# --------------------------------------------------------------------------
+# Dokumenten-Pipeline Endpunkte (Build 14 Stufe A)
+# --------------------------------------------------------------------------
+
+def test_documents_ingest_mock_modus(client):
+    response = client.post('/documents', json={'text': 'Testdokument fuer Mock-Ingestion'})
+    assert response.status_code == 200
+    data = response.json()
+    assert data['status'] == 'success'
+    assert data['mock'] is True
+    assert data['engine_active'] is False
+    assert data['document_count'] == 1
+    assert len(data['doc_ids']) == 1
+
+
+def test_documents_ingest_single_doc_engine(engine_client):
+    response = engine_client.post('/documents', json={
+        'text': 'Neues Gesetz ueber den Datenschutz.',
+        'doc_id': 'doc_dsgvo_1',
+        'file_path': 'docs/dsgvo.md',
+        'process_options': 'P'
+    })
+    assert response.status_code == 200
+    data = response.json()
+    assert data['status'] == 'success'
+    assert data['mock'] is False
+    assert data['engine_active'] is True
+    assert data['track_id'] == 'track_mock_123'
+    assert data['doc_ids'] == ['doc_dsgvo_1']
+
+
+def test_documents_ingest_batch_engine(engine_client):
+    response = engine_client.post('/documents', json={
+        'documents': [
+            {'text': 'Absatz 1', 'file_path': 'doc1.txt', 'process_options': 'P'},
+            {'text': 'Absatz 2', 'file_path': 'doc2.txt', 'process_options': 'R'}
+        ]
+    })
+    assert response.status_code == 200
+    data = response.json()
+    assert data['status'] == 'success'
+    assert data['document_count'] == 2
+    assert len(data['doc_ids']) == 2
+
+
+def test_documents_ingest_leerer_text_400(engine_client):
+    response = engine_client.post('/documents', json={'text': '   '})
+    assert response.status_code == 400
+
+
+def test_documents_status_mock(client):
+    response = client.get('/documents/status')
+    assert response.status_code == 200
+    data = response.json()
+    assert data['mock'] is True
+    assert data['engine_active'] is False
+    assert 'processing_status' in data
+
+
+def test_documents_status_engine(engine_client):
+    response = engine_client.get('/documents/status')
+    assert response.status_code == 200
+    data = response.json()
+    assert data['mock'] is False
+    assert data['engine_active'] is True
+    assert data['processing_status']['processed'] == 1
+
+
+def test_documents_status_filter_doc_id(engine_client):
+    response = engine_client.get('/documents/status?doc_id=doc_1')
+    assert response.status_code == 200
+    data = response.json()
+    assert 'doc_1' in data['documents']
+
+
+def test_documents_list_endpoint(engine_client):
+    response = engine_client.get('/documents/list')
+    assert response.status_code == 200
+    data = response.json()
+    assert 'documents' in data
+
+
+def test_documents_delete_endpoint(engine_client):
+    response = engine_client.delete('/documents/doc_1')
+    assert response.status_code == 200
+    data = response.json()
+    assert data['status'] == 'success'
+    assert data['doc_id'] == 'doc_1'
+

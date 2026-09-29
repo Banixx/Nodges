@@ -3,7 +3,7 @@ DATEI:        10_bericht_gesamtschau_und_historie.txt
 QUELLE:       com/bericht.md
 BESCHREIBUNG: Ausfuehrlicher Gesamtbericht, Historie aller Phasen und Multi-Harness Dialogprotokoll (58 KB)
 STAND:        28. September 2026
-GROESSE:      58334 Bytes
+GROESSE:      60641 Bytes
 ================================================================================
 
 # Bericht: Multi-Harness-Zusammenarbeit Nodges
@@ -937,3 +937,34 @@ Um jegliche Drift und Diskrepanzen zwischen den Harnesses auszuschliessen, steue
 3. **`post-commit`:** Gibt sofortige Rueckmeldung ueber den aktuellen lokalen Stand.
 
 Damit ist die historische winAnt-Phase mit ihren manuellen, fehleranfaelligen `sgc`/`sgp`-Pushes auf den geloeschten `pi`-Branch endgueltig durch ein automatisiertes, abgesichertes System abgeloest.
+
+---
+
+## Teil J — Ping-Pong-Trigger-Analyse (Test 5) und Save-Politik der Zurueckhaltung (Version 0.106.34)
+
+*Erarbeitet am 2026-09-29 durch conT und piCon im Rahmen des Trigger-Tests auf `com/feature/test5/`.*
+
+### J.1 Der Ping-Pong-Trigger-Test (test5)
+
+Zur Pruefung des COM-Busses sollte auf `com/feature/test5/laufblatt.md` ein wechselseitiges Weiterzaehlen zwischen conT und piCon erfolgen:
+1. Eintrag 0: Benutzer legt die Testdatei an.
+2. Eintrag 1: conT beginnt die Zaehlung und setzt Ping an piCon ab.
+3. Eintrag 2: piCon fuehrt fort (Zahl 2) und pingt conT.
+4. Eintrag 3 & 4: conT (Zahl 3) und piCon (Zahl 4) ergaenzen jeweils nach manuellem Anstoss.
+
+### J.2 Analyse des Fehlverhaltens: Warum der Ping-Pong-Trigger nicht autonom lief
+
+Der Test zeigte, dass der Ablauf zwischen den beiden KIs nicht selbstaendig weiterlief, sondern bei jedem Schritt im Leerlauf verharrte:
+- **COM-Bus als passiver Logger:** Der COM-Bus (`tools/watch_com.*`, `events.log`, `ping-*.md`) ist ein passives Dateisystem-Protokoll, kein aktiver Prozess-Scheduler.
+- **piCon (Container):** Die Erweiterung `nodges-com.ts` ist an den Hook `before_agent_start` gekoppelt. Dieser laeuft ausschliesslich, wenn ein menschlicher Benutzer einen Prompt im Chat abschickt.
+- **conT (Antigravity):** Ein Inferenz-Turn endet nach der Ausgabe der Antwort an den Benutzer. Antigravity wartet danach auf Benutzer-Eingaben; der externe PowerShell-Waechter kann keine eigenstaendigen Prompts in Antigravity injizieren.
+- *Ausfuehrlicher Einzelbericht:* `com/doc/0_106_34_pingpong_trigger_analyse.md`.
+
+### J.3 Neue Save-Politik: Zurueckhaltung statt Automatik (Benutzerbeschluss 2026-09-29)
+
+Im Rahmen der gemeinsamen Arbeit wurde festgestellt, dass automatische Git-Sicherungen (`save`) nach Einzelschritten schaedlich sind:
+- Risiko gemischter Commits mit halbfertigen Dateien der Gegenseite (`git add -A`).
+- Versionsinflation ohne echten fachlichen Meilenstein.
+- **Beschluss des Benutzers:** Die Versionierung ist sekundaer. Dateien zu schreiben und liegen zu lassen ist der Normalfall. `save` erfolgt nur noch auf explizite Anforderung des Benutzers oder am fachlichen Abschluss.
+- *Ausfuehrlicher Einzelbericht:* `com/doc/0_106_34_save_politik_zurueckhaltung_bericht.md` sowie `com/feature/test5/warum_save_hier_suboptimal.md`.
+

@@ -3,7 +3,7 @@ DATEI:        04_todo.txt
 QUELLE:       com/todo.md
 BESCHREIBUNG: Aktueller Aufgabenstand, erledigte Schritte und offene Punkte
 STAND:        28. September 2026
-GROESSE:      9795 Bytes
+GROESSE:      10860 Bytes
 ================================================================================
 
 # Offene Punkte
@@ -43,13 +43,15 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 - **Hinweis:** Aktuelle Feature‑Entwicklungen finden Sie im Verzeichnis `W:/com/feature/` bzw. `//wsl.localhost/Ubuntu/home/unixusername/nodges/com/feature` (WSL‑Pfad).
 
 ### Aktive Features (Multi-Harness)
-- **Aktiv (Feature `test5`):** Philosophie von Nodges (Multi-Harness conT & piCon): Kognitionspsychologisches Leitbild (Spatial Literacy, Cognitive Offloading, 7 Dimensionen, Neurodiversitaet, Metaphern) und Systemphilosophie (Local-First, Schema-Stabilitaet, SSoT ext4, COM-Bus). Dashboard: `com/feature/test5/dashboard.md` bzw. `dashboard.html`. Rapport: `com/feature/test5/rapport_test5.md`. Pong 1 (piCon) erledigt; Bericht: `com/doc/0_106_23_test5_pong1_bericht.md`. Runde 2 (Synthese/Manifest) wartet auf conT.
+- **Aktiv (Build 14 Stufe A):** Erweiterte Ingestion-Pipeline (Dokumenten-Ingestion mit `doc_id`, `file_path`, semantischem Absatz-Chunking via `rag.apipeline_enqueue_documents` anstelle von unstrukturiertem Token-Cutting `rag.ainsert`). Endpunkte: `POST /documents` und `GET /documents/status`. Spezifikation: `com/feature/build14/build14-spezifikation.md`. Dashboard: `com/feature/build14/dashboard.md`.
+- **Erledigt (Feature `test5`):** Philosophie von Nodges (Multi-Harness conT & piCon): Kognitionspsychologisches Leitbild (Spatial Literacy, Cognitive Offloading, 4-Kanal-Doktrin, Neurodiversitaet, Metaphern) und Systemphilosophie (Local-First, Schema-Stabilitaet, SSoT ext4, COM-Bus). Dashboard: `com/feature/test5/dashboard.md` bzw. `dashboard.html`. Rapport: `com/feature/test5/rapport_test5.md`. Synthese & Nodges-Manifest abgeschlossen; Ergebnisbericht: `com/doc/0_106_35_nodges_philosophie_synthese_und_manifest_bericht.md`.
 
 ### Werkzeuge und Qualitaetssicherung
 - **Erledigt (conT, Single Harness):** Test-Infrastruktur Harmonisierung: Dashboard auf einer Bildschirmseite eingerichtet (Name, Beschreibung, Ziele, Fortschritt 100%). L1-Laufzeit geklaert: Vitest verbleibt verbindlich im Linux-Container; keine Windows-Binaries im ext4 node_modules; Domaenenteilung (L0/L2 auf Host, L1/L3 im Container) verifiziert. Dashboard: `com/feature/test_infrastruktur/dashboard.md` bzw. `dashboard.html`. Rapport: `com/feature/test_infrastruktur/rapport_test_infrastruktur.md`.
 - **Erledigt (conT):** `.nvmrc` auf Node 20 fixiert, `"engines": { "node": ">=20.0.0" }` in `package.json` hinterlegt (Paritaet mit CI-Workflow).
 - **Erledigt (conT):** `knip` installiert (`knip.json`, Skript `"knip"` in `package.json`) und durchgefuehrt: 0 ungenutzte Quelldateien im gesamten Projekt `src/`.
-- **Erledigt (Feature `git_hooks`):** Git-Hooks (pre-commit, pre-push, post-commit) konfiguriert und repo-weit aktiviert. Push-Restriktion gemaess Beschluss: GitHub-Push ausschliesslich bei Major-Versionen (`X.0.0`) nach expliziter Rueckfrage an den Benutzer (`--bestaetigt-durch-user`). Minor-Releases (`release`, Ziffer 2) nur nach vorheriger Ruecksprache mit dem Benutzer (`--bestaetigt-durch-user`). Patch-Releases (`save`, Ziffer 3) erfolgen selbststaendig. Dashboard: `com/feature/git_hooks/dashboard.md` bzw. `dashboard.html`. Rapport: `com/feature/git_hooks/rapport_git_hooks.md`.
+- **Erledigt (Feature `git_hooks`):** Git-Hooks (pre-commit, pre-push, post-commit) konfiguriert und repo-weit aktiviert. Push-Restriktion gemaess Beschluss: GitHub-Push ausschliesslich bei Major-Versionen (`X.0.0`) nach expliziter Rueckfrage an den Benutzer (`--bestaetigt-durch-user`). Minor-Releases (`release`, Ziffer 2) nur nach vorheriger Ruecksprache mit dem Benutzer (`--bestaetigt-durch-user`). Patch-Releases (`save`) erfolgen nur auf Anforderung des Benutzers oder am fachlichen Abschluss (Beschluss 2026-09-29: Versionierung sekundaer, kein Automatismus). Dashboard: `com/feature/git_hooks/dashboard.md` bzw. `dashboard.html`. Rapport: `com/feature/git_hooks/rapport_git_hooks.md`.
+- **Erledigt (conT):** Text-Export-Archiv `com/txt/`: Vollstaendige Generierung von 28 Textdokumenten (.txt) inklusive synthetisierter Gesamtschau (`00_GESAMTSCHAU_NODGES_UEBERBLICK.txt`), Katalog (`INDEX_DATEIEN.txt`), All-in-One-Monolith (`NODGES_GESAMTBAND_ALL_IN_ONE.txt`, 430 KB) sowie aller zentralen Steuerungsdateien, Arbeitspapiere und der 12 neuesten Feature-Berichte/Dashboards.
 - optional: `stats.js`-Overlay im Dev-Modus (FPS, Draw Calls, Dreiecke); `vitest bench` fuer Layout-/Physikberechnungen; `size-limit`; Renovate/Dependabot.
 - nur piCon-Ergaenzung: `madge` oder `dependency-cruiser` gegen Zyklen und Schichtverletzungen in `src/core`.
 
@@ -61,7 +63,9 @@ Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` versc
 - Eingefuehrt: `tools/nodges-git.sh` mit `save` (Patch + lokaler Commit, kein Push), `release` (Minor + Tag + Push)
   und `status` (Standbericht statt Pull). Versionierte Hooks in `git-hooks/`, aktiv ueber `core.hooksPath`.
 - conT liest Workspace-Skills aus `W:/.agents/skills/<name>/SKILL.md`; dort liegen `save`, `release`, `status`
-  versioniert. piCon spiegelt sie unter `/home/.pi/agent/skills/`; `uupdate` bleibt Alt-Name fuer `save`.
+  versioniert. Seit 2026-09-29 gilt ein einziger Skill-Ort fuer beide Harnesses: die Dateien liegen nur
+  unter `W:/.agents/skills/` (= `/workspace/.agents/skills/`). Die Kopien unter `/home/.pi/agent/skills/`
+  und der Alt-Name `uupdate` wurden entfernt.
 - Dokumentation: `com/doc/0_106_5_git_workflow_vereinheitlichung.md` (Abschnitt 6 = Umsetzung).
 - Noch zu pruefen im Betrieb: greifen die Hooks auch auf der **Windows-Seite** (`core.hooksPath` relativ)?
   Falls dort nicht aufloesbar, laufen die Hooks bei conT stillschweigend nicht (Git bricht nicht ab).

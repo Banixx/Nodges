@@ -1,6 +1,7 @@
 import os
 import json
 import asyncio
+import hashlib
 from contextlib import asynccontextmanager
 from typing import Optional, List, Dict, Any
 from fastapi import FastAPI, HTTPException
@@ -100,6 +101,20 @@ class QueryRequest(BaseModel):
 
 class InsertRequest(BaseModel):
     text: str
+
+class DocumentItem(BaseModel):
+    text: str
+    doc_id: Optional[str] = None
+    file_path: Optional[str] = None
+    process_options: Optional[str] = "P"
+
+class DocumentsRequest(BaseModel):
+    documents: Optional[List[DocumentItem]] = None
+    text: Optional[str] = None
+    doc_id: Optional[str] = None
+    file_path: Optional[str] = None
+    process_options: Optional[str] = "P"
+    background: Optional[bool] = False
 
 # LightRAG Instanziierung (optional mit Fallback)
 try:
@@ -391,27 +406,221 @@ async def process_query(request: QueryRequest):
         }
     }
 
+def _serialize_doc_status(item: Any) -> Dict[str, Any]:
+    """Wandelt ein DocProcessingStatus-Objekt oder Dict in ein JSON-kompatibles Dict um."""
+    if item is None:
+        return {}
+    if isinstance(item, dict):
+        status_val = item.get("status")
+        if hasattr(status_val, "value"):
+            status_val = status_val.value
+        res = dict(item)
+        res["status"] = str(status_val) if status_val is not None else None
+        return res
+    status_val = getattr(item, "status", None)
+    if hasattr(status_val, "value"):
+        status_val = status_val.value
+    return {
+        "status": str(status_val) if status_val is not None else None,
+        "content_summary": getattr(item, "content_summary", None),
+        "file_path": getattr(item, "file_path", None),
+        "created_at": getattr(item, "created_at", None),
+        "updated_at": getattr(item, "updated_at", None),
+        "track_id": getattr(item, "track_id", None),
+        "chunks_count": getattr(item, "chunks_count", None),
+        "error_msg": getattr(item, "error_msg", None),
+        "content_hash": getattr(item, "content_hash", None),
+    }
+
+
+def _prepare_documents(request: DocumentsRequest) -> List[Dict[str, Any]]:
+    """Extrahiert und normalisiert Dokumente aus DocumentsRequest (Batch oder Einzeldokument)."""
+    docs: List[Dict[str, Any]] = []
+    if request.documents:
+        for item in request.documents:
+            t = (item.text or "").strip()
+            if not t:
+                continue
+            d_id = item.doc_id.strip() if item.doc_id and item.doc_id.strip() else hashlib.md5(t.encode("utf-8")).hexdigest()
+            f_path = item.file_path.strip() if item.file_path and item.file_path.strip() else f"doc_{d_id[:8]}.txt"
+            p_opt = item.process_options.strip() if item.process_options and item.process_options.strip() else "P"
+            docs.append({
+                "text": t,
+                "doc_id": d_id,
+                "file_path": f_path,
+                "process_options": p_opt
+            })
+    elif request.text and request.text.strip():
+        t = request.text.strip()
+        d_id = request.doc_id.strip() if request.doc_id and request.doc_id.strip() else hashlib.md5(t.encode("utf-8")).hexdigest()
+        f_path = request.file_path.strip() if request.file_path and request.file_path.strip() else f"doc_{d_id[:8]}.txt"
+        p_opt = request.process_options.strip() if request.process_options and request.process_options.strip() else "P"
+        docs.append({
+            "text": t,
+            "doc_id": d_id,
+            "file_path": f_path,
+            "process_options": p_opt
+        })
+    return docs
+
+
+async def _execute_document_ingestion(docs: List[Dict[str, Any]], background: bool = False) -> Dict[str, Any]:
+    """Nimmt Dokumente ueber die semantische LightRAG-Pipeline auf (Build 14 Stufe A)."""
+    if LIGHTRAG_AVAILABLE and rag_instance is not None:
+        try:
+            texts = [d["text"] for d in docs]
+            ids = [d["doc_id"] for d in docs]
+            file_paths = [d["file_path"] for d in docs]
+            process_options = [d["process_options"] for d in docs]
+
+            # Enqueue ueber die semantische Pipeline
+            track_id = await rag_instance.apipeline_enqueue_documents(
+                input=texts,
+                ids=ids,
+                file_paths=file_paths,
+                process_options=process_options
+            )
+
+            if background:
+                asyncio.create_task(rag_instance.apipeline_process_enqueue_documents())
+                return {
+                    "status": "enqueued",
+                    "track_id": track_id,
+                    "document_count": len(docs),
+                    "doc_ids": ids,
+                    "message": "Dokumente in Pipeline eingereiht; Verarbeitung laeuft im Hintergrund.",
+                    "mock": False,
+                    "engine_active": True
+                }
+            else:
+                await rag_instance.apipeline_process_enqueue_documents()
+                doc_statuses = {}
+                if hasattr(rag_instance, "aget_docs_by_track_id"):
+                    raw = await rag_instance.aget_docs_by_track_id(track_id)
+                    if raw:
+                        for k, v in raw.items():
+                            doc_statuses[k] = _serialize_doc_status(v)
+                return {
+                    "status": "success",
+                    "track_id": track_id,
+                    "document_count": len(docs),
+                    "doc_ids": ids,
+                    "doc_statuses": doc_statuses,
+                    "message": "Dokumente erfolgreich ueber die semantische Pipeline aufgenommen.",
+                    "mock": False,
+                    "engine_active": True
+                }
+        except Exception as err:
+            import traceback
+            traceback.print_exc()
+            print(f"[LightRAG Ingestion Error] {err}")
+            raise HTTPException(status_code=500, detail=f"LightRAG Ingestion Error: {err}")
+
+    # Fallback / Mock Modus
+    mock_ids = [d["doc_id"] for d in docs]
+    return {
+        "status": "success",
+        "track_id": f"mock_track_{mock_ids[0][:8]}",
+        "document_count": len(docs),
+        "doc_ids": mock_ids,
+        "message": "Dokumente verarbeitet (Mock-Modus aktiv).",
+        "mock": True,
+        "engine_active": False
+    }
+
+
+@app.post("/documents")
+@app.post("/documents/")
+async def ingest_documents(request: DocumentsRequest):
+    docs = _prepare_documents(request)
+    if not docs:
+        raise HTTPException(status_code=400, detail="Mindestens ein Dokument mit nicht-leerem Text erforderlich")
+    return await _execute_document_ingestion(docs, background=bool(request.background))
+
+
+@app.get("/documents/status")
+@app.get("/documents/status/")
+async def get_documents_status(track_id: Optional[str] = None, doc_id: Optional[str] = None):
+    if not LIGHTRAG_AVAILABLE or rag_instance is None:
+        return {
+            "status": "success",
+            "processing_status": {"pending": 0, "processing": 0, "processed": 0, "failed": 0},
+            "documents": {},
+            "engine_active": False,
+            "mock": True
+        }
+
+    try:
+        proc_status = {}
+        if hasattr(rag_instance, "get_processing_status"):
+            proc_status = await rag_instance.get_processing_status()
+
+        docs: Dict[str, Any] = {}
+
+        if doc_id:
+            if hasattr(rag_instance, "aget_docs_by_ids"):
+                raw = await rag_instance.aget_docs_by_ids([doc_id])
+                if raw:
+                    for k, v in raw.items():
+                        docs[k] = _serialize_doc_status(v)
+        elif track_id:
+            if hasattr(rag_instance, "aget_docs_by_track_id"):
+                raw = await rag_instance.aget_docs_by_track_id(track_id)
+                if raw:
+                    for k, v in raw.items():
+                        docs[k] = _serialize_doc_status(v)
+        else:
+            try:
+                from lightrag.base import DocStatus
+                for st in DocStatus:
+                    if hasattr(rag_instance, "get_docs_by_status"):
+                        status_docs = await rag_instance.get_docs_by_status(st)
+                        if status_docs:
+                            for k, v in status_docs.items():
+                                docs[k] = _serialize_doc_status(v)
+            except Exception as st_err:
+                print(f"[LightRAG Warning] Error listing doc statuses: {st_err}")
+
+        return {
+            "status": "success",
+            "processing_status": proc_status,
+            "documents": docs,
+            "engine_active": True,
+            "mock": False
+        }
+    except Exception as e:
+        print(f"[LightRAG Error] get_documents_status failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve document status: {e}")
+
+
+@app.get("/documents/list")
+@app.get("/documents/list/")
+async def list_documents():
+    return await get_documents_status()
+
+
+@app.delete("/documents/{doc_id}")
+@app.delete("/documents/{doc_id}/")
+async def delete_document(doc_id: str):
+    if not LIGHTRAG_AVAILABLE or rag_instance is None:
+        return {"status": "success", "message": f"Dokument '{doc_id}' geloescht (Mock)", "mock": True, "engine_active": False}
+    try:
+        if hasattr(rag_instance, "adelete_by_doc_id"):
+            res = await rag_instance.adelete_by_doc_id(doc_id)
+            return {"status": "success", "doc_id": doc_id, "result": str(res), "mock": False, "engine_active": True}
+        else:
+            raise HTTPException(status_code=501, detail="Dokumentenloeschung in dieser LightRAG-Version nicht verfuegbar")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fehler beim Loeschen von Dokument '{doc_id}': {e}")
+
+
 @app.post("/insert")
 async def process_insert(request: InsertRequest):
     if not request.text or not request.text.strip():
         raise HTTPException(status_code=400, detail="Insert text must not be empty")
 
-    if LIGHTRAG_AVAILABLE and rag_instance is not None:
-        try:
-            await rag_instance.ainsert(request.text)
-            return {"status": "success", "message": "Text successfully inserted into LightRAG knowledge base.", "mock": False, "engine_active": True}
-        except Exception as err:
-            import traceback
-            traceback.print_exc()
-            print(f"[LightRAG Insert Error] {err}")
-            raise HTTPException(status_code=500, detail=f"LightRAG Insert Error: {err}")
-
-    return {
-        "status": "success",
-        "message": "Text received (Mock mode active).",
-        "mock": True,
-        "engine_active": False
-    }
+    docs = _prepare_documents(DocumentsRequest(text=request.text, file_path="insert_text.txt", process_options="P"))
+    return await _execute_document_ingestion(docs, background=False)
 
 class DatabaseRequest(BaseModel):
     name: str

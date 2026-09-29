@@ -6,9 +6,6 @@ Gesamtanzahl Dokumente: 28 Dateien
 
 UEBERSICHTS- UND SAMMELDATEIEN:
 --------------------------------------------------------------------------------
-000_NODGES_KERN_00_BIS_11.txt
-  Kompakter Sammelband aller Kern- und Steuerungsdokumente (00 bis 11) in einer Datei (246 KB)
-
 00_GESAMTSCHAU_NODGES_UEBERBLICK.txt
   Umfassende Zusammenfassung: Architektur, Kognition, Harnesses, Git-Workflow, Status
 
@@ -20,16 +17,16 @@ INDEX_DATEIEN.txt
 
 EINZELDOKUMENTE:
 --------------------------------------------------------------------------------
-01_AGENTS.txt                                  |   19 KB | Zentrale Arbeitsregeln, Multi-Harness Architektur (conT & piCon), Single Source of Truth und COM-Bus
+01_AGENTS.txt                                  |   21 KB | Zentrale Arbeitsregeln, Multi-Harness Architektur (conT & piCon), Single Source of Truth und COM-Bus
   -> Original: AGENTS.md
 
 02_00_start_hier.txt                           |    3 KB | Verbindlicher Einstieg, Lesereihenfolge und Orientierung fuer alle Agenten
   -> Original: com/00_start_hier.md
 
-03_entscheidungen.txt                          |    9 KB | Bindende Benutzerbeschluesse mit Datum, Rang 1 der Dokumentenhierarchie
+03_entscheidungen.txt                          |   13 KB | Bindende Benutzerbeschluesse mit Datum, Rang 1 der Dokumentenhierarchie
   -> Original: com/entscheidungen.md
 
-04_todo.txt                                    |   10 KB | Aktueller Aufgabenstand, erledigte Schritte und offene Punkte
+04_todo.txt                                    |   11 KB | Aktueller Aufgabenstand, erledigte Schritte und offene Punkte
   -> Original: com/todo.md
 
 05_fragen_an_user.txt                          |    6 KB | Offene Entscheidungsvorlagen und Fragen an den Benutzer Banixx
@@ -41,7 +38,7 @@ EINZELDOKUMENTE:
 07_ideen.txt                                   |    6 KB | Ungepruefte Ideensammlung und zukuenftige Ausbaustufen
   -> Original: com/ideen.md
 
-10_bericht_gesamtschau_und_historie.txt        |   57 KB | Ausfuehrlicher Gesamtbericht, Historie aller Phasen und Multi-Harness Dialogprotokoll (58 KB)
+10_bericht_gesamtschau_und_historie.txt        |   59 KB | Ausfuehrlicher Gesamtbericht, Historie aller Phasen und Multi-Harness Dialogprotokoll (58 KB)
   -> Original: com/bericht.md
 
 11_nodges_gesamtdokumentation_106_8.txt        |   99 KB | Grosse Gesamtdokumentation ueber alle 16 Kapitel (Architektur, Kognition, Pipeline, UI, Shader, Physik) (101 KB)
@@ -71,7 +68,7 @@ EINZELDOKUMENTE:
 23_doc_0_106_21_pi_harness_model_liste.txt     |    3 KB | Referenzliste der im Pi-Agenten verfuegbaren LLM-Modelle und Konfigurationen
   -> Original: com/doc/0_106_21_pi_harness_model_liste.md
 
-24_feature_test5_rapport_philosophie.txt       |   19 KB | Multi-Harness-Rapport test5: Philosophie von Nodges, Kognitionspsychologie und Local-First
+24_feature_test5_rapport_philosophie.txt       |   28 KB | Multi-Harness-Rapport test5: Philosophie von Nodges, Kognitionspsychologie und Local-First
   -> Original: com/feature/test5/rapport_test5.md
 
 25_feature_test5_dashboard.txt                 |    4 KB | One-Page Dashboard zu Feature test5 (Philosophie, Ziele, Metriken)
@@ -94,11 +91,4 @@ EINZELDOKUMENTE:
 
 31_feature_build14_dashboard.txt               |    4 KB | One-Page Dashboard zum Feature Build 14
   -> Original: com/feature/build14/dashboard.md
-
-32_feature_test_ping_pong_protokollblatt.txt   |    1 KB | Sekundengenaues Protokollblatt des 3-Runden Test-Ping-Pong zwischen conT und piCon
-  -> Original: com/feature/Protokollblatt.txt
-
-33_doc_0_106_31_com_bus_pid_stabilisierung_bericht.txt | 2 KB | Abschlussbericht zum 3-Runden Test Ping-Pong und Stabilisierung des Windows-COM-Waechters
-  -> Original: com/doc/0_106_31_com_bus_pid_stabilisierung_bericht.md
-
 

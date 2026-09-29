@@ -10,7 +10,7 @@
 
 ## 1. Architektur und Single Source of Truth (SSoT)
 
-Das Projekt Nodges nutzt eine Multi-Harness-Entwicklungsumgebung mit strikter physischer Konsolidierung. Es existiert nur ein einziger physischer Arbeitsort:
+Das Projekt Nodges nutzt eine Multi-Harness-Entwicklungsumgebung mit strikter physischer Konsolidierung. Seit dem 2026-09-28 gibt es **zwei gueltige Arbeitsorte**: den ext4-SSoT fuer den Projektinhalt und den Windows-Host-Ort fuer die Infrastruktur (`com/entscheidungen.md`). Primaerer Ort:
 
 ```
         /home/unixusername/nodges   (WSL2 Linux, ext4)  <-- Single Source of Truth
@@ -27,6 +27,7 @@ Das Projekt Nodges nutzt eine Multi-Harness-Entwicklungsumgebung mit strikter ph
 ```
 
 - **Dateisystem-Identitaet:** Beide Agenten greifen auf dieselben physischen Linux-ext4-Inodes zu. Aenderungen sind auf beiden Seiten ohne Git-Sync sofort praesent.
+- **Zweiter gueltiger Ort (Host-Infrastruktur, dopi):** `C:/Users/ich/Desktop/code/_projects/Nodges_Pi` — dort liegen die unter Windows verwaltete `docker-compose.yml`, das `Dockerfile`, `.devcontainer/` und `start_pi_container.cmd`. Der Ort traegt keinen Projekt-Fachinhalt.
 - **Netzlaufwerk `W:/`:** Gemappt via Windows Startup-Skript (`subst W: \\wsl.localhost\Ubuntu\home\unixusername\nodges`). Dies verhindert Abstuerze der IDE-File-Watcher, die bei direktem UNC-Zugriff ueber das 9P-Protokoll auftreten koennen.
 - **winAnt (NTFS-Workspace):** Ist vollstaendig abgekoppelt und archiviert.
 
@@ -36,6 +37,7 @@ Das Projekt Nodges nutzt eine Multi-Harness-Entwicklungsumgebung mit strikter ph
 |---|---|---|---|
 | **conT** | Antigravity (Windows 11) | `W:/` | Architektur, Three.js 3D-Graph-Visualisierung, UI, E2E-Tests (Playwright), Dokumentation |
 | **piCon** | Pi-Agent (Docker-Container) | `/workspace` | Container-Dienste (Vite, LightRAG Backend), Linux-Skripte, Backend-Tests (Pytest), Backup |
+| **dopi** | Docker- & Host-Orchestrator (Windows 11) | `C:/Users/ich/Desktop/code/_projects/Nodges_Pi` | Host-Docker, Compose, Startskripte, Container-Infrastruktur (Bedarfs-Harness, kein fester Turnus) |
 
 ---
 

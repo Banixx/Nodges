@@ -3,3 +3,4 @@ uvicorn
 lightrag-hku
 pydantic
 python-dotenv
+langchain-text-splitters>=0.3

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Feature todo2 &middot; Next-Gen Task- & Auftragssystem</title>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --accent-violet: #a855f7;
+      --accent-violet-light: #c084fc;
+      --accent-rose: #f43f5e;
+      --accent-rose-light: #fb7185;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --status-ok: #10b981;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      height: 100vh;
+      max-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 18px 24px;
+      overflow: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 16px;
+    }
+
+    .title-group h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--accent-violet-light);
+      letter-spacing: -0.02em;
+    }
+
+    .title-group p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .header-badges {
+      display: flex;
+      gap: 10px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-violet {
+      background: rgba(168, 85, 247, 0.15);
+      color: var(--accent-violet-light);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+    }
+
+    .badge-rose {
+      background: rgba(244, 63, 94, 0.15);
+      color: var(--accent-rose-light);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+    }
+
+    .badge-status {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
+      min-height: 0;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .card h2 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent-rose-light);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      line-height: 1.45;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .meta-label {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .meta-value {
+      color: var(--accent-violet-light);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .description-text {
+      color: #d1d5db;
+      background: rgba(255, 255, 255, 0.02);
+      border-left: 3px solid var(--accent-violet);
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-top: 6px;
+      font-size: 0.82rem;
+    }
+
+    .goals-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .goal-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 7px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .goal-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent-violet-light);
+      white-space: nowrap;
+    }
+
+    .goal-desc {
+      color: #e5e7eb;
+      font-size: 0.82rem;
+    }
+
+    .progress-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .progress-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+    }
+
+    .progress-name {
+      color: #d1d5db;
+      font-weight: 500;
+    }
+
+    .progress-percent {
+      color: var(--accent-rose-light);
+      font-weight: 700;
+    }
+
+    .progress-bar-bg {
+      height: 6px;
+      background: #1f2937;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-violet), var(--accent-rose));
+      border-radius: 3px;
+    }
+
+    .overall-box {
+      margin-top: 6px;
+      padding: 10px;
+      background: rgba(168, 85, 247, 0.08);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .overall-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent-violet-light);
+    }
+
+    .overall-val {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--accent-rose-light);
+    }
+
+    .status-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .step-item {
+      padding: 8px 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+
+    .step-label {
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 2px;
+    }
+
+    .step-value {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .link-btn {
+      text-align: center;
+      padding: 6px 8px;
+      border-radius: 5px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--accent-violet-light);
+      transition: all 0.2s ease;
+    }
+
+    .link-btn:hover {
+      background: rgba(168, 85, 247, 0.15);
+      border-color: var(--accent-violet);
+      color: #ffffff;
+    }
+
+    footer {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="title-group">
+      <h1 id="ui-title">Feature todo2 &middot; Task- & Auftragssystem</h1>
+      <p id="ui-subtitle">Hierarchische Arbeitslisten, Dezentrale Verlinkung & COM-Ping Rueckbau</p>
+    </div>
+    <div class="header-badges">
+      <span class="badge badge-violet" id="ui-badge-harness">Harness: Multi-Harness</span>
+      <span class="badge badge-rose">One-Page View</span>
+      <span class="badge badge-status" id="ui-badge-status">Status: In Arbeit</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Kachel 1: Name & Beschreibung -->
+    <div class="card">
+      <h2>Name & Beschreibung <span>[Stammdaten]</span></h2>
+      <div class="card-content">
+        <div>
+          <div class="meta-row">
+            <span class="meta-label">Projektname:</span>
+            <span class="meta-value" id="ui-meta-name">todo2</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Betriebsmodus:</span>
+            <span class="meta-value" id="ui-meta-mode">Multi-Harness (conT / piCon / dopi)</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Kategorie:</span>
+            <span class="meta-value" id="ui-meta-category">Workflow & Task-Management</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Speicherort:</span>
+            <span class="meta-value" id="ui-meta-path">W:/com/feature/todo2/</span>
+          </div>
+        </div>
+        <div class="description-text" id="ui-meta-desc">
+          Entwurf fuer eine modulare, dreistufige Arbeitsliste (Thema &gt; Unterthema &gt; Task), die nahtlos auf die Feature-Verzeichnisse referenziert und das wenig effektive COM-Ping-System durch pull-basierte, zustandsorientierte Auftragsmarkierungen ersetzt.
+        </div>
+      </div>
+    </div>
+
+    <!-- Kachel 2: Ziele -->
+    <div class="card">
+      <h2>Projektziele <span>[Architektur]</span></h2>
+      <div class="card-content">
+        <ul class="goals-list" id="ui-goals-list">
+          <li class="goal-item">
+            <span class="goal-tag">[Z-01]</span>
+            <span class="goal-desc">Hierarchischer Aufbau: Themen &gt; Unterthemen &gt; konkrete Tasks</span>
+          </li>
+          <li class="goal-item">
+            <span class="goal-tag">[Z-02]</span>
+            <span class="goal-desc">Dezentrale Detaillierung: Verlinkung auf com/feature/&lt;name&gt;/todo-feature.md</span>
+          </li>
+          <li class="goal-item">
+            <span class="goal-tag">[Z-03]</span>
+            <span class="goal-desc">Rueckbau-Plan fuer COM-Ping (Prozess- und Dateibausteine verschlanken)</span>
+          </li>
+          <li class="goal-item">
+            <span class="goal-tag">[Z-04]</span>
+            <span class="goal-desc">Zustandsbasiertes Auftragssystem (Zuweisung an conT, piCon, dopi)</span>
+          </li>
+          <li class="goal-item">
+            <span class="goal-tag">[Z-05]</span>
+            <span class="goal-desc">Nahtlose Uebernahme des Bestands aus todo.md</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Kachel 3: Fortschritt & Teststufen -->
+    <div class="card">
+      <h2>Fortschritt & Meilensteine <span>[Status]</span></h2>
+      <div class="card-content">
+        <div class="progress-section" id="ui-progress-section">
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">M1: Analyse Ping-System & Schwachstellen</span>
+              <span class="progress-percent">100% [OK]</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">M2: Entwurf todo2.md (Themenbaum)</span>
+              <span class="progress-percent">100% [OK]</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">M3: Auftragskonzept & Rollen-Uebergabe</span>
+              <span class="progress-percent">100% [OK]</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">M4: Rueckbau-Konzept COM-Bus</span>
+              <span class="progress-percent">100% [OK]</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="overall-box">
+          <span class="overall-title">Gesamtfortschritt Konzept</span>
+          <span class="overall-val" id="ui-overall-percent">100%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kachel 4: Status & Naechste Schritte -->
+    <div class="card">
+      <h2>Status & Steuerung <span>[Aktionen]</span></h2>
+      <div class="card-content">
+        <div class="status-steps">
+          <div class="step-item">
+            <div class="step-label">Aktueller Status</div>
+            <div class="step-value" id="ui-status-text">Konzept, Entwurf todo2.md und Rueckbau-Empfehlung fertiggestellt.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-label">Naechste Aktion</div>
+            <div class="step-value" id="ui-next-step">Benutzer-Feedback einholen zur Abloesung von todo.md und schrittweisem Ping-Rueckbau.</div>
+          </div>
+        </div>
+        <div class="links-grid">
+          <a class="link-btn" href="../../todo2.md">Entwurf todo2.md</a>
+          <a class="link-btn" href="./rapport_todo2.md">Rapport todo2</a>
+          <a class="link-btn" href="../../entscheidungen.md">Entscheidungen</a>
+          <a class="link-btn" href="../../doc/0_106_35_todo2_konzept_und_auftragssystem_bericht.md">Ergebnisbericht</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span id="ui-footer-left">Nodges Multi-Harness &middot; Feature todo2</span>
+    <span>One-Page Dashboard &middot; Keine Emojis &middot; Verbindliche Dokumentation</span>
+  </footer>
+
+</body>
+</html>

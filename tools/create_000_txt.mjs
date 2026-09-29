@@ -15,10 +15,16 @@ const files = [
   { file: '11_nodges_gesamtdokumentation_106_8.txt', origin: 'com/doc/Nodges_doc_106_8/NodgesDoc_106_8.md', desc: 'Grosse Gesamtdokumentation ueber alle 16 Kapitel (Architektur, Kognition, Pipeline, UI, Shader, Physik)' }
 ];
 
+let pkgVersion = '0.106.35';
+try {
+  const pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
+  if (pkg.version) pkgVersion = pkg.version;
+} catch {}
+
 let doc = '';
 doc += '================================================================================\n';
 doc += 'NODGES KERN-SAMMELBAND (00 BIS 11)\n';
-doc += 'Stand: 28. September 2026 | Nodges Version 0.106.27\n';
+doc += `Stand: 29. September 2026 | Nodges Version ${pkgVersion}\n`;
 doc += 'Ablage: W:/com/txt/000_NODGES_KERN_00_BIS_11.txt\n';
 doc += 'Enthaelt alle 10 zentralen Steuerungs- und Basisdokumente von 00 bis 11\n';
 doc += 'in einem einzigen konsolidierten Dokument fuer schnellen LLM- und Lese-Zugriff.\n';
