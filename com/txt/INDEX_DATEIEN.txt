@@ -6,6 +6,9 @@ Gesamtanzahl Dokumente: 28 Dateien
 
 UEBERSICHTS- UND SAMMELDATEIEN:
 --------------------------------------------------------------------------------
+000_NODGES_KERN_00_BIS_11.txt
+  Kompakter Sammelband aller Kern- und Steuerungsdokumente (00 bis 11) in einer Datei (246 KB)
+
 00_GESAMTSCHAU_NODGES_UEBERBLICK.txt
   Umfassende Zusammenfassung: Architektur, Kognition, Harnesses, Git-Workflow, Status
 

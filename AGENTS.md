@@ -17,7 +17,7 @@ Dieses Dokument dient als zentrale, verbindliche Referenz fuer alle beteiligten 
 
 ## 2\. Physische Architektur und Single Source of Truth (SSoT)
 
-Es gibt **nur einen einzigen physischen Arbeitsort** fuer dieses Projekt:
+Es gibt **einen primaeren Arbeitsort** (ext4 unter WSL2, SSoT fuer den Projektinhalt) **und einen zweiten gueltigen Ort** auf dem Windows-Host (`C:/Users/ich/Desktop/code/_projects/Nodges_Pi`). Beide sind gueltig und werden nicht gegeneinander ausgespielt:
 
 ```
         /home/unixusername/nodges   (WSL2 Linux, ext4)  <-- Single Source of Truth
@@ -32,6 +32,8 @@ Es gibt **nur einen einzigen physischen Arbeitsort** fuer dieses Projekt:
               GitHub Remote
        (Sicherung \& Tag-Archiv)
 ```
+
+**Zweiter gueltiger Ort (dopi, Host-Infrastruktur):** `C:/Users/ich/Desktop/code/_projects/Nodges_Pi` — dort liegen die unter Windows verwaltete `docker-compose.yml`, das `Dockerfile`, `.devcontainer/` und `start_pi_container.cmd`. Der Ort liegt bewusst ausserhalb des ext4-SSoT und traegt keinen Projekt-Fachinhalt.
 
 * **Dateisystem-Identitaet:** `conT` (ueber das Netzlaufwerk [W:/](file:///W:/)) und `piCon` (ueber `/workspace`) greifen direkt auf exakt dieselben physischen ext4-Inodes zu.
 * **Kein Git-Sync fuer lokale Arbeit:** Aenderungen, die von `conT` oder `piCon` vorgenommen werden, sind auf der Gegenseite unmittelbar im Dateisystem praesent. Es ist kein `git commit` oder `git push` erforderlich, um Zwischenschritte zwischen den beiden Agenten auszutauschen.
@@ -63,7 +65,7 @@ und interpretieren nichts selbst. Damit ist Drift zwischen den beiden Seiten aus
 |`bash tools/nodges-git.sh major --bestaetigt-durch-user`|Major-Version (`0.107.0` -> `1.0.0`), Typecheck, Tests, Commit, Tag, Push nach GitHub. **NUR nach Rueckfrage an den Benutzer.**|ja|
 |`bash tools/nodges-git.sh hooks`|Richtet die versionierten Git-Hooks ein (`core.hooksPath = git-hooks`).|nein|
 
-**Regel: Zwischenstaende (Patch) sichern die Agenten selbststaendig. Lokale Minor-Releases erfordern vorherige Ruecksprache mit dem Benutzer. Nach GitHub geht ausschliesslich ein Major-Release und nur nach vorheriger Rueckfrage an den Benutzer.**
+**Regel: Zurueckhaltung ist die Grundhaltung (Abschnitt 6). Ausdruecklich vereinbart ist davon das selbststaendige Sichern von Zwischenstaenden (Patch); das aendert aber nichts an der Zurueckhaltung bei inhaltlichen Code-Aenderungen. Lokale Minor-Releases erfordern vorherige Ruecksprache mit dem Benutzer. Nach GitHub geht ausschliesslich ein Major-Release und nur nach vorheriger Rueckfrage an den Benutzer.**
 
 ### Versionierte Git-Hooks (`git-hooks/`, aktiv ueber `core.hooksPath`)
 
@@ -79,8 +81,10 @@ conT und piCon teilen **dieselbe `.git`-Verwaltung**, deshalb gelten die Hooks a
 
 |Harness|Ort|Inhalt|
 |-|-|-|
-|conT (Antigravity)|`W:/.agents/skills/<name>/SKILL.md` (= `/workspace/.agents/skills/...`)|`save`, `release`, `status` — duenne Verweise auf `tools/nodges-git.sh`|
-|piCon (Container)|`/home/.pi/agent/skills/<name>/SKILL.md`|dieselben drei Griffe; `uupdate` bleibt als Alt-Name fuer `save` erhalten|
+|conT (Antigravity)|`W:/.agents/skills/<name>/SKILL.md` (= `/workspace/.agents/skills/...`)|`save`, `release`, `status`, `com` — duenne Verweise auf `tools/nodges-git.sh` bzw. `tools/nodges-com.sh`|
+|piCon (Container)|`/workspace/.agents/skills/<name>/SKILL.md`|**dieselben** Skills, kein eigener Satz|
+
+> **Ein Skill-Ort fuer beide Harnesses:** `.agents/skills/` im Repo ist die einzige verbindliche Quelle. Aeltere Kopien unter `/home/.pi/agent/skills/` (`com`, `release`, `save`, `status`) werden vom Pi-Agenten als Kollision uebersprungen und sind Altlast. Das Skill `uupdate` existiert nicht mehr.
 
 > \*\*Vorsicht:\*\* `.agents/` ist bis auf `.agents/skills/` in der `.gitignore` ausgeschlossen. Die Skills
 > selbst sind versioniert, andere Agenten-Konfigurationen dort bleiben privat.
@@ -167,6 +171,7 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
 |`bericht.md`|Gesamtbericht und Dialogprotokoll (Historie)|
 |`setup.md` / `setup/`|technische Kurzanleitung Setup/Git und Vorlagen|
 |`doc/`|Archiv aller bisherigen Berichte (273 Dateien)|
+|`txt/`|**Ausnahme:** reine `.txt`-Varianten der Kerndokumente fuer **NotebookLM**, das keine `.md` liest. Erzeugt ueber `tools/export_com_txt.mjs` bzw. `tools/create_000_txt.mjs`, indexiert in `com/txt/INDEX_DATEIEN.txt`.|
 
 ### Verzeichnisstruktur fuer Dokumentation
 
@@ -245,7 +250,8 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
    * **Erklaerungs-Trigger ("ç"):** Wenn der Benutzer im Prompt das Zeichen **"ç"** (mit Cedille) verwendet, werden Fachbegriffe grosszuegig in Klammern mit deutschsprachigen Synonymen oder in maximal zwei Saetzen erklaert. Fehlt das Zeichen, bleibt die Kommunikation technisch praezise, direkt und kompakt.
    * **Farbvorlieben:** Violette und rosafarbene Schrift fuer Terminal- und UI-Gestaltung (gilt nicht fuer Markdown- oder Code-Repo-Inhalte).
    * **Wahrheitsgebot:** Nichts ungeprueft behaupten — fremde Angaben am realen Code und Dateistand verifizieren.
-   * **Zurueckhaltung:** Vor groesseren Refactorings, strukturellen Umbauten oder Loeschungen immer zuerst den Benutzer fragen.
+   * **Zurueckhaltung (Grundhaltung):** Keine inhaltlichen Code-Aenderungen ohne ausdrueckliche Anforderung des Benutzers. Vor groesseren Refactorings, strukturellen Umbauten oder Loeschungen immer zuerst den Benutzer fragen. Ausdruecklich vereinbarte Ausnahmen sind die Git-Sicherung (`save`) und die Berichtspflicht (Abschnitt 6 Punkt 4).
+   * **Benutzerprofil-Datei:** Ergaenzend zu diesem Abschnitt liegt das Benutzerprofil in `/home/.pi/user.md` — das ist die einzige gueltige Profildatei. Sie liegt ausserhalb des Repos; conT erreicht sie nicht ueber `W:/`, fuer conT gilt deshalb der Profiltext in diesem `AGENTS.md`.
    * **Fragen-Trigger ("fragen"):** Wenn der Benutzer in einer Session nach "fragen" fragt (z.B. "Welche Fragen sind offen?", "gibt es offene fragen?", "fragen"), orientiert sich das LLM verbindlich an [W:/com/fragen_an_user.md](file:///W:/com/fragen_an_user.md) und praesentiert die offenen Entscheidungsvorlagen strukturiert und kompakt.
 
 \---

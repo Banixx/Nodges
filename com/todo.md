@@ -2,6 +2,10 @@
 
 Kurz halten. Vor jeder Aufgabe lesen. Erledigtes loeschen oder nach `doc/` verschieben. Details siehe `com/doc/0_106_4_todo_abarbeitung_bericht.md`.
 
+## Offen (2026-09-28)
+
+- **Loeschfreigabe einholen (piCon):** `/home/.pi/agent/user.md` (abgeloeste Profilkopie) und `/home/.pi/agent/skills/{com,release,save,status}/` (uebersprungene Skill-Doppelungen). Beides ausserhalb des Repos. Details siehe `com/doc/0_106_32_agents_md_bereinigung_bericht.md`.
+
 ## Erledigt in 0.106.4 (2026-09-25)
 
 - **`@playwright/test` & Browser**: Installiert in `node_modules`; Chromium, FFmpeg und Headless-Shell im Container via `TMPDIR` installiert.
