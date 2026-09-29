@@ -29,14 +29,14 @@ zusaetzlich eine Skill-Dopplung gemeldet.
 - `/home/.pi/user.md` — als alleingueltige Profildatei gekennzeichnet, Harness-Tabelle um dopi ergaenzt, Pfadfehler (`/home/.pi/AGENTS.md`) korrigiert, Git-Verlauf/Testdaten/Browser-Fehlerbild ergaenzt
 - `/workspace/com/entscheidungen.md` — sechs neue Beschluesse vom 2026-09-28
 
-## Offen (Rueckfrage an den Benutzer)
+## Offene Loeschungen (erledigt am 2026-09-28)
 
-Loeschungen wurden bewusst nicht ohne Freigabe ausgefuehrt:
+Nach Freigabe des Benutzers entfernt:
 
-1. `/home/.pi/agent/user.md` — abgeloeste Profilkopie. Inhalt ist in `/home/.pi/user.md` uebernommen; loeschen?
-2. `/home/.pi/agent/skills/{com,release,save,status}/` — uebersprungene Doppelungen. `brave-search` bleibt in jedem Fall. Loeschen?
+1. `/home/.pi/agent/user.md` — abgeloeste Profilkopie (Inhalt in `/home/.pi/user.md` uebernommen).
+2. `/home/.pi/agent/skills/{com,release,save,status}/` — uebersprungene Doppelungen. `brave-search` bleibt. Vor dem Loeschen wurde der piCon-Teil des `com`-Skills in `/workspace/.agents/skills/com/SKILL.md` eingearbeitet, damit piCon nichts verliert.
 
-Beides liegt ausserhalb des Repos (nicht versioniert), deshalb keine Wiederherstellung moeglich.
+Beides lag ausserhalb des Repos (nicht versioniert).
 
 ## Hinweis zur geteilten Datei
 

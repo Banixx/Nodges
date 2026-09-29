@@ -84,7 +84,7 @@ conT und piCon teilen **dieselbe `.git`-Verwaltung**, deshalb gelten die Hooks a
 |conT (Antigravity)|`W:/.agents/skills/<name>/SKILL.md` (= `/workspace/.agents/skills/...`)|`save`, `release`, `status`, `com` — duenne Verweise auf `tools/nodges-git.sh` bzw. `tools/nodges-com.sh`|
 |piCon (Container)|`/workspace/.agents/skills/<name>/SKILL.md`|**dieselben** Skills, kein eigener Satz|
 
-> **Ein Skill-Ort fuer beide Harnesses:** `.agents/skills/` im Repo ist die einzige verbindliche Quelle. Aeltere Kopien unter `/home/.pi/agent/skills/` (`com`, `release`, `save`, `status`) werden vom Pi-Agenten als Kollision uebersprungen und sind Altlast. Das Skill `uupdate` existiert nicht mehr.
+> **Ein Skill-Ort fuer beide Harnesses:** `.agents/skills/` im Repo ist die einzige verbindliche Quelle. Die frueheren Kopien unter `/home/.pi/agent/skills/` (`com`, `release`, `save`, `status`) sind am 2026-09-28 entfernt worden; der `com`-Skill deckt beide Seiten ab (Linux `nodges-com.sh`, Windows `nodges-com.ps1`). Das Skill `uupdate` existiert nicht mehr.
 
 > \*\*Vorsicht:\*\* `.agents/` ist bis auf `.agents/skills/` in der `.gitignore` ausgeschlossen. Die Skills
 > selbst sind versioniert, andere Agenten-Konfigurationen dort bleiben privat.
