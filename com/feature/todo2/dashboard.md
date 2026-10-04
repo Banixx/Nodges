@@ -43,10 +43,12 @@
 
 ## 4. Status & Naechste Schritte
 
-- **Aktueller Status:** Entwurf fuer `todo2.md`, Rapport und Dokumentation fuer Feature `todo2` angelegt.
-- **Naechste Aktion:** Abstimmung mit dem Benutzer ueber die Uebernahme von `todo2.md` als neues Primaer-Todo und Freigabe des Rueckbaus des Ping-Busses.
+- **Aktueller Status:** Entwurf durch Benutzer freigegeben (2026-10-01). `todo2.md` hat die alte `todo.md` abgeloest (archiviert als `todo_archiv.md`).
+- **Naechste Aktionen:**
+  - Rueckbau des Ping-Watchers gemaess Beschluss (piCon Container, conT Host, dopi Compose).
+  - Pflege der Aufgaben fortan direkt in [todo.md](file:///W:/com/todo.md).
 - **Verknuepfte Dokumente:**
-  - Hauptentwurf: [todo2.md](file:///W:/com/todo2.md)
+  - Aktive Aufgabenmatrix: [todo.md](file:///W:/com/todo.md)
   - Detail-Rapport: [rapport_todo2.md](file:///W:/com/feature/todo2/rapport_todo2.md)
   - HTML-Dashboard: [dashboard.html](file:///W:/com/feature/todo2/dashboard.html)
   - Ergebnisbericht: [0_106_35_todo2_konzept_und_auftragssystem_bericht.md](file:///W:/com/doc/0_106_35_todo2_konzept_und_auftragssystem_bericht.md)

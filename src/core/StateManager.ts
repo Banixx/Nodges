@@ -74,6 +74,8 @@ export interface State {
     labelFilterMode: string;
     labelFilterThreshold: number;
     labelMaxClosest: number;
+    labelLodEnabled: boolean;
+    labelFadeDistance: number;
     visibleLabelsCount: number;
     totalLabelsCount: number;
     activeColorScheme: string;
@@ -91,6 +93,8 @@ export interface State {
     mapActive: boolean;
     temporalFadeEnabled: boolean;
     temporalFadeDuration: number;
+    dynamicNeighborExpansionEnabled: boolean;
+    neighborExpansionDepth: number;
     activeDatabase: {
         id: string;
         name: string;
@@ -189,6 +193,8 @@ export class StateManager {
             labelFilterMode: 'visibility',
             labelFilterThreshold: 0,
             labelMaxClosest: 50,
+            labelLodEnabled: true,
+            labelFadeDistance: 60,
             visibleLabelsCount: 0,
             totalLabelsCount: 0,
             activeColorScheme: 'start-olive',
@@ -206,6 +212,8 @@ export class StateManager {
             mapActive: false,
             temporalFadeEnabled: true,
             temporalFadeDuration: 5.0,
+            dynamicNeighborExpansionEnabled: false,
+            neighborExpansionDepth: 1,
         };
 
         this.subscribers = new Map();
@@ -733,6 +741,78 @@ export class StateManager {
         });
 
         this.notifySubscribers('data_changed');
+    }
+
+    mergeGraphData(
+        newEntities: EntityData[],
+        newRelationships: RelationshipData[],
+        description: string = 'Merge Graph Data'
+    ): { addedNodes: number; addedEdges: number } {
+        const existingNodeIds = new Set(this.state.graphData.entities.map(e => String(e.id)));
+        const addedEntities: EntityData[] = [];
+
+        newEntities.forEach(entity => {
+            const id = String(entity.id);
+            if (!existingNodeIds.has(id)) {
+                existingNodeIds.add(id);
+                addedEntities.push(entity);
+            }
+        });
+
+        const existingEdgeKeys = new Set(
+            this.state.graphData.relationships.map(r => `${r.source}->${r.target}:${r.relation || ''}`)
+        );
+        const addedRelationships: RelationshipData[] = [];
+
+        newRelationships.forEach(rel => {
+            const key = `${rel.source}->${rel.target}:${rel.relation || ''}`;
+            if (!existingEdgeKeys.has(key)) {
+                existingEdgeKeys.add(key);
+                addedRelationships.push(rel);
+            }
+        });
+
+        if (addedEntities.length > 0 || addedRelationships.length > 0) {
+            const updatedEntities = [...this.state.graphData.entities, ...addedEntities];
+            const updatedRelationships = [...this.state.graphData.relationships, ...addedRelationships];
+
+            this.update({
+                graphData: {
+                    ...this.state.graphData,
+                    entities: updatedEntities,
+                    relationships: updatedRelationships
+                }
+            });
+
+            this.addToHistory({
+                type: 'ADD_NODE',
+                description: `${description} (+${addedEntities.length} Knoten, +${addedRelationships.length} Kanten)`,
+                undo: () => {
+                    const removeNodeIds = new Set(addedEntities.map(e => e.id));
+                    const removeEdgeKeys = new Set(addedRelationships.map(r => `${r.source}->${r.target}:${r.relation || ''}`));
+                    this.update({
+                        graphData: {
+                            ...this.state.graphData,
+                            entities: this.state.graphData.entities.filter(e => !removeNodeIds.has(e.id)),
+                            relationships: this.state.graphData.relationships.filter(
+                                r => !removeEdgeKeys.has(`${r.source}->${r.target}:${r.relation || ''}`)
+                            )
+                        }
+                    });
+                    this.notifySubscribers('data_changed');
+                },
+                redo: () => {
+                    this.mergeGraphData(addedEntities, addedRelationships, description);
+                }
+            });
+
+            this.notifySubscribers('data_changed');
+        }
+
+        return {
+            addedNodes: addedEntities.length,
+            addedEdges: addedRelationships.length
+        };
     }
 
     // --- History System ---

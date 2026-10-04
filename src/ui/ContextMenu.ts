@@ -1,11 +1,23 @@
 /**
- * ContextMenu - A simple, stylish context menu for Nodges
+ * ContextMenu - A simple, stylish, and context-aware context menu for Nodges
  */
 export interface ContextMenuOption {
     label: string;
-    action: () => void;
+    action?: () => void;
     icon?: string;
     disabled?: boolean;
+    separator?: boolean;
+    danger?: boolean;
+    badge?: string;
+    isToggle?: boolean;
+    isActive?: boolean;
+}
+
+export interface ContextMenuHeader {
+    title: string;
+    modeBadge?: string;
+    modeBadgeType?: 'simple' | 'expert' | 'dev';
+    subtitle?: string;
 }
 
 export class ContextMenu {
@@ -29,20 +41,81 @@ export class ContextMenu {
         });
     }
 
-    show(x: number, y: number, options: ContextMenuOption[]) {
+    show(x: number, y: number, options: ContextMenuOption[], header?: ContextMenuHeader) {
         this.container.innerHTML = '';
 
+        if (header) {
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'context-menu-header';
+
+            const titleRow = document.createElement('div');
+            titleRow.className = 'context-menu-title-row';
+
+            const titleSpan = document.createElement('span');
+            titleSpan.className = 'context-menu-title';
+            titleSpan.textContent = header.title;
+            titleSpan.title = header.title;
+            titleRow.appendChild(titleSpan);
+
+            if (header.modeBadge) {
+                const badgeSpan = document.createElement('span');
+                badgeSpan.className = `context-menu-mode-badge mode-${header.modeBadgeType || 'simple'}`;
+                badgeSpan.textContent = header.modeBadge;
+                titleRow.appendChild(badgeSpan);
+            }
+
+            headerDiv.appendChild(titleRow);
+
+            if (header.subtitle) {
+                const subSpan = document.createElement('div');
+                subSpan.className = 'context-menu-subtitle';
+                subSpan.textContent = header.subtitle;
+                subSpan.title = header.subtitle;
+                headerDiv.appendChild(subSpan);
+            }
+
+            this.container.appendChild(headerDiv);
+        }
+
         options.forEach(option => {
+            if (option.separator) {
+                const sep = document.createElement('div');
+                sep.className = 'context-menu-separator';
+                this.container.appendChild(sep);
+                return;
+            }
+
             const item = document.createElement('div');
             item.className = 'context-menu-item';
             if (option.disabled) {
                 item.classList.add('disabled');
             }
-            item.textContent = option.label;
-            if (!option.disabled) {
+            if (option.danger) {
+                item.classList.add('danger');
+            }
+            if (option.isToggle && option.isActive) {
+                item.classList.add('toggle-active');
+            }
+
+            const labelSpan = document.createElement('span');
+            let labelText = option.label;
+            if (option.isToggle) {
+                labelText = `${option.isActive ? '✓ ' : '○ '}${labelText}`;
+            }
+            labelSpan.textContent = labelText;
+            item.appendChild(labelSpan);
+
+            if (option.badge) {
+                const badge = document.createElement('span');
+                badge.className = 'context-menu-item-badge';
+                badge.textContent = option.badge;
+                item.appendChild(badge);
+            }
+
+            if (!option.disabled && option.action) {
                 item.onclick = (e) => {
                     e.stopPropagation();
-                    option.action();
+                    option.action!();
                     this.hide();
                 };
             }
@@ -62,8 +135,7 @@ export class ContextMenu {
         this.container.style.left = `${posX}px`;
         this.container.style.top = `${posY}px`;
 
-        // Delay setting isOpen via setTimeout to prevent the current event (which triggered show)
-        // from immediately triggering the window-level close listener due to event bubbling.
+        // Delay setting isOpen via setTimeout to prevent current event from immediate closing
         setTimeout(() => {
             this.isOpen = true;
         }, 0);

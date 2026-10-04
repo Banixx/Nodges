@@ -13,6 +13,8 @@ export interface NodeLabelConfig {
     distanceThreshold: number;
     constantScreenSize: boolean;
     screenSizeScale: number;
+    lodEnabled?: boolean;
+    fadeDistance?: number;
 }
 
 interface LabelData {
@@ -28,11 +30,14 @@ export class NodeLabelManager {
     private labelGroup: THREE.Group;
     public config: NodeLabelConfig;
 
-    // Hilfsvektoren zur performanten Berechnung der dynamischen Positionen
+    // Hilfsvektoren und Frustum zur performanten Berechnung der dynamischen Positionen und LOD
     private tempPos = new THREE.Vector3();
     private cameraRight = new THREE.Vector3();
     private cameraUp = new THREE.Vector3();
     private dirToCamera = new THREE.Vector3();
+    private frustum = new THREE.Frustum();
+    private projScreenMatrix = new THREE.Matrix4();
+    private frustumSphere = new THREE.Sphere();
 
     constructor(container: ServiceContainer) {
         const [scene, camera] = 
@@ -58,7 +63,9 @@ export class NodeLabelManager {
             alwaysVisible: false,
             distanceThreshold: 60, // Höher, da sie jetzt mit Distanz kleiner werden
             constantScreenSize: false, // Geändert: Sollen mit Distanz kleiner werden
-            screenSizeScale: 0.025
+            screenSizeScale: 0.025,
+            lodEnabled: true,
+            fadeDistance: 60
         };
 
         // Bind update method to use in animation loop
@@ -322,8 +329,10 @@ export class NodeLabelManager {
         let visibleCount = 0;
         const totalCount = this.labels.size;
 
-        // Kamera-Vektoren einmal pro Frame ermitteln
+        // Kamera-Vektoren und Frustum einmal pro Frame ermitteln
         this.camera.matrixWorld.extractBasis(this.cameraRight, this.cameraUp, this.dirToCamera);
+        this.projScreenMatrix.multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse);
+        this.frustum.setFromProjectionMatrix(this.projScreenMatrix);
 
         interface CandidateLabel {
             label: LabelData;
@@ -332,6 +341,7 @@ export class NodeLabelManager {
             layerOpacity: number;
             filterOpacityFactor: number;
             filterScaleFactor: number;
+            distanceFade: number;
         }
 
         const candidateLabels: CandidateLabel[] = [];
@@ -339,20 +349,25 @@ export class NodeLabelManager {
         const showAlways = state ? state.showLabelsAlways : this.config.alwaysVisible;
         const showHover = state ? state.showLabelsOnHover : true;
         const hoveredObj = state?.hoveredObject;
+        const lodEnabled = state?.labelLodEnabled !== undefined ? state.labelLodEnabled : (this.config.lodEnabled !== false);
+        const maxDistance = state?.labelFadeDistance !== undefined ? state.labelFadeDistance : (this.config.distanceThreshold || 60);
 
-        // First pass: evaluate filtering rules and gather candidates with distance
+        // First pass: evaluate filtering rules, frustum culling, distance LOD and gather candidates
         this.labels.forEach((label) => {
+            const isSelected = Boolean(hasSelection && highlightedNeighborhoodNodes && highlightedNeighborhoodNodes.has(String(label.entity.id)));
+            const isHovered = Boolean(
+                (hoveredObj && (
+                    hoveredObj.userData?.id === label.entity.id ||
+                    hoveredObj.parent?.userData?.id === label.entity.id ||
+                    (hoveredObj.userData && String(hoveredObj.userData.id) === String(label.entity.id))
+                )) || isSelected
+            );
+
             if (!showAlways) {
                 if (!showHover) {
                     label.sprite.visible = false;
                     return;
                 }
-                const isHovered = (hoveredObj && (
-                    hoveredObj.userData?.id === label.entity.id ||
-                    hoveredObj.parent?.userData?.id === label.entity.id ||
-                    (hoveredObj.userData && String(hoveredObj.userData.id) === String(label.entity.id))
-                )) || (highlightedNeighborhoodNodes && highlightedNeighborhoodNodes.has(String(label.entity.id)));
-
                 if (!isHovered) {
                     label.sprite.visible = false;
                     return;
@@ -440,18 +455,49 @@ export class NodeLabelManager {
                 label.sprite.material.color.setHex(0xffffff);
             }
 
-            let basePos = label.entity.position
-                ? new THREE.Vector3(label.entity.position.x, label.entity.position.y, label.entity.position.z)
-                : (label.sprite.userData.basePosition || label.sprite.position);
+            if (!label.sprite.userData.baseVector) {
+                label.sprite.userData.baseVector = new THREE.Vector3();
+            }
+            const basePos: THREE.Vector3 = label.sprite.userData.baseVector;
 
             if (app && app.nodeManager) {
                 const nodePos = app.nodeManager.getNodePosition(String(label.entity.id));
                 if (nodePos) {
-                    basePos = nodePos;
+                    basePos.copy(nodePos);
+                } else if (label.entity.position) {
+                    basePos.set(label.entity.position.x, label.entity.position.y, label.entity.position.z);
+                } else if (label.sprite.userData.basePosition) {
+                    basePos.copy(label.sprite.userData.basePosition);
+                } else {
+                    basePos.copy(label.sprite.position);
                 }
+            } else if (label.entity.position) {
+                basePos.set(label.entity.position.x, label.entity.position.y, label.entity.position.z);
+            } else if (label.sprite.userData.basePosition) {
+                basePos.copy(label.sprite.userData.basePosition);
+            } else {
+                basePos.copy(label.sprite.position);
+            }
+
+            // Frustum Culling: Wenn der Knoten weder gehovert noch selektiert ist und ausserhalb des Sichtfelds liegt
+            if (!isHovered && !this.frustum.intersectsSphere(this.frustumSphere.set(basePos, 3.0))) {
+                label.sprite.visible = false;
+                return;
             }
 
             const distance = this.camera.position.distanceTo(basePos);
+
+            // LOD & Distanz-Fading: On-Demand Vorrang fuer gehoverte/selektierte Knoten
+            let distanceFade = 1.0;
+            if (lodEnabled && !isHovered) {
+                const fadeStart = maxDistance * 0.6;
+                if (distance >= maxDistance) {
+                    label.sprite.visible = false;
+                    return; // Außerhalb der LOD-Sichtweite cullen
+                } else if (distance > fadeStart) {
+                    distanceFade = (maxDistance - distance) / (maxDistance - fadeStart);
+                }
+            }
 
             candidateLabels.push({
                 label,
@@ -459,7 +505,8 @@ export class NodeLabelManager {
                 basePos,
                 layerOpacity,
                 filterOpacityFactor,
-                filterScaleFactor
+                filterScaleFactor,
+                distanceFade
             });
         });
 
@@ -474,11 +521,11 @@ export class NodeLabelManager {
         }
 
         // Third pass: Render & position active candidates
-        activeCandidates.forEach(({ label, distance, basePos, layerOpacity, filterOpacityFactor, filterScaleFactor }) => {
+        activeCandidates.forEach(({ label, distance, basePos, layerOpacity, filterOpacityFactor, filterScaleFactor, distanceFade }) => {
             label.sprite.visible = true;
             visibleCount++;
 
-            label.sprite.material.opacity = layerOpacity * filterOpacityFactor;
+            label.sprite.material.opacity = layerOpacity * filterOpacityFactor * distanceFade;
 
             // Konstante Bildschirmgroesse: Skalierung proportional zur Kamera-Distanz
             let s = 1;

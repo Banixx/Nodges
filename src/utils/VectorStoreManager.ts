@@ -1,5 +1,15 @@
-import { GraphData, EntityData, RelationshipData } from '../types';
-import { LLMService, LLMProvider } from './LLMService';
+import { GraphData, EntityData, RelationshipData, LLMProvider } from '../types';
+
+export type EmbeddingGenerator = (text: string, provider: LLMProvider, model: string) => Promise<number[]>;
+
+let defaultEmbeddingGenerator: EmbeddingGenerator | null = null;
+
+/**
+ * Registers an embedding generator function to decouple VectorStoreManager from direct service dependencies.
+ */
+export function setEmbeddingGenerator(generator: EmbeddingGenerator): void {
+    defaultEmbeddingGenerator = generator;
+}
 
 // Global cache for embeddings to avoid re-generating vectors for identical texts
 const embeddingsCache = new Map<string, number[]>();
@@ -27,13 +37,18 @@ export function cosineSimilarity(vecA: number[], vecB: number[]): number {
 export async function getCachedEmbedding(
     text: string,
     provider: LLMProvider,
-    model: string
+    model: string,
+    customGenerator?: EmbeddingGenerator
 ): Promise<number[]> {
     const cacheKey = `${provider}-${model}-${text}`;
     if (embeddingsCache.has(cacheKey)) {
         return embeddingsCache.get(cacheKey)!;
     }
-    const vector = await LLMService.generateEmbedding(text, provider, model);
+    const generator = customGenerator || defaultEmbeddingGenerator;
+    if (!generator) {
+        throw new Error('[VectorStoreManager] No embedding generator registered. Call setEmbeddingGenerator first.');
+    }
+    const vector = await generator(text, provider, model);
     embeddingsCache.set(cacheKey, vector);
     return vector;
 }

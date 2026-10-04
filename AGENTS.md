@@ -8,10 +8,9 @@ Dieses Dokument dient als zentrale, verbindliche Referenz fuer alle beteiligten 
 
 |Harness|Umgebung|Arbeitsverzeichnis|Aufgaben|Status|
 |-|-|-|-|-|
-|**conT**|Antigravity (Windows 11)|`W:/` (gemappt auf WSL2)|Architektur, Frontend/Three.js, UI, Dokumentation|\[aktiv]|
-|**piCon**|Pi-Agent im Docker-Container `pi-harness`|`/workspace`|Container-Dienste, Vite, LightRAG, Linux-Skripte, Backup|\[aktiv]|
-|**dopi**|Docker- & Host-Orchestrator|`C:/Users/ich/Desktop/code/_projects/Nodges_Pi`|Host- & Docker-Setup, Compose, Startskripte, Container-Infrastruktur|\[Bedarf] (redet nur bei Setup mit, kein fester Turnus, expliziter Aufruf)|
-|<b>~~winAnt~~</b>|~~Antigravity (Windows Host)~~|~~`C:/Users/ich/Desktop/code/\_projects/Nodges`~~|~~Urspruenglicher Windows-NTFS-Workspace~~|**\[abgekoppelt]** (ersetzt durch conT)|
+|**conT**|Antigravity (Windows 11)|`W:/` (gemappt auf WSL2)|Architektur, Frontend/Three.js, UI, E2E-Tests|\[aktiv]|
+|**piCon**|Pi-Agent im Docker-Container `pi-harness`|`/workspace`|Backend, Python/LightRAG, Ingestion, Linux-Skripte, L1-Tests|\[aktiv]|
+|**dopi**|Docker- & Host-Orchestrator (Antigravity Host)|`C:/Users/ich/Desktop/code/_projects/Nodges_Pi`|Host- & Docker-Setup, Container-Erstellung, Compose, Startskripte, Container-Infrastruktur|\[Bedarf] (nur bei Setup-Bedarf)|
 
 \---
 
@@ -81,10 +80,10 @@ conT und piCon teilen **dieselbe `.git`-Verwaltung**, deshalb gelten die Hooks a
 
 |Harness|Ort|Inhalt|
 |-|-|-|
-|conT (Antigravity)|`W:/.agents/skills/<name>/SKILL.md` (= `/workspace/.agents/skills/...`)|`save`, `release`, `status`, `com` — duenne Verweise auf `tools/nodges-git.sh` bzw. `tools/nodges-com.sh`|
+|conT (Antigravity)|`W:/.agents/skills/<name>/SKILL.md` (= `/workspace/.agents/skills/...`)|`save`, `release`, `status` — duenne Verweise auf `tools/nodges-git.sh`|
 |piCon (Container)|`/workspace/.agents/skills/<name>/SKILL.md`|**dieselben** Skills, kein eigener Satz|
 
-> **Ein Skill-Ort fuer beide Harnesses:** `.agents/skills/` im Repo ist die einzige verbindliche Quelle. Die frueheren Kopien unter `/home/.pi/agent/skills/` (`com`, `release`, `save`, `status`) sind am 2026-09-28 entfernt worden; der `com`-Skill deckt beide Seiten ab (Linux `nodges-com.sh`, Windows `nodges-com.ps1`). Das Skill `uupdate` existiert nicht mehr.
+> **Ein Skill-Ort fuer beide Harnesses:** `.agents/skills/` im Repo ist die einzige verbindliche Quelle. Die frueheren Kopien unter `/home/.pi/agent/skills/` (`release`, `save`, `status`) sind entfernt worden. Der fruehere `com`-Skill und die COM-Bus-Skripte wurden zurueckgebaut.
 
 > \*\*Vorsicht:\*\* `.agents/` ist bis auf `.agents/skills/` in der `.gitignore` ausgeschlossen. Die Skills
 > selbst sind versioniert, andere Agenten-Konfigurationen dort bleiben privat.
@@ -204,12 +203,12 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
 | Bereich | Primaere Zustaendigkeit | Pfade |
 |---|---|---|
 | Frontend, 3D-Canvas & E2E-Tests | **conT** (Host / Windows 11) | `src/`, `e2e/`, `playwright.config.ts` |
-| Backend, Python-Venv & Container-Tools | **piCon** (Docker-Container / Linux) | `lightrag-backend/`, `tools/*.sh`, `tools/*.mjs`, `tools/watch_com.mjs` |
-| Host-Docker & Container-Infrastruktur | **dopi** (Host / Bedarfs-Harness) | `C:/Users/ich/Desktop/code/_projects/Nodges_Pi` (`docker-compose.yml`, `Dockerfile`, `.devcontainer/`, `start_pi_container.cmd`) |
-| Gemeinsame Dateien | **conT & piCon** (nur mit vorheriger Ansage/Ping) | `package.json`, `AGENTS.md`, `com/`, `tools/nodges-git.sh`, `git-hooks/` |
+| Backend, Python-Venv & Linux-Tools | **piCon** (Docker-Container / Linux) | `lightrag-backend/`, `tools/*.sh`, `tools/*.mjs` |
+| Host-Docker, Container-Erstellung & Infrastruktur | **dopi** (Antigravity Host / Bedarfs-Harness) | `C:/Users/ich/Desktop/code/_projects/Nodges_Pi` (`docker-compose.yml`, `Dockerfile`, `.devcontainer/`, `start_pi_container.cmd`) |
+| Gemeinsame Dateien | **conT & piCon** (nur mit vorheriger Notiz in todo.md) | `package.json`, `AGENTS.md`, `com/`, `tools/nodges-git.sh`, `git-hooks/` |
 
 *Regeln:*
-* Wer ausnahmsweise in der Domaene des anderen arbeiten muss, kuendigt dies vorher kurz per Notiz in `com/todo.md` oder via COM-Ping an.
+* Wer ausnahmsweise in der Domaene des anderen arbeiten muss, kuendigt dies vorher kurz per Notiz in `com/todo.md` an.
 * **Sonderregel fuer dopi:** dopi hat grundsaetzlich nur mitzureden, wenn es um das Setup (Host-Docker, Compose, Startskripte, Infrastruktur) geht – und auch dann nicht immer. Es gibt keinen fixen Turnus fuer dopi. Dopi wird nur bei explizitem Bedarf von conT oder piCon aufgerufen.
 
 ---
@@ -229,88 +228,33 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
    * Wenn eine Nutzeranfrage ein Fragezeichen ("?") enthaelt, handelt es sich um eine Frage.
    * Fragen sind **direkt im ersten Satz** zu beantworten (sofern passend mit `Ja` oder `Nein` am Satzanfang).
    * Bei reinen Fragen werden **keine Code-Aenderungen** ausgefuehrt.
-   * *Ausnahme:* Rueckfragen innerhalb eines initiierten Multi-Harness-Rapports (z.B. in `com/feature/`) sind Arbeitsaufgaben zwischen den Agenten und unterliegen nicht der Code-Aenderungssperre.
-4. **Planungs- und Dokumentationsmodus (Berichtspflicht):**
+4. **Dokumentation und Aufgabenpflege:**
+   * **Schlanke Dokumentation:** Keine unnoetigen Mammut-Berichte fuer Zwischenschritte. Der primaere Status gehoert direkt, knapp und praegnant in [W:/com/todo.md](file:///W:/com/todo.md).
+   * **Ergebnisberichte:** Nur bei groesseren Architekturumbauten oder echten Meilensteinen wird eine kompakte Datei unter [W:/com/doc/](file:///W:/com/doc/) abgelegt.
+   * **Benutzerbeschluesse:** Werden verbindlich mit Datum in [W:/com/entscheidungen.md](file:///W:/com/entscheidungen.md) festgehalten.
+   * **Offene Punkte & Rueckfragen:** Gehoeren strukturiert nach [W:/com/fragen_an_user.md](file:///W:/com/fragen_an_user.md).
+5. **Sorgfalt bei Aenderungen:**
 
-   * **Verbindliche Berichtspflicht:** Nach jedem groesseren Arbeitsschritt, Feature-Abschluss oder Meilenstein ist selbststaendig ein ausfuehrlicher Ergebnisbericht als Markdown-Datei im Ordner [W:/com/doc/](file:///W:/com/doc/) mit dem Versionspraefix (z.B. `0_106_13_thema_bericht.md`) zu erstellen und zu speichern. Reine Chat-Antworten fluechtig zu belassen ist untersagt, da sie fuer das andere Harness nicht auffindbar sind.
-   * Im Planungsmodus (`planning_mode`) sind Aenderungen am Dateisystem ausserhalb von `com/` strikt untersagt.
-   * Die Ablage von Arbeitsergebnissen erfolgt verbindlich nach Struktur:
-     - **Ergebnisbericht:** Dauerhafte Dokumentation und Analyse gehoert nach `com/doc/`.
-     - **Laufende Vorhaben & Dashboards:** Werden in `com/feature/<name>/` gefuehrt (`dashboard.md` & `dashboard.html`).
-     - **Offene naechste Schritte:** Gehoeren knapp und praegnant nach `com/todo.md`.
-     - **Benutzerbeschluesse:** Werden sofort verbindlich mit Datum in `com/entscheidungen.md` uebertragen.
-5. **Sorgfaltspflicht vor Aenderungen:**
-
-   * Vor Aenderungen muessen relevante Dateien, die Projektstruktur, `git status` und vorhandene Tests geprueft werden.
-   * Vor groesseren Eingriffen oder Loeschungen ist die Rueckfrage an den Benutzer erforderlich. Keine stillen Ueberschreibungen fremder Arbeit.
+   * Keine stillen Ueberschreibungen fremder Arbeit.
 6. **Benutzerprofil und Interaktionsregeln (Single Source of Truth):**
 
    * **Benutzer:** `Banixx` (GitHub), Windows-Benutzer `ich`.
    * **Erfahrung:** Amateurprogrammierer.
-   * **Erklaerungs-Trigger ("ç"):** Wenn der Benutzer im Prompt das Zeichen **"ç"** (mit Cedille) verwendet, werden Fachbegriffe grosszuegig in Klammern mit deutschsprachigen Synonymen oder in maximal zwei Saetzen erklaert. Fehlt das Zeichen, bleibt die Kommunikation technisch praezise, direkt und kompakt.
-   * **Farbvorlieben:** Violette und rosafarbene Schrift fuer Terminal- und UI-Gestaltung (gilt nicht fuer Markdown- oder Code-Repo-Inhalte).
    * **Wahrheitsgebot:** Nichts ungeprueft behaupten — fremde Angaben am realen Code und Dateistand verifizieren.
-   * **Zurueckhaltung (Grundhaltung):** Keine inhaltlichen Code-Aenderungen ohne ausdrueckliche Anforderung des Benutzers. Vor groesseren Refactorings, strukturellen Umbauten oder Loeschungen immer zuerst den Benutzer fragen. Einzige ausdruecklich vereinbarte Ausnahme ist die Berichtspflicht (Abschnitt 6 Punkt 4). Git-Sicherungen (`save`) sind kein Automatismus: erst auf Anforderung oder am fachlichen Abschluss.
+   * **Zurueckhaltung (Grundhaltung):** Keine inhaltlichen Code-Aenderungen ohne ausdrueckliche Anforderung des Benutzers. Einzige ausdruecklich vereinbarte Ausnahme ist die Berichtspflicht (Abschnitt 6 Punkt 4). Git-Sicherungen (`save`) sind kein Automatismus: erst auf Anforderung oder am fachlichen Abschluss.
    * **Benutzerprofil-Datei:** Ergaenzend zu diesem Abschnitt liegt das Benutzerprofil in `/home/.pi/user.md` — das ist die einzige gueltige Profildatei. Sie liegt ausserhalb des Repos; conT erreicht sie nicht ueber `W:/`, fuer conT gilt deshalb der Profiltext in diesem `AGENTS.md`.
    * **Fragen-Trigger ("fragen"):** Wenn der Benutzer in einer Session nach "fragen" fragt (z.B. "Welche Fragen sind offen?", "gibt es offene fragen?", "fragen"), orientiert sich das LLM verbindlich an [W:/com/fragen_an_user.md](file:///W:/com/fragen_an_user.md) und praesentiert die offenen Entscheidungsvorlagen strukturiert und kompakt.
 
 \---
 
-## 7\. Der COM-Bus — wie conT und piCon sich gegenseitig wecken
+## 7\. Koordination und Aufgabenfluss (Zustandsbasiert)
 
-Dateien in `com/` sind die gemeinsame Arbeitsgrundlage. Damit ein Harness sofort mitbekommt, dass das
-andere dort etwas abgelegt hat, laeuft auf jeder Seite ein Waechter (Dateibeobachter):
+Der fruehere aktive COM-Bus (Hintergrund-Waechter, Dateisystem-Pings und periodisches Token-Polling) wurde gemaess Benutzerbeschluss vom 2026-10-01 vollstaendig zurueckgebaut.
 
-|Seite|Waechter|Einschalten|
-|-|-|-|
-|piCon (Linux-Container)|`tools/watch\_com.mjs` (Node, weil keine `inotify-tools` im Image)|`bash tools/nodges-com.sh start`|
-|conT (Windows/Antigravity)|`W:/tools/watch\_com.ps1` (PowerShell, `FileSystemWatcher`)|als Hintergrundprozess gestartet|
+Die Zusammenarbeit zwischen **conT**, **piCon** und **dopi** erfolgt rein zustandsbasiert:
+1. **Gemeinsamer Wissensspeicher `com/`:** Fachliche Vorgaben, Notizen und Architekturentscheidungen liegen transparent im Dateisystem vor (SSoT).
+2. **Aufgabenmatrix [com/todo.md](file:///W:/com/todo.md):** Aufgaben werden anhand ihrer Domaenentags (`[READY: conT]`, `[READY: piCon]`, `[READY: dopi]`) uebernommen.
+3. **Status-Aktualisierung:** Bei Beginn setzt das bearbeitende Harness den Tag `[IN ARBEIT: <Harness>]` und nach Abschluss auf `[ERLEDIGT]` (bzw. `[REVIEW: User]`).
+4. **Kein Ping-Zwang:** Da beide Agenten dieselben Inodes nutzen, sind Aenderungen sofort sichtbar. Pings und Dauerscanner sind nicht mehr aktiv.
 
-**So fliesst eine Meldung:**
-
-1. conT legt eine Datei in `com/` ab (z.B. `com/todo.md`).
-2. Der Linux-Waechter merkt das sofort (Ereignis direkt vom Dateisystem) und schreibt eine Zeile in
-`tools/com-bus/events.log`, zum Beispiel `2026-09-27 06:03:11  geandert  com/todo.md  (812 B)`.
-3. Die Erweiterung `/home/.pi/agent/extensions/nodges-com.ts` schaut bei **jedem Prompt** (Ereignis
-`before\_agent\_start`) in diese Liste und stellt alles Neue als `COM\_UPDATE`-Nachricht in den Chat.
-piCon muss also nicht nachfragen — die Meldung erscheint von selbst.
-4. Der Zaehlerstand `tools/com-bus/piCon.seen` merkt, was piCon schon gemeldet wurde; conT fuehrt analog `tools/com-bus/conT.seen`.
-
-**Gezielter Weckruf (Ping):**
-- Aus dem Linux-Container: `bash tools/nodges-com.sh ping conT "Bitte Datei X lesen"`
-- Vom Windows-Host: `.\tools\nodges-com.ps1 ping piCon "Bitte Datei X lesen"` (oder `tools\nodges-com.cmd ping piCon "..."`)
-Der Ping legt `tools/com-bus/ping-<ziel>.md` ab. Der jeweilige Waechter meldet ihn einmal und raeumt die Datei sofort ab.
-
-**Bedienung auf der conT-Seite (Windows-Fernbedienung):**
-
-|Befehl (PowerShell / CMD)|Wirkung|
-|-|-|
-|`.\tools\nodges-com.ps1 status` / `tools\nodges-com.cmd status`|Laeuft der Windows-Waechter? Wie viele Ereignisse sind fuer conT ungelesen?|
-|`.\tools\nodges-com.ps1 read` / `tools\nodges-com.cmd read`|Neues zeigen und als gelesen markieren (`-Peek` laesst Zaehler stehen)|
-|`.\tools\nodges-com.ps1 ack` / `tools\nodges-com.cmd ack`|Alles fuer conT als gelesen markieren (`conT.seen` nachziehen)|
-|`.\tools\nodges-com.ps1 watch` / `tools\nodges-com.cmd watch`|Die Ereignisse live mitlesen (Abbruch mit Strg+C)|
-|`.\tools\nodges-com.ps1 ping <ziel> "<text>"`|Weckruf an `piCon`, `conT` oder `all`|
-|`.\tools\nodges-com.ps1 stop` / `start`|Windows-Waechter anhalten bzw. starten|
-
-**Bedienung auf der piCon-Seite (Linux-Fernbedienung):**
-
-|Befehl|Wirkung|
-|-|-|
-|`bash tools/nodges-com.sh status`|Laeuft der Waechter? Wie viele Ereignisse sind ungelesen?|
-|`bash tools/nodges-com.sh read`|Neues zeigen und als gelesen markieren (`--peek` laesst den Zaehler stehen)|
-|`bash tools/nodges-com.sh ack`|Alles als gelesen markieren (`piCon.seen`)|
-|`bash tools/nodges-com.sh watch`|Die Ereignisse live mitlesen (Abbruch mit Strg+C)|
-|`bash tools/nodges-com.sh ping <ziel> <text>`|Weckruf an `conT`, `piCon` oder `all`|
-|`bash tools/nodges-com.sh stop` / `start`|Waechter anhalten bzw. starten|
-
-Regeln dazu:
-
-* **Der Bus liegt unter `tools/com-bus/`, nicht in `com/`.** Sonst loest das Protokoll beim Schreiben
-sich selbst wieder aus. `com/` bleibt reiner Inhalt, `tools/` ist Werkzeug. `tools/com-bus/` ist
-Laufzeitprotokoll und bleibt per `.gitignore` aus dem Repo draussen; der Rest von `com/` bleibt
-versioniert.
-* Der Waechter muss nach jedem Neustart des Containers einmal gestartet werden (merken: `status` sagt es).
-* Wer eine Rueckfrage an das andere Harness hat, schreibt sie als Datei in `com/` **und** setzt einen Ping.
-Die Datei ist der Inhalt, der Ping ist nur die Klingel.
-* Ausfuehrlich beschrieben in `com/doc/0\_106\_7\_com\_bus\_picon.md`.
 

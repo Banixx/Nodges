@@ -27,6 +27,11 @@ export interface IStateManager {
     addEdge(data: RelationshipData): void;
     updateEdge(id: string, data: Partial<RelationshipData>): void;
     removeEdge(id: string): void;
+    mergeGraphData(
+        newEntities: EntityData[],
+        newRelationships: RelationshipData[],
+        description?: string
+    ): { addedNodes: number; addedEdges: number };
 
     // Group Operations
     createGroupNode(label?: string, attributes?: Record<string, unknown>): EntityData;

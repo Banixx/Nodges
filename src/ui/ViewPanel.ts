@@ -148,6 +148,23 @@ export class ViewPanel {
         );
         labelSection.appendChild(closestRow);
 
+        // Checkbox for LOD / Distanz-Fading
+        const lodRow = this.createCheckboxRow(
+            'LOD / Distanz-Fading',
+            'labelLodEnabled',
+            this.stateManager.state.labelLodEnabled
+        );
+        labelSection.appendChild(lodRow);
+
+        // Slider for LOD Fade Distance
+        const fadeDistRow = this.createSliderRow(
+            'LOD Sichtweite (Fade-Distanz)',
+            'labelFadeDistance',
+            this.stateManager.state.labelFadeDistance,
+            10, 200, 5, 0
+        );
+        labelSection.appendChild(fadeDistRow);
+
         // --- LABEL FILTER ---
         const filterHeader = document.createElement('h5');
         filterHeader.textContent = 'Label Filter (Datenbasiert)';
@@ -633,6 +650,18 @@ export class ViewPanel {
             if (valueSpan) valueSpan.textContent = state.labelMaxClosest.toFixed(0);
         }
 
+        const lodCheck = document.getElementById('checkbox-labelLodEnabled') as HTMLInputElement;
+        if (lodCheck && lodCheck.checked !== state.labelLodEnabled) {
+            lodCheck.checked = state.labelLodEnabled;
+        }
+
+        const fadeDistSlider = document.getElementById('slider-labelFadeDistance') as HTMLInputElement;
+        if (fadeDistSlider && parseFloat(fadeDistSlider.value) !== state.labelFadeDistance) {
+            fadeDistSlider.value = state.labelFadeDistance.toString();
+            const valueSpan = fadeDistSlider.previousElementSibling?.querySelector('span:last-child');
+            if (valueSpan) valueSpan.textContent = state.labelFadeDistance.toFixed(0);
+        }
+
         const marginSlider = document.getElementById('slider-cameraFitMargin') as HTMLInputElement;
         const durationSlider = document.getElementById('slider-cameraTransitionDuration') as HTMLInputElement;
 
@@ -684,6 +713,8 @@ export class ViewPanel {
             modeSelect?.closest('.select-row') as HTMLElement,
             thresholdSlider?.closest('.slider-row') as HTMLElement,
             closestSlider?.closest('.slider-row') as HTMLElement,
+            lodCheck?.closest('label') as HTMLElement,
+            fadeDistSlider?.closest('.slider-row') as HTMLElement,
             labelCountInfo as HTMLElement
         ];
 

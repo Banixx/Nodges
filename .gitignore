@@ -1,5 +1,4 @@
 # Google Drive
-
 .tmp.driveupload/
 
 # Logs
@@ -13,11 +12,11 @@ tmp_*
 # Backup files (keep structure but ignore content)
 backups/*
 !backups/.gitkeep
-.gemini/
 
 # System files
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Editor files
 .vscode/
@@ -25,29 +24,37 @@ Thumbs.db
 *.swp
 *.swo
 
-# Node modules (if any)
+# Node modules
 node_modules/
 
 # Python environments and caches
 **/venv/
+**/.venv/
 **/__pycache__/
 *.py[cod]
+**/.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
 
 # LightRAG Laufzeitdaten (Datenbanken, Vektorindex)
 lightrag-backend/rag_storage/
 
-# Build outputs
+# Build outputs and caches
 dist/
 build/
+*.tsbuildinfo
 
 # Environment files
 .env
 .env.local
 
 # AI and Tooling
+.gemini/
 .agent/
 # .agents/skills/ wird VERSIONIERT: die Workspace-Skills von conT liegen dort und
-mussen fuer beide Harnesses im Git gesichert sein. Alles andere unter .agents/ bleibt draussen.
+# muessen fuer beide Harnesses im Git gesichert sein. Alles andere unter .agents/ bleibt draussen.
 .agents/*
 !.agents/skills/
 .clinerules
@@ -57,7 +64,6 @@ mussen fuer beide Harnesses im Git gesichert sein. Alles andere unter .agents/ b
 # doc/ wird NICHT mehr ignoriert (Freigabe Benutzer 2026-09-24).
 # Arbeitsdokumente muessen zwischen beiden Harnesses (piCon + Antigravity)
 # ueber GitHub verfuegbar sein. Siehe setup.md Abschnitt 4.
-
 download/
 
 # Local scripts
@@ -79,8 +85,3 @@ testdata/Nodges_ErrorLog_*.json
 coverage/
 playwright-report/
 test-results/
-
-# COM-Bus: Laufzeitprotokoll zwischen conT und piCon. Der Bus liegt absichtlich
-# unter tools/com-bus/ (ausserhalb von com/), damit das Protokoll sich nicht
-# selbst ausloest. Siehe tools/nodges-com.sh und com/doc/0_106_7_com_bus_picon.md
-tools/com-bus/

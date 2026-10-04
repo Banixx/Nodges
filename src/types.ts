@@ -2,8 +2,10 @@ import * as THREE from 'three';
 import { z } from 'zod';
 
 // ============================================================================
-// Data Model Types (Zod Definitions)
+// Data Model & Provider Types
 // ============================================================================
+
+export type LLMProvider = 'openrouter' | 'openai' | 'anthropic' | 'ollama' | 'lmstudio';
 
 // Data Model Schema
 export const PropertySchemaSchema = z.object({

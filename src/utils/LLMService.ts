@@ -1,6 +1,6 @@
-import { GraphData, GraphDataSchema } from '../types';
+import { GraphData, GraphDataSchema, LLMProvider } from '../types';
 import { zodToJsonSchema } from 'zod-to-json-schema';
-import { deduplicateGraph } from './VectorStoreManager';
+import { deduplicateGraph, setEmbeddingGenerator } from './VectorStoreManager';
 
 import build6PromptRaw from '../prompts/build_6_prompt.md?raw';
 import build10PromptRaw from '../prompts/build_10_prompt.md?raw';
@@ -8,7 +8,7 @@ import build10KeywordPromptRaw from '../prompts/build_10_keyword_prompt.md?raw';
 import build10SparqlPromptRaw from '../prompts/build_10_sparql_prompt.md?raw';
 import build10ExpansionPromptRaw from '../prompts/build_10_expansion_prompt.md?raw';
 
-export type LLMProvider = 'openrouter' | 'openai' | 'anthropic' | 'ollama' | 'lmstudio';
+export type { LLMProvider } from '../types';
 
 export interface Build10Config {
     grounding: 'none' | 'wikidata' | 'rag' | 'dedup';
@@ -1693,3 +1693,7 @@ ${JSON.stringify(existingGraphData.dataModel, null, 2)}`;
         return newGraphData;
     }
 }
+
+// Registriere Embedding-Generator fuer VectorStoreManager (Zyklus-Entkopplung)
+setEmbeddingGenerator((text, provider, model) => LLMService.generateEmbedding(text, provider, model));
+

@@ -74,7 +74,14 @@ export class InteractionManager {
         this.dragHandler = new DragHandler(stateManager, camera, controls);
         this.nodeCreationHandler = new NodeCreationHandler(stateManager, camera, scene, renderer, highlightManager);
         this.keyboardHandler = new KeyboardHandler(stateManager, this.selectionHandler, this.nodeCreationHandler);
-        this.contextMenuHandler = new ContextMenuHandler(stateManager, this.selectionHandler, this.nodeCreationHandler);
+        this.contextMenuHandler = new ContextMenuHandler(
+            stateManager,
+            this.selectionHandler,
+            this.nodeCreationHandler,
+            camera,
+            controls,
+            scene
+        );
 
         this.initializeEventSubscriptions();
     }
@@ -163,6 +170,11 @@ export class InteractionManager {
 
             const isAdditive = !!(data.event?.ctrlKey || data.event?.shiftKey);
             this.selectionHandler.selectObject(clickedObject, isAdditive);
+
+            // Dynamisches Nachladen bei Klick, sofern Option aktiv
+            if (clickedObject.userData.type === 'node' && this.stateManager.state.dynamicNeighborExpansionEnabled) {
+                this.contextMenuHandler.expandNodeNeighborhood(clickedObject);
+            }
         } else {
             if (this.nodeCreationHandler.isCreatingEdge) {
                 this.nodeCreationHandler.createNewNode(data.event, (position: THREE.Vector3) => {

@@ -433,8 +433,28 @@ def _serialize_doc_status(item: Any) -> Dict[str, Any]:
     }
 
 
+_DEFAULT_MAX_INGEST_TEXT_BYTES = 50 * 1024 * 1024
+try:
+    MAX_INGEST_TEXT_BYTES = int(
+        os.getenv("LIGHTRAG_MAX_INGEST_TEXT_BYTES", str(_DEFAULT_MAX_INGEST_TEXT_BYTES))
+    )
+    if MAX_INGEST_TEXT_BYTES <= 0:
+        raise ValueError("must be positive")
+except ValueError:
+    MAX_INGEST_TEXT_BYTES = _DEFAULT_MAX_INGEST_TEXT_BYTES
+    print(
+        "[LightRAG Warning] Ungueltiger LIGHTRAG_MAX_INGEST_TEXT_BYTES-Wert; "
+        f"verwende {_DEFAULT_MAX_INGEST_TEXT_BYTES} Bytes."
+    )
+
+
 def _prepare_documents(request: DocumentsRequest) -> List[Dict[str, Any]]:
-    """Extrahiert und normalisiert Dokumente aus DocumentsRequest (Batch oder Einzeldokument)."""
+    """Extrahiert, normalisiert und begrenzt Text aus Dokumentenrequests.
+
+    PDF-Dateien werden im Frontend in Text umgewandelt; das Backend erhaelt
+    daher keinen PDF-Upload, sondern ausschliesslich extrahierten Text.
+    Die Byte-Grenze schuetzt sowohl Einzel- als auch Batch-Ingestion.
+    """
     docs: List[Dict[str, Any]] = []
     if request.documents:
         for item in request.documents:
@@ -461,6 +481,27 @@ def _prepare_documents(request: DocumentsRequest) -> List[Dict[str, Any]]:
             "file_path": f_path,
             "process_options": p_opt
         })
+
+    total_bytes = 0
+    for doc in docs:
+        text_bytes = len(doc["text"].encode("utf-8"))
+        if text_bytes > MAX_INGEST_TEXT_BYTES:
+            raise HTTPException(
+                status_code=413,
+                detail=(
+                    f"Dokument '{doc['file_path']}' ist mit {text_bytes} Bytes zu gross. "
+                    f"Maximal erlaubt sind {MAX_INGEST_TEXT_BYTES} Bytes pro Request."
+                ),
+            )
+        total_bytes += text_bytes
+        if total_bytes > MAX_INGEST_TEXT_BYTES:
+            raise HTTPException(
+                status_code=413,
+                detail=(
+                    f"Die gesamte Dokumentenmenge ist mit {total_bytes} Bytes zu gross. "
+                    f"Maximal erlaubt sind {MAX_INGEST_TEXT_BYTES} Bytes pro Request."
+                ),
+            )
     return docs
 
 
@@ -619,7 +660,7 @@ async def process_insert(request: InsertRequest):
     if not request.text or not request.text.strip():
         raise HTTPException(status_code=400, detail="Insert text must not be empty")
 
-    docs = _prepare_documents(DocumentsRequest(text=request.text, file_path="insert_text.txt", process_options="P"))
+    docs = _prepare_documents(DocumentsRequest(text=request.text, process_options="P"))
     return await _execute_document_ingestion(docs, background=False)
 
 class DatabaseRequest(BaseModel):

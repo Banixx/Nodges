@@ -68,8 +68,8 @@ Jeder Task in `todo2.md` oder in den Feature-Todos wird mit einem eindeutigen Zu
 | Tag | Bedeutung | Ausfuehrendes Harness |
 |---|---|---|
 | `[READY: conT]` | Aufgabe ist vollstaendig vorbereitet und liegt in der Frontend-/UI-/Canvas-Domaene | conT (Antigravity Windows) |
-| `[READY: piCon]` | Aufgabe ist vorbereitet und betrifft Container, Python, Backend oder Linux-Tools | piCon (Docker-Container) |
-| `[READY: dopi]` | Infrastruktur-/Docker-Aufgabe (nur bei Bedarf aufgerufen) | dopi (Host Docker) |
+| `[READY: piCon]` | Aufgabe ist vorbereitet und betrifft Python, Backend, Ingestion, L1-Tests oder Linux-Tools | piCon (Docker-Container) |
+| `[READY: dopi]` | Container-Erstellung, Host-Docker, Compose & Infrastruktur (Antigravity Host) | dopi (Antigravity Host Docker) |
 | `[IN ARBEIT: <Harness>]` | Task wird aktuell aktiv von der jeweiligen Instanz bearbeitet | conT / piCon / dopi |
 | `[BLOCKED: <Grund>]` | Blockiert durch externe Abhaengigkeit oder fehlende Vorarbeiten | - |
 | `[REVIEW: User]` | Fertiggestellt, bedarf Begutachtung oder Freigabe des Benutzers | Benutzer (Banixx) |

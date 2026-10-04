@@ -1,8 +1,8 @@
-import type { App } from '../App';
+import type { IApp } from '../core/IApp';
 import { IStateManager } from '../core/interfaces';
 
 export class FilePanelUI {
-    private app: App;
+    private app: IApp;
     private stateManager: IStateManager;
     private filePanelContent: HTMLElement | null;
     private availableFiles: string[] = [];
@@ -10,7 +10,7 @@ export class FilePanelUI {
     private currentDirectory: string = '';
     private isRenderFilePanelPending: boolean = false;
 
-    constructor(containerId: string, stateManager: IStateManager, app: App) {
+    constructor(containerId: string, stateManager: IStateManager, app: IApp) {
         this.stateManager = stateManager;
         this.app = app;
         this.filePanelContent = document.getElementById(containerId);

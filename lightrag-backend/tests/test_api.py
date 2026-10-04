@@ -275,6 +275,18 @@ def test_insert_mit_engine(engine_client):
     assert response.json()['engine_active'] is True
 
 
+def test_insert_unterschiedlicher_text_erhaelt_unterschiedliche_quellpfade(engine_client, main_module):
+    assert engine_client.post('/insert', json={'text': 'Text A'}).status_code == 200
+    assert engine_client.post('/insert', json={'text': 'Text B'}).status_code == 200
+
+    enqueue_calls = main_module.rag_instance.apipeline_enqueue_documents.await_args_list
+    paths = [call.kwargs['file_paths'][0] for call in enqueue_calls]
+    ids = [call.kwargs['ids'][0] for call in enqueue_calls]
+    assert len(set(paths)) == 2
+    assert len(set(ids)) == 2
+    assert all(path != 'insert_text.txt' for path in paths)
+
+
 def test_graph_exception_fuehrt_zu_leerem_graph(engine_client, main_module, monkeypatch):
     """Faellt die Graphextraktion aus, bricht die Query nicht ab."""
     async def failing_extract(_query):
@@ -439,6 +451,29 @@ def test_documents_ingest_batch_engine(engine_client):
 def test_documents_ingest_leerer_text_400(engine_client):
     response = engine_client.post('/documents', json={'text': '   '})
     assert response.status_code == 400
+
+
+def test_documents_ingest_zu_grosser_text_413(client, main_module, monkeypatch):
+    monkeypatch.setattr(main_module, 'MAX_INGEST_TEXT_BYTES', 4)
+    response = client.post('/documents', json={
+        'text': '12345',
+        'file_path': 'grosse.pdf'
+    })
+    assert response.status_code == 413
+    assert 'grosse.pdf' in response.json()['detail']
+    assert '4 Bytes' in response.json()['detail']
+
+
+def test_documents_ingest_batch_groesse_wird_aufsummiert(client, main_module, monkeypatch):
+    monkeypatch.setattr(main_module, 'MAX_INGEST_TEXT_BYTES', 5)
+    response = client.post('/documents', json={
+        'documents': [
+            {'text': 'abc', 'file_path': 'eins.pdf'},
+            {'text': 'def', 'file_path': 'zwei.pdf'}
+        ]
+    })
+    assert response.status_code == 413
+    assert 'gesamte Dokumentenmenge' in response.json()['detail']
 
 
 def test_documents_status_mock(client):

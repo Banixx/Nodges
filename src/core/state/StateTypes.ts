@@ -129,6 +129,8 @@ export interface SystemState {
     isPlaying: boolean;
     playbackSpeed: number;
     mapActive: boolean;
+    dynamicNeighborExpansionEnabled: boolean;
+    neighborExpansionDepth: number;
 }
 
 /**
@@ -265,6 +267,8 @@ export const STATE_KEY_TO_CATEGORIES: Record<string, StateCategory[]> = {
     isPlaying: [STATE_CATEGORIES.SYSTEM],
     playbackSpeed: [STATE_CATEGORIES.SYSTEM],
     mapActive: [STATE_CATEGORIES.SYSTEM],
+    dynamicNeighborExpansionEnabled: [STATE_CATEGORIES.SYSTEM, STATE_CATEGORIES.UI],
+    neighborExpansionDepth: [STATE_CATEGORIES.SYSTEM, STATE_CATEGORIES.UI],
 
     // DevState
     devPowerPreference: [STATE_CATEGORIES.DEV],

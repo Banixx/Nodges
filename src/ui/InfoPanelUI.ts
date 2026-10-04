@@ -1,15 +1,15 @@
 import * as THREE from 'three';
-import type { App } from '../App';
+import type { IApp } from '../core/IApp';
 import { IStateManager } from '../core/interfaces';
 import { PanelUtils } from '../utils/PanelUtils';
 
 export class InfoPanelUI {
-    private app: App;
+    private app: IApp;
     private stateManager: IStateManager;
     private infoPanel: HTMLElement | null;
     private infoPanelContent: HTMLElement | null;
 
-    constructor(containerId: string, stateManager: IStateManager, app: App) {
+    constructor(containerId: string, stateManager: IStateManager, app: IApp) {
         this.stateManager = stateManager;
         this.app = app;
         

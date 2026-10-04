@@ -1,12 +1,12 @@
-import type { App } from '../App';
+import type { IApp } from '../core/IApp';
 import { IStateManager } from '../core/interfaces';
 import type { State } from '../core/StateManager';
 
 export class EdgeControlsUI {
-    private app: App;
+    private app: IApp;
     private stateManager: IStateManager;
 
-    constructor(stateManager: IStateManager, app: App) {
+    constructor(stateManager: IStateManager, app: IApp) {
         this.stateManager = stateManager;
         this.app = app;
 

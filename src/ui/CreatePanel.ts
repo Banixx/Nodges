@@ -3,7 +3,7 @@
  * Allows users to generate new nodes and edges using an LLM.
  */
 import { IStateManager } from '../core/interfaces';
-import type { App } from '../App';
+import type { IApp } from '../core/IApp';
 import { LLMService, LLMProvider, LLMModel, Build13RelationCandidate } from '../utils/LLMService';
 import { LightRAGService } from '../utils/LightRAGService';
 import { GraphDataSchema } from '../types';
@@ -15,7 +15,7 @@ import { isSupportedSourceDocument, parseSourceDocument } from '../utils/SourceD
 
 export class CreatePanel {
     private container: HTMLElement;
-    private app: App;
+    private app: IApp;
     private stateManager: IStateManager;
 
     private providerSelect!: HTMLSelectElement;
@@ -74,7 +74,7 @@ export class CreatePanel {
         return `${counter}_${day}_${hhmm}`;
     }
 
-    constructor(containerId: string, _stateManager: IStateManager, app: App) {
+    constructor(containerId: string, _stateManager: IStateManager, app: IApp) {
         const el = document.getElementById(containerId);
         if (!el) {
             console.warn(`[CreatePanel] Container '${containerId}' not found. Creating stub.`);

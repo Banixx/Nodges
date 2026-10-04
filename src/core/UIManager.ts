@@ -2,7 +2,7 @@
  * UIManager - Manages all HTML UI components and interactions.
  * This class encapsulates all logic for panels, buttons, and other UI elements.
  */
-import type { App } from '../App';
+import type { IApp } from './IApp';
 import { IStateManager } from './interfaces';
 import type { State } from './StateManager';
 import { EnvironmentPanel } from '../ui/EnvironmentPanel';
@@ -27,7 +27,7 @@ interface Bounds {
 }
 
 export class UIManager {
-    private app: App;
+    private app: IApp;
     private stateManager: IStateManager;
     public mappingUI!: MappingUI;
     private legendPanel: LegendPanel;
@@ -35,7 +35,7 @@ export class UIManager {
     // New Components
     private statsUI: StatsUI;
 
-    constructor(app: App) {
+    constructor(app: IApp) {
         this.app = app;
         this.stateManager = app.stateManager;
 

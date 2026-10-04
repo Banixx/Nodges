@@ -11,6 +11,8 @@ export interface LabelConfig {
     visible: boolean;
     alwaysVisible: boolean;
     distanceThreshold: number;
+    lodEnabled?: boolean;
+    fadeDistance?: number;
 }
 
 interface EdgeWithPosition {
@@ -40,6 +42,14 @@ export class EdgeLabelManager {
     private labelGroup: THREE.Group;
     public config: LabelConfig;
 
+    // Reusable Hilfsvektoren und Frustum zur performanten Berechnung ohne GC-Overhead
+    private tempMidPoint = new THREE.Vector3();
+    private tempDirection = new THREE.Vector3();
+    private tempOffsetDirection = new THREE.Vector3();
+    private frustum = new THREE.Frustum();
+    private projScreenMatrix = new THREE.Matrix4();
+    private frustumSphere = new THREE.Sphere();
+
     constructor(container: ServiceContainer) {
         const [scene, camera] = 
             container.resolve<THREE.Scene, THREE.Camera>(
@@ -62,7 +72,9 @@ export class EdgeLabelManager {
             padding: 0.05,
             visible: true,
             alwaysVisible: false,
-            distanceThreshold: 15
+            distanceThreshold: 15,
+            lodEnabled: true,
+            fadeDistance: 20
         };
 
         // Bind update method to use in animation loop
@@ -144,38 +156,38 @@ export class EdgeLabelManager {
      * Update label position based on edge position
      */
     updateLabelPosition(sprite: THREE.Sprite, edge: EdgeWithPosition) {
-        if (!sprite || !edge || !edge.line) return;
+        if (!sprite || !edge || !edge.line || !edge.startNode?.mesh || !edge.endNode?.mesh) return;
 
-        // Calculate midpoint
+        // Calculate midpoint using reusable vector
         const startPos = edge.startNode.mesh.position;
         const endPos = edge.endNode.mesh.position;
 
-        const midPoint = new THREE.Vector3(
-            (startPos.x + endPos.x) / 2,
-            (startPos.y + endPos.y) / 2,
-            (startPos.z + endPos.z) / 2
+        this.tempMidPoint.set(
+            (startPos.x + endPos.x) * 0.5,
+            (startPos.y + endPos.y) * 0.5,
+            (startPos.z + endPos.z) * 0.5
         );
 
         // Apply offset if exists
         if (edge.options && edge.options.offset && edge.options.offset !== 0) {
-            const direction = new THREE.Vector3().subVectors(endPos, startPos).normalize();
+            this.tempDirection.subVectors(endPos, startPos).normalize();
             // Calculate perpendicular vector for offset
-            const offsetDirection = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
-            midPoint.addScaledVector(offsetDirection, edge.options.offset);
+            this.tempOffsetDirection.set(-this.tempDirection.z, 0, this.tempDirection.x).normalize();
+            this.tempMidPoint.addScaledVector(this.tempOffsetDirection, edge.options.offset);
 
             // Add some height dynamically based on camera distance
-            const distance = this.camera.position.distanceTo(midPoint);
+            const distance = this.camera.position.distanceTo(this.tempMidPoint);
             const zoomFactor = Math.min(1.0, Math.max(0.1, distance / 30.0));
-            midPoint.y += 0.5 * zoomFactor;
+            this.tempMidPoint.y += 0.5 * zoomFactor;
         } else {
             // Add a small height even for single edges so they don't clip into the tube,
             // scaling down when zooming in.
-            const distance = this.camera.position.distanceTo(midPoint);
+            const distance = this.camera.position.distanceTo(this.tempMidPoint);
             const zoomFactor = Math.min(1.0, Math.max(0.1, distance / 30.0));
-            midPoint.y += 0.3 * zoomFactor;
+            this.tempMidPoint.y += 0.3 * zoomFactor;
         }
 
-        sprite.position.copy(midPoint);
+        sprite.position.copy(this.tempMidPoint);
     }
 
     /**
@@ -222,10 +234,17 @@ export class EdgeLabelManager {
 
         const state = (window as any).app?.stateManager?.state;
         const labelMaxClosest = state?.labelMaxClosest !== undefined ? state.labelMaxClosest : 50;
+        const lodEnabled = state?.labelLodEnabled !== undefined ? state.labelLodEnabled : (this.config.lodEnabled !== false);
+        const maxDistance = state?.labelFadeDistance !== undefined ? (state.labelFadeDistance * 0.4) : (this.config.distanceThreshold || 15);
+
+        // Frustum vorbereiten
+        this.projScreenMatrix.multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse);
+        this.frustum.setFromProjectionMatrix(this.projScreenMatrix);
 
         interface CandidateEdgeLabel {
             label: LabelData;
             distance: number;
+            distanceFade: number;
         }
 
         const candidateLabels: CandidateEdgeLabel[] = [];
@@ -234,18 +253,19 @@ export class EdgeLabelManager {
         const showHover = state ? state.showLabelsOnHover : true;
         const hoveredObj = state?.hoveredObject;
 
-        // Pass 1: Update position & check line visibility
+        // Pass 1: Update position & check line visibility, frustum and LOD
         this.labels.forEach((label) => {
+            const isHovered = Boolean(hoveredObj && (
+                hoveredObj.userData?.id === label.edge.id ||
+                hoveredObj.userData?.source === label.edge.source ||
+                hoveredObj.userData?.target === label.edge.target
+            ));
+
             if (!showAlways) {
                 if (!showHover) {
                     label.sprite.visible = false;
                     return;
                 }
-                const isHovered = hoveredObj && (
-                    hoveredObj.userData?.id === label.edge.id ||
-                    hoveredObj.userData?.source === label.edge.source ||
-                    hoveredObj.userData?.target === label.edge.target
-                );
                 if (!isHovered) {
                     label.sprite.visible = false;
                     return;
@@ -260,8 +280,27 @@ export class EdgeLabelManager {
                 return;
             }
 
+            // Frustum Culling: Wenn die Kante weder gehovert ist noch im Sichtfeld liegt
+            if (!isHovered && !this.frustum.intersectsSphere(this.frustumSphere.set(label.sprite.position, 2.0))) {
+                label.sprite.visible = false;
+                return;
+            }
+
             const distance = this.camera.position.distanceTo(label.sprite.position);
-            candidateLabels.push({ label, distance });
+
+            // LOD & Distanz-Fading (On-Demand: Bei Hover immer voll sichtbar)
+            let distanceFade = 1.0;
+            if (lodEnabled && !isHovered) {
+                const fadeStart = maxDistance * 0.6;
+                if (distance >= maxDistance) {
+                    label.sprite.visible = false;
+                    return;
+                } else if (distance > fadeStart) {
+                    distanceFade = (maxDistance - distance) / (maxDistance - fadeStart);
+                }
+            }
+
+            candidateLabels.push({ label, distance, distanceFade });
         });
 
         // Pass 2: Proximity Filter (Keep top N closest labels if labelMaxClosest > 0)
@@ -275,8 +314,10 @@ export class EdgeLabelManager {
         }
 
         // Pass 3: Render & Face Camera
-        activeCandidates.forEach(({ label }) => {
+        const baseOpacity = this.config.backgroundOpacity || 0.7;
+        activeCandidates.forEach(({ label, distanceFade }) => {
             label.sprite.visible = true;
+            label.sprite.material.opacity = baseOpacity * distanceFade;
             label.sprite.quaternion.copy(this.camera.quaternion);
         });
     }

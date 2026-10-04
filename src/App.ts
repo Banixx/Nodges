@@ -38,6 +38,7 @@ import { GraphData, EntityData, RelationshipData, VisualMappings, DataModel } fr
 import { VisualOptimizer } from './utils/VisualOptimizer';
 import { notify } from './core/NotificationService';
 import { LLMService } from './utils/LLMService';
+import type { IApp } from './core/IApp';
 
 import { ServiceContainer } from './core/di/ServiceContainer';
 import { errorHandler } from './core/ErrorHandler';
@@ -50,7 +51,7 @@ declare global {
     }
 }
 
-export class App {
+export class App implements IApp {
     public scene: THREE.Scene;
     public camera: THREE.PerspectiveCamera;
     public renderer: THREE.WebGLRenderer;

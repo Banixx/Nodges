@@ -1,5 +1,4 @@
 import { IStateManager } from '../core/interfaces';
-import type { App } from '../App';
 
 export class TimePlayerUI {
     private stateManager: IStateManager;
@@ -17,7 +16,7 @@ export class TimePlayerUI {
     private minTime: number = 0;
     private maxTime: number = 100;
 
-    constructor(stateManager: IStateManager, _app: App) {
+    constructor(stateManager: IStateManager, _app?: unknown) {
         this.stateManager = stateManager;
 
         // Remove any existing instance to prevent duplicates (e.g., from HMR)

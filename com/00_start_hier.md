@@ -15,14 +15,14 @@ Es liegt direkt im Projekt-Root und ist damit ueber `/workspace/com/` (piCon) wi
 8. **`doc/`** — das Archiv aller bisherigen Berichte (273 Dateien). Gezielt suchen, nicht pauschal lesen.
 
 > Wichtig: Die Dateien in `com/` sind bewusst **klein und steuernd**. Ein Harness soll sie vollstaendig einlesen koennen.
-> Alles Umfangreiche gehoert nach `com/doc/` mit Versionspraefix.
+> Status und Zwischenstaende gehoeren primaer nach `com/todo.md`. Umfangreiche Analysen nur bei echten Meilensteinen nach `com/doc/`.
 
 ## Aufbau
 
 ```
 com/
   00_start_hier.md    <- dieses File: Einstieg und Lesereihenfolge
-  todo.md             <- offene Punkte (sollte vor jeder Aufgabe gelesen werden)
+  todo.md             <- offene Punkte und Arbeitsstatus (zentrale Steuerungsdatei)
   feature/            <- laufende Vorhaben und Features, ein Ordner/File je Vorhaben
   entscheidungen.md   <- Beschluesse des Benutzers (bindend)
   fragen_an_user.md   <- offene Fragen fuer den Benutzer (Orientierung bei "fragen")
@@ -33,11 +33,12 @@ com/
   doc/                <- Archiv: alle bisherigen Berichte (versioniert, 273 Dateien)
 ```
 
-## Wann schreibe ich was? (Empfehlung, keine Pflicht)
+## Wann schreibe ich was? (Schlank und zielgerichtet)
 
 | Situation | Zielort |
 |---|---|
-| Ergebnis eines Arbeitsauftrags, Analyse, Bericht | `com/doc/0_106_3_mein_thema.md` (Versionspraefix aus `package.json`) |
+| Status, Zwischenschritt, naechste Aufgabe | `com/todo.md` |
+| Grosser Meilenstein, Architekturanalyse | `com/doc/<version>_thema.md` (nur bei echtem Bedarf) |
 | Etwas bleibt offen, naechster Schritt unklar | `com/todo.md` |
 | Es gibt ein absehbares Vorhaben mit mehreren Schritten | eigene Datei oder Ordner in `com/feature/` |
 | Der Benutzer hat etwas beschlossen | `com/entscheidungen.md` (mit Datum und wenn moeglich Commit/Tag) |
