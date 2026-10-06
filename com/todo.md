@@ -69,5 +69,5 @@
 
 ## 5. Thema: Host-Infrastruktur & Docker (dopi-Domaene)
 
-### 5.1 Unterthema: Container-Lifecycle & Port-Konflikte
 - [x] **[ERLEDIGT]** Pruefung von Port-Konflikten (Fallback-Variablen `VITE_PORT` / `LIGHTRAG_PORT`), Bereinigung veralteter COM-Bus-Befehle und Standardisierung des Docker-Healthchecks in `C:/Users/ich/Desktop/code/_projects/Nodges_Pi/docker-compose.yml`.
+- [x] **[ERLEDIGT]** Live-Verifikation Container-Lifecycle: `pi-harness` erfolgreich gestartet, Healthcheck schaltet reproduzierbar auf `healthy`, Endpunkte `http://localhost:5173/` (Vite) und `http://localhost:8000/health` (LightRAG) vom Windows-Host aus erreichbar.
