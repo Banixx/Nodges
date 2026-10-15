@@ -27,10 +27,20 @@
 
 ### 1.2 Unterthema: Bereinigung & Rueckbau aktiver Waechter / Trigger
 - [x] **[ERLEDIGT]** Entfernen der COM-Bus- und Waechter-Skripte (`watch_com.ps1`, `watch_com.mjs`, `nodges-com.*`, `sync_com.ps1`, `test-com.sh`, Verzeichnis `tools/com-bus/`).
+- [x] **[ERLEDIGT]** Private Pi-Extension `nodges-com.ts` und `.bak` entfernt; aktuelle Setup- und Ablaufhinweise auf zustandsbasierte Koordination umgestellt. Historische Berichte bleiben als Historie erhalten.
 - [x] **[ERLEDIGT]** Rueckbau des `com`-Skills unter `W:/.agents/skills/com/`.
-- [x] **[ERLEDIGT]** Umstellung auf rein zustandsbasierte Multi-Harness-Koordination ueber `todo.md` in `AGENTS.md`.
+- [x] **[ERLEDIGT]** On-Demand-Spiegelung und Projektskill `sync` ([W:/.agents/skills/sync/SKILL.md](file:///W:/.agents/skills/sync/SKILL.md)) fuer die Synchronisation von `W:/com` nach `C:/Users/ich/Desktop/code/_Nodges_Com_Sync` eingerichtet (Benutzeranforderung 2026-10-14).
+### 1.3 Unterthema: Harmonisierung der Agenten-Instruktionen (Feature `AgentMd`)
+- [x] **[ERLEDIGT]** Bestandsaufnahme piCon: `/home/.pi/agent/` im Container `pi-harness` per Docker geprueft (dopi, 2026-10-07). (Verknuepft mit [0_107_0_agent_md_harmonisierung.md](file:///W:/com/feature/0_107_0_agent_md_harmonisierung.md)).
+- [x] **[ERLEDIGT]** Ist-Stand und Vorschlag dopi: [bericht_instruktionen_harnesses.md](file:///W:/com/feature/AgentMd/bericht_instruktionen_harnesses.md) (Teil A bis C) und Grafik [agenten_harnesses.mmd](file:///W:/com/feature/AgentMd/agenten_harnesses.mmd) im Ordner `com/feature/AgentMd/`.
+- [x] **[ERLEDIGT]** conT hat `com/feature/AgentMd/` geprueft und seine Sicht am 2026-10-08 in Teil D des Berichts eingetragen (keine Aenderung an den Instruktionsdateien).
+- [x] **[ERLEDIGT]** piCon hat `com/feature/AgentMd/` geprueft und seine Sicht am 2026-10-07 in Teil E des Berichts eingetragen, insbesondere zu `/home/.pi/user.md` und `/home/.pi/agent/AGENTS.md` (keine Aenderung an den Instruktionsdateien).
+- [x] **[ERLEDIGT]** Entscheidung zu `user.md` (2026-10-08): Datei geloescht, Verweis in `/home/.pi/agent/AGENTS.md` entfernt.
+- [ ] **[BLOCKED: Freigabe User]** Soll-Konzept (Schritt 2 bis 4 der Feature-Datei): schlanke `W:/AGENTS.md`, Bereinigung von `Nodges_Pi/AGENTS.md`; Umsetzung erst nach Freigabe.
+
 
 ---
+
 
 ## 2. Thema: Wissensgraph & LightRAG (Backend & Ingestion)
 
@@ -71,3 +81,5 @@
 
 - [x] **[ERLEDIGT]** Pruefung von Port-Konflikten (Fallback-Variablen `VITE_PORT` / `LIGHTRAG_PORT`), Bereinigung veralteter COM-Bus-Befehle und Standardisierung des Docker-Healthchecks in `C:/Users/ich/Desktop/code/_projects/Nodges_Pi/docker-compose.yml`.
 - [x] **[ERLEDIGT]** Live-Verifikation Container-Lifecycle: `pi-harness` erfolgreich gestartet, Healthcheck schaltet reproduzierbar auf `healthy`, Endpunkte `http://localhost:5173/` (Vite) und `http://localhost:8000/health` (LightRAG) vom Windows-Host aus erreichbar.
+- [x] **[ERLEDIGT]** Pi-Agent Update auf Version 1.1.0 (`@earendil-works/pi-coding-agent@1.1.0`): `Dockerfile` aktualisiert, Image `nodges_pi-pi-agent` neu gebaut, Container `pi-harness` neu gestartet und Healthcheck verifiziert (2026-10-09).
+

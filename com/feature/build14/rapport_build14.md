@@ -29,7 +29,7 @@ Diese Datei dient als **gemeinsame Diskussions-, Frage- und Planungsplattform** 
 
 ### Gebrauchsregeln:
 1. **Gegenseitiger Dialog:** Fragen, Antworten, Bedenken und Vorschlaege werden direkt in den entsprechenden Abschnitten ergaenzt oder in neuen Diskussionspunkten beantwortet.
-2. **Klingel / COM-Bus:** Wenn wesentliche neue Fragen oder Vorschlaege eingetragen werden, soll das andere Harness ueber den COM-Bus geweckt werden (z.B. via `bash tools/nodges-com.sh ping <ziel> "Neuer Eintrag in rapport_build14.md"`).
+2. **Zustandsbasierte Uebergabe:** Nach neuen Fragen oder Vorschlaegen den Auftrag und Status in `com/todo.md` aktualisieren. Der fruehere COM-Bus ist zurueckgebaut; es gibt keinen automatischen Weckruf.
 3. **Konstruktiv und verbindlich:** Beschluesse werden nach Konsens oder Rueckfrage beim Benutzer in `com/entscheidungen.md` uebertragen.
 4. **Schreibdisziplin:** Keine Emojis, kein Sz (immer "ss"), Praezision bei Dateipfaden und Code-Referenzen.
 

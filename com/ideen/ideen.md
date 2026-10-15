@@ -1,0 +1,103 @@
+# Ideensammlung
+
+Ungepruefte Einfaelle und Verbesserungsvorschlaege. **Keine Verpflichtung, keine Reihenfolge.**
+Verbindlich wird eine Idee erst durch einen Beschluss des Benutzers (→ `entscheidungen.md`)
+oder durch einen Eintrag in `plan/`.
+
+## Quellen dieser Sammlung
+
+Die Inhalte stammen aus zwei Bestandsdateien, die hier zusammengefuehrt wurden:
+
+- **`com/doc/idee_nodges.md`** — die konzeptionelle Idee (Luhmann-Ansatz, Primat der Kanten).
+  **Am 2026-09-27 vollstaendig in Teil 1 dieser Datei uebernommen; die Quelldatei wurde danach geloescht.**
+- **`com/doc/14_verbesserungsvorschlaege_nodges_V4.md`** — die technische Sammlung A1–A10 und B1–B12;
+  dort stehen die ausfuehrlichen Begruendungen.
+- Ergaenzend: `com/doc/0_106_2_ergaenzungsvorschlag_conT_bericht_setup.md`.
+
+> Wichtig: Diese Datei ist ein **Verzeichnis**, kein Ersatz. Fuer Teil 2 bleiben die Quellen im Archiv
+> `com/doc/` erhalten. Fuer Teil 1 ist die Quelle `idee_nodges.md` dagegen inzwischen entfernt — dieser
+> Text hier ist nunmehr der einzige Ort.
+
+---
+
+## Teil 1 — Konzeptionelle Ideen (uebernommen aus `idee_nodges.md`)
+
+### Kernkonzept
+
+In Anlehnung an Niklas Luhmanns Systemtheorie („Die Beziehungen bilden das System“) gilt:
+
+- **Beziehungsbasierte Raumordnung:** Die Position im 3D-Raum wird primaer durch Beziehungsdichte und
+  Kantenstruktur bestimmt (Force-Directed Graph / Directed Force), nicht durch Einzelfakten.
+- **Primat der Kanten:** Eigenstaendige Konzepte, Rollen und Organisationseinheiten (Parteizugehoerigkeit,
+  Leitung eines Departements, Ausschussmitgliedschaften) werden als **explizite Kanten** zwischen
+  eigenstaendigen Knoten modelliert statt als Attribut.
+- **Keine Isolations-Attribute:** Fakten mit Struktur-Relevanz duerfen nicht als Freitext in einem
+  Einzelknoten verschwinden — sonst gehen Netzwerktopologie und automatisches Clustering verloren.
+
+### Zukuenftige Ausbaustufe (Property-to-Edge Promotion)
+
+- **Automatische Inferenz (spaeter):** Analysiert Knoten-Attribute bei unvollstaendigen
+  Quelldaten analysiert und daraus synthetische Kanten plus Ankerknoten erzeugt.
+
+---
+
+## Teil 2 — Technische Verbesserungen
+
+Die urspruengliche Einteilung in **A (Detail, risikoarm)** und **B (Architektur, grundlegend)** ist
+beibehalten. Die Kuerzel A1–A10 / B1–B12 entsprechen der Quelldatei, damit dort nachgelesen werden kann.
+
+### A — Detailverbesserungen (schnell umsetzbar)
+
+| Nr. | Idee | Kernpunkt |
+|---|---|---|
+| A1 | Debug-Logging bereinigen | Log-Helper mit Level-Filter statt `console.log` in `App.ts`; Worker loggt mitunter sensible Knotendaten. |
+| A2 | Toten Code entfernen | Auskommentierte Bloecke und ungenutzte Imports loeschen (`noUnusedLocals`). |
+| A3 | State typsicher machen | `[key: string]: any` in `State` eliminieren; State als Schnittmenge der Sub-States typisieren. |
+| A4 | Duplizierte Datenhaltung aufloesen | `App.currentEntities` etc. gegen den `StateManager` vereinheitlichen, Sync entfaellt. |
+| A5 | Einheitliche Positions-API | Zentraler `PositionResolver` statt mehrfach duplizierter x/y/z-Berechnung. |
+| A6 | Versionsfelder klaeren | `metadata.version` vs. `metadata.schemaVersion` — ein Feld festlegen, Ableitung zentralisieren. |
+| A7 | Lint/Format ergaenzen | ESLint + Prettier einrichten, als CI-Schritt. |
+| A8 | CI-Test-Job | Vor dem Build `npm run test -- --run`, damit Regressionen beim Deploy auffallen. |
+| A9 | `any`-Typen reduzieren | Z.B. `IRaycastManager` statt `any`; DI-Container typisieren. |
+| A10 | API-Key-Sicherheit | Client-Keys nie geheim; optional server-seitige Verwaltung (Deno-Proxy/Backend). |
+
+### B — Architektur-Verbesserungen (grundlegend)
+
+| Nr. | Idee | Kernpunkt |
+|---|---|---|
+| B1 | `App.ts` entschlacken | God-Object aufloesen: `SceneFactory`, `RenderLoop`, `GraphLoaderService`, `MappingCoordinator`. App nur noch Verdrahtung. |
+| B2 | Echte Dependency Injection | Konstruktor-Injektion statt Service-Locator; Container nur als Composition-Root. |
+| B3 | Interfaces konsequent nutzen | `ILayoutManager`, `ICameraManager`, `IUIManager`, `INodeLabelManager` etc.; Konsumenten nur gegen Abstraktionen. |
+| B4 | Duales Tracking konsolidieren | `CentralEventManager` nur Dispatcher/Raycast-Quelle; Handler besitzen die Logik. |
+| B5 | UI-Komponenten zerlegen | `MappingUI` (2850 Zeilen), `CreatePanel` (2313), FilePanel/ViewPanel in kleine Komponenten. |
+| B6 | UI von `window.app` entkoppeln | Explizite Props/Stores statt globaler Zugriffe; Events ueber den Bus. |
+| B7 | Ein Store-System | Selektoren/SELECTOR-Pattern, Ableitungen cachen; ggf. etablierte Store-Bibliothek. |
+| B8 | Persistenz abstrahieren | `Repository`/`DataSource`-Interface: JSON-Adapter (Dev), LightRAG/Server (Produktion). |
+| B9 | Rendering kapseln | `RenderPipeline`/`MinimapView`; Minimap ist mit `MinimapManager` bereits ausgelagert, Haupt-Pipeline offen. |
+| B10 | Layout als Schicht mit Plugins-API | `LayoutDefinition`-Registry plus eigener `LayoutCoordinator`, entkoppelt von Mapping-Triggern. |
+| B11 | Zustandsuebergaenge vereinheitlichen | Undo/Redo ueber Immutable-Updates oder Patch-Diffs statt Closures. |
+| B12 | Testbarkeit erhoehen | Nach A5/B1/B5 Tests mit Three.js-Mocks; mindestens fuer die neuen Services Integrationstests. |
+
+### Priorisierung (aus der Quelldatei uebernommen)
+
+- **Sofort** (wenig Aufwand, hohe Rendite): A1, A2, A3, A8, A10.
+- **Kurzfristig** (Architektur-Gewinn): A4, A6, A5, B2, B3.
+- **Mittelfristig** (grosse Refactorings): B1, B5, B8, B9, B10, B11, B12.
+
+---
+
+## Teil 3 — Ideen zum Harness und zur Arbeitsweise
+
+Vorschlaege, die beim Anlegen von `com/` entstanden sind — betreffen die Zusammenarbeit, nicht den Code:
+
+- **Automatischer Index fuer `doc/`:** Ein Skript, das beim Commit alle Dateien mit Versionspraefix in eine
+  Indexdatei schreibt. Erspart das Suchen im 273-Dateien-Archiv.
+- **Status im Plan-Dateinamen:** Laufende Plaene als `laeuft_...`, fertige als `fertig_...`, damit `plan/`
+  nicht aufgeraeumt werden muss. Statt Unterordner `archiv/`.
+- **Health-Check-Skript:** Eine Datei `scripts/healthcheck.sh`, die alle Pruefungen in einem Durchlauf ausgibt
+  (`curl localhost:8000/health`, `curl localhost:5173/lightrag-api/health`, Vite auf 5173).
+- **`sgc`/`uupdate` fragt optional nach einem Tag:** Statt spaeter separat ein Git-Tag zu setzen, koennte der
+  Skill beim Push fragen, ob der Stand als Meilenstein markiert wird.
+- **Abgleich `vision_104.md` gegen Teil 1 dieser Datei:** Die Saetze in Teil 1 sind teils aelter als die
+  Vision; bei Gelegenheit auf Widersprueche pruefen. (Die frueher dafuer genutzte `idee_nodges.md` ist
+  geloescht, der Inhalt steht jetzt oben.)

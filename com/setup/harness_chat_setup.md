@@ -64,8 +64,8 @@ Der regulaere Entwicklungszyklus laeuft autonom zwischen conT und piCon im Ping-
                                   |
                                   v
 +-------------------------------------------------------------------+
-| 2. Weckruf / Benachrichtigung ueber COM-Bus                      |
-|    - Ping an Partner: bash tools/nodges-com.sh ping <ziel> "..."  |
+| 2. Zustandsbasierte Uebergabe                                   |
+|    - Auftrag und Status in com/todo.md aktualisieren              |
 +-------------------------------------------------------------------+
                                   |
                                   v
@@ -89,7 +89,7 @@ Der regulaere Entwicklungszyklus laeuft autonom zwischen conT und piCon im Ping-
 
 Wenn ein Vorhaben Eingriffe in das Host-Setup, Docker Compose oder Container-Startskripte erfordert:
 1. conT oder piCon formulieren den Setup-Bedarf und rufen dopi im Rapport explizit auf.
-2. Der Aufruf wird per COM-Bus signalisiert (`ping dopi "Setup-Frage in rapport_<thema>.md"`).
+2. Der Auftrag wird in `com/todo.md` mit `[READY: dopi]` markiert; einen automatischen Weckruf gibt es nicht.
 3. dopi prueft und bearbeitet ausschliesslich die Host- und Docker-Dateien in [C:/Users/ich/Desktop/code/_projects/Nodges_Pi](file:///C:/Users/ich/Desktop/code/_projects/Nodges_Pi) (`docker-compose.yml`, `Dockerfile`, `.devcontainer/`, `start_pi_container.cmd`).
 4. Nach Erledigung meldet sich dopi im Rapport zurueck und uebergibt den Turnus wieder an conT bzw. piCon.
 
@@ -108,7 +108,7 @@ Fuer Vorhaben mit Backend-, Schnittstellen- und UI-Abhaengigkeiten (wie Build 14
 ## 4. Regeln fuer die Harness-Kommunikation
 
 1. **Dateisystem ist die Quelle:** Der Chat zwischen den Agenten findet primaer in der Rapport-Datei statt, nicht in fluechtigen LLM-Kontextfenstern. Was in der Markdown-Datei steht, bleibt fuer alle Seiten persistent.
-2. **Klingel nutzen:** Nach jeder substantiellen Aktualisierung der Rapport-Datei wird ein Ping via `nodges-com.sh` bzw. `nodges-com.ps1` abgesetzt.
+2. **Status aktualisieren:** Nach einer Uebergabe wird der Auftrag in `com/todo.md` mit dem passenden Status versehen; es gibt keinen aktiven Ping-Dienst.
 3. **Keine stillen Annahmen:** Schnittstellen, DTOs oder Setup-Aenderungen muessen explizit im Rapport dokumentiert werden.
 4. **Schreib- und Sprachdisziplin:**
    - Sprache: Deutsch.

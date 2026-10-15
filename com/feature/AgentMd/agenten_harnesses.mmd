@@ -1,0 +1,69 @@
+%% Agenten-Harnesses: Wer bekommt welche Instruktionen? (Ist-Stand 2026-10-07, erstellt von dopi)
+%% Legende der Kanten:
+%%   durchgezogen (-->)  = wird automatisch geladen
+%%   gestrichelt  (-.->) = nur Verweis im Text, wird NICHT automatisch geladen (Agent muss aktiv lesen)
+%% Geprueft: piCon-Seite per docker exec pi-harness (Dateien und Inhalte real gelesen).
+%% Geprueft: conT/dopi-Seite anhand der geladenen Regeln der Antigravity-Sessions.
+%% Nicht geprueft: ob conT und dopi in der Praxis jeweils beide Workspaces geoeffnet haben (laut Feature-Datei: ja).
+
+flowchart LR
+
+    subgraph QUELLEN["Instruktionsdateien (Ort)"]
+        direction TB
+        G["GEMINI.md<br/>C:/Users/ich/.gemini/GEMINI.md<br/>Globale Regeln: Deutsch, Pfade, Fragemodus, Emojis"]
+        WA["W:/AGENTS.md  (= /workspace/AGENTS.md)<br/>Projektregeln: Rollen, SSoT, Git, Ports, com/"]
+        PA["Nodges_Pi/AGENTS.md<br/>C:/Users/ich/Desktop/code/_projects/Nodges_Pi/AGENTS.md<br/>dopi-Rolle: nur Docker/Host-Infrastruktur"]
+        SK["W:/.agents/skills/<br/>save, release, status"]
+        PIA["/home/.pi/agent/AGENTS.md<br/>Pi global: direkte Antworten, Zurueckhaltung,<br/>Verweis auf user.md"]
+        PIU["/home/.pi/user.md<br/>Benutzerprofil + Kurzreferenz (veraltet in Teilen)"]
+        PIS["/home/.pi/agent/skills/brave-search"]
+        COM["W:/com/ (00_start_hier, todo, entscheidungen, ...)"]
+    end
+
+    subgraph CONT["conT  (Antigravity, W:/ + Nodges_Pi im Workspace)"]
+        direction TB
+        C1["Regeln bei Sessionstart"]
+    end
+
+    subgraph DOPI["dopi  (Antigravity, Nodges_Pi + W:/ im Workspace)"]
+        direction TB
+        D1["Regeln bei Sessionstart"]
+    end
+
+    subgraph PICON["piCon  (Pi im Container pi-harness, cwd /workspace)"]
+        direction TB
+        P1["Regeln bei Sessionstart"]
+    end
+
+    G --> C1
+    G --> D1
+    WA --> C1
+    WA --> D1
+    WA --> P1
+    PA --> C1
+    PA --> D1
+    SK --> C1
+    SK --> D1
+    SK --> P1
+    PIA --> P1
+    PIS --> P1
+
+    PIA -.->|"Verweis: pflegt user.md"| PIU
+    PIU -.->|"nur wenn aktiv gelesen"| P1
+    WA -.->|"Leseauftrag"| COM
+    COM -.->|"nur wenn aktiv gelesen"| C1
+    COM -.->|"nur wenn aktiv gelesen"| D1
+    COM -.->|"nur wenn aktiv gelesen"| P1
+
+    %% Befunde, die aus der Grafik folgen:
+    %% 1. conT erhaelt PA (dopi-Rolle): Quer-Effekt, gehoert nicht zu conT.
+    %% 2. G wird von piCon nicht gesehen; Pi hat dafuer PIA (Teilduplikat: Direktantwort, Zurueckhaltung).
+    %% 3. Sprache, Emojis, Kein-Sz stehen in G und WA; PIA kennt sie nicht explizit. piCon bekommt sie nur ueber WA.
+    %% 4. PIU ist nur ein Verweis und enthaelt Altaussagen (bericht.md/setup.md im Root, push nach origin/main),
+    %%    die W:/AGENTS.md widersprechen (com/bericht.md; Push nur Major).
+    %% 5. Die Skills in W:/.agents/skills sind fuer alle drei sichtbar; brave-search nur fuer piCon.
+
+    classDef quelle fill:#eef,stroke:#446
+    classDef harness fill:#efe,stroke:#464
+    class G,WA,PA,SK,PIA,PIU,PIS,COM quelle
+    class C1,D1,P1 harness

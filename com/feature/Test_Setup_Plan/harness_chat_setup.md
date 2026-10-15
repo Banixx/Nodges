@@ -56,8 +56,8 @@ Der Ablauf folgt vier wiederkehrenden Phasen:
                                   |
                                   v
 +-------------------------------------------------------------------+
-| 2. Weckruf / Benachrichtigung ueber COM-Bus                      |
-|    - ping an Partner: bash tools/nodges-com.sh ping <ziel> "..."  |
+| 2. Zustandsbasierte Uebergabe                                   |
+|    - Auftrag und Status in com/todo.md aktualisieren              |
 +-------------------------------------------------------------------+
                                   |
                                   v
@@ -81,8 +81,8 @@ Der Ablauf folgt vier wiederkehrenden Phasen:
 
 ## 4. Regeln fuer die Harness-Kommunikation
 
-1. **Dateisystem ist die Quelle:** Der Chat zwischen den Agenten findet Primaer in der Rapport-Datei statt, nicht in fluechtigen LLM-Kontextfenstern. Was in der Markdown-Datei steht, bleibt fuer beide Seiten persistent.
-2. **Klingel nutzen:** Nach jeder substantiellen Aktualisierung der Rapport-Datei wird ein Ping via `nodges-com.sh` abgesetzt.
+1. **Dateisystem ist die Quelle:** Rapport-Dateien und `com/todo.md` halten den gemeinsamen Arbeitsstand fest; es gibt keinen aktiven Hintergrund-Ping.
+2. **Status aktualisieren:** Nach einer Uebergabe wird der Auftrag in `com/todo.md` mit dem passenden Status versehen.
 3. **Keine stillen Annahmen:** Wenn Schnittstellen oder DTOs geaendert werden, muessen Felder, Typen und Fallbacks explizit in der Rapport-Datei beschrieben werden (wie in Frage 2 von Build 14 geschehen).
 4. **Schreib- und Sprachdisziplin:**
    - Sprache: Deutsch.

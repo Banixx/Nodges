@@ -242,7 +242,6 @@ Der vollstaendige Einstieg steht in [**W:/com/00\_start\_hier.md**](file:///W:/c
    * **Erfahrung:** Amateurprogrammierer.
    * **Wahrheitsgebot:** Nichts ungeprueft behaupten — fremde Angaben am realen Code und Dateistand verifizieren.
    * **Zurueckhaltung (Grundhaltung):** Keine inhaltlichen Code-Aenderungen ohne ausdrueckliche Anforderung des Benutzers. Einzige ausdruecklich vereinbarte Ausnahme ist die Berichtspflicht (Abschnitt 6 Punkt 4). Git-Sicherungen (`save`) sind kein Automatismus: erst auf Anforderung oder am fachlichen Abschluss.
-   * **Benutzerprofil-Datei:** Ergaenzend zu diesem Abschnitt liegt das Benutzerprofil in `/home/.pi/user.md` — das ist die einzige gueltige Profildatei. Sie liegt ausserhalb des Repos; conT erreicht sie nicht ueber `W:/`, fuer conT gilt deshalb der Profiltext in diesem `AGENTS.md`.
    * **Fragen-Trigger ("fragen"):** Wenn der Benutzer in einer Session nach "fragen" fragt (z.B. "Welche Fragen sind offen?", "gibt es offene fragen?", "fragen"), orientiert sich das LLM verbindlich an [W:/com/fragen_an_user.md](file:///W:/com/fragen_an_user.md) und praesentiert die offenen Entscheidungsvorlagen strukturiert und kompakt.
 
 \---

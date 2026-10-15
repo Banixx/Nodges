@@ -14,8 +14,8 @@ if [ "$branch" != "main" ]; then
   ausnahme || exit 1
 fi
 
-# Geheimnisse: .env-Dateien, private Schluessel, Zertifikate
-verdaechtig="$(git diff --cached --name-only | grep -E '(^|/)\.env($|\.)|id_(rsa|ed25519)|\.(pem|key|p12)$' || true)"
+# Geheimnisse: .env-Dateien, private Schluessel, Zertifikate (geloeschte Dateien ignorieren)
+verdaechtig="$(git diff --cached --name-only --diff-filter=d | grep -E '(^|/)\.env($|\.)|id_(rsa|ed25519)|\.(pem|key|p12)$' || true)"
 if [ -n "$verdaechtig" ]; then
   echo "ABBRUCH: moegliches Geheimnis in der Stage:" >&2
   echo "$verdaechtig" >&2

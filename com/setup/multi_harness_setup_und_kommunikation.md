@@ -1,10 +1,12 @@
 # Multi-Harness Setup, Skripte und Kommunikations-Architektur
 
+> **Historisches Dokument, keine aktuelle Betriebsanleitung:** Der hier beschriebene COM-Bus samt Watchern, Skripten und der Pi-Extension `nodges-com.ts` wurde zurueckgebaut. Die Extension und ihre Sicherung wurden entfernt. Aktuelle Koordination: zustandsbasiert ueber `AGENTS.md` und `com/todo.md`.
+>
 > **Dokumentenpfad:** [W:/com/setup/multi_harness_setup_und_kommunikation.md](file:///W:/com/setup/multi_harness_setup_und_kommunikation.md)  
 > **Projekt:** Nodges  
 > **Stand:** 27. September 2026 (Version 0.106.8)  
 > **Beteiligte Harnesses:** **conT** (Antigravity auf Windows 11) und **piCon** (Pi-Agent im Linux-Docker-Container)  
-> **Status:** Verbindliche Systemdokumentation und Analyse  
+> **Status:** Historische Systemdokumentation und Analyse; Stand vor dem Rueckbau vom 2026-10-02
 
 ---
 
@@ -53,7 +55,7 @@ Das Projekt Nodges nutzt eine Multi-Harness-Entwicklungsumgebung mit strikter ph
 | [W:/tools/watch_com.ps1](file:///W:/tools/watch_com.ps1) | conT / System | PowerShell (Windows) | Windows-Waechter: Ueberwacht `com/` und `tools/com-bus/`, loest One-Way-Sync aus. |
 | [W:/tools/sync_com.ps1](file:///W:/tools/sync_com.ps1) | `watch_com.ps1` / CLI | PowerShell (Windows) | Spiegelt `W:/com` via `robocopy /MIR` nach `C:/Users/ich/Desktop/code/_Nodges_Com_Sync`. |
 | [W:/tools/nodges-com.ps1](file:///W:/tools/nodges-com.ps1) | conT / Benutzer | PowerShell (Windows) | Windows-CLI fuer den COM-Bus (`ping`, `status`, `read`, `sync`). |
-| `/home/.pi/agent/extensions/nodges-com.ts` | piCon | TypeScript (Pi-Agent) | Liest `events.log` beim Prompt-Start und blendet `COM_UPDATE` direkt in den Pi-Chat ein. |
+| `/home/.pi/agent/extensions/nodges-com.ts` | piCon | TypeScript (Pi-Agent) | Historische Extension zum COM-Bus; inzwischen samt Sicherung geloescht. |
 | [W:/start_pi_container.cmd](file:///W:/start_pi_container.cmd) | Benutzer | Windows CMD | Startet den Pi-Harness Docker-Container. Zwingend mit CRLF ausgecheckt. |
 | `.devcontainer/start-lightrag.sh` | Container-System | Bash (Container) | Startet das FastAPI/LightRAG-Backend auf Port 8000. |
 | `lightrag-backend/backup_storage.sh` | piCon | Bash (Container) | Erstellt komprimierte Snapshots des RAG-Vektorspeichers. |
@@ -133,5 +135,5 @@ Auf Basis der Pruefung von [W:/com/plan/Test_Setup_Plan/rapport_test_setup.md](f
 ## 6. Richtlinien fuer den Betrieb
 
 1. **Status vor Behauptung:** Vor jeder Aussage ueber den Stand eines Partners wird der reale Dateistand geprueft (Skripte, `package.json`, Code).
-2. **Klingel nach Dokumentation:** Zuerst wird der Befund in die entsprechende Rapport- oder Todo-Datei geschrieben, erst anschliessend wird der Ping via `nodges-com.sh` bzw. `nodges-com.ps1` abgesetzt.
-3. **Keine stillen Annahmen ueber Hintergrundprozesse:** Dateisystem-basierte Pings dienen der Asynchronitaet. Bleibt ein Ping liegen, bedeutet dies unter Windows zumeist fehlende IPC-Events ueber WSL-Netzlaufwerke, kein Scheitern des Partners.
+2. **Historischer COM-Bus-Ablauf:** Die fruehere Ping- und Watcher-Prozedur ist ausser Betrieb und darf nicht mehr verwendet werden.
+3. **Aktuelle Koordination:** Aufgaben und Uebergaben werden ueber Status und Auftragstags in `com/todo.md` dokumentiert; es gibt keine aktiven COM-Hintergrundprozesse.

@@ -97,7 +97,7 @@ bash tools/nodges-git.sh release   # Minor (Patch auf 0) + Tag + Push nach origi
 
 ## 2b. Der COM-Bus und die Multi-Harness-Kommunikation (Historisch / Vollstaendig zurueckgebaut)
 
-> **Ueberholt / Zurueckgebaut (Beschluss 2026-10-02):** Der aktive COM-Bus, Hintergrundwaechter (`watch_com.*`), Pingskripte (`nodges-com.*`, `sync_com.ps1`, `test-com.sh`), der Skill `com` und das Verzeichnis `tools/com-bus/` wurden gemaess Benutzerbeschluss vollstaendig entfernt.
+> **Ueberholt / Zurueckgebaut (Beschluss 2026-10-02 und anschliessende Dateiaufraeumung):** Der aktive COM-Bus, Hintergrundwaechter (`watch_com.*`), Pingskripte (`nodges-com.*`, `sync_com.ps1`, `test-com.sh`), der Skill `com`, die Pi-Extension `nodges-com.ts` samt Sicherung und das Verzeichnis `tools/com-bus/` sind entfernt.
 > Die Koordination aller Harnesses (`conT`, `piCon`, `dopi`) erfolgt fortan rein **zustandsbasiert ueber [W:/com/todo.md](file:///W:/com/todo.md)** und Dateistatus im ext4/Netzlaufwerk (SSoT). Die nachfolgenden Abschnitte und Tabellen dienen ausschliesslich der Dokumentationshistorie.
 
 Grundsatz fuer alle Agenten: **"Die Datei ist der Inhalt, der Ping ist nur die Klingel."**
@@ -113,7 +113,7 @@ Grundsatz fuer alle Agenten: **"Die Datei ist der Inhalt, der Ping ist nur die K
    - Liegt unter [W:/tools/com-bus/](file:///W:/tools/com-bus/) (ausserhalb von `com/`, um Rekursion zu vermeiden).
    - Protokoll: `tools/com-bus/events.log`.
    - Weckruf: `ping-<ziel>.md` (`conT`, `piCon` oder `all`).
-   - piCon nutzt die Agent-Extension `/home/.pi/agent/extensions/nodges-com.ts` fuer Prompt-Einblendungen.
+   - Die fruehere Agent-Extension `/home/.pi/agent/extensions/nodges-com.ts` samt Sicherung ist geloescht.
    - conT liest `com/todo.md`, die Rapport-Dateien und prueft Pings in `tools/com-bus/`.
 
 ### Werkzeuge des COM-Busses:
